@@ -13,9 +13,9 @@ package GenderSense {
          * Representation layer (this model) is the source of truth.
          * Execution layer consumes it via generation or configuration.
          *
-         * NOTE: use case def / include use case syntax is per SysML v2 spec
-         * but not yet verified in Syside Modeler 0.8.4. If parse errors occur,
-         * replace with action def placeholders or remove pending verification.
+         * Verified clean in Syside Modeler 0.8.5 (5 March 2026).
+         * use case def, requirement def with subject, satisfy relationships,
+         * and constraint def with evaluable bodies all parse correctly.
          */
 
     // =========================================================================
@@ -81,6 +81,22 @@ package GenderSense {
             use case def MeetProfessionalStandards {
                 doc /* GMC Good Medical Practice, specialist standards,
                      * appraisal and revalidation requirements. */
+            }
+
+            // --- satisfy/verify syntax verification (v3.1) ---
+
+            requirement def BloodMonitoringRequired {
+                doc /* Patients on hormone therapy must have blood tests
+                     * performed at defined monitoring intervals. This is
+                     * a CQC and clinical governance requirement. */
+                subject patient : GenderSense::ServiceDelivery::ClinicalEntities::Patient;
+                attribute monitoringIntervalWeeks : Integer;
+            }
+
+            requirement def ConsentBeforeTreatment {
+                doc /* Informed consent must be obtained and recorded
+                     * before any treatment is initiated. */
+                subject patient : GenderSense::ServiceDelivery::ClinicalEntities::Patient;
             }
         }
 
@@ -172,14 +188,44 @@ package GenderSense {
 
         package ConstraintLibrary {
             private import ScalarValues::*;
+            private import Enterprise::Regulation::*;
 
             doc /* Composable clinical constraints, safety rules, drug
                  * interaction checks, contraindication screening. Constraints
                  * are reusable and testable in isolation: each takes typed
                  * inputs and returns a boolean evaluation. */
 
-            // Placeholder — constraints will be elaborated as clinical
-            // pathways are modelled and safety rules are formalised.
+            // --- satisfy/verify syntax verification (v3.1) ---
+
+            constraint def BloodMonitoringIntervalConstraint {
+                doc /* Evaluable rule: the number of weeks since the last
+                     * blood test must not exceed the required monitoring
+                     * interval. */
+                in weeksSinceLastTest : Integer;
+                in requiredIntervalWeeks : Integer;
+
+                weeksSinceLastTest <= requiredIntervalWeeks
+            }
+
+            constraint def ConsentRecordedConstraint {
+                doc /* Evaluable rule: a valid consent record must exist
+                     * for the specified treatment before it can proceed. */
+                in consentRecorded : Boolean;
+
+                consentRecorded
+            }
+
+            // Traceability: constraint satisfies requirement
+            // Uses constraint usages (not defs) as the 'by' target,
+            // and relative paths to avoid namespace shadowing.
+            constraint bloodMonitoringCheck : BloodMonitoringIntervalConstraint;
+            constraint consentCheck : ConsentRecordedConstraint;
+
+            satisfy requirement BloodMonitoringRequired
+                by bloodMonitoringCheck;
+
+            satisfy requirement ConsentBeforeTreatment
+                by consentCheck;
         }
 
         package LogicEngine {
