@@ -1,4 +1,18 @@
+# Environment and Python
 .env
 .venv/
 __pycache__/
 *.pyc
+
+# Node.js
+node_modules/
+
+# Build artefacts
+dist/
+.svelte-kit/
+
+# OS files
+.DS_Store
+
+# pnpm
+pnpm-lock.yaml
