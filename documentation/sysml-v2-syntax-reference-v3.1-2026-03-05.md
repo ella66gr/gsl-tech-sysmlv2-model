@@ -1009,7 +1009,7 @@ package ConstraintLibrary {
 - [x] ~~`satisfy` relationships (linking requirements to constraints)~~ — verified 5 March 2026; see "Satisfy/Verify Traceability" section
 - [ ] `verify` relationships — not yet tested
 - [ ] Port definitions and connections
-- [x] ~~Syside Automator programmatic model access~~ — Automator 0.8.5 now on PyPI with `Compiler.evaluate_filter` and `Compiler.evaluate_feature`; full evaluation deferred to generator migration
+- [x] ~~Syside Automator programmatic model access~~ — Automator 0.8.5 evaluated 5 March 2026. All 10 tests passed: multi-file model loading, package/part def/enum def/use case def/requirement def/constraint def/state def/metadata def enumeration, satisfy relationship traversal. Semantic API confirmed as full replacement for regex generators. See `gsl-sysml-model/scripts/evaluate_automator.py`
 - [ ] `metadata def` with non-scalar attribute types (e.g. enum-valued metadata attributes)
 - [ ] `metadata def` specialisation (one metadata def extending another)
 - [ ] `metadata def` applied to `part def`, `state def`, or `requirement def` elements (only verified on `action def` and `action` so far)
