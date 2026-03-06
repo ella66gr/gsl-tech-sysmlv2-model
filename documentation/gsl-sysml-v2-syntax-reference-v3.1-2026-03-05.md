@@ -1001,6 +1001,86 @@ package ConstraintLibrary {
 
 ---
 
+## Entity Lifecycle State Machines ✅
+
+*New in v3.2 — verified 6 March 2026 in Syside Modeler 0.8.5*
+
+### Purpose
+
+Core domain entities (Episode, Prescription, LabResult, Referral) each have lifecycle state machines that pathways reference. These are defined as standalone `state def` blocks within `ServiceDelivery::ClinicalEntities`, with `exhibit state` on each `part def`.
+
+### Working constructs
+
+```sysml
+package ClinicalEntities {
+    private import ScalarValues::*;
+
+    // Entity-specific events
+    attribute def EpisodeOpened;
+    attribute def EpisodeSuspended;
+    // ... etc.
+
+    state def EpisodeLifecycle {
+        doc /* Lifecycle of a bounded episode of care. */
+
+        initial;
+        state created;
+        state active;
+        state suspended;
+        state completed;
+        state cancelled;
+
+        transition created_to_active
+            first created
+            accept EpisodeOpened
+            then active;
+
+        // ... further transitions ...
+    }
+
+    part def Episode {
+        doc /* A bounded episode of care. */
+        attribute episodeId : String;
+        ref patient : Patient;
+
+        exhibit state episodeLifecycle : EpisodeLifecycle;
+    }
+}
+```
+
+### Key points
+- `exhibit state name : StateDef;` inside a `part def` connects the lifecycle to the structural element
+- Event `attribute def` declarations are scoped to the same package as the `state def` that references them
+- Events and states are named with entity-specific prefixes where needed to avoid collisions with KerML/SysML standard library names
+- Multiple `state def` blocks and their associated `attribute def` events coexist within the same package without issues
+- `ref` attributes can cross-reference other entity part defs within the same package (e.g. `ref patient : Patient;` inside `Prescription`)
+
+### Entity lifecycles defined
+
+| Entity | State def | States | Terminal states |
+|---|---|---|---|
+| Episode | `EpisodeLifecycle` | created, active, suspended, completed, cancelled | completed, cancelled |
+| Prescription | `PrescriptionLifecycle` | drafted, authorised, dispensed, active, completed, cancelled | completed, cancelled |
+| LabResult | `LabResultLifecycle` | requested, collected, resulted, reviewed, actioned, cancelled | actioned, cancelled |
+| Referral | `ReferralLifecycle` | drafted, sent, acknowledged, referralAccepted, declined, completed, cancelled | declined, completed, cancelled |
+
+### ⚠️ Syntax traps — reserved and shadowed state names
+
+Some common English words are reserved keywords or shadow names in the KerML/SysML v2 standard library. Using them as state names causes parsing errors or namespace-distinguishability warnings.
+
+| State name | Problem | Error | Fix |
+|---|---|---|---|
+| `state ordered;` | `ordered` is a SysML v2 keyword (multiplicity modifier) | `parsing-error`: unexpected token | Use `requested` or another synonym |
+| `state accepted;` | Shadows `StatePerformances::StatePerformance::accepted` from KerML | `namespace-distinguishability` | Prefix with entity context: `referralAccepted` |
+
+**General rule:** Avoid short, generic English words as state names. If in doubt, prefix with the entity context (e.g. `referralAccepted` rather than `accepted`). Known safe state names from verified models include: `created`, `active`, `suspended`, `completed`, `cancelled`, `drafted`, `authorised`, `dispensed`, `collected`, `resulted`, `reviewed`, `actioned`, `sent`, `acknowledged`, `declined`.
+
+### Not yet verified
+- State def specialisation (`:>`) — e.g. `state def EpisodeLifecycle :> StandardLifecycle { ... }` to extend the base pattern with additional states and transitions. Deferred; standalone state defs work and avoid potential specialisation complications.
+- `exhibit state` on `part def` with multiplicity — e.g. a part with multiple concurrent state machines
+
+---
+
 ## TODO: Patterns Not Yet Verified
 
 - [ ] `decide` / `merge` control nodes — proper syntax for Syside
@@ -1013,6 +1093,7 @@ package ConstraintLibrary {
 - [ ] `metadata def` with non-scalar attribute types (e.g. enum-valued metadata attributes)
 - [ ] `metadata def` specialisation (one metadata def extending another)
 - [ ] `metadata def` applied to `part def`, `state def`, or `requirement def` elements (only verified on `action def` and `action` so far)
+- [ ] `state def` specialisation (`:>`) — extending `StandardLifecycle` with entity-specific states/transitions
 - [ ] Generator extension: `gen_temporal_workflow.py` emitting `tryTransition()` calls from `@StateTransitionTrigger` annotations
 - [ ] Temporal `Promise.all()` generation from SysML `fork` / `join` constructs
 - [x] ~~`use case def` — basic declaration with `doc` blocks~~ — verified 5 March 2026 (GenderSense package hierarchy)
@@ -1020,7 +1101,8 @@ package ConstraintLibrary {
 - [ ] SysML v2 `view` and `viewpoint` elements for scoped diagram generation
 - [ ] Syside CLI `viz` command for headless diagram export
 - [ ] Re-test `decide`/`merge`, `fork`/`join` against Syside 0.8.5 (may now work given full v2.0 support claim)
+- [x] ~~Entity lifecycle state machines with `exhibit state`~~ — verified 6 March 2026. Four entity lifecycles (Episode, Prescription, LabResult, Referral) with `exhibit state` on part defs. Discovered reserved/shadowed state name traps: `ordered` (keyword), `accepted` (KerML shadow).
 
 ---
 
-*End of document. Previous version preserved as `sysml-v2-syntax-reference-v3.0-2026-03-03.md`.*
+*End of document. Previous versions preserved as `gsl-sysml-v2-syntax-reference-v2.0-2026-03-03.md` and `gsl-sysml-v2-syntax-reference-v1.0-2026-03-01.md`.*
