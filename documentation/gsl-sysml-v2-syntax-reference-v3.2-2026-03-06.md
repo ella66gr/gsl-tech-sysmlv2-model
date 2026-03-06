@@ -1,13 +1,15 @@
 # SysML v2 Syntax Reference — Syside Modeler
 ## Verified Patterns from CoffeeShop Exercise & Demonstrator
 
-> **Version:** 3.1 — 5 March 2026
-> **Previous version:** `sysml-v2-syntax-reference-v3.0-2026-03-03.md` (v3.0, 3 March 2026)
+> **Version:** 3.2 — 6 March 2026
+> **Previous version:** `gsl-sysml-v2-syntax-reference-v3.1-2026-03-05.md` (v3.1, 5 March 2026)
 > **Purpose:** Capture working SysML v2 syntax as verified against Syside Modeler.
 > This file should travel with the project repo and be consulted before writing new `.sysml` files.
 > Update as new patterns are verified or corrected.
 >
-> **What's new in v3.1:** Syside Modeler updated to 0.8.5 (released 1 March 2026). Verified `use case def` syntax in the GenderSense package hierarchy. Documented significant new Syside 0.8.5 capabilities (use case diagrams, sequence diagrams, SysML v2 views, CLI diagram generation, Automator filter evaluation and user-defined calculation support). Updated TODO list.
+> **What's new in v3.2:** Entity lifecycle state machines with `exhibit state` on part defs. Reserved/shadowed state name traps (`ordered`, `accepted`). Domain-layer action flow with clinical metadata annotations (`@ClinicalReviewGate`, `@ConsentRequired`, `@AuditPoint`, `@LogicRule`, `@DecisionTable`, `@SafetyConstraint`) verified on action steps. Backward `then` reference (action flow loop) verified. Same-file sibling package import verified.
+>
+> **What was new in v3.1:** Syside Modeler updated to 0.8.5 (released 1 March 2026). Verified `use case def` syntax in the GenderSense package hierarchy. Documented significant new Syside 0.8.5 capabilities (use case diagrams, sequence diagrams, SysML v2 views, CLI diagram generation, Automator filter evaluation and user-defined calculation support). Updated TODO list.
 
 ---
 
@@ -1081,9 +1083,78 @@ Some common English words are reserved keywords or shadow names in the KerML/Sys
 
 ---
 
+## Domain-Layer Action Flow with Clinical Metadata ✅
+
+*New in v3.2 — verified 6 March 2026 in Syside Modeler 0.8.5*
+
+### Purpose
+
+The hormone therapy initiation pathway is the first domain-layer action flow in the GenderSense model. It validates the full clinical action flow pattern: multi-phase process, metadata annotations from a clinical metadata library, branching at decision points, and a backward loop for the monitoring/adjustment cycle.
+
+### New verified patterns
+
+#### 1. Clinical metadata annotations on action steps
+
+Metadata defs defined in `Foundation::MetadataLibrary` and imported via `private import Foundation::MetadataLibrary::*;` resolve correctly as `@` annotations on action steps within a different package (`ServiceDelivery::ClinicalPathways::HormoneTherapy`). All six clinical metadata defs verified:
+
+```sysml
+action confirmEligibility {
+    @LogicRule { ruleName = "hormoneEligibility"; }
+}
+
+action obtainConsent {
+    @ConsentRequired { consentType = "hormone-therapy-initiation"; }
+    @AuditPoint { auditCategory = "consent"; }
+}
+
+action reviewBaselineResults {
+    @ClinicalReviewGate {
+        reviewerRole = "prescribing-clinician";
+        reviewCriteria = "baseline-bloods-reviewed";
+    }
+}
+
+action selectRegimen {
+    @DecisionTable { tableName = "regimenSelection"; }
+}
+
+action issuePrescription {
+    @SafetyConstraint {
+        constraintName = "prescribing-safety-check";
+        severity = "critical";
+    }
+}
+```
+
+#### 2. Same-file sibling package import
+
+`private import ServiceDelivery::ClinicalEntities::*;` from within `ServiceDelivery::ClinicalPathways::HormoneTherapy` resolves correctly. A package can import from a sibling package within the same top-level package in the same file.
+
+#### 3. Backward `then` reference (action flow loop)
+
+```sysml
+action scheduleMonitoringBloods { ... }
+then awaitMonitoringResults;
+
+// ... several actions later ...
+
+action adjustDose { ... }
+then scheduleMonitoringBloods;   // backward reference — creates a loop
+```
+
+Syside resolves `then scheduleMonitoringBloods;` from `adjustDose` to the earlier action declaration. **Action flow loops via backward `then` references work.** The `then` keyword resolves by name within the enclosing `action def`, not just to the immediately preceding declaration.
+
+### Key points
+- `in item patient : Patient;` works with imported part defs from other packages
+- Multiple `@` annotations on a single action step parse correctly (verified with 2 annotations on several steps)
+- Branching with multiple `then` lines after a decision action works as in the coffee shop demonstrator
+- 14 action steps in a single `action def` with mixed annotation patterns — no issues at scale
+
+---
+
 ## TODO: Patterns Not Yet Verified
 
-- [ ] `decide` / `merge` control nodes — proper syntax for Syside
+- [ ] `decide` / `merge` control nodes — proper syntax for Syside (may be less urgent now that action-node decision points and backward loops are verified)
 - [ ] Guard conditions on action flow transitions
 - [ ] `fork` / `join` for parallel actions
 - [x] ~~`satisfy` relationships (linking requirements to constraints)~~ — verified 5 March 2026; see "Satisfy/Verify Traceability" section
@@ -1102,7 +1173,10 @@ Some common English words are reserved keywords or shadow names in the KerML/Sys
 - [ ] Syside CLI `viz` command for headless diagram export
 - [ ] Re-test `decide`/`merge`, `fork`/`join` against Syside 0.8.5 (may now work given full v2.0 support claim)
 - [x] ~~Entity lifecycle state machines with `exhibit state`~~ — verified 6 March 2026. Four entity lifecycles (Episode, Prescription, LabResult, Referral) with `exhibit state` on part defs. Discovered reserved/shadowed state name traps: `ordered` (keyword), `accepted` (KerML shadow).
+- [x] ~~Clinical metadata annotations on action steps~~ — verified 6 March 2026. All six clinical metadata defs (`@ClinicalReviewGate`, `@ConsentRequired`, `@AuditPoint`, `@LogicRule`, `@DecisionTable`, `@SafetyConstraint`) applied to action steps via cross-package import. Multiple annotations per step verified.
+- [x] ~~Backward `then` reference (action flow loop)~~ — verified 6 March 2026. `then targetAction;` resolves to an earlier action declaration within the same `action def`, creating a loop. Verified in the hormone therapy monitoring cycle.
+- [x] ~~Same-file sibling package import~~ — verified 6 March 2026. `private import ServiceDelivery::ClinicalEntities::*;` from within `ServiceDelivery::ClinicalPathways::HormoneTherapy` resolves correctly.
 
 ---
 
-*End of document. Previous versions preserved as `gsl-sysml-v2-syntax-reference-v2.0-2026-03-03.md` and `gsl-sysml-v2-syntax-reference-v1.0-2026-03-01.md`.*
+*End of document. Previous versions preserved as `gsl-sysml-v2-syntax-reference-v3.1-2026-03-05.md`, `gsl-sysml-v2-syntax-reference-v2.0-2026-03-03.md`, and `gsl-sysml-v2-syntax-reference-v1.0-2026-03-01.md`.*

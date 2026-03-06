@@ -16,18 +16,21 @@ package Foundation {
              *
              * Validated in demonstrator: @TemporalWorkflow,
              * @TemporalActivity, @TemporalSignal, @StateTransitionTrigger.
+             * These live in the shared metadata library
+             * (sysml-metadata-lib/temporal/) and are imported by
+             * orchestration-layer action flows.
              *
-             * Clinical extensions (to be verified):
+             * Clinical extensions defined here:
              * @ClinicalReviewGate, @ConsentRequired, @AuditPoint,
              * @LogicRule, @DecisionTable, @SafetyConstraint.
              *
-             * NOTE: The existing TemporalMetadata package in the shared
-             * metadata library (sysml-metadata-lib/) is the current
-             * verified implementation. Clinical metadata defs will be
-             * added here as they are verified in Syside. */
-
-        // Demonstrator-validated metadata defs are in the shared library.
-        // Clinical extensions will be defined here as pathways are modelled.
+             * These were defined during the package hierarchy session
+             * (5 March 2026) and parse correctly as metadata defs.
+             * Reviewed 6 March 2026 against the hormone therapy
+             * initiation pathway requirements: the existing set covers
+             * all domain-layer annotation needs. Verification of @
+             * application on action steps will occur when the domain
+             * action flow is modelled (Step 5). */
 
         metadata def ClinicalReviewGate {
             doc /* Marks a pathway step as requiring clinical review

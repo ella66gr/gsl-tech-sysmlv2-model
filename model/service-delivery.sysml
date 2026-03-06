@@ -62,6 +62,8 @@ package ServiceDelivery {
 
         package HormoneTherapy {
             private import ScalarValues::*;
+            private import ServiceDelivery::ClinicalEntities::*;
+            private import Foundation::MetadataLibrary::*;
 
             doc /* Hormone therapy initiation, titration, monitoring,
                  * and shared care protocols. The recommended first
@@ -71,7 +73,13 @@ package ServiceDelivery {
                  * referrals), multiple participants (patient, GP,
                  * endocrinologist, phlebotomy), governance requirements
                  * (consent, clinical review intervals, monitoring
-                 * schedules), full two-layer action flow pattern. */
+                 * schedules), full two-layer action flow pattern.
+                 *
+                 * This package contains the domain-layer action flow
+                 * (the clinical process as a clinician would describe
+                 * it) and use case definitions. The orchestration-layer
+                 * action flow (Temporal execution model) will be added
+                 * in a subsequent step. */
 
             use case def InitiateHormoneTherapy {
                 doc /* End-to-end hormone therapy initiation from clinical
@@ -86,6 +94,315 @@ package ServiceDelivery {
             use case def TransitionToSharedCare {
                 doc /* Establish shared care arrangement with the patient's
                      * GP for ongoing prescribing and monitoring. */
+            }
+
+            // ==========================================================
+            // Domain-layer action flow: Hormone Therapy Initiation
+            //
+            // This is the governance view — the clinical process as a
+            // clinician or governance reviewer would understand it.
+            // Action nodes represent clinical activities, not system
+            // operations.
+            //
+            // Participants:
+            //   - Patient
+            //   - Prescribing clinician (GenderSense)
+            //   - Phlebotomy service
+            //   - Laboratory
+            //   - Pharmacy
+            //   - Patient's GP (for shared care)
+            //
+            // The pathway begins after assessment has concluded that
+            // hormone therapy is appropriate. It ends when the patient
+            // is on a stable regimen with monitoring in place.
+            // ==========================================================
+
+            action def InitiateHormoneTherapyProcess {
+                doc /* Domain-layer action flow for hormone therapy
+                     * initiation. Covers the full clinical process
+                     * from eligibility confirmation through to
+                     * established stable regimen and transition to
+                     * ongoing monitoring or shared care.
+                     *
+                     * This is a long-running process. Typical duration
+                     * is 6-12 months from initiation to stability,
+                     * depending on clinical response and monitoring
+                     * results. */
+
+                in item patient : Patient;
+                in item episode : Episode;
+
+                // --- Phase 1: Eligibility, consent, and baseline ---
+
+                action confirmEligibility {
+                    doc /* Verify that the patient meets clinical
+                         * eligibility criteria for hormone therapy.
+                         * Criteria include completed assessment,
+                         * treatment plan in place, no absolute
+                         * contraindications, and capacity to consent.
+                         *
+                         * Evaluates: EligibilityCriteriaMetConstraint
+                         * (to be defined in ConstraintLibrary). */
+                    @LogicRule { ruleName = "hormoneEligibility"; }
+                }
+                then providePatientInformation;
+
+                action providePatientInformation {
+                    doc /* Provide the patient with comprehensive
+                         * information about the proposed treatment:
+                         * expected effects and timeline, potential
+                         * risks and side effects, alternative options,
+                         * monitoring requirements, and implications
+                         * for fertility.
+                         *
+                         * Information provision must be documented in
+                         * the clinical record before consent can be
+                         * obtained.
+                         *
+                         * Satisfies: InformedConsentRequiresInformation */
+                    @AuditPoint { auditCategory = "patient-information"; }
+                }
+                then obtainConsent;
+
+                action obtainConsent {
+                    doc /* Obtain informed consent for hormone therapy.
+                         * Consent must be specific to the proposed
+                         * treatment, documented in the clinical record,
+                         * and include evidence of capacity.
+                         *
+                         * Prerequisite: providePatientInformation must
+                         * have been completed.
+                         *
+                         * Satisfies: ConsentBeforeTreatment */
+                    @ConsentRequired { consentType = "hormone-therapy-initiation"; }
+                    @AuditPoint { auditCategory = "consent"; }
+                }
+                then orderBaselineBloods;
+
+                action orderBaselineBloods {
+                    doc /* Order baseline blood tests. The required panel
+                         * includes: FBC, U&Es, LFTs, lipid profile,
+                         * fasting glucose, prolactin, and baseline
+                         * hormone levels (testosterone, oestradiol).
+                         *
+                         * Also record baseline observations: weight, BP.
+                         *
+                         * Creates LabResult entities in 'requested' state. */
+                    @AuditPoint { auditCategory = "investigation-order"; }
+                }
+                then awaitBaselineResults;
+
+                action awaitBaselineResults {
+                    doc /* Wait for baseline blood test results to be
+                         * returned by the laboratory. This is a long-
+                         * running wait — typically 3-7 working days.
+                         *
+                         * LabResult entities transition through:
+                         * requested -> collected -> resulted.
+                         *
+                         * The pathway does not proceed until all
+                         * required tests have resulted. */
+                }
+                then reviewBaselineResults;
+
+                action reviewBaselineResults {
+                    doc /* Clinician reviews the baseline blood test
+                         * results and records their clinical
+                         * interpretation.
+                         *
+                         * LabResult entities transition:
+                         * resulted -> reviewed.
+                         *
+                         * This is a clinical review gate — the pathway
+                         * must not proceed to prescribing until a
+                         * clinician has reviewed all baseline results.
+                         *
+                         * Satisfies: BaselineInvestigationsBeforePrescribing */
+                    @ClinicalReviewGate {
+                        reviewerRole = "prescribing-clinician";
+                        reviewCriteria = "baseline-bloods-reviewed";
+                    }
+                }
+                then selectRegimen;
+
+                // --- Phase 2: Prescribing ---
+
+                action selectRegimen {
+                    doc /* Clinical decision: select the hormone therapy
+                         * regimen. Decision factors include patient
+                         * preference, clinical assessment, baseline
+                         * blood results, contraindications, and the
+                         * approved prescribing protocol.
+                         *
+                         * Determines: medication, route of
+                         * administration, starting dose.
+                         *
+                         * Evaluates: RegimenWithinProtocolConstraint
+                         * Satisfies: PrescribingProtocolAdherence */
+                    @DecisionTable { tableName = "regimenSelection"; }
+                    @ClinicalReviewGate {
+                        reviewerRole = "prescribing-clinician";
+                        reviewCriteria = "prescribing-decision";
+                    }
+                }
+                then issuePrescription;
+
+                action issuePrescription {
+                    doc /* Issue the hormone therapy prescription.
+                         * Includes drug interaction screening and
+                         * safety constraint evaluation.
+                         *
+                         * Creates a Prescription entity in 'drafted'
+                         * state, then transitions to 'authorised'
+                         * upon clinician sign-off.
+                         *
+                         * Satisfies: ClinicalReviewBeforePrescribing */
+                    @SafetyConstraint {
+                        constraintName = "prescribing-safety-check";
+                        severity = "critical";
+                    }
+                    @AuditPoint { auditCategory = "prescribing"; }
+                }
+                then dispenseMedication;
+
+                action dispenseMedication {
+                    doc /* Prescription is dispensed by pharmacy.
+                         * Patient receives medication and written
+                         * information about administration.
+                         *
+                         * Prescription entity transitions:
+                         * authorised -> dispensed -> active
+                         * (when patient begins taking medication). */
+                }
+                then scheduleMonitoringBloods;
+
+                // --- Phase 3: Monitoring cycle ---
+                //
+                // The following steps (scheduleMonitoringBloods through
+                // assessStabilityDecision) form a monitoring cycle that
+                // repeats until the patient's regimen is stable.
+                // Typical cycle: bloods at 3 months, clinical review,
+                // dose adjustment if needed, repeat.
+
+                action scheduleMonitoringBloods {
+                    doc /* Schedule follow-up blood tests at the
+                         * appropriate monitoring interval. Initial
+                         * monitoring is typically at 3 months post-
+                         * initiation, then at intervals determined by
+                         * clinical response.
+                         *
+                         * Creates new LabResult entities in 'requested'
+                         * state.
+                         *
+                         * Satisfies: BloodMonitoringRequired */
+                    @AuditPoint { auditCategory = "monitoring-schedule"; }
+                }
+                then awaitMonitoringResults;
+
+                action awaitMonitoringResults {
+                    doc /* Wait for monitoring blood test results.
+                         * Long-running wait — typically 3-7 working
+                         * days for results, but the interval from
+                         * scheduling to collection may be weeks.
+                         *
+                         * LabResult entities transition:
+                         * requested -> collected -> resulted. */
+                }
+                then reviewMonitoringResults;
+
+                action reviewMonitoringResults {
+                    doc /* Clinician reviews monitoring blood results
+                         * and records clinical interpretation.
+                         * Assesses hormone levels against therapeutic
+                         * target ranges, safety markers, and any
+                         * concerning trends.
+                         *
+                         * LabResult entities transition:
+                         * resulted -> reviewed -> actioned. */
+                    @ClinicalReviewGate {
+                        reviewerRole = "prescribing-clinician";
+                        reviewCriteria = "monitoring-results-review";
+                    }
+                }
+                then assessStabilityDecision;
+
+                action assessStabilityDecision {
+                    doc /* Clinical decision point: is the patient's
+                         * regimen stable?
+                         *
+                         * Stable means: hormone levels within
+                         * therapeutic range, no significant side
+                         * effects, patient satisfied with progress,
+                         * safety markers satisfactory.
+                         *
+                         * If stable -> proceed to transition to
+                         *   ongoing care.
+                         * If adjustment needed -> adjust dose and
+                         *   repeat the monitoring cycle. */
+                    @DecisionTable { tableName = "stabilityAssessment"; }
+                }
+                then adjustDose;
+                then confirmStable;
+
+                // --- Branch: dose adjustment (loops back) ---
+
+                action adjustDose {
+                    doc /* Adjust the hormone therapy dose based on
+                         * monitoring results and clinical review.
+                         *
+                         * The current Prescription is completed and
+                         * a new Prescription is created at the
+                         * adjusted dose (immutable prescription
+                         * records — see PrescriptionLifecycle).
+                         *
+                         * Satisfies: ClinicalReviewBeforeDoseAdjustment */
+                    @ClinicalReviewGate {
+                        reviewerRole = "prescribing-clinician";
+                        reviewCriteria = "dose-adjustment-review";
+                    }
+                    @AuditPoint { auditCategory = "dose-adjustment"; }
+                }
+                then scheduleMonitoringBloods;
+
+                // --- Branch: stable regimen ---
+
+                action confirmStable {
+                    doc /* Confirm that the hormone therapy regimen is
+                         * stable. Record the stabilisation date, current
+                         * regimen details, and established monitoring
+                         * schedule in the clinical record.
+                         *
+                         * This marks the end of the initiation/titration
+                         * phase and the beginning of ongoing maintenance. */
+                    @AuditPoint { auditCategory = "regimen-stabilised"; }
+                }
+                then transitionToOngoingCare;
+
+                // --- Phase 4: Transition ---
+
+                action transitionToOngoingCare {
+                    doc /* Establish the ongoing care arrangement.
+                         * This may be:
+                         *
+                         * 1. Continued monitoring by GenderSense
+                         *    (ongoing monitoring pathway)
+                         * 2. Shared care with the patient's GP
+                         *    (shared care protocol sent, GP acceptance
+                         *    confirmed, handoff completed)
+                         * 3. A combination of both
+                         *
+                         * If shared care: creates a Referral entity
+                         * and initiates the shared care establishment
+                         * process.
+                         *
+                         * Satisfies: SharedCareCommunication (when
+                         * shared care path is taken).
+                         *
+                         * Episode remains active — it transitions to
+                         * the ongoing monitoring pathway rather than
+                         * completing here. */
+                    @AuditPoint { auditCategory = "care-transition"; }
+                }
             }
         }
 
