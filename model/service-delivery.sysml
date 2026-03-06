@@ -64,6 +64,7 @@ package ServiceDelivery {
             private import ScalarValues::*;
             private import ServiceDelivery::ClinicalEntities::*;
             private import Foundation::MetadataLibrary::*;
+            private import TemporalMetadata::*;
 
             doc /* Hormone therapy initiation, titration, monitoring,
                  * and shared care protocols. The recommended first
@@ -77,9 +78,8 @@ package ServiceDelivery {
                  *
                  * This package contains the domain-layer action flow
                  * (the clinical process as a clinician would describe
-                 * it) and use case definitions. The orchestration-layer
-                 * action flow (Temporal execution model) will be added
-                 * in a subsequent step. */
+                 * it), the orchestration-layer action flow (Temporal
+                 * execution model), and use case definitions. */
 
             use case def InitiateHormoneTherapy {
                 doc /* End-to-end hormone therapy initiation from clinical
@@ -402,6 +402,300 @@ package ServiceDelivery {
                          * the ongoing monitoring pathway rather than
                          * completing here. */
                     @AuditPoint { auditCategory = "care-transition"; }
+                }
+            }
+
+            // ==========================================================
+            // Orchestration-layer action flow: Hormone Therapy Initiation
+            //
+            // This is the execution view — how the Temporal workflow
+            // engine manages the clinical process. Each domain-layer
+            // clinical activity maps to one or more orchestration steps
+            // annotated with @TemporalActivity (system does work),
+            // @TemporalSignal (system waits for external event), or
+            // @StateTransitionTrigger (entity lifecycle event).
+            //
+            // The mapping principle: domain-layer human activities
+            // ("clinician reviews results") become orchestration-layer
+            // signal waits ("workflow suspends until clinician-review-
+            // completed signal received from portal"). System activities
+            // ("record in CDR", "send lab order") become Temporal
+            // activities with retry and timeout semantics.
+            //
+            // This action def is the generation target for
+            // gen_temporal_workflow.py. The generated TypeScript workflow
+            // function will contain the activity calls, signal handlers,
+            // state transitions, and the monitoring loop.
+            // ==========================================================
+
+            action def InitiateHormoneTherapyWorkflow {
+                doc /* Orchestration-layer action flow for hormone therapy
+                     * initiation. Maps the domain-layer clinical process
+                     * to Temporal workflow execution.
+                     *
+                     * Generated Temporal workflow: initiateHormoneTherapy
+                     * Task queue: gendersense-clinical
+                     *
+                     * This is a long-running workflow. Temporal's durable
+                     * execution model handles the months-long duration,
+                     * surviving process restarts and infrastructure
+                     * failures transparently. */
+
+                @TemporalWorkflow {
+                    workflowName = "initiateHormoneTherapy";
+                    taskQueue = "gendersense-clinical";
+                }
+
+                in item patient : Patient;
+                in item episode : Episode;
+
+                // --- Phase 1: Eligibility, consent, and baseline ---
+
+                action evaluateEligibility {
+                    doc /* Activity: query CDR for assessment data and
+                         * evaluate eligibility constraints. Returns
+                         * an eligibility result with pass/fail and
+                         * any blocking reasons. */
+                    @TemporalActivity { activityName = "evaluateEligibility"; }
+                    @StateTransitionTrigger { eventName = "EpisodeOpened"; }
+                }
+                then recordInformationProvision;
+
+                action recordInformationProvision {
+                    doc /* Activity: record in the CDR that patient
+                         * information has been provided. Sends the
+                         * information pack via the patient portal
+                         * or records face-to-face provision. */
+                    @TemporalActivity { activityName = "recordInformationProvision"; }
+                }
+                then waitConsentRecorded;
+
+                action waitConsentRecorded {
+                    doc /* Signal wait: the workflow suspends until a
+                         * consent event is received from the patient
+                         * portal or recorded by a clinician.
+                         *
+                         * Timeout: 30 days. If consent is not recorded
+                         * within this period, the workflow raises an
+                         * alert for clinical follow-up. */
+                    @TemporalSignal { signalName = "consentRecorded"; timeoutMinutes = 43200; }
+                }
+                then submitBaselineLabOrder;
+
+                action submitBaselineLabOrder {
+                    doc /* Activity: submit the baseline blood test order
+                         * to the lab interface. Creates LabResult
+                         * entities in the CDR in 'requested' state. */
+                    @TemporalActivity { activityName = "submitBaselineLabOrder"; }
+                }
+                then waitBaselineResultsReceived;
+
+                action waitBaselineResultsReceived {
+                    doc /* Signal wait: the workflow suspends until all
+                         * baseline lab results have been received.
+                         * The lab interface sends a signal when each
+                         * result is available; the workflow checks
+                         * whether all required tests are complete.
+                         *
+                         * Timeout: 30 days. Overdue results trigger
+                         * a chase activity. */
+                    @TemporalSignal { signalName = "baselineResultsReceived"; timeoutMinutes = 43200; }
+                }
+                then notifyBaselineResultsReady;
+
+                action notifyBaselineResultsReady {
+                    doc /* Activity: notify the prescribing clinician
+                         * that baseline results are available for
+                         * review. Sends a task to the clinician's
+                         * worklist. */
+                    @TemporalActivity { activityName = "notifyBaselineResultsReady"; }
+                }
+                then waitBaselineReviewCompleted;
+
+                action waitBaselineReviewCompleted {
+                    doc /* Signal wait: the workflow suspends until the
+                         * clinician signals that they have reviewed
+                         * all baseline results and recorded their
+                         * clinical interpretation.
+                         *
+                         * Timeout: 14 days. Overdue review triggers
+                         * an escalation notification. */
+                    @TemporalSignal { signalName = "baselineReviewCompleted"; timeoutMinutes = 20160; }
+                    @StateTransitionTrigger { eventName = "ResultReviewed"; }
+                }
+                then waitRegimenSelected;
+
+                // --- Phase 2: Prescribing ---
+
+                action waitRegimenSelected {
+                    doc /* Signal wait: the workflow suspends until the
+                         * clinician has selected a regimen and recorded
+                         * the prescribing decision in the portal.
+                         *
+                         * The signal payload includes the selected
+                         * medication, route, and starting dose.
+                         *
+                         * Timeout: 14 days. */
+                    @TemporalSignal { signalName = "regimenSelected"; timeoutMinutes = 20160; }
+                }
+                then runSafetyChecks;
+
+                action runSafetyChecks {
+                    doc /* Activity: evaluate prescribing safety
+                         * constraints — drug interaction screening,
+                         * contraindication checks, protocol adherence
+                         * validation. Returns pass/fail with any
+                         * blocking reasons.
+                         *
+                         * If safety checks fail, the workflow loops
+                         * back to regimen selection (not modelled in
+                         * this linear flow; handled by the activity
+                         * raising an exception). */
+                    @TemporalActivity { activityName = "runSafetyChecks"; }
+                }
+                then createPrescription;
+
+                action createPrescription {
+                    doc /* Activity: create the prescription record in
+                         * the CDR. Transitions the Prescription entity
+                         * from drafted to authorised. */
+                    @TemporalActivity { activityName = "createPrescription"; }
+                    @StateTransitionTrigger { eventName = "PrescriptionAuthorised"; }
+                }
+                then waitPrescriptionDispensed;
+
+                action waitPrescriptionDispensed {
+                    doc /* Signal wait: the workflow suspends until the
+                         * pharmacy confirms dispensing. In a future
+                         * integration this signal comes from the
+                         * pharmacy system; initially it may be
+                         * manually recorded by a clinician.
+                         *
+                         * Timeout: 14 days. */
+                    @TemporalSignal { signalName = "prescriptionDispensed"; timeoutMinutes = 20160; }
+                    @StateTransitionTrigger { eventName = "PrescriptionDispensed"; }
+                }
+                then recordMedicationStarted;
+
+                action recordMedicationStarted {
+                    doc /* Activity: record that the patient has started
+                         * taking the medication. Transitions the
+                         * Prescription entity to active. */
+                    @TemporalActivity { activityName = "recordMedicationStarted"; }
+                    @StateTransitionTrigger { eventName = "PrescriptionStarted"; }
+                }
+                then scheduleMonitoringOrder;
+
+                // --- Phase 3: Monitoring cycle ---
+                //
+                // Temporal handles the monitoring loop via the backward
+                // then reference. Each iteration of the loop is a new
+                // cycle of: schedule bloods -> wait for results ->
+                // clinician review -> stability assessment.
+
+                action scheduleMonitoringOrder {
+                    doc /* Activity: schedule the next monitoring blood
+                         * test order. Creates LabResult entities in
+                         * the CDR and submits the order to the lab
+                         * interface.
+                         *
+                         * On the first iteration this is typically at
+                         * 3 months; subsequent intervals are determined
+                         * by the monitoring protocol. */
+                    @TemporalActivity { activityName = "scheduleMonitoringOrder"; }
+                }
+                then waitMonitoringResultsReceived;
+
+                action waitMonitoringResultsReceived {
+                    doc /* Signal wait: the workflow suspends until
+                         * monitoring lab results are received.
+                         *
+                         * This is the longest wait in the cycle —
+                         * the interval between scheduling and
+                         * result receipt may be 3+ months.
+                         *
+                         * Timeout: 120 days (accounts for scheduling
+                         * interval plus lab turnaround). */
+                    @TemporalSignal { signalName = "monitoringResultsReceived"; timeoutMinutes = 172800; }
+                }
+                then notifyMonitoringResultsReady;
+
+                action notifyMonitoringResultsReady {
+                    doc /* Activity: notify the prescribing clinician
+                         * that monitoring results are available for
+                         * review. */
+                    @TemporalActivity { activityName = "notifyMonitoringResultsReady"; }
+                }
+                then waitMonitoringReviewCompleted;
+
+                action waitMonitoringReviewCompleted {
+                    doc /* Signal wait: the workflow suspends until the
+                         * clinician has reviewed monitoring results.
+                         *
+                         * Timeout: 14 days. */
+                    @TemporalSignal { signalName = "monitoringReviewCompleted"; timeoutMinutes = 20160; }
+                    @StateTransitionTrigger { eventName = "ResultReviewed"; }
+                }
+                then waitStabilityAssessment;
+
+                action waitStabilityAssessment {
+                    doc /* Signal wait: the workflow suspends until the
+                         * clinician has recorded their stability
+                         * assessment decision. The signal payload
+                         * includes the outcome: 'stable' or
+                         * 'adjust-dose' with new dose details.
+                         *
+                         * Timeout: 14 days. */
+                    @TemporalSignal { signalName = "stabilityAssessed"; timeoutMinutes = 20160; }
+                    @StateTransitionTrigger { eventName = "ResultActioned"; }
+                }
+                then createAdjustedPrescription;
+                then recordStabilisation;
+
+                // --- Branch: dose adjustment (loops back) ---
+
+                action createAdjustedPrescription {
+                    doc /* Activity: complete the current prescription
+                         * and create a new one at the adjusted dose.
+                         * Transitions the old Prescription to completed
+                         * and the new one through drafted -> authorised.
+                         *
+                         * The stability assessment signal payload
+                         * provides the new dose details. */
+                    @TemporalActivity { activityName = "createAdjustedPrescription"; }
+                    @StateTransitionTrigger { eventName = "PrescriptionCompleted"; }
+                }
+                then scheduleMonitoringOrder;
+
+                // --- Branch: stable regimen ---
+
+                action recordStabilisation {
+                    doc /* Activity: record the stabilisation milestone
+                         * in the CDR. Captures the stabilisation date,
+                         * final stable regimen, and established
+                         * monitoring schedule. */
+                    @TemporalActivity { activityName = "recordStabilisation"; }
+                }
+                then initiateTransition;
+
+                // --- Phase 4: Transition ---
+
+                action initiateTransition {
+                    doc /* Activity: set up the ongoing care arrangement.
+                         * Depending on the care model:
+                         *
+                         * - GenderSense monitoring: creates a new
+                         *   monitoring workflow instance
+                         * - Shared care: creates a Referral, sends
+                         *   the shared care protocol to the GP, and
+                         *   waits for acceptance (may be handled by
+                         *   a child workflow)
+                         * - Combination: does both
+                         *
+                         * This is the final activity in the initiation
+                         * workflow. The ongoing monitoring becomes a
+                         * separate workflow instance. */
+                    @TemporalActivity { activityName = "initiateTransition"; }
                 }
             }
         }

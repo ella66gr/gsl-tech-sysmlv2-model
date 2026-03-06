@@ -4,7 +4,7 @@
 
 Thes are the steps for initialising Github when wotking with SysMLv2 in VS Code with Seaside Modeller, etc.
 
-### Install GitHub CLI (Optional / if not already installed)
+## Install GitHub CLI (Optional / if not already installed)
 
 ```bash
 # On macOS with Homebrew (global installation)
@@ -17,7 +17,7 @@ gh --version
 gh auth login
 ```
 
-### Verify SSH Setup
+## Verify SSH Setup
 
 If you want to verify your SSH connection works:
 
@@ -28,7 +28,7 @@ ssh -T git@github.com
 "Hi ella66gr! You've successfully authenticated, but GitHub does not provide shell access.""
 ```
 
-### Initialise Git
+## Initialise Git
 
 ```bash
 # Make initial commit
@@ -37,7 +37,7 @@ git add -A
 git commit -m "SysMLv2 'Funky-Shop' example project setup"
 ```
 
-### Create GitHub Repository
+## Create GitHub Repository
 
 ```bash
 # Using GitHub CLI (recommended)
