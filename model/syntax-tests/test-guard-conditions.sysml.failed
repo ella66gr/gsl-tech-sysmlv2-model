@@ -1,0 +1,93 @@
+// =========================================================================
+// SYNTAX TEST: Guard conditions on action flow transitions
+//
+// Purpose: Test whether Syside 0.8.5 supports guard conditions
+//          (if expressions) on action flow branches.
+//
+// What to check:
+//   1. Does each variant parse without errors?
+//   2. If any variant fails, which ones work and which don't?
+//
+// Previous finding (v3.2 syntax ref, Phase 3 traps):
+//   then X if true then Y; — failed with parse error.
+//   Guard conditions listed as unverified in TODO.
+//
+// SysML v2 spec syntax for guarded successions:
+//   first A if guard then B;
+//   — or —
+//   transition first A if guard then B;
+//
+// Syside may implement a subset. Testing multiple variants.
+// =========================================================================
+
+package SyntaxTestGuardConditions {
+    private import ScalarValues::*;
+
+    doc /* Test: guard conditions on action flow transitions. */
+
+    // --- Variant A: guard on then (inline) ---
+
+    action def CheckOrderWithGuardA {
+        doc /* Tests: then target if condition; */
+
+        in item isLargeOrder : Boolean;
+
+        action assessOrder;
+        then applyDiscount if isLargeOrder;
+        then skipDiscount if not isLargeOrder;
+
+        action applyDiscount;
+        then completeOrder;
+
+        action skipDiscount;
+        then completeOrder;
+
+        action completeOrder;
+    }
+
+    // --- Variant B: guard using transition keyword ---
+
+    action def CheckOrderWithGuardB {
+        doc /* Tests: transition first source if condition then target; */
+
+        in item isLargeOrder : Boolean;
+
+        action assessOrder;
+
+        transition first assessOrder
+            if isLargeOrder
+            then applyDiscount;
+
+        transition first assessOrder
+            if not isLargeOrder
+            then skipDiscount;
+
+        action applyDiscount;
+        then completeOrder;
+
+        action skipDiscount;
+        then completeOrder;
+
+        action completeOrder;
+    }
+
+    // --- Variant C: guard with boolean attribute ---
+
+    action def CheckOrderWithGuardC {
+        doc /* Tests: guard referencing an attribute of the action def. */
+
+        attribute isLargeOrder : Boolean;
+
+        action assessOrder;
+        then applyDiscount if isLargeOrder;
+        then skipDiscount;
+
+        action applyDiscount;
+        then completeOrder;
+
+        action skipDiscount;
+        then completeOrder;
+
+        action completeOrder;
+    }
+}

@@ -1,0 +1,95 @@
+// =========================================================================
+// SYNTAX TEST: verify relationships
+//
+// Purpose: Test whether Syside 0.8.5 supports verify relationships,
+//          which link verification activities to requirements.
+//
+// What to check:
+//   1. Does the file parse without errors?
+//   2. Does the verify relationship appear in the model explorer?
+//   3. Can you trace from the requirement to its verification?
+//
+// Context: satisfy relationships are verified working (v3.2 syntax
+// ref). verify is the counterpart — satisfy says "this element
+// fulfils the requirement", verify says "this test/check proves
+// the requirement is met."
+//
+// For GenderSense: satisfy links constraints to requirements (runtime
+// checks). verify would link test cases or audit queries to
+// requirements (evidence that the check works).
+//
+// SysML v2 spec syntax:
+//   verify requirement RequirementName by verificationElement;
+// =========================================================================
+
+package SyntaxTestVerify {
+    private import ScalarValues::*;
+
+    doc /* Test: verify relationships linking requirements to
+         * verification elements. */
+
+    // --- Requirements ---
+
+    requirement def OrderMustBeValidated {
+        doc /* Every order must pass validation before processing. */
+    }
+
+    requirement def DiscountMustNotExceedLimit {
+        doc /* No single-item discount may exceed 50%. */
+    }
+
+    // --- Constraints (satisfy targets — known working pattern) ---
+
+    constraint def OrderValidConstraint {
+        in hasItems : Boolean;
+        in totalPositive : Boolean;
+
+        hasItems and totalPositive
+    }
+
+    constraint def DiscountLimitConstraint {
+        in discountPercent : Real;
+
+        discountPercent <= 50.0
+    }
+
+    constraint orderValidCheck : OrderValidConstraint;
+    constraint discountLimitCheck : DiscountLimitConstraint;
+
+    // --- Satisfy relationships (known working — included for context) ---
+
+    satisfy requirement OrderMustBeValidated
+        by orderValidCheck;
+
+    satisfy requirement DiscountMustNotExceedLimit
+        by discountLimitCheck;
+
+    // --- Verification cases (verify targets) ---
+
+    // Variant A: verify by a use case def (test case)
+
+    use case def TestOrderValidation {
+        doc /* Verification test: submit orders with various valid
+             * and invalid configurations and confirm that the
+             * validation constraint catches all invalid cases. */
+    }
+
+    use case def TestDiscountLimit {
+        doc /* Verification test: apply discounts at boundary values
+             * (0%, 49%, 50%, 51%) and confirm the constraint
+             * correctly accepts/rejects. */
+    }
+
+    // Variant B: verify relationship — this is what we're testing
+
+    verify requirement OrderMustBeValidated
+        by TestOrderValidation;
+
+    verify requirement DiscountMustNotExceedLimit
+        by TestDiscountLimit;
+
+    // Variant C: verify by a constraint usage (if use case fails)
+
+    verify requirement OrderMustBeValidated
+        by orderValidCheck;
+}
