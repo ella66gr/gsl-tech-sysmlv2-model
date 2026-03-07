@@ -1,6 +1,6 @@
 # GenderSense SysML v2 Modelling — Session Report
 
-## 7 March 2026 (Session 5)
+## 7 March 2026 (Session 2)
 
 **Purpose:** Comprehensive progress report for continuity into the next chat session. This session resolved the OPT generation blocker from session 4 and completed all remaining steps of CDR Exercise Phase A, achieving the full round-trip: template upload → EHR creation → composition commit → composition retrieval → AQL query. It also corrected an archetype typo and exercised the template re-deployment process.
 
