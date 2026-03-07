@@ -34,9 +34,16 @@ export {
   type AqlResultSet,
 } from './ehrbase-client.js';
 
-// Composition builders — Phase B
+// Order composition builder — Phase B
 export {
   buildOrderComposition,
   ORDER_TEMPLATE_ID,
   type OrderCompositionInput,
 } from './composition-builder.js';
+
+// Feedback composition builder — Phase C
+export {
+  buildFeedbackComposition,
+  FEEDBACK_TEMPLATE_ID,
+  type FeedbackCompositionInput,
+} from './feedback-composition-builder.js';

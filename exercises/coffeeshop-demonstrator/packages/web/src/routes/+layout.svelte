@@ -14,6 +14,10 @@
   &nbsp;|&nbsp;
   <a href="/orders">Orders</a>
   &nbsp;|&nbsp;
+  <a href="/entity">Entity Views</a>
+  &nbsp;|&nbsp;
+  <a href="/feedback">Feedback</a>
+  &nbsp;|&nbsp;
   <a href="/pathway">Pathway</a>
 </nav>
 
