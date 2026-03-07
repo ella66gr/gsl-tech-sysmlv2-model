@@ -21,3 +21,22 @@ export * from './workflow-constants.js';
 
 // Re-export Phase D audit types explicitly for clarity
 export type { WorkflowStepDef } from './workflow-constants.js';
+
+// EHRbase CDR client — Phase B
+export {
+  createEhrbaseClient,
+  DEFAULT_EHRBASE_CONFIG,
+  EhrbaseError,
+  type EhrbaseClient,
+  type EhrbaseConfig,
+  type EhrCreationResult,
+  type CompositionCommitResult,
+  type AqlResultSet,
+} from './ehrbase-client.js';
+
+// Composition builders — Phase B
+export {
+  buildOrderComposition,
+  ORDER_TEMPLATE_ID,
+  type OrderCompositionInput,
+} from './composition-builder.js';
