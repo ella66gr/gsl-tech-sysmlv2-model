@@ -1,6 +1,6 @@
 # GenderSense SysML v2 Modelling — Session Report (Hormone Initiation)
 
-## 6 March 2026
+## 6 March 2026 (Session 1)
 
 **Purpose:** Comprehensive progress report for continuity into the next chat session. This session modelled the first clinical pathway — Hormone Therapy Initiation — end to end across both the domain and orchestration layers, with supporting entity lifecycles, governance requirements, evaluable constraints, and satisfy traceability.
 

@@ -1,6 +1,6 @@
 # GenderSense SysML v2 Modelling — Session Report
 
-## 6 March 2026 (Session 2)
+## 6 March 2026 (Session 3)
 
 **Purpose:** Comprehensive progress report for continuity into the next chat session. This session completed three substantial pieces of work: (1) resolved all five unverified syntax patterns from the session 1 deferred list, (2) produced the full planning document for the Coffee Shop CDR Extension Exercise, and (3) consolidated the GenderSense development artefacts into a single monorepo.
 

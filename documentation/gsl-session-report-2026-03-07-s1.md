@@ -1,6 +1,6 @@
 # GenderSense SysML v2 Modelling — Session Report
 
-## 7 March 2026 (Session 4)
+## 7 March 2026 (Session 2)
 
 **Purpose:** Comprehensive progress report for continuity into the next chat session. This session began execution of the Coffee Shop CDR Extension Exercise (Phase A — Infrastructure), standing up EHRbase locally and designing the ORDER_RECORD archetype and template in Archetype Designer. The session hit a blocking issue with OPT (Operational Template) generation and documented the findings.
 
