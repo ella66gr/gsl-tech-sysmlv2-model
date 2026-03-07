@@ -1,0 +1,64 @@
+# =============================================================================
+# EHRbase CDR — Local Development Stack
+# Coffee Shop CDR Extension Exercise (Phase A)
+#
+# Runs EHRbase 2.11.0 with a preconfigured PostgreSQL instance.
+# Port 5433 avoids conflict with any local PostgreSQL on 5432.
+# Port 8080 for the EHRbase REST API and Swagger UI.
+#
+# Usage:
+#   docker compose -f docker-compose.ehrbase.yml up -d
+#   docker compose -f docker-compose.ehrbase.yml down
+#   docker compose -f docker-compose.ehrbase.yml down -v   # also removes data volumes
+#
+# Swagger UI:  http://localhost:8080/ehrbase/swagger-ui.html
+# Health check: curl http://localhost:8080/ehrbase/status
+#
+# Auth (basic): ehrbase-user / SuperSecretPassword
+# =============================================================================
+
+services:
+  ehrdb:
+    image: ehrbase/ehrbase-v2-postgres:16.2
+    environment:
+      POSTGRES_PASSWORD: postgres
+      EHRBASE_USER_ADMIN: ehrbase
+      EHRBASE_PASSWORD_ADMIN: ehrbase
+      EHRBASE_USER: ehrbase_restricted
+      EHRBASE_PASSWORD: ehrbase_restricted
+    ports:
+      - "5433:5432"
+    volumes:
+      - ehrbase-pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  ehrbase:
+    image: ehrbase/ehrbase:2.11.0
+    depends_on:
+      ehrdb:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://ehrdb:5432/ehrbase
+      DB_USER_ADMIN: ehrbase
+      DB_PASS_ADMIN: ehrbase
+      DB_USER: ehrbase_restricted
+      DB_PASS: ehrbase_restricted
+      SECURITY_AUTHTYPE: BASIC
+      SECURITY_AUTHUSER: ehrbase-user
+      SECURITY_AUTHPASSWORD: SuperSecretPassword
+      SERVER_NODENAME: coffeeshop.local
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/ehrbase/status || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+volumes:
+  ehrbase-pg-data:

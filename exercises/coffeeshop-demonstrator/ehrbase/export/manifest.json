@@ -1,0 +1,28 @@
+{
+  "modelVersion" : 1,
+  "sources" : [ {
+    "sourceType" : "repository",
+    "id" : "coffeesh-212",
+    "user" : "ella66gr@gmail.com@google",
+    "repositoryId" : "coffeesh-212"
+  } ],
+  "entries" : [ {
+    "path" : "local/coffeeshop-order-composition.v1.t.json",
+    "type" : "template",
+    "id" : "coffeeshop-order-composition.v1",
+    "sourceId" : "coffeesh-212",
+    "lastModified" : "2026-03-07T14:55:14.981Z"
+  }, {
+    "path" : "local/openEHR-EHR-OBSERVATION.order_record.v0.adl",
+    "type" : "archetype",
+    "id" : "openEHR-EHR-OBSERVATION.order_record.v0",
+    "sourceId" : "coffeesh-212",
+    "lastModified" : "2026-03-07T13:13:35.306Z"
+  }, {
+    "path" : "local/openEHR-EHR-COMPOSITION.order_composition.v0.adl",
+    "type" : "archetype",
+    "id" : "openEHR-EHR-COMPOSITION.order_composition.v0",
+    "sourceId" : "coffeesh-212",
+    "lastModified" : "2026-03-07T14:51:15.508Z"
+  } ]
+}

@@ -1,0 +1,204 @@
+archetype (adl_version=1.4; uid=38c13eb3-1fa8-4f37-8f25-a92553631ab4)
+	openEHR-EHR-OBSERVATION.order_record.v0
+
+concept
+	[at0000]
+
+language
+	original_language = <[ISO_639-1::en]>
+
+description
+	original_author = <
+		["date"] = <"2026-03-07">
+	>
+	lifecycle_state = <"unmanaged">
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+		>
+	>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["build_uid"] = <"6e76e2dd-8ad2-3ec9-8228-f360f718e65d">
+		["MD5-CAM-1.0.1"] = <"330f73ef9b1bcbdd5ea13a1f185e604a">
+	>
+
+definition
+	OBSERVATION[at0000] matches {    -- order_record
+		data matches {
+			HISTORY[at0001] matches {    -- History
+				events cardinality matches {1..*; unordered} matches {
+					EVENT[at0002] occurrences matches {0..*} matches {    -- Any event
+						data matches {
+							ITEM_TREE[at0003] matches {    -- Tree
+								items cardinality matches {0..*; unordered} matches {
+									ELEMENT[at0005] occurrences matches {0..1} matches {    -- Drink name
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0010,    -- Coffee
+													at0011]    -- Tea
+												}
+											}
+										}
+									}
+									ELEMENT[at0006] occurrences matches {0..1} matches {    -- Drink size
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0007,    -- Small
+													at0008,    -- Medium
+													at0009]    -- Large
+												}
+											}
+										}
+									}
+									ELEMENT[at0012] occurrences matches {0..1} matches {    -- Milk choice
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0013,    -- None
+													at0014,    -- Whole milk
+													at0015,    -- Semi-skimmed milk
+													at0016,    -- Oak milk
+													at0017]    -- Soy milk
+												}
+											}
+										}
+									}
+									ELEMENT[at0018] occurrences matches {0..*} matches {*}    -- Extras
+									ELEMENT[at0019] occurrences matches {0..1} matches {    -- Price
+										value matches {
+											DV_CODED_TEXT matches {
+												defining_code matches {
+													[local::
+													at0020,    -- £1.25
+													at0021,    -- £1.75
+													at0022,    -- £2.30
+													at0023]    -- £2.85
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		protocol matches {
+			ITEM_TREE[at0004] matches {*}    -- Item tree
+		}
+	}
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"order_record">
+					description = <"order_record">
+				>
+				["at0001"] = <
+					text = <"History">
+					description = <"@ internal @">
+				>
+				["at0002"] = <
+					text = <"Any event">
+					description = <"@ internal @">
+				>
+				["at0003"] = <
+					text = <"Tree">
+					description = <"@ internal @">
+				>
+				["at0004"] = <
+					text = <"Item tree">
+					description = <"@ internal @">
+				>
+				["at0005"] = <
+					text = <"Drink name">
+					description = <"The name of the drink ordered.">
+				>
+				["at0006"] = <
+					text = <"Drink size">
+					description = <"The available drink sizes that can be ordered.">
+				>
+				["at0007"] = <
+					text = <"Small">
+					description = <"125mL">
+				>
+				["at0008"] = <
+					text = <"Medium">
+					description = <"175mL">
+				>
+				["at0009"] = <
+					text = <"Large">
+					description = <"250mL">
+				>
+				["at0010"] = <
+					text = <"Coffee">
+					description = <"Arabica">
+				>
+				["at0011"] = <
+					text = <"Tea">
+					description = <"Black">
+				>
+				["at0012"] = <
+					text = <"Milk choice">
+					description = <"Selection of milk options available for a drink.">
+				>
+				["at0013"] = <
+					text = <"None">
+					description = <"No milk added">
+				>
+				["at0014"] = <
+					text = <"Whole milk">
+					description = <"Dairy">
+				>
+				["at0015"] = <
+					text = <"Semi-skimmed milk">
+					description = <"Dairy">
+				>
+				["at0016"] = <
+					text = <"Oak milk">
+					description = <"Non-dairy">
+				>
+				["at0017"] = <
+					text = <"Soy milk">
+					description = <"Non-dairy">
+				>
+				["at0018"] = <
+					text = <"Extras">
+					description = <"Additional modifications to the drink">
+				>
+				["at0019"] = <
+					text = <"Price">
+					description = <"The price of the drink.">
+				>
+				["at0020"] = <
+					text = <"£1.25">
+					description = <"">
+				>
+				["at0021"] = <
+					text = <"£1.75">
+					description = <"">
+				>
+				["at0022"] = <
+					text = <"£2.30">
+					description = <"">
+				>
+				["at0023"] = <
+					text = <"£2.85">
+					description = <"">
+				>
+			>
+		>
+	>

@@ -1,0 +1,54 @@
+archetype (adl_version=1.4; uid=a3cfb8f3-ff2f-4a18-b657-2105a07dc84f)
+	openEHR-EHR-COMPOSITION.order_composition.v0
+
+concept
+	[at0000]
+
+language
+	original_language = <[ISO_639-1::en]>
+
+description
+	original_author = <
+		["date"] = <"2026-03-07">
+	>
+	lifecycle_state = <"unmanaged">
+	details = <
+		["en"] = <
+			language = <[ISO_639-1::en]>
+		>
+	>
+	other_details = <
+		["licence"] = <"This work is licensed under the Creative Commons Attribution-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.">
+		["custodian_organisation"] = <"openEHR Foundation">
+		["original_namespace"] = <"org.openehr">
+		["original_publisher"] = <"openEHR Foundation">
+		["custodian_namespace"] = <"org.openehr">
+		["MD5-CAM-1.0.1"] = <"27a8d7f380ea5f9a5b992d2ea31c4599">
+		["build_uid"] = <"a2056b81-2543-362f-a825-9ee580af33c9">
+	>
+
+definition
+	COMPOSITION[at0000] matches {    -- order_composition
+		category matches {
+			DV_CODED_TEXT matches {
+				defining_code matches {
+					[openehr::433]
+				}
+			}
+		}
+		context matches {
+			EVENT_CONTEXT matches {*}
+		}
+	}
+
+ontology
+	term_definitions = <
+		["en"] = <
+			items = <
+				["at0000"] = <
+					text = <"order_composition">
+					description = <"order_composition">
+				>
+			>
+		>
+	>
