@@ -14,9 +14,9 @@
         <other_details id="original_namespace"></other_details>
         <other_details id="original_publisher"></other_details>
         <other_details id="custodian_namespace"></other_details>
-        <other_details id="sem_ver">0.1.0</other_details>
+        <other_details id="sem_ver">0.2.0</other_details>
         <other_details id="build_uid"></other_details>
-        <other_details id="MD5-CAM-1.0.1">3fab2d3ff45ef27d4c382c1d268a6818</other_details>
+        <other_details id="MD5-CAM-1.0.1">e5b22a9ddc8e14a5ed8c5bbb799138c7</other_details>
         <other_details id="PARENT:MD5-CAM-1.0.1">27a8d7f380ea5f9a5b992d2ea31c4599</other_details>
         <details>
             <language>
@@ -618,7 +618,7 @@
                     <items id="description">Dairy</items>
                 </term_definitions>
                 <term_definitions code="at0016">
-                    <items id="text">Oak milk</items>
+                    <items id="text">Oat milk</items>
                     <items id="description">Non-dairy</items>
                 </term_definitions>
                 <term_definitions code="at0017">

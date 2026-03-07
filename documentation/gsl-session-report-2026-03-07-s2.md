@@ -2,7 +2,7 @@
 
 ## 7 March 2026 (Session 5)
 
-**Purpose:** Comprehensive progress report for continuity into the next chat session. This session resolved the OPT generation blocker from session 4 and completed all remaining steps of CDR Exercise Phase A, achieving the full round-trip: template upload → EHR creation → composition commit → composition retrieval → AQL query.
+**Purpose:** Comprehensive progress report for continuity into the next chat session. This session resolved the OPT generation blocker from session 4 and completed all remaining steps of CDR Exercise Phase A, achieving the full round-trip: template upload → EHR creation → composition commit → composition retrieval → AQL query. It also corrected an archetype typo and exercised the template re-deployment process.
 
 ---
 
@@ -16,11 +16,14 @@ Resolve the OPT generation blocker (session 4 recommendation: install Ocean Temp
 
 - **OPT blocker resolved:** Archetype Designer OPT export works in Firefox (Chrome-specific bug — export hangs indefinitely in Chrome). Ocean Template Designer was investigated but found to be Windows-only (.NET/VB.Net application), not viable on macOS
 - **Step A4 — Template upload to EHRbase:** `coffeeshop-order-composition.v1` OPT uploaded successfully via REST API, template registered and listed
-- **Step A5a — Test EHR created:** EHR `c6b206d8-183e-4eff-b303-e73264cddf31` created with system_id `coffeeshop.local`
-- **Step A5b — Composition committed:** Canonical JSON composition for a coffee order committed successfully, validated against template, assigned UID `bb7df584-65c6-4a1b-83b8-d995aba5e82e::coffeeshop.local::1`
+- **Step A5a — Test EHR created:** EHR created with system_id `coffeeshop.local`
+- **Step A5b — Composition committed:** Canonical JSON composition for a coffee order committed successfully, validated against template
 - **Step A5c — Composition retrieved:** Round-trip confirmed — retrieved composition matches committed data
 - **Step A5d — AQL query working:** Entity-view query returned `["Coffee", "Large", "£2.85"]` — proving the CDR is fully queryable
 - **Composition validation exercised:** Initial commit rejected with `Dv_Coded_Text value does not match` error due to archetype typo ("Oak milk" vs "Oat milk") — EHRbase correctly enforces term definition consistency
+- **Archetype typo corrected:** Fixed "Oak milk" → "Oat milk" in Archetype Designer (archetype level, not template level — key learning), re-exported OPT, database reset, corrected OPT and composition re-uploaded and re-committed successfully
+- **Archetype Designer learning:** Term definitions are edited in the archetype, not the template. Templates inherit from archetypes and constrain further, but terminology text lives at the archetype level
+- **Template re-deployment process exercised:** EHRbase rejects duplicate template uploads (HTTP 409 Conflict). Resolution: `docker compose down -v` to destroy volumes, then `up -d` for a fresh database. Alternative: `ehrbase.template.allow-overwrite=true` environment variable (not tested)
 
 ### 1.3 Not started
 
@@ -39,8 +42,8 @@ Resolve the OPT generation blocker (session 4 recommendation: install Ocean Temp
 
 | File | Purpose |
 |---|---|
-| `exercises/coffeeshop-demonstrator/ehrbase/coffeeshop-order-composition.v1.opt` | Tooling-generated OPT from Archetype Designer (Firefox export) — replaces hand-written OPT from session 4 |
-| `exercises/coffeeshop-demonstrator/ehrbase/test-order-composition.json` | Canonical JSON composition — large coffee, oak milk, extra shot, £2.85 |
+| `exercises/coffeeshop-demonstrator/ehrbase/coffeeshop-order-composition.v1.opt` | Tooling-generated OPT from Archetype Designer (Firefox export), corrected "Oat milk" — replaces hand-written OPT from session 4 |
+| `exercises/coffeeshop-demonstrator/ehrbase/test-order-composition.json` | Canonical JSON composition — large coffee, oat milk, extra shot, £2.85 |
 
 ### 2.3 No SysML model changes
 
@@ -48,7 +51,7 @@ No `.sysml` files were modified. The syntax reference remains at v3.3.
 
 ### 2.4 Git commits recommended
 
-1. **CDR Exercise Phase A complete** — tooling-generated OPT, test composition, session report
+1. **CDR Exercise Phase A complete** — tooling-generated OPT (corrected), test composition, session report
 2. Clean up: consider removing `minimal-test.opt` and `test-template.opt` (failed hand-written OPTs from session 4)
 
 ---
@@ -58,10 +61,10 @@ No `.sysml` files were modified. The syntax reference remains at v3.3.
 | Criterion | Status | Evidence |
 |---|---|---|
 | A1: EHRbase running locally | Done (session 4) | Docker Compose, both containers healthy |
-| A2: ORDER_RECORD archetype designed | Done (session 4) | Archetype in Archetype Designer with 5 data elements |
+| A2: ORDER_RECORD archetype designed | Done (session 4), corrected this session | Archetype in Archetype Designer with 5 data elements, "Oat milk" typo fixed |
 | A3: Template created | Done (session 4) | Template wrapping ORDER_RECORD OBSERVATION |
-| A4: Template uploaded to EHRbase | **Done (this session)** | Template listed via Definition API, created_timestamp 2026-03-07T16:11:25.361Z |
-| A5: Test EHR + composition committed | **Done (this session)** | Composition UID `bb7df584-65c6-4a1b-83b8-d995aba5e82e::coffeeshop.local::1` |
+| A4: Template uploaded to EHRbase | **Done (this session)** | Template listed via Definition API |
+| A5: Test EHR + composition committed | **Done (this session)** | Composition committed, retrieved, and queried via AQL |
 | Bonus: AQL query working | **Done (this session)** | Entity-view query returns `["Coffee", "Large", "£2.85"]` |
 
 ---
@@ -86,11 +89,19 @@ Comparing the tooling-generated OPT (677 lines) with the hand-written attempts f
 
 ### 4.4 EHRbase validates DV_CODED_TEXT values against term definitions
 
-The initial composition commit was rejected because the `value` field for Milk choice said "Oat milk" but the archetype term definition (at0016) says "Oak milk" (a typo in the archetype). EHRbase enforces exact text match between the composition's coded text value and the archetype's term definition text. This is correct behaviour — the CDR ensures data integrity at the semantic level.
+The initial composition commit was rejected because the `value` field for Milk choice said "Oat milk" but the archetype term definition (at0016) said "Oak milk" (a typo in the archetype). EHRbase enforces exact text match between the composition's coded text value and the archetype's term definition text. This is correct behaviour — the CDR ensures data integrity at the semantic level.
 
-**Implication for GenderSense:** Archetype term definitions must be accurate before templates are deployed. Typos in archetype terms propagate into the OPT and are enforced by the CDR. A term correction requires re-export of the OPT and re-upload to EHRbase (EHRbase supports template overwrite via configuration).
+**Implication for GenderSense:** Archetype term definitions must be accurate before templates are deployed. Typos in archetype terms propagate into the OPT and are enforced by the CDR. A term correction requires re-export of the OPT and re-upload to EHRbase.
 
-### 4.5 Canonical JSON composition structure
+### 4.5 Archetype Designer: edit terms in the archetype, not the template
+
+When correcting a term definition, the edit must be made in the **archetype** view, not the template view. Templates inherit terminology from their component archetypes — the template constrains which terms are available but does not own the term text. This is consistent with openEHR's two-level modelling: archetypes own the semantics, templates select and constrain.
+
+### 4.6 Template re-deployment requires database reset or overwrite config
+
+EHRbase rejects uploading an OPT with a template_id that already exists (HTTP 409 Conflict). For development, the simplest resolution is to destroy the Docker volumes (`docker compose down -v`) and restart with a fresh database. For production scenarios, EHRbase supports `ehrbase.template.allow-overwrite=true` as a configuration option.
+
+### 4.7 Canonical JSON composition structure
 
 The canonical JSON format for openEHR compositions follows the RM hierarchy:
 - COMPOSITION → content[] → OBSERVATION → data (HISTORY) → events[] → POINT_EVENT → data (ITEM_TREE) → items[] → ELEMENT → value
@@ -100,7 +111,7 @@ The canonical JSON format for openEHR compositions follows the RM hierarchy:
 - Context requires `start_time` and `setting` (coded using openehr terminology, e.g. "238" = "other care")
 - Coded text values require both `value` (display text) and `defining_code` (terminology_id + code_string)
 
-### 4.6 AQL path structure
+### 4.8 AQL path structure
 
 AQL paths mirror the RM hierarchy using archetype node IDs:
 ```
@@ -114,42 +125,30 @@ The final `/value/value` reaches through ELEMENT.value (the DV_CODED_TEXT) to th
 
 ## 5. Test Data Reference
 
-### 5.1 EHR
+Note: The database was reset during this session to deploy the corrected OPT. The EHR IDs and composition UIDs from the initial round have been superseded. The current state of the database after the final clean run:
+
+### 5.1 Current EHR
 
 | Field | Value |
 |---|---|
-| ehr_id | `c6b206d8-183e-4eff-b303-e73264cddf31` |
+| ehr_id | `08ab3485-c35e-4c9c-aaca-2f7b1b87785e` |
 | system_id | `coffeeshop.local` |
-| time_created | `2026-03-07T16:13:11.517249Z` |
 
-### 5.2 Composition
+### 5.2 Current Composition
 
 | Field | Value |
 |---|---|
-| Composition UID | `bb7df584-65c6-4a1b-83b8-d995aba5e82e::coffeeshop.local::1` |
 | Template | `coffeeshop-order-composition.v1` |
 | Drink name | Coffee (at0010) |
 | Drink size | Large (at0009) |
-| Milk choice | Oak milk (at0016) — archetype typo, should be "Oat milk" |
+| Milk choice | Oat milk (at0016) — corrected |
 | Extras | Extra shot (free text) |
 | Price | £2.85 (at0023) |
 | Composer | Barista One |
 
 ---
 
-## 6. Archetype Typo — "Oak milk"
-
-The ORDER_RECORD archetype (at0016) has "Oak milk" instead of "Oat milk". This was entered during archetype design in session 4 and propagated into the OPT. To correct:
-
-1. Fix the term in Archetype Designer (at0016 text: "Oat milk")
-2. Re-export the OPT (using Firefox)
-3. Re-upload to EHRbase (may require `ehrbase.template.allow-overwrite=true` configuration or a fresh database)
-
-This is low priority — it doesn't affect the exercise's validation goals. Note for later correction when the remaining archetypes (PREPARATION_EVENT, CUSTOMER_FEEDBACK) are designed.
-
----
-
-## 7. Syntax Reference Status
+## 6. Syntax Reference Status
 
 **No changes to the syntax reference this session.** The syntax reference remains at v3.3 (6 March 2026). No SysML patterns were tested or verified during this session as the work was focused on openEHR CDR integration.
 
@@ -157,23 +156,27 @@ File: `documentation/gsl-sysml-v2-syntax-reference-v3.3-2026-03-06.md`
 
 ---
 
-## 8. Design Decisions
+## 7. Design Decisions
 
-### 8.1 Firefox for OPT export
+### 7.1 Firefox for OPT export
 
 Archetype Designer's OPT export is broken in Chrome. Use Firefox for all OPT exports going forward.
 
-### 8.2 Canonical JSON for compositions (not flat/structured format)
+### 7.2 Canonical JSON for compositions (not flat/structured format)
 
 The test composition uses openEHR canonical JSON format, which maps directly to the Reference Model. EHRbase also supports "flat" and "structured" simplified formats via the EHRscape API, which are more compact but use a different endpoint. For the exercise, canonical JSON is preferred because it exercises the standard openEHR REST API and makes the RM structure explicit. For GenderSense production, the flat format may be more practical for form-driven data entry.
 
-### 8.3 Test composition matches archetype terms exactly
+### 7.3 Test composition matches archetype terms exactly
 
 EHRbase validates that DV_CODED_TEXT values match the term definitions in the template. This means composition builders must use the exact text from the archetype terminology, not approximations. This has implications for code generation — a composition builder should derive display text from the template, not require developers to type it.
 
+### 7.4 Database reset for template updates during development
+
+During development, the simplest way to update a template is to destroy the database volumes and start fresh. This is acceptable for the exercise where test data is trivially recreatable. For Phase B onwards, a script to re-seed the database (upload template, create EHR, commit test compositions) would be useful.
+
 ---
 
-## 9. Companion Documents
+## 8. Companion Documents
 
 These documents are current as of this session and should be available to the next session:
 
@@ -184,17 +187,17 @@ These documents are current as of this session and should be available to the ne
 5. **`gsl-hormone-initiation-modelling-plan-2026-03-06.md`** — Modelling plan, all substantive steps completed
 6. **`gsl-coffeeshop-cdr-exercise-plan-2026-03-06.md`** — CDR extension exercise plan
 7. **`gsl-session-report-2026-03-07-s1.md`** — Session 4 report (EHRbase setup, archetype design, OPT blocker)
-8. **`gsl-session-report-2026-03-07-s2.md`** — This report (Phase A completion)
+8. **`gsl-session-report-2026-03-07-s2.md`** — This report (Phase A completion, typo correction, template re-deployment)
 
 ---
 
-## 10. Recommended Next Steps
+## 9. Recommended Next Steps
 
-### 10.1 Immediate: Git commit Phase A milestone
+### 9.1 Immediate: Git commit Phase A milestone
 
-Commit the tooling-generated OPT, test composition, and this session report. Consider cleaning up the failed hand-written OPTs (`minimal-test.opt`, `test-template.opt`) or renaming them with a `.failed` extension.
+Commit the corrected OPT, test composition, and this session report. Consider cleaning up the failed hand-written OPTs (`minimal-test.opt`, `test-template.opt`).
 
-### 10.2 Near-term: Phase B — Temporal integration
+### 9.2 Near-term: Phase B — Temporal integration
 
 Modify the existing coffee shop demonstrator workflow activities to commit compositions to EHRbase as part of order processing. Key deliverables:
 
@@ -205,18 +208,16 @@ Modify the existing coffee shop demonstrator workflow activities to commit compo
 
 **Dependency:** PREPARATION_EVENT archetype and template need to be designed in Archetype Designer and exported as OPT before the `prepareDrink` activity can commit preparation compositions. The ORDER_RECORD path can proceed immediately.
 
-### 10.3 Near-term: Fix "Oak milk" typo
-
-Correct at0016 in Archetype Designer, re-export OPT, re-upload. Low priority but should be done before Phase B integration to avoid confusion.
-
-### 10.4 Near-term: Design remaining archetypes
+### 9.3 Near-term: Design remaining archetypes
 
 - PREPARATION_EVENT (ACTION) — preparation method, barista, timing
 - CUSTOMER_FEEDBACK (EVALUATION) — rating, comment
 
+These should be designed in Archetype Designer, exported as OPTs (Firefox), and uploaded to EHRbase.
+
 ---
 
-## 11. Working Practices Reminder
+## 10. Working Practices Reminder
 
 - **Syntax reference first:** Now at `documentation/gsl-sysml-v2-syntax-reference-v3.3-2026-03-06.md`
 - **Version the syntax reference:** Bump version at the start of any session that adds verified findings
@@ -227,7 +228,7 @@ Correct at0016 in Archetype Designer, re-export OPT, re-upload. Low priority but
 - **Syside Modeler version:** 0.8.5 (VS Code extension, 1 March 2026)
 - **Development environment:** macOS (MacBook Pro), Python 3.12, VS Code
 - **EHRbase version:** 2.11.0 (Docker). PostgreSQL 16.2 (Docker). Pinned — do not upgrade mid-exercise
-- **Archetype Designer:** Use Firefox for OPT export (Chrome hangs)
+- **Archetype Designer:** Use Firefox for OPT export (Chrome hangs). Edit terms in the archetype, not the template
 - **Monorepo:** All GenderSense development artefacts in `gsl-sysml-model/`
 - **Docker commands:** Run from `exercises/coffeeshop-demonstrator/` with `-f docker-compose.ehrbase.yml`
 - **EHRbase auth:** `ehrbase-user` / `SuperSecretPassword` (basic auth)
