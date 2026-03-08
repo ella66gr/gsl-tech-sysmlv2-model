@@ -1,6 +1,6 @@
 # GenderSense Package Hierarchy (Generated)
 
-**Generated:** 2026-03-08 19:48  
+**Generated:** 2026-03-08 20:47  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
 **Total packages:** 64 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
@@ -11,7 +11,7 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 GenderSense Package Hierarchy
-Generated 2026-03-08 19:48 from model/*.sysml (64 packages)
+Generated 2026-03-08 20:47 from model/*.sysml (64 packages)
 
 GenderSense
 ├── Enterprise                    Defines the organisational, regulatory, strategic, and risk context.
@@ -22,14 +22,14 @@ GenderSense
 │
 ├── Foundation                    Cross-cutting infrastructure that everything else imports.
 │   ├── MetadataLibrary           Metadata definitions for generator configuration and — [9 metadata]
-│   ├── CommonTypes               Shared data types, enumerations, units of measure, and — [2 parts, 5 enums]
+│   ├── CommonTypes               Shared data types, enumerations, units of measure, and — [2 parts, 12 enums]
 │   ├── StatePatterns             Reusable lifecycle state machine patterns. — [1 states]
 │   └── GenerationPipeline        Generator configurations, template definitions, generation
 │
 ├── Knowledge                     Explicit treatment of knowledge, decision logic, and adaptive
-│   ├── ClinicalDecisionSupport   Decision rules, eligibility criteria, monitoring protocols, — [3 use cases]
+│   ├── ClinicalDecisionSupport   Decision rules, eligibility criteria, monitoring protocols, — [2 parts, 3 use cases]
 │   ├── ConstraintLibrary         Composable clinical constraints, safety rules, drug — [8 constraints]
-│   ├── LogicEngine               Inference rules, Prolog-style reasoning, deterministic
+│   ├── LogicEngine               Inference rules, Prolog-style reasoning, deterministic — [5 parts, 4 use cases]
 │   ├── DecisionModels            DMN-style decision tables, decision requirement graphs,
 │   ├── OutcomeFramework          Outcome definitions, measurement points, structured outcome — [1 parts]
 │   ├── LearningCycles            Pathway refinement process, evidence review, change control — [2 use cases]
@@ -89,4 +89,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-03-08 19:48 by `gen_package_hierarchy.py`.*
+*Generated 2026-03-08 20:47 by `gen_package_hierarchy.py`.*
