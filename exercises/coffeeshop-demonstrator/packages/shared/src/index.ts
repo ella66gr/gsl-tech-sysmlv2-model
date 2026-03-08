@@ -47,3 +47,10 @@ export {
   FEEDBACK_TEMPLATE_ID,
   type FeedbackCompositionInput,
 } from './feedback-composition-builder.js';
+
+// Preparation composition builder — Phase D
+export {
+  buildPreparationComposition,
+  PREPARATION_TEMPLATE_ID,
+  type PreparationCompositionInput,
+} from './preparation-composition-builder.js';

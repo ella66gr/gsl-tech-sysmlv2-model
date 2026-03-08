@@ -14,10 +14,10 @@
         <other_details id="original_namespace"></other_details>
         <other_details id="original_publisher"></other_details>
         <other_details id="custodian_namespace"></other_details>
-        <other_details id="sem_ver">1.0.0</other_details>
+        <other_details id="sem_ver">0.1.0</other_details>
         <other_details id="build_uid"></other_details>
-        <other_details id="MD5-CAM-1.0.1">cb8e289e37ed130f24e235db439b10c8</other_details>
-        <other_details id="PARENT:MD5-CAM-1.0.1">966c14f5ccd63c29c5614e73cc4fdebf</other_details>
+        <other_details id="PARENT:MD5-CAM-1.0.1">107fc5cefcd8b35fe08a37fb2a1a497a</other_details>
+        <other_details id="MD5-CAM-1.0.1">78ade91120786fbfa42bc8761d30ee69</other_details>
         <details>
             <language>
                 <terminology_id>
@@ -29,12 +29,12 @@
         </details>
     </description>
     <uid>
-        <value>5ca76df8-c0fa-4fe9-81e5-765623a2ecb9</value>
+        <value>f1d2d745-bb35-48b4-9859-63a4bcd9176b</value>
     </uid>
     <template_id>
-        <value>coffeeshop-feedback-composition.v1</value>
+        <value>coffeeshop-preparation-composition.v1</value>
     </template_id>
-    <concept>coffeeshop-feedback-composition.v1</concept>
+    <concept>coffeeshop-preparation-composition.v1</concept>
     <definition>
         <rm_type_name>COMPOSITION</rm_type_name>
         <occurrences>
@@ -134,7 +134,7 @@
             </existence>
             <match_negated>false</match_negated>
             <children xsi:type="C_ARCHETYPE_ROOT">
-                <rm_type_name>EVALUATION</rm_type_name>
+                <rm_type_name>ACTION</rm_type_name>
                 <occurrences>
                     <lower_included>true</lower_included>
                     <upper_included>true</upper_included>
@@ -145,7 +145,7 @@
                 </occurrences>
                 <node_id>at0000</node_id>
                 <attributes xsi:type="C_SINGLE_ATTRIBUTE">
-                    <rm_attribute_name>data</rm_attribute_name>
+                    <rm_attribute_name>description</rm_attribute_name>
                     <existence>
                         <lower_included>true</lower_included>
                         <upper_included>true</upper_included>
@@ -235,11 +235,8 @@
                                                 <terminology_id>
                                                     <value>local</value>
                                                 </terminology_id>
-                                                <code_list>at0005</code_list>
-                                                <code_list>at0006</code_list>
-                                                <code_list>at0007</code_list>
-                                                <code_list>at0008</code_list>
-                                                <code_list>at0009</code_list>
+                                                <code_list>at0003</code_list>
+                                                <code_list>at0004</code_list>
                                             </children>
                                         </attributes>
                                     </children>
@@ -255,7 +252,7 @@
                                     <lower>0</lower>
                                     <upper>1</upper>
                                 </occurrences>
-                                <node_id>at0003</node_id>
+                                <node_id>at0005</node_id>
                                 <attributes xsi:type="C_SINGLE_ATTRIBUTE">
                                     <rm_attribute_name>value</rm_attribute_name>
                                     <existence>
@@ -291,7 +288,79 @@
                                     <lower>0</lower>
                                     <upper>1</upper>
                                 </occurrences>
-                                <node_id>at0004</node_id>
+                                <node_id>at0006</node_id>
+                                <attributes xsi:type="C_SINGLE_ATTRIBUTE">
+                                    <rm_attribute_name>value</rm_attribute_name>
+                                    <existence>
+                                        <lower_included>true</lower_included>
+                                        <upper_included>true</upper_included>
+                                        <lower_unbounded>false</lower_unbounded>
+                                        <upper_unbounded>false</upper_unbounded>
+                                        <lower>0</lower>
+                                        <upper>1</upper>
+                                    </existence>
+                                    <match_negated>false</match_negated>
+                                    <children xsi:type="C_COMPLEX_OBJECT">
+                                        <rm_type_name>DV_DATE_TIME</rm_type_name>
+                                        <occurrences>
+                                            <lower_included>true</lower_included>
+                                            <upper_included>true</upper_included>
+                                            <lower_unbounded>false</lower_unbounded>
+                                            <upper_unbounded>false</upper_unbounded>
+                                            <lower>1</lower>
+                                            <upper>1</upper>
+                                        </occurrences>
+                                        <node_id></node_id>
+                                    </children>
+                                </attributes>
+                            </children>
+                            <children xsi:type="C_COMPLEX_OBJECT">
+                                <rm_type_name>ELEMENT</rm_type_name>
+                                <occurrences>
+                                    <lower_included>true</lower_included>
+                                    <upper_included>true</upper_included>
+                                    <lower_unbounded>false</lower_unbounded>
+                                    <upper_unbounded>false</upper_unbounded>
+                                    <lower>0</lower>
+                                    <upper>1</upper>
+                                </occurrences>
+                                <node_id>at0007</node_id>
+                                <attributes xsi:type="C_SINGLE_ATTRIBUTE">
+                                    <rm_attribute_name>value</rm_attribute_name>
+                                    <existence>
+                                        <lower_included>true</lower_included>
+                                        <upper_included>true</upper_included>
+                                        <lower_unbounded>false</lower_unbounded>
+                                        <upper_unbounded>false</upper_unbounded>
+                                        <lower>0</lower>
+                                        <upper>1</upper>
+                                    </existence>
+                                    <match_negated>false</match_negated>
+                                    <children xsi:type="C_COMPLEX_OBJECT">
+                                        <rm_type_name>DV_DATE_TIME</rm_type_name>
+                                        <occurrences>
+                                            <lower_included>true</lower_included>
+                                            <upper_included>true</upper_included>
+                                            <lower_unbounded>false</lower_unbounded>
+                                            <upper_unbounded>false</upper_unbounded>
+                                            <lower>1</lower>
+                                            <upper>1</upper>
+                                        </occurrences>
+                                        <node_id></node_id>
+                                    </children>
+                                </attributes>
+                            </children>
+                            <children xsi:type="C_COMPLEX_OBJECT">
+                                <rm_type_name>ELEMENT</rm_type_name>
+                                <occurrences>
+                                    <lower_included>true</lower_included>
+                                    <upper_included>true</upper_included>
+                                    <lower_unbounded>false</lower_unbounded>
+                                    <upper_unbounded>false</upper_unbounded>
+                                    <lower>0</lower>
+                                    <upper>1</upper>
+                                </occurrences>
+                                <node_id>at0008</node_id>
                                 <attributes xsi:type="C_SINGLE_ATTRIBUTE">
                                     <rm_attribute_name>value</rm_attribute_name>
                                     <existence>
@@ -332,47 +401,43 @@
                     </children>
                 </attributes>
                 <archetype_id>
-                    <value>openEHR-EHR-EVALUATION.customer_feedback.v0</value>
+                    <value>openEHR-EHR-ACTION.preparation_event.v0</value>
                 </archetype_id>
                 <term_definitions code="at0000">
-                    <items id="text">customer_feedback</items>
-                    <items id="description">customer_feedback</items>
+                    <items id="text">preparation_event</items>
+                    <items id="description">Preparation event</items>
                 </term_definitions>
                 <term_definitions code="at0001">
                     <items id="text">Item tree</items>
                     <items id="description">@ internal @</items>
                 </term_definitions>
                 <term_definitions code="at0002">
-                    <items id="text">Rating</items>
-                    <items id="description">Customer feedback rating score</items>
+                    <items id="text">Preparation method</items>
+                    <items id="description">Method for preparing the drink.</items>
                 </term_definitions>
                 <term_definitions code="at0003">
-                    <items id="text">Comment</items>
-                    <items id="description">Customer feedback comments.</items>
+                    <items id="text">Hot path</items>
+                    <items id="description">Used for hot drink preparation</items>
                 </term_definitions>
                 <term_definitions code="at0004">
-                    <items id="text">Order reference</items>
-                    <items id="description">Customer order related to feedback.</items>
+                    <items id="text">Cold path</items>
+                    <items id="description">Used for cold drink preparation</items>
                 </term_definitions>
                 <term_definitions code="at0005">
-                    <items id="text">1 star</items>
-                    <items id="description">Very Poor</items>
+                    <items id="text">Barista name</items>
+                    <items id="description">The name of the employee</items>
                 </term_definitions>
                 <term_definitions code="at0006">
-                    <items id="text">2 stars</items>
-                    <items id="description">Poor</items>
+                    <items id="text">Start time</items>
+                    <items id="description">Shift start time</items>
                 </term_definitions>
                 <term_definitions code="at0007">
-                    <items id="text">3 stars</items>
-                    <items id="description">Average</items>
+                    <items id="text">End time</items>
+                    <items id="description">Shift end time</items>
                 </term_definitions>
                 <term_definitions code="at0008">
-                    <items id="text">4 stars</items>
-                    <items id="description">Good</items>
-                </term_definitions>
-                <term_definitions code="at0009">
-                    <items id="text">5 stars</items>
-                    <items id="description">Excellent</items>
+                    <items id="text">Preparation notes</items>
+                    <items id="description">Notes about the order</items>
                 </term_definitions>
             </children>
             <cardinality>
@@ -388,14 +453,14 @@
             </cardinality>
         </attributes>
         <archetype_id>
-            <value>openEHR-EHR-COMPOSITION.feedback_composition.v0</value>
+            <value>openEHR-EHR-COMPOSITION.preparation_composition.v0</value>
         </archetype_id>
         <template_id>
-            <value>coffeeshop-feedback-composition.v1</value>
+            <value>coffeeshop-preparation-composition.v1</value>
         </template_id>
         <term_definitions code="at0000">
-            <items id="text">coffeeshop-feedback-composition.v1</items>
-            <items id="description">feedback_composition</items>
+            <items id="text">coffeeshop-preparation-composition.v1</items>
+            <items id="description">preparation_composition</items>
         </term_definitions>
     </definition>
 </template>

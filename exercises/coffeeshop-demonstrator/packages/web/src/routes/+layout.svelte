@@ -18,6 +18,8 @@
   &nbsp;|&nbsp;
   <a href="/feedback">Feedback</a>
   &nbsp;|&nbsp;
+  <a href="/governance">Governance</a>
+  &nbsp;|&nbsp;
   <a href="/pathway">Pathway</a>
 </nav>
 
