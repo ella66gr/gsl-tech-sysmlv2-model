@@ -210,6 +210,76 @@ package Foundation {
             attribute phone : String;
             attribute preferredMethod : ContactMethod;
         }
+
+        // --- Evaluation and self-knowledge types ---------------
+        // Added Session 8: Knowledge Layer Phase 1
+
+        enum def EvaluationOutcome {
+            doc /* Result of evaluating a constraint, rule, or goal.
+                 * Three-valued: pass (condition met), fail (condition
+                 * not met), indeterminate (insufficient data). */
+            pass;
+            fail;
+            indeterminate;
+        }
+
+        enum def Severity {
+            doc /* Severity classification for deficits, constraints,
+                 * and audit findings. */
+            critical;
+            warning;
+            informational;
+        }
+
+        enum def AssessmentScope {
+            doc /* Scope at which an evaluation or assessment is
+                 * performed. */
+            patient;
+            cohort;
+            pathway;
+            domain;
+            system;
+        }
+
+        enum def DataSourceType {
+            doc /* Authoritative data source for input derivation.
+                 * Source-agnostic: same InputDerivation structure
+                 * works regardless of where data comes from. */
+            cdr;         // openEHR CDR via AQL
+            temporal;    // Temporal workflow state and history
+            platform;    // Platform services (infrastructure, identity)
+            entity;      // Entity lifecycle state (XState / Temporal)
+        }
+
+        enum def DeficitDomain {
+            doc /* Domain classification for a deficit. */
+            clinical;
+            operational;
+            infrastructure;
+            governance;
+        }
+
+        enum def RemediationCategory {
+            doc /* How a deficit can be addressed. Defines the boundary
+                 * between deterministic system action and advisory
+                 * output.
+                 * automatic: pathway model defines next step, system
+                 *   can trigger it.
+                 * recommended: specific action identified but requires
+                 *   human decision.
+                 * advisory: deficit is systemic or compound, system
+                 *   surfaces it with supporting data. */
+            automatic;
+            recommended;
+            advisory;
+        }
+
+        enum def ServiceHealthStatus {
+            doc /* Health status of an infrastructure service. */
+            healthy;
+            degraded;
+            unreachable;
+        }
     }
 
     package StatePatterns {

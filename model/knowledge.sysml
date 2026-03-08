@@ -17,12 +17,153 @@ package Knowledge {
 
     package ClinicalDecisionSupport {
         private import ScalarValues::*;
+        private import Foundation::CommonTypes::*;
+        private import Knowledge::LogicEngine::*;
 
         doc /* Decision rules, eligibility criteria, monitoring protocols,
              * and clinical guidelines modelled as evaluable constraints.
              * Consumes CDR data via AQL queries, evaluates against
              * model-derived rules, and surfaces results to pathways
-             * and clinician/patient interfaces. */
+             * and clinician/patient interfaces.
+             *
+             * Separates "what the rule is" (ConstraintLibrary) from
+             * "how to get the data for the rule" (here). Each
+             * constraint def has a corresponding ConstraintEvaluationSpec
+             * that binds it to its input derivations.
+             *
+             * Elaborated Session 8: Knowledge Layer Phase 1. */
+
+        // =============================================================
+        // Input derivation pattern
+        // =============================================================
+
+        part def InputDerivation {
+            doc /* Defines how a single constraint input is derived
+                 * from an authoritative data source. The pattern is
+                 * source-agnostic: the same structure describes AQL
+                 * queries against the CDR, Temporal workflow state
+                 * queries, and platform service API calls.
+                 *
+                 * Each input in a constraint def has a corresponding
+                 * InputDerivation that specifies the query,
+                 * computation, and fallback behaviour. This formalises
+                 * what the ConstraintLibrary doc blocks describe
+                 * narratively. */
+            attribute inputName : String;
+            attribute sourceType : DataSourceType;
+            attribute query : String;
+            attribute computation : String;
+            attribute fallbackOutcome : EvaluationOutcome;
+            attribute fallbackReason : String;
+        }
+
+        part def ConstraintEvaluationSpec {
+            doc /* Binds a constraint definition to its input
+                 * derivations, forming a complete evaluation
+                 * specification. This is the unit that the evaluation
+                 * engine consumes: it knows which constraint to
+                 * evaluate and how to get every input.
+                 *
+                 * Separates "what the rule is" (ConstraintLibrary)
+                 * from "how to get the data" (here). */
+            attribute constraintName : String;
+            attribute requirementName : String;
+            attribute severity : Severity;
+            part inputDerivations : InputDerivation[0..*];
+        }
+
+        // =============================================================
+        // Constraint evaluation specifications
+        //
+        // One spec per ConstraintLibrary constraint. Each spec names
+        // the constraint, the requirement it satisfies, its severity,
+        // and the input derivations needed to evaluate it.
+        // =============================================================
+
+        // --- Consent and patient information ---
+
+        part consentSpec : ConstraintEvaluationSpec {
+            doc /* Evaluation spec for ConsentRecordedConstraint.
+                 * Single CDR input: consent composition exists. */
+            attribute :>> constraintName = "ConsentRecordedConstraint";
+            attribute :>> requirementName = "ConsentBeforeTreatment";
+            attribute :>> severity = Severity::critical;
+        }
+
+        part informationSpec : ConstraintEvaluationSpec {
+            doc /* Evaluation spec for PatientInformationProvidedConstraint.
+                 * Single CDR input: information-provision event. */
+            attribute :>> constraintName = "PatientInformationProvidedConstraint";
+            attribute :>> requirementName = "InformedConsentRequiresInformation";
+            attribute :>> severity = Severity::critical;
+        }
+
+        // --- Baseline investigations ---
+
+        part baselineBloodsSpec : ConstraintEvaluationSpec {
+            doc /* Evaluation spec for BaselineBloodsReviewedConstraint.
+                 * Two inputs from CDR/entity: all tests resulted,
+                 * all results reviewed. */
+            attribute :>> constraintName = "BaselineBloodsReviewedConstraint";
+            attribute :>> requirementName = "BaselineInvestigationsBeforePrescribing";
+            attribute :>> severity = Severity::critical;
+        }
+
+        // --- Prescribing governance ---
+
+        part clinicalReviewSpec : ConstraintEvaluationSpec {
+            doc /* Evaluation spec for ClinicalReviewCompletedConstraint.
+                 * Single CDR input: consultation composition with
+                 * review outcome. */
+            attribute :>> constraintName = "ClinicalReviewCompletedConstraint";
+            attribute :>> requirementName = "ClinicalReviewBeforePrescribing";
+            attribute :>> severity = Severity::critical;
+        }
+
+        part regimenProtocolSpec : ConstraintEvaluationSpec {
+            doc /* Evaluation spec for RegimenWithinProtocolConstraint.
+                 * Three inputs: medication, route, dose checked against
+                 * the prescribing protocol decision table. */
+            attribute :>> constraintName = "RegimenWithinProtocolConstraint";
+            attribute :>> requirementName = "PrescribingProtocolAdherence";
+            attribute :>> severity = Severity::critical;
+        }
+
+        // --- Monitoring ---
+
+        part bloodMonitoringSpec : ConstraintEvaluationSpec {
+            doc /* Evaluation spec for BloodMonitoringIntervalConstraint.
+                 * Two inputs: weeksSinceLastTest from CDR (most recent
+                 * LabResult), requiredIntervalWeeks from entity
+                 * (active prescription monitoring interval). */
+            attribute :>> constraintName = "BloodMonitoringIntervalConstraint";
+            attribute :>> requirementName = "BloodMonitoringRequired";
+            attribute :>> severity = Severity::warning;
+        }
+
+        part doseAdjustmentSpec : ConstraintEvaluationSpec {
+            doc /* Evaluation spec for DoseAdjustmentReviewedConstraint.
+                 * Two CDR inputs: clinical review completed,
+                 * current results reviewed. */
+            attribute :>> constraintName = "DoseAdjustmentReviewedConstraint";
+            attribute :>> requirementName = "ClinicalReviewBeforeDoseAdjustment";
+            attribute :>> severity = Severity::critical;
+        }
+
+        // --- Shared care ---
+
+        part sharedCareSpec : ConstraintEvaluationSpec {
+            doc /* Evaluation spec for SharedCareAcceptedConstraint.
+                 * Two inputs: shared care protocol sent (CDR),
+                 * GP practice accepted (entity lifecycle state). */
+            attribute :>> constraintName = "SharedCareAcceptedConstraint";
+            attribute :>> requirementName = "SharedCareCommunication";
+            attribute :>> severity = Severity::critical;
+        }
+
+        // =============================================================
+        // Use cases
+        // =============================================================
 
         use case def EvaluateEligibility {
             doc /* Determine whether a patient meets eligibility criteria
@@ -229,15 +370,196 @@ package Knowledge {
 
     package LogicEngine {
         private import ScalarValues::*;
+        private import Foundation::CommonTypes::*;
 
         doc /* Inference rules, Prolog-style reasoning, deterministic
-             * constraint evaluation. Explicit architectural space for
-             * logic programming.
+             * constraint evaluation, and system self-knowledge
+             * infrastructure. Explicit architectural space for logic
+             * programming.
              *
-             * Runtime target TBD: embedded Prolog (e.g. Tau Prolog),
-             * TypeScript constraint evaluator, DMN engine, or combination.
-             * Decision deferred until clinical rules are better understood
-             * from first pathway modelling. */
+             * Three-tier reasoning stack:
+             * Tier 1 — TypeScript constraint evaluator (generated from
+             *   SysML). Boolean constraints with structured explanation
+             *   traces. Handles ConstraintLibrary evaluation and
+             *   Layers 1-4 of self-knowledge.
+             * Tier 2 — Embedded Prolog (Tau Prolog or SWI-Prolog WASM)
+             *   for inference chains, contraindication cascades, compound
+             *   deficit reasoning, and "why" queries. Layer 5 compound
+             *   remediation.
+             * Tier 3 — ML/LLM advisory interface (interface only, no
+             *   implementation). Cannot override Tier 1/2 logic.
+             *
+             * Runtime target: Tier 1 (TypeScript) is the starting point.
+             * Tier 2 (Prolog) explored when clinical rules demand
+             * inference beyond boolean constraints. Tier 3 deferred.
+             *
+             * Self-knowledge infrastructure lives here alongside rule
+             * evaluation because the foundational patterns (structured
+             * results, input derivation, explanation traces) are shared.
+             * Extract to a dedicated package later if warranted.
+             *
+             * Elaborated Session 8: Knowledge Layer Phase 1. */
+
+        // =============================================================
+        // Evaluation result structures (Track A)
+        // =============================================================
+
+        part def EvaluatedInput {
+            doc /* A single input value used in a rule evaluation.
+                 * Records what data was used, where it came from,
+                 * and how it was derived — supporting the
+                 * self-explanation requirement for clinical governance
+                 * and patient safety. */
+            attribute inputName : String;
+            attribute inputValue : String;     // serialised value
+            attribute sourceType : DataSourceType;
+            attribute sourceQuery : String;    // AQL, Temporal query, or API call
+            attribute derivedAt : String;      // ISO datetime
+        }
+
+        part def ExplanationTrace {
+            doc /* A structured explanation of how a rule evaluation
+                 * reached its conclusion. Supports three audiences:
+                 * - Clinicians: why did this safety check pass/fail?
+                 * - Patients: why am I eligible or not?
+                 * - Auditors: trace from outcome through every decision.
+                 *
+                 * The trace is the clinical governance artefact that
+                 * makes the self-explaining requirement concrete. */
+            attribute ruleExpression : String;     // the rule as evaluated
+            attribute humanExplanation : String;   // plain-language explanation
+            part evaluatedInputs : EvaluatedInput[0..*];
+        }
+
+        part def EvaluationResult {
+            doc /* The atomic unit of knowledge evaluation. Every rule,
+                 * at every point in the system, produces one of these.
+                 *
+                 * EvaluationResults are persisted (CDR or audit log),
+                 * queryable, and presentable to clinicians, patients,
+                 * and auditors. They are the structured output of
+                 * Tier 1 deterministic evaluation.
+                 *
+                 * The same structure is produced whether the evaluation
+                 * is invoked at point-of-care (single patient, single
+                 * rule) or in a governance audit (population, multiple
+                 * rules). */
+            attribute ruleName : String;
+            attribute outcome : EvaluationOutcome;
+            attribute evaluatedAt : String;          // ISO datetime
+            attribute constraintRef : String;        // ConstraintLibrary def name
+            attribute requirementRef : String;       // satisfied requirement name
+            part explanation : ExplanationTrace;
+            part subEvaluations : EvaluationResult[0..*];
+        }
+
+        // =============================================================
+        // Self-knowledge structures (Track B)
+        // =============================================================
+
+        part def Deficit {
+            doc /* A structured record of a gap between the system's
+                 * actual operational state and its goal state.
+                 * Generalises the Phase D governance audit pattern
+                 * from a single rule to any operational dimension.
+                 *
+                 * Each deficit references the goal it falls short of
+                 * (requirement, constraint, or outcome definition),
+                 * the actual state found, and the expected state.
+                 * Supporting EvaluationResult records provide the
+                 * evidence chain.
+                 *
+                 * Deficits are computed, not stored — they are the
+                 * output of comparing Layer 2 (operational state)
+                 * against Layer 3 (goal state). */
+            attribute deficitDomain : DeficitDomain;
+            attribute scope : AssessmentScope;
+            attribute description : String;
+            attribute goalReference : String;
+            attribute actualState : String;
+            attribute expectedState : String;
+            attribute severity : Severity;
+            attribute detectedAt : String;          // ISO datetime
+            attribute remediationCategory : RemediationCategory;
+            attribute remediationDescription : String;
+            part supportingEvaluations : EvaluationResult[0..*];
+        }
+
+        part def SystemStateAssessment {
+            doc /* The composite output of the self-knowledge
+                 * infrastructure. Aggregates across all five layers
+                 * to produce a whole-system picture.
+                 *
+                 * Not a new data store — computed on demand by
+                 * querying existing authoritative sources (Temporal,
+                 * CDR, platform services) and running existing
+                 * evaluation logic.
+                 *
+                 * Can be scoped: single patient, clinical pathway,
+                 * domain, or entire system. Scheduled Temporal cron
+                 * workflows produce periodic assessments; on-demand
+                 * requests produce point-in-time assessments.
+                 *
+                 * This is the primary artefact of the self-describing
+                 * property: the system's own structured report on
+                 * itself. */
+            attribute assessmentId : String;
+            attribute assessedAt : String;          // ISO datetime
+            attribute scope : AssessmentScope;
+            attribute scopeFilter : String;
+            attribute modelVersion : String;
+
+            // Layer 1 — Structural summary
+            attribute packagesCount : Integer;
+            attribute pathwaysCount : Integer;
+            attribute constraintsCount : Integer;
+            attribute requirementsCount : Integer;
+            attribute entityLifecyclesCount : Integer;
+
+            // Layer 3 vs Layer 2 — Goal compliance summary
+            attribute totalGoals : Integer;
+            attribute goalsMet : Integer;
+            attribute goalsUnmet : Integer;
+            attribute goalsIndeterminate : Integer;
+
+            // Layer 4 — Deficits
+            part deficits : Deficit[0..*];
+
+            // Layer 5 — Evaluation evidence
+            part evaluationResults : EvaluationResult[0..*];
+        }
+
+        // =============================================================
+        // Use cases
+        // =============================================================
+
+        use case def EvaluateConstraint {
+            doc /* Evaluate a single constraint for a specific patient
+                 * or context. Derives inputs from authoritative sources,
+                 * evaluates the constraint expression, and produces a
+                 * structured EvaluationResult with explanation trace. */
+        }
+
+        use case def PerformGapAnalysis {
+            doc /* Compare operational state against goal state for a
+                 * defined scope (patient, pathway, domain, system).
+                 * Produces Deficit records identifying where actual
+                 * state falls short of expected state. */
+        }
+
+        use case def ProduceSystemStateAssessment {
+            doc /* Aggregate structural self-knowledge, operational
+                 * state, goal compliance, deficits, and remediation
+                 * recommendations into a composite
+                 * SystemStateAssessment. The primary output of the
+                 * self-describing property. */
+        }
+
+        use case def ExplainEvaluationResult {
+            doc /* Given an EvaluationResult, produce a human-readable
+                 * explanation suitable for the requesting audience
+                 * (clinician, patient, auditor). */
+        }
     }
 
     package DecisionModels {
