@@ -2,7 +2,7 @@
 
 ## 8 March 2026
 
-**Purpose:** Comprehensive progress report for continuity into the next chat session. This session executed Knowledge Layer Elaboration Phase 1 — evaluation and self-knowledge architecture design in the SysML model.
+**Purpose:** Comprehensive progress report for continuity into the next chat session. This session executed Knowledge Layer Elaboration Phase 1 — evaluation and self-knowledge architecture design in the SysML model — and restructured the syntax reference documentation.
 
 ---
 
@@ -16,7 +16,12 @@
 4. **Stage 3 — ClinicalDecisionSupport elaboration:** Two new part defs (InputDerivation, ConstraintEvaluationSpec) and eight concrete evaluation specs mapping to all ConstraintLibrary constraints. Doc block updated with separation-of-concerns description.
 5. **Stage 5 — Architecture decision document:** Wrote `gsl-architecture-decision-knowledge-evaluation.md` covering evaluation invocation pattern, System Model Manifest concept, operational state query pattern, goal state projection, remediation classification, and assessment invocation patterns.
 6. **Syntax reference v3.5:** Updated with five newly verified patterns (see Section 3 below).
-7. **Session report** (this document).
+7. **Syntax reference restructuring:** Split the monolithic syntax reference (68KB, ~1,580 lines) into three focused documents:
+   - `reference/gsl-sysml-v2-syntax-reference-v3.5-*.md` — concise syntax lookup (~280 lines), organised by construct type
+   - `architecture/gsl-validated-architectural-patterns.md` — integration patterns, generation pipelines, design rationale (~250 lines)
+   - `guides/gsl-guide-repo-conventions.md` — file structure, generators, git practices, documentation conventions (~180 lines)
+   - Created `reference/versions/` directory for previous monolithic versions
+8. **Session report** (this document).
 
 ### Not started / deferred
 
@@ -33,7 +38,10 @@
 | File | Purpose |
 |---|---|
 | `documentation/architecture/gsl-architecture-decision-knowledge-evaluation.md` | Architecture decisions for evaluation invocation, System Model Manifest, operational state queries, goal projection, remediation classification, assessment invocation |
-| `documentation/reference/gsl-sysml-v2-syntax-reference-v3.5-2026-03-08.md` | Syntax reference updated with Knowledge Layer Phase 1 findings |
+| `documentation/architecture/gsl-validated-architectural-patterns.md` | **New.** Extracted from monolithic syntax reference. Integration patterns, generation pipelines, design rationale |
+| `documentation/reference/gsl-sysml-v2-syntax-reference-v3.5-2026-03-08.md` | **Restructured.** Concise syntax lookup organised by construct type, replacing monolithic document |
+| `documentation/guides/gsl-guide-repo-conventions.md` | **New.** Extracted from monolithic syntax reference. File structure, generators, git practices, documentation conventions |
+| `documentation/reference/versions/` | **New directory.** Home for previous monolithic syntax reference versions |
 | `documentation/plans/gsl-plan-knowledge-layer-phase1-implementation-2026-03-08.md` | Detailed implementation plan for Phase 1 (six stages) |
 | `documentation/session-reports/gsl-session-report-2026-03-08-s8.md` | This document |
 
@@ -44,10 +52,20 @@
 | `model/foundation.sysml` | Seven new enum defs in CommonTypes (EvaluationOutcome, Severity, AssessmentScope, DataSourceType, DeficitDomain, RemediationCategory, ServiceHealthStatus) |
 | `model/knowledge.sysml` | LogicEngine: five part defs + four use case defs + updated doc block + Foundation::CommonTypes import. ClinicalDecisionSupport: two part defs + eight evaluation specs + Foundation::CommonTypes and Knowledge::LogicEngine imports + updated doc block. |
 
+### Files moved (pending)
+
+| File | Destination |
+|---|---|
+| `reference/gsl-sysml-v2-syntax-reference-v1.0-2026-03-01.md` | `reference/versions/` |
+| `reference/gsl-sysml-v2-syntax-reference-v2.0-2026-03-03.md` | `reference/versions/` |
+| `reference/gsl-sysml-v2-syntax-reference-v3.3-2026-03-06.md` | `reference/versions/` |
+| `reference/gsl-sysml-v2-syntax-reference-v3.4-2026-03-08.md` | `reference/versions/` |
+
 ### Git commits
 
 1. `Knowledge Layer Phase 1: evaluation and self-knowledge architecture` — Stages 1–4 (foundation enums, LogicEngine structures, CDS evaluation specs)
-2. (Pending) `Add architecture decision document, syntax reference v3.5, session report` — Stage 5+6 documentation
+2. (Pending) `Restructure syntax reference into three documents` — syntax reference split, architecture patterns, repo conventions, old versions moved
+3. (Pending) `Add architecture decision document, session report, implementation plan` — Stage 5+6 documentation
 
 ---
 
@@ -112,11 +130,10 @@ The manifest is a JSON file generated from the SysML model by a build-time gener
 
 ### 6.1 Immediate: file operations
 
-- Copy syntax reference to create v3.5 file (preserving v3.4)
+- Move old syntax reference versions (v1.0, v2.0, v3.3, v3.4) to `reference/versions/`
 - Copy Phase 1 implementation plan to `documentation/plans/`
-- Copy this session report to `documentation/session-reports/`
 - Run `gsl save` to regenerate hierarchy outputs with new element counts
-- Git commit documentation changes
+- Git commit documentation changes (two pending commits)
 
 ### 6.2 Near-term: Knowledge Layer Phase 2 — LogicEngine elaboration
 
@@ -138,9 +155,33 @@ The nested `:>>` redefinition pattern (InputDerivation instances inside Constrai
 
 ---
 
-## 7. Working Practices
+## 7. Syntax Reference Restructuring
+
+The monolithic syntax reference had grown to 68KB (~1,580 lines) across eight sessions. It contained three distinct kinds of content mixed together: syntax lookup material, exercise narrative and validation history, and repo/tooling conventions.
+
+### Problem
+
+The document was too long to scan as a reference. Finding specific syntax patterns required wading through integration narratives, file structure diagrams, and validation stories.
+
+### Solution
+
+Split into three focused documents, each in the appropriate documentation subdirectory:
+
+| Document | Location | Lines | Content |
+|---|---|---|---|
+| Syntax reference v3.5 | `reference/` | ~280 | Construct-by-construct syntax lookup, traps, operators, reserved words, TODO |
+| Validated architectural patterns | `architecture/` | ~250 | Integration stories, generation pipeline, CDR patterns, self-knowledge architecture |
+| Repo conventions | `guides/` | ~180 | File structure, generators, git practices, Syside conventions, documentation standards |
+
+Previous monolithic versions moved to `reference/versions/` for history. The syntax reference retains the version numbering (v3.5) and "what's new" header.
+
+---
+
+## 8. Working Practices
 
 - **Syntax reference:** `reference/gsl-sysml-v2-syntax-reference-v3.5-2026-03-08.md`
+- **Architectural patterns:** `architecture/gsl-validated-architectural-patterns.md`
+- **Repo conventions:** `guides/gsl-guide-repo-conventions.md`
 - **Package hierarchy:** `gsl` for terminal view, `gsl save` for all formats
 - **MCP filesystem access:** Claude reads/writes model files directly. Ella runs shell commands and checks Syside.
 - **Syside Modeler version:** 0.8.5
@@ -148,7 +189,7 @@ The nested `:>>` redefinition pattern (InputDerivation instances inside Constrai
 
 ---
 
-## 8. Files in Repository After This Session
+## 9. Files in Repository After This Session
 
 ```
 gsl-sysml-model/
@@ -176,12 +217,13 @@ gsl-sysml-model/
 │   ├── gen_package_hierarchy.py
 │   └── evaluate_automator.py
 ├── documentation/
-│   ├── architecture/             6 files (+1: knowledge evaluation decision)
+│   ├── architecture/             7 files (+2: knowledge evaluation decision, validated patterns)
 │   ├── generated/                4 files
-│   ├── guides/                   2 files
+│   ├── guides/                   3 files (+1: repo conventions)
 │   ├── plans/                    6 files (+1: Phase 1 implementation plan)
-│   ├── reference/                5 files (+1: v3.5 syntax reference)
-│   └── session-reports/          10 files (+1: this report)
+│   ├── reference/                2 files (v3.5 syntax reference + versions/ directory)
+│   │   └── versions/             4 files (v1.0, v2.0, v3.3, v3.4 — pending move)
+│   └── session-reports/          11 files (+1: this report)
 └── archive/
 ```
 
