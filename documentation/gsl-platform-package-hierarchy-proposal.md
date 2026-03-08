@@ -1,6 +1,8 @@
 # Package hierarchy proposal
 
+**Status:** Reconciled with SysML model 8 March 2026 (Session 7). All packages now exist in the model. Naming updated to reflect SysML identifier constraints.
 
+**Note:** The TemporalMetadata package lives as a separate library (`libraries/temporal-metadata/temporal-metadata.sysml`), not under Foundation::MetadataLibrary. It is imported directly by orchestration-layer action flows.
 
 GenderSense
 ├── Enterprise
@@ -36,7 +38,7 @@ GenderSense
 │   │   ├── SelfManagement    — personal dashboard, progress tracking, alerts & notifications,
 │   │   │                       access to individual clinical records including blood results,
 │   │   │                       self-assessment tools, decision aids, progress sharing
-│   │   ├── Identity+Avatar   — personal evolving avatar: self-representation, identity
+│   │   ├── IdentityAndAvatar — personal evolving avatar: self-representation, identity
 │   │   │                       exploration, gender expression, presentation preferences,
 │   │   │                       aptitudes, values, concerns and vulnerabilities. Versioned
 │   │   │                       history — earlier selves are meaningful, not obsolete.
@@ -70,12 +72,13 @@ GenderSense
 │   │   └── PeerMessaging     — patient-to-patient messaging, group chat,
 │   │                           peer support channels (distinct from clinical messaging)
 │   ├── Booking               — appointment scheduling, availability, reminders
-│   ├── EHR                   — clinical record, demographics, document storage
+│   ├── EHR                   — clinical record (openEHR CDR), demographics, document storage
 │   ├── Forms                 — questionnaires, clinical forms, validation rules
 │   ├── Messaging             — clinical comms, secure clinician-patient messaging, notifications
-│   ├── VideoConsulting       — telehealth integration (1:1 clinical sessions)
+│   ├── VideoConsulting        — telehealth integration (1:1 clinical sessions)
 │   ├── LabInterface          — lab orders, results, pathology integration
-│   ├── Prescribing           — electronic prescribing system integration
+│   ├── PrescribingSystem     — electronic prescribing system integration (disambiguated from
+│   │                           ServiceDelivery::ClinicalPathways::Prescribing)
 │   ├── Payments              — payment processing, invoicing, receipts
 │   ├── Documents             — document generation, templates, signing
 │   ├── Identity              — user accounts, authentication, authorisation
@@ -90,7 +93,13 @@ GenderSense
 │   └── Reporting             — BI, operational dashboards, regulatory reporting
 │
 └── Foundation
-    ├── MetadataLibrary       — @TemporalWorkflow, @ClinicalReviewGate, @OpenEhrArchetype, etc.
+    ├── MetadataLibrary       — @ClinicalReviewGate, @ConsentRequired, @AuditPoint,
+    │                           @LogicRule, @DecisionTable, @SafetyConstraint,
+    │                           @OpenEhrArchetype, @OpenEhrElement, @OpenEhrTemplate
     ├── CommonTypes           — shared data types, enumerations, units
     ├── StatePatterns         — reusable lifecycle state machine patterns
     └── GenerationPipeline    — generator configs, templates, conventions
+
+(TemporalMetadata — @TemporalWorkflow, @TemporalActivity, @TemporalSignal,
+ @StateTransitionTrigger — lives in libraries/temporal-metadata/ as a
+ separate top-level package, imported by orchestration-layer action flows)
