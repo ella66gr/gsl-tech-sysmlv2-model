@@ -1,0 +1,135 @@
+#!/bin/bash
+# =========================================================================
+# gsl — GenderSense Model Toolkit
+# =========================================================================
+#
+# Quick commands for working with the GenderSense SysML model.
+# Put this on your PATH or add an alias in ~/.zshrc:
+#
+#   alias gsl='~/Developer/gsl-tech/gsl-sysml-model/scripts/gsl'
+#
+# Then use from anywhere:
+#
+#   gsl view          Show the package hierarchy in terminal
+#   gsl save          Export all formats (markdown, OPML, HTML, OmniOutliner)
+#   gsl oo            Export and open in OmniOutliner
+#   gsl html          Export and open interactive mindmap in browser
+#   gsl diff          Compare model against proposal
+#   gsl edit          Open the guide for editing .sysml files
+#   gsl model         Open the model directory in VS Code / Syside
+#   gsl help          Show this help
+#
+# =========================================================================
+
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SCRIPT="$REPO_ROOT/scripts/gen_package_hierarchy.py"
+DOCS="$REPO_ROOT/documentation"
+GENERATED="$DOCS/generated"
+MODEL="$REPO_ROOT/model"
+GUIDE="$DOCS/guides/gsl-guide-editing-package-hierarchy.md"
+
+# Colours for terminal output
+BOLD='\033[1m'
+DIM='\033[2m'
+RESET='\033[0m'
+GREEN='\033[32m'
+CYAN='\033[36m'
+
+cmd="${1:-view}"
+
+case "$cmd" in
+
+    view|v)
+        # Default: show the hierarchy in terminal
+        python3 "$SCRIPT"
+        ;;
+
+    save|s)
+        # Export all formats
+        echo -e "${BOLD}Exporting all formats...${RESET}"
+        python3 "$SCRIPT" --save
+        ;;
+
+    oo|omnioutliner)
+        # Export and open in OmniOutliner
+        python3 "$SCRIPT" --save=oo
+        echo -e "${DIM}Opening in OmniOutliner...${RESET}"
+        open -a 'OmniOutliner' "$GENERATED/gsl-generated-package-hierarchy.txt"
+        ;;
+
+    html|mindmap)
+        # Export and open HTML mindmap
+        python3 "$SCRIPT" --save=html
+        echo -e "${DIM}Opening in browser...${RESET}"
+        open "$GENERATED/gsl-generated-package-hierarchy.html"
+        ;;
+
+    md|markdown)
+        # Export markdown only
+        python3 "$SCRIPT" --save=markdown
+        ;;
+
+    opml)
+        # Export and open OPML
+        python3 "$SCRIPT" --save=opml
+        open "$GENERATED/gsl-generated-package-hierarchy.opml"
+        ;;
+
+    diff|d)
+        # Compare model against proposal
+        python3 "$SCRIPT" --diff
+        ;;
+
+    edit|guide|g)
+        # Open the editing guide
+        if [ -f "$GUIDE" ]; then
+            open "$GUIDE"
+        else
+            echo "Guide not found at: $GUIDE"
+            echo "Expected: gsl-guide-editing-package-hierarchy.md"
+        fi
+        ;;
+
+    model|m)
+        # Open model directory in VS Code
+        if command -v code &> /dev/null; then
+            code "$REPO_ROOT"
+        else
+            open "$MODEL"
+        fi
+        ;;
+
+    files|f)
+        # Show what files exist
+        echo -e "${BOLD}Model files:${RESET}"
+        ls -la "$MODEL"/*.sysml
+        echo ""
+        echo -e "${BOLD}Generated outputs:${RESET}"
+        ls -la "$GENERATED"/gsl-generated-* 2>/dev/null || echo "  (none yet — run 'gsl save')"
+        ;;
+
+    help|h|--help|-h)
+        echo -e "${BOLD}gsl — GenderSense Model Toolkit${RESET}"
+        echo ""
+        echo -e "  ${CYAN}gsl${RESET}              Show package hierarchy in terminal (default)"
+        echo -e "  ${CYAN}gsl view${RESET}         Same as above"
+        echo -e "  ${CYAN}gsl save${RESET}         Export all formats"
+        echo -e "  ${CYAN}gsl oo${RESET}           Export and open in OmniOutliner"
+        echo -e "  ${CYAN}gsl html${RESET}         Export and open interactive mindmap"
+        echo -e "  ${CYAN}gsl diff${RESET}         Compare model against proposal"
+        echo -e "  ${CYAN}gsl edit${RESET}         Open the .sysml editing guide"
+        echo -e "  ${CYAN}gsl model${RESET}        Open model directory in VS Code"
+        echo -e "  ${CYAN}gsl files${RESET}        List model and generated files"
+        echo -e "  ${CYAN}gsl help${RESET}         Show this help"
+        echo ""
+        echo -e "${DIM}Add to ~/.zshrc:  alias gsl='$REPO_ROOT/scripts/gsl'${RESET}"
+        ;;
+
+    *)
+        echo "Unknown command: $cmd"
+        echo "Run 'gsl help' for available commands."
+        exit 1
+        ;;
+esac
