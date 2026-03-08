@@ -9,7 +9,6 @@ GenderSense
 │   ├── Strategy              — partnerships, business model, ethos & values
 │   └── Risk                  — clinical risk, business continuity, safeguarding
 │
-
 ├── Knowledge
 │   ├── ClinicalDecisionSupport  — decision rules, eligibility criteria, monitoring protocols
 │   ├── ConstraintLibrary        — composable clinical constraints, safety rules, interaction checks
@@ -19,7 +18,7 @@ GenderSense
 │   ├── LearningCycles           — pathway refinement process, evidence review, change control
 │   └── Analytics                — data contracts for BI/predictive/ML, event streams,
 │                                  LLM integration points, advisory layer interface
-
+│
 ├── ServiceDelivery
 │   ├── PatientJourney        — top-level lifecycle (acquisition → discharge)
 │   ├── ClinicalPathways
@@ -33,12 +32,48 @@ GenderSense
 │   └── ClinicalEntities      — patient, episode, consultation, prescription, referral, lab result
 │
 ├── Platform
-│   ├── PatientPortal         — web platform, secure access, self-service
+│   ├── PatientPortal         — patient-facing web platform, self-management hub
+│   │   ├── SelfManagement    — personal dashboard, progress tracking, alerts & notifications,
+│   │   │                       access to individual clinical records including blood results,
+│   │   │                       self-assessment tools, decision aids, progress sharing
+│   │   ├── Identity+Avatar   — personal evolving avatar: self-representation, identity
+│   │   │                       exploration, gender expression, presentation preferences,
+│   │   │                       aptitudes, values, concerns and vulnerabilities. Versioned
+│   │   │                       history — earlier selves are meaningful, not obsolete.
+│   │   │                       Selective sharing controls (clinician, peer group, private).
+│   │   │                       Connects to: Journal (reflective identity work), Community
+│   │   │                       (presentation in group spaces), TherapyPathways (guided
+│   │   │                       identity exercises), SelfManagement (milestone integration),
+│   │   │                       OutcomeFramework (progress as lived experience, not just
+│   │   │                       clinical measures). Not gamification — externalised identity
+│   │   │                       work with therapeutic value: articulation, development,
+│   │   │                       confidence-building, sense of agency and control
+│   │   ├── Journal           — personal journal, reflective practice, clinician-shared entries
+│   │   ├── SessionPlanning   — consultation session sequence planning, appointment preparation,
+│   │   │                       agenda setting, post-session actions
+│   │   └── DocumentAccess    — secure document portal, e-signing for consent and contracts,
+│   │                           document sharing with clinicians and third parties
+│   ├── Education             — patient-facing knowledge and learning platform
+│   │   ├── KnowledgeBase     — FAQs, reference materials, answerbase, curated information,
+│   │   │                       decision aids, terminology guides
+│   │   ├── LearningContent   — structured courses, self-directed learning modules,
+│   │   │                       instructional video and audio, educational pathways
+│   │   ├── TherapyPathways   — structured therapy journeys, guided self-development,
+│   │   │                       coaching exercises, psychoeducation sequences
+│   │   └── ContentDelivery   — content management, personalised recommendations,
+│   │                           progress-aware delivery, accessibility
+│   ├── Community             — patient-to-patient and group interaction
+│   │   ├── GroupSpaces       — group spaces with privacy controls, shared resources,
+│   │   │                       moderation, community guidelines enforcement
+│   │   ├── GroupSessions     — group video sessions, facilitated workshops,
+│   │   │                       peer support circles, scheduled group events
+│   │   └── PeerMessaging     — patient-to-patient messaging, group chat,
+│   │                           peer support channels (distinct from clinical messaging)
 │   ├── Booking               — appointment scheduling, availability, reminders
 │   ├── EHR                   — clinical record, demographics, document storage
 │   ├── Forms                 — questionnaires, clinical forms, validation rules
-│   ├── Messaging             — patient comms, secure messaging, notifications
-│   ├── VideoConsulting       — telehealth integration
+│   ├── Messaging             — clinical comms, secure clinician-patient messaging, notifications
+│   ├── VideoConsulting       — telehealth integration (1:1 clinical sessions)
 │   ├── LabInterface          — lab orders, results, pathology integration
 │   ├── Prescribing           — electronic prescribing system integration
 │   ├── Payments              — payment processing, invoicing, receipts
@@ -55,7 +90,7 @@ GenderSense
 │   └── Reporting             — BI, operational dashboards, regulatory reporting
 │
 └── Foundation
-    ├── MetadataLibrary       — @TemporalWorkflow, @ClinicalReviewGate, etc.
+    ├── MetadataLibrary       — @TemporalWorkflow, @ClinicalReviewGate, @OpenEhrArchetype, etc.
     ├── CommonTypes           — shared data types, enumerations, units
     ├── StatePatterns         — reusable lifecycle state machine patterns
     └── GenerationPipeline    — generator configs, templates, conventions
