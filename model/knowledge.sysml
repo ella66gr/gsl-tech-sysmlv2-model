@@ -33,8 +33,18 @@ package Knowledge {
              * in DecisionModels have corresponding
              * DecisionTableEvaluationSpecs following the same pattern.
              *
+             * Goal-state projection:
+             * The GoalProjector (LogicEngine) consumes three goal
+             * sources: requirements (Enterprise::Regulation),
+             * constraint evaluation specs (here), and outcome
+             * definitions (Knowledge::OutcomeFramework). Outcome
+             * definitions are self-contained — they specify both
+             * the target and the evaluation query, so a separate
+             * evaluation spec is not needed for them.
+             *
              * Elaborated Session 8 (Phase 1: constraint specs),
-             * Session 10 (Phase 3: decision table specs). */
+             * Session 10 (Phase 3: decision table specs),
+             * Session 11 (Phase 4: goal-state projection note). */
 
         // =============================================================
         // Input derivation pattern
@@ -1650,19 +1660,582 @@ package Knowledge {
 
     package OutcomeFramework {
         private import ScalarValues::*;
+        private import Foundation::CommonTypes::*;
+        private import Foundation::MetadataLibrary::*;
 
         doc /* Outcome definitions, measurement points, structured outcome
-             * capture, outcome-to-pathway feedback.
+             * capture, and outcome-to-pathway feedback for clinical
+             * outcome measurement.
              *
              * Records not just that a patient was treated, but the specific
              * regimen, monitoring results at defined intervals, whether
-             * clinical targets were achieved, and any adverse events. */
+             * clinical targets were achieved, and any adverse events. Over
+             * time this builds a dataset that informs pathway refinement
+             * via LearningCycles.
+             *
+             * Architectural role — outcomes are goals:
+             * Each OutcomeDefinition implies an expected state. The
+             * GoalProjector (Knowledge::LogicEngine) projects outcome
+             * definitions into GoalProjections. The GapAnalyser compares
+             * actual outcome data (from CDR) against these projections and
+             * produces Deficit records for unmet outcomes. This connects
+             * OutcomeFramework directly to the five-layer self-knowledge
+             * architecture (Phase 1) — outcomes are the third goal source
+             * alongside requirements (Enterprise::Regulation) and
+             * constraints (Knowledge::ConstraintLibrary).
+             *
+             * Data capture — outcomes are CDR compositions:
+             * Outcome measurements are captured as openEHR compositions
+             * in the CDR via the same two data paths validated in the CDR
+             * exercise: workflow-driven (Temporal activities commit
+             * compositions during pathway execution) and form-driven
+             * (clinician records outcome data directly). The outcome
+             * framework defines which compositions constitute outcomes,
+             * at which measurement points, and against which targets.
+             *
+             * Feedback loop — outcomes drive pathway refinement:
+             * Aggregated outcome data feeds into LearningCycles:
+             * capture structured outcomes → analyse patterns → propose
+             * pathway refinement → clinical governance review → update
+             * model → regenerate. The model is the mechanism for both
+             * capturing and enacting the learning.
+             *
+             * Elaborated Session 11: Knowledge Layer Phase 4.
+             * Connects to Phase 1 (self-knowledge data structures),
+             * Phase 2 (GoalProjector, GapAnalyser), and Phase 3
+             * (decision tables that consume outcome-derived inputs). */
+
+        // =============================================================
+        // Core structural definitions
+        // =============================================================
 
         part def OutcomeDefinition {
-            doc /* A defined clinical outcome with measurement criteria. */
+            doc /* A defined clinical outcome with target criteria and
+                 * measurement specification.
+                 *
+                 * Each outcome definition specifies:
+                 * - What is being measured (name, description, category)
+                 * - What the target is (value, range, comparison operator)
+                 * - How often it is measured (frequency)
+                 * - How to query the CDR for actual data (evaluation query)
+                 *
+                 * Outcome definitions are the input to goal-state
+                 * projection. The GoalProjector transforms each
+                 * definition into a GoalProjection that the GapAnalyser
+                 * evaluates against CDR data.
+                 *
+                 * Concrete outcomes are modelled as part usages with
+                 * :>> attribute redefinitions, following the
+                 * ConstraintEvaluationSpec and decision table row
+                 * patterns established in Phases 1 and 3. */
             attribute outcomeName : String;
             attribute description : String;
-            attribute measurementInterval : String;
+            attribute category : OutcomeCategory;
+            attribute frequency : MeasurementFrequency;
+            attribute targetOperator : ComparisonOperator;
+            attribute targetValue : String;
+            attribute targetUpperBound : String;
+            attribute targetUnit : String;
+            attribute evaluationQuery : String;
+            attribute severity : Severity;
+        }
+
+        part def MeasurementPoint {
+            doc /* A defined point in time at which outcome measurements
+                 * are collected. Each measurement point specifies when
+                 * it occurs (weeks from treatment initiation), what
+                 * outcomes are assessed, and what the clinical focus is.
+                 *
+                 * Measurement points are contained within a
+                 * MeasurementSchedule. At runtime, the evaluation
+                 * infrastructure checks whether due measurement points
+                 * have corresponding CDR data — a missing measurement
+                 * at a due point produces an adherence deficit. */
+            attribute pointName : String;
+            attribute timingWeeksFromInitiation : Integer;
+            attribute description : String;
+            attribute isRepeating : Boolean;
+            attribute repeatIntervalWeeks : Integer;
+        }
+
+        part def MeasurementSchedule {
+            doc /* A complete measurement schedule for a clinical
+                 * pathway. Defines the sequence of measurement points
+                 * and associates each point with the outcomes to be
+                 * measured.
+                 *
+                 * One schedule per pathway. The schedule is the bridge
+                 * between the pathway's temporal structure (when things
+                 * happen) and the outcome framework's measurement
+                 * structure (what to measure and when). */
+            attribute scheduleName : String;
+            attribute pathwayRef : String;
+            attribute description : String;
+            part measurementPoints : MeasurementPoint[0..*];
+        }
+
+        part def OutcomeEvaluationResult {
+            @OpenEhrArchetype {
+                archetypeId = "openEHR-EHR-EVALUATION.outcome_assessment.v0";
+                rmClass = "EVALUATION";
+            }
+            doc /* The result of evaluating an outcome measurement
+                 * against its target. Links the outcome definition,
+                 * the patient, the measurement point, the actual
+                 * value obtained, and whether the target was met.
+                 *
+                 * Structurally parallel to EvaluationResult in
+                 * LogicEngine — both are structured, auditable
+                 * records of a comparison against an expected state.
+                 * The key difference is that EvaluationResult records
+                 * a point-in-time constraint check, while
+                 * OutcomeEvaluationResult records a longitudinal
+                 * clinical outcome measurement.
+                 *
+                 * At runtime, these are persisted as CDR compositions
+                 * or audit records, queryable for governance reporting
+                 * and patient-facing outcome summaries. */
+            attribute outcomeRef : String;
+            attribute patientId : String;
+            attribute measurementPointRef : String;
+            attribute measuredAt : String;
+            attribute actualValue : String;
+            attribute actualUnit : String;
+            attribute outcomeStatus : OutcomeStatus;
+            attribute clinicianNotes : String;
+        }
+
+        // =============================================================
+        // Outcome-to-LearningCycles feedback interface
+        // =============================================================
+
+        part def OutcomeFeedbackRecord {
+            doc /* A structured record linking aggregated outcome data
+                 * to a pathway refinement proposal. This is the
+                 * interface between OutcomeFramework and LearningCycles.
+                 *
+                 * When outcome patterns are identified (e.g. a
+                 * significant proportion of patients not reaching
+                 * target at 6 months on a particular regimen), the
+                 * pattern is captured as a feedback record that
+                 * feeds into LearningCycles::ProposePathwayRefinement.
+                 *
+                 * The feedback record is not an automatic trigger —
+                 * it surfaces the pattern with supporting data for
+                 * clinical governance review. The decision to modify
+                 * the pathway or protocol is a human governance
+                 * decision, consistent with the remediation boundary
+                 * principle (automatic / recommended / advisory). */
+            attribute feedbackId : String;
+            attribute patternDescription : String;
+            attribute affectedOutcome : String;
+            attribute affectedPathway : String;
+            attribute cohortSize : Integer;
+            attribute observationPeriod : String;
+            attribute proposedAction : String;
+            attribute severity : Severity;
+            attribute detectedAt : String;
+        }
+
+        // =============================================================
+        // Concrete outcome definitions — Hormone Therapy
+        //
+        // Representative clinically plausible values for modelling
+        // purposes. Actual clinical target ranges will be loaded
+        // from the validated prescribing protocol before runtime use.
+        // =============================================================
+
+        // --- Clinical outcomes ---
+
+        part oestradiolTarget : OutcomeDefinition {
+            doc /* Target oestradiol level for feminising hormone
+                 * therapy. Measured at each monitoring blood test.
+                 * Target range is trough level (measured immediately
+                 * before next dose or at a standardised time point).
+                 *
+                 * Representative target: 400–600 pmol/L.
+                 * Source: Endocrine Society guidelines / local protocol. */
+            attribute :>> outcomeName = "OestradiolTherapeuticRange";
+            attribute :>> description = "Serum oestradiol within therapeutic target range at trough";
+            attribute :>> category = OutcomeCategory::clinical;
+            attribute :>> frequency = MeasurementFrequency::threeMonthly;
+            attribute :>> targetOperator = ComparisonOperator::within;
+            attribute :>> targetValue = "400";
+            attribute :>> targetUpperBound = "600";
+            attribute :>> targetUnit = "pmol/L";
+            attribute :>> evaluationQuery = "AQL: LabResult where testName='oestradiol' for patient within measurement window";
+            attribute :>> severity = Severity::warning;
+        }
+
+        part testosteroneMascTarget : OutcomeDefinition {
+            doc /* Target testosterone level for masculinising
+                 * hormone therapy. Measured at each monitoring
+                 * blood test.
+                 *
+                 * Representative target: 10–30 nmol/L.
+                 * Source: Endocrine Society guidelines / local protocol. */
+            attribute :>> outcomeName = "TestosteroneTherapeuticRange";
+            attribute :>> description = "Serum testosterone within therapeutic target range";
+            attribute :>> category = OutcomeCategory::clinical;
+            attribute :>> frequency = MeasurementFrequency::threeMonthly;
+            attribute :>> targetOperator = ComparisonOperator::within;
+            attribute :>> targetValue = "10";
+            attribute :>> targetUpperBound = "30";
+            attribute :>> targetUnit = "nmol/L";
+            attribute :>> evaluationQuery = "AQL: LabResult where testName='testosterone' for patient within measurement window";
+            attribute :>> severity = Severity::warning;
+        }
+
+        part testosteroneSuppressionTarget : OutcomeDefinition {
+            doc /* Target testosterone suppression for feminising
+                 * hormone therapy. Testosterone should be suppressed
+                 * below the threshold once oestradiol is at target.
+                 *
+                 * Representative target: < 2 nmol/L.
+                 * Source: Endocrine Society guidelines / local protocol. */
+            attribute :>> outcomeName = "TestosteroneSuppression";
+            attribute :>> description = "Serum testosterone suppressed below threshold on feminising therapy";
+            attribute :>> category = OutcomeCategory::clinical;
+            attribute :>> frequency = MeasurementFrequency::threeMonthly;
+            attribute :>> targetOperator = ComparisonOperator::lessThan;
+            attribute :>> targetValue = "2";
+            attribute :>> targetUpperBound = "";
+            attribute :>> targetUnit = "nmol/L";
+            attribute :>> evaluationQuery = "AQL: LabResult where testName='testosterone' for patient on feminising therapy";
+            attribute :>> severity = Severity::warning;
+        }
+
+        part haematologySafety : OutcomeDefinition {
+            doc /* Haematological safety monitoring. For masculinising
+                 * therapy: haemoglobin and haematocrit must remain
+                 * within safe limits (polycythaemia risk). For
+                 * feminising therapy: VTE risk markers monitored.
+                 *
+                 * Representative target: haematocrit < 0.54.
+                 * Source: Local protocol / Endocrine Society. */
+            attribute :>> outcomeName = "HaematologySafety";
+            attribute :>> description = "Haematological safety markers within safe limits";
+            attribute :>> category = OutcomeCategory::safety;
+            attribute :>> frequency = MeasurementFrequency::threeMonthly;
+            attribute :>> targetOperator = ComparisonOperator::lessThan;
+            attribute :>> targetValue = "0.54";
+            attribute :>> targetUpperBound = "";
+            attribute :>> targetUnit = "L/L";
+            attribute :>> evaluationQuery = "AQL: LabResult where testName='haematocrit' for patient within measurement window";
+            attribute :>> severity = Severity::critical;
+        }
+
+        part metabolicSafety : OutcomeDefinition {
+            doc /* Metabolic safety monitoring: liver function tests
+                 * and lipid profile within acceptable limits. Both
+                 * oestrogen and testosterone therapy can affect
+                 * hepatic and lipid markers.
+                 *
+                 * This is a composite outcome — multiple lab values
+                 * are assessed. The evaluationQuery returns a set
+                 * of results; all must be within limits for the
+                 * outcome to be met.
+                 *
+                 * Representative: LFTs within 3x upper limit of normal. */
+            attribute :>> outcomeName = "MetabolicSafety";
+            attribute :>> description = "Liver function and lipid profile within acceptable limits";
+            attribute :>> category = OutcomeCategory::safety;
+            attribute :>> frequency = MeasurementFrequency::sixMonthly;
+            attribute :>> targetOperator = ComparisonOperator::lessThan;
+            attribute :>> targetValue = "3";
+            attribute :>> targetUpperBound = "";
+            attribute :>> targetUnit = "xULN";
+            attribute :>> evaluationQuery = "AQL: LabResult where testName in ('ALT','GGT') for patient within measurement window";
+            attribute :>> severity = Severity::warning;
+        }
+
+        // --- Adherence outcomes ---
+
+        part monitoringAdherence : OutcomeDefinition {
+            doc /* Whether monitoring bloods are completed within
+                 * the defined schedule. This is the longitudinal
+                 * pattern of the BloodMonitoringIntervalConstraint
+                 * — the constraint checks one point in time; this
+                 * outcome tracks the pattern across all measurement
+                 * points.
+                 *
+                 * Target: 100% of scheduled monitoring bloods
+                 * completed within the allowed window. */
+            attribute :>> outcomeName = "MonitoringAdherence";
+            attribute :>> description = "Monitoring blood tests completed at all scheduled measurement points";
+            attribute :>> category = OutcomeCategory::adherence;
+            attribute :>> frequency = MeasurementFrequency::threeMonthly;
+            attribute :>> targetOperator = ComparisonOperator::equalTo;
+            attribute :>> targetValue = "complete";
+            attribute :>> targetUpperBound = "";
+            attribute :>> targetUnit = "";
+            attribute :>> evaluationQuery = "AQL: count of LabResult compositions vs count of due measurement points";
+            attribute :>> severity = Severity::warning;
+        }
+
+        part appointmentAdherence : OutcomeDefinition {
+            doc /* Whether scheduled clinical appointments are
+                 * attended. Missed appointments may indicate
+                 * disengagement, access barriers, or dissatisfaction.
+                 *
+                 * Target: all scheduled appointments attended or
+                 * rescheduled within acceptable window. */
+            attribute :>> outcomeName = "AppointmentAdherence";
+            attribute :>> description = "Scheduled clinical appointments attended or rescheduled within window";
+            attribute :>> category = OutcomeCategory::adherence;
+            attribute :>> frequency = MeasurementFrequency::threeMonthly;
+            attribute :>> targetOperator = ComparisonOperator::equalTo;
+            attribute :>> targetValue = "complete";
+            attribute :>> targetUpperBound = "";
+            attribute :>> targetUnit = "";
+            attribute :>> evaluationQuery = "AQL: appointment attendance record for patient within measurement window";
+            attribute :>> severity = Severity::informational;
+        }
+
+        // --- Safety outcomes ---
+
+        part adverseEventTracking : OutcomeDefinition {
+            doc /* Tracking of adverse events during treatment.
+                 * Any adverse event of warning severity or above
+                 * is captured and evaluated.
+                 *
+                 * Target: no critical adverse events. Warning-level
+                 * events are expected to be managed; critical events
+                 * trigger urgent clinical review. */
+            attribute :>> outcomeName = "AdverseEventTracking";
+            attribute :>> description = "No critical adverse events; warning-level events managed and documented";
+            attribute :>> category = OutcomeCategory::safety;
+            attribute :>> frequency = MeasurementFrequency::threeMonthly;
+            attribute :>> targetOperator = ComparisonOperator::equalTo;
+            attribute :>> targetValue = "none-critical";
+            attribute :>> targetUpperBound = "";
+            attribute :>> targetUnit = "";
+            attribute :>> evaluationQuery = "AQL: adverse event compositions for patient with severity >= critical";
+            attribute :>> severity = Severity::critical;
+        }
+
+        // --- Patient-reported outcomes ---
+
+        part treatmentSatisfaction : OutcomeDefinition {
+            doc /* Patient-reported treatment satisfaction, captured
+                 * during monitoring consultations. Also an input to
+                 * the stabilityAssessment decision table.
+                 *
+                 * Target: patient satisfied or neutral. Dissatisfied
+                 * status triggers exploration of concerns and
+                 * potential pathway adjustment. */
+            attribute :>> outcomeName = "TreatmentSatisfaction";
+            attribute :>> description = "Patient-reported satisfaction with treatment progress";
+            attribute :>> category = OutcomeCategory::patientReported;
+            attribute :>> frequency = MeasurementFrequency::sixMonthly;
+            attribute :>> targetOperator = ComparisonOperator::within;
+            attribute :>> targetValue = "satisfied";
+            attribute :>> targetUpperBound = "neutral";
+            attribute :>> targetUnit = "";
+            attribute :>> evaluationQuery = "AQL: consultation composition with satisfaction assessment for patient";
+            attribute :>> severity = Severity::informational;
+        }
+
+        part goalAttainment : OutcomeDefinition {
+            doc /* Patient-reported goal attainment — whether the
+                 * patient feels their personal treatment goals are
+                 * being met. This is distinct from clinical targets
+                 * (which are physiological) and from satisfaction
+                 * (which is about the service experience).
+                 *
+                 * Captured via structured self-assessment at 6-month
+                 * and 12-month points.
+                 *
+                 * Target: patient reports goals being met or
+                 * progressing. */
+            attribute :>> outcomeName = "GoalAttainment";
+            attribute :>> description = "Patient-reported progress toward personal treatment goals";
+            attribute :>> category = OutcomeCategory::patientReported;
+            attribute :>> frequency = MeasurementFrequency::sixMonthly;
+            attribute :>> targetOperator = ComparisonOperator::within;
+            attribute :>> targetValue = "met";
+            attribute :>> targetUpperBound = "progressing";
+            attribute :>> targetUnit = "";
+            attribute :>> evaluationQuery = "AQL: self-assessment composition with goal attainment for patient";
+            attribute :>> severity = Severity::informational;
+        }
+
+        // =============================================================
+        // Hormone Therapy Measurement Schedule
+        //
+        // Defines the measurement points for the hormone therapy
+        // initiation pathway and associates each point with the
+        // outcomes to be collected.
+        // =============================================================
+
+        part baselinePoint : MeasurementPoint {
+            doc /* Baseline measurements before treatment initiation.
+                 * Pre-treatment values establish the reference for
+                 * all subsequent outcome evaluation.
+                 *
+                 * Outcomes collected: all clinical (hormone levels,
+                 * haematology, metabolic), baseline PROs. */
+            attribute :>> pointName = "Baseline";
+            attribute :>> timingWeeksFromInitiation = 0;
+            attribute :>> description = "Pre-treatment baseline assessment. All clinical and safety bloods, initial PROs.";
+            attribute :>> isRepeating = false;
+            attribute :>> repeatIntervalWeeks = 0;
+        }
+
+        part threeMonthPoint : MeasurementPoint {
+            doc /* First monitoring assessment at approximately
+                 * 12 weeks post-initiation.
+                 *
+                 * Primary focus: initial hormone response. Are
+                 * levels moving toward target? Any early side
+                 * effects or safety concerns?
+                 *
+                 * Outcomes collected: all clinical, adherence,
+                 * safety. PROs if concerns flagged. */
+            attribute :>> pointName = "ThreeMonth";
+            attribute :>> timingWeeksFromInitiation = 12;
+            attribute :>> description = "First monitoring assessment. Initial hormone response, early safety review.";
+            attribute :>> isRepeating = false;
+            attribute :>> repeatIntervalWeeks = 0;
+        }
+
+        part sixMonthPoint : MeasurementPoint {
+            doc /* Mid-term assessment at approximately 26 weeks.
+                 *
+                 * Primary focus: target achievement. Have therapeutic
+                 * ranges been reached? Stability assessment. Full
+                 * safety panel. Patient satisfaction and goal
+                 * attainment.
+                 *
+                 * This is the first point at which the
+                 * stabilityAssessment decision table may declare a
+                 * patient stable (12+ weeks on current dose). */
+            attribute :>> pointName = "SixMonth";
+            attribute :>> timingWeeksFromInitiation = 26;
+            attribute :>> description = "Mid-term assessment. Target achievement, stability, full safety panel, PROs.";
+            attribute :>> isRepeating = false;
+            attribute :>> repeatIntervalWeeks = 0;
+        }
+
+        part twelveMonthPoint : MeasurementPoint {
+            doc /* Long-term assessment at approximately 52 weeks.
+                 *
+                 * Primary focus: sustained target levels, long-term
+                 * safety, treatment satisfaction, readiness for
+                 * transition to annual monitoring or shared care.
+                 *
+                 * Successful outcomes at this point typically trigger
+                 * transition to ongoing care (annual monitoring,
+                 * potentially shared care with GP). */
+            attribute :>> pointName = "TwelveMonth";
+            attribute :>> timingWeeksFromInitiation = 52;
+            attribute :>> description = "Long-term assessment. Sustained targets, safety, transition readiness.";
+            attribute :>> isRepeating = false;
+            attribute :>> repeatIntervalWeeks = 0;
+        }
+
+        part annualMonitoringPoint : MeasurementPoint {
+            doc /* Annual ongoing monitoring after stabilisation.
+                 * Repeats every 52 weeks from the 12-month point.
+                 *
+                 * Primary focus: continued target levels, emerging
+                 * long-term risks (metabolic, haematological),
+                 * continued satisfaction. */
+            attribute :>> pointName = "AnnualMonitoring";
+            attribute :>> timingWeeksFromInitiation = 104;
+            attribute :>> description = "Annual ongoing monitoring. Continued targets, long-term safety, satisfaction.";
+            attribute :>> isRepeating = true;
+            attribute :>> repeatIntervalWeeks = 52;
+        }
+
+        part hormoneTherapySchedule : MeasurementSchedule {
+            doc /* Measurement schedule for the hormone therapy
+                 * initiation pathway.
+                 *
+                 * Defines the standard measurement points from
+                 * baseline through the first year and into ongoing
+                 * annual monitoring. Individual patients may have
+                 * additional ad-hoc measurement points triggered
+                 * by the stabilityAssessment decision table
+                 * (e.g. increased monitoring frequency if adjustment
+                 * needed). */
+            attribute :>> scheduleName = "HormoneTherapyInitiationSchedule";
+            attribute :>> pathwayRef = "ServiceDelivery::ClinicalPathways::HormoneTherapy";
+            attribute :>> description = "Standard measurement schedule for hormone therapy from baseline through annual monitoring";
+        }
+
+        // =============================================================
+        // Use cases
+        // =============================================================
+
+        use case def RecordOutcomeMeasurement {
+            doc /* Capture an outcome measurement for a patient at
+                 * a specific measurement point. Data may enter via
+                 * the workflow (Temporal activity commits composition)
+                 * or via form entry (clinician or patient records
+                 * directly).
+                 *
+                 * Both paths produce the same CDR composition type.
+                 * The composition is tagged with the measurement
+                 * point and outcome definition references for
+                 * queryability. */
+        }
+
+        use case def EvaluateOutcomeAgainstTarget {
+            doc /* Evaluate a recorded outcome measurement against
+                 * its defined target. Produces an
+                 * OutcomeEvaluationResult.
+                 *
+                 * This is conceptually parallel to EvaluateConstraint
+                 * in LogicEngine: both compare actual data against
+                 * an expected condition. The difference is that
+                 * constraint evaluation is point-in-time (is this
+                 * condition met right now?) while outcome evaluation
+                 * is longitudinal (is this target being met across
+                 * the measurement schedule?).
+                 *
+                 * At a population level, this use case feeds into
+                 * governance reporting: what proportion of patients
+                 * are achieving target at each measurement point? */
+        }
+
+        use case def ProduceOutcomeReport {
+            doc /* Generate an outcome report for a patient, cohort,
+                 * or pathway. Aggregates OutcomeEvaluationResults
+                 * across measurement points to show the longitudinal
+                 * outcome profile.
+                 *
+                 * Three reporting scopes:
+                 * - Patient: individual outcome trajectory showing
+                 *   values at each measurement point against targets
+                 * - Cohort: population outcome summary showing what
+                 *   proportion of patients meet targets at each point
+                 * - Pathway: overall pathway effectiveness assessment
+                 *   across all outcome categories
+                 *
+                 * Reports are derivable from CDR data via AQL.
+                 * The report structure is a natural input to the
+                 * SystemStateAssessment (Layer 4 — unmet outcome
+                 * targets are deficits). */
+        }
+
+        use case def FeedOutcomeToLearningCycle {
+            doc /* When outcome patterns indicate a potential
+                 * pathway issue (e.g. a significant proportion of
+                 * patients not reaching target on a regimen, or
+                 * emerging safety signals), package the evidence
+                 * as an OutcomeFeedbackRecord and feed it into
+                 * LearningCycles::ProposePathwayRefinement.
+                 *
+                 * This is the closing connection in the learning
+                 * loop: outcomes → evidence → proposal → governance
+                 * review → model update → regeneration.
+                 *
+                 * Detection can be automated (scheduled Temporal
+                 * workflow that analyses outcome patterns) or
+                 * manual (clinician notices a trend and initiates
+                 * feedback). The governance review step is always
+                 * human. */
         }
     }
 
@@ -1672,19 +2245,42 @@ package Knowledge {
         doc /* Pathway refinement process, evidence review, change control
              * governance. Itself modelled as an action flow.
              *
-             * Cycle: capture structured outcomes -> analyse patterns ->
-             * propose pathway refinement -> clinical governance review ->
-             * update model -> regenerate. The model is the mechanism for
-             * both capturing and enacting the learning. */
+             * Cycle: capture structured outcomes → analyse patterns →
+             * propose pathway refinement → clinical governance review →
+             * update model → regenerate. The model is the mechanism for
+             * both capturing and enacting the learning.
+             *
+             * Input from OutcomeFramework:
+             * OutcomeFeedbackRecord captures evidence of outcome patterns
+             * (e.g. cohort not reaching targets on a specific regimen)
+             * and feeds into ProposePathwayRefinement. Detection may be
+             * automated (scheduled Temporal workflow analysing outcome
+             * data) or clinician-initiated.
+             *
+             * Input from SystemStateAssessment:
+             * Advisory-category deficits identified in gap analysis
+             * (systemic issues that cannot be resolved by a single action)
+             * also feed into the learning cycle as evidence for pathway
+             * or protocol review.
+             *
+             * The governance review step is always human — the learning
+             * cycle does not automatically modify the model. This is
+             * consistent with the remediation boundary principle:
+             * automatic actions are limited to deterministic,
+             * pathway-defined steps; pathway changes require governance
+             * approval. */
 
         use case def ProposePathwayRefinement {
             doc /* Initiate a pathway change proposal based on outcome
-                 * data or new clinical evidence. */
+                 * data, OutcomeFeedbackRecords, or advisory deficits
+                 * from SystemStateAssessments. */
         }
 
         use case def ReviewAndApproveChange {
             doc /* Clinical governance review and approval of a proposed
-                 * pathway or protocol change. */
+                 * pathway or protocol change. Approved changes are
+                 * enacted by updating the SysML model and regenerating
+                 * affected artefacts. */
         }
     }
 
