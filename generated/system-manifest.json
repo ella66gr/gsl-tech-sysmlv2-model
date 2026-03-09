@@ -1,0 +1,1065 @@
+{
+  "modelVersion": "2026-03-09",
+  "generatedAt": "2026-03-09T23:08:25Z",
+  "generator": "scripts/gen_system_manifest.py",
+  "sourceFiles": [
+    "model/enterprise.sysml",
+    "model/foundation.sysml",
+    "model/gendersense.sysml",
+    "model/knowledge.sysml",
+    "model/operations.sysml",
+    "model/platform.sysml",
+    "model/service-delivery.sysml",
+    "libraries/temporal-metadata/temporal-metadata.sysml"
+  ],
+  "constraints": {
+    "count": 8,
+    "items": [
+      {
+        "name": "ConsentRecordedConstraint",
+        "package": "Knowledge::ConstraintLibrary",
+        "inputs": [
+          {
+            "name": "consentRecorded",
+            "type": "Boolean"
+          }
+        ],
+        "description": "Evaluable rule: a valid consent record must exist for the specified treatment before it can proceed.",
+        "satisfies": "ConsentBeforeTreatment",
+        "severity": "critical",
+        "evaluationSpec": "consentSpec"
+      },
+      {
+        "name": "PatientInformationProvidedConstraint",
+        "package": "Knowledge::ConstraintLibrary",
+        "inputs": [
+          {
+            "name": "informationProvided",
+            "type": "Boolean"
+          }
+        ],
+        "description": "Evaluable rule: the patient must have been provided with treatment information before consent is obtained.",
+        "satisfies": "InformedConsentRequiresInformation",
+        "severity": "critical",
+        "evaluationSpec": "informationSpec"
+      },
+      {
+        "name": "BaselineBloodsReviewedConstraint",
+        "package": "Knowledge::ConstraintLibrary",
+        "inputs": [
+          {
+            "name": "allBaselineTestsResulted",
+            "type": "Boolean"
+          },
+          {
+            "name": "allBaselineResultsReviewed",
+            "type": "Boolean"
+          }
+        ],
+        "description": "Evaluable rule: all required baseline blood tests must have reached the 'reviewed' state before a hormone therapy prescr",
+        "satisfies": "BaselineInvestigationsBeforePrescribing",
+        "severity": "critical",
+        "evaluationSpec": "baselineBloodsSpec"
+      },
+      {
+        "name": "ClinicalReviewCompletedConstraint",
+        "package": "Knowledge::ConstraintLibrary",
+        "inputs": [
+          {
+            "name": "reviewCompleted",
+            "type": "Boolean"
+          }
+        ],
+        "description": "Evaluable rule: a clinical review must have been completed and documented before a prescribing decision can proceed.",
+        "satisfies": "ClinicalReviewBeforePrescribing",
+        "severity": "critical",
+        "evaluationSpec": "clinicalReviewSpec"
+      },
+      {
+        "name": "RegimenWithinProtocolConstraint",
+        "package": "Knowledge::ConstraintLibrary",
+        "inputs": [
+          {
+            "name": "medicationApproved",
+            "type": "Boolean"
+          },
+          {
+            "name": "routeApproved",
+            "type": "Boolean"
+          },
+          {
+            "name": "doseWithinRange",
+            "type": "Boolean"
+          }
+        ],
+        "description": "Evaluable rule: the proposed medication, route, and dose must fall within the bounds of an approved prescribing protocol",
+        "satisfies": "PrescribingProtocolAdherence",
+        "severity": "critical",
+        "evaluationSpec": "regimenProtocolSpec"
+      },
+      {
+        "name": "BloodMonitoringIntervalConstraint",
+        "package": "Knowledge::ConstraintLibrary",
+        "inputs": [
+          {
+            "name": "weeksSinceLastTest",
+            "type": "Integer"
+          },
+          {
+            "name": "requiredIntervalWeeks",
+            "type": "Integer"
+          }
+        ],
+        "description": "Evaluable rule: the number of weeks since the last blood test must not exceed the required monitoring interval.",
+        "satisfies": "BloodMonitoringRequired",
+        "severity": "warning",
+        "evaluationSpec": "bloodMonitoringSpec"
+      },
+      {
+        "name": "DoseAdjustmentReviewedConstraint",
+        "package": "Knowledge::ConstraintLibrary",
+        "inputs": [
+          {
+            "name": "clinicalReviewCompleted",
+            "type": "Boolean"
+          },
+          {
+            "name": "currentResultsReviewed",
+            "type": "Boolean"
+          }
+        ],
+        "description": "Evaluable rule: a clinical review must have been completed, with current blood results reviewed, before a dose adjustmen",
+        "satisfies": "ClinicalReviewBeforeDoseAdjustment",
+        "severity": "critical",
+        "evaluationSpec": "doseAdjustmentSpec"
+      },
+      {
+        "name": "SharedCareAcceptedConstraint",
+        "package": "Knowledge::ConstraintLibrary",
+        "inputs": [
+          {
+            "name": "sharedCareProtocolSent",
+            "type": "Boolean"
+          },
+          {
+            "name": "gpPracticeAccepted",
+            "type": "Boolean"
+          }
+        ],
+        "description": "Evaluable rule: shared care must not commence until the GP practice has confirmed acceptance of the shared care arrangem",
+        "satisfies": "SharedCareCommunication",
+        "severity": "critical",
+        "evaluationSpec": "sharedCareSpec"
+      }
+    ]
+  },
+  "requirements": {
+    "count": 8,
+    "items": [
+      {
+        "name": "ConsentBeforeTreatment",
+        "package": "Enterprise::Regulation",
+        "description": "Informed consent must be obtained and recorded before any treatment is initiated."
+      },
+      {
+        "name": "InformedConsentRequiresInformation",
+        "package": "Enterprise::Regulation",
+        "description": "Before consent can be considered informed, the patient must have received and had opportunity to consider relevant infor"
+      },
+      {
+        "name": "BaselineInvestigationsBeforePrescribing",
+        "package": "Enterprise::Regulation",
+        "description": "Baseline blood tests must be completed, resulted, and reviewed by a clinician before a hormone therapy prescription is a"
+      },
+      {
+        "name": "ClinicalReviewBeforePrescribing",
+        "package": "Enterprise::Regulation",
+        "description": "A clinician with appropriate competence must conduct a clinical review before authorising a hormone therapy prescription"
+      },
+      {
+        "name": "PrescribingProtocolAdherence",
+        "package": "Enterprise::Regulation",
+        "description": "Prescribing must follow an approved clinical protocol."
+      },
+      {
+        "name": "BloodMonitoringRequired",
+        "package": "Enterprise::Regulation",
+        "description": "Patients on hormone therapy must have blood tests performed at defined monitoring intervals."
+      },
+      {
+        "name": "ClinicalReviewBeforeDoseAdjustment",
+        "package": "Enterprise::Regulation",
+        "description": "Any change to hormone therapy dosage must be preceded by a clinical review that considers current blood results, symptom"
+      },
+      {
+        "name": "SharedCareCommunication",
+        "package": "Enterprise::Regulation",
+        "description": "When hormone therapy monitoring is transitioned to shared care with the patient's GP, the GP must receive a shared care "
+      }
+    ]
+  },
+  "entityLifecycles": {
+    "count": 4,
+    "items": [
+      {
+        "name": "EpisodeLifecycle",
+        "package": "ServiceDelivery::ClinicalEntities",
+        "states": [
+          "created",
+          "active",
+          "suspended",
+          "completed",
+          "cancelled"
+        ],
+        "terminalStates": [
+          "completed",
+          "cancelled"
+        ]
+      },
+      {
+        "name": "PrescriptionLifecycle",
+        "package": "ServiceDelivery::ClinicalEntities",
+        "states": [
+          "drafted",
+          "authorised",
+          "dispensed",
+          "active",
+          "completed",
+          "cancelled"
+        ],
+        "terminalStates": [
+          "completed",
+          "cancelled"
+        ]
+      },
+      {
+        "name": "LabResultLifecycle",
+        "package": "ServiceDelivery::ClinicalEntities",
+        "states": [
+          "requested",
+          "collected",
+          "resulted",
+          "reviewed",
+          "actioned",
+          "cancelled"
+        ],
+        "terminalStates": [
+          "actioned",
+          "cancelled"
+        ]
+      },
+      {
+        "name": "ReferralLifecycle",
+        "package": "ServiceDelivery::ClinicalEntities",
+        "states": [
+          "drafted",
+          "sent",
+          "acknowledged",
+          "referralAccepted",
+          "declined",
+          "completed",
+          "cancelled"
+        ],
+        "terminalStates": [
+          "declined",
+          "completed",
+          "cancelled"
+        ]
+      }
+    ]
+  },
+  "pathways": {
+    "count": 2,
+    "items": [
+      {
+        "name": "InitiateHormoneTherapyProcess",
+        "package": "ServiceDelivery::ClinicalPathways",
+        "type": "domain",
+        "stepCount": 17,
+        "metadataAnnotations": [
+          "@AuditPoint",
+          "@ClinicalReviewGate",
+          "@ConsentRequired",
+          "@DecisionTable",
+          "@LogicRule",
+          "@SafetyConstraint"
+        ],
+        "description": "Domain-layer action flow for hormone therapy initiation."
+      },
+      {
+        "name": "InitiateHormoneTherapyWorkflow",
+        "package": "ServiceDelivery::ClinicalPathways",
+        "type": "domain",
+        "stepCount": 21,
+        "metadataAnnotations": [
+          "@StateTransitionTrigger",
+          "@TemporalActivity",
+          "@TemporalSignal",
+          "@TemporalWorkflow"
+        ],
+        "description": "Orchestration-layer action flow for hormone therapy initiation."
+      }
+    ]
+  },
+  "outcomes": {
+    "count": 10,
+    "items": [
+      {
+        "usageName": "oestradiolTarget",
+        "package": "Knowledge::OutcomeFramework",
+        "outcomeName": "OestradiolTherapeuticRange",
+        "description": "Serum oestradiol within therapeutic target range at trough",
+        "targetValue": "400",
+        "targetUpperBound": "600",
+        "targetUnit": "pmol/L",
+        "evaluationQuery": "AQL: LabResult where testName='oestradiol' for patient within measurement window",
+        "category": "clinical",
+        "frequency": "threeMonthly",
+        "targetOperator": "within",
+        "severity": "warning"
+      },
+      {
+        "usageName": "testosteroneMascTarget",
+        "package": "Knowledge::OutcomeFramework",
+        "outcomeName": "TestosteroneTherapeuticRange",
+        "description": "Serum testosterone within therapeutic target range",
+        "targetValue": "10",
+        "targetUpperBound": "30",
+        "targetUnit": "nmol/L",
+        "evaluationQuery": "AQL: LabResult where testName='testosterone' for patient within measurement window",
+        "category": "clinical",
+        "frequency": "threeMonthly",
+        "targetOperator": "within",
+        "severity": "warning"
+      },
+      {
+        "usageName": "testosteroneSuppressionTarget",
+        "package": "Knowledge::OutcomeFramework",
+        "outcomeName": "TestosteroneSuppression",
+        "description": "Serum testosterone suppressed below threshold on feminising therapy",
+        "targetValue": "2",
+        "targetUnit": "nmol/L",
+        "evaluationQuery": "AQL: LabResult where testName='testosterone' for patient on feminising therapy",
+        "category": "clinical",
+        "frequency": "threeMonthly",
+        "targetOperator": "lessThan",
+        "severity": "warning"
+      },
+      {
+        "usageName": "haematologySafety",
+        "package": "Knowledge::OutcomeFramework",
+        "outcomeName": "HaematologySafety",
+        "description": "Haematological safety markers within safe limits",
+        "targetValue": "0.54",
+        "targetUnit": "L/L",
+        "evaluationQuery": "AQL: LabResult where testName='haematocrit' for patient within measurement window",
+        "category": "safety",
+        "frequency": "threeMonthly",
+        "targetOperator": "lessThan",
+        "severity": "critical"
+      },
+      {
+        "usageName": "metabolicSafety",
+        "package": "Knowledge::OutcomeFramework",
+        "outcomeName": "MetabolicSafety",
+        "description": "Liver function and lipid profile within acceptable limits",
+        "targetValue": "3",
+        "targetUnit": "xULN",
+        "evaluationQuery": "AQL: LabResult where testName in ('ALT','GGT') for patient within measurement window",
+        "category": "safety",
+        "frequency": "sixMonthly",
+        "targetOperator": "lessThan",
+        "severity": "warning"
+      },
+      {
+        "usageName": "monitoringAdherence",
+        "package": "Knowledge::OutcomeFramework",
+        "outcomeName": "MonitoringAdherence",
+        "description": "Monitoring blood tests completed at all scheduled measurement points",
+        "targetValue": "complete",
+        "evaluationQuery": "AQL: count of LabResult compositions vs count of due measurement points",
+        "category": "adherence",
+        "frequency": "threeMonthly",
+        "targetOperator": "equalTo",
+        "severity": "warning"
+      },
+      {
+        "usageName": "appointmentAdherence",
+        "package": "Knowledge::OutcomeFramework",
+        "outcomeName": "AppointmentAdherence",
+        "description": "Scheduled clinical appointments attended or rescheduled within window",
+        "targetValue": "complete",
+        "evaluationQuery": "AQL: appointment attendance record for patient within measurement window",
+        "category": "adherence",
+        "frequency": "threeMonthly",
+        "targetOperator": "equalTo",
+        "severity": "informational"
+      },
+      {
+        "usageName": "adverseEventTracking",
+        "package": "Knowledge::OutcomeFramework",
+        "outcomeName": "AdverseEventTracking",
+        "description": "No critical adverse events; warning-level events managed and documented",
+        "targetValue": "none-critical",
+        "evaluationQuery": "AQL: adverse event compositions for patient with severity >= critical",
+        "category": "safety",
+        "frequency": "threeMonthly",
+        "targetOperator": "equalTo",
+        "severity": "critical"
+      },
+      {
+        "usageName": "treatmentSatisfaction",
+        "package": "Knowledge::OutcomeFramework",
+        "outcomeName": "TreatmentSatisfaction",
+        "description": "Patient-reported satisfaction with treatment progress",
+        "targetValue": "satisfied",
+        "targetUpperBound": "neutral",
+        "evaluationQuery": "AQL: consultation composition with satisfaction assessment for patient",
+        "category": "patientReported",
+        "frequency": "sixMonthly",
+        "targetOperator": "within",
+        "severity": "informational"
+      },
+      {
+        "usageName": "goalAttainment",
+        "package": "Knowledge::OutcomeFramework",
+        "outcomeName": "GoalAttainment",
+        "description": "Patient-reported progress toward personal treatment goals",
+        "targetValue": "met",
+        "targetUpperBound": "progressing",
+        "evaluationQuery": "AQL: self-assessment composition with goal attainment for patient",
+        "category": "patientReported",
+        "frequency": "sixMonthly",
+        "targetOperator": "within",
+        "severity": "informational"
+      }
+    ]
+  },
+  "decisionTables": {
+    "count": 2,
+    "items": [
+      {
+        "defName": "RegimenSelectionTable",
+        "tableName": "regimenSelection",
+        "hitPolicy": "unique",
+        "rowCount": 9,
+        "package": "Knowledge::DecisionModels"
+      },
+      {
+        "defName": "StabilityAssessmentTable",
+        "tableName": "stabilityAssessment",
+        "hitPolicy": "unique",
+        "rowCount": 8,
+        "package": "Knowledge::DecisionModels"
+      }
+    ]
+  },
+  "metadata": {
+    "count": 13,
+    "items": [
+      {
+        "name": "ClinicalReviewGate",
+        "package": "Foundation::MetadataLibrary",
+        "attributes": [
+          "reviewerRole",
+          "reviewCriteria"
+        ]
+      },
+      {
+        "name": "ConsentRequired",
+        "package": "Foundation::MetadataLibrary",
+        "attributes": [
+          "consentType"
+        ]
+      },
+      {
+        "name": "AuditPoint",
+        "package": "Foundation::MetadataLibrary",
+        "attributes": [
+          "auditCategory"
+        ]
+      },
+      {
+        "name": "LogicRule",
+        "package": "Foundation::MetadataLibrary",
+        "attributes": [
+          "ruleName"
+        ]
+      },
+      {
+        "name": "DecisionTable",
+        "package": "Foundation::MetadataLibrary",
+        "attributes": [
+          "tableName"
+        ]
+      },
+      {
+        "name": "SafetyConstraint",
+        "package": "Foundation::MetadataLibrary",
+        "attributes": [
+          "constraintName",
+          "severity"
+        ]
+      },
+      {
+        "name": "OpenEhrArchetype",
+        "package": "Foundation::MetadataLibrary",
+        "attributes": [
+          "archetypeId",
+          "rmClass"
+        ]
+      },
+      {
+        "name": "OpenEhrElement",
+        "package": "Foundation::MetadataLibrary",
+        "attributes": [
+          "name",
+          "nodeId",
+          "rmType"
+        ]
+      },
+      {
+        "name": "OpenEhrTemplate",
+        "package": "Foundation::MetadataLibrary",
+        "attributes": [
+          "templateId"
+        ]
+      },
+      {
+        "name": "TemporalWorkflow",
+        "package": "TemporalMetadata",
+        "attributes": [
+          "workflowName",
+          "taskQueue"
+        ]
+      },
+      {
+        "name": "TemporalActivity",
+        "package": "TemporalMetadata",
+        "attributes": [
+          "activityName"
+        ]
+      },
+      {
+        "name": "TemporalSignal",
+        "package": "TemporalMetadata",
+        "attributes": [
+          "signalName",
+          "timeoutMinutes"
+        ]
+      },
+      {
+        "name": "StateTransitionTrigger",
+        "package": "TemporalMetadata",
+        "attributes": [
+          "eventName"
+        ]
+      }
+    ]
+  },
+  "useCases": {
+    "count": 100,
+    "items": [
+      {
+        "name": "MeetCQCFundamentalStandards",
+        "source": "enterprise.sysml",
+        "description": "Demonstrate compliance with CQC fundamental standards for a regulated healthcare provider."
+      },
+      {
+        "name": "MeetDataProtectionObligations",
+        "source": "enterprise.sysml",
+        "description": "Demonstrate compliance with UK GDPR / Data Protection Act 2018 including DPIA, lawful basis, subject rights."
+      },
+      {
+        "name": "MeetClinicalSafetyRequirements",
+        "source": "enterprise.sysml",
+        "description": "Demonstrate compliance with DCB0129 (manufacturer) and DCB0160 (deployer) clinical risk management standards."
+      },
+      {
+        "name": "MeetProfessionalStandards",
+        "source": "enterprise.sysml",
+        "description": "GMC Good Medical Practice, specialist standards, appraisal and revalidation requirements."
+      },
+      {
+        "name": "ManageClinicalRisk",
+        "source": "enterprise.sysml",
+        "description": "Identify, assess, mitigate, and monitor clinical risks across all service delivery pathways."
+      },
+      {
+        "name": "MaintainBusinessContinuity",
+        "source": "enterprise.sysml",
+        "description": "Ensure service continuity under adverse conditions including system failure, staff absence, and external disruption."
+      },
+      {
+        "name": "ManageSafeguarding",
+        "source": "enterprise.sysml",
+        "description": "Safeguarding framework for vulnerable adults and children, including referral pathways and reporting."
+      },
+      {
+        "name": "EvaluateEligibility",
+        "source": "knowledge.sysml",
+        "description": "Determine whether a patient meets eligibility criteria for a specific pathway or intervention."
+      },
+      {
+        "name": "TriggerMonitoringAlert",
+        "source": "knowledge.sysml",
+        "description": "Flag when clinical data (e.g."
+      },
+      {
+        "name": "ProvidePathwayGuidance",
+        "source": "knowledge.sysml",
+        "description": "Surface personalised clinical guidance to patients and clinicians derived from structured data and rules."
+      },
+      {
+        "name": "EvaluateConstraint",
+        "source": "knowledge.sysml",
+        "description": "Evaluate a single constraint for a specific patient or context."
+      },
+      {
+        "name": "PerformGapAnalysis",
+        "source": "knowledge.sysml",
+        "description": "Compare operational state against goal state for a defined scope (patient, pathway, domain, system)."
+      },
+      {
+        "name": "ProduceSystemStateAssessment",
+        "source": "knowledge.sysml",
+        "description": "Aggregate structural self-knowledge, operational state, goal compliance, deficits, and remediation recommendations into "
+      },
+      {
+        "name": "ExplainEvaluationResult",
+        "source": "knowledge.sysml",
+        "description": "Given an EvaluationResult or SystemStateAssessment, produce an audience-appropriate explanation."
+      },
+      {
+        "name": "EvaluateDecisionTable",
+        "source": "knowledge.sysml",
+        "description": "Evaluate a decision table for a specific patient and clinical context."
+      },
+      {
+        "name": "ValidateDecisionAgainstTable",
+        "source": "knowledge.sysml",
+        "description": "After a clinician makes a prescribing decision, validate that the chosen regimen appears in the decision table."
+      },
+      {
+        "name": "RecordOutcomeMeasurement",
+        "source": "knowledge.sysml",
+        "description": "Capture an outcome measurement for a patient at a specific measurement point."
+      },
+      {
+        "name": "EvaluateOutcomeAgainstTarget",
+        "source": "knowledge.sysml",
+        "description": "Evaluate a recorded outcome measurement against its defined target."
+      },
+      {
+        "name": "ProduceOutcomeReport",
+        "source": "knowledge.sysml",
+        "description": "Generate an outcome report for a patient, cohort, or pathway."
+      },
+      {
+        "name": "FeedOutcomeToLearningCycle",
+        "source": "knowledge.sysml",
+        "description": "When outcome patterns indicate a potential pathway issue (e.g."
+      },
+      {
+        "name": "ProposePathwayRefinement",
+        "source": "knowledge.sysml",
+        "description": "Initiate a pathway change proposal based on outcome data, OutcomeFeedbackRecords, or advisory deficits from SystemStateA"
+      },
+      {
+        "name": "ReviewAndApproveChange",
+        "source": "knowledge.sysml",
+        "description": "Clinical governance review and approval of a proposed pathway or protocol change."
+      },
+      {
+        "name": "ProcessInvoice",
+        "source": "operations.sysml",
+        "description": "Generate, issue, and track an invoice."
+      },
+      {
+        "name": "ReconcilePayments",
+        "source": "operations.sysml",
+        "description": "Reconcile payments received against invoices issued."
+      },
+      {
+        "name": "ManageAcquisitionFunnel",
+        "source": "operations.sysml",
+        "description": "Track patient acquisition from initial awareness through to registration."
+      },
+      {
+        "name": "GenerateOperationalDashboard",
+        "source": "operations.sysml",
+        "description": "Produce operational dashboard: referral-to-appointment times, pathway bottlenecks, capacity utilisation."
+      },
+      {
+        "name": "ProduceRegulatoryReport",
+        "source": "operations.sysml",
+        "description": "Generate regulatory reports for CQC, NHS England, or other bodies from system data."
+      },
+      {
+        "name": "ViewPatientDashboard",
+        "source": "platform.sysml",
+        "description": "Patient views their personalised dashboard with upcoming appointments, recent results, and pending actions."
+      },
+      {
+        "name": "CompleteSelfServiceTask",
+        "source": "platform.sysml",
+        "description": "Patient completes a self-service task: form, consent, payment, questionnaire, booking change."
+      },
+      {
+        "name": "ViewClinicalRecord",
+        "source": "platform.sysml",
+        "description": "Patient views their own clinical data: blood results, prescriptions, consultation summaries."
+      },
+      {
+        "name": "TrackProgress",
+        "source": "platform.sysml",
+        "description": "Patient tracks their progress through a pathway or towards clinical targets."
+      },
+      {
+        "name": "CompleteSelfAssessment",
+        "source": "platform.sysml",
+        "description": "Patient completes a triggered or scheduled self- assessment instrument."
+      },
+      {
+        "name": "EditIdentityProfile",
+        "source": "platform.sysml",
+        "description": "Patient creates or updates their identity representation — gender expression, presentation preferences, values, concerns"
+      },
+      {
+        "name": "ReviewIdentityHistory",
+        "source": "platform.sysml",
+        "description": "Patient reviews the versioned history of their identity profile, reflecting on their journey and development over time."
+      },
+      {
+        "name": "ManageSharingControls",
+        "source": "platform.sysml",
+        "description": "Patient configures which aspects of their identity profile are visible to clinicians, peer groups, or kept private."
+      },
+      {
+        "name": "WriteJournalEntry",
+        "source": "platform.sysml",
+        "description": "Patient writes a journal entry — free text, prompted reflection, or structured format."
+      },
+      {
+        "name": "ReviewJournalHistory",
+        "source": "platform.sysml",
+        "description": "Patient reviews their journal entries over time, with filtering by date, sharing level, or linked therapy exercise."
+      },
+      {
+        "name": "PrepareForSession",
+        "source": "platform.sysml",
+        "description": "Patient prepares for an upcoming consultation: sets agenda items, notes questions, reviews relevant clinical data."
+      },
+      {
+        "name": "RecordPostSessionActions",
+        "source": "platform.sysml",
+        "description": "Patient records their understanding of what was discussed and agreed, and any actions they need to take before the next "
+      },
+      {
+        "name": "ViewDocuments",
+        "source": "platform.sysml",
+        "description": "Patient views documents associated with their care: letters, reports, consent records."
+      },
+      {
+        "name": "SignDocument",
+        "source": "platform.sysml",
+        "description": "Patient electronically signs a document — consent form, shared care agreement, or similar."
+      },
+      {
+        "name": "ShareDocument",
+        "source": "platform.sysml",
+        "description": "Patient shares a document with a third party (GP, employer, other provider)."
+      },
+      {
+        "name": "SearchKnowledgeBase",
+        "source": "platform.sysml",
+        "description": "Patient searches for information on a topic — medication, procedure, terminology, rights, practical guidance."
+      },
+      {
+        "name": "ViewDecisionAid",
+        "source": "platform.sysml",
+        "description": "Patient accesses a structured decision aid to help them understand options and make informed choices about their care."
+      },
+      {
+        "name": "FollowLearningModule",
+        "source": "platform.sysml",
+        "description": "Patient works through a structured learning module at their own pace — video, reading, exercises, self-check questions."
+      },
+      {
+        "name": "FollowTherapyExercise",
+        "source": "platform.sysml",
+        "description": "Patient works through a guided therapeutic exercise — identity exploration, values clarification, confidence building, s"
+      },
+      {
+        "name": "ReviewTherapyProgress",
+        "source": "platform.sysml",
+        "description": "Patient reviews their progress through a therapy pathway, with summaries of completed exercises and insights captured."
+      },
+      {
+        "name": "RecommendContent",
+        "source": "platform.sysml",
+        "description": "System recommends educational content to a patient based on their pathway stage, recent clinical events, and learning hi"
+      },
+      {
+        "name": "ManageContent",
+        "source": "platform.sysml",
+        "description": "Clinical or editorial team creates, updates, tags, and publishes educational content."
+      },
+      {
+        "name": "ParticipateInGroupSpace",
+        "source": "platform.sysml",
+        "description": "Patient joins and participates in a community group space — posting, reading, responding, sharing resources."
+      },
+      {
+        "name": "ModerateGroupSpace",
+        "source": "platform.sysml",
+        "description": "Moderator manages a group space: reviewing flagged content, enforcing community guidelines, managing membership."
+      },
+      {
+        "name": "HostGroupSession",
+        "source": "platform.sysml",
+        "description": "Facilitate a live group session: peer support circle, workshop, or group therapy exercise."
+      },
+      {
+        "name": "JoinGroupSession",
+        "source": "platform.sysml",
+        "description": "Patient joins a scheduled group session."
+      },
+      {
+        "name": "SendPeerMessage",
+        "source": "platform.sysml",
+        "description": "Patient sends a message to another patient or to a peer support channel."
+      },
+      {
+        "name": "BookAppointment",
+        "source": "platform.sysml",
+        "description": "Schedule an appointment: check availability, confirm with patient, send reminders."
+      },
+      {
+        "name": "CancelAppointment",
+        "source": "platform.sysml",
+        "description": "Process an appointment cancellation from patient or clinician, including downstream pathway effects."
+      },
+      {
+        "name": "CommitComposition",
+        "source": "platform.sysml",
+        "description": "Store a clinical composition in the CDR conforming to a registered template."
+      },
+      {
+        "name": "QueryByArchetype",
+        "source": "platform.sysml",
+        "description": "Retrieve clinical data via AQL query filtered by archetype type."
+      },
+      {
+        "name": "RunGovernanceAudit",
+        "source": "platform.sysml",
+        "description": "Execute a population-level data completeness audit."
+      },
+      {
+        "name": "ManageArchetypes",
+        "source": "platform.sysml",
+        "description": "Design, version, and deploy archetypes and templates."
+      },
+      {
+        "name": "RenderClinicalForm",
+        "source": "platform.sysml",
+        "description": "Present a clinical form to a clinician or patient with validation, conditional logic, and CDR mapping."
+      },
+      {
+        "name": "SubmitFormData",
+        "source": "platform.sysml",
+        "description": "Validate and submit form data, mapping to an openEHR composition for CDR storage."
+      },
+      {
+        "name": "SendNotification",
+        "source": "platform.sysml",
+        "description": "Send a notification to a patient or clinician via the appropriate channel (email, SMS, in-app)."
+      },
+      {
+        "name": "ConductSecureMessaging",
+        "source": "platform.sysml",
+        "description": "Secure asynchronous messaging between patient and clinical team."
+      },
+      {
+        "name": "HostVideoConsultation",
+        "source": "platform.sysml",
+        "description": "Set up and manage a video consultation session between patient and clinician."
+      },
+      {
+        "name": "OrderLabTests",
+        "source": "platform.sysml",
+        "description": "Submit a lab order for a patient: test panel selection, patient details, clinical context."
+      },
+      {
+        "name": "ReceiveLabResults",
+        "source": "platform.sysml",
+        "description": "Receive and process inbound lab results, commit to CDR, and signal waiting pathways."
+      },
+      {
+        "name": "IssuePrescription",
+        "source": "platform.sysml",
+        "description": "Transmit a prescription to a dispensing pharmacy via electronic prescribing integration."
+      },
+      {
+        "name": "CheckInteractions",
+        "source": "platform.sysml",
+        "description": "Screen a proposed prescription against the patient's current medications for interactions and contraindications."
+      },
+      {
+        "name": "ProcessPayment",
+        "source": "platform.sysml",
+        "description": "Take a payment from a patient for a service, issuing a receipt."
+      },
+      {
+        "name": "ManageSubscription",
+        "source": "platform.sysml",
+        "description": "Manage recurring payment subscriptions for ongoing service packages."
+      },
+      {
+        "name": "GenerateDocument",
+        "source": "platform.sysml",
+        "description": "Generate a document from a template populated with clinical and administrative data."
+      },
+      {
+        "name": "ObtainElectronicSignature",
+        "source": "platform.sysml",
+        "description": "Obtain an electronic signature on a document (e.g."
+      },
+      {
+        "name": "AuthenticateUser",
+        "source": "platform.sysml",
+        "description": "Authenticate a user and establish a session."
+      },
+      {
+        "name": "AuthoriseAccess",
+        "source": "platform.sysml",
+        "description": "Determine whether an authenticated user is authorised to access a specific resource or perform an action."
+      },
+      {
+        "name": "AcquirePatient",
+        "source": "service-delivery.sysml",
+        "description": "Patient discovers and engages with GenderSense."
+      },
+      {
+        "name": "RegisterPatient",
+        "source": "service-delivery.sysml",
+        "description": "Patient registration, identity verification, demographic capture, consent collection, account creation."
+      },
+      {
+        "name": "AssessPatient",
+        "source": "service-delivery.sysml",
+        "description": "Comprehensive assessment: self-assessment instruments, clinician assessment, formulation, and treatment planning."
+      },
+      {
+        "name": "TreatPatient",
+        "source": "service-delivery.sysml",
+        "description": "Active treatment phase: pathway-specific interventions, monitoring, adjustments, shared care."
+      },
+      {
+        "name": "FollowUpPatient",
+        "source": "service-delivery.sysml",
+        "description": "Ongoing follow-up, outcome capture, discharge planning, or transition to long-term shared care."
+      },
+      {
+        "name": "InitiateHormoneTherapy",
+        "source": "service-delivery.sysml",
+        "description": "End-to-end hormone therapy initiation from clinical decision through to established stable regimen."
+      },
+      {
+        "name": "MonitorHormoneTherapy",
+        "source": "service-delivery.sysml",
+        "description": "Ongoing monitoring: scheduled blood tests, clinical review, dose adjustment, safety checks."
+      },
+      {
+        "name": "TransitionToSharedCare",
+        "source": "service-delivery.sysml",
+        "description": "Establish shared care arrangement with the patient's GP for ongoing prescribing and monitoring."
+      },
+      {
+        "name": "ConductNewPatientAssessment",
+        "source": "service-delivery.sysml",
+        "description": "Full new patient assessment process from initial self-assessment through clinician evaluation to formulation and treatme"
+      },
+      {
+        "name": "AdministorSelfAssessment",
+        "source": "service-delivery.sysml",
+        "description": "Patient completes validated self-assessment instruments (e.g."
+      },
+      {
+        "name": "ConductClinicianAssessment",
+        "source": "service-delivery.sysml",
+        "description": "Clinician-led assessment including history taking, examination where indicated, risk assessment, and clinical formulatio"
+      },
+      {
+        "name": "ProcessInboundReferral",
+        "source": "service-delivery.sysml",
+        "description": "Receive, triage, and action an inbound referral from a GP, self-referral, or other source."
+      },
+      {
+        "name": "MakeOutboundReferral",
+        "source": "service-delivery.sysml",
+        "description": "Refer a patient to an external specialist service (endocrinology, surgery, mental health, etc)."
+      },
+      {
+        "name": "EstablishSharedCare",
+        "source": "service-delivery.sysml",
+        "description": "Set up a shared care agreement with a GP practice for ongoing prescribing and monitoring."
+      },
+      {
+        "name": "PrescribeMedication",
+        "source": "service-delivery.sysml",
+        "description": "Issue a prescription following clinical decision, safety checks, and interaction screening."
+      },
+      {
+        "name": "MonitorMedication",
+        "source": "service-delivery.sysml",
+        "description": "Ongoing medication monitoring including blood tests, side effect assessment, and dose adjustment."
+      },
+      {
+        "name": "ManageRepeatPrescription",
+        "source": "service-delivery.sysml",
+        "description": "Repeat prescription workflow including review intervals, blood test requirements, and renewal."
+      },
+      {
+        "name": "ObtainInformedConsent",
+        "source": "service-delivery.sysml",
+        "description": "Obtain and record informed consent for a specific treatment or intervention."
+      },
+      {
+        "name": "WithdrawConsent",
+        "source": "service-delivery.sysml",
+        "description": "Process a patient's withdrawal of consent, including downstream effects on active pathways."
+      },
+      {
+        "name": "AssessCapacity",
+        "source": "service-delivery.sysml",
+        "description": "Formal capacity assessment where there is doubt about a patient's ability to consent."
+      },
+      {
+        "name": "ProvideTransitionCoaching",
+        "source": "service-delivery.sysml",
+        "description": "One-to-one coaching support for patients navigating gender transition."
+      },
+      {
+        "name": "FacilitateGroupWork",
+        "source": "service-delivery.sysml",
+        "description": "Facilitated group sessions: peer support, psycho- education, shared experience."
+      },
+      {
+        "name": "ConductClinicalAudit",
+        "source": "service-delivery.sysml",
+        "description": "Population-level clinical audit: does every patient have required measurements recorded? Are monitoring schedules being "
+      },
+      {
+        "name": "AnalyseSignificantEvent",
+        "source": "service-delivery.sysml",
+        "description": "Structured significant event analysis following an adverse event, near-miss, or complaint."
+      },
+      {
+        "name": "ReviewClinicalProtocol",
+        "source": "service-delivery.sysml",
+        "description": "Periodic review and update of clinical protocols and guidelines."
+      }
+    ]
+  }
+}
