@@ -377,31 +377,46 @@ package Knowledge {
              * infrastructure. Explicit architectural space for logic
              * programming.
              *
+             * Component inventory:
+             * - ConstraintEvaluator: Tier 1 deterministic evaluation
+             *   (InputResolver, ExpressionEvaluator, ExplanationBuilder)
+             * - OperationalStateAggregator: Layer 2 operational state
+             *   queries across Temporal, CDR, and platform services
+             * - GapAnalyser: Layer 4 comparison of operational state
+             *   against goal state (GoalProjector)
+             * - AssessmentOrchestrator: coordinates five-layer
+             *   SystemStateAssessment production
+             * - SelfExplanationService: audience-appropriate rendering
+             *   of evaluation results and assessments
+             * - EvaluationSpecRegistry: runtime lookup of constraint
+             *   evaluation specifications
+             * - InferenceEvaluator: Tier 2 interface (Prolog boundary)
+             * - AdvisoryInterface: Tier 3 interface (ML/LLM boundary)
+             *
+             * Data structures (Phase 1):
+             * - EvaluationResult, ExplanationTrace, EvaluatedInput
+             * - Deficit, SystemStateAssessment
+             *
+             * Additional structures (Phase 2):
+             * - OperationalSnapshot, OperationalQuery
+             * - GoalProjection, EvaluationContext
+             *
              * Three-tier reasoning stack:
              * Tier 1 — TypeScript constraint evaluator (generated from
              *   SysML). Boolean constraints with structured explanation
              *   traces. Handles ConstraintLibrary evaluation and
              *   Layers 1-4 of self-knowledge.
-             * Tier 2 — Embedded Prolog (Tau Prolog or SWI-Prolog WASM)
-             *   for inference chains, contraindication cascades, compound
-             *   deficit reasoning, and "why" queries. Layer 5 compound
-             *   remediation.
-             * Tier 3 — ML/LLM advisory interface (interface only, no
-             *   implementation). Cannot override Tier 1/2 logic.
+             * Tier 2 — Embedded Prolog for inference chains,
+             *   contraindication cascades, compound deficit reasoning.
+             *   Layer 5 compound remediation.
+             * Tier 3 — ML/LLM advisory interface. Cannot override
+             *   Tier 1/2 logic.
              *
-             * Runtime target: Tier 1 (TypeScript) is the starting point.
-             * Tier 2 (Prolog) explored when clinical rules demand
-             * inference beyond boolean constraints. Tier 3 deferred.
-             *
-             * Self-knowledge infrastructure lives here alongside rule
-             * evaluation because the foundational patterns (structured
-             * results, input derivation, explanation traces) are shared.
-             * Extract to a dedicated package later if warranted.
-             *
-             * Elaborated Session 8: Knowledge Layer Phase 1. */
+             * Elaborated Session 8 (Phase 1: data structures) and
+             * Session 9 (Phase 2: component model). */
 
         // =============================================================
-        // Evaluation result structures (Track A)
+        // Evaluation result structures (Phase 1 — Track A)
         // =============================================================
 
         part def EvaluatedInput {
@@ -454,7 +469,7 @@ package Knowledge {
         }
 
         // =============================================================
-        // Self-knowledge structures (Track B)
+        // Self-knowledge structures (Phase 1 — Track B)
         // =============================================================
 
         part def Deficit {
@@ -516,6 +531,9 @@ package Knowledge {
             attribute requirementsCount : Integer;
             attribute entityLifecyclesCount : Integer;
 
+            // Layer 2 — Operational snapshot
+            part operationalSnapshot : OperationalSnapshot;
+
             // Layer 3 vs Layer 2 — Goal compliance summary
             attribute totalGoals : Integer;
             attribute goalsMet : Integer;
@@ -530,35 +548,613 @@ package Knowledge {
         }
 
         // =============================================================
-        // Use cases
+        // Phase 2 — Tier 1 evaluator component (Stage 1)
+        // =============================================================
+
+        part def InputResolver {
+            doc /* Resolves constraint inputs from authoritative data
+                 * sources. For each InputDerivation in a
+                 * ConstraintEvaluationSpec, the resolver executes the
+                 * specified query against the appropriate source (CDR,
+                 * Temporal, platform service), applies the computation
+                 * to derive a typed value, and handles fallback if the
+                 * query fails or returns no data.
+                 *
+                 * Source-agnostic: the resolver dispatches based on
+                 * the InputDerivation's sourceType attribute. The
+                 * query format varies by source (AQL for CDR, API
+                 * call for Temporal, HTTP for platform services) but
+                 * the resolution pattern is identical.
+                 *
+                 * Produces EvaluatedInput records as output — these
+                 * feed both the expression evaluator (for the
+                 * constraint check) and the explanation builder (for
+                 * the audit trace). */
+            attribute resolverId : String;
+        }
+
+        part def ExpressionEvaluator {
+            doc /* Evaluates a constraint's boolean expression given
+                 * resolved input values. For Tier 1, this is
+                 * straightforward boolean evaluation: the constraint
+                 * def's expression is evaluated with the derived
+                 * input values substituted.
+                 *
+                 * Returns an EvaluationOutcome (pass, fail,
+                 * indeterminate). Indeterminate arises when one or
+                 * more inputs could not be resolved and the fallback
+                 * outcome propagates.
+                 *
+                 * In a future generated implementation, this component
+                 * is replaced by generated TypeScript functions — one
+                 * per constraint def. The generated function takes
+                 * typed inputs and returns the boolean result directly,
+                 * with the expression evaluation compiled rather than
+                 * interpreted. */
+            attribute evaluatorId : String;
+        }
+
+        part def ExplanationBuilder {
+            doc /* Assembles ExplanationTrace records from the
+                 * evaluation context: the resolved inputs
+                 * (EvaluatedInput records), the constraint expression
+                 * as evaluated, and a human-readable explanation of
+                 * the outcome.
+                 *
+                 * Supports three audiences:
+                 * - Clinicians: technical but accessible explanation
+                 *   of why a safety check passed or failed, with
+                 *   data values
+                 * - Patients: plain-language explanation suitable for
+                 *   self-management interfaces
+                 * - Auditors: full formal trace with data provenance
+                 *
+                 * The audience parameter determines explanation depth
+                 * and language register. All three are derived from
+                 * the same underlying EvaluatedInput and expression
+                 * data — the difference is presentation, not
+                 * content. */
+            attribute builderId : String;
+        }
+
+        part def ConstraintEvaluator {
+            doc /* The Tier 1 deterministic constraint evaluation
+                 * component. Consumes ConstraintEvaluationSpecs from
+                 * ClinicalDecisionSupport, derives inputs from
+                 * authoritative sources (CDR via AQL, Temporal,
+                 * platform services), evaluates constraint boolean
+                 * expressions, and produces structured
+                 * EvaluationResults with full ExplanationTraces.
+                 *
+                 * This is a generic runtime component: it does not
+                 * contain any specific clinical logic. All rule
+                 * knowledge comes from the ConstraintLibrary (what
+                 * the rule is) and the ConstraintEvaluationSpec
+                 * (how to get the data). The evaluator is the
+                 * execution engine that connects the two.
+                 *
+                 * Invocation: pathway action steps annotated with
+                 * @LogicRule or @SafetyConstraint generate Temporal
+                 * activities that call this component. See
+                 * architecture decision document, Section 1.
+                 *
+                 * Scope: evaluates one constraint for one context
+                 * (typically one patient). Population-level
+                 * evaluation (governance audit) wraps this in a
+                 * loop over a patient cohort — same component,
+                 * iterated. */
+            attribute evaluatorId : String;
+
+            // --- Capabilities ---
+            part inputResolver : InputResolver;
+            part expressionEvaluator : ExpressionEvaluator;
+            part explanationBuilder : ExplanationBuilder;
+        }
+
+        // =============================================================
+        // Phase 2 — Operational state aggregator (Stage 2)
+        // =============================================================
+
+        part def OperationalQuery {
+            doc /* A single operational state query against an
+                 * authoritative source. Structurally parallel to
+                 * InputDerivation but scoped to operational rather
+                 * than clinical data.
+                 *
+                 * The query returns a structured result (count,
+                 * list, or status) rather than a single typed value.
+                 * This is a wider interface than InputDerivation,
+                 * which derives a single constraint input.
+                 *
+                 * At runtime, implemented as a TypeScript function
+                 * that calls the appropriate API (Temporal client,
+                 * EHRbase REST/AQL, platform health endpoint). */
+            attribute queryName : String;
+            attribute sourceType : DataSourceType;
+            attribute query : String;
+            attribute description : String;
+        }
+
+        part def OperationalSnapshot {
+            doc /* A point-in-time capture of the system's operational
+                 * state, produced by the OperationalStateAggregator.
+                 * This is the Layer 2 content that feeds into gap
+                 * analysis and the SystemStateAssessment.
+                 *
+                 * Not persisted as a separate data store — computed
+                 * on demand. The snapshot captures the query results
+                 * at a specific moment for comparison against
+                 * goals. */
+            attribute capturedAt : String;          // ISO datetime
+            attribute scope : AssessmentScope;
+
+            // Process state summary
+            attribute activeWorkflows : Integer;
+            attribute blockedWorkflows : Integer;
+            attribute failedWorkflows : Integer;
+            attribute workflowsPastSla : Integer;
+
+            // Clinical data summary
+            attribute overdueMonitoringItems : Integer;
+            attribute totalActivePatients : Integer;
+
+            // Infrastructure health
+            attribute cdrStatus : ServiceHealthStatus;
+            attribute temporalStatus : ServiceHealthStatus;
+            attribute externalIntegrationsHealthy : Integer;
+            attribute externalIntegrationsTotal : Integer;
+        }
+
+        part def OperationalStateAggregator {
+            doc /* Queries the system's operational state across all
+                 * authoritative data sources: Temporal (process
+                 * state), CDR (clinical data state), entity
+                 * lifecycle state, and platform services
+                 * (infrastructure health).
+                 *
+                 * Uses the same source-agnostic InputDerivation
+                 * pattern as the ConstraintEvaluator, but scoped
+                 * to operational rather than clinical queries. Each
+                 * operational query is an InputDerivation with the
+                 * appropriate sourceType.
+                 *
+                 * Produces a structured OperationalSnapshot — the
+                 * Layer 2 content of a SystemStateAssessment.
+                 *
+                 * Query categories:
+                 * - Process state (Temporal): active, blocked,
+                 *   failed workflows; workflow step distribution;
+                 *   SLA adherence
+                 * - Clinical data state (CDR via AQL): composition
+                 *   counts by archetype, overdue monitoring items,
+                 *   recording completeness
+                 * - Entity lifecycle state: counts by entity type
+                 *   and state (e.g. 42 active prescriptions,
+                 *   7 pending referrals)
+                 * - Infrastructure health: CDR reachable, Temporal
+                 *   workers running, external integrations
+                 *   responding
+                 *
+                 * See architecture decision document, Section 3
+                 * (Operational State Query Pattern). */
+            attribute aggregatorId : String;
+            part processStateQuery : OperationalQuery;
+            part clinicalDataQuery : OperationalQuery;
+            part entityStateQuery : OperationalQuery;
+            part infrastructureQuery : OperationalQuery;
+        }
+
+        // =============================================================
+        // Phase 2 — Gap analyser (Stage 3)
+        // =============================================================
+
+        part def GoalProjection {
+            doc /* A single goal projected from the model into a
+                 * shape comparable against operational state. The
+                 * unit of comparison for gap analysis.
+                 *
+                 * Each projection names the goal source
+                 * (requirement, constraint, or outcome definition),
+                 * the expected condition, and the query needed to
+                 * check actual state. The gap analyser evaluates
+                 * the query and compares the result against the
+                 * expected condition. */
+            attribute goalName : String;
+            attribute goalSource : String;         // requirement, constraint, or outcome def name
+            attribute expectedCondition : String;  // human-readable expected state
+            attribute evaluationQuery : String;    // query to check actual state
+            attribute scope : AssessmentScope;
+        }
+
+        part def GoalProjector {
+            doc /* Projects goals from model sources (requirements,
+                 * constraints, outcome definitions) into a
+                 * comparable shape against operational state.
+                 *
+                 * Each goal is expressed as a GoalProjection: an
+                 * expected condition that can be evaluated against
+                 * actual data. The projection mechanism varies by
+                 * source:
+                 *
+                 * - Requirement goals: "every active patient has
+                 *   a LabResult within N weeks" -> AQL query
+                 *   counting patients without recent LabResults
+                 * - Constraint goals: constraint evaluates to pass
+                 *   for every active patient -> batch constraint
+                 *   evaluation across cohort
+                 * - Outcome goals: "hormone levels within
+                 *   therapeutic range at 6-month measurement
+                 *   point" -> AQL query against outcome
+                 *   compositions
+                 *
+                 * The projector does not evaluate goals — it
+                 * transforms them into a shape the gap analyser
+                 * can compare against operational data. */
+            attribute projectorId : String;
+        }
+
+        part def GapAnalyser {
+            doc /* Compares the system's operational state (Layer 2,
+                 * OperationalSnapshot) against its goal state
+                 * (Layer 3, projected from requirements,
+                 * constraints, and outcome definitions) and
+                 * produces Deficit records for every unmet goal.
+                 *
+                 * This is the direct generalisation of the Phase D
+                 * governance audit: Phase D compared expected
+                 * compositions against actual compositions for a
+                 * single rule. The gap analyser applies the same
+                 * pattern across all defined goals and all
+                 * operational dimensions.
+                 *
+                 * Goal sources:
+                 * - Requirements (Enterprise::Regulation) ->
+                 *   expected compliance conditions
+                 * - Constraints (Knowledge::ConstraintLibrary) ->
+                 *   expected evaluation pass outcomes for all
+                 *   active patients
+                 * - Outcome definitions
+                 *   (Knowledge::OutcomeFramework) -> expected
+                 *   clinical target achievement
+                 *
+                 * Each goal is projected as an expected condition.
+                 * The analyser evaluates the condition against
+                 * operational data and emits a Deficit if the
+                 * condition is not met.
+                 *
+                 * See architecture decision document, Section 4
+                 * (Goal State Projection). */
+            attribute analyserId : String;
+            part goalProjector : GoalProjector;
+        }
+
+        // =============================================================
+        // Phase 2 — Tier 2 and Tier 3 interfaces (Stage 4)
+        // =============================================================
+
+        part def InferenceEvaluator {
+            doc /* Tier 2 reasoning interface: inference chains,
+                 * contraindication cascades, compound deficit
+                 * reasoning, and "why" queries.
+                 *
+                 * Where Tier 1 (ConstraintEvaluator) evaluates
+                 * single boolean constraints, Tier 2 reasons about
+                 * relationships between multiple constraints,
+                 * deficits, and available actions. This is the
+                 * architectural space for Prolog-style logic
+                 * programming.
+                 *
+                 * Key capabilities (interface only, not yet
+                 * implemented):
+                 *
+                 * - Contraindication cascade: given a proposed
+                 *   medication, trace through all interaction
+                 *   rules, existing medications, and patient
+                 *   conditions to produce a compound safety
+                 *   assessment with full inference chain
+                 * - Compound deficit reasoning: given multiple
+                 *   Deficit records, identify interactions
+                 *   (e.g. overdue bloods AND missed appointment
+                 *   AND expiring prescription), reason about
+                 *   priority and sequencing, and produce a
+                 *   compound remediation recommendation
+                 * - "Why" queries: given an EvaluationResult,
+                 *   trace backward through the inference chain
+                 *   to explain not just what the result is but
+                 *   why the inputs have their current values
+                 *
+                 * Runtime target: Tau Prolog (pure JS, embeddable
+                 * in Temporal activities) or SWI-Prolog WASM.
+                 * Decision deferred until clinical rules demand
+                 * inference beyond Tier 1 boolean constraints.
+                 *
+                 * Produces EvaluationResults with the same
+                 * structure as Tier 1, but subEvaluations may
+                 * form deeper trees reflecting the inference
+                 * chain. */
+            attribute evaluatorId : String;
+            attribute reasoningEngine : String;    // e.g. "tau-prolog", "swi-prolog-wasm"
+        }
+
+        part def AdvisoryInterface {
+            doc /* Tier 3 advisory interface: ML/LLM-augmented
+                 * intelligence. Powerful but probabilistic, always
+                 * advisory rather than authoritative. Cannot
+                 * override Tier 1 or Tier 2 logic.
+                 *
+                 * Capabilities (interface boundary only):
+                 *
+                 * - Pattern recognition across patient cohorts
+                 * - Natural language processing of unstructured
+                 *   clinical notes
+                 * - Predictive analytics (trajectory-based dose
+                 *   adjustment suggestions, capacity forecasting)
+                 * - Literature synthesis for clinical guideline
+                 *   updates
+                 * - Advisory remediation for systemic deficits
+                 *   where no single deterministic action resolves
+                 *   the gap
+                 *
+                 * Architectural constraints:
+                 * - All Tier 3 outputs are labelled as advisory
+                 * - Tier 3 cannot modify pathway state or trigger
+                 *   automatic actions
+                 * - Tier 3 outputs are presented alongside (never
+                 *   instead of) Tier 1/2 deterministic results
+                 * - Clinical validation is required before any
+                 *   Tier 3 capability is surfaced to clinicians
+                 *   or patients
+                 *
+                 * Implementation deferred. The interface exists to
+                 * ensure the architecture accommodates ML/LLM
+                 * capabilities without compromising the
+                 * deterministic foundation. */
+            attribute interfaceId : String;
+            attribute modelType : String;         // e.g. "llm", "ml-classifier", "predictive"
+            attribute confidenceThreshold : Real; // minimum confidence for surfacing
+        }
+
+        // =============================================================
+        // Phase 2 — Self-explanation and orchestration (Stage 5)
+        // =============================================================
+
+        part def SelfExplanationService {
+            doc /* The API surface through which consumers access the
+                 * system's self-knowledge and evaluation
+                 * explanations.
+                 *
+                 * Four consumer categories, each with different
+                 * needs:
+                 *
+                 * - Clinician UI: point-of-care evaluation results
+                 *   with clinical context. "Why did this safety
+                 *   check fail?" with data values and rule
+                 *   references.
+                 * - Patient portal: plain-language explanations
+                 *   for self-management. "Why am I eligible / not
+                 *   eligible?" with actionable guidance.
+                 * - Governance dashboard: population-level
+                 *   assessment summaries, deficit inventories,
+                 *   compliance rates, trend analysis over
+                 *   assessment history.
+                 * - Audit endpoint: full formal traces with data
+                 *   provenance, constraint references, requirement
+                 *   traceability. Exportable for regulatory
+                 *   submission.
+                 *
+                 * All four are views onto the same underlying data
+                 * (EvaluationResults, SystemStateAssessments). The
+                 * service applies audience-appropriate filtering,
+                 * explanation depth, and presentation format.
+                 *
+                 * Implements the ExplainEvaluationResult use
+                 * case. */
+            attribute serviceId : String;
+        }
+
+        part def AssessmentOrchestrator {
+            doc /* Orchestrates the production of
+                 * SystemStateAssessments by coordinating the other
+                 * LogicEngine components.
+                 *
+                 * Assessment production sequence:
+                 * 1. Read System Model Manifest for Layer 1
+                 *    (structural summary — packages, pathways,
+                 *    constraints, etc.)
+                 * 2. Invoke OperationalStateAggregator for Layer 2
+                 *    (operational snapshot)
+                 * 3. Invoke GoalProjector for Layer 3 (project all
+                 *    in-scope goals)
+                 * 4. Invoke GapAnalyser for Layer 4 (compare
+                 *    Layers 2 and 3, produce Deficit records)
+                 * 5. Classify each Deficit's remediation category
+                 *    for Layer 5
+                 * 6. For Tier 1 deficits with deterministic
+                 *    remediation, identify the specific pathway
+                 *    action step
+                 * 7. For compound deficits, optionally invoke
+                 *    InferenceEvaluator (Tier 2) for reasoning
+                 * 8. Assemble the composite SystemStateAssessment
+                 *
+                 * Invocation patterns (from architecture decision
+                 * document, Section 6):
+                 * - On-demand: platform API call, scoped by caller
+                 * - Scheduled: Temporal cron workflow (daily
+                 *   clinical governance, weekly operational health)
+                 * - Triggered: critical deficit in point-of-care
+                 *   evaluation triggers broader scoped assessment
+                 *
+                 * Implements the ProduceSystemStateAssessment use
+                 * case. The orchestrator itself is a natural
+                 * candidate for a Temporal workflow — it
+                 * coordinates multiple queries and evaluations
+                 * that may take non-trivial time. */
+            attribute orchestratorId : String;
+            ref constraintEvaluator : ConstraintEvaluator;
+            ref operationalAggregator : OperationalStateAggregator;
+            ref gapAnalyser : GapAnalyser;
+            ref explanationService : SelfExplanationService;
+        }
+
+        // =============================================================
+        // Phase 2 — Registry and context (Stage 6)
+        // =============================================================
+
+        part def EvaluationSpecRegistry {
+            doc /* A runtime registry of ConstraintEvaluationSpecs,
+                 * loaded from the model (or generated as a
+                 * TypeScript module) at system startup.
+                 *
+                 * The registry resolves constraint names to their
+                 * full evaluation specifications: which inputs to
+                 * derive, from which sources, with what
+                 * computations, and what fallback behaviour. This
+                 * is the lookup table that the ConstraintEvaluator
+                 * consults when invoked.
+                 *
+                 * Generation approach (from architecture decision
+                 * document, Section 1):
+                 * - A generator reads ConstraintEvaluationSpec
+                 *   part usages from
+                 *   Knowledge::ClinicalDecisionSupport
+                 * - It produces a TypeScript module exporting a
+                 *   map from constraint name to spec object
+                 * - The registry loads this module at startup
+                 *
+                 * This replaces the need to parse SysML at
+                 * runtime. The registry is a static, generated
+                 * artefact — it changes only when the model is
+                 * updated and the generator re-run. */
+            attribute registryId : String;
+            attribute specCount : Integer;
+            attribute modelVersion : String;
+        }
+
+        part def EvaluationContext {
+            doc /* The runtime context for a single evaluation
+                 * invocation. Captures the scope (which patient,
+                 * which pathway step), the trigger (point-of-care,
+                 * governance audit, triggered assessment), and any
+                 * ambient data already available (to avoid
+                 * redundant queries).
+                 *
+                 * Passed to the ConstraintEvaluator alongside the
+                 * ConstraintEvaluationSpec. The evaluator uses the
+                 * context to parameterise InputDerivation queries
+                 * (e.g. substituting the patient's EHR ID into
+                 * AQL). */
+            attribute contextId : String;
+            attribute patientId : String;
+            attribute pathwayStepRef : String;
+            attribute triggerType : String;        // point-of-care, governance-audit, triggered
+            attribute scope : AssessmentScope;
+        }
+
+        // =============================================================
+        // Use cases (Phase 1 defs, Phase 2 elaboration)
         // =============================================================
 
         use case def EvaluateConstraint {
-            doc /* Evaluate a single constraint for a specific patient
-                 * or context. Derives inputs from authoritative sources,
-                 * evaluates the constraint expression, and produces a
-                 * structured EvaluationResult with explanation trace. */
+            doc /* Evaluate a single constraint for a specific
+                 * patient or context.
+                 *
+                 * Component allocation:
+                 * 1. EvaluationSpecRegistry resolves the constraint
+                 *    name to its ConstraintEvaluationSpec
+                 * 2. InputResolver derives each input from its
+                 *    authoritative source per the spec
+                 * 3. ExpressionEvaluator evaluates the constraint
+                 *    boolean expression with derived inputs
+                 * 4. ExplanationBuilder assembles the
+                 *    ExplanationTrace
+                 * 5. ConstraintEvaluator composes the
+                 *    EvaluationResult
+                 *
+                 * Invoked by:
+                 * - Temporal activities generated from pathway
+                 *   steps annotated with @LogicRule or
+                 *   @SafetyConstraint
+                 * - Governance audit workflows iterating over a
+                 *   patient cohort
+                 * - Triggered assessment when a deficit is
+                 *   detected
+                 *
+                 * Produces: one EvaluationResult with full
+                 * ExplanationTrace per invocation. */
         }
 
         use case def PerformGapAnalysis {
-            doc /* Compare operational state against goal state for a
-                 * defined scope (patient, pathway, domain, system).
-                 * Produces Deficit records identifying where actual
-                 * state falls short of expected state. */
+            doc /* Compare operational state against goal state for
+                 * a defined scope (patient, pathway, domain,
+                 * system).
+                 *
+                 * Component allocation:
+                 * 1. GoalProjector projects all in-scope goals
+                 *    from requirements, constraints, and outcome
+                 *    definitions
+                 * 2. OperationalStateAggregator captures current
+                 *    state (or receives a pre-computed
+                 *    OperationalSnapshot)
+                 * 3. GapAnalyser compares each GoalProjection
+                 *    against operational data
+                 * 4. For each unmet goal, a Deficit record is
+                 *    produced with severity, remediation category,
+                 *    and supporting EvaluationResult evidence
+                 *
+                 * Scope determines breadth:
+                 * - Patient: all goals applicable to one patient
+                 * - Pathway: all goals for a specific clinical
+                 *   pathway
+                 * - Domain: all goals within a domain (clinical,
+                 *   operational, infrastructure)
+                 * - System: all goals across all domains
+                 *
+                 * Produces: a set of Deficit records. */
         }
 
         use case def ProduceSystemStateAssessment {
             doc /* Aggregate structural self-knowledge, operational
-                 * state, goal compliance, deficits, and remediation
-                 * recommendations into a composite
-                 * SystemStateAssessment. The primary output of the
-                 * self-describing property. */
+                 * state, goal compliance, deficits, and
+                 * remediation recommendations into a composite
+                 * SystemStateAssessment.
+                 *
+                 * Component allocation: AssessmentOrchestrator
+                 * coordinates the full five-layer assembly:
+                 * - Layer 1: reads System Model Manifest
+                 *   (structural)
+                 * - Layer 2: invokes OperationalStateAggregator
+                 * - Layer 3: invokes GoalProjector
+                 * - Layer 4: invokes GapAnalyser
+                 * - Layer 5: classifies remediation categories
+                 *
+                 * Three invocation triggers:
+                 * - On-demand: API call from clinician or admin UI
+                 * - Scheduled: Temporal cron workflow
+                 * - Triggered: critical deficit escalation
+                 *
+                 * Produces: one SystemStateAssessment. */
         }
 
         use case def ExplainEvaluationResult {
-            doc /* Given an EvaluationResult, produce a human-readable
-                 * explanation suitable for the requesting audience
-                 * (clinician, patient, auditor). */
+            doc /* Given an EvaluationResult or
+                 * SystemStateAssessment, produce an
+                 * audience-appropriate explanation.
+                 *
+                 * Component allocation: SelfExplanationService
+                 * renders the underlying data (EvaluatedInputs,
+                 * ExplanationTraces, Deficit records) into the
+                 * appropriate format for the requesting consumer.
+                 *
+                 * Audience rendering:
+                 * - Clinician: data values, rule references,
+                 *   clinical context, recommended actions
+                 * - Patient: plain-language explanation, actionable
+                 *   guidance, self-management prompts
+                 * - Auditor: full trace, data provenance,
+                 *   requirement traceability, exportable format
+                 * - Dashboard: summary statistics, trend
+                 *   indicators, deficit inventory, compliance
+                 *   rates */
         }
     }
 
