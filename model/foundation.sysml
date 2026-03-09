@@ -280,6 +280,98 @@ package Foundation {
             degraded;
             unreachable;
         }
+
+        // Added Session 10: Knowledge Layer Phase 3 (DecisionModels)
+
+        enum def HormoneLevel {
+            doc /* Categorised hormone level from blood test results.
+                 * Used in decision tables for regimen selection and
+                 * stability assessment. */
+            low;
+            normal;
+            high;
+            suppressed;
+        }
+
+        enum def TherapyPreference {
+            doc /* Patient's preference for hormone therapy type.
+                 * Captures the direction of therapy as expressed
+                 * by the patient during assessment. */
+            oestrogen;
+            testosterone;
+            combined;
+        }
+
+        enum def ContraindicationCategory {
+            doc /* Categorised contraindication status for prescribing
+                 * decisions. Simplification of the full clinical
+                 * assessment into categories that drive protocol
+                 * selection. */
+            noContraindication;
+            vteRisk;
+            liverDisease;
+            cardiacRisk;
+            multiple;
+        }
+
+        enum def HormoneMedication {
+            doc /* Hormone therapy medications in the prescribing
+                 * protocol. Each entry represents a specific
+                 * pharmaceutical product. */
+            estradiolValerate;
+            estradiolGel;
+            estradiolPatch;
+            testosteroneUndecanoate;
+            testosteroneEnantate;
+            testosteroneGel;
+        }
+
+        enum def AdministrationRoute {
+            doc /* Route of medication administration. */
+            oral;
+            transdermal;
+            intramuscular;
+            subcutaneous;
+        }
+
+        enum def DoseCategory {
+            doc /* Categorised starting dose level. Maps to specific
+                 * dose values per medication in the prescribing
+                 * protocol. The dose category determines the actual
+                 * dose based on medication-specific tables. */
+            low;
+            standardDose;
+            reduced;
+            high;
+        }
+
+        enum def PatientSatisfaction {
+            doc /* Patient-reported satisfaction with treatment
+                 * progress. Captured during monitoring consultations. */
+            satisfied;
+            neutral;
+            dissatisfied;
+        }
+
+        enum def StabilityClassification {
+            doc /* Clinical classification of regimen stability.
+                 * Output of the stabilityAssessment decision table. */
+            stable;
+            improving;
+            adjustmentNeeded;
+            concerning;
+        }
+
+        enum def MonitoringAction {
+            doc /* Recommended monitoring action based on stability
+                 * assessment. Output of the stabilityAssessment
+                 * decision table. */
+            continueCurrentRegimen;
+            adjustDose;
+            reduceMonitoringInterval;
+            increaseMonitoringInterval;
+            clinicalReviewUrgent;
+        }
     }
 
     package StatePatterns {

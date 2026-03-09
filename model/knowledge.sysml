@@ -29,9 +29,12 @@ package Knowledge {
              * Separates "what the rule is" (ConstraintLibrary) from
              * "how to get the data for the rule" (here). Each
              * constraint def has a corresponding ConstraintEvaluationSpec
-             * that binds it to its input derivations.
+             * that binds it to its input derivations. Decision tables
+             * in DecisionModels have corresponding
+             * DecisionTableEvaluationSpecs following the same pattern.
              *
-             * Elaborated Session 8: Knowledge Layer Phase 1. */
+             * Elaborated Session 8 (Phase 1: constraint specs),
+             * Session 10 (Phase 3: decision table specs). */
 
         // =============================================================
         // Input derivation pattern
@@ -159,6 +162,50 @@ package Knowledge {
             attribute :>> constraintName = "SharedCareAcceptedConstraint";
             attribute :>> requirementName = "SharedCareCommunication";
             attribute :>> severity = Severity::critical;
+        }
+
+        // =============================================================
+        // Decision table evaluation specifications
+        //
+        // Parallel to ConstraintEvaluationSpecs, these bind decision
+        // tables to their input derivations. The same InputDerivation
+        // pattern applies: each table input is derived from an
+        // authoritative data source.
+        // =============================================================
+
+        part def DecisionTableEvaluationSpec {
+            doc /* Binds a decision table to its input derivations
+                 * and evaluation metadata, parallel to
+                 * ConstraintEvaluationSpec for constraints.
+                 *
+                 * The tableName matches the @DecisionTable metadata
+                 * annotation on pathway steps. The evaluation
+                 * infrastructure resolves the name to this spec,
+                 * derives inputs, evaluates the table, and returns
+                 * the matching row's outputs. */
+            attribute tableName : String;
+            attribute description : String;
+            part inputDerivations : InputDerivation[0..*];
+        }
+
+        part regimenSelectionSpec : DecisionTableEvaluationSpec {
+            doc /* Evaluation spec for the regimenSelection decision
+                 * table. Derives four inputs from CDR and clinical
+                 * assessment data: baseline testosterone, baseline
+                 * oestradiol, patient therapy preference, and
+                 * contraindication category. */
+            attribute :>> tableName = "regimenSelection";
+            attribute :>> description = "Derives inputs for regimen selection from baseline bloods and assessment";
+        }
+
+        part stabilityAssessmentSpec : DecisionTableEvaluationSpec {
+            doc /* Evaluation spec for the stabilityAssessment
+                 * decision table. Derives inputs from monitoring
+                 * bloods, treatment history, and consultation
+                 * data: hormone level, weeks on treatment, side
+                 * effect severity, and patient satisfaction. */
+            attribute :>> tableName = "stabilityAssessment";
+            attribute :>> description = "Derives inputs for stability assessment from monitoring data and consultation";
         }
 
         // =============================================================
@@ -1160,14 +1207,445 @@ package Knowledge {
 
     package DecisionModels {
         private import ScalarValues::*;
+        private import Foundation::CommonTypes::*;
 
-        doc /* DMN-style decision tables, decision requirement graphs,
-             * multi-criteria clinical protocol decisions. Deterministic
-             * and auditable. Decision tables map to SysML v2 constraints
-             * and can be read and validated by clinicians.
+        doc /* DMN-style decision tables modelled as SysML part defs
+             * with typed inputs, outputs, and row-level rules.
+             * Deterministic and auditable — clinicians can read and
+             * validate the tables directly from the model.
              *
-             * Examples: prescribing protocol selection, referral routing,
-             * risk stratification. */
+             * SysML v2 does not define a decision table as a first-class
+             * language element. The v2 spec expects tabular decision
+             * logic to be represented using general-purpose constructs
+             * (part defs, constraints, views) with domain-specific
+             * methodology layered on top. This package implements that
+             * approach.
+             *
+             * Representation pattern:
+             * - DecisionTableDef: abstract table interface with
+             *   common metadata (name, hit policy, description)
+             * - Concrete table part defs specialise DecisionTableDef
+             *   and declare typed input and output attributes
+             * - Table rows are part usages of a row def, with :>>
+             *   attribute redefinitions providing the concrete input
+             *   conditions and output values
+             *
+             * Decision tables are a specialised form of constraint
+             * evaluation. The @DecisionTable metadata annotation on
+             * pathway steps triggers evaluation via the same
+             * ConstraintEvaluator infrastructure in LogicEngine.
+             * The table recommends an output; the clinician makes
+             * the final decision at a @ClinicalReviewGate.
+             *
+             * Two decision tables for the hormone therapy pathway:
+             * - regimenSelection: baseline data to medication, route,
+             *   starting dose
+             * - stabilityAssessment: monitoring data to stability
+             *   classification, monitoring action
+             *
+             * Elaborated Session 10: Knowledge Layer Phase 3. */
+
+        // =============================================================
+        // Decision table pattern definitions
+        // =============================================================
+
+        enum def HitPolicy {
+            doc /* How a decision table resolves when evaluating.
+                 * Based on DMN hit policy semantics.
+                 * unique: exactly one row must match (error otherwise)
+                 * firstMatch: rows are ordered, first match wins
+                 * collect: all matching rows contribute to output */
+            unique;
+            firstMatch;
+            collect;
+        }
+
+        part def DecisionTableDef {
+            doc /* Abstract definition for a decision table. Concrete
+                 * tables specialise this with their specific input
+                 * and output attributes.
+                 *
+                 * Each table has a name (matching the @DecisionTable
+                 * annotation in the pathway), a hit policy, and a
+                 * description of its clinical purpose.
+                 *
+                 * This part def provides common metadata; it is
+                 * not intended to be instantiated directly. */
+            attribute tableName : String;
+            attribute hitPolicy : HitPolicy;
+            attribute tableDescription : String;
+        }
+
+        // =============================================================
+        // Regimen Selection Decision Table
+        //
+        // Maps baseline investigation results, patient preference,
+        // and contraindication status to the recommended hormone
+        // therapy regimen (medication, route, starting dose).
+        //
+        // Referenced by: @DecisionTable { tableName = "regimenSelection"; }
+        // on selectRegimen step in HormoneTherapy pathway.
+        //
+        // Consumed by: ConstraintEvaluator via EvaluationSpecRegistry.
+        // Validated against: RegimenWithinProtocolConstraint.
+        // =============================================================
+
+        part def RegimenSelectionRow {
+            doc /* A single row in the regimen selection decision
+                 * table. Each row maps a combination of input
+                 * conditions to a recommended regimen.
+                 *
+                 * Concrete rows redefine all attributes with
+                 * specific values using :>> redefinition. */
+
+            // --- Inputs (conditions) ---
+            attribute baselineTestosterone : HormoneLevel;
+            attribute baselineOestradiol : HormoneLevel;
+            attribute therapyPreference : TherapyPreference;
+            attribute contraindication : ContraindicationCategory;
+
+            // --- Outputs (recommendations) ---
+            attribute medication : HormoneMedication;
+            attribute administrationRoute : AdministrationRoute;
+            attribute startingDose : DoseCategory;
+        }
+
+        part def RegimenSelectionTable :> DecisionTableDef {
+            doc /* Regimen selection decision table for hormone
+                 * therapy initiation.
+                 *
+                 * Hit policy: Unique — exactly one row should match
+                 * for any valid combination of inputs. If no row
+                 * matches, the evaluation returns indeterminate
+                 * with a recommendation for clinician judgement.
+                 *
+                 * Clinical source: GenderSense Prescribing Protocol
+                 * (version and date to be recorded when real
+                 * protocol data is loaded).
+                 *
+                 * Note: the rows below use representative,
+                 * clinically plausible values for modelling
+                 * purposes. Actual prescribing protocol data
+                 * will be loaded from the validated clinical
+                 * source before any runtime use. */
+
+            attribute :>> tableName = "regimenSelection";
+            attribute :>> hitPolicy = HitPolicy::unique;
+            attribute :>> tableDescription = "Maps baseline hormones, patient preference, and contraindications to recommended regimen";
+
+            // --- Oestrogen therapy rows ---
+
+            part row01 : RegimenSelectionRow {
+                doc /* Oestrogen preference, no contraindications,
+                     * low baseline — standard transdermal patch. */
+                attribute :>> baselineTestosterone = HormoneLevel::normal;
+                attribute :>> baselineOestradiol = HormoneLevel::low;
+                attribute :>> therapyPreference = TherapyPreference::oestrogen;
+                attribute :>> contraindication = ContraindicationCategory::noContraindication;
+                attribute :>> medication = HormoneMedication::estradiolPatch;
+                attribute :>> administrationRoute = AdministrationRoute::transdermal;
+                attribute :>> startingDose = DoseCategory::standardDose;
+            }
+
+            part row02 : RegimenSelectionRow {
+                doc /* Oestrogen preference, VTE risk —
+                     * transdermal preferred over oral to avoid
+                     * first-pass hepatic effects. Reduced dose. */
+                attribute :>> baselineTestosterone = HormoneLevel::normal;
+                attribute :>> baselineOestradiol = HormoneLevel::low;
+                attribute :>> therapyPreference = TherapyPreference::oestrogen;
+                attribute :>> contraindication = ContraindicationCategory::vteRisk;
+                attribute :>> medication = HormoneMedication::estradiolPatch;
+                attribute :>> administrationRoute = AdministrationRoute::transdermal;
+                attribute :>> startingDose = DoseCategory::reduced;
+            }
+
+            part row03 : RegimenSelectionRow {
+                doc /* Oestrogen preference, liver disease —
+                     * transdermal to bypass hepatic metabolism. */
+                attribute :>> baselineTestosterone = HormoneLevel::normal;
+                attribute :>> baselineOestradiol = HormoneLevel::low;
+                attribute :>> therapyPreference = TherapyPreference::oestrogen;
+                attribute :>> contraindication = ContraindicationCategory::liverDisease;
+                attribute :>> medication = HormoneMedication::estradiolGel;
+                attribute :>> administrationRoute = AdministrationRoute::transdermal;
+                attribute :>> startingDose = DoseCategory::reduced;
+            }
+
+            part row04 : RegimenSelectionRow {
+                doc /* Oestrogen preference, cardiac risk —
+                     * transdermal, low starting dose with close
+                     * monitoring. */
+                attribute :>> baselineTestosterone = HormoneLevel::normal;
+                attribute :>> baselineOestradiol = HormoneLevel::low;
+                attribute :>> therapyPreference = TherapyPreference::oestrogen;
+                attribute :>> contraindication = ContraindicationCategory::cardiacRisk;
+                attribute :>> medication = HormoneMedication::estradiolPatch;
+                attribute :>> administrationRoute = AdministrationRoute::transdermal;
+                attribute :>> startingDose = DoseCategory::low;
+            }
+
+            part row05 : RegimenSelectionRow {
+                doc /* Oestrogen preference, multiple contraindications —
+                     * requires specialist review. Lowest-risk option
+                     * as starting point for discussion. */
+                attribute :>> baselineTestosterone = HormoneLevel::normal;
+                attribute :>> baselineOestradiol = HormoneLevel::low;
+                attribute :>> therapyPreference = TherapyPreference::oestrogen;
+                attribute :>> contraindication = ContraindicationCategory::multiple;
+                attribute :>> medication = HormoneMedication::estradiolGel;
+                attribute :>> administrationRoute = AdministrationRoute::transdermal;
+                attribute :>> startingDose = DoseCategory::low;
+            }
+
+            // --- Testosterone therapy rows ---
+
+            part row06 : RegimenSelectionRow {
+                doc /* Testosterone preference, no contraindications —
+                     * standard IM injection. */
+                attribute :>> baselineTestosterone = HormoneLevel::low;
+                attribute :>> baselineOestradiol = HormoneLevel::normal;
+                attribute :>> therapyPreference = TherapyPreference::testosterone;
+                attribute :>> contraindication = ContraindicationCategory::noContraindication;
+                attribute :>> medication = HormoneMedication::testosteroneUndecanoate;
+                attribute :>> administrationRoute = AdministrationRoute::intramuscular;
+                attribute :>> startingDose = DoseCategory::standardDose;
+            }
+
+            part row07 : RegimenSelectionRow {
+                doc /* Testosterone preference, needle aversion or
+                     * patient preference for self-administration —
+                     * transdermal gel. */
+                attribute :>> baselineTestosterone = HormoneLevel::low;
+                attribute :>> baselineOestradiol = HormoneLevel::high;
+                attribute :>> therapyPreference = TherapyPreference::testosterone;
+                attribute :>> contraindication = ContraindicationCategory::noContraindication;
+                attribute :>> medication = HormoneMedication::testosteroneGel;
+                attribute :>> administrationRoute = AdministrationRoute::transdermal;
+                attribute :>> startingDose = DoseCategory::standardDose;
+            }
+
+            part row08 : RegimenSelectionRow {
+                doc /* Testosterone preference, cardiac risk —
+                     * gel preferred over injection for more stable
+                     * serum levels. Reduced starting dose. */
+                attribute :>> baselineTestosterone = HormoneLevel::low;
+                attribute :>> baselineOestradiol = HormoneLevel::normal;
+                attribute :>> therapyPreference = TherapyPreference::testosterone;
+                attribute :>> contraindication = ContraindicationCategory::cardiacRisk;
+                attribute :>> medication = HormoneMedication::testosteroneGel;
+                attribute :>> administrationRoute = AdministrationRoute::transdermal;
+                attribute :>> startingDose = DoseCategory::reduced;
+            }
+
+            part row09 : RegimenSelectionRow {
+                doc /* Testosterone preference, liver disease —
+                     * transdermal to avoid hepatic first-pass.
+                     * Standard dose (testosterone is not primarily
+                     * hepatically metabolised at standard doses). */
+                attribute :>> baselineTestosterone = HormoneLevel::low;
+                attribute :>> baselineOestradiol = HormoneLevel::normal;
+                attribute :>> therapyPreference = TherapyPreference::testosterone;
+                attribute :>> contraindication = ContraindicationCategory::liverDisease;
+                attribute :>> medication = HormoneMedication::testosteroneGel;
+                attribute :>> administrationRoute = AdministrationRoute::transdermal;
+                attribute :>> startingDose = DoseCategory::standardDose;
+            }
+        }
+
+        // =============================================================
+        // Stability Assessment Decision Table
+        //
+        // Maps monitoring results, time on treatment, and patient-
+        // reported outcomes to a stability classification and
+        // recommended monitoring action.
+        //
+        // Referenced by: @DecisionTable { tableName = "stabilityAssessment"; }
+        // on assessStabilityDecision step in HormoneTherapy pathway.
+        //
+        // Drives the monitoring cycle branch: stable patients proceed
+        // to confirmStable; patients needing adjustment loop back
+        // to adjustDose -> scheduleMonitoringBloods.
+        // =============================================================
+
+        part def StabilityAssessmentRow {
+            doc /* A single row in the stability assessment decision
+                 * table. Each row maps monitoring indicators to a
+                 * stability classification and recommended action. */
+
+            // --- Inputs (conditions) ---
+            attribute hormoneLevel : HormoneLevel;
+            attribute minimumWeeksOnTreatment : Integer;
+            attribute sideEffectSeverity : Severity;
+            attribute satisfaction : PatientSatisfaction;
+
+            // --- Outputs (recommendations) ---
+            attribute classification : StabilityClassification;
+            attribute monitoringAction : MonitoringAction;
+        }
+
+        part def StabilityAssessmentTable :> DecisionTableDef {
+            doc /* Stability assessment decision table for hormone
+                 * therapy monitoring.
+                 *
+                 * Hit policy: Unique — exactly one classification
+                 * should result from any valid input combination.
+                 *
+                 * The table is evaluated at each monitoring review
+                 * point (typically every 3 months during titration,
+                 * every 6-12 months once stable).
+                 *
+                 * Note: minimumWeeksOnTreatment uses integer
+                 * comparison rather than enum matching. In the
+                 * generated evaluator, rows with integer inputs
+                 * use range checks rather than equality. The
+                 * values shown in rows represent the minimum
+                 * weeks threshold for that row to be eligible. */
+
+            attribute :>> tableName = "stabilityAssessment";
+            attribute :>> hitPolicy = HitPolicy::unique;
+            attribute :>> tableDescription = "Maps monitoring indicators to stability classification and monitoring action";
+
+            // --- Stable regimen rows ---
+
+            part row01 : StabilityAssessmentRow {
+                doc /* Normal hormones, 12+ weeks, no significant
+                     * side effects, patient satisfied — stable.
+                     * Continue current regimen, standard monitoring. */
+                attribute :>> hormoneLevel = HormoneLevel::normal;
+                attribute :>> minimumWeeksOnTreatment = 12;
+                attribute :>> sideEffectSeverity = Severity::informational;
+                attribute :>> satisfaction = PatientSatisfaction::satisfied;
+                attribute :>> classification = StabilityClassification::stable;
+                attribute :>> monitoringAction = MonitoringAction::continueCurrentRegimen;
+            }
+
+            part row02 : StabilityAssessmentRow {
+                doc /* Normal hormones, 12+ weeks, no significant
+                     * side effects, patient neutral — stable but
+                     * explore satisfaction concerns. Continue
+                     * regimen with reduced monitoring interval. */
+                attribute :>> hormoneLevel = HormoneLevel::normal;
+                attribute :>> minimumWeeksOnTreatment = 12;
+                attribute :>> sideEffectSeverity = Severity::informational;
+                attribute :>> satisfaction = PatientSatisfaction::neutral;
+                attribute :>> classification = StabilityClassification::stable;
+                attribute :>> monitoringAction = MonitoringAction::reduceMonitoringInterval;
+            }
+
+            // --- Improving but not yet stable ---
+
+            part row03 : StabilityAssessmentRow {
+                doc /* Normal hormones but less than 12 weeks on
+                     * treatment — too early to declare stable.
+                     * Continue and recheck. */
+                attribute :>> hormoneLevel = HormoneLevel::normal;
+                attribute :>> minimumWeeksOnTreatment = 0;
+                attribute :>> sideEffectSeverity = Severity::informational;
+                attribute :>> satisfaction = PatientSatisfaction::satisfied;
+                attribute :>> classification = StabilityClassification::improving;
+                attribute :>> monitoringAction = MonitoringAction::continueCurrentRegimen;
+            }
+
+            // --- Adjustment needed ---
+
+            part row04 : StabilityAssessmentRow {
+                doc /* Low hormone levels — dose likely insufficient.
+                     * Adjust dose upward. */
+                attribute :>> hormoneLevel = HormoneLevel::low;
+                attribute :>> minimumWeeksOnTreatment = 12;
+                attribute :>> sideEffectSeverity = Severity::informational;
+                attribute :>> satisfaction = PatientSatisfaction::dissatisfied;
+                attribute :>> classification = StabilityClassification::adjustmentNeeded;
+                attribute :>> monitoringAction = MonitoringAction::adjustDose;
+            }
+
+            part row05 : StabilityAssessmentRow {
+                doc /* High hormone levels — dose may need reducing.
+                     * Adjust dose downward. */
+                attribute :>> hormoneLevel = HormoneLevel::high;
+                attribute :>> minimumWeeksOnTreatment = 12;
+                attribute :>> sideEffectSeverity = Severity::informational;
+                attribute :>> satisfaction = PatientSatisfaction::satisfied;
+                attribute :>> classification = StabilityClassification::adjustmentNeeded;
+                attribute :>> monitoringAction = MonitoringAction::adjustDose;
+            }
+
+            part row06 : StabilityAssessmentRow {
+                doc /* Normal hormones but warning-level side effects —
+                     * may need route or formulation change.
+                     * Increase monitoring, clinical review. */
+                attribute :>> hormoneLevel = HormoneLevel::normal;
+                attribute :>> minimumWeeksOnTreatment = 0;
+                attribute :>> sideEffectSeverity = Severity::warning;
+                attribute :>> satisfaction = PatientSatisfaction::dissatisfied;
+                attribute :>> classification = StabilityClassification::adjustmentNeeded;
+                attribute :>> monitoringAction = MonitoringAction::increaseMonitoringInterval;
+            }
+
+            // --- Concerning ---
+
+            part row07 : StabilityAssessmentRow {
+                doc /* Critical side effects regardless of hormone
+                     * levels — urgent clinical review. */
+                attribute :>> hormoneLevel = HormoneLevel::normal;
+                attribute :>> minimumWeeksOnTreatment = 0;
+                attribute :>> sideEffectSeverity = Severity::critical;
+                attribute :>> satisfaction = PatientSatisfaction::dissatisfied;
+                attribute :>> classification = StabilityClassification::concerning;
+                attribute :>> monitoringAction = MonitoringAction::clinicalReviewUrgent;
+            }
+
+            part row08 : StabilityAssessmentRow {
+                doc /* Suppressed hormone levels — possible over-
+                     * suppression. Urgent review to assess dose
+                     * and clinical status. */
+                attribute :>> hormoneLevel = HormoneLevel::suppressed;
+                attribute :>> minimumWeeksOnTreatment = 0;
+                attribute :>> sideEffectSeverity = Severity::informational;
+                attribute :>> satisfaction = PatientSatisfaction::neutral;
+                attribute :>> classification = StabilityClassification::concerning;
+                attribute :>> monitoringAction = MonitoringAction::clinicalReviewUrgent;
+            }
+        }
+
+        // =============================================================
+        // Use cases
+        // =============================================================
+
+        use case def EvaluateDecisionTable {
+            doc /* Evaluate a decision table for a specific patient
+                 * and clinical context.
+                 *
+                 * Invoked when a pathway step annotated with
+                 * @DecisionTable is reached. The evaluation:
+                 * 1. Resolves the table by name via the registry
+                 * 2. Derives input values from authoritative sources
+                 * 3. Matches inputs against table rows per hit policy
+                 * 4. Returns the matching row's output values as a
+                 *    structured recommendation
+                 * 5. Produces an EvaluationResult with ExplanationTrace
+                 *    showing which row matched and why
+                 *
+                 * The result is a recommendation, not an automatic
+                 * action — the clinician reviews it at a
+                 * @ClinicalReviewGate before proceeding.
+                 *
+                 * Component allocation: ConstraintEvaluator (same
+                 * Tier 1 infrastructure as constraint evaluation). */
+        }
+
+        use case def ValidateDecisionAgainstTable {
+            doc /* After a clinician makes a prescribing decision,
+                 * validate that the chosen regimen appears in the
+                 * decision table. If the clinician overrides the
+                 * table recommendation, the override is logged
+                 * as a protocol deviation with clinical justification.
+                 *
+                 * This is the bridge to RegimenWithinProtocolConstraint
+                 * in ConstraintLibrary: the table recommends, the
+                 * constraint validates. */
+        }
     }
 
     package OutcomeFramework {

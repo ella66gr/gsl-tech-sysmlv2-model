@@ -2,7 +2,7 @@
 <opml version="2.0">
   <head>
     <title>GenderSense Package Hierarchy</title>
-    <dateCreated>2026-03-09 18:07</dateCreated>
+    <dateCreated>2026-03-09 19:08</dateCreated>
   </head>
   <body>
     <outline text="GenderSense — Model-driven clinical service management platform">
@@ -14,18 +14,18 @@
       </outline>
       <outline text="Foundation  — Cross-cutting infrastructure that everything else imports." _note="foundation.sysml:5">
         <outline text="MetadataLibrary  — Metadata definitions for generator configuration and  [9 metadata]" _note="foundation.sysml:11"/>
-        <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [2 parts, 12 enums]" _note="foundation.sysml:152"/>
-        <outline text="StatePatterns  — Reusable lifecycle state machine patterns.  [1 states]" _note="foundation.sysml:285"/>
-        <outline text="GenerationPipeline  — Generator configurations, template definitions, generation" _note="foundation.sysml:348"/>
+        <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [2 parts, 21 enums]" _note="foundation.sysml:152"/>
+        <outline text="StatePatterns  — Reusable lifecycle state machine patterns.  [1 states]" _note="foundation.sysml:377"/>
+        <outline text="GenerationPipeline  — Generator configurations, template definitions, generation" _note="foundation.sysml:440"/>
       </outline>
       <outline text="Knowledge  — Explicit treatment of knowledge, decision logic, and adaptive" _note="knowledge.sysml:5">
-        <outline text="ClinicalDecisionSupport  — Decision rules, eligibility criteria, monitoring protocols,  [2 parts, 3 use cases]" _note="knowledge.sysml:18"/>
-        <outline text="ConstraintLibrary  — Composable clinical constraints, safety rules, drug  [8 constraints]" _note="knowledge.sysml:184"/>
-        <outline text="LogicEngine  — Inference rules, Prolog-style reasoning, deterministic  [21 parts, 4 use cases]" _note="knowledge.sysml:371"/>
-        <outline text="DecisionModels  — DMN-style decision tables, decision requirement graphs," _note="knowledge.sysml:1161"/>
-        <outline text="OutcomeFramework  — Outcome definitions, measurement points, structured outcome  [1 parts]" _note="knowledge.sysml:1173"/>
-        <outline text="LearningCycles  — Pathway refinement process, evidence review, change control  [2 use cases]" _note="knowledge.sysml:1191"/>
-        <outline text="Analytics  — Data contracts for BI and predictive analytics, event stream  [1 parts]" _note="knowledge.sysml:1213"/>
+        <outline text="ClinicalDecisionSupport  — Decision rules, eligibility criteria, monitoring protocols,  [3 parts, 3 use cases]" _note="knowledge.sysml:18"/>
+        <outline text="ConstraintLibrary  — Composable clinical constraints, safety rules, drug  [8 constraints]" _note="knowledge.sysml:231"/>
+        <outline text="LogicEngine  — Inference rules, Prolog-style reasoning, deterministic  [21 parts, 4 use cases]" _note="knowledge.sysml:418"/>
+        <outline text="DecisionModels  — DMN-style decision tables modelled as SysML part defs  [5 parts, 2 use cases, 1 enums]" _note="knowledge.sysml:1208"/>
+        <outline text="OutcomeFramework  — Outcome definitions, measurement points, structured outcome  [1 parts]" _note="knowledge.sysml:1651"/>
+        <outline text="LearningCycles  — Pathway refinement process, evidence review, change control  [2 use cases]" _note="knowledge.sysml:1669"/>
+        <outline text="Analytics  — Data contracts for BI and predictive analytics, event stream  [1 parts]" _note="knowledge.sysml:1691"/>
       </outline>
       <outline text="Operations  — Back office and growth functions." _note="operations.sysml:5">
         <outline text="Finance  — Billing, accounts, Xero integration, financial reporting,  [2 use cases]" _note="operations.sysml:14"/>

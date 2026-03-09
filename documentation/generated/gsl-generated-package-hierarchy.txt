@@ -7,17 +7,17 @@ GenderSense	Model-driven clinical service management platform
 		Risk	Clinical risk management, business continuity, safeguarding	3 use cases	enterprise.sysml:227
 	Foundation	Cross-cutting infrastructure that everything else imports.		foundation.sysml:5
 		MetadataLibrary	Metadata definitions for generator configuration and	9 metadata	foundation.sysml:11
-		CommonTypes	Shared data types, enumerations, units of measure, and	2 parts, 12 enums	foundation.sysml:152
-		StatePatterns	Reusable lifecycle state machine patterns.	1 states	foundation.sysml:285
-		GenerationPipeline	Generator configurations, template definitions, generation		foundation.sysml:348
+		CommonTypes	Shared data types, enumerations, units of measure, and	2 parts, 21 enums	foundation.sysml:152
+		StatePatterns	Reusable lifecycle state machine patterns.	1 states	foundation.sysml:377
+		GenerationPipeline	Generator configurations, template definitions, generation		foundation.sysml:440
 	Knowledge	Explicit treatment of knowledge, decision logic, and adaptive		knowledge.sysml:5
-		ClinicalDecisionSupport	Decision rules, eligibility criteria, monitoring protocols,	2 parts, 3 use cases	knowledge.sysml:18
-		ConstraintLibrary	Composable clinical constraints, safety rules, drug	8 constraints	knowledge.sysml:184
-		LogicEngine	Inference rules, Prolog-style reasoning, deterministic	21 parts, 4 use cases	knowledge.sysml:371
-		DecisionModels	DMN-style decision tables, decision requirement graphs,		knowledge.sysml:1161
-		OutcomeFramework	Outcome definitions, measurement points, structured outcome	1 parts	knowledge.sysml:1173
-		LearningCycles	Pathway refinement process, evidence review, change control	2 use cases	knowledge.sysml:1191
-		Analytics	Data contracts for BI and predictive analytics, event stream	1 parts	knowledge.sysml:1213
+		ClinicalDecisionSupport	Decision rules, eligibility criteria, monitoring protocols,	3 parts, 3 use cases	knowledge.sysml:18
+		ConstraintLibrary	Composable clinical constraints, safety rules, drug	8 constraints	knowledge.sysml:231
+		LogicEngine	Inference rules, Prolog-style reasoning, deterministic	21 parts, 4 use cases	knowledge.sysml:418
+		DecisionModels	DMN-style decision tables modelled as SysML part defs	5 parts, 2 use cases, 1 enums	knowledge.sysml:1208
+		OutcomeFramework	Outcome definitions, measurement points, structured outcome	1 parts	knowledge.sysml:1651
+		LearningCycles	Pathway refinement process, evidence review, change control	2 use cases	knowledge.sysml:1669
+		Analytics	Data contracts for BI and predictive analytics, event stream	1 parts	knowledge.sysml:1691
 	Operations	Back office and growth functions.		operations.sysml:5
 		Finance	Billing, accounts, Xero integration, financial reporting,	2 use cases	operations.sysml:14
 		People	HR, contracts, indemnity arrangements, personnel		operations.sysml:30

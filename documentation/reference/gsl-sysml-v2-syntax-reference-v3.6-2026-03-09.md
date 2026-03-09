@@ -1,7 +1,7 @@
 # SysML v2 Syntax Reference — Syside Modeler
 
-> **Version:** 3.5 — 8 March 2026
-> **Previous version:** v3.4 (8 March 2026). Full version history in `documentation/reference/versions/`
+> **Version:** 3.6 — 9 March 2026
+> **Previous version:** v3.5 (8 March 2026). Full version history in `documentation/reference/versions/`
 > **Purpose:** Concise reference for writing `.sysml` files against Syside Modeler.
 > Consult before writing new SysML code. Update as new patterns are verified.
 >
@@ -9,7 +9,7 @@
 > - `gsl-validated-architectural-patterns.md` — integration patterns, generation pipelines, design rationale
 > - `gsl-guide-repo-conventions.md` — file structure, generators, git practices, `gsl` toolkit
 >
-> **What's new in v3.5:** Knowledge Layer Phase 1 — multiplicity on contained parts (`part x : XDef[0..*]`), recursive self-referential containment, attribute redefinition with `:>>` (string and enum literal defaults), cross-package enum imports. 24 common English words confirmed safe as enum literals.
+> **What's new in v3.6:** Knowledge Layer Phase 3 (DecisionModels) — `:>>` with integer literal defaults, part def specialisation (`:>`) with `:>>` on inherited attributes, seven `:>>` redefinitions in a single part usage. Two new reserved word traps: `standard`, `action`. 38 additional common English words confirmed safe as enum literals (62 total).
 
 ---
 
@@ -81,6 +81,25 @@ part consentSpec : ConstraintEvaluationSpec {
 
 Both string literal and enum literal defaults work (verified v3.5).
 
+**Integer literal defaults** also work (verified v3.6):
+
+```sysml
+part row01 : StabilityAssessmentRow {
+    attribute :>> minimumWeeksOnTreatment = 12;   // integer literal ✅
+}
+```
+
+**Part def specialisation with `:>>`** — inherited attributes can be redefined on a specialised part def (verified v3.6):
+
+```sysml
+part def RegimenSelectionTable :> DecisionTableDef {
+    attribute :>> tableName = "regimenSelection";         // string on specialised def ✅
+    attribute :>> hitPolicy = HitPolicy::unique;           // enum on specialised def ✅
+}
+```
+
+**Scale:** Seven `:>>` redefinitions in a single part usage verified (v3.6, decision table rows).
+
 **Not yet tested:** Nested `:>>` redefinition inside contained parts inside part usages.
 
 ---
@@ -98,9 +117,11 @@ enum def EvaluationOutcome {
 }
 ```
 
-### Safe enum literal names (verified v3.5)
+### Safe enum literal names (verified v3.5, extended v3.6)
 
-`entity`, `system`, `pass`, `fail`, `domain`, `platform`, `patient`, `cohort`, `pathway`, `clinical`, `operational`, `infrastructure`, `governance`, `automatic`, `recommended`, `advisory`, `healthy`, `degraded`, `unreachable`, `critical`, `warning`, `informational`, `cdr`, `temporal`
+**v3.5 (24 words):** `entity`, `system`, `pass`, `fail`, `domain`, `platform`, `patient`, `cohort`, `pathway`, `clinical`, `operational`, `infrastructure`, `governance`, `automatic`, `recommended`, `advisory`, `healthy`, `degraded`, `unreachable`, `critical`, `warning`, `informational`, `cdr`, `temporal`
+
+**v3.6 (38 additional words, 62 total):** `low`, `normal`, `high`, `suppressed`, `oestrogen`, `testosterone`, `combined`, `noContraindication`, `vteRisk`, `liverDisease`, `cardiacRisk`, `multiple`, `oral`, `transdermal`, `intramuscular`, `subcutaneous`, `estradiolValerate`, `estradiolGel`, `estradiolPatch`, `testosteroneUndecanoate`, `testosteroneEnantate`, `testosteroneGel`, `standardDose`, `reduced`, `satisfied`, `neutral`, `dissatisfied`, `stable`, `improving`, `adjustmentNeeded`, `concerning`, `continueCurrentRegimen`, `adjustDose`, `reduceMonitoringInterval`, `increaseMonitoringInterval`, `clinicalReviewUrgent`, `unique`, `firstMatch`, `collect`
 
 ### Cross-package enum usage
 
@@ -349,8 +370,10 @@ Basic `use case def` with `doc` verified (v3.1). Advanced patterns (`include use
 | `ordered` | SysML v2 keyword (multiplicity modifier) | State names, attribute names |
 | `accepted` | Shadows KerML `StatePerformances::StatePerformance::accepted` | State names |
 | `comment` | SysML v2 keyword (`comment about`) | Attribute names |
+| `standard` | KerML reserved (standard library namespace) | Enum literals, attribute names (v3.6) |
+| `action` | SysML v2 keyword (`action def`, `action`) | Attribute names (v3.6) |
 
-**General rule:** Avoid short generic English words as identifiers. Use compound names (`referralAccepted`, `feedbackComment`). All enum literals listed in Section 3 are confirmed safe.
+**General rule:** Avoid short generic English words as identifiers. Use compound names (`referralAccepted`, `feedbackComment`, `standardDose`, `monitoringAction`). All enum literals listed in Section 3 are confirmed safe.
 
 ---
 
@@ -389,6 +412,7 @@ Basic `use case def` with `doc` verified (v3.1). Advanced patterns (`include use
 
 | Version | Date | Key additions |
 |---|---|---|
+| 3.6 | 9 Mar 2026 | Integer `:>>` defaults, part def specialisation with `:>>`, seven `:>>` in one usage, `standard` and `action` reserved, 38 new safe enum literals |
 | 3.5 | 8 Mar 2026 | Multiplicity on contained parts, recursive containment, `:>>` redefinition, cross-package enum imports |
 | 3.4 | 8 Mar 2026 | openEHR metadata on part defs, `@metadata` on attribute fails, `comment` reserved, `//` comments on attributes |
 | 3.3 | 6 Mar 2026 | `decide`/`merge`, `fork`/`join`, state def specialisation, guard conditions fail, `verify` fails |
