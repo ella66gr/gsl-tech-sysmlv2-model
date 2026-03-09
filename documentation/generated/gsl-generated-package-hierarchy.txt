@@ -13,11 +13,11 @@ GenderSense	Model-driven clinical service management platform
 	Knowledge	Explicit treatment of knowledge, decision logic, and adaptive		knowledge.sysml:5
 		ClinicalDecisionSupport	Decision rules, eligibility criteria, monitoring protocols,	2 parts, 3 use cases	knowledge.sysml:18
 		ConstraintLibrary	Composable clinical constraints, safety rules, drug	8 constraints	knowledge.sysml:184
-		LogicEngine	Inference rules, Prolog-style reasoning, deterministic	5 parts, 4 use cases	knowledge.sysml:371
-		DecisionModels	DMN-style decision tables, decision requirement graphs,		knowledge.sysml:565
-		OutcomeFramework	Outcome definitions, measurement points, structured outcome	1 parts	knowledge.sysml:577
-		LearningCycles	Pathway refinement process, evidence review, change control	2 use cases	knowledge.sysml:595
-		Analytics	Data contracts for BI and predictive analytics, event stream	1 parts	knowledge.sysml:617
+		LogicEngine	Inference rules, Prolog-style reasoning, deterministic	21 parts, 4 use cases	knowledge.sysml:371
+		DecisionModels	DMN-style decision tables, decision requirement graphs,		knowledge.sysml:1161
+		OutcomeFramework	Outcome definitions, measurement points, structured outcome	1 parts	knowledge.sysml:1173
+		LearningCycles	Pathway refinement process, evidence review, change control	2 use cases	knowledge.sysml:1191
+		Analytics	Data contracts for BI and predictive analytics, event stream	1 parts	knowledge.sysml:1213
 	Operations	Back office and growth functions.		operations.sysml:5
 		Finance	Billing, accounts, Xero integration, financial reporting,	2 use cases	operations.sysml:14
 		People	HR, contracts, indemnity arrangements, personnel		operations.sysml:30

@@ -6,7 +6,9 @@ A practical guide for adding, renaming, moving, or removing packages in the SysM
 
 ## The `gsl` toolkit
 
-The `gsl` command gives you quick access to the package hierarchy from anywhere in your terminal. Set it up once:
+The `gsl` command gives you quick access to the package hierarchy from anywhere in your terminal. Set it up once as below.
+
+Permissions:
 
 ```bash
 chmod +x ~/Developer/gsl-tech/gsl-sysml-model/scripts/gsl
@@ -16,6 +18,13 @@ Add to `~/.zshrc`:
 
 ```bash
 alias gsl='~/Developer/gsl-tech/gsl-sysml-model/scripts/gsl'
+```
+
+But a permanent saving would be useful, so instead use:
+
+```bash
+echo "alias gsl='~/Developer/gsl-tech/gsl-sysml-model/scripts/gsl'" >> ~/.zshrc
+source ~/.zshrc
 ```
 
 Then use:

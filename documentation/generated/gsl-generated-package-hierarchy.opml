@@ -2,7 +2,7 @@
 <opml version="2.0">
   <head>
     <title>GenderSense Package Hierarchy</title>
-    <dateCreated>2026-03-08 20:47</dateCreated>
+    <dateCreated>2026-03-09 18:07</dateCreated>
   </head>
   <body>
     <outline text="GenderSense — Model-driven clinical service management platform">
@@ -21,11 +21,11 @@
       <outline text="Knowledge  — Explicit treatment of knowledge, decision logic, and adaptive" _note="knowledge.sysml:5">
         <outline text="ClinicalDecisionSupport  — Decision rules, eligibility criteria, monitoring protocols,  [2 parts, 3 use cases]" _note="knowledge.sysml:18"/>
         <outline text="ConstraintLibrary  — Composable clinical constraints, safety rules, drug  [8 constraints]" _note="knowledge.sysml:184"/>
-        <outline text="LogicEngine  — Inference rules, Prolog-style reasoning, deterministic  [5 parts, 4 use cases]" _note="knowledge.sysml:371"/>
-        <outline text="DecisionModels  — DMN-style decision tables, decision requirement graphs," _note="knowledge.sysml:565"/>
-        <outline text="OutcomeFramework  — Outcome definitions, measurement points, structured outcome  [1 parts]" _note="knowledge.sysml:577"/>
-        <outline text="LearningCycles  — Pathway refinement process, evidence review, change control  [2 use cases]" _note="knowledge.sysml:595"/>
-        <outline text="Analytics  — Data contracts for BI and predictive analytics, event stream  [1 parts]" _note="knowledge.sysml:617"/>
+        <outline text="LogicEngine  — Inference rules, Prolog-style reasoning, deterministic  [21 parts, 4 use cases]" _note="knowledge.sysml:371"/>
+        <outline text="DecisionModels  — DMN-style decision tables, decision requirement graphs," _note="knowledge.sysml:1161"/>
+        <outline text="OutcomeFramework  — Outcome definitions, measurement points, structured outcome  [1 parts]" _note="knowledge.sysml:1173"/>
+        <outline text="LearningCycles  — Pathway refinement process, evidence review, change control  [2 use cases]" _note="knowledge.sysml:1191"/>
+        <outline text="Analytics  — Data contracts for BI and predictive analytics, event stream  [1 parts]" _note="knowledge.sysml:1213"/>
       </outline>
       <outline text="Operations  — Back office and growth functions." _note="operations.sysml:5">
         <outline text="Finance  — Billing, accounts, Xero integration, financial reporting,  [2 use cases]" _note="operations.sysml:14"/>
