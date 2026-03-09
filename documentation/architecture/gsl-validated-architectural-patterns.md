@@ -1,10 +1,10 @@
 # Validated Architectural Patterns — SysML v2 Model-Driven Architecture
 
-**Date:** 8 March 2026
-**Context:** Patterns validated across the Coffee Shop Exercise, Coffee Shop Demonstrator (Phases A–D), CDR Extension Exercise (Phases A–E), Hormone Therapy Pathway modelling, and Knowledge Layer Phase 1.
+**Date:** 8 March 2026 (created), 9 March 2026 (updated Session 12)
+**Context:** Patterns validated across the Coffee Shop Exercise, Coffee Shop Demonstrator (Phases A–D), CDR Extension Exercise (Phases A–E), Hormone Therapy Pathway modelling, Knowledge Layer Phases 1–5.
 
 **Companion documents:**
-- `documentation/reference/gsl-sysml-v2-syntax-reference-v3.5-*.md` — concise syntax lookup
+- `documentation/reference/gsl-sysml-v2-syntax-reference-v3.7-2026-03-09.md` — concise syntax lookup
 - `documentation/guides/gsl-guide-repo-conventions.md` — file structure, generators, git practices
 
 ---
@@ -118,13 +118,17 @@ Enterprise::Regulation          requirement def BloodMonitoringRequired
 Knowledge::ConstraintLibrary    constraint bloodMonitoringCheck : BloodMonitoringIntervalConstraint
         ↓ (evaluation spec)
 Knowledge::CDS                  part bloodMonitoringSpec : ConstraintEvaluationSpec
-        ↓ (runtime)
+        ↓ (generated evaluator — Phase 5)
+generated/constraint-evaluators.ts   evaluateBloodMonitoringInterval(inputs)
+        ↓ (generated spec registry — Phase 5)
+generated/constraint-specs.ts        constraintSpecs['BloodMonitoringIntervalConstraint']
+        ↓ (runtime — not yet built)
 Temporal activity               evaluationEngine.evaluate("BloodMonitoringIntervalConstraint", patient)
         ↓ (audit)
 CDR / audit log                 EvaluationResult composition
 ```
 
-**Validated:** `satisfy` relationships (v3.1). Evaluation spec pattern with `:>>` redefinition (v3.5). End-to-end runtime chain is designed (Knowledge Layer Phase 1 architecture decision document) but not yet built.
+**Validated:** `satisfy` relationships (v3.1). Evaluation spec pattern with `:>>` redefinition (v3.5). Generated evaluator functions and spec registry (Phase 5, Session 12). End-to-end runtime chain is designed but not yet built.
 
 ---
 
@@ -145,9 +149,9 @@ part consentSpec : ConstraintEvaluationSpec {
 }
 ```
 
-This pattern separates "what the rule is" (ConstraintLibrary) from "how to evaluate it" (CDS evaluation specs). Eight concrete specs map to all eight ConstraintLibrary constraints.
+This pattern separates "what the rule is" (ConstraintLibrary) from "how to evaluate it" (CDS evaluation specs). Eight concrete specs map to all eight ConstraintLibrary constraints. Two DecisionTableEvaluationSpecs follow the same pattern for decision tables.
 
-**Validated:** v3.5. String and enum literal defaults both work. Input derivation detail is in doc blocks; nested `:>>` inside contained parts not yet tested.
+**Validated:** v3.5. String and enum literal defaults both work. Integer (v3.6) and boolean (v3.7) literal defaults also work. Input derivation detail is in doc blocks; nested `:>>` inside contained parts not yet tested.
 
 ---
 
@@ -170,15 +174,15 @@ State def specialisation (`:>`) works for extending base patterns with additiona
 
 ## 8. Five-Layer Self-Knowledge Architecture
 
-Designed in Knowledge Layer Phase 1. Structural definitions in the model; runtime not yet built.
+Designed in Knowledge Layer Phase 1. Structural definitions in the model. Layer 1 now has a generated runtime artefact (System Model Manifest, Phase 5).
 
-| Layer | Question | Source | SysML structure |
-|---|---|---|---|
-| 1. Structural | "What am I?" | System Model Manifest (generated from SysML) | — (generated artefact) |
-| 2. Operational | "What state am I in?" | Temporal, CDR, platform services | InputDerivation (source-agnostic) |
-| 3. Goal-state | "What should I be?" | Requirements, constraints, outcome definitions | ConstraintEvaluationSpec |
-| 4. Gap analysis | "Where am I falling short?" | Layer 2 vs Layer 3 comparison | Deficit part def |
-| 5. Remediation | "What would close the gap?" | Deterministic / compound / advisory | RemediationCategory enum |
+| Layer | Question | Source | SysML structure | Runtime artefact |
+|---|---|---|---|---|
+| 1. Structural | "What am I?" | System Model Manifest (generated) | — | `generated/system-manifest.json` ✅ |
+| 2. Operational | "What state am I in?" | Temporal, CDR, platform services | InputDerivation | Not yet built |
+| 3. Goal-state | "What should I be?" | Requirements, constraints, outcomes | ConstraintEvaluationSpec | `generated/constraint-specs.ts` ✅ |
+| 4. Gap analysis | "Where am I falling short?" | Layer 2 vs Layer 3 comparison | Deficit part def | Not yet built |
+| 5. Remediation | "What would close the gap?" | Deterministic / compound / advisory | RemediationCategory enum | Not yet built |
 
 Composite output: `SystemStateAssessment` part def. Computed on demand, not a separate data store.
 
@@ -188,28 +192,51 @@ See: `documentation/architecture/gsl-architecture-decision-knowledge-evaluation.
 
 ## 9. Generation Pipeline
 
-### Generators (validated in demonstrator)
+### Demonstrator generators (Coffee Shop)
 
-| Generator | Input | Output |
+| Generator | Input | Output | Location |
+|---|---|---|---|
+| `gen_typescript_types.py` | Structural model | TypeScript interfaces + enums | `exercises/coffeeshop-demonstrator/generators/` |
+| `gen_state_machines.py` | `state def` | XState v5 machines | `exercises/coffeeshop-demonstrator/generators/` |
+| `gen_temporal_workflow.py` | Annotated orchestration `action def` | Temporal async workflow | `exercises/coffeeshop-demonstrator/generators/` |
+| `gen_mermaid_pathway.py` | Domain `action def` | Mermaid diagrams | `exercises/coffeeshop-demonstrator/generators/` |
+
+### Model-level generators
+
+| Generator | Input | Output | Location |
+|---|---|---|---|
+| `gen_package_hierarchy.py` | All `.sysml` files | Multi-format hierarchy views (markdown, OPML, HTML, OmniOutliner) | `scripts/` |
+| `gen_constraint_evaluator.py` | `constraint def` + `ConstraintEvaluationSpec` usages | 3 TypeScript files: types, evaluation functions, spec registry | `scripts/` |
+| `gen_decision_table_evaluator.py` | `DecisionTableDef` + row usages | TypeScript lookup functions + evaluate wrappers | `scripts/` |
+| `gen_system_manifest.py` | All `.sysml` files | JSON structural manifest (8 inventory sections) | `scripts/` |
+
+**Validated (Phase 5, Session 12):** All three new generators parse the current model correctly and produce well-formed output. Constraint evaluator translates all eight boolean expressions to TypeScript. Decision table evaluator extracts 17 rows across 2 tables with correct input/output split. Manifest generator cross-checks against `gsl` package hierarchy (8 constraints, 8 requirements, 4 lifecycles, 10 outcomes, 2 tables, 13 metadata, 100 use cases).
+
+### Generated output inventory
+
+| File | Generator | Content |
 |---|---|---|
-| `gen_typescript_types.py` | Structural model | TypeScript interfaces + enums |
-| `gen_state_machines.py` | `state def` | XState v5 machines |
-| `gen_temporal_workflow.py` | Annotated orchestration `action def` | Temporal async workflow |
-| `gen_mermaid_pathway.py` | Domain `action def` | Mermaid diagrams |
-| `gen_package_hierarchy.py` | All `.sysml` files | Multi-format hierarchy views |
+| `generated/evaluation-types.ts` | `gen_constraint_evaluator.py` | EvaluationResult, Severity, InputDerivation, ConstraintEvaluationSpec |
+| `generated/constraint-evaluators.ts` | `gen_constraint_evaluator.py` | 8 evaluation functions + function registry |
+| `generated/constraint-specs.ts` | `gen_constraint_evaluator.py` | 8 constraint specs + 2 decision table specs |
+| `generated/decision-table-evaluators.ts` | `gen_decision_table_evaluator.py` | 2 tables (9 + 8 rows), lookup functions, evaluate wrappers |
+| `generated/system-manifest.json` | `gen_system_manifest.py` | Structural manifest: constraints, requirements, lifecycles, pathways, outcomes, tables, metadata, use cases |
 
 ### Key principles
 
-- Generated files carry `DO NOT EDIT` headers
+- Generated files carry `DO NOT EDIT` headers with timestamp and source reference
 - Current generators use regex text parsing (adequate for controlled formatting)
 - Syside Automator (semantic model access) is the planned replacement — all 10 evaluation tests passed (v3.1)
+- Regex generators serve as executable specifications for Automator migration: same input → same output
 - Generation policy decisions (e.g. `ref` → full object vs ID-only) are generator config, not model concerns
+- Generators fail loudly and degrade gracefully — unparseable expressions emit `TODO` placeholders, never broken output
 
 ### Future generators (designed, not built)
 
-- Constraint evaluator generator: SysML `constraint def` → TypeScript evaluation function
-- System Model Manifest generator: all `.sysml` files → JSON structural manifest
+- Temporal workflow generator extension: emit `evaluationEngine.evaluate()` calls from `@LogicRule` / `@SafetyConstraint` metadata
 - Composition builder generator: OPT XML → TypeScript CDR composition builders
+- Outcome evaluator generator: `OutcomeDefinition` usages → TypeScript outcome evaluation functions
+- Prolog rule generator: `constraint def` → Tau Prolog rules (contingent on Tier 2 adoption)
 
 ---
 
@@ -229,4 +256,29 @@ Validated across CDR Exercise Phases A–E. See `gsl-cdr-exercise-summary-2026-0
 
 ---
 
-*Extracted from monolithic syntax reference 8 March 2026 (Session 8). Content validated across sessions 1–8.*
+## 11. Tau Prolog for Tier 2 Reasoning
+
+Feasibility validated in Phase 5 spike (Session 12). 16/16 tests passed.
+
+**What Tau Prolog is:** A pure JavaScript ISO Prolog implementation. Runs in any JS environment including Temporal's deterministic V8 isolate. 566 KiB bundle size.
+
+**What it enables (beyond Tier 1 TypeScript):**
+
+- **Compound deficit reasoning:** Given multiple Deficit records, reason about interactions (e.g. overdue bloods AND missing consent AND expiring prescription), priority ordering, and compound remediation. This is natural in Prolog but awkward in imperative code.
+- **"Why not" explanation:** Negation as failure (`\+`) produces structured explanations listing every unmet prerequisite, not just the first failure.
+- **Inference chains:** Forward and backward chaining over clinical rule relationships (contraindication cascades, multi-factor eligibility assessment).
+- **Arithmetic evaluation:** Numeric comparison (`=<`, `>`, `is`) works for monitoring interval checks and threshold-based rules.
+
+**Performance:** 2.40ms per eligibility query, 3.67ms per deficit enumeration (100 iterations). Well within Temporal activity time budgets.
+
+**Temporal compatibility:** Pure JavaScript, no Node.js APIs. Same compatibility profile as XState (validated in Phase C demonstrator). Should run in Temporal's V8 isolate without issues.
+
+**Adoption recommendation:** Conditional. Adopt for Tier 2 reasoning when clinical rules demand compound inference beyond Tier 1 boolean constraints. The current constraint library is fully served by generated TypeScript. Tier 2 becomes valuable as clinical pathway complexity grows — particularly for compound deficit reasoning in Layer 5 remediation and for contraindication cascade analysis.
+
+**Rule generation path:** SysML constraint defs have a consistent shape (typed inputs, boolean expression, satisfy relationship). A generator could produce Prolog rules mechanically: each constraint becomes a rule, each input becomes a fact query, each negated prerequisite becomes a `why_not` rule.
+
+See: `spikes/tau-prolog-spike/spike.mjs`
+
+---
+
+*Extracted from monolithic syntax reference 8 March 2026 (Session 8). Updated 9 March 2026 (Session 12: Phase 5 generators, Tau Prolog spike).*
