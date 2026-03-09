@@ -1,0 +1,13 @@
+{
+  "name": "tau-prolog-spike",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Feasibility spike: Tau Prolog for Tier 2 clinical reasoning",
+  "type": "module",
+  "scripts": {
+    "spike": "node spike.mjs"
+  },
+  "dependencies": {
+    "tau-prolog": "^0.3.4"
+  }
+}
