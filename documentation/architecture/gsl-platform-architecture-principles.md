@@ -145,4 +145,28 @@ The high-level architecture does not need to be fully specified before beginning
 
 ---
 
+## Appendix A: Key Architectural Concepts
+
+(Copied from the gsl-plan-coffeeshop-demonstrator-spec.md document 01/03/26)
+
+### A.1 Temporal Workflow Durability
+
+A Temporal workflow function is an ordinary TypeScript async function. Each `await` in the function is a durability point. If the worker process crashes and restarts, Temporal replays the function from its event history, skipping already-completed steps, and resumes execution at the exact point of interruption. The developer writes straightforward sequential code; Temporal makes it durable transparently.
+
+### A.2 Temporal Signals for Human-in-the-Loop
+
+When a workflow needs to wait for an external event (a barista confirming preparation is complete, or in clinical terms, a lab returning blood results), it uses Temporal signals. The workflow function suspends at an `await`, consuming zero resources. When the signal arrives (via an API call from the web UI or an integration), the workflow resumes exactly where it left off. Suspensions can last seconds or months.
+
+### A.3 XState Entity Lifecycle Enforcement
+
+An XState state machine defines the valid states and transitions for an entity (e.g. an Order). It acts as a runtime guard: if any code attempts a transition that the model does not permit, XState silently rejects it. This provides defence in depth independent of the Temporal workflow. The machine definition is generated from the SysML `state def`, ensuring the runtime enforcement matches the model exactly.
+
+### A.4 Generation as the Bridge
+
+Code generation is the mechanism that keeps model and execution in sync. By generating workflow orchestration, state machine definitions, type definitions, and pathway diagrams from the same SysML source, changes to the model propagate automatically to all downstream artefacts. The principle is that process knowledge exists only in the model; generated code is a derived artefact, not a source of truth.
+
+
+
+---
+
 ###### **Document status:** Working document. Captures architectural thinking as of 4 March 2026. Intended to inform subsequent exercise specifications and design decisions. Not a formal architecture document.

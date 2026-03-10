@@ -6,6 +6,7 @@ package GenderSense {
     private import Platform::*;
     private import Operations::*;
     private import Foundation::*;
+    private import BusinessModel::*;
 
     doc /* GenderSense: Model-driven clinical service management platform
          * for gender-affirming healthcare.
@@ -31,5 +32,6 @@ package GenderSense {
          *   platform.sysml          — Portal, Booking, EHR, Forms, Messaging, Video, Labs, Prescribing, Payments, Docs, Identity, Orchestration, Integration
          *   operations.sysml        — Finance, People, Marketing, CRM, Reporting
          *   foundation.sysml        — MetadataLibrary, CommonTypes, StatePatterns, GenerationPipeline
+         *   business-model.sysml    — ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, ScenarioModelling
          */
 }

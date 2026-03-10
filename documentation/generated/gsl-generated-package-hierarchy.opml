@@ -2,7 +2,7 @@
 <opml version="2.0">
   <head>
     <title>GenderSense Package Hierarchy</title>
-    <dateCreated>2026-03-09 22:14</dateCreated>
+    <dateCreated>2026-03-10 22:31</dateCreated>
   </head>
   <body>
     <outline text="GenderSense — Model-driven clinical service management platform">
@@ -78,6 +78,10 @@
         <outline text="CoachingSupport  — Transition coaching services, group work, peer support  [2 use cases]" _note="service-delivery.sysml:802"/>
         <outline text="ClinicalGovernance  — Policies, protocols, procedures, clinical audit, outcome  [3 use cases]" _note="service-delivery.sysml:820"/>
         <outline text="ClinicalEntities  — Core domain entities: the nouns of the clinical domain.  [6 parts, 4 states]" _note="service-delivery.sysml:848"/>
+      </outline>
+      <outline text="BusinessModel  — The business model package captures the strategic logic of the" _note="business-model.sysml:6">
+        <outline text="ServiceConcept  — Defines the value proposition, customer segments, service  [5 parts]" _note="business-model.sysml:37"/>
+        <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-model.sysml:251"/>
       </outline>
     </outline>
     <outline text="Libraries (separate from main model)">

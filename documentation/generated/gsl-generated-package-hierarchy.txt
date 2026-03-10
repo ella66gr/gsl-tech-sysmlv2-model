@@ -63,5 +63,8 @@ GenderSense	Model-driven clinical service management platform
 		CoachingSupport	Transition coaching services, group work, peer support	2 use cases	service-delivery.sysml:802
 		ClinicalGovernance	Policies, protocols, procedures, clinical audit, outcome	3 use cases	service-delivery.sysml:820
 		ClinicalEntities	Core domain entities: the nouns of the clinical domain.	6 parts, 4 states	service-delivery.sysml:848
+	BusinessModel	The business model package captures the strategic logic of the		business-model.sysml:6
+		ServiceConcept	Defines the value proposition, customer segments, service	5 parts	business-model.sysml:37
+		ActivityModel	Cross-cutting activity taxonomy and costing foundation.	5 parts, 2 enums	business-model.sysml:251
 Libraries	Separate from main model		
 	TemporalMetadata	Metadata definitions for Temporal workflow generation.	4 metadata	libraries/temporal-metadata/temporal-metadata.sysml:1

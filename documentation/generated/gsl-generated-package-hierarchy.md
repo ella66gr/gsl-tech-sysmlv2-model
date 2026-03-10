@@ -1,8 +1,8 @@
 # GenderSense Package Hierarchy (Generated)
 
-**Generated:** 2026-03-09 22:14  
+**Generated:** 2026-03-10 22:31  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
-**Total packages:** 64 (excluding root)  
+**Total packages:** 67 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
 
 This document is generated from the SysML model. Do not edit manually.
@@ -11,7 +11,7 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 GenderSense Package Hierarchy
-Generated 2026-03-09 22:14 from model/*.sysml (64 packages)
+Generated 2026-03-10 22:31 from model/*.sysml (67 packages)
 
 GenderSense
 ├── Enterprise                    Defines the organisational, regulatory, strategic, and risk context.
@@ -71,17 +71,21 @@ GenderSense
 │   ├── Orchestration             Temporal infrastructure, workflow engine, worker deployment,
 │   └── Integration               API gateway, third-party connectors, webhook management,
 │
-└── ServiceDelivery               The clinical and operational heart of GenderSense.
-    ├── PatientJourney            Top-level lifecycle from acquisition through to discharge — [5 use cases]
-    ├── ClinicalPathways          Detailed clinical pathway models.
-    │   ├── HormoneTherapy        Hormone therapy initiation, titration, monitoring, — [3 use cases, 2 actions]
-    │   ├── Assessment            New patient assessment, self-assessment instruments, — [3 use cases]
-    │   ├── Referrals             Inbound referral processing, outbound specialist — [3 use cases]
-    │   └── Prescribing           Prescribing protocols, dispensing, medication monitoring, — [3 use cases]
-    ├── Consent                   Consent models: informed consent for treatment, consent — [3 use cases]
-    ├── CoachingSupport           Transition coaching services, group work, peer support — [2 use cases]
-    ├── ClinicalGovernance        Policies, protocols, procedures, clinical audit, outcome — [3 use cases]
-    └── ClinicalEntities          Core domain entities: the nouns of the clinical domain. — [6 parts, 4 states]
+├── ServiceDelivery               The clinical and operational heart of GenderSense.
+│   ├── PatientJourney            Top-level lifecycle from acquisition through to discharge — [5 use cases]
+│   ├── ClinicalPathways          Detailed clinical pathway models.
+│   │   ├── HormoneTherapy        Hormone therapy initiation, titration, monitoring, — [3 use cases, 2 actions]
+│   │   ├── Assessment            New patient assessment, self-assessment instruments, — [3 use cases]
+│   │   ├── Referrals             Inbound referral processing, outbound specialist — [3 use cases]
+│   │   └── Prescribing           Prescribing protocols, dispensing, medication monitoring, — [3 use cases]
+│   ├── Consent                   Consent models: informed consent for treatment, consent — [3 use cases]
+│   ├── CoachingSupport           Transition coaching services, group work, peer support — [2 use cases]
+│   ├── ClinicalGovernance        Policies, protocols, procedures, clinical audit, outcome — [3 use cases]
+│   └── ClinicalEntities          Core domain entities: the nouns of the clinical domain. — [6 parts, 4 states]
+│
+└── BusinessModel                 The business model package captures the strategic logic of the
+    ├── ServiceConcept            Defines the value proposition, customer segments, service — [5 parts]
+    └── ActivityModel             Cross-cutting activity taxonomy and costing foundation. — [5 parts, 2 enums]
 
 Libraries (separate from main model):
   TemporalMetadata (libraries/temporal-metadata/temporal-metadata.sysml) — Metadata definitions for Temporal workflow generation. — [4 metadata]
@@ -89,4 +93,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-03-09 22:14 by `gen_package_hierarchy.py`.*
+*Generated 2026-03-10 22:31 by `gen_package_hierarchy.py`.*
