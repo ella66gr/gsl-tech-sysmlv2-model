@@ -3,24 +3,34 @@
 // demonstrator extension
 // =========================================================================
 //
-// Validates: cross-project import of ScenarioModelling and
-// StrategyAndEvolution sub-packages, GrowthShape enum :>> from
+// Validates: cross-project import of BusinessScenarios and
+// BusinessStrategy packages, GrowthShape enum :>> from
 // exercises directory, ScenarioDefinition structure for a toy domain.
 //
-// Two scenarios: Small Kiosk vs Full Café.
+// Two scenarios: Small Kiosk vs Full Café, plus subscription variant.
+//
+// Phase 6A: imports updated from BusinessModel::ScenarioModelling
+// and BusinessModel::StrategyAndEvolution to the promoted top-level
+// packages BusinessScenarios and BusinessStrategy.
 
 package CoffeeshopScenarios {
     private import ScalarValues::*;
-    private import BusinessModel::ScenarioModelling::*;
-    private import BusinessModel::StrategyAndEvolution::*;
+    private import BusinessScenarios::*;
+    private import BusinessStrategy::*;
 
     doc /* Coffee shop scenario modelling extension. Two scenarios
          * for the same coffee shop business, demonstrating that the
          * ScenarioModelling and StrategyAndEvolution structures
          * accommodate a simple service business.
          *
-         * Phase 3 demonstrator — validates BusinessModel sub-package
-         * import and instantiation from exercises directory. */
+         * Phase 3 demonstrator — validates BusinessScenarios and
+         * BusinessStrategy import and instantiation from exercises
+         * directory.
+         *
+         * Phase 5 demonstrator — subscription scenario validates
+         * the subscription revenue formula pattern.
+         *
+         * Phase 6A — imports updated for promoted packages. */
 
     // =================================================================
     // SCENARIO DEFINITIONS
