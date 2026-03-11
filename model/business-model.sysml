@@ -1874,6 +1874,35 @@ package BusinessModel {
             attribute :>> parameterSnapshot = "Shared clinical params with Variant A. Subscription £99/month, 100% uptake. Coach 0.5 FTE, moderator 0.2 FTE. Clinician 1: 0.5→0.8 FTE at month 6. Clinician 2: 0.5→1.0 FTE at months 6→12. Platform £500/month. 25% overhead.";
             attribute :>> notes = "Illustrative placeholders per Phase 5 guardrail G1. All parameter values set once, not tuned.";
         }
+
+        // =============================================================
+        // SCENARIO COMPARISON — Variant A vs Variant B
+        // =============================================================
+
+        part leanVsFullComparison : ScenarioComparison {
+            doc /* Side-by-side comparison of Lean Clinical (Variant A)
+                 * and Full Platform (Variant B). Produced by the
+                 * projection engine --compare mode.
+                 *
+                 * Key findings (engine-derived, illustrative values):
+                 * - Variant A: max deficit ~£22K, margin £3.8K/mo at M24
+                 * - Variant B: max deficit ~£90K, margin £2.4K/mo at M24
+                 * - Variant B requires ~4.1x the capital of Variant A
+                 * - Variant B has 3 revenue streams vs 2
+                 * - Both variants: patient acquisition is the dominant
+                 *   sensitivity parameter
+                 * - Variant B clinician utilisation is low (15%) at
+                 *   current growth — over-resourced for 76 patients
+                 *   with 1.8 FTE clinicians
+                 *
+                 * All values are illustrative placeholders. This
+                 * comparison tests structural capability, not validated
+                 * business projections. */
+            attribute :>> comparisonName = "Lean Clinical vs Full Platform";
+            attribute :>> scenarioRefs = "Lean Clinical (Variant A), Full Platform (Variant B)";
+            attribute :>> comparisonDate = "2026-03-11";
+            attribute :>> summaryNotes = "Variant B requires ~4.1x capital (£90K vs £22K), has 3 revenue streams vs 2, but lower margin at month 24 (£2.4K vs £3.8K). Subscription contributes ~39% of Variant B revenue by month 24. Both variants sensitive to patient acquisition rate. Variant B over-resourced at projected growth (15% clinician utilisation with 1.8 FTE). Break-even not reached for either variant within 24 months at base assumptions.";
+        }
     }
 
     // =================================================================
