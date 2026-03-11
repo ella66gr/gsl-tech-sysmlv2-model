@@ -10,10 +10,16 @@
 // named BusinessStrategy (not BusinessModel::StrategyAndEvolution).
 //
 // Phase 6A (Session 18). See gsl-plan-business-meta-model-phase6a.md.
+// Phase 7 (Session 19). StrategicObjective restructured from part def
+// to requirement def to enable formal satisfy relationships to
+// Capability usages. relatedCapabilities attribute removed — replaced
+// by satisfy in BusinessModel::ResourcePlanning. relatedScenarios
+// upgraded from String to ref. Import added from BusinessScenarios.
 // =========================================================================
 
 package BusinessStrategy {
     private import ScalarValues::*;
+    private import BusinessScenarios::ScenarioDefinition;
 
     doc /* Strategic direction, business model variants, and
          * pivot scenarios. Captures the intentional direction
@@ -23,13 +29,17 @@ package BusinessStrategy {
          *
          * Formerly BusinessModel::StrategyAndEvolution. Promoted
          * to top-level package in Phase 6A for file size management.
-         * All content is unchanged; only the package namespace has
-         * moved.
          *
          * Connects to Enterprise::Strategy (upgrading the
          * current placeholder) and to BusinessScenarios
          * (each variant has a corresponding ScenarioDefinition
          * with full parameterisation).
+         *
+         * Phase 7: StrategicObjective is a requirement def.
+         * satisfy relationships are in BusinessModel::
+         * ResourcePlanning (different package from the def,
+         * per Syside constraint). relatedScenarios is a typed
+         * ref to ScenarioDefinition[0..*].
          *
          * Variant A and B are fully elaborated with
          * ScenarioDefinitions. Variant C remains a placeholder.
@@ -37,24 +47,39 @@ package BusinessStrategy {
          * Source: gsl-service-business-meta-modelling.md
          * sections 3.5, 7.1 */
 
-    // -- Part definitions ----------------------------------
+    // -- Requirement definitions ---------------------------
 
-    part def StrategicObjective {
+    requirement def StrategicObjective {
         doc /* A defined business goal with a timeframe, success
-             * criteria, and relationship to capabilities and
-             * scenarios. Provides the intentional direction that
-             * the other concerns serve.
+             * criteria, and traceability to capabilities that
+             * satisfy it and scenarios that parameterise it.
              *
-             * Formal satisfy relationships from objectives to
-             * capabilities are deferred to Phase 7. */
+             * Modelled as requirement def (not part def) to enable
+             * formal satisfy relationships from objectives to
+             * Capability usages in ResourcePlanning. This preserves
+             * structural traceability for future tooling —
+             * generators, validators, and traceability reports can
+             * follow the satisfy chain rather than parsing string
+             * conventions.
+             *
+             * subject: the GenderSense service system that must
+             * achieve this objective.
+             *
+             * satisfy relationships are in BusinessModel::
+             * ResourcePlanning (different package, per Syside
+             * constraint on satisfy in same package as req def).
+             *
+             * Phase 7 restructuring from part def. */
+        subject genderSenseService;
         attribute objectiveName : String;
         attribute description : String;
         attribute targetDate : String;          // e.g. "Month 18", "Year 2 Q4"
         attribute successCriteria : String;
-        attribute relatedCapabilities : String; // references Capability names
-        attribute relatedScenarios : String;    // references ScenarioDefinition names
         attribute status : String;              // planned, in progress, achieved, revised
+        ref relatedScenarios : ScenarioDefinition[0..*];
     }
+
+    // -- Part definitions ----------------------------------
 
     part def BusinessModelVariant {
         doc /* A named alternative business model configuration.
@@ -87,44 +112,40 @@ package BusinessStrategy {
     }
 
     // -- GSL strategic objectives --------------------------
+    //
+    // Note: relatedCapabilities is no longer an attribute here.
+    // Traceability from objectives to capabilities is expressed
+    // via satisfy relationships in BusinessModel::ResourcePlanning.
 
-    part objectivePatientCohort : StrategicObjective {
+    requirement objectivePatientCohort : StrategicObjective {
         attribute :>> objectiveName = "Build active patient cohort";
         attribute :>> description = "Reach 200 active patients across assessment, initiation, and monitoring";
         attribute :>> targetDate = "Month 18";
         attribute :>> successCriteria = "200+ patients in active monitoring or initiation by month 18";
-        attribute :>> relatedCapabilities = "Prescribing and monitoring, Clinical assessment, Blood monitoring";
-        attribute :>> relatedScenarios = "Lean Clinical (Variant A)";
         attribute :>> status = "planned";
     }
 
-    part objectiveSharedCare : StrategicObjective {
+    requirement objectiveSharedCare : StrategicObjective {
         attribute :>> objectiveName = "Establish shared care network";
         attribute :>> description = "Build shared care agreements with GP practices for ongoing monitoring";
         attribute :>> targetDate = "Month 24";
         attribute :>> successCriteria = "50+ signed shared care protocols with GP practices";
-        attribute :>> relatedCapabilities = "Prescribing and monitoring";
-        attribute :>> relatedScenarios = "Lean Clinical (Variant A), Full Platform (Variant B)";
         attribute :>> status = "planned";
     }
 
-    part objectiveBreakEven : StrategicObjective {
+    requirement objectiveBreakEven : StrategicObjective {
         attribute :>> objectiveName = "Financial break-even";
         attribute :>> description = "Reach the point where cumulative cash flow turns positive";
         attribute :>> targetDate = "Month 24";
         attribute :>> successCriteria = "Cumulative cash flow >= £0";
-        attribute :>> relatedCapabilities = "";
-        attribute :>> relatedScenarios = "Lean Clinical (Variant A)";
         attribute :>> status = "planned";
     }
 
-    part objectivePlatformLaunch : StrategicObjective {
+    requirement objectivePlatformLaunch : StrategicObjective {
         attribute :>> objectiveName = "Patient portal operational";
         attribute :>> description = "Launch the patient-facing portal with pathway visibility, journal, and document access";
         attribute :>> targetDate = "Month 6";
         attribute :>> successCriteria = "Portal live with pathway visibility, journal, and document access features";
-        attribute :>> relatedCapabilities = "Clinical assessment, Prescribing and monitoring";
-        attribute :>> relatedScenarios = "Lean Clinical (Variant A), Full Platform (Variant B)";
         attribute :>> status = "planned";
     }
 
@@ -156,7 +177,7 @@ package BusinessStrategy {
     }
 
     part variantConsultancyLicence : BusinessModelVariant {
-        doc /* Deferred beyond Phase 5. Requires modelling
+        doc /* Deferred beyond Phase 7. Requires modelling
              * licence pricing, platform deployment for licensees,
              * and support cost structures. */
         attribute :>> variantName = "Consultancy + Platform Licence";
