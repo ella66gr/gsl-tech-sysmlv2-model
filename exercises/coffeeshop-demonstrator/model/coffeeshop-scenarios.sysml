@@ -12,6 +12,7 @@
 // Phase 6A: imports updated from BusinessModel::ScenarioModelling
 // and BusinessModel::StrategyAndEvolution to the promoted top-level
 // packages BusinessScenarios and BusinessStrategy.
+// Phase 6A Stage 3: PeriodActuals and VarianceAnalysis demonstrator.
 
 package CoffeeshopScenarios {
     private import ScalarValues::*;
@@ -30,7 +31,9 @@ package CoffeeshopScenarios {
          * Phase 5 demonstrator — subscription scenario validates
          * the subscription revenue formula pattern.
          *
-         * Phase 6A — imports updated for promoted packages. */
+         * Phase 6A — imports updated for promoted packages.
+         * PeriodActuals and VarianceAnalysis validate the
+         * operational steering part defs for a non-clinical domain. */
 
     // =================================================================
     // SCENARIO DEFINITIONS
@@ -289,10 +292,6 @@ package CoffeeshopScenarios {
     }
 
     // Subscription revenue formula
-    //
-    // This is the key pattern being validated: an additive revenue
-    // stream with its own volume driver, structurally identical to
-    // formulaSubscriptionRevenue in the GSL model.
 
     part formulaCafeSubscriptionRevenue : ProjectionFormula {
         doc /* Coffee shop equivalent of GSL's
@@ -368,5 +367,56 @@ package CoffeeshopScenarios {
         attribute :>> transitionPlan = "Secure high street premises, hire 2 additional baristas, add food menu, fit out seating area";
         attribute :>> estimatedTransitionMonths = 3;
         attribute :>> riskNotes = "Requires £35K capital for fit-out and 3-month cash buffer during transition";
+    }
+
+    // =================================================================
+    // OPERATIONAL STEERING — Phase 6A demonstrator
+    // =================================================================
+    //
+    // Validates PeriodActuals and VarianceAnalysis part defs for a
+    // non-clinical domain. One week of illustrative kiosk actuals
+    // compared against the projection. SysML only — no engine wiring.
+    //
+    // Note: actualPatientCount is a domain-specific attribute name
+    // (healthcare). In the coffee shop context it would be
+    // actualCustomerCount. This mismatch is documented as a known
+    // issue — generalising attribute names is deferred. Set to 0.
+
+    part kioskWeek1Actuals : PeriodActuals {
+        doc /* Small Kiosk, week 1 actuals. 240 drinks sold against
+             * a projected 250. Revenue shortfall due to rain on
+             * Wednesday reducing footfall. Cost slightly above
+             * projection due to ingredient waste (new barista
+             * over-preparing milk). */
+        attribute :>> periodLabel = "Week 1";
+        attribute :>> actualRevenue = 840.0;
+        attribute :>> actualCost = 610.0;
+        attribute :>> actualMargin = 230.0;
+        attribute :>> actualPatientCount = 0;      // not applicable — see note above
+        attribute :>> recordedDate = "2026-03-17";
+        attribute :>> notes = "240 drinks sold (projected 250). Rain on Wednesday reduced footfall.";
+    }
+
+    part kioskWeek1Variance : VarianceAnalysis {
+        doc /* Variance analysis for kiosk week 1. Primary cause
+             * is volume variance (fewer drinks sold). Cost variance
+             * is unfavourable due to ingredient waste — a training
+             * issue, not structural.
+             *
+             * The decomposition demonstrates the variance structure
+             * producing a humanly readable explanation: "we sold
+             * fewer coffees because it rained, and wasted some milk
+             * because the new barista is still learning." This is
+             * the same explanatory structure that, in the GSL
+             * clinical domain, would say "revenue was below plan
+             * because GP referrals were lower than projected." */
+        attribute :>> periodLabel = "Week 1";
+        attribute :>> revenueVariance = -35.0;
+        attribute :>> costVariance = -10.0;
+        attribute :>> marginVariance = -45.0;
+        attribute :>> varianceSource = "volume";
+        attribute :>> decomposition = "Revenue: volume variance -£35 (240 vs 250 drinks at £3.50). Price variance £0. Cost: ingredient waste +£10 unfavourable (new barista over-preparing milk).";
+        attribute :>> rebaselineRecommended = "No — single week, within normal variation. Weather-driven, not structural.";
+        attribute :>> notes = "First week of trading. Variance is small and explainable. No action needed beyond barista training on milk preparation.";
     }
 }
