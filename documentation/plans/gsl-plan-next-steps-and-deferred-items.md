@@ -217,19 +217,44 @@ Plan the transition from the development environment (`temporal server start-lit
 - Plotting / visualisation (matplotlib or similar) — currently CSV export to spreadsheet is sufficient
 - Manifest integration — engine reads parameter values from generated System Model Manifest JSON
 - Projection generator — SysML `ProjectionFormula` usages → engine code. Deferred until formula patterns stabilise through hand-written implementation.
-- Comparison mode — side-by-side output for two scenarios (prep for Phase 5)
+- ~~Comparison mode — side-by-side output for two scenarios (prep for Phase 5)~~ **Done (Session 17)**
+- Sensitivity "dominant" text misleading when break-even not reached in either scenario — the spread calculation falls back to 99-0=99. Minor formatting fix needed.
+- Coffee shop subscription scenario not yet wired into the projection engine — SysML model is complete but engine `SCENARIOS` dict does not include a `coffeeshop-cafe-subscription` entry. Low priority — validates SysML pattern, not engine execution.
 
 ### Phase 3 deferred items (carried forward from Session 15)
 
 - Formal `ref` from ScenarioDefinition to ServiceOffering (deferred to Phase 7)
 - Full 24-month ProjectionOutput time series — now produced by the engine; SysML illustrative values cover months 1, 6, 12, 18, 24 only
-- ScenarioComparison instantiation (Phase 5)
+- ~~ScenarioComparison instantiation (Phase 5)~~ **Done (Session 17)** — `leanVsFullComparison`
 - `VarianceSource` enum used as typed attribute (Phase 6)
 - Formal `satisfy` from StrategicObjective to Capability (Phase 7)
-- Full Platform ScenarioDefinition (Phase 5)
+- ~~Full Platform ScenarioDefinition (Phase 5)~~ **Done (Session 17)** — `fullPlatformScenario` with full parameterisation
 - Variant C elaboration (beyond Phase 5)
-- File splitting strategy for `business-model.sysml` (Phase 5 planning)
+- File splitting strategy for `business-model.sysml` — now ~1,900 lines. Approaching the 1,500-line threshold noted in Phase 5 plan. Should be addressed before Phase 6.
 - PeriodActuals and VarianceAnalysis instantiation (Phase 6)
+
+## Business Meta Model — Phase 5 Findings (Session 17)
+
+### Structural findings
+
+- **Subscription revenue requires a new ProjectionFormula** — it has its own volume driver (activeSubscribers) distinct from clinical revenue. The existing Variant A formulas handle the clinical component unchanged. This is a genuine new structural pattern.
+- **Existing part def vocabulary handled Variant B without modification** — no part defs were added or changed. All 3 new service offerings, 2 new resource types, and subscription revenue fit within the Phase 1-3 vocabulary. This validates the meta-model design.
+- **Parameter inheritance works at engine level** — Variant B shares clinical parameters with Variant A via Python dict spread. The SysML model documents this via comment blocks rather than formal inheritance (no SysML specialisation of ScenarioDefinition). This is a pragmatic choice.
+
+### Projection findings (illustrative, not validated)
+
+- Variant B break-even not reached within 24 months (margin turns positive month 21)
+- Max deficit ~£90K (4.1× Variant A's ~£22K)
+- Subscription contributes ~39% of Variant B revenue by month 24
+- Variant B clinician utilisation is 15% — over-resourced at 1.8 FTE for 76 patients
+- Patient acquisition dominates sensitivity for both variants
+- Subscription price (£59-£149) swings cumulative CF by ~£81K
+
+### Items for Ella's review
+
+- All Variant B parameter values are illustrative placeholders — need real pricing and resource assumptions before any business decision use
+- The 100% subscription uptake assumption is the simplest model — sensitivity shows 60% uptake is materially worse
+- Clinician utilisation at 15% suggests the two-clinician model is premature at 4-6 patients/month acquisition — either growth needs to be higher or clinician 2 should join later
 
 ## Syntax Reference v3.7 (09.03.26)
 
