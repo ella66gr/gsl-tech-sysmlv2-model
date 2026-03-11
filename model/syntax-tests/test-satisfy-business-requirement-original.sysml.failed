@@ -1,0 +1,121 @@
+// =========================================================================
+// SYNTAX TEST: satisfy with business-domain requirement def
+//
+// Purpose: Verify that Syside 0.8.5 supports satisfy relationships
+//          for non-clinical requirement defs (business objectives).
+//
+// What to check:
+//   1. Does a requirement def with business attributes parse?
+//   2. Does a requirement usage parse with :>> redefinitions?
+//   3. Does satisfy requirement X by Y work where X is a business
+//      requirement and Y is a part usage?
+//   4. Can one requirement have multiple satisfy-by statements?
+//   5. Does the satisfy target need to be in the same package, or
+//      can it reference a usage from a different package?
+//
+// Context: Phase 7 converts StrategicObjective from part def to
+// requirement def, with satisfy relationships to Capability usages
+// in BusinessModel::ResourcePlanning. The verified pattern (clinical
+// requirements in Enterprise::Regulation) uses requirement defs with
+// subject and typed attributes — this test confirms the same pattern
+// works for business-domain objectives.
+//
+// IMPORTANT: satisfy must be in a DIFFERENT package from the
+// requirement def (verified Syside constraint — same-package satisfy
+// triggers namespace-distinguishability shadow warning).
+//
+// SysML v2 spec: satisfy requirement X by Y;
+// =========================================================================
+
+package SyntaxTestSatisfyBusinessRequirement {
+    private import ScalarValues::*;
+
+    doc /* Test: satisfy with business-domain requirement defs.
+         * Phase 7 pre-flight verification.
+         *
+         * Structure: DefPackage holds the requirement defs,
+         * ImplPackage holds the usages and satisfy relationships.
+         * This mirrors the Phase 7 pattern: requirement defs in
+         * BusinessStrategy, satisfy in ResourcePlanning. */
+
+    // =================================================================
+    // Package A: Requirement definitions (mirrors BusinessStrategy)
+    // =================================================================
+
+    package ObjectiveDefs {
+        private import ScalarValues::*;
+
+        doc /* Business objective requirement definitions. */
+
+        requirement def BusinessObjective {
+            doc /* A business-domain objective modelled as a
+                 * requirement def to enable formal satisfy. */
+            subject businessService : String;
+            attribute objectiveName : String;
+            attribute targetDate : String;
+            attribute successCriteria : String;
+        }
+
+        // --- Requirement usages (specific objectives) ---
+
+        requirement objectiveGrowth : BusinessObjective {
+            attribute :>> objectiveName = "Grow customer base";
+            attribute :>> targetDate = "Month 12";
+            attribute :>> successCriteria = "100 active customers";
+        }
+
+        requirement objectiveProfitability : BusinessObjective {
+            attribute :>> objectiveName = "Achieve profitability";
+            attribute :>> targetDate = "Month 6";
+            attribute :>> successCriteria = "Monthly margin > 0";
+        }
+    }
+
+    // =================================================================
+    // Package B: Capabilities and satisfy (mirrors ResourcePlanning)
+    // =================================================================
+
+    package CapabilityImpl {
+        private import ScalarValues::*;
+        private import SyntaxTestSatisfyBusinessRequirement::ObjectiveDefs::*;
+
+        doc /* Capability usages with satisfy relationships.
+             * In a DIFFERENT package from the requirement defs. */
+
+        // --- Capability part def (simplified) ---
+
+        part def TestCapability {
+            attribute capabilityName : String;
+        }
+
+        // --- Capability usages ---
+
+        part serviceCapability : TestCapability {
+            attribute :>> capabilityName = "Core service delivery";
+        }
+
+        part marketingCapability : TestCapability {
+            attribute :>> capabilityName = "Customer acquisition";
+        }
+
+        // --- Test A: basic satisfy (named form) ---
+        //
+        // FINDING: satisfy requirement X by Y creates a local
+        // usage named X that shadows the imported requirement.
+        // Use the named-and-typed form to avoid the
+        // namespace-distinguishability warning.
+
+        satisfy requirement growthByMarketing : objectiveGrowth
+            by marketingCapability;
+
+        // --- Test B: second satisfy for a different requirement ---
+
+        satisfy requirement profitByService : objectiveProfitability
+            by serviceCapability;
+
+        // --- Test C: multiple satisfy for the SAME requirement ---
+
+        satisfy requirement growthByService : objectiveGrowth
+            by serviceCapability;
+    }
+}

@@ -1,0 +1,109 @@
+// =========================================================================
+// SYNTAX TEST: satisfy with business-domain requirement def
+//
+// STATUS: PARTIALLY FAILED
+//
+// FINDINGS (Phase 7, Session 19):
+//
+// 1. requirement def with business-domain attributes — WORKS
+// 2. requirement usage with :>> redefinitions — WORKS
+// 3. satisfy requirement X by partUsage — FAILS (type-error)
+//    Error: "partUsage does not conform to ScalarValues::String"
+//    The by-target must conform to the requirement's subject type.
+//    satisfy works for constraint-typed targets (as in clinical
+//    requirements) but not for part-typed targets (capabilities).
+//
+// 4. satisfy requirement localName : reqUsage — WARNING
+//    (usage-feature-typing) "Usages should only be typed by
+//    Classifiers, this will be upgraded to error in Syside v0.9"
+//    Typing a satisfy by a requirement usage (not def) triggers this.
+//
+// 5. satisfy requirement X (bare) — WARNING
+//    (namespace-distinguishability) Creates a local usage named X
+//    that shadows the imported requirement. Use the named form
+//    satisfy requirement localName : ReqDef to avoid.
+//
+// CONCLUSION: satisfy is designed for requirement→constraint
+// traceability, not requirement→capability (part) traceability.
+// Use ObjectiveCapabilityMapping with typed ref instead.
+//
+// This file is retained for reference. The errors are expected.
+// =========================================================================
+
+package SyntaxTestSatisfyBusinessRequirement {
+    private import ScalarValues::*;
+
+    doc /* Test: satisfy with business-domain requirement defs.
+         * Phase 7 pre-flight verification.
+         *
+         * RESULT: satisfy by part usage does not work.
+         * See header comments for full findings. */
+
+    // =================================================================
+    // Package A: Requirement definitions (mirrors BusinessStrategy)
+    // =================================================================
+
+    package ObjectiveDefs {
+        private import ScalarValues::*;
+
+        doc /* Business objective requirement definitions. */
+
+        requirement def BusinessObjective {
+            doc /* A business-domain objective modelled as a
+                 * requirement def to enable formal satisfy. */
+            subject businessService : String;
+            attribute objectiveName : String;
+            attribute targetDate : String;
+            attribute successCriteria : String;
+        }
+
+        // --- Requirement usages (specific objectives) ---
+
+        requirement objectiveGrowth : BusinessObjective {
+            attribute :>> objectiveName = "Grow customer base";
+            attribute :>> targetDate = "Month 12";
+            attribute :>> successCriteria = "100 active customers";
+        }
+
+        requirement objectiveProfitability : BusinessObjective {
+            attribute :>> objectiveName = "Achieve profitability";
+            attribute :>> targetDate = "Month 6";
+            attribute :>> successCriteria = "Monthly margin > 0";
+        }
+    }
+
+    // =================================================================
+    // Package B: Capabilities and satisfy attempts
+    // =================================================================
+
+    package CapabilityImpl {
+        private import ScalarValues::*;
+        private import SyntaxTestSatisfyBusinessRequirement::ObjectiveDefs::*;
+
+        doc /* EXPECTED ERRORS: satisfy by part usage triggers
+             * type-error and usage-feature-typing warnings. */
+
+        part def TestCapability {
+            attribute capabilityName : String;
+        }
+
+        part serviceCapability : TestCapability {
+            attribute :>> capabilityName = "Core service delivery";
+        }
+
+        part marketingCapability : TestCapability {
+            attribute :>> capabilityName = "Customer acquisition";
+        }
+
+        // These all produce errors — retained for documentation:
+
+        satisfy requirement growthByMarketing : objectiveGrowth
+            by marketingCapability;
+
+        satisfy requirement profitByService : objectiveProfitability
+            by serviceCapability;
+
+        satisfy requirement growthByService : objectiveGrowth
+            by serviceCapability;
+    }
+}
