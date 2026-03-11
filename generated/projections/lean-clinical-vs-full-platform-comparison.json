@@ -1,0 +1,32 @@
+{
+  "lean-clinical": {
+    "scenario": "Lean Clinical (Variant A)",
+    "summary": {
+      "breakEvenMonth": null,
+      "maxCashDeficit": -22085.93,
+      "maxCashDeficitMonth": 14,
+      "marginAtFinalMonth": 3832.46,
+      "cumulativeCashFlowAtFinalMonth": -1239.51,
+      "activePatientsAtFinalMonth": 76.2,
+      "clinicianUtilisationAtFinalMonth": 34.2,
+      "revenueStreams": 2,
+      "clinicianFTEAtFinalMonth": 0.8,
+      "totalStaffFTEAtFinalMonth": 1.1
+    }
+  },
+  "full-platform": {
+    "scenario": "Full Platform (Variant B)",
+    "summary": {
+      "breakEvenMonth": null,
+      "maxCashDeficit": -90315.52,
+      "maxCashDeficitMonth": 20,
+      "marginAtFinalMonth": 2374.47,
+      "cumulativeCashFlowAtFinalMonth": -85077.91,
+      "activePatientsAtFinalMonth": 76.2,
+      "clinicianUtilisationAtFinalMonth": 15.2,
+      "revenueStreams": 3,
+      "clinicianFTEAtFinalMonth": 1.8,
+      "totalStaffFTEAtFinalMonth": 2.8
+    }
+  }
+}

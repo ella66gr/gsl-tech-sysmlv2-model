@@ -202,11 +202,11 @@ Plan the transition from the development environment (`temporal server start-lit
 
 ### Revenue model parameter gap
 
-- **`effectiveMonthlyRevenuePerPatient` as new SysML ProjectionParameter** — the existing `monitoringFeePerQuarter` (£150) captures only the quarterly blood review fee. The effective blended revenue is approximately £134/patient/month (~£400/quarter). A new parameter should be added to ScenarioModelling to make this explicit. Requires Ella to validate against actual clinical pricing intentions.
+- **`effectiveMonthlyRevenuePerPatient` as new SysML ProjectionParameter** — the existing `monitoringFeePerQuarter` (£150) captures only the quarterly blood review fee. The effective blended revenue is approximately £134/patient/month (~£400/quarter). A new parameter should be added to BusinessScenarios to make this explicit. Requires Ella to validate against actual clinical pricing intentions.
 
 ### SysML model updates (after parameter validation)
 
-- Update illustrative `ProjectionOutput` values in `business-model.sysml` to match validated engine output
+- Update illustrative `ProjectionOutput` values in `business-scenarios.sysml` to match validated engine output
 - Consider splitting monitoring revenue into explicit initiation-period and stable-period fees
 - Consider renaming or generalising `activePatientsTotal` field in ProjectionOutput for domain-agnostic use (low priority — carried forward from Session 15)
 
@@ -226,12 +226,12 @@ Plan the transition from the development environment (`temporal server start-lit
 - Formal `ref` from ScenarioDefinition to ServiceOffering (deferred to Phase 7)
 - Full 24-month ProjectionOutput time series — now produced by the engine; SysML illustrative values cover months 1, 6, 12, 18, 24 only
 - ~~ScenarioComparison instantiation (Phase 5)~~ **Done (Session 17)** — `leanVsFullComparison`
-- `VarianceSource` enum used as typed attribute (Phase 6)
+- `VarianceSource` enum used as typed attribute (Phase 6B)
 - Formal `satisfy` from StrategicObjective to Capability (Phase 7)
 - ~~Full Platform ScenarioDefinition (Phase 5)~~ **Done (Session 17)** — `fullPlatformScenario` with full parameterisation
 - Variant C elaboration (beyond Phase 5)
-- File splitting strategy for `business-model.sysml` — now ~1,900 lines. Approaching the 1,500-line threshold noted in Phase 5 plan. Should be addressed before Phase 6.
-- PeriodActuals and VarianceAnalysis instantiation (Phase 6)
+- ~~File splitting strategy for `business-model.sysml`~~ **Done (Session 18, Phase 6A)** — split into `business-model.sysml`, `business-scenarios.sysml`, `business-strategy.sysml`
+- ~~PeriodActuals and VarianceAnalysis instantiation (Phase 6)~~ **Done (Session 18, Phase 6A)** — coffee shop demonstrator instantiation validates the part defs. GSL domain instantiation deferred to Phase 6B.
 
 ## Business Meta Model — Phase 5 Findings (Session 17)
 
@@ -255,6 +255,39 @@ Plan the transition from the development environment (`temporal server start-lit
 - All Variant B parameter values are illustrative placeholders — need real pricing and resource assumptions before any business decision use
 - The 100% subscription uptake assumption is the simplest model — sensitivity shows 60% uptake is materially worse
 - Clinician utilisation at 15% suggests the two-clinician model is premature at 4-6 patients/month acquisition — either growth needs to be higher or clinician 2 should join later
+
+## Business Meta Model — Phase 6A Findings (Session 18)
+
+### File split
+
+- **Promoted ScenarioModelling to BusinessScenarios** (top-level package, `business-scenarios.sysml`). Promoted StrategyAndEvolution to BusinessStrategy (`business-strategy.sysml`). BusinessModel retains ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning.
+- **Cross-file enum resolution confirmed** — `BusinessScenarios::GrowthShape::sCurve` resolves correctly from the coffee shop exercises directory through the `BusinessScenarios::*` import. No new syntax finding — consistent with v3.10.
+- **Import path update scope was small** — only `coffeeshop-scenarios.sysml` needed updating. The other coffee shop files import from `BusinessModel::ServiceConcept::*` etc. which didn't change.
+
+### Operations expansion
+
+- **WorkforceRole part def** — captures the contract/qualification view of a role, complementing the planning view in ResourcePlanning::ResourceType. The two are connected by string reference (`resourceTypeRef`).
+- **PremisesArrangement and EquipmentInventory** part defs — lightweight estates modelling. GSL instantiations confirm the solo-clinician model's minimal physical infrastructure.
+- **ProduceBusinessModelMetrics use case** — the operational bridge to Phase 6B's steering cycle. This is where PeriodActuals data comes from.
+
+### Coffee shop demonstrator
+
+- **PeriodActuals and VarianceAnalysis validate for non-clinical domain** — the kiosk week 1 variance decomposition produces a readable explanation: "we sold fewer coffees because it rained, and wasted some milk because the new barista is still learning."
+- **`actualPatientCount` domain mismatch confirmed** — the attribute name is healthcare-specific. Set to 0 in coffee shop context. Generalising to `actualCustomerCount` or similar is deferred (low priority).
+
+### Items remaining for Phase 6B
+
+- `VarianceSource` enum used as typed attribute (currently String in VarianceAnalysis)
+- GSL domain PeriodActuals and VarianceAnalysis instantiation
+- Steering cycle wiring: OperationalSnapshot extension, GoalProjector extension, GapAnalyser extension for financial variances
+- Extended ExplanationTrace / SelfExplanationService for business steering audience
+
+### Items remaining for Phase 7
+
+- Formal `ref` from ScenarioDefinition to ServiceOffering
+- Formal `satisfy` from StrategicObjective to Capability
+- Governance cross-references (BusinessStrategy → Enterprise::Strategy, ResourceConstraint → Enterprise::Regulation)
+- Variant C elaboration
 
 ## Syntax Reference v3.7 (09.03.26)
 

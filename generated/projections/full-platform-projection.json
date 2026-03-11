@@ -1,0 +1,907 @@
+{
+  "scenario": "Full Platform (Variant B)",
+  "description": "Clinical care plus coaching, education, and community. 2 clinicians, subscription + per-episode.",
+  "generatedAt": "2026-03-11T18:07:35.466714+00:00",
+  "timelineMonths": 24,
+  "parameters": {
+    "scenarioName": "Full Platform (Variant B)",
+    "description": "Clinical care plus coaching, education, and community. 2 clinicians, subscription + per-episode.",
+    "timelineMonths": 24,
+    "domain": "clinical",
+    "assessmentFeePerPatient": 600.0,
+    "monitoringFeePerQuarter": 150.0,
+    "effectiveMonthlyRevenuePerPatient": 134.0,
+    "clinicianCostPerFTEPerMonth": 5000.0,
+    "adminFTE": 0.3,
+    "adminCostPerFTEPerMonth": 1800.0,
+    "platformCostPerMonth": 500.0,
+    "insurancePerMonth": 250.0,
+    "labCostPerBloodPanel": 45.0,
+    "overheadPercentage": 25.0,
+    "clinicianFTESchedule": {
+      "phase1": {
+        "fte": 0.5,
+        "months": [
+          1,
+          5
+        ]
+      },
+      "phase2": {
+        "fte": 1.3,
+        "months": [
+          6,
+          11
+        ]
+      },
+      "phase3": {
+        "fte": 1.8,
+        "months": [
+          12,
+          24
+        ]
+      }
+    },
+    "bloodPanelsPerInitiationEpisode": 5.0,
+    "bloodPanelsPerMonitoringQuarter": 1.0,
+    "newPatientsSchedule": {
+      "year1": {
+        "count": 4,
+        "months": [
+          1,
+          12
+        ]
+      },
+      "year2": {
+        "count": 6,
+        "months": [
+          13,
+          24
+        ]
+      }
+    },
+    "assessmentToInitiationConversion": 0.85,
+    "initiationToStableConversion": 0.9,
+    "initiationDurationMonths": 9,
+    "churnRatePerQuarter": 0.05,
+    "availableHoursPerFTEPerMonth": 140.0,
+    "assessmentHoursPerPatient": 2.0,
+    "initiationHoursPerPatientPerMonth": 0.5,
+    "monitoringHoursPerReview": 0.5,
+    "subscriptionFeePerMonth": 99.0,
+    "subscriptionUptakeRate": 1.0,
+    "coachFTE": 0.5,
+    "coachCostPerFTEPerMonth": 3000.0,
+    "moderatorFTE": 0.2,
+    "moderatorCostPerFTEPerMonth": 2000.0
+  },
+  "months": [
+    {
+      "month": 1,
+      "periodLabel": "Month 1",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 3.4,
+        "activePool": 3.0,
+        "churnedThisMonth": 0.1,
+        "totalActive": 7.0
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 403.09,
+        "total": 1900.89,
+        "subscription": 297.8
+      },
+      "cost": {
+        "clinician": 2500.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 85.0,
+        "directTotal": 5775.0,
+        "overhead": 1443.75,
+        "total": 7218.75,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -5317.86,
+      "cumulativeCashFlow": -5317.86,
+      "clinicianUtilisation": 13.9,
+      "confidenceProfile": "low — early months, envelope-level overhead estimate"
+    },
+    {
+      "month": 2,
+      "periodLabel": "Month 2",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 6.8,
+        "activePool": 6.0,
+        "churnedThisMonth": 0.1,
+        "totalActive": 10.0
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 799.34,
+        "total": 2589.9,
+        "subscription": 590.56
+      },
+      "cost": {
+        "clinician": 2500.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 170.0,
+        "directTotal": 5860.0,
+        "overhead": 1465.0,
+        "total": 7325.0,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -4735.1,
+      "cumulativeCashFlow": -10052.95,
+      "clinicianUtilisation": 16.3,
+      "confidenceProfile": "low — early months, envelope-level overhead estimate"
+    },
+    {
+      "month": 3,
+      "periodLabel": "Month 3",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 10.2,
+        "activePool": 8.9,
+        "churnedThisMonth": 0.2,
+        "totalActive": 12.9
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 1188.88,
+        "total": 3267.24,
+        "subscription": 878.35
+      },
+      "cost": {
+        "clinician": 2500.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 255.0,
+        "directTotal": 5945.0,
+        "overhead": 1486.25,
+        "total": 7431.25,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -4164.01,
+      "cumulativeCashFlow": -14216.97,
+      "clinicianUtilisation": 18.7,
+      "confidenceProfile": "low — early months, envelope-level overhead estimate"
+    },
+    {
+      "month": 4,
+      "periodLabel": "Month 4",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 13.6,
+        "activePool": 11.7,
+        "churnedThisMonth": 0.2,
+        "totalActive": 15.7
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 1571.82,
+        "total": 3933.08,
+        "subscription": 1161.27
+      },
+      "cost": {
+        "clinician": 2500.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 340.0,
+        "directTotal": 6030.0,
+        "overhead": 1507.5,
+        "total": 7537.5,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -3604.42,
+      "cumulativeCashFlow": -17821.38,
+      "clinicianUtilisation": 21.1,
+      "confidenceProfile": "moderate — growth assumptions dominate"
+    },
+    {
+      "month": 5,
+      "periodLabel": "Month 5",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 17.0,
+        "activePool": 14.5,
+        "churnedThisMonth": 0.3,
+        "totalActive": 18.5
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 1948.26,
+        "total": 4587.65,
+        "subscription": 1439.39
+      },
+      "cost": {
+        "clinician": 2500.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 425.0,
+        "directTotal": 6115.0,
+        "overhead": 1528.75,
+        "total": 7643.75,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -3056.1,
+      "cumulativeCashFlow": -20877.49,
+      "clinicianUtilisation": 23.6,
+      "confidenceProfile": "moderate — growth assumptions dominate"
+    },
+    {
+      "month": 6,
+      "periodLabel": "Month 6",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 20.4,
+        "activePool": 17.3,
+        "churnedThisMonth": 0.3,
+        "totalActive": 21.3
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 2318.32,
+        "total": 5231.11,
+        "subscription": 1712.79
+      },
+      "cost": {
+        "clinician": 6500.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 510.0,
+        "directTotal": 10200.0,
+        "overhead": 2550.0,
+        "total": 12750.0,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -7518.89,
+      "cumulativeCashFlow": -28396.38,
+      "clinicianUtilisation": 10.0,
+      "confidenceProfile": "moderate — growth assumptions dominate"
+    },
+    {
+      "month": 7,
+      "periodLabel": "Month 7",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 23.8,
+        "activePool": 20.0,
+        "churnedThisMonth": 0.3,
+        "totalActive": 24.0
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 2682.11,
+        "total": 5863.67,
+        "subscription": 1981.56
+      },
+      "cost": {
+        "clinician": 6500.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 595.0,
+        "directTotal": 10285.0,
+        "overhead": 2571.25,
+        "total": 12856.25,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -6992.58,
+      "cumulativeCashFlow": -35388.96,
+      "clinicianUtilisation": 10.9,
+      "confidenceProfile": "moderate — growth assumptions dominate"
+    },
+    {
+      "month": 8,
+      "periodLabel": "Month 8",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 27.2,
+        "activePool": 22.7,
+        "churnedThisMonth": 0.4,
+        "totalActive": 26.7
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 3039.73,
+        "total": 6485.5,
+        "subscription": 2245.77
+      },
+      "cost": {
+        "clinician": 6500.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 680.0,
+        "directTotal": 10370.0,
+        "overhead": 2592.5,
+        "total": 12962.5,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -6477.0,
+      "cumulativeCashFlow": -41865.96,
+      "clinicianUtilisation": 11.9,
+      "confidenceProfile": "moderate — growth assumptions dominate"
+    },
+    {
+      "month": 9,
+      "periodLabel": "Month 9",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 27.2,
+        "activePool": 25.3,
+        "churnedThisMonth": 0.4,
+        "totalActive": 29.3
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 3391.29,
+        "total": 7096.79,
+        "subscription": 2505.5
+      },
+      "cost": {
+        "clinician": 6500.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 680.0,
+        "directTotal": 10370.0,
+        "overhead": 2592.5,
+        "total": 12962.5,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -5865.71,
+      "cumulativeCashFlow": -47731.67,
+      "clinicianUtilisation": 11.9,
+      "confidenceProfile": "moderate — growth assumptions dominate"
+    },
+    {
+      "month": 10,
+      "periodLabel": "Month 10",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 27.2,
+        "activePool": 27.9,
+        "churnedThisMonth": 0.5,
+        "totalActive": 31.9
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 3736.89,
+        "total": 7697.72,
+        "subscription": 2760.83
+      },
+      "cost": {
+        "clinician": 6500.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 690.31,
+        "directTotal": 10380.31,
+        "overhead": 2595.08,
+        "total": 12975.39,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -5277.67,
+      "cumulativeCashFlow": -53009.34,
+      "clinicianUtilisation": 11.9,
+      "confidenceProfile": "moderate — growth assumptions dominate"
+    },
+    {
+      "month": 11,
+      "periodLabel": "Month 11",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 27.2,
+        "activePool": 30.4,
+        "churnedThisMonth": 0.5,
+        "totalActive": 34.4
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 4076.62,
+        "total": 8288.46,
+        "subscription": 3011.83
+      },
+      "cost": {
+        "clinician": 6500.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 728.34,
+        "directTotal": 10418.34,
+        "overhead": 2604.58,
+        "total": 13022.92,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -4734.46,
+      "cumulativeCashFlow": -57743.8,
+      "clinicianUtilisation": 12.2,
+      "confidenceProfile": "moderate — growth assumptions dominate"
+    },
+    {
+      "month": 12,
+      "periodLabel": "Month 12",
+      "patients": {
+        "newThisMonth": 4,
+        "enteringActive": 3.1,
+        "inInitiationPeriod": 27.2,
+        "activePool": 32.9,
+        "churnedThisMonth": 0.6,
+        "totalActive": 36.9
+      },
+      "revenue": {
+        "assessment": 1200.0,
+        "monitoring": 4410.6,
+        "total": 8869.19,
+        "subscription": 3258.58
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 765.72,
+        "directTotal": 12955.72,
+        "overhead": 3238.93,
+        "total": 16194.66,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -7325.47,
+      "cumulativeCashFlow": -65069.27,
+      "clinicianUtilisation": 8.9,
+      "confidenceProfile": "moderate — growth assumptions dominate"
+    },
+    {
+      "month": 13,
+      "periodLabel": "Month 13",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 28.9,
+        "activePool": 36.9,
+        "churnedThisMonth": 0.6,
+        "totalActive": 42.9
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 4940.47,
+        "total": 10390.51,
+        "subscription": 3650.05
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 842.04,
+        "directTotal": 13032.04,
+        "overhead": 3258.01,
+        "total": 16290.05,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -5899.53,
+      "cumulativeCashFlow": -70968.81,
+      "clinicianUtilisation": 11.0,
+      "confidenceProfile": "moderate — conversion and churn assumptions becoming significant"
+    },
+    {
+      "month": 14,
+      "periodLabel": "Month 14",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 30.6,
+        "activePool": 40.8,
+        "churnedThisMonth": 0.7,
+        "totalActive": 46.8
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 5461.35,
+        "total": 11296.22,
+        "subscription": 4034.88
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 917.34,
+        "directTotal": 13107.34,
+        "overhead": 3276.84,
+        "total": 16384.18,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -5087.96,
+      "cumulativeCashFlow": -76056.76,
+      "clinicianUtilisation": 11.5,
+      "confidenceProfile": "moderate — conversion and churn assumptions becoming significant"
+    },
+    {
+      "month": 15,
+      "periodLabel": "Month 15",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 32.3,
+        "activePool": 44.6,
+        "churnedThisMonth": 0.8,
+        "totalActive": 50.6
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 5973.4,
+        "total": 12186.58,
+        "subscription": 4413.18
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 991.66,
+        "directTotal": 13181.66,
+        "overhead": 3295.42,
+        "total": 16477.08,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -4290.5,
+      "cumulativeCashFlow": -80347.26,
+      "clinicianUtilisation": 12.0,
+      "confidenceProfile": "moderate — conversion and churn assumptions becoming significant"
+    },
+    {
+      "month": 16,
+      "periodLabel": "Month 16",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 34.0,
+        "activePool": 48.3,
+        "churnedThisMonth": 0.8,
+        "totalActive": 54.3
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 6476.77,
+        "total": 13061.84,
+        "subscription": 4785.07
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 1065.01,
+        "directTotal": 13255.01,
+        "overhead": 3313.75,
+        "total": 16568.76,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -3506.92,
+      "cumulativeCashFlow": -83854.18,
+      "clinicianUtilisation": 12.5,
+      "confidenceProfile": "moderate — conversion and churn assumptions becoming significant"
+    },
+    {
+      "month": 17,
+      "periodLabel": "Month 17",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 35.7,
+        "activePool": 52.0,
+        "churnedThisMonth": 0.9,
+        "totalActive": 58.0
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 6971.6,
+        "total": 13922.27,
+        "subscription": 5150.66
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 1137.4,
+        "directTotal": 13327.4,
+        "overhead": 3331.85,
+        "total": 16659.25,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -2736.99,
+      "cumulativeCashFlow": -86591.17,
+      "clinicianUtilisation": 12.9,
+      "confidenceProfile": "moderate — conversion and churn assumptions becoming significant"
+    },
+    {
+      "month": 18,
+      "periodLabel": "Month 18",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 37.4,
+        "activePool": 55.7,
+        "churnedThisMonth": 1.0,
+        "totalActive": 61.7
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 7458.05,
+        "total": 14768.1,
+        "subscription": 5510.05
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 1208.86,
+        "directTotal": 13398.86,
+        "overhead": 3349.71,
+        "total": 16748.57,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -1980.47,
+      "cumulativeCashFlow": -88571.64,
+      "clinicianUtilisation": 13.4,
+      "confidenceProfile": "moderate — conversion and churn assumptions becoming significant"
+    },
+    {
+      "month": 19,
+      "periodLabel": "Month 19",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 39.1,
+        "activePool": 59.2,
+        "churnedThisMonth": 1.0,
+        "totalActive": 65.2
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 7936.25,
+        "total": 15599.6,
+        "subscription": 5863.35
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 1279.39,
+        "directTotal": 13469.39,
+        "overhead": 3367.35,
+        "total": 16836.73,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -1237.13,
+      "cumulativeCashFlow": -89808.77,
+      "clinicianUtilisation": 13.9,
+      "confidenceProfile": "moderate — long-term churn assumption least validated"
+    },
+    {
+      "month": 20,
+      "periodLabel": "Month 20",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 40.8,
+        "activePool": 62.7,
+        "churnedThisMonth": 1.1,
+        "totalActive": 68.7
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 8406.35,
+        "total": 16417.01,
+        "subscription": 6210.66
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 1349.01,
+        "directTotal": 13539.01,
+        "overhead": 3384.75,
+        "total": 16923.76,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": -506.75,
+      "cumulativeCashFlow": -90315.52,
+      "clinicianUtilisation": 14.3,
+      "confidenceProfile": "moderate — long-term churn assumption least validated"
+    },
+    {
+      "month": 21,
+      "periodLabel": "Month 21",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 40.8,
+        "activePool": 66.2,
+        "churnedThisMonth": 1.1,
+        "totalActive": 72.2
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 8868.47,
+        "total": 17220.55,
+        "subscription": 6552.08
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 1400.74,
+        "directTotal": 13590.74,
+        "overhead": 3397.68,
+        "total": 16988.42,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": 232.13,
+      "cumulativeCashFlow": -90083.39,
+      "clinicianUtilisation": 14.5,
+      "confidenceProfile": "moderate — long-term churn assumption least validated"
+    },
+    {
+      "month": 22,
+      "periodLabel": "Month 22",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 40.8,
+        "activePool": 69.6,
+        "churnedThisMonth": 1.2,
+        "totalActive": 75.6
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 9322.76,
+        "total": 18010.48,
+        "subscription": 6887.71
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 1451.59,
+        "directTotal": 13641.59,
+        "overhead": 3410.4,
+        "total": 17051.99,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": 958.49,
+      "cumulativeCashFlow": -89124.91,
+      "clinicianUtilisation": 14.8,
+      "confidenceProfile": "moderate — long-term churn assumption least validated"
+    },
+    {
+      "month": 23,
+      "periodLabel": "Month 23",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 40.8,
+        "activePool": 72.9,
+        "churnedThisMonth": 1.3,
+        "totalActive": 78.9
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 9769.35,
+        "total": 18787.01,
+        "subscription": 7217.66
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 1501.58,
+        "directTotal": 13691.58,
+        "overhead": 3422.9,
+        "total": 17114.48,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": 1672.53,
+      "cumulativeCashFlow": -87452.38,
+      "clinicianUtilisation": 15.0,
+      "confidenceProfile": "moderate — long-term churn assumption least validated"
+    },
+    {
+      "month": 24,
+      "periodLabel": "Month 24",
+      "patients": {
+        "newThisMonth": 6,
+        "enteringActive": 4.6,
+        "inInitiationPeriod": 40.8,
+        "activePool": 76.2,
+        "churnedThisMonth": 1.3,
+        "totalActive": 82.2
+      },
+      "revenue": {
+        "assessment": 1800.0,
+        "monitoring": 10208.37,
+        "total": 19550.38,
+        "subscription": 7542.01
+      },
+      "cost": {
+        "clinician": 9000.0,
+        "admin": 540.0,
+        "platform": 500.0,
+        "insurance": 250.0,
+        "lab": 1550.73,
+        "directTotal": 13740.73,
+        "overhead": 3435.18,
+        "total": 17175.91,
+        "coach": 1500.0,
+        "moderator": 400.0
+      },
+      "margin": 2374.47,
+      "cumulativeCashFlow": -85077.91,
+      "clinicianUtilisation": 15.2,
+      "confidenceProfile": "moderate — long-term churn assumption least validated"
+    }
+  ],
+  "summary": {
+    "breakEvenMonth": null,
+    "maxCashDeficit": -90315.52,
+    "maxCashDeficitMonth": 20,
+    "marginAtFinalMonth": 2374.47,
+    "cumulativeCashFlowAtFinalMonth": -85077.91,
+    "activePatientsAtFinalMonth": 76.2,
+    "clinicianUtilisationAtFinalMonth": 15.2,
+    "revenueStreams": 3,
+    "clinicianFTEAtFinalMonth": 1.8,
+    "totalStaffFTEAtFinalMonth": 2.8
+  }
+}
