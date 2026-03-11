@@ -11,10 +11,15 @@
 // named BusinessScenarios (not BusinessModel::ScenarioModelling).
 //
 // Phase 6A (Session 18). See gsl-plan-business-meta-model-phase6a.md.
+// Phase 6B (Session 18). Steering cycle wiring: VarianceSource enum
+// typing, cross-package imports to Knowledge::LogicEngine, illustrative
+// GoalProjection and Deficit instantiations.
 // =========================================================================
 
 package BusinessScenarios {
     private import ScalarValues::*;
+    private import Knowledge::LogicEngine::*;
+    private import Foundation::CommonTypes::*;
 
     doc /* Provides the mechanics for driving the business model
          * vocabulary — computing projections, comparing alternatives,
@@ -24,11 +29,16 @@ package BusinessScenarios {
          *
          * Formerly BusinessModel::ScenarioModelling. Promoted to
          * top-level package in Phase 6A for file size management.
-         * All content is unchanged; only the package namespace has
-         * moved.
+         *
+         * Phase 6B: imports from Knowledge::LogicEngine and
+         * Foundation::CommonTypes establish the structural wiring
+         * between the business model and the self-knowledge
+         * architecture. GoalProjection and Deficit part defs from
+         * LogicEngine are used to express financial goals and
+         * variances, validating the architecture as domain-agnostic.
          *
          * Source: gsl-service-business-meta-modelling.md sections
-         * 3.7 and 3.8 */
+         * 3.7, 3.8, and 4.7 */
 
     // -- Enumerations --------------------------------------
 
@@ -132,11 +142,13 @@ package BusinessScenarios {
     }
 
     part def VarianceAnalysis {
+        doc /* Phase 6B: varianceSource typed as VarianceSource enum
+             * (was String). Resolves deferred item from Phase 3. */
         attribute periodLabel : String;
         attribute revenueVariance : Real;
         attribute costVariance : Real;
         attribute marginVariance : Real;
-        attribute varianceSource : String;
+        attribute varianceSource : VarianceSource;
         attribute decomposition : String;
         attribute rebaselineRecommended : String;
         attribute notes : String;
@@ -780,20 +792,12 @@ package BusinessScenarios {
     }
 
     // Variant B projection formula — subscription revenue
-    //
-    // Structural finding: subscription revenue IS a new formula.
-    // The existing formulaTotalRevenue (assessment + monitoring)
-    // remains valid for the clinical component. Subscription
-    // revenue is additive. The engine composes:
-    //   totalRevenue = clinicalRevenue + subscriptionRevenue
 
     part formulaSubscriptionRevenue : ProjectionFormula {
         doc /* New formula required for Variant B. Subscription
              * revenue has its own volume driver (active
              * subscribers) distinct from assessment volume or
-             * monitoring volume. This answers the Phase 5 plan's
-             * key structural question: yes, subscription revenue
-             * requires a new formula. */
+             * monitoring volume. */
         attribute :>> formulaName = "Monthly subscription revenue";
         attribute :>> inputs = "activeSubscribers, subscriptionFeePerMonth";
         attribute :>> expression = "activeSubscribers * subscriptionFeePerMonth";
@@ -829,9 +833,6 @@ package BusinessScenarios {
     // Variant B illustrative projection outputs
 
     part fpOutputMonth1 : ProjectionOutput {
-        doc /* Month 1: same patients as Variant A but higher
-             * fixed costs (coach, moderator from day 1). Small
-             * subscription revenue from ~3 active patients. */
         attribute :>> periodLabel = "Month 1";
         attribute :>> revenue = 1900.0;
         attribute :>> cost = 8000.0;
@@ -843,9 +844,6 @@ package BusinessScenarios {
     }
 
     part fpOutputMonth6 : ProjectionOutput {
-        doc /* Month 6: second clinician joins. ~18 active
-             * patients generating subscription revenue. Cost
-             * step-up as clinician 2 starts. */
         attribute :>> periodLabel = "Month 6";
         attribute :>> revenue = 5400.0;
         attribute :>> cost = 13000.0;
@@ -857,9 +855,6 @@ package BusinessScenarios {
     }
 
     part fpOutputMonth12 : ProjectionOutput {
-        doc /* Month 12: clinician 2 steps to 1.0 FTE. ~35
-             * active patients. Subscription revenue growing
-             * but not yet offsetting the higher cost base. */
         attribute :>> periodLabel = "Month 12";
         attribute :>> revenue = 9400.0;
         attribute :>> cost = 16500.0;
@@ -871,9 +866,6 @@ package BusinessScenarios {
     }
 
     part fpOutputMonth18 : ProjectionOutput {
-        doc /* Month 18: ~50 active patients. Subscription
-             * revenue ~£5K/month. Deficit narrowing but still
-             * negative margin. */
         attribute :>> periodLabel = "Month 18";
         attribute :>> revenue = 13500.0;
         attribute :>> cost = 16000.0;
@@ -885,9 +877,6 @@ package BusinessScenarios {
     }
 
     part fpOutputMonth24 : ProjectionOutput {
-        doc /* Month 24: ~63 active patients. Approaching
-             * break-even but cumulative deficit still deep.
-             * Subscription revenue ~£6.2K/month. */
         attribute :>> periodLabel = "Month 24";
         attribute :>> revenue = 16500.0;
         attribute :>> cost = 16000.0;
@@ -954,5 +943,79 @@ package BusinessScenarios {
         attribute :>> scenarioRefs = "Lean Clinical (Variant A), Full Platform (Variant B)";
         attribute :>> comparisonDate = "2026-03-11";
         attribute :>> summaryNotes = "Variant B requires ~4.1x capital (£90K vs £22K), has 3 revenue streams vs 2, but lower margin at month 24 (£2.4K vs £3.8K). Subscription contributes ~39% of Variant B revenue by month 24. Both variants sensitive to patient acquisition rate. Variant B over-resourced at projected growth (15% clinician utilisation with 1.8 FTE). Break-even not reached for either variant within 24 months at base assumptions.";
+    }
+
+    // =================================================================
+    // STEERING CYCLE WIRING — Phase 6B
+    // =================================================================
+    //
+    // Illustrative GoalProjection and Deficit instantiations using
+    // part defs from Knowledge::LogicEngine. These demonstrate that
+    // the self-knowledge architecture handles financial goals and
+    // variances without modification — a financial forecast is a
+    // goal, a revenue shortfall is a deficit.
+    //
+    // This section establishes the structural connection between
+    // BusinessScenarios and Knowledge::LogicEngine via cross-package
+    // import and part usage. The import at the top of this file
+    // (private import Knowledge::LogicEngine::*) is the visible
+    // manifestation of this architectural wiring.
+
+    part goalMonth6Revenue : GoalProjection {
+        doc /* Financial goal: Lean Clinical month 6 revenue should
+             * be at least £2,550 (from the Variant A projection
+             * output). This is structurally identical to a clinical
+             * goal — "revenue should be £X" is the same pattern as
+             * "monitoring bloods should be within 12 weeks."
+             *
+             * The GoalProjection part def (from LogicEngine) handles
+             * this without modification. goalSource references a
+             * ProjectionFormula, expectedCondition states the target,
+             * evaluationQuery describes how to check actuals. */
+        attribute :>> goalName = "Month 6 revenue target (Lean Clinical)";
+        attribute :>> goalSource = "BusinessScenarios::formulaTotalRevenue";
+        attribute :>> expectedCondition = "totalMonthlyRevenue >= 2550.0";
+        attribute :>> evaluationQuery = "Xero management accounts: total revenue for month 6";
+        attribute :>> scope = AssessmentScope::system;
+    }
+
+    part goalMonth6PatientCount : GoalProjection {
+        doc /* Activity goal: Lean Clinical month 6 should have 20
+             * active patients (from the projection output). Patient
+             * acquisition is the dominant sensitivity parameter —
+             * tracking it as an explicit goal makes the most
+             * important assumption visible in the assessment. */
+        attribute :>> goalName = "Month 6 active patient target (Lean Clinical)";
+        attribute :>> goalSource = "BusinessScenarios::leanClinicalScenario";
+        attribute :>> expectedCondition = "activePatientsTotal >= 20";
+        attribute :>> evaluationQuery = "Temporal workflow query: count of active patient episodes";
+        attribute :>> scope = AssessmentScope::system;
+    }
+
+    part deficitMonth6Revenue : Deficit {
+        doc /* Illustrative financial deficit: month 6 revenue is
+             * £2,100 vs expected £2,550. This is structurally
+             * identical to a clinical deficit — the Deficit part
+             * def handles it without modification.
+             *
+             * deficitDomain = financial (new enum literal, Phase 6B).
+             * goalReference points to the ProjectionFormula.
+             * actualState and expectedState carry the figures.
+             * description carries the variance decomposition.
+             * remediationCategory = recommended (re-examine
+             * marketing spend, not an automatic system action).
+             *
+             * All values are illustrative — this instantiation
+             * validates the structural pattern, not real data. */
+        attribute :>> deficitDomain = DeficitDomain::financial;
+        attribute :>> scope = AssessmentScope::system;
+        attribute :>> description = "Month 6 revenue shortfall. Volume variance: 3 new patients vs projected 4 (acquisition below plan). Price variance: £0 (fees unchanged).";
+        attribute :>> goalReference = "BusinessScenarios::formulaTotalRevenue";
+        attribute :>> actualState = "£2,100";
+        attribute :>> expectedState = "£2,550";
+        attribute :>> severity = Severity::warning;
+        attribute :>> detectedAt = "2026-09-01T00:00:00Z";
+        attribute :>> remediationCategory = RemediationCategory::recommended;
+        attribute :>> remediationDescription = "Review patient acquisition channels. Consider: increase SEO investment, accelerate GP network outreach, or re-baseline growth assumption from 4/month to 3/month.";
     }
 }

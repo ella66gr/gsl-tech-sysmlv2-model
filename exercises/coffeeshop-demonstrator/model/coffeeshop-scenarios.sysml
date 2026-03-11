@@ -9,15 +9,17 @@
 //
 // Two scenarios: Small Kiosk vs Full Café, plus subscription variant.
 //
-// Phase 6A: imports updated from BusinessModel::ScenarioModelling
-// and BusinessModel::StrategyAndEvolution to the promoted top-level
-// packages BusinessScenarios and BusinessStrategy.
+// Phase 6A: imports updated for promoted packages.
 // Phase 6A Stage 3: PeriodActuals and VarianceAnalysis demonstrator.
+// Phase 6B Stage 4: VarianceSource enum typing, GoalProjection and
+// Deficit instantiations from Knowledge::LogicEngine.
 
 package CoffeeshopScenarios {
     private import ScalarValues::*;
     private import BusinessScenarios::*;
     private import BusinessStrategy::*;
+    private import Knowledge::LogicEngine::*;
+    private import Foundation::CommonTypes::*;
 
     doc /* Coffee shop scenario modelling extension. Two scenarios
          * for the same coffee shop business, demonstrating that the
@@ -31,9 +33,12 @@ package CoffeeshopScenarios {
          * Phase 5 demonstrator — subscription scenario validates
          * the subscription revenue formula pattern.
          *
-         * Phase 6A — imports updated for promoted packages.
-         * PeriodActuals and VarianceAnalysis validate the
-         * operational steering part defs for a non-clinical domain. */
+         * Phase 6A — PeriodActuals and VarianceAnalysis validate
+         * the operational steering part defs.
+         *
+         * Phase 6B — VarianceSource enum typing, GoalProjection
+         * and Deficit from Knowledge::LogicEngine validate the
+         * steering cycle wiring for a non-clinical domain. */
 
     // =================================================================
     // SCENARIO DEFINITIONS
@@ -172,28 +177,17 @@ package CoffeeshopScenarios {
     // =================================================================
 
     part kioskMonth6 : ProjectionOutput {
-        doc /* Kiosk at month 6: ~65 drinks/day (midpoint of growth).
-             * Revenue: 65 * £3.50 * 26 trading days = ~£5,915/mo.
-             * Cost: barista £2,080 + rent £800 + ingredients
-             * (~£0.80/drink = £1,352) + overhead ~£500 = ~£4,732.
-             * Margin: ~£1,183/month. Profitable from early on. */
         attribute :>> periodLabel = "Month 6";
         attribute :>> revenue = 5915.0;
         attribute :>> cost = 4732.0;
         attribute :>> margin = 1183.0;
         attribute :>> cumulativeCashFlow = 4200.0;
-        attribute :>> activePatientsTotal = 0;     // not applicable — using drinks/day
-        attribute :>> clinicianUtilisation = 0.0;  // not applicable
+        attribute :>> activePatientsTotal = 0;
+        attribute :>> clinicianUtilisation = 0.0;
         attribute :>> confidenceProfile = "moderate — seasonal variation not modelled";
     }
 
     part cafeMonth6 : ProjectionOutput {
-        doc /* Cafe at month 6: ~160 drinks/day (inflection point).
-             * Revenue: 160 * £4.20 * 26 = ~£17,472/mo.
-             * Cost: baristas £6,240 + rent £3,000 + ingredients
-             * (~£1.00/drink = £4,160) + overhead ~£2,000 = ~£15,400.
-             * Margin: ~£2,072/month. Higher absolute margin but
-             * higher capital requirement to reach this point. */
         attribute :>> periodLabel = "Month 6";
         attribute :>> revenue = 17472.0;
         attribute :>> cost = 15400.0;
@@ -233,20 +227,8 @@ package CoffeeshopScenarios {
     // =================================================================
     // SUBSCRIPTION SCENARIO — Phase 5 demonstrator parity
     // =================================================================
-    //
-    // Validates the subscription revenue ProjectionFormula pattern
-    // from the GSL Full Platform variant (Phase 5). The coffee shop
-    // equivalent: a monthly coffee subscription alongside per-drink
-    // pricing. Structural pattern: totalRevenue = drinkRevenue +
-    // subscriptionRevenue, mirroring totalRevenue = clinicalRevenue +
-    // subscriptionRevenue in the GSL model.
 
     part cafeSubscriptionScenario : ScenarioDefinition {
-        doc /* Full café with a monthly subscription offering.
-             * Subscribers pay £25/month for 1 free drink per day
-             * (value: ~£4.20 × 26 = £109). Additive to walk-in
-             * drink revenue. Structurally identical to the GSL
-             * Full Platform subscription model. */
         attribute :>> scenarioName = "Cafe with Subscription";
         attribute :>> description = "Full cafe plus monthly coffee subscription for regular customers";
         attribute :>> activeOfferings = "Hot drinks, Cold drinks, Food, Pastries, Monthly Subscription";
@@ -254,8 +236,6 @@ package CoffeeshopScenarios {
         attribute :>> timelineMonths = 12;
         attribute :>> notes = "Phase 5 demonstrator parity — validates subscription revenue formula pattern";
     }
-
-    // Subscription parameters
 
     part subMonthlyFee : ProjectionParameter {
         attribute :>> parameterName = "subscriptionFeePerMonth";
@@ -267,18 +247,13 @@ package CoffeeshopScenarios {
     }
 
     part subMemberCount : ProjectionParameter {
-        doc /* Subscription members grow from 0 to 40 over 12
-             * months. These are a subset of total customers —
-             * regulars who commit to the subscription. */
         attribute :>> parameterName = "subscriptionMembers";
         attribute :>> parameterValue = 0.0;
         attribute :>> unit = "members";
         attribute :>> sourceRef = "GrowthAssumption";
         attribute :>> temporalVariation = "Grows from 0 to 40 over 12 months";
-        attribute :>> notes = "Members also contribute to daily drink volume (their free drink is included in drink count but not in drink revenue)";
+        attribute :>> notes = "Members also contribute to daily drink volume";
     }
-
-    // Subscription growth assumption
 
     part subMemberGrowth : GrowthAssumption {
         attribute :>> assumptionName = "Subscription membership growth";
@@ -291,14 +266,7 @@ package CoffeeshopScenarios {
         attribute :>> notes = "Regulars converting to subscription as awareness grows";
     }
 
-    // Subscription revenue formula
-
     part formulaCafeSubscriptionRevenue : ProjectionFormula {
-        doc /* Coffee shop equivalent of GSL's
-             * formulaSubscriptionRevenue. Same structural pattern:
-             * volume driver × monthly fee = additive revenue stream.
-             * Validates that the ProjectionFormula vocabulary handles
-             * subscription revenue in a non-clinical domain. */
         attribute :>> formulaName = "Monthly subscription revenue";
         attribute :>> inputs = "subscriptionMembers, subscriptionFeePerMonth";
         attribute :>> expression = "subscriptionMembers * subscriptionFeePerMonth";
@@ -308,9 +276,6 @@ package CoffeeshopScenarios {
     }
 
     part formulaCafeSubscriptionTotalRevenue : ProjectionFormula {
-        doc /* Extended total revenue composing drink revenue with
-             * subscription revenue. Mirrors GSL
-             * formulaFullPlatformTotalRevenue. */
         attribute :>> formulaName = "Total monthly revenue (with subscription)";
         attribute :>> inputs = "monthlyDrinkRevenue, monthlySubscriptionRevenue";
         attribute :>> expression = "monthlyDrinkRevenue + monthlySubscriptionRevenue";
@@ -319,16 +284,7 @@ package CoffeeshopScenarios {
         attribute :>> notes = "Extends per-drink formula with subscription term";
     }
 
-    // Illustrative output — month 6 with subscription
-
     part cafeSubMonth6 : ProjectionOutput {
-        doc /* Cafe with subscription at month 6: ~160 drinks/day
-             * plus ~20 subscribers at £25/month.
-             * Drink revenue: 160 × £4.20 × 26 = ~£17,472/mo.
-             * Subscription revenue: 20 × £25 = £500/mo.
-             * Total revenue: ~£17,972/mo.
-             * Cost: same as fullCafe + minor subscription admin.
-             * Margin: ~£2,572/month (£500 subscription uplift). */
         attribute :>> periodLabel = "Month 6";
         attribute :>> revenue = 17972.0;
         attribute :>> cost = 15500.0;
@@ -339,12 +295,7 @@ package CoffeeshopScenarios {
         attribute :>> confidenceProfile = "moderate — subscription uptake assumption unvalidated";
     }
 
-    // Subscription variant
-
     part variantCafeSubscription : BusinessModelVariant {
-        doc /* Phase 5 demonstrator parity: a subscription variant
-             * for the coffee shop, mirroring the GSL Full Platform
-             * subscription model. */
         attribute :>> variantName = "Cafe with Subscription";
         attribute :>> variantLabel = "S";
         attribute :>> description = "Full cafe plus monthly coffee subscription for regulars";
@@ -370,53 +321,73 @@ package CoffeeshopScenarios {
     }
 
     // =================================================================
-    // OPERATIONAL STEERING — Phase 6A demonstrator
+    // OPERATIONAL STEERING — Phase 6A + 6B demonstrator
     // =================================================================
-    //
-    // Validates PeriodActuals and VarianceAnalysis part defs for a
-    // non-clinical domain. One week of illustrative kiosk actuals
-    // compared against the projection. SysML only — no engine wiring.
-    //
-    // Note: actualPatientCount is a domain-specific attribute name
-    // (healthcare). In the coffee shop context it would be
-    // actualCustomerCount. This mismatch is documented as a known
-    // issue — generalising attribute names is deferred. Set to 0.
 
     part kioskWeek1Actuals : PeriodActuals {
         doc /* Small Kiosk, week 1 actuals. 240 drinks sold against
-             * a projected 250. Revenue shortfall due to rain on
-             * Wednesday reducing footfall. Cost slightly above
-             * projection due to ingredient waste (new barista
-             * over-preparing milk). */
+             * a projected 250. */
         attribute :>> periodLabel = "Week 1";
         attribute :>> actualRevenue = 840.0;
         attribute :>> actualCost = 610.0;
         attribute :>> actualMargin = 230.0;
-        attribute :>> actualPatientCount = 0;      // not applicable — see note above
+        attribute :>> actualPatientCount = 0;      // not applicable — domain mismatch, deferred
         attribute :>> recordedDate = "2026-03-17";
         attribute :>> notes = "240 drinks sold (projected 250). Rain on Wednesday reduced footfall.";
     }
 
     part kioskWeek1Variance : VarianceAnalysis {
         doc /* Variance analysis for kiosk week 1. Primary cause
-             * is volume variance (fewer drinks sold). Cost variance
-             * is unfavourable due to ingredient waste — a training
-             * issue, not structural.
+             * is volume variance (fewer drinks sold).
              *
-             * The decomposition demonstrates the variance structure
-             * producing a humanly readable explanation: "we sold
-             * fewer coffees because it rained, and wasted some milk
-             * because the new barista is still learning." This is
-             * the same explanatory structure that, in the GSL
-             * clinical domain, would say "revenue was below plan
-             * because GP referrals were lower than projected." */
+             * Phase 6B: varianceSource now typed as VarianceSource
+             * enum (was String in Phase 6A). */
         attribute :>> periodLabel = "Week 1";
         attribute :>> revenueVariance = -35.0;
         attribute :>> costVariance = -10.0;
         attribute :>> marginVariance = -45.0;
-        attribute :>> varianceSource = "volume";
+        attribute :>> varianceSource = VarianceSource::volume;
         attribute :>> decomposition = "Revenue: volume variance -£35 (240 vs 250 drinks at £3.50). Price variance £0. Cost: ingredient waste +£10 unfavourable (new barista over-preparing milk).";
         attribute :>> rebaselineRecommended = "No — single week, within normal variation. Weather-driven, not structural.";
-        attribute :>> notes = "First week of trading. Variance is small and explainable. No action needed beyond barista training on milk preparation.";
+        attribute :>> notes = "First week of trading. Variance is small and explainable.";
+    }
+
+    // =================================================================
+    // STEERING CYCLE WIRING — Phase 6B demonstrator
+    // =================================================================
+    //
+    // GoalProjection and Deficit from Knowledge::LogicEngine validate
+    // the steering cycle pattern for a non-clinical domain.
+
+    part kioskGoalWeek1Revenue : GoalProjection {
+        doc /* Financial goal: kiosk week 1 revenue should be £875
+             * (250 drinks × £3.50). GoalProjection from LogicEngine
+             * handles this without modification — same structure
+             * as a clinical goal. */
+        attribute :>> goalName = "Week 1 kiosk revenue target";
+        attribute :>> goalSource = "CoffeeshopScenarios::smallKioskScenario";
+        attribute :>> expectedCondition = "weeklyRevenue >= 875.0";
+        attribute :>> evaluationQuery = "Till reconciliation: total revenue for week 1";
+        attribute :>> scope = AssessmentScope::system;
+    }
+
+    part kioskDeficitWeek1Revenue : Deficit {
+        doc /* Illustrative financial deficit: week 1 revenue is
+             * £840 vs expected £875. Volume variance from weather.
+             *
+             * Validates that Deficit (from LogicEngine) handles
+             * a coffee shop financial shortfall identically to a
+             * clinical governance gap. Same part def, different
+             * domain. */
+        attribute :>> deficitDomain = DeficitDomain::financial;
+        attribute :>> scope = AssessmentScope::system;
+        attribute :>> description = "Week 1 revenue shortfall. Volume variance: 240 drinks vs projected 250 (rain on Wednesday).";
+        attribute :>> goalReference = "CoffeeshopScenarios::smallKioskScenario";
+        attribute :>> actualState = "£840";
+        attribute :>> expectedState = "£875";
+        attribute :>> severity = Severity::informational;
+        attribute :>> detectedAt = "2026-03-17T18:00:00Z";
+        attribute :>> remediationCategory = RemediationCategory::advisory;
+        attribute :>> remediationDescription = "No action needed — weather-driven, not structural. Monitor next week for pattern.";
     }
 }
