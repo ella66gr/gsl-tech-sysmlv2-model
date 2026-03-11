@@ -207,20 +207,65 @@ package Enterprise {
     package Strategy {
         private import ScalarValues::*;
 
-        doc /* Partnerships, business model, ethos and values,
+        doc /* Partnerships, strategic context, ethos and values,
              * CIC/limited company structure, strategic direction.
-             * Lightweight documentation of strategic context. */
+             *
+             * This is the enterprise-level anchor for strategy.
+             * Detailed business strategy (objectives, variants,
+             * pivot scenarios) lives in the BusinessStrategy
+             * package. Detailed scenario modelling lives in
+             * BusinessScenarios. This package provides the
+             * organisational framing and governance context.
+             *
+             * Cross-references to BusinessStrategy and
+             * BusinessScenarios are via String attributes and
+             * doc blocks — Enterprise does not import from
+             * Business* packages (outer ring does not depend
+             * on inner ring). */
 
         part def Partnership {
-            doc /* A strategic partnership or collaboration. */
+            doc /* A strategic partnership or collaboration.
+                 * Cross-references BusinessStrategy::
+                 * StrategicObjective by name where the
+                 * partnership supports a specific objective. */
             attribute partnerName : String;
             attribute nature : String;
+            attribute strategicObjectiveRef : String;
         }
 
-        part def BusinessModel {
-            doc /* Revenue model, pricing, service tiers. */
-            attribute modelName : String;
-            attribute description : String;
+        part def StrategicContext {
+            doc /* Connects the enterprise-level strategic context
+                 * to the detailed business strategy and scenario
+                 * modelling. This is the structural bridge between
+                 * the outer ring (Enterprise) and the business
+                 * model layer.
+                 *
+                 * Renamed from BusinessModel (Phase 7) to avoid
+                 * collision with the top-level BusinessModel
+                 * package and to better reflect its role as the
+                 * enterprise-level strategic anchor.
+                 *
+                 * Cross-references (via String, not import):
+                 * - BusinessStrategy::StrategicObjective
+                 * - BusinessStrategy::BusinessModelVariant
+                 * - BusinessStrategy::PivotScenario
+                 * - BusinessScenarios::ScenarioDefinition */
+            attribute contextName : String;
+            attribute currentVariant : String;
+            attribute strategicHorizonMonths : Integer;
+            attribute governanceNotes : String;
+        }
+
+        // -- GSL strategic context ----------------------------
+
+        part gslStrategicContext : StrategicContext {
+            doc /* GenderSense strategic context as of 2026.
+                 * Sole founder governance. Lean Clinical variant
+                 * is the active business model configuration. */
+            attribute :>> contextName = "GenderSense Strategic Context 2026";
+            attribute :>> currentVariant = "Lean Clinical (Variant A)";
+            attribute :>> strategicHorizonMonths = 24;
+            attribute :>> governanceNotes = "Sole founder governance. Clinical governance via CQC registration. Strategic decisions informed by projection comparison and actuals tracking via BusinessScenarios steering cycle.";
         }
     }
 
