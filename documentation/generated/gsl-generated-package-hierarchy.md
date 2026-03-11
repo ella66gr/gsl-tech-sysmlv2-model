@@ -1,8 +1,8 @@
 # GenderSense Package Hierarchy (Generated)
 
-**Generated:** 2026-03-10 22:31  
+**Generated:** 2026-03-10 23:55  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
-**Total packages:** 67 (excluding root)  
+**Total packages:** 71 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
 
 This document is generated from the SysML model. Do not edit manually.
@@ -11,7 +11,7 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 GenderSense Package Hierarchy
-Generated 2026-03-10 22:31 from model/*.sysml (67 packages)
+Generated 2026-03-10 23:55 from model/*.sysml (71 packages)
 
 GenderSense
 ├── Enterprise                    Defines the organisational, regulatory, strategic, and risk context.
@@ -85,7 +85,11 @@ GenderSense
 │
 └── BusinessModel                 The business model package captures the strategic logic of the
     ├── ServiceConcept            Defines the value proposition, customer segments, service — [5 parts]
-    └── ActivityModel             Cross-cutting activity taxonomy and costing foundation. — [5 parts, 2 enums]
+    ├── ActivityModel             Cross-cutting activity taxonomy and costing foundation. — [5 parts, 2 enums]
+    ├── ResourcePlanning          Defines the resources required to operate the service — [5 parts]
+    ├── FinancialPlanning         Defines the financial structure of the business: how — [5 parts, 1 enums]
+    ├── ScenarioModelling         Provides the mechanics for driving the business model — [11 parts, 2 enums]
+    └── StrategyAndEvolution      Strategic direction, business model variants, and — [3 parts]
 
 Libraries (separate from main model):
   TemporalMetadata (libraries/temporal-metadata/temporal-metadata.sysml) — Metadata definitions for Temporal workflow generation. — [4 metadata]
@@ -93,4 +97,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-03-10 22:31 by `gen_package_hierarchy.py`.*
+*Generated 2026-03-10 23:55 by `gen_package_hierarchy.py`.*

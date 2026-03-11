@@ -2,7 +2,7 @@
 <opml version="2.0">
   <head>
     <title>GenderSense Package Hierarchy</title>
-    <dateCreated>2026-03-10 22:31</dateCreated>
+    <dateCreated>2026-03-10 23:55</dateCreated>
   </head>
   <body>
     <outline text="GenderSense — Model-driven clinical service management platform">
@@ -82,6 +82,10 @@
       <outline text="BusinessModel  — The business model package captures the strategic logic of the" _note="business-model.sysml:6">
         <outline text="ServiceConcept  — Defines the value proposition, customer segments, service  [5 parts]" _note="business-model.sysml:37"/>
         <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-model.sysml:251"/>
+        <outline text="ResourcePlanning  — Defines the resources required to operate the service  [5 parts]" _note="business-model.sysml:359"/>
+        <outline text="FinancialPlanning  — Defines the financial structure of the business: how  [5 parts, 1 enums]" _note="business-model.sysml:597"/>
+        <outline text="ScenarioModelling  — Provides the mechanics for driving the business model  [11 parts, 2 enums]" _note="business-model.sysml:773"/>
+        <outline text="StrategyAndEvolution  — Strategic direction, business model variants, and  [3 parts]" _note="business-model.sysml:1336"/>
       </outline>
     </outline>
     <outline text="Libraries (separate from main model)">

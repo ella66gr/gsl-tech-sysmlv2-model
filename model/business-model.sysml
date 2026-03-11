@@ -16,8 +16,8 @@ package BusinessModel {
          * The five concerns addressed across this package and the
          * existing model:
          * - Service Concept (here: ServiceConcept)
-         * - Financial Model (here: FinancialPlanning — Phase 2)
-         * - Resource and Capability Model (here: ResourcePlanning — Phase 2)
+         * - Financial Model (here: FinancialPlanning)
+         * - Resource and Capability Model (here: ResourcePlanning)
          * - Service Delivery System (ServiceDelivery package)
          * - Governance and Adaptation (Enterprise + ServiceDelivery::ClinicalGovernance)
          *
@@ -26,9 +26,9 @@ package BusinessModel {
          *
          * Source: gsl-service-business-meta-modelling.md
          *
-         * Phase 1 (this file): ServiceConcept + ActivityModel
-         * Phase 2 (planned): ResourcePlanning + FinancialPlanning
-         * Phase 3 (planned): ScenarioModelling + StrategyAndEvolution */
+         * Phase 1: ServiceConcept + ActivityModel (complete)
+         * Phase 2: ResourcePlanning + FinancialPlanning (complete)
+         * Phase 3: ScenarioModelling + StrategyAndEvolution (complete) */
 
     // =================================================================
     // SERVICE CONCEPT — What value is delivered, to whom, and why
@@ -349,6 +349,1156 @@ package BusinessModel {
             attribute allocationMethod : String;
             attribute estimatedCostPerUnit : Real;
             attribute costNotes : String;
+        }
+    }
+
+    // =================================================================
+    // RESOURCE PLANNING — What resources and capabilities are needed
+    // =================================================================
+
+    package ResourcePlanning {
+        private import ScalarValues::*;
+
+        doc /* Defines the resources required to operate the service
+             * delivery system: people, technology, estate, licences,
+             * and external services. Resources are organised into
+             * capabilities (combinations that produce service
+             * functions), capacity models (throughput relationships),
+             * and constraints (limits on availability and use).
+             *
+             * Cross-references to Platform capabilities and
+             * ServiceDelivery processes are via String attributes
+             * and doc blocks — consistent with ServiceConcept
+             * approach. Formal ref relationships deferred until
+             * shapes stabilise.
+             *
+             * Source: gsl-service-business-meta-modelling.md section 3.3 */
+
+        // -- Part definitions ----------------------------------
+
+        part def ResourceType {
+            doc /* A category of resource required to operate the
+                 * service delivery system. Each type has acquisition
+                 * characteristics, capacity constraints, and cost
+                 * profiles. */
+            attribute resourceTypeName : String;
+            attribute category : String;           // personnel, technology, estate, insurance, external service
+            attribute acquisitionMethod : String;  // employed, contracted, subscribed, purchased, rented
+            attribute costProfile : String;        // e.g. "£5,000/FTE/month"
+            attribute capacityUnit : String;       // FTE, instances, seats, hours
+        }
+
+        part def ResourceInstance {
+            doc /* A specific resource available to the business at
+                 * a defined capacity and cost. Represents planning-
+                 * level archetypes ("a prescribing clinician at
+                 * 0.5 FTE") rather than named individuals. */
+            attribute instanceName : String;
+            attribute resourceType : String;       // references a ResourceType by name
+            attribute capacity : String;           // e.g. "0.5 FTE", "1 instance"
+            attribute availabilityNotes : String;
+            attribute costPerUnit : Real;
+            attribute costBasis : String;          // per month, per hour, per use
+        }
+
+        part def Capability {
+            doc /* An organised combination of resources that produces
+                 * a defined service function. Capabilities bridge the
+                 * gap between raw resources and service delivery — you
+                 * don't deliver care with "a doctor" and "a system";
+                 * you deliver it with "the ability to conduct a hormone
+                 * therapy monitoring review."
+                 *
+                 * Cross-reference: enabledOfferings maps to
+                 * ServiceConcept::ServiceOffering names. */
+            attribute capabilityName : String;
+            attribute description : String;
+            attribute requiredResources : String;   // descriptive: "1 prescribing clinician + EHRbase CDR + lab interface"
+            attribute enabledOfferings : String;    // references ServiceOffering names
+        }
+
+        part def CapacityModel {
+            doc /* The relationship between resource configuration and
+                 * service throughput. A planning assertion, not a
+                 * computed formula — the formula representation lives
+                 * in ScenarioModelling::ProjectionFormula (Phase 3).
+                 *
+                 * CapacityModel says "with 1 clinician at 8 sessions/
+                 * day we can see 80 patients/week." ProjectionFormula
+                 * computes "at month 12 with 0.8 FTE and 55 active
+                 * patients, utilisation is 78%." */
+            attribute resourceConfiguration : String;
+            attribute throughputPerPeriod : String;
+            attribute periodUnit : String;         // per day, per week, per month
+            attribute assumptions : String;
+            attribute bottleneck : String;          // which resource constrains throughput
+        }
+
+        part def ResourceConstraint {
+            doc /* A constraint on resource availability or use that
+                 * affects service delivery. May be regulatory,
+                 * financial, temporal, or contractual.
+                 *
+                 * Cross-reference: regulatory constraints map to
+                 * Enterprise::Regulation requirement defs. */
+            attribute constraintName : String;
+            attribute constraintType : String;     // regulatory, financial, temporal, contractual, practical
+            attribute affectedResource : String;   // references a ResourceType by name
+            attribute limit : String;
+            attribute regulatorySource : String;   // e.g. "Enterprise::Regulation" or empty
+        }
+
+        // -- GSL Lean Clinical resource instantiation ----------
+
+        part prescribingClinician : ResourceType {
+            doc /* Clinician with prescribing qualification and RCP
+                 * Certificate in Gender Identity Healthcare. The
+                 * primary clinical resource and capacity bottleneck. */
+            attribute :>> resourceTypeName = "Prescribing clinician";
+            attribute :>> category = "personnel";
+            attribute :>> acquisitionMethod = "employed or contracted";
+            attribute :>> costProfile = "£5,000 per FTE per month";
+            attribute :>> capacityUnit = "FTE";
+        }
+
+        part administrativeSupport : ResourceType {
+            attribute :>> resourceTypeName = "Administrative support";
+            attribute :>> category = "personnel";
+            attribute :>> acquisitionMethod = "employed";
+            attribute :>> costProfile = "£1,800 per FTE per month";
+            attribute :>> capacityUnit = "FTE";
+        }
+
+        part technologyPlatform : ResourceType {
+            doc /* The GSL platform: SvelteKit web app, Temporal
+                 * orchestration, EHRbase CDR, hosting infrastructure. */
+            attribute :>> resourceTypeName = "Technology platform";
+            attribute :>> category = "technology";
+            attribute :>> acquisitionMethod = "self-built and hosted";
+            attribute :>> costProfile = "£200 per month fixed";
+            attribute :>> capacityUnit = "instances";
+        }
+
+        part clinicalPremises : ResourceType {
+            attribute :>> resourceTypeName = "Clinical premises";
+            attribute :>> category = "estate";
+            attribute :>> acquisitionMethod = "rented or shared";
+            attribute :>> costProfile = "included in overhead allocation";
+            attribute :>> capacityUnit = "rooms";
+        }
+
+        part professionalIndemnity : ResourceType {
+            attribute :>> resourceTypeName = "Professional indemnity insurance";
+            attribute :>> category = "insurance";
+            attribute :>> acquisitionMethod = "annual policy";
+            attribute :>> costProfile = "£250 per month";
+            attribute :>> capacityUnit = "policies";
+        }
+
+        part laboratoryServices : ResourceType {
+            doc /* External pathology laboratory for blood monitoring.
+                 * Variable cost — scales with patient volume. */
+            attribute :>> resourceTypeName = "Laboratory services";
+            attribute :>> category = "external service";
+            attribute :>> acquisitionMethod = "contracted";
+            attribute :>> costProfile = "£45 per blood panel";
+            attribute :>> capacityUnit = "panels";
+        }
+
+        part clinicianMonth1to9 : ResourceInstance {
+            doc /* Initial clinician capacity: 0.5 FTE for the first
+                 * 9 months. Sufficient for up to ~20 active patients. */
+            attribute :>> instanceName = "Prescribing clinician (months 1-9)";
+            attribute :>> resourceType = "Prescribing clinician";
+            attribute :>> capacity = "0.5 FTE";
+            attribute :>> availabilityNotes = "3 clinical days per fortnight";
+            attribute :>> costPerUnit = 2500.0;
+            attribute :>> costBasis = "per month";
+        }
+
+        part clinicianMonth10to24 : ResourceInstance {
+            doc /* Scaled clinician capacity: 0.8 FTE from month 10.
+                 * Supports growth to ~40 active patients. */
+            attribute :>> instanceName = "Prescribing clinician (months 10-24)";
+            attribute :>> resourceType = "Prescribing clinician";
+            attribute :>> capacity = "0.8 FTE";
+            attribute :>> availabilityNotes = "4 clinical days per week";
+            attribute :>> costPerUnit = 4000.0;
+            attribute :>> costBasis = "per month";
+        }
+
+        part adminInstance : ResourceInstance {
+            attribute :>> instanceName = "Administrative support";
+            attribute :>> resourceType = "Administrative support";
+            attribute :>> capacity = "0.3 FTE";
+            attribute :>> availabilityNotes = "1.5 days per week";
+            attribute :>> costPerUnit = 540.0;
+            attribute :>> costBasis = "per month";
+        }
+
+        part prescribingCapability : Capability {
+            doc /* The ability to prescribe and monitor hormone therapy.
+                 * The core clinical capability of the Lean Clinical
+                 * variant. */
+            attribute :>> capabilityName = "Prescribing and monitoring";
+            attribute :>> description = "Prescribe, titrate, and monitor hormone therapy with full audit trail";
+            attribute :>> requiredResources = "1 prescribing clinician + EHRbase CDR + lab interface + prescribing system";
+            attribute :>> enabledOfferings = "Hormone Therapy Initiation, Ongoing Monitoring";
+        }
+
+        part assessmentCapability : Capability {
+            attribute :>> capabilityName = "Clinical assessment";
+            attribute :>> description = "Comprehensive new patient assessment with structured clinical record";
+            attribute :>> requiredResources = "1 prescribing clinician + video consulting + forms platform + EHRbase CDR";
+            attribute :>> enabledOfferings = "Initial Assessment";
+        }
+
+        part monitoringCapability : Capability {
+            attribute :>> capabilityName = "Blood monitoring";
+            attribute :>> description = "Order, receive, and review blood monitoring results";
+            attribute :>> requiredResources = "Lab interface + EHRbase CDR + prescribing clinician for review";
+            attribute :>> enabledOfferings = "Hormone Therapy Initiation, Ongoing Monitoring";
+        }
+
+        part leanClinicalCapacity : CapacityModel {
+            doc /* Capacity model for the Lean Clinical variant.
+                 * Clinician time is the primary bottleneck. */
+            attribute :>> resourceConfiguration = "1 prescribing clinician at 0.5-0.8 FTE";
+            attribute :>> throughputPerPeriod = "20-40 active patients";
+            attribute :>> periodUnit = "concurrent active caseload";
+            attribute :>> assumptions = "8 monitoring slots per week at 0.5 FTE, 30 min per review, 2 hours admin per day";
+            attribute :>> bottleneck = "Prescribing clinician time";
+        }
+
+        part maxPatientsPerClinician : ResourceConstraint {
+            attribute :>> constraintName = "Maximum active patients per clinician";
+            attribute :>> constraintType = "practical";
+            attribute :>> affectedResource = "Prescribing clinician";
+            attribute :>> limit = "40 active patients per FTE clinician";
+            attribute :>> regulatorySource = "";
+        }
+
+        part prescribingQualification : ResourceConstraint {
+            doc /* Regulatory requirement: the prescribing clinician
+                 * must hold appropriate qualification for hormone
+                 * prescribing. Maps to Enterprise::Regulation. */
+            attribute :>> constraintName = "Prescribing qualification";
+            attribute :>> constraintType = "regulatory";
+            attribute :>> affectedResource = "Prescribing clinician";
+            attribute :>> limit = "Must hold prescribing qualification and gender identity healthcare credential";
+            attribute :>> regulatorySource = "Enterprise::Regulation";
+        }
+    }
+
+    // =================================================================
+    // FINANCIAL PLANNING — How money flows through the business
+    // =================================================================
+
+    package FinancialPlanning {
+        private import ScalarValues::*;
+
+        doc /* Defines the financial structure of the business: how
+             * revenue is generated, what drives cost, what the unit
+             * economics look like, and how pricing works. This is
+             * the "does this work financially?" package.
+             *
+             * Distinct from Operations::Finance which handles
+             * operational accounting (invoicing, payment processing,
+             * Xero integration). FinancialPlanning is structural
+             * economics — the bank-manager spreadsheet made explicit.
+             *
+             * Source: gsl-service-business-meta-modelling.md section 3.4 */
+
+        enum def PricingType {
+            doc /* The structural pricing model for a service offering. */
+            perEpisode;
+            subscription;
+            tiered;
+            slidingScale;
+            flatFee;
+        }
+
+        part def RevenueStream {
+            doc /* A mechanism by which income is generated. */
+            attribute streamName : String;
+            attribute sourceSegment : String;
+            attribute triggerEvent : String;
+            attribute pricingModelRef : String;
+            attribute projectedVolume : String;
+        }
+
+        part def CostDriver {
+            doc /* A structural factor that generates cost. */
+            attribute driverName : String;
+            attribute linkedResource : String;
+            attribute costBehaviour : String;
+            attribute estimatedUnitCost : Real;
+            attribute scalingFactor : String;
+        }
+
+        part def UnitEconomics {
+            doc /* The financial profile of a single unit of service delivery. */
+            attribute offeringRef : String;
+            attribute revenuePerUnit : Real;
+            attribute costPerUnit : Real;
+            attribute marginPerUnit : Real;
+            attribute breakdownNotes : String;
+        }
+
+        part def PricingModel {
+            doc /* The logic that determines what a customer pays. */
+            attribute pricingModelName : String;
+            attribute pricingType : PricingType;
+            attribute basePrice : Real;
+            attribute adjustmentLogic : String;
+            attribute applicableOfferings : String;
+        }
+
+        part def FinancialProjection {
+            doc /* A named financial projection linked to a scenario.
+                 * Lightweight placeholder — full mechanics in
+                 * ScenarioModelling. */
+            attribute projectionName : String;
+            attribute scenarioRef : String;
+            attribute timelineMonths : Integer;
+            attribute revenueFormula : String;
+            attribute costFormula : String;
+            attribute breakEvenIndicator : String;
+        }
+
+        // -- GSL Lean Clinical financial instantiation ----------
+
+        part assessmentRevenue : RevenueStream {
+            attribute :>> streamName = "Assessment fees";
+            attribute :>> sourceSegment = "Self-referring individuals, GP-referred patients";
+            attribute :>> triggerEvent = "Completion of initial assessment episode";
+            attribute :>> pricingModelRef = "perEpisodePricing";
+            attribute :>> projectedVolume = "4 per month (year 1), 6 per month (year 2)";
+        }
+
+        part monitoringRevenue : RevenueStream {
+            attribute :>> streamName = "Monitoring fees";
+            attribute :>> sourceSegment = "Patients in stable monitoring";
+            attribute :>> triggerEvent = "Quarterly monitoring review";
+            attribute :>> pricingModelRef = "perEpisodePricing";
+            attribute :>> projectedVolume = "grows with stable cohort — see projection";
+        }
+
+        part clinicianCost : CostDriver {
+            attribute :>> driverName = "Clinician cost";
+            attribute :>> linkedResource = "Prescribing clinician";
+            attribute :>> costBehaviour = "semi-variable — fixed FTE cost, scaled in steps as caseload grows";
+            attribute :>> estimatedUnitCost = 5000.0;
+            attribute :>> scalingFactor = "per FTE per month";
+        }
+
+        part adminCost : CostDriver {
+            attribute :>> driverName = "Administrative support cost";
+            attribute :>> linkedResource = "Administrative support";
+            attribute :>> costBehaviour = "semi-variable";
+            attribute :>> estimatedUnitCost = 1800.0;
+            attribute :>> scalingFactor = "per FTE per month";
+        }
+
+        part platformCost : CostDriver {
+            attribute :>> driverName = "Platform hosting and infrastructure";
+            attribute :>> linkedResource = "Technology platform";
+            attribute :>> costBehaviour = "fixed";
+            attribute :>> estimatedUnitCost = 200.0;
+            attribute :>> scalingFactor = "per month";
+        }
+
+        part insuranceCost : CostDriver {
+            attribute :>> driverName = "Professional indemnity insurance";
+            attribute :>> linkedResource = "Professional indemnity insurance";
+            attribute :>> costBehaviour = "fixed";
+            attribute :>> estimatedUnitCost = 250.0;
+            attribute :>> scalingFactor = "per month";
+        }
+
+        part labCost : CostDriver {
+            attribute :>> driverName = "Laboratory costs";
+            attribute :>> linkedResource = "Laboratory services";
+            attribute :>> costBehaviour = "variable";
+            attribute :>> estimatedUnitCost = 45.0;
+            attribute :>> scalingFactor = "per blood panel";
+        }
+
+        part overheadCost : CostDriver {
+            attribute :>> driverName = "Overhead allocation";
+            attribute :>> linkedResource = "";
+            attribute :>> costBehaviour = "percentage of direct cost";
+            attribute :>> estimatedUnitCost = 25.0;
+            attribute :>> scalingFactor = "percentage of direct cost";
+        }
+
+        part assessmentUnitEconomics : UnitEconomics {
+            attribute :>> offeringRef = "Initial Assessment";
+            attribute :>> revenuePerUnit = 600.0;
+            attribute :>> costPerUnit = 350.0;
+            attribute :>> marginPerUnit = 250.0;
+            attribute :>> breakdownNotes = "Clinician 2hrs £125, baseline bloods £90, platform/admin £65, overhead £70";
+        }
+
+        part monitoringUnitEconomics : UnitEconomics {
+            attribute :>> offeringRef = "Ongoing Monitoring (quarterly)";
+            attribute :>> revenuePerUnit = 150.0;
+            attribute :>> costPerUnit = 106.0;
+            attribute :>> marginPerUnit = 44.0;
+            attribute :>> breakdownNotes = "Clinician 30min £31, blood panel £45, admin/platform £10, overhead £20";
+        }
+
+        part perEpisodePricing : PricingModel {
+            attribute :>> pricingModelName = "Per-episode pricing";
+            attribute :>> pricingType = PricingType::perEpisode;
+            attribute :>> basePrice = 0.0;
+            attribute :>> adjustmentLogic = "Fixed fee per service offering. Assessment £600, monitoring review £150.";
+            attribute :>> applicableOfferings = "Initial Assessment, Hormone Therapy Initiation, Ongoing Monitoring";
+        }
+
+        part leanClinicalProjection : FinancialProjection {
+            attribute :>> projectionName = "Lean Clinical 24-month projection";
+            attribute :>> scenarioRef = "Lean Clinical (Variant A)";
+            attribute :>> timelineMonths = 24;
+            attribute :>> revenueFormula = "assessment fees (volume x price) + monitoring fees (stable cohort x quarterly fee)";
+            attribute :>> costFormula = "clinician FTE + admin FTE + platform + insurance + lab panels + 25% overhead";
+            attribute :>> breakEvenIndicator = "estimated month 14 at base assumptions";
+        }
+    }
+
+    // =================================================================
+    // SCENARIO MODELLING — Projection mechanics and operational steering
+    // =================================================================
+
+    package ScenarioModelling {
+        private import ScalarValues::*;
+
+        doc /* Provides the mechanics for driving the business model
+             * vocabulary — computing projections, comparing alternatives,
+             * and stress-testing assumptions. Without this, the business
+             * model is a structured description; with it, it becomes an
+             * explorable, quantitative tool.
+             *
+             * Source: gsl-service-business-meta-modelling.md sections
+             * 3.7 and 3.8 */
+
+        // -- Enumerations --------------------------------------
+
+        enum def GrowthShape {
+            linear;
+            stepped;
+            sCurve;
+            custom;
+        }
+
+        enum def VarianceSource {
+            volume;
+            price;
+            mix;
+            timing;
+        }
+
+        // -- Part definitions: projection mechanics ------------
+
+        part def ScenarioDefinition {
+            attribute scenarioName : String;
+            attribute description : String;
+            attribute activeOfferings : String;
+            attribute variantLabel : String;
+            attribute timelineMonths : Integer;
+            attribute notes : String;
+        }
+
+        part def ProjectionParameter {
+            attribute parameterName : String;
+            attribute parameterValue : Real;
+            attribute unit : String;
+            attribute sourceRef : String;
+            attribute temporalVariation : String;
+            attribute notes : String;
+        }
+
+        part def GrowthAssumption {
+            attribute assumptionName : String;
+            attribute targetVariable : String;
+            attribute growthShape : GrowthShape;
+            attribute startValue : Real;
+            attribute endValue : Real;
+            attribute inflectionMonth : Integer;
+            attribute trajectory : String;
+            attribute notes : String;
+        }
+
+        part def ProjectionFormula {
+            attribute formulaName : String;
+            attribute inputs : String;
+            attribute expression : String;
+            attribute outputVariable : String;
+            attribute outputUnit : String;
+            attribute notes : String;
+        }
+
+        part def ProjectionTimeline {
+            attribute timelineName : String;
+            attribute periodMonths : Integer;
+            attribute intervalUnit : String;
+            attribute startCondition : String;
+        }
+
+        part def ProjectionOutput {
+            attribute periodLabel : String;
+            attribute revenue : Real;
+            attribute cost : Real;
+            attribute margin : Real;
+            attribute cumulativeCashFlow : Real;
+            attribute activePatientsTotal : Integer;
+            attribute clinicianUtilisation : Real;
+            attribute confidenceProfile : String;
+        }
+
+        part def SensitivityParameter {
+            attribute parameterRef : String;
+            attribute baseValue : Real;
+            attribute pessimisticValue : Real;
+            attribute optimisticValue : Real;
+            attribute impactDescription : String;
+        }
+
+        part def ScenarioComparison {
+            attribute comparisonName : String;
+            attribute scenarioRefs : String;
+            attribute comparisonDate : String;
+            attribute summaryNotes : String;
+        }
+
+        // -- Part definitions: operational steering ------------
+
+        part def PeriodActuals {
+            attribute periodLabel : String;
+            attribute actualRevenue : Real;
+            attribute actualCost : Real;
+            attribute actualMargin : Real;
+            attribute actualPatientCount : Integer;
+            attribute recordedDate : String;
+            attribute notes : String;
+        }
+
+        part def VarianceAnalysis {
+            attribute periodLabel : String;
+            attribute revenueVariance : Real;
+            attribute costVariance : Real;
+            attribute marginVariance : Real;
+            attribute varianceSource : String;
+            attribute decomposition : String;
+            attribute rebaselineRecommended : String;
+            attribute notes : String;
+        }
+
+        part def ForecastBaseline {
+            attribute baselineName : String;
+            attribute baselineVersion : Integer;
+            attribute scenarioRef : String;
+            attribute effectiveDate : String;
+            attribute parameterSnapshot : String;
+            attribute notes : String;
+        }
+
+        // -- GSL Lean Clinical scenario instantiation ----------
+
+        part leanClinicalScenario : ScenarioDefinition {
+            attribute :>> scenarioName = "Lean Clinical (Variant A)";
+            attribute :>> description = "Assessment and hormone therapy only. 1 clinician, per-episode pricing.";
+            attribute :>> activeOfferings = "Initial Assessment, Hormone Therapy Initiation, Ongoing Monitoring";
+            attribute :>> variantLabel = "A";
+            attribute :>> timelineMonths = 24;
+            attribute :>> notes = "Figures are illustrative best-estimates per meta-modelling section 7.2";
+        }
+
+        // Projection parameters — revenue
+
+        part paramAssessmentFee : ProjectionParameter {
+            attribute :>> parameterName = "assessmentFeePerPatient";
+            attribute :>> parameterValue = 600.0;
+            attribute :>> unit = "£";
+            attribute :>> sourceRef = "FinancialPlanning::perEpisodePricing";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "Fixed fee per initial assessment episode";
+        }
+
+        part paramMonitoringFee : ProjectionParameter {
+            attribute :>> parameterName = "monitoringFeePerQuarter";
+            attribute :>> parameterValue = 150.0;
+            attribute :>> unit = "£";
+            attribute :>> sourceRef = "FinancialPlanning::perEpisodePricing";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "Fixed fee per quarterly monitoring review";
+        }
+
+        // Projection parameters — resource cost
+
+        part paramClinicianFTEEarly : ProjectionParameter {
+            attribute :>> parameterName = "clinicianFTEMonths1to9";
+            attribute :>> parameterValue = 0.5;
+            attribute :>> unit = "FTE";
+            attribute :>> sourceRef = "ResourcePlanning::clinicianMonth1to9";
+            attribute :>> temporalVariation = "Months 1-9 only. Steps to 0.8 FTE at month 10.";
+            attribute :>> notes = "3 clinical days per fortnight";
+        }
+
+        part paramClinicianFTELater : ProjectionParameter {
+            attribute :>> parameterName = "clinicianFTEMonths10to24";
+            attribute :>> parameterValue = 0.8;
+            attribute :>> unit = "FTE";
+            attribute :>> sourceRef = "ResourcePlanning::clinicianMonth10to24";
+            attribute :>> temporalVariation = "From month 10 onwards";
+            attribute :>> notes = "4 clinical days per week";
+        }
+
+        part paramClinicianCost : ProjectionParameter {
+            attribute :>> parameterName = "clinicianCostPerFTEPerMonth";
+            attribute :>> parameterValue = 5000.0;
+            attribute :>> unit = "£/FTE/month";
+            attribute :>> sourceRef = "FinancialPlanning::clinicianCost";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "Actual monthly cost = FTE x this rate";
+        }
+
+        part paramAdminFTE : ProjectionParameter {
+            attribute :>> parameterName = "adminFTE";
+            attribute :>> parameterValue = 0.3;
+            attribute :>> unit = "FTE";
+            attribute :>> sourceRef = "ResourcePlanning::adminInstance";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "1.5 days per week throughout";
+        }
+
+        part paramAdminCost : ProjectionParameter {
+            attribute :>> parameterName = "adminCostPerFTEPerMonth";
+            attribute :>> parameterValue = 1800.0;
+            attribute :>> unit = "£/FTE/month";
+            attribute :>> sourceRef = "FinancialPlanning::adminCost";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "";
+        }
+
+        part paramPlatformCost : ProjectionParameter {
+            attribute :>> parameterName = "platformCostPerMonth";
+            attribute :>> parameterValue = 200.0;
+            attribute :>> unit = "£/month";
+            attribute :>> sourceRef = "FinancialPlanning::platformCost";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "Fixed hosting and infrastructure";
+        }
+
+        part paramInsuranceCost : ProjectionParameter {
+            attribute :>> parameterName = "insurancePerMonth";
+            attribute :>> parameterValue = 250.0;
+            attribute :>> unit = "£/month";
+            attribute :>> sourceRef = "FinancialPlanning::insuranceCost";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "Professional indemnity";
+        }
+
+        part paramLabCost : ProjectionParameter {
+            attribute :>> parameterName = "labCostPerBloodPanel";
+            attribute :>> parameterValue = 45.0;
+            attribute :>> unit = "£/panel";
+            attribute :>> sourceRef = "FinancialPlanning::labCost";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "";
+        }
+
+        // Projection parameters — clinical pathway derived
+
+        part paramBloodPanelsInitiation : ProjectionParameter {
+            attribute :>> parameterName = "bloodPanelsPerInitiationEpisode";
+            attribute :>> parameterValue = 5.0;
+            attribute :>> unit = "panels";
+            attribute :>> sourceRef = "ServiceDelivery::ClinicalPathways::HormoneTherapy";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "Baseline + 4 monitoring panels during titration";
+        }
+
+        part paramBloodPanelsMonitoring : ProjectionParameter {
+            attribute :>> parameterName = "bloodPanelsPerMonitoringQuarter";
+            attribute :>> parameterValue = 1.0;
+            attribute :>> unit = "panels";
+            attribute :>> sourceRef = "ServiceDelivery::ClinicalPathways::HormoneTherapy";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "1 panel per quarterly review once stable";
+        }
+
+        part paramOverheadPercentage : ProjectionParameter {
+            attribute :>> parameterName = "overheadPercentage";
+            attribute :>> parameterValue = 25.0;
+            attribute :>> unit = "%";
+            attribute :>> sourceRef = "FinancialPlanning::overheadCost";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "Envelope-level overhead as percentage of direct cost";
+        }
+
+        // Projection parameters — growth
+
+        part paramNewPatientsYear1 : ProjectionParameter {
+            attribute :>> parameterName = "newPatientsPerMonthYear1";
+            attribute :>> parameterValue = 4.0;
+            attribute :>> unit = "patients/month";
+            attribute :>> sourceRef = "GrowthAssumption";
+            attribute :>> temporalVariation = "Months 1-12";
+            attribute :>> notes = "Linear acquisition assumption";
+        }
+
+        part paramNewPatientsYear2 : ProjectionParameter {
+            attribute :>> parameterName = "newPatientsPerMonthYear2";
+            attribute :>> parameterValue = 6.0;
+            attribute :>> unit = "patients/month";
+            attribute :>> sourceRef = "GrowthAssumption";
+            attribute :>> temporalVariation = "Months 13-24";
+            attribute :>> notes = "Increased acquisition via GP network and reputation";
+        }
+
+        // Projection parameters — conversion and retention
+
+        part paramAssessmentConversion : ProjectionParameter {
+            attribute :>> parameterName = "assessmentToInitiationConversion";
+            attribute :>> parameterValue = 85.0;
+            attribute :>> unit = "%";
+            attribute :>> sourceRef = "Clinical estimate";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "85% of assessed patients proceed to hormone therapy";
+        }
+
+        part paramInitiationConversion : ProjectionParameter {
+            attribute :>> parameterName = "initiationToStableConversion";
+            attribute :>> parameterValue = 90.0;
+            attribute :>> unit = "%";
+            attribute :>> sourceRef = "Clinical estimate";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "90% complete initiation over ~9 months average";
+        }
+
+        part paramChurnRate : ProjectionParameter {
+            attribute :>> parameterName = "churnRatePerQuarter";
+            attribute :>> parameterValue = 5.0;
+            attribute :>> unit = "%";
+            attribute :>> sourceRef = "Clinical estimate";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "5% of stable patients disengage per quarter";
+        }
+
+        // Growth assumptions
+
+        part growthPatientAcquisitionYear1 : GrowthAssumption {
+            attribute :>> assumptionName = "Patient acquisition year 1";
+            attribute :>> targetVariable = "newPatientsPerMonth";
+            attribute :>> growthShape = GrowthShape::linear;
+            attribute :>> startValue = 4.0;
+            attribute :>> endValue = 4.0;
+            attribute :>> inflectionMonth = 0;
+            attribute :>> trajectory = "4 new patients per month, constant through year 1";
+            attribute :>> notes = "Conservative linear assumption";
+        }
+
+        part growthPatientAcquisitionYear2 : GrowthAssumption {
+            attribute :>> assumptionName = "Patient acquisition year 2";
+            attribute :>> targetVariable = "newPatientsPerMonth";
+            attribute :>> growthShape = GrowthShape::stepped;
+            attribute :>> startValue = 4.0;
+            attribute :>> endValue = 6.0;
+            attribute :>> inflectionMonth = 13;
+            attribute :>> trajectory = "Steps from 4 to 6 new patients per month at month 13";
+            attribute :>> notes = "Driven by GP network expansion and reputation growth";
+        }
+
+        part growthClinicianFTE : GrowthAssumption {
+            attribute :>> assumptionName = "Clinician FTE step-up";
+            attribute :>> targetVariable = "clinicianFTE";
+            attribute :>> growthShape = GrowthShape::stepped;
+            attribute :>> startValue = 0.5;
+            attribute :>> endValue = 0.8;
+            attribute :>> inflectionMonth = 10;
+            attribute :>> trajectory = "0.5 FTE months 1-9, steps to 0.8 FTE at month 10";
+            attribute :>> notes = "Triggered by caseload reaching ~20 active patients";
+        }
+
+        part growthConversionRate : GrowthAssumption {
+            attribute :>> assumptionName = "Assessment-to-initiation conversion";
+            attribute :>> targetVariable = "assessmentToInitiationConversion";
+            attribute :>> growthShape = GrowthShape::linear;
+            attribute :>> startValue = 85.0;
+            attribute :>> endValue = 85.0;
+            attribute :>> inflectionMonth = 0;
+            attribute :>> trajectory = "Fixed at 85% throughout projection period";
+            attribute :>> notes = "Conservative assumption — may improve with reputation";
+        }
+
+        part growthChurnRate : GrowthAssumption {
+            attribute :>> assumptionName = "Stable patient churn";
+            attribute :>> targetVariable = "churnRatePerQuarter";
+            attribute :>> growthShape = GrowthShape::linear;
+            attribute :>> startValue = 5.0;
+            attribute :>> endValue = 5.0;
+            attribute :>> inflectionMonth = 0;
+            attribute :>> trajectory = "Fixed at 5% per quarter throughout";
+            attribute :>> notes = "Represents patients transferring to GP-only care or disengaging";
+        }
+
+        // Projection formulas
+
+        part formulaMonthlyAssessmentRevenue : ProjectionFormula {
+            attribute :>> formulaName = "Monthly assessment revenue";
+            attribute :>> inputs = "newPatientsPerMonth, assessmentFeePerPatient";
+            attribute :>> expression = "newPatientsPerMonth * assessmentFeePerPatient / 2";
+            attribute :>> outputVariable = "monthlyAssessmentRevenue";
+            attribute :>> outputUnit = "£/month";
+            attribute :>> notes = "Divided by 2 because assessment spans ~2 months";
+        }
+
+        part formulaMonthlyMonitoringRevenue : ProjectionFormula {
+            attribute :>> formulaName = "Monthly monitoring revenue";
+            attribute :>> inputs = "stablePatients, monitoringFeePerQuarter";
+            attribute :>> expression = "stablePatients * monitoringFeePerQuarter / 3";
+            attribute :>> outputVariable = "monthlyMonitoringRevenue";
+            attribute :>> outputUnit = "£/month";
+            attribute :>> notes = "Quarterly fee spread across 3 months";
+        }
+
+        part formulaTotalRevenue : ProjectionFormula {
+            attribute :>> formulaName = "Total monthly revenue";
+            attribute :>> inputs = "monthlyAssessmentRevenue, monthlyMonitoringRevenue";
+            attribute :>> expression = "monthlyAssessmentRevenue + monthlyMonitoringRevenue";
+            attribute :>> outputVariable = "totalMonthlyRevenue";
+            attribute :>> outputUnit = "£/month";
+            attribute :>> notes = "";
+        }
+
+        part formulaDirectCost : ProjectionFormula {
+            attribute :>> formulaName = "Monthly direct cost";
+            attribute :>> inputs = "clinicianFTE, clinicianCostPerFTEPerMonth, adminFTE, adminCostPerFTEPerMonth, platformCostPerMonth, insurancePerMonth, bloodPanelsThisMonth, labCostPerBloodPanel";
+            attribute :>> expression = "(clinicianFTE * clinicianCostPerFTEPerMonth) + (adminFTE * adminCostPerFTEPerMonth) + platformCostPerMonth + insurancePerMonth + (bloodPanelsThisMonth * labCostPerBloodPanel)";
+            attribute :>> outputVariable = "monthlyDirectCost";
+            attribute :>> outputUnit = "£/month";
+            attribute :>> notes = "bloodPanelsThisMonth derived from initiation and monitoring patient counts";
+        }
+
+        part formulaOverhead : ProjectionFormula {
+            attribute :>> formulaName = "Monthly overhead";
+            attribute :>> inputs = "monthlyDirectCost, overheadPercentage";
+            attribute :>> expression = "monthlyDirectCost * overheadPercentage / 100";
+            attribute :>> outputVariable = "monthlyOverhead";
+            attribute :>> outputUnit = "£/month";
+            attribute :>> notes = "Envelope-level allocation";
+        }
+
+        part formulaMargin : ProjectionFormula {
+            attribute :>> formulaName = "Monthly margin";
+            attribute :>> inputs = "totalMonthlyRevenue, monthlyDirectCost, monthlyOverhead";
+            attribute :>> expression = "totalMonthlyRevenue - monthlyDirectCost - monthlyOverhead";
+            attribute :>> outputVariable = "monthlyMargin";
+            attribute :>> outputUnit = "£/month";
+            attribute :>> notes = "";
+        }
+
+        part formulaCumulativeCash : ProjectionFormula {
+            attribute :>> formulaName = "Cumulative cash flow";
+            attribute :>> inputs = "previousCumulativeCashFlow, monthlyMargin";
+            attribute :>> expression = "previousCumulativeCashFlow + monthlyMargin";
+            attribute :>> outputVariable = "cumulativeCashFlow";
+            attribute :>> outputUnit = "£";
+            attribute :>> notes = "Running total from month 1";
+        }
+
+        part formulaUtilisation : ProjectionFormula {
+            attribute :>> formulaName = "Clinician utilisation";
+            attribute :>> inputs = "clinicianActivityHours, clinicianFTE, availableHoursPerMonth";
+            attribute :>> expression = "clinicianActivityHours / (clinicianFTE * availableHoursPerMonth) * 100";
+            attribute :>> outputVariable = "clinicianUtilisation";
+            attribute :>> outputUnit = "%";
+            attribute :>> notes = "availableHoursPerMonth estimated at 140 (35 hrs/wk * 4 wks)";
+        }
+
+        // Projection timeline
+
+        part leanClinicalTimeline : ProjectionTimeline {
+            attribute :>> timelineName = "24-month monthly projection";
+            attribute :>> periodMonths = 24;
+            attribute :>> intervalUnit = "monthly";
+            attribute :>> startCondition = "Service launch (month 1 = first patient assessed)";
+        }
+
+        // Sensitivity parameters
+
+        part sensitivityPatientGrowth : SensitivityParameter {
+            attribute :>> parameterRef = "newPatientsPerMonthYear1";
+            attribute :>> baseValue = 4.0;
+            attribute :>> pessimisticValue = 2.0;
+            attribute :>> optimisticValue = 6.0;
+            attribute :>> impactDescription = "Break-even shifts by approximately 6 months in each direction";
+        }
+
+        part sensitivityAssessmentFee : SensitivityParameter {
+            attribute :>> parameterRef = "assessmentFeePerPatient";
+            attribute :>> baseValue = 600.0;
+            attribute :>> pessimisticValue = 450.0;
+            attribute :>> optimisticValue = 750.0;
+            attribute :>> impactDescription = "Break-even shifts by approximately 3 months in each direction";
+        }
+
+        part sensitivityClinicianCost : SensitivityParameter {
+            attribute :>> parameterRef = "clinicianCostPerFTEPerMonth";
+            attribute :>> baseValue = 5000.0;
+            attribute :>> pessimisticValue = 6000.0;
+            attribute :>> optimisticValue = 4000.0;
+            attribute :>> impactDescription = "Break-even shifts by approximately 2 months in each direction";
+        }
+
+        part sensitivityOverhead : SensitivityParameter {
+            attribute :>> parameterRef = "overheadPercentage";
+            attribute :>> baseValue = 25.0;
+            attribute :>> pessimisticValue = 35.0;
+            attribute :>> optimisticValue = 20.0;
+            attribute :>> impactDescription = "Break-even shifts by approximately 2 months in each direction";
+        }
+
+        // Illustrative projection outputs
+
+        part outputMonth1 : ProjectionOutput {
+            attribute :>> periodLabel = "Month 1";
+            attribute :>> revenue = 1200.0;
+            attribute :>> cost = 4488.0;
+            attribute :>> margin = -3288.0;
+            attribute :>> cumulativeCashFlow = -3288.0;
+            attribute :>> activePatientsTotal = 4;
+            attribute :>> clinicianUtilisation = 15.0;
+            attribute :>> confidenceProfile = "low — early month, envelope-level overhead estimate";
+        }
+
+        part outputMonth6 : ProjectionOutput {
+            attribute :>> periodLabel = "Month 6";
+            attribute :>> revenue = 2550.0;
+            attribute :>> cost = 4750.0;
+            attribute :>> margin = -2200.0;
+            attribute :>> cumulativeCashFlow = -15500.0;
+            attribute :>> activePatientsTotal = 20;
+            attribute :>> clinicianUtilisation = 35.0;
+            attribute :>> confidenceProfile = "moderate — growth assumptions dominate";
+        }
+
+        part outputMonth12 : ProjectionOutput {
+            attribute :>> periodLabel = "Month 12";
+            attribute :>> revenue = 4800.0;
+            attribute :>> cost = 5050.0;
+            attribute :>> margin = -250.0;
+            attribute :>> cumulativeCashFlow = -18500.0;
+            attribute :>> activePatientsTotal = 38;
+            attribute :>> clinicianUtilisation = 55.0;
+            attribute :>> confidenceProfile = "moderate — conversion and churn assumptions becoming significant";
+        }
+
+        part outputMonth18 : ProjectionOutput {
+            attribute :>> periodLabel = "Month 18";
+            attribute :>> revenue = 7500.0;
+            attribute :>> cost = 6250.0;
+            attribute :>> margin = 1250.0;
+            attribute :>> cumulativeCashFlow = -12500.0;
+            attribute :>> activePatientsTotal = 52;
+            attribute :>> clinicianUtilisation = 72.0;
+            attribute :>> confidenceProfile = "moderate — churn rate now material to projections";
+        }
+
+        part outputMonth24 : ProjectionOutput {
+            attribute :>> periodLabel = "Month 24";
+            attribute :>> revenue = 10500.0;
+            attribute :>> cost = 6650.0;
+            attribute :>> margin = 3850.0;
+            attribute :>> cumulativeCashFlow = -1200.0;
+            attribute :>> activePatientsTotal = 65;
+            attribute :>> clinicianUtilisation = 85.0;
+            attribute :>> confidenceProfile = "moderate — long-term churn assumption least validated";
+        }
+
+        // Initial forecast baseline
+
+        part leanClinicalBaselineV1 : ForecastBaseline {
+            attribute :>> baselineName = "Lean Clinical launch baseline";
+            attribute :>> baselineVersion = 1;
+            attribute :>> scenarioRef = "Lean Clinical (Variant A)";
+            attribute :>> effectiveDate = "Pre-launch";
+            attribute :>> parameterSnapshot = "All parameters at section 7.2 base values. 4 patients/month year 1, 6 patients/month year 2, 0.5 FTE months 1-9, 0.8 FTE months 10-24, 25% overhead.";
+            attribute :>> notes = "Re-baseline when 6+ months of actuals indicate material deviation from assumptions";
+        }
+    }
+
+    // =================================================================
+    // STRATEGY AND EVOLUTION — Where the business is heading
+    // =================================================================
+
+    package StrategyAndEvolution {
+        private import ScalarValues::*;
+
+        doc /* Strategic direction, business model variants, and
+             * pivot scenarios. Captures the intentional direction
+             * that the other concerns serve: where is this business
+             * heading, what alternatives exist, and what would
+             * trigger a change of direction?
+             *
+             * Connects to Enterprise::Strategy (upgrading the
+             * current placeholder) and to ScenarioModelling
+             * (each variant has a corresponding ScenarioDefinition
+             * with full parameterisation).
+             *
+             * Full elaboration of Variants B and C is a Phase 5
+             * concern. Phase 3 establishes structural placeholders
+             * with summary-level descriptions.
+             *
+             * Source: gsl-service-business-meta-modelling.md
+             * sections 3.5, 7.1 */
+
+        // -- Part definitions ----------------------------------
+
+        part def StrategicObjective {
+            doc /* A defined business goal with a timeframe, success
+                 * criteria, and relationship to capabilities and
+                 * scenarios. Provides the intentional direction that
+                 * the other concerns serve.
+                 *
+                 * Formal satisfy relationships from objectives to
+                 * capabilities are deferred to Phase 7. */
+            attribute objectiveName : String;
+            attribute description : String;
+            attribute targetDate : String;          // e.g. "Month 18", "Year 2 Q4"
+            attribute successCriteria : String;
+            attribute relatedCapabilities : String; // references Capability names
+            attribute relatedScenarios : String;    // references ScenarioDefinition names
+            attribute status : String;              // planned, in progress, achieved, revised
+        }
+
+        part def BusinessModelVariant {
+            doc /* A named alternative business model configuration.
+                 * Lighter than a full ScenarioDefinition — captures
+                 * the strategic essence for comparison at the
+                 * boardroom level. The detailed scenario lives in
+                 * ScenarioModelling and is referenced via scenarioRef. */
+            attribute variantName : String;
+            attribute variantLabel : String;        // e.g. "A", "B", "C"
+            attribute description : String;
+            attribute activeOfferings : String;
+            attribute keyDifferentiator : String;
+            attribute investmentLevel : String;     // e.g. "~£15K", "~£120K"
+            attribute riskProfile : String;
+            attribute scenarioRef : String;         // references a ScenarioDefinition name
+        }
+
+        part def PivotScenario {
+            doc /* A structured what-if analysis for transitioning
+                 * between business model variants. Captures the
+                 * trigger condition, transition plan, estimated
+                 * duration, and risks. */
+            attribute pivotName : String;
+            attribute fromVariant : String;         // references a BusinessModelVariant name
+            attribute toVariant : String;           // references a BusinessModelVariant name
+            attribute triggerCondition : String;
+            attribute transitionPlan : String;
+            attribute estimatedTransitionMonths : Integer;
+            attribute riskNotes : String;
+        }
+
+        // -- GSL strategic objectives --------------------------
+
+        part objectivePatientCohort : StrategicObjective {
+            attribute :>> objectiveName = "Build active patient cohort";
+            attribute :>> description = "Reach 200 active patients across assessment, initiation, and monitoring";
+            attribute :>> targetDate = "Month 18";
+            attribute :>> successCriteria = "200+ patients in active monitoring or initiation by month 18";
+            attribute :>> relatedCapabilities = "Prescribing and monitoring, Clinical assessment, Blood monitoring";
+            attribute :>> relatedScenarios = "Lean Clinical (Variant A)";
+            attribute :>> status = "planned";
+        }
+
+        part objectiveSharedCare : StrategicObjective {
+            attribute :>> objectiveName = "Establish shared care network";
+            attribute :>> description = "Build shared care agreements with GP practices for ongoing monitoring";
+            attribute :>> targetDate = "Month 24";
+            attribute :>> successCriteria = "50+ signed shared care protocols with GP practices";
+            attribute :>> relatedCapabilities = "Prescribing and monitoring";
+            attribute :>> relatedScenarios = "Lean Clinical (Variant A), Full Platform (Variant B)";
+            attribute :>> status = "planned";
+        }
+
+        part objectiveBreakEven : StrategicObjective {
+            attribute :>> objectiveName = "Financial break-even";
+            attribute :>> description = "Reach the point where cumulative cash flow turns positive";
+            attribute :>> targetDate = "Month 24";
+            attribute :>> successCriteria = "Cumulative cash flow >= £0";
+            attribute :>> relatedCapabilities = "";
+            attribute :>> relatedScenarios = "Lean Clinical (Variant A)";
+            attribute :>> status = "planned";
+        }
+
+        part objectivePlatformLaunch : StrategicObjective {
+            attribute :>> objectiveName = "Patient portal operational";
+            attribute :>> description = "Launch the patient-facing portal with pathway visibility, journal, and document access";
+            attribute :>> targetDate = "Month 6";
+            attribute :>> successCriteria = "Portal live with pathway visibility, journal, and document access features";
+            attribute :>> relatedCapabilities = "Clinical assessment, Prescribing and monitoring";
+            attribute :>> relatedScenarios = "Lean Clinical (Variant A), Full Platform (Variant B)";
+            attribute :>> status = "planned";
+        }
+
+        // -- Business model variants (summary level) -----------
+
+        part variantLeanClinical : BusinessModelVariant {
+            attribute :>> variantName = "Lean Clinical";
+            attribute :>> variantLabel = "A";
+            attribute :>> description = "Assessment and hormone therapy only. No coaching, no community. Lowest capital, fastest break-even, limited revenue ceiling.";
+            attribute :>> activeOfferings = "Initial Assessment, Hormone Therapy Initiation, Ongoing Monitoring";
+            attribute :>> keyDifferentiator = "Low capital, fast break-even, limited ceiling";
+            attribute :>> investmentLevel = "~£15K";
+            attribute :>> riskProfile = "High sensitivity to patient acquisition; single point of failure (1 clinician)";
+            attribute :>> scenarioRef = "Lean Clinical (Variant A)";
+        }
+
+        part variantFullPlatform : BusinessModelVariant {
+            doc /* Phase 5 will elaborate this variant with a full
+                 * ScenarioDefinition and projection parameters. */
+            attribute :>> variantName = "Full Platform";
+            attribute :>> variantLabel = "B";
+            attribute :>> description = "Full digital platform with coaching, education, community, patient portal. Subscription model. Higher ceiling, longer break-even.";
+            attribute :>> activeOfferings = "Initial Assessment, Hormone Therapy Initiation, Ongoing Monitoring, Coaching, Education, Community";
+            attribute :>> keyDifferentiator = "Full digital platform, subscription revenue, higher ceiling";
+            attribute :>> investmentLevel = "~£120K";
+            attribute :>> riskProfile = "Longer break-even, higher capital requirement; more diversified revenue";
+            attribute :>> scenarioRef = "";
+        }
+
+        part variantConsultancyLicence : BusinessModelVariant {
+            doc /* Deferred beyond Phase 5. Requires modelling
+                 * licence pricing, platform deployment for licensees,
+                 * and support cost structures. */
+            attribute :>> variantName = "Consultancy + Platform Licence";
+            attribute :>> variantLabel = "C";
+            attribute :>> description = "Dual revenue: clinical services AND platform licence/SaaS to other gender services. Highest ceiling, longest break-even.";
+            attribute :>> activeOfferings = "Initial Assessment, Hormone Therapy Initiation, Ongoing Monitoring, Platform Licence";
+            attribute :>> keyDifferentiator = "Scalable platform revenue independent of clinical capacity";
+            attribute :>> investmentLevel = "~£200K";
+            attribute :>> riskProfile = "Longest break-even, highest capital; platform revenue scalable independently";
+            attribute :>> scenarioRef = "";
+        }
+
+        // -- Pivot scenarios -----------------------------------
+
+        part pivotLeanToFull : PivotScenario {
+            doc /* The most likely transition path. Variant A
+                 * establishes clinical operations and proves the
+                 * model; Variant B adds platform capabilities
+                 * when demand and resources allow. */
+            attribute :>> pivotName = "Lean Clinical to Full Platform transition";
+            attribute :>> fromVariant = "Lean Clinical (A)";
+            attribute :>> toVariant = "Full Platform (B)";
+            attribute :>> triggerCondition = "Break-even achieved and patient demand exceeds single-clinician capacity";
+            attribute :>> transitionPlan = "Hire second clinician, add coaching capability, launch subscription model, expand patient portal";
+            attribute :>> estimatedTransitionMonths = 6;
+            attribute :>> riskNotes = "Requires capital injection or retained earnings sufficient for 6-month transition period";
         }
     }
 }
