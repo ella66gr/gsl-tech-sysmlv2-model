@@ -242,6 +242,55 @@ package BusinessModel {
             attribute :>> basis = "Patient portal reading from the same pathway model that drives clinical delivery";
             attribute :>> testability = "Patient satisfaction survey and portal usage metrics";
         }
+
+        // -- Variant B (Full Platform) service offerings -------
+
+        part coachingService : ServiceOffering {
+            doc /* Gender identity coaching delivered by a trained
+                 * coach. Included in the Full Platform subscription.
+                 * No clinical pathway equivalent — coaching is a
+                 * non-clinical support offering. */
+            attribute :>> offeringName = "Coaching";
+            attribute :>> description = "Structured gender identity coaching sessions with a trained coach";
+            attribute :>> scope = "Goal setting, self-advocacy skills, navigating social transition, wellbeing support";
+            attribute :>> pricingBasis = "subscription";
+            attribute :>> estimatedDurationWeeks = 0;  // ongoing, no fixed duration
+            attribute :>> clinicalPathwayRef = "";     // non-clinical offering
+        }
+
+        part educationService : ServiceOffering {
+            doc /* Structured education modules on gender-affirming
+                 * care topics. Included in subscription. Self-paced
+                 * digital content with optional live sessions. */
+            attribute :>> offeringName = "Education";
+            attribute :>> description = "Structured education modules on gender-affirming care and wellbeing";
+            attribute :>> scope = "Understanding hormones, managing expectations, health literacy, rights and access";
+            attribute :>> pricingBasis = "subscription";
+            attribute :>> estimatedDurationWeeks = 0;  // ongoing library, no fixed duration
+            attribute :>> clinicalPathwayRef = "";     // non-clinical offering
+        }
+
+        part communityAccess : ServiceOffering {
+            doc /* Moderated peer community platform. Included in
+                 * subscription. Provides peer support, shared
+                 * experience, and community connection. */
+            attribute :>> offeringName = "Community";
+            attribute :>> description = "Moderated peer community platform for shared experience and support";
+            attribute :>> scope = "Peer forums, facilitated groups, community events, resource sharing";
+            attribute :>> pricingBasis = "subscription";
+            attribute :>> estimatedDurationWeeks = 0;  // ongoing, no fixed duration
+            attribute :>> clinicalPathwayRef = "";     // non-clinical offering
+        }
+
+        // -- Variant B value propositions ----------------------
+
+        part holisticCareModel : ValueProposition {
+            attribute :>> propositionName = "Holistic care model";
+            attribute :>> description = "Clinical care, coaching, education, and peer community as one integrated package";
+            attribute :>> targetSegment = "Self-referring individuals";
+            attribute :>> differentiator = "No other UK gender service offers clinical + coaching + community as a single subscription";
+            attribute :>> evidenceBasis = "Service offering comparison with existing providers";
+        }
     }
 
     // =================================================================
@@ -588,6 +637,81 @@ package BusinessModel {
             attribute :>> limit = "Must hold prescribing qualification and gender identity healthcare credential";
             attribute :>> regulatorySource = "Enterprise::Regulation";
         }
+
+        // -- Variant B (Full Platform) resource instantiation --
+
+        part genderCoach : ResourceType {
+            doc /* Trained gender identity coach. Non-clinical role
+                 * delivering structured coaching sessions. */
+            attribute :>> resourceTypeName = "Gender identity coach";
+            attribute :>> category = "personnel";
+            attribute :>> acquisitionMethod = "contracted";
+            attribute :>> costProfile = "£3,000 per FTE per month";
+            attribute :>> capacityUnit = "FTE";
+        }
+
+        part communityModerator : ResourceType {
+            doc /* Part-time community management role. Moderates
+                 * peer forums, facilitates groups, manages content. */
+            attribute :>> resourceTypeName = "Community moderator";
+            attribute :>> category = "personnel";
+            attribute :>> acquisitionMethod = "employed";
+            attribute :>> costProfile = "£2,000 per FTE per month";
+            attribute :>> capacityUnit = "FTE";
+        }
+
+        part coachInstance : ResourceInstance {
+            attribute :>> instanceName = "Gender identity coach";
+            attribute :>> resourceType = "Gender identity coach";
+            attribute :>> capacity = "0.5 FTE";
+            attribute :>> availabilityNotes = "2.5 days per week";
+            attribute :>> costPerUnit = 1500.0;
+            attribute :>> costBasis = "per month";
+        }
+
+        part moderatorInstance : ResourceInstance {
+            attribute :>> instanceName = "Community moderator";
+            attribute :>> resourceType = "Community moderator";
+            attribute :>> capacity = "0.2 FTE";
+            attribute :>> availabilityNotes = "1 day per week";
+            attribute :>> costPerUnit = 400.0;
+            attribute :>> costBasis = "per month";
+        }
+
+        part secondClinicianMonth6to24 : ResourceInstance {
+            doc /* Second clinician added at month 6 in Variant B.
+                 * Steps from 0.5 to 1.0 FTE at month 12. */
+            attribute :>> instanceName = "Second prescribing clinician (months 6-24)";
+            attribute :>> resourceType = "Prescribing clinician";
+            attribute :>> capacity = "0.5 FTE stepping to 1.0 FTE at month 12";
+            attribute :>> availabilityNotes = "Variant B only — earlier scaling than Variant A";
+            attribute :>> costPerUnit = 2500.0;
+            attribute :>> costBasis = "per month (at 0.5 FTE)";
+        }
+
+        part coachingCapability : Capability {
+            attribute :>> capabilityName = "Gender identity coaching";
+            attribute :>> description = "Deliver structured coaching sessions supporting social transition and wellbeing";
+            attribute :>> requiredResources = "1 gender identity coach + video consulting + scheduling platform";
+            attribute :>> enabledOfferings = "Coaching";
+        }
+
+        part communityCapability : Capability {
+            attribute :>> capabilityName = "Peer community platform";
+            attribute :>> description = "Operate moderated peer forums, facilitated groups, and community events";
+            attribute :>> requiredResources = "1 community moderator + community platform software + content moderation tools";
+            attribute :>> enabledOfferings = "Community";
+        }
+
+        part fullPlatformCapacity : CapacityModel {
+            doc /* Capacity model for the Full Platform variant.
+                 * Multiple resource types with different bottlenecks. */
+            attribute :>> resourceConfiguration = "2 prescribing clinicians (1.5-2.0 FTE total) + 0.5 FTE coach + 0.2 FTE moderator";
+            attribute :>> throughputPerPeriod = "80-100 active patients";
+            attribute :>> periodUnit = "concurrent active caseload";
+            attribute :>> assumptions = "Clinical capacity doubled vs Variant A; coaching at 10 sessions/week; community moderation 1 day/week";
+            attribute :>> bottleneck = "Prescribing clinician time (clinical); coach availability (coaching)";
+        }
     }
 
     // =================================================================
@@ -763,6 +887,69 @@ package BusinessModel {
             attribute :>> revenueFormula = "assessment fees (volume x price) + monitoring fees (stable cohort x quarterly fee)";
             attribute :>> costFormula = "clinician FTE + admin FTE + platform + insurance + lab panels + 25% overhead";
             attribute :>> breakEvenIndicator = "estimated month 14 at base assumptions";
+        }
+
+        // -- Variant B (Full Platform) financial instantiation --
+
+        part subscriptionRevenue : RevenueStream {
+            doc /* Monthly subscription fee from active patients in
+                 * the Full Platform variant. Additive to clinical
+                 * episode fees — subscribers also pay per-episode
+                 * for clinical services. */
+            attribute :>> streamName = "Subscription fees";
+            attribute :>> sourceSegment = "Active subscribers (Full Platform patients)";
+            attribute :>> triggerEvent = "Monthly subscription renewal";
+            attribute :>> pricingModelRef = "subscriptionPricing";
+            attribute :>> projectedVolume = "grows with active patient cohort";
+        }
+
+        part coachCost : CostDriver {
+            attribute :>> driverName = "Coach cost";
+            attribute :>> linkedResource = "Gender identity coach";
+            attribute :>> costBehaviour = "semi-variable — fixed FTE cost, added when coaching offering launches";
+            attribute :>> estimatedUnitCost = 3000.0;
+            attribute :>> scalingFactor = "per FTE per month";
+        }
+
+        part moderatorCost : CostDriver {
+            attribute :>> driverName = "Community moderator cost";
+            attribute :>> linkedResource = "Community moderator";
+            attribute :>> costBehaviour = "semi-variable — fixed FTE cost, added when community launches";
+            attribute :>> estimatedUnitCost = 2000.0;
+            attribute :>> scalingFactor = "per FTE per month";
+        }
+
+        part subscriptionPricing : PricingModel {
+            doc /* Monthly subscription covering coaching, education,
+                 * and community access. Clinical services remain
+                 * per-episode on top of the subscription. */
+            attribute :>> pricingModelName = "Monthly subscription";
+            attribute :>> pricingType = PricingType::subscription;
+            attribute :>> basePrice = 99.0;
+            attribute :>> adjustmentLogic = "Flat monthly fee. Clinical episode fees charged separately.";
+            attribute :>> applicableOfferings = "Coaching, Education, Community";
+        }
+
+        part subscriptionUnitEconomics : UnitEconomics {
+            doc /* Per-subscriber economics for the subscription
+                 * component only. Clinical episode economics are
+                 * separate (assessmentUnitEconomics,
+                 * monitoringUnitEconomics). All values are
+                 * illustrative placeholders. */
+            attribute :>> offeringRef = "Subscription (monthly)";
+            attribute :>> revenuePerUnit = 99.0;
+            attribute :>> costPerUnit = 55.0;
+            attribute :>> marginPerUnit = 44.0;
+            attribute :>> breakdownNotes = "Coach allocation £30, moderator allocation £8, platform £12, overhead £5. All values placeholder.";
+        }
+
+        part fullPlatformProjection : FinancialProjection {
+            attribute :>> projectionName = "Full Platform 24-month projection";
+            attribute :>> scenarioRef = "Full Platform (Variant B)";
+            attribute :>> timelineMonths = 24;
+            attribute :>> revenueFormula = "assessment fees + monitoring fees + subscription fees (active subscribers x monthly fee)";
+            attribute :>> costFormula = "2 clinician FTE + admin FTE + coach FTE + moderator FTE + platform + insurance + lab panels + 25% overhead";
+            attribute :>> breakEvenIndicator = "placeholder — to be determined by projection engine";
         }
     }
 
