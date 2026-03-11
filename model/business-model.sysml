@@ -28,7 +28,8 @@ package BusinessModel {
          *
          * Phase 1: ServiceConcept + ActivityModel (complete)
          * Phase 2: ResourcePlanning + FinancialPlanning (complete)
-         * Phase 3: ScenarioModelling + StrategyAndEvolution (complete) */
+         * Phase 3: ScenarioModelling + StrategyAndEvolution (complete)
+         * Phase 5: Full Platform (Variant B) scenario (complete) */
 
     // =================================================================
     // SERVICE CONCEPT — What value is delivered, to whom, and why
@@ -1514,6 +1515,365 @@ package BusinessModel {
             attribute :>> parameterSnapshot = "All parameters at section 7.2 base values. 4 patients/month year 1, 6 patients/month year 2, 0.5 FTE months 1-9, 0.8 FTE months 10-24, 25% overhead.";
             attribute :>> notes = "Re-baseline when 6+ months of actuals indicate material deviation from assumptions";
         }
+
+        // =============================================================
+        // GSL Full Platform scenario instantiation (Variant B)
+        // =============================================================
+        //
+        // Phase 5, Stage 3. Full parameterisation of the Full Platform
+        // variant. Shares clinical parameters with Variant A (same
+        // assessment fee, monitoring fee, conversion rates, churn).
+        // Adds subscription revenue, coach/moderator costs, higher
+        // platform cost, and a two-clinician FTE schedule.
+        //
+        // All values are illustrative placeholders per Phase 5
+        // guardrail G1 — set once, not tuned.
+        //
+        // Key structural finding: subscription revenue requires a
+        // new ProjectionFormula (formulaSubscriptionRevenue) because
+        // it introduces an additive revenue stream with its own
+        // volume driver (activeSubscribers). The existing Variant A
+        // formulas handle the clinical revenue component unchanged.
+
+        part fullPlatformScenario : ScenarioDefinition {
+            attribute :>> scenarioName = "Full Platform (Variant B)";
+            attribute :>> description = "Clinical care plus coaching, education, and community. 2 clinicians, subscription pricing alongside per-episode clinical fees.";
+            attribute :>> activeOfferings = "Initial Assessment, Hormone Therapy Initiation, Ongoing Monitoring, Coaching, Education, Community";
+            attribute :>> variantLabel = "B";
+            attribute :>> timelineMonths = 24;
+            attribute :>> notes = "All values are illustrative placeholders. Subscription revenue is additive to clinical episode revenue.";
+        }
+
+        // Variant B projection parameters — subscription revenue
+
+        part fpParamSubscriptionFee : ProjectionParameter {
+            attribute :>> parameterName = "subscriptionFeePerMonth";
+            attribute :>> parameterValue = 99.0;
+            attribute :>> unit = "£/month";
+            attribute :>> sourceRef = "FinancialPlanning::subscriptionPricing";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "Flat monthly fee for coaching, education, community access. Placeholder.";
+        }
+
+        part fpParamSubscriptionUptake : ProjectionParameter {
+            doc /* Simplifying assumption: all active patients in the
+                 * Full Platform variant are subscribers. This is the
+                 * simplest model and can be relaxed in future if a
+                 * clinical-only tier is introduced. */
+            attribute :>> parameterName = "subscriptionUptakeRate";
+            attribute :>> parameterValue = 100.0;
+            attribute :>> unit = "%";
+            attribute :>> sourceRef = "Design assumption";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "100% — all active patients are subscribers. Simplifying assumption documented per Phase 5 plan.";
+        }
+
+        // Variant B projection parameters — resource cost (new)
+
+        part fpParamCoachFTE : ProjectionParameter {
+            attribute :>> parameterName = "coachFTE";
+            attribute :>> parameterValue = 0.5;
+            attribute :>> unit = "FTE";
+            attribute :>> sourceRef = "ResourcePlanning::coachInstance";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "0.5 FTE throughout. Constant — does not scale within 24-month projection.";
+        }
+
+        part fpParamCoachCost : ProjectionParameter {
+            attribute :>> parameterName = "coachCostPerFTEPerMonth";
+            attribute :>> parameterValue = 3000.0;
+            attribute :>> unit = "£/FTE/month";
+            attribute :>> sourceRef = "FinancialPlanning::coachCost";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "Placeholder — below clinician rate";
+        }
+
+        part fpParamModeratorFTE : ProjectionParameter {
+            attribute :>> parameterName = "moderatorFTE";
+            attribute :>> parameterValue = 0.2;
+            attribute :>> unit = "FTE";
+            attribute :>> sourceRef = "ResourcePlanning::moderatorInstance";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "0.2 FTE throughout. 1 day per week.";
+        }
+
+        part fpParamModeratorCost : ProjectionParameter {
+            attribute :>> parameterName = "moderatorCostPerFTEPerMonth";
+            attribute :>> parameterValue = 2000.0;
+            attribute :>> unit = "£/FTE/month";
+            attribute :>> sourceRef = "FinancialPlanning::moderatorCost";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "Placeholder";
+        }
+
+        part fpParamPlatformCost : ProjectionParameter {
+            doc /* Higher than Variant A (£200) due to community
+                 * platform infrastructure. */
+            attribute :>> parameterName = "platformCostPerMonth";
+            attribute :>> parameterValue = 500.0;
+            attribute :>> unit = "£/month";
+            attribute :>> sourceRef = "FinancialPlanning::platformCost";
+            attribute :>> temporalVariation = "";
+            attribute :>> notes = "Higher than Variant A due to community platform hosting";
+        }
+
+        // Variant B projection parameters — clinician FTE schedule
+        //
+        // Two clinicians. Clinician 1: 0.5 FTE months 1-5, 0.8 FTE
+        // from month 6. Clinician 2: 0.5 FTE from month 6, 1.0 FTE
+        // from month 12. Total FTE: 0.5 → 1.3 → 1.8.
+
+        part fpParamClinician1FTEEarly : ProjectionParameter {
+            attribute :>> parameterName = "clinician1FTEMonths1to5";
+            attribute :>> parameterValue = 0.5;
+            attribute :>> unit = "FTE";
+            attribute :>> sourceRef = "ResourcePlanning::clinicianMonth1to9";
+            attribute :>> temporalVariation = "Months 1-5. Steps to 0.8 FTE at month 6.";
+            attribute :>> notes = "Clinician 1 early phase";
+        }
+
+        part fpParamClinician1FTELater : ProjectionParameter {
+            attribute :>> parameterName = "clinician1FTEMonths6to24";
+            attribute :>> parameterValue = 0.8;
+            attribute :>> unit = "FTE";
+            attribute :>> sourceRef = "ResourcePlanning::clinicianMonth10to24";
+            attribute :>> temporalVariation = "From month 6 onwards";
+            attribute :>> notes = "Clinician 1 scales earlier than Variant A";
+        }
+
+        part fpParamClinician2FTEEarly : ProjectionParameter {
+            attribute :>> parameterName = "clinician2FTEMonths6to11";
+            attribute :>> parameterValue = 0.5;
+            attribute :>> unit = "FTE";
+            attribute :>> sourceRef = "ResourcePlanning::secondClinicianMonth6to24";
+            attribute :>> temporalVariation = "Months 6-11. Steps to 1.0 FTE at month 12.";
+            attribute :>> notes = "Second clinician initial phase";
+        }
+
+        part fpParamClinician2FTELater : ProjectionParameter {
+            attribute :>> parameterName = "clinician2FTEMonths12to24";
+            attribute :>> parameterValue = 1.0;
+            attribute :>> unit = "FTE";
+            attribute :>> sourceRef = "ResourcePlanning::secondClinicianMonth6to24";
+            attribute :>> temporalVariation = "From month 12 onwards";
+            attribute :>> notes = "Second clinician full capacity";
+        }
+
+        // Variant B projection parameters — shared with Variant A
+        //
+        // The following parameters are shared between variants:
+        // assessmentFeePerPatient, monitoringFeePerQuarter,
+        // effectiveMonthlyRevenuePerPatient, clinicianCostPerFTEPerMonth,
+        // adminFTE, adminCostPerFTEPerMonth, insurancePerMonth,
+        // labCostPerBloodPanel, bloodPanelsPerInitiationEpisode,
+        // bloodPanelsPerMonitoringQuarter, overheadPercentage,
+        // newPatientsPerMonthYear1, newPatientsPerMonthYear2,
+        // assessmentToInitiationConversion, initiationToStableConversion,
+        // churnRatePerQuarter.
+        //
+        // These are not duplicated — the engine inherits Variant A
+        // clinical parameters and overrides only the parameters that
+        // differ. This is documented as a structural finding: the
+        // existing parameter vocabulary handles both variants.
+
+        // Variant B growth assumptions
+
+        part fpGrowthPatientAcquisition : GrowthAssumption {
+            doc /* Same patient acquisition rate as Variant A.
+                 * Deliberately shared to isolate structural cost/
+                 * revenue differences between variants. */
+            attribute :>> assumptionName = "Patient acquisition (Full Platform)";
+            attribute :>> targetVariable = "newPatientsPerMonth";
+            attribute :>> growthShape = GrowthShape::stepped;
+            attribute :>> startValue = 4.0;
+            attribute :>> endValue = 6.0;
+            attribute :>> inflectionMonth = 13;
+            attribute :>> trajectory = "4 per month year 1, steps to 6 at month 13";
+            attribute :>> notes = "Shared with Variant A to isolate cost/revenue differences";
+        }
+
+        part fpGrowthClinicianFTE : GrowthAssumption {
+            doc /* Two-clinician schedule. Faster scaling than Variant A
+                 * to support the larger service offering. */
+            attribute :>> assumptionName = "Total clinician FTE (Full Platform)";
+            attribute :>> targetVariable = "totalClinicianFTE";
+            attribute :>> growthShape = GrowthShape::stepped;
+            attribute :>> startValue = 0.5;
+            attribute :>> endValue = 1.8;
+            attribute :>> inflectionMonth = 6;
+            attribute :>> trajectory = "0.5 FTE months 1-5, 1.3 FTE months 6-11, 1.8 FTE months 12-24";
+            attribute :>> notes = "Clinician 1 (0.5→0.8) + Clinician 2 (0→0.5→1.0)";
+        }
+
+        part fpGrowthSubscriptionBase : GrowthAssumption {
+            doc /* Subscribers grow with the active patient pool.
+                 * Simplifying assumption: 100% uptake, so subscriber
+                 * count equals active patient count. */
+            attribute :>> assumptionName = "Subscription base growth";
+            attribute :>> targetVariable = "activeSubscribers";
+            attribute :>> growthShape = GrowthShape::linear;
+            attribute :>> startValue = 0.0;
+            attribute :>> endValue = 65.0;
+            attribute :>> inflectionMonth = 0;
+            attribute :>> trajectory = "Mirrors active patient pool growth (100% uptake assumption)";
+            attribute :>> notes = "End value is illustrative — actual depends on cohort dynamics";
+        }
+
+        // Variant B projection formula — subscription revenue
+        //
+        // Structural finding: subscription revenue IS a new formula.
+        // The existing formulaTotalRevenue (assessment + monitoring)
+        // remains valid for the clinical component. Subscription
+        // revenue is additive. The engine composes:
+        //   totalRevenue = clinicalRevenue + subscriptionRevenue
+
+        part formulaSubscriptionRevenue : ProjectionFormula {
+            doc /* New formula required for Variant B. Subscription
+                 * revenue has its own volume driver (active
+                 * subscribers) distinct from assessment volume or
+                 * monitoring volume. This answers the Phase 5 plan's
+                 * key structural question: yes, subscription revenue
+                 * requires a new formula. */
+            attribute :>> formulaName = "Monthly subscription revenue";
+            attribute :>> inputs = "activeSubscribers, subscriptionFeePerMonth";
+            attribute :>> expression = "activeSubscribers * subscriptionFeePerMonth";
+            attribute :>> outputVariable = "monthlySubscriptionRevenue";
+            attribute :>> outputUnit = "£/month";
+            attribute :>> notes = "Additive to clinical revenue. activeSubscribers derived from active patient pool x uptake rate.";
+        }
+
+        part formulaFullPlatformTotalRevenue : ProjectionFormula {
+            doc /* Extended total revenue for Variant B. Composes
+                 * clinical revenue (shared formula) with subscription
+                 * revenue (new formula). */
+            attribute :>> formulaName = "Total monthly revenue (Full Platform)";
+            attribute :>> inputs = "monthlyAssessmentRevenue, monthlyMonitoringRevenue, monthlySubscriptionRevenue";
+            attribute :>> expression = "monthlyAssessmentRevenue + monthlyMonitoringRevenue + monthlySubscriptionRevenue";
+            attribute :>> outputVariable = "totalMonthlyRevenue";
+            attribute :>> outputUnit = "£/month";
+            attribute :>> notes = "Extends Variant A formula with subscription term";
+        }
+
+        part formulaFullPlatformDirectCost : ProjectionFormula {
+            doc /* Extended direct cost for Variant B. Adds coach,
+                 * moderator, and higher platform cost to Variant A's
+                 * cost structure. */
+            attribute :>> formulaName = "Monthly direct cost (Full Platform)";
+            attribute :>> inputs = "totalClinicianFTE, clinicianCostPerFTEPerMonth, adminFTE, adminCostPerFTEPerMonth, coachFTE, coachCostPerFTEPerMonth, moderatorFTE, moderatorCostPerFTEPerMonth, platformCostPerMonth, insurancePerMonth, bloodPanelsThisMonth, labCostPerBloodPanel";
+            attribute :>> expression = "(totalClinicianFTE * clinicianCostPerFTEPerMonth) + (adminFTE * adminCostPerFTEPerMonth) + (coachFTE * coachCostPerFTEPerMonth) + (moderatorFTE * moderatorCostPerFTEPerMonth) + platformCostPerMonth + insurancePerMonth + (bloodPanelsThisMonth * labCostPerBloodPanel)";
+            attribute :>> outputVariable = "monthlyDirectCost";
+            attribute :>> outputUnit = "£/month";
+            attribute :>> notes = "Extends Variant A formula with coach, moderator, higher platform cost";
+        }
+
+        // Variant B illustrative projection outputs
+        //
+        // Hand-estimated sanity-check targets. The engine will produce
+        // precise values. These are set once per guardrail G1.
+        //
+        // Key structural story: Variant B has substantially higher
+        // costs (coach, moderator, second clinician earlier) which
+        // subscription revenue only partially offsets, resulting in a
+        // much later break-even and deeper cumulative cash deficit.
+
+        part fpOutputMonth1 : ProjectionOutput {
+            doc /* Month 1: same patients as Variant A but higher
+                 * fixed costs (coach, moderator from day 1). Small
+                 * subscription revenue from ~3 active patients. */
+            attribute :>> periodLabel = "Month 1";
+            attribute :>> revenue = 1900.0;
+            attribute :>> cost = 8000.0;
+            attribute :>> margin = -6100.0;
+            attribute :>> cumulativeCashFlow = -6100.0;
+            attribute :>> activePatientsTotal = 4;
+            attribute :>> clinicianUtilisation = 15.0;
+            attribute :>> confidenceProfile = "low — early month, high fixed cost base, envelope overhead";
+        }
+
+        part fpOutputMonth6 : ProjectionOutput {
+            doc /* Month 6: second clinician joins. ~18 active
+                 * patients generating subscription revenue. Cost
+                 * step-up as clinician 2 starts. */
+            attribute :>> periodLabel = "Month 6";
+            attribute :>> revenue = 5400.0;
+            attribute :>> cost = 13000.0;
+            attribute :>> margin = -7600.0;
+            attribute :>> cumulativeCashFlow = -40000.0;
+            attribute :>> activePatientsTotal = 20;
+            attribute :>> clinicianUtilisation = 25.0;
+            attribute :>> confidenceProfile = "moderate — growth assumptions dominate, clinician step-up uncertainty";
+        }
+
+        part fpOutputMonth12 : ProjectionOutput {
+            doc /* Month 12: clinician 2 steps to 1.0 FTE. ~35
+                 * active patients. Subscription revenue growing
+                 * but not yet offsetting the higher cost base. */
+            attribute :>> periodLabel = "Month 12";
+            attribute :>> revenue = 9400.0;
+            attribute :>> cost = 16500.0;
+            attribute :>> margin = -7100.0;
+            attribute :>> cumulativeCashFlow = -80000.0;
+            attribute :>> activePatientsTotal = 38;
+            attribute :>> clinicianUtilisation = 30.0;
+            attribute :>> confidenceProfile = "moderate — subscription uptake assumption becoming significant";
+        }
+
+        part fpOutputMonth18 : ProjectionOutput {
+            doc /* Month 18: ~50 active patients. Subscription
+                 * revenue ~£5K/month. Deficit narrowing but still
+                 * negative margin. */
+            attribute :>> periodLabel = "Month 18";
+            attribute :>> revenue = 13500.0;
+            attribute :>> cost = 16000.0;
+            attribute :>> margin = -2500.0;
+            attribute :>> cumulativeCashFlow = -100000.0;
+            attribute :>> activePatientsTotal = 52;
+            attribute :>> clinicianUtilisation = 40.0;
+            attribute :>> confidenceProfile = "moderate — churn rate and subscription retention now material";
+        }
+
+        part fpOutputMonth24 : ProjectionOutput {
+            doc /* Month 24: ~63 active patients. Approaching
+                 * break-even but cumulative deficit still deep.
+                 * Subscription revenue ~£6.2K/month. */
+            attribute :>> periodLabel = "Month 24";
+            attribute :>> revenue = 16500.0;
+            attribute :>> cost = 16000.0;
+            attribute :>> margin = 500.0;
+            attribute :>> cumulativeCashFlow = -92000.0;
+            attribute :>> activePatientsTotal = 65;
+            attribute :>> clinicianUtilisation = 50.0;
+            attribute :>> confidenceProfile = "moderate — long-term assumptions dominate, subscription retention least validated";
+        }
+
+        // Variant B sensitivity parameters
+
+        part fpSensitivitySubscriptionPrice : SensitivityParameter {
+            attribute :>> parameterRef = "subscriptionFeePerMonth";
+            attribute :>> baseValue = 99.0;
+            attribute :>> pessimisticValue = 59.0;
+            attribute :>> optimisticValue = 149.0;
+            attribute :>> impactDescription = "Subscription price directly affects revenue diversification benefit. At £59 subscription contributes less than clinical revenue; at £149 it becomes the dominant revenue stream.";
+        }
+
+        part fpSensitivitySubscriptionUptake : SensitivityParameter {
+            attribute :>> parameterRef = "subscriptionUptakeRate";
+            attribute :>> baseValue = 100.0;
+            attribute :>> pessimisticValue = 60.0;
+            attribute :>> optimisticValue = 100.0;
+            attribute :>> impactDescription = "If only 60% of patients subscribe, subscription revenue drops by 40% while coach and moderator costs remain fixed. Tests whether subscription model is viable at partial uptake.";
+        }
+
+        // Variant B forecast baseline
+
+        part fullPlatformBaselineV1 : ForecastBaseline {
+            attribute :>> baselineName = "Full Platform launch baseline";
+            attribute :>> baselineVersion = 1;
+            attribute :>> scenarioRef = "Full Platform (Variant B)";
+            attribute :>> effectiveDate = "Pre-launch";
+            attribute :>> parameterSnapshot = "Shared clinical params with Variant A. Subscription £99/month, 100% uptake. Coach 0.5 FTE, moderator 0.2 FTE. Clinician 1: 0.5→0.8 FTE at month 6. Clinician 2: 0.5→1.0 FTE at months 6→12. Platform £500/month. 25% overhead.";
+            attribute :>> notes = "Illustrative placeholders per Phase 5 guardrail G1. All parameter values set once, not tuned.";
+        }
     }
 
     // =================================================================
@@ -1534,9 +1894,8 @@ package BusinessModel {
              * (each variant has a corresponding ScenarioDefinition
              * with full parameterisation).
              *
-             * Full elaboration of Variants B and C is a Phase 5
-             * concern. Phase 3 establishes structural placeholders
-             * with summary-level descriptions.
+             * Variant A and B are fully elaborated with
+             * ScenarioDefinitions. Variant C remains a placeholder.
              *
              * Source: gsl-service-business-meta-modelling.md
              * sections 3.5, 7.1 */
@@ -1646,8 +2005,9 @@ package BusinessModel {
         }
 
         part variantFullPlatform : BusinessModelVariant {
-            doc /* Phase 5 will elaborate this variant with a full
-                 * ScenarioDefinition and projection parameters. */
+            doc /* Full Platform variant with complete ScenarioDefinition
+                 * and projection parameters in ScenarioModelling.
+                 * Elaborated in Phase 5. */
             attribute :>> variantName = "Full Platform";
             attribute :>> variantLabel = "B";
             attribute :>> description = "Full digital platform with coaching, education, community, patient portal. Subscription model. Higher ceiling, longer break-even.";
@@ -1655,7 +2015,7 @@ package BusinessModel {
             attribute :>> keyDifferentiator = "Full digital platform, subscription revenue, higher ceiling";
             attribute :>> investmentLevel = "~£120K";
             attribute :>> riskProfile = "Longer break-even, higher capital requirement; more diversified revenue";
-            attribute :>> scenarioRef = "";
+            attribute :>> scenarioRef = "Full Platform (Variant B)";
         }
 
         part variantConsultancyLicence : BusinessModelVariant {
