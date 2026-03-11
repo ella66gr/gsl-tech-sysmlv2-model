@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-GenderSense Projection Engine — Phase 4, Business Meta Model Implementation
+GenderSense Projection Engine — Phases 4-5, Business Meta Model Implementation
 
 Reads scenario parameters (hard-coded from the SysML model) and produces
 a monthly time-series financial projection.
@@ -13,9 +13,12 @@ Usage:
     python scripts/projection_engine.py --format=csv             # CSV export
     python scripts/projection_engine.py --format=markdown        # Markdown summary
     python scripts/projection_engine.py --format=all             # All formats
+    python scripts/projection_engine.py --scenario=full-platform
     python scripts/projection_engine.py --scenario=coffeeshop-kiosk
     python scripts/projection_engine.py --scenario=coffeeshop-cafe
     python scripts/projection_engine.py --sensitivity            # Sensitivity analysis
+    python scripts/projection_engine.py --sensitivity --scenario=full-platform
+    python scripts/projection_engine.py --compare=lean-clinical,full-platform
 
 No external dependencies — Python stdlib only.
 """
@@ -104,6 +107,52 @@ LEAN_CLINICAL_PARAMS = {
     "monitoringHoursPerReview": 0.5,           # from monitoringUnitEconomics
 }
 
+
+# -- Full Platform (Variant B) -------------------------------------------
+#
+# Inherits all clinical parameters from Lean Clinical. Overrides and adds:
+# - Subscription revenue (£99/month per active subscriber, 100% uptake)
+# - Coach cost (0.5 FTE at £3,000/FTE/month)
+# - Moderator cost (0.2 FTE at £2,000/FTE/month)
+# - Higher platform cost (£500/month vs £200/month)
+# - Two-clinician FTE schedule (faster scaling)
+#
+# Source: business-model.sysml :: ScenarioModelling :: fullPlatformScenario
+# All values are illustrative placeholders per Phase 5 guardrail G1.
+
+FULL_PLATFORM_PARAMS = {
+    **LEAN_CLINICAL_PARAMS,
+
+    "scenarioName": "Full Platform (Variant B)",
+    "description": "Clinical care plus coaching, education, and community. 2 clinicians, subscription + per-episode.",
+
+    # Subscription revenue — fpParamSubscriptionFee, fpParamSubscriptionUptake
+    "subscriptionFeePerMonth": 99.0,
+    "subscriptionUptakeRate": 1.0,             # 100% — all active patients are subscribers
+
+    # Coach — fpParamCoachFTE, fpParamCoachCost
+    "coachFTE": 0.5,
+    "coachCostPerFTEPerMonth": 3000.0,
+
+    # Moderator — fpParamModeratorFTE, fpParamModeratorCost
+    "moderatorFTE": 0.2,
+    "moderatorCostPerFTEPerMonth": 2000.0,
+
+    # Higher platform cost — fpParamPlatformCost
+    "platformCostPerMonth": 500.0,
+
+    # Two-clinician FTE schedule — fpParamClinician1/2 early/later
+    # Clinician 1: 0.5 FTE months 1-5, 0.8 FTE from month 6
+    # Clinician 2: 0.5 FTE from month 6, 1.0 FTE from month 12
+    # Total:       0.5 → 1.3 → 1.8
+    "clinicianFTESchedule": {
+        "phase1": {"fte": 0.5, "months": (1, 5)},
+        "phase2": {"fte": 1.3, "months": (6, 11)},
+        "phase3": {"fte": 1.8, "months": (12, 24)},
+    },
+}
+
+
 # -- Coffee shop scenarios (from coffeeshop-scenarios.sysml) ---------------
 
 COFFEESHOP_KIOSK_PARAMS = {
@@ -146,8 +195,13 @@ COFFEESHOP_CAFE_PARAMS = {
     "tradingDaysPerMonth": 26,
 }
 
-# Sensitivity parameter definitions — from SysML SensitivityParameter usages
-SENSITIVITY_VARIATIONS = [
+
+# =========================================================================
+# SENSITIVITY PARAMETER DEFINITIONS
+# =========================================================================
+
+# Lean Clinical — from SysML SensitivityParameter usages
+LEAN_CLINICAL_SENSITIVITY = [
     {
         "parameterName": "newPatientsPerMonth (year 1)",
         "paramKey": "newPatientsSchedule.year1.count",
@@ -173,6 +227,37 @@ SENSITIVITY_VARIATIONS = [
         "sysmlPrediction": "±2 months",
     },
 ]
+
+# Full Platform — from SysML fpSensitivity* usages
+# Includes shared patient growth sensitivity plus Variant B-specific params
+FULL_PLATFORM_SENSITIVITY = [
+    {
+        "parameterName": "newPatientsPerMonth (year 1)",
+        "paramKey": "newPatientsSchedule.year1.count",
+        "base": 4, "pessimistic": 2, "optimistic": 6,
+        "sysmlPrediction": "shared with Variant A",
+    },
+    {
+        "parameterName": "subscriptionFeePerMonth",
+        "paramKey": "subscriptionFeePerMonth",
+        "base": 99.0, "pessimistic": 59.0, "optimistic": 149.0,
+        "sysmlPrediction": "subscription price sensitivity",
+    },
+    {
+        "parameterName": "subscriptionUptakeRate",
+        "paramKey": "subscriptionUptakeRate",
+        "base": 1.0, "pessimistic": 0.6, "optimistic": 1.0,
+        "sysmlPrediction": "60% uptake vs 100%",
+    },
+]
+
+SENSITIVITY_BY_SCENARIO = {
+    "lean-clinical": LEAN_CLINICAL_SENSITIVITY,
+    "full-platform": FULL_PLATFORM_SENSITIVITY,
+}
+
+# Backward compatibility alias
+SENSITIVITY_VARIATIONS = LEAN_CLINICAL_SENSITIVITY
 
 
 # =========================================================================
@@ -218,6 +303,12 @@ def run_clinical_projection(params):
     that initiation patients ARE being monitored and generating appointments.
 
     The initiation pipeline is tracked separately for lab cost calculation.
+
+    Subscription revenue (Variant B): if the params contain
+    subscriptionFeePerMonth, subscription revenue is computed as
+    activePool × uptakeRate × monthlyFee and added to total revenue.
+    If absent, the function produces identical output to Phase 4
+    (Variant A regression safety).
     """
     timeline = params["timelineMonths"]
 
@@ -228,6 +319,17 @@ def run_clinical_projection(params):
                            * params["initiationToStableConversion"])
 
     effective_revenue = params["effectiveMonthlyRevenuePerPatient"]
+
+    # Subscription params (Variant B — absent for Variant A)
+    has_subscription = "subscriptionFeePerMonth" in params
+    subscription_fee = params.get("subscriptionFeePerMonth", 0.0)
+    subscription_uptake = params.get("subscriptionUptakeRate", 0.0)
+
+    # Additional cost params (Variant B — absent or zero for Variant A)
+    coach_fte = params.get("coachFTE", 0.0)
+    coach_cost_rate = params.get("coachCostPerFTEPerMonth", 0.0)
+    moderator_fte = params.get("moderatorFTE", 0.0)
+    moderator_cost_rate = params.get("moderatorCostPerFTEPerMonth", 0.0)
 
     # Initiation pipeline: tracks patients in first 9 months (for lab costs)
     initiation_pipeline = []
@@ -268,13 +370,24 @@ def run_clinical_projection(params):
         # -- Revenue --
         assessment_revenue = new_patients * params["assessmentFeePerPatient"] / 2.0
         monitoring_revenue = active_pool * effective_revenue
-        total_revenue = assessment_revenue + monitoring_revenue
+
+        # Subscription revenue (Variant B only)
+        subscription_revenue = 0.0
+        if has_subscription:
+            active_subscribers = active_pool * subscription_uptake
+            subscription_revenue = active_subscribers * subscription_fee
+
+        total_revenue = assessment_revenue + monitoring_revenue + subscription_revenue
 
         # -- Costs --
         clinician_cost = clinician_fte * params["clinicianCostPerFTEPerMonth"]
         admin_cost = params["adminFTE"] * params["adminCostPerFTEPerMonth"]
         platform_cost = params["platformCostPerMonth"]
         insurance_cost = params["insurancePerMonth"]
+
+        # Coach and moderator cost (Variant B; zero for Variant A)
+        coach_cost = coach_fte * coach_cost_rate
+        moderator_cost = moderator_fte * moderator_cost_rate
 
         # Lab: initiation patients consume panels spread over 9 months,
         # stable patients consume 1 panel per quarter
@@ -286,7 +399,8 @@ def run_clinical_projection(params):
         total_panels = initiation_panels + monitoring_panels
         lab_cost = total_panels * params["labCostPerBloodPanel"]
 
-        direct_cost = clinician_cost + admin_cost + platform_cost + insurance_cost + lab_cost
+        direct_cost = (clinician_cost + admin_cost + platform_cost
+                       + insurance_cost + coach_cost + moderator_cost + lab_cost)
         overhead = direct_cost * params["overheadPercentage"] / 100.0
         total_cost = direct_cost + overhead
 
@@ -313,6 +427,31 @@ def run_clinical_projection(params):
         else:
             confidence = "moderate — long-term churn assumption least validated"
 
+        # -- Build revenue dict --
+        revenue_dict = {
+            "assessment": round(assessment_revenue, 2),
+            "monitoring": round(monitoring_revenue, 2),
+            "total": round(total_revenue, 2),
+        }
+        if has_subscription:
+            revenue_dict["subscription"] = round(subscription_revenue, 2)
+
+        # -- Build cost dict --
+        cost_dict = {
+            "clinician": round(clinician_cost, 2),
+            "admin": round(admin_cost, 2),
+            "platform": round(platform_cost, 2),
+            "insurance": round(insurance_cost, 2),
+            "lab": round(lab_cost, 2),
+            "directTotal": round(direct_cost, 2),
+            "overhead": round(overhead, 2),
+            "total": round(total_cost, 2),
+        }
+        if coach_fte > 0:
+            cost_dict["coach"] = round(coach_cost, 2)
+        if moderator_fte > 0:
+            cost_dict["moderator"] = round(moderator_cost, 2)
+
         months.append({
             "month": m,
             "periodLabel": f"Month {m}",
@@ -324,21 +463,8 @@ def run_clinical_projection(params):
                 "churnedThisMonth": round(churned, 1),
                 "totalActive": round(total_active, 1),
             },
-            "revenue": {
-                "assessment": round(assessment_revenue, 2),
-                "monitoring": round(monitoring_revenue, 2),
-                "total": round(total_revenue, 2),
-            },
-            "cost": {
-                "clinician": round(clinician_cost, 2),
-                "admin": round(admin_cost, 2),
-                "platform": round(platform_cost, 2),
-                "insurance": round(insurance_cost, 2),
-                "lab": round(lab_cost, 2),
-                "directTotal": round(direct_cost, 2),
-                "overhead": round(overhead, 2),
-                "total": round(total_cost, 2),
-            },
+            "revenue": revenue_dict,
+            "cost": cost_dict,
             "margin": round(margin, 2),
             "cumulativeCashFlow": round(cumulative_cash_flow, 2),
             "clinicianUtilisation": round(utilisation, 1),
@@ -481,6 +607,17 @@ def compute_summary(months, params):
     if params["domain"] == "clinical":
         summary["activePatientsAtFinalMonth"] = last["patients"]["activePool"]
         summary["clinicianUtilisationAtFinalMonth"] = last["clinicianUtilisation"]
+        # Revenue stream count for comparison output
+        summary["revenueStreams"] = 2  # assessment + monitoring
+        if "subscriptionFeePerMonth" in params:
+            summary["revenueStreams"] = 3  # + subscription
+        # Total staff FTE at final month
+        final_month = last["month"]
+        summary["clinicianFTEAtFinalMonth"] = _get_clinician_fte(params, final_month)
+        total_staff = summary["clinicianFTEAtFinalMonth"] + params["adminFTE"]
+        total_staff += params.get("coachFTE", 0.0)
+        total_staff += params.get("moderatorFTE", 0.0)
+        summary["totalStaffFTEAtFinalMonth"] = round(total_staff, 1)
 
     return summary
 
@@ -535,6 +672,158 @@ def _set_param(params, key_path, value):
     for part in parts[:-1]:
         target = target[part]
     target[parts[-1]] = value
+
+
+# =========================================================================
+# COMPARISON
+# =========================================================================
+
+def run_comparison(scenario_keys):
+    """Run projections for multiple scenarios and produce comparison data."""
+    results = {}
+    for key in scenario_keys:
+        params = SCENARIOS[key]
+        results[key] = run_projection(params)
+    return results
+
+
+def format_comparison_markdown(results):
+    """Produce a side-by-side comparison markdown table."""
+    lines = []
+    lines.append("# Scenario Comparison")
+    lines.append("")
+    lines.append(f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d')}")
+    lines.append("")
+
+    # Build header from scenario names
+    keys = list(results.keys())
+    names = [results[k]["scenario"] for k in keys]
+    header = "| Metric | " + " | ".join(names) + " |"
+    separator = "|---|" + "|".join(["---:" for _ in keys]) + "|"
+
+    lines.append(header)
+    lines.append(separator)
+
+    # Metrics rows
+    summaries = [results[k]["summary"] for k in keys]
+
+    def _fmt_be(s):
+        v = s["breakEvenMonth"]
+        return str(v) if v else "Not reached"
+
+    def _fmt_money(v):
+        return f"£{v:,.0f}"
+
+    metrics = [
+        ("Break-even month", lambda s: _fmt_be(s)),
+        ("Max cash deficit", lambda s: _fmt_money(s["maxCashDeficit"])),
+        ("Max deficit month", lambda s: str(s["maxCashDeficitMonth"])),
+        ("Margin at month 24", lambda s: _fmt_money(s["marginAtFinalMonth"])),
+        ("Cumulative CF at month 24", lambda s: _fmt_money(s["cumulativeCashFlowAtFinalMonth"])),
+    ]
+
+    # Clinical-specific metrics
+    if all("activePatientsAtFinalMonth" in s for s in summaries):
+        metrics.extend([
+            ("Active patients at month 24", lambda s: f"{s['activePatientsAtFinalMonth']:.0f}"),
+            ("Clinician FTE at month 24", lambda s: f"{s['clinicianFTEAtFinalMonth']:.1f}"),
+            ("Total staff FTE at month 24", lambda s: f"{s['totalStaffFTEAtFinalMonth']:.1f}"),
+            ("Revenue streams", lambda s: str(s.get("revenueStreams", "—"))),
+            ("Clinician utilisation at month 24", lambda s: f"{s['clinicianUtilisationAtFinalMonth']:.0f}%"),
+        ])
+
+    for label, fn in metrics:
+        vals = [fn(s) for s in summaries]
+        lines.append(f"| {label} | " + " | ".join(vals) + " |")
+
+    lines.append("")
+
+    # Investment estimate (from params)
+    lines.append("## Investment Estimate")
+    lines.append("")
+    for key in keys:
+        s = results[key]["summary"]
+        deficit = abs(s["maxCashDeficit"])
+        lines.append(f"- **{results[key]['scenario']}:** ~£{deficit:,.0f} "
+                      f"(maximum cash deficit, month {s['maxCashDeficitMonth']})")
+    lines.append("")
+
+    # Structural observations
+    lines.append("## Structural Observations")
+    lines.append("")
+    if len(keys) == 2:
+        s_a, s_b = summaries
+        be_a = s_a["breakEvenMonth"] or 99
+        be_b = s_b["breakEvenMonth"] or 99
+        deficit_a = abs(s_a["maxCashDeficit"])
+        deficit_b = abs(s_b["maxCashDeficit"])
+
+        if be_a < be_b:
+            lines.append(f"- {names[0]} reaches break-even {be_b - be_a} months earlier than {names[1]}")
+        elif be_b < be_a:
+            lines.append(f"- {names[1]} reaches break-even {be_a - be_b} months earlier than {names[0]}")
+
+        if deficit_b > deficit_a:
+            ratio = deficit_b / deficit_a if deficit_a > 0 else 0
+            lines.append(f"- {names[1]} requires ~{ratio:.1f}x the capital of {names[0]} "
+                          f"(£{deficit_b:,.0f} vs £{deficit_a:,.0f})")
+
+        margin_a = s_a["marginAtFinalMonth"]
+        margin_b = s_b["marginAtFinalMonth"]
+        if margin_b > margin_a:
+            lines.append(f"- {names[1]} has £{margin_b - margin_a:,.0f}/month higher margin at month 24")
+
+        streams_a = s_a.get("revenueStreams", 0)
+        streams_b = s_b.get("revenueStreams", 0)
+        if streams_b > streams_a:
+            lines.append(f"- {names[1]} has more diversified revenue ({streams_b} streams vs {streams_a})")
+
+    lines.append("")
+    lines.append("*All values are illustrative placeholders. This comparison tests structural "
+                 "capability, not validated business projections.*")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def format_comparison_console(results):
+    """Produce a console-friendly comparison summary."""
+    lines = []
+    keys = list(results.keys())
+    names = [results[k]["scenario"] for k in keys]
+    summaries = [results[k]["summary"] for k in keys]
+
+    width = max(len(n) for n in names) + 4
+    lines.append(f"{'=' * 60}")
+    lines.append("  Scenario Comparison")
+    lines.append(f"{'=' * 60}")
+    lines.append("")
+
+    header = f"  {'Metric':<30}"
+    for name in names:
+        header += f"  {name:>{width}}"
+    lines.append(header)
+    lines.append(f"  {'-' * 30}" + f"  {'-' * width}" * len(names))
+
+    def _row(label, fn):
+        row = f"  {label:<30}"
+        for s in summaries:
+            row += f"  {fn(s):>{width}}"
+        lines.append(row)
+
+    _row("Break-even month", lambda s: str(s["breakEvenMonth"] or "Never"))
+    _row("Max cash deficit", lambda s: f"£{s['maxCashDeficit']:,.0f}")
+    _row("Final month margin", lambda s: f"£{s['marginAtFinalMonth']:,.0f}")
+    _row("Final cumulative CF", lambda s: f"£{s['cumulativeCashFlowAtFinalMonth']:,.0f}")
+
+    if all("activePatientsAtFinalMonth" in s for s in summaries):
+        _row("Active patients (final)", lambda s: f"{s['activePatientsAtFinalMonth']:.0f}")
+        _row("Clinician FTE (final)", lambda s: f"{s['clinicianFTEAtFinalMonth']:.1f}")
+        _row("Total staff FTE (final)", lambda s: f"{s['totalStaffFTEAtFinalMonth']:.1f}")
+        _row("Revenue streams", lambda s: str(s.get("revenueStreams", "—")))
+        _row("Utilisation (final)", lambda s: f"{s['clinicianUtilisationAtFinalMonth']:.0f}%")
+
+    lines.append("")
+    return "\n".join(lines)
 
 
 # =========================================================================
@@ -609,21 +898,44 @@ def format_markdown(result):
     domain = result["parameters"].get("domain", "clinical")
 
     if domain == "clinical":
-        lines.append("| Month | New | Pool | Total | Revenue | Cost | Margin | Cumulative | Util % |")
-        lines.append("|------:|----:|-----:|------:|--------:|-----:|-------:|-----------:|-------:|")
-        for row in months:
-            p = row["patients"]
-            lines.append(
-                f"| {row['month']:2d} "
-                f"| {p['newThisMonth']:.0f} "
-                f"| {p['activePool']:.0f} "
-                f"| {p['totalActive']:.0f} "
-                f"| £{row['revenue']['total']:,.0f} "
-                f"| £{row['cost']['total']:,.0f} "
-                f"| £{row['margin']:,.0f} "
-                f"| £{row['cumulativeCashFlow']:,.0f} "
-                f"| {row['clinicianUtilisation']:.0f}% |"
-            )
+        # Check if subscription revenue is present
+        has_sub = "subscription" in months[0].get("revenue", {})
+
+        if has_sub:
+            lines.append("| Month | New | Pool | Total | Clin Rev | Sub Rev | Total Rev | Cost | Margin | Cumulative | Util % |")
+            lines.append("|------:|----:|-----:|------:|---------:|--------:|----------:|-----:|-------:|-----------:|-------:|")
+            for row in months:
+                p = row["patients"]
+                r = row["revenue"]
+                lines.append(
+                    f"| {row['month']:2d} "
+                    f"| {p['newThisMonth']:.0f} "
+                    f"| {p['activePool']:.0f} "
+                    f"| {p['totalActive']:.0f} "
+                    f"| £{r['assessment'] + r['monitoring']:,.0f} "
+                    f"| £{r.get('subscription', 0):,.0f} "
+                    f"| £{r['total']:,.0f} "
+                    f"| £{row['cost']['total']:,.0f} "
+                    f"| £{row['margin']:,.0f} "
+                    f"| £{row['cumulativeCashFlow']:,.0f} "
+                    f"| {row['clinicianUtilisation']:.0f}% |"
+                )
+        else:
+            lines.append("| Month | New | Pool | Total | Revenue | Cost | Margin | Cumulative | Util % |")
+            lines.append("|------:|----:|-----:|------:|--------:|-----:|-------:|-----------:|-------:|")
+            for row in months:
+                p = row["patients"]
+                lines.append(
+                    f"| {row['month']:2d} "
+                    f"| {p['newThisMonth']:.0f} "
+                    f"| {p['activePool']:.0f} "
+                    f"| {p['totalActive']:.0f} "
+                    f"| £{row['revenue']['total']:,.0f} "
+                    f"| £{row['cost']['total']:,.0f} "
+                    f"| £{row['margin']:,.0f} "
+                    f"| £{row['cumulativeCashFlow']:,.0f} "
+                    f"| {row['clinicianUtilisation']:.0f}% |"
+                )
     else:
         lines.append("| Month | Daily | Monthly | Revenue | Cost | Margin | Cumulative |")
         lines.append("|------:|------:|--------:|--------:|-----:|-------:|-----------:|")
@@ -643,9 +955,10 @@ def format_markdown(result):
     return "\n".join(lines)
 
 
-def format_sensitivity_markdown(results):
+def format_sensitivity_markdown(results, scenario_name=None):
     lines = []
-    lines.append("# Lean Clinical (Variant A) — Sensitivity Analysis")
+    title = scenario_name or "Sensitivity Analysis"
+    lines.append(f"# {title} — Sensitivity Analysis")
     lines.append("")
     lines.append(f"Generated: {datetime.now(timezone.utc).strftime('%Y-%m-%d')}")
     lines.append("")
@@ -679,7 +992,7 @@ def format_sensitivity_markdown(results):
         runs = r["runs"]
         for metric, label in [("breakEvenMonth", "Break-even month"),
                                ("maxCashDeficit", "Max cash deficit"),
-                               ("marginAtFinalMonth", "Margin at month 24"),
+                               ("marginAtFinalMonth", "Margin at final month"),
                                ("cumulativeCashFlowAtFinalMonth", "Cumulative cash flow")]:
             vals = []
             for scenario in ["pessimistic", "base", "optimistic"]:
@@ -708,6 +1021,8 @@ def format_sensitivity_markdown(results):
             f"**{dominant}** dominates, with a break-even spread of "
             f"approximately {max_spread} months between pessimistic and optimistic values."
         )
+    elif results:
+        lines.append("No clear dominant parameter — break-even not reached in multiple scenarios.")
     lines.append("")
     return "\n".join(lines)
 
@@ -737,15 +1052,30 @@ def format_console(result):
     domain = result["parameters"].get("domain", "clinical")
 
     if domain == "clinical":
-        lines.append(f"  {'Mo':>3}  {'New':>3}  {'Pool':>4}  {'Tot':>4}  {'Revenue':>8}  {'Cost':>8}  {'Margin':>8}  {'CumCF':>9}  {'Util':>5}")
-        lines.append(f"  {'---':>3}  {'---':>3}  {'----':>4}  {'----':>4}  {'--------':>8}  {'--------':>8}  {'--------':>8}  {'---------':>9}  {'-----':>5}")
-        for row in months:
-            p = row["patients"]
-            lines.append(
-                f"  {row['month']:3d}  {p['newThisMonth']:3.0f}  {p['activePool']:4.0f}  {p['totalActive']:4.0f}"
-                f"  {row['revenue']['total']:8,.0f}  {row['cost']['total']:8,.0f}  {row['margin']:8,.0f}"
-                f"  {row['cumulativeCashFlow']:9,.0f}  {row['clinicianUtilisation']:4.0f}%"
-            )
+        has_sub = "subscription" in months[0].get("revenue", {})
+        if has_sub:
+            lines.append(f"  {'Mo':>3}  {'New':>3}  {'Pool':>4}  {'Tot':>4}  {'ClinRev':>8}  {'SubRev':>7}  {'TotRev':>8}  {'Cost':>8}  {'Margin':>8}  {'CumCF':>9}  {'Util':>5}")
+            lines.append(f"  {'---':>3}  {'---':>3}  {'----':>4}  {'----':>4}  {'--------':>8}  {'-------':>7}  {'--------':>8}  {'--------':>8}  {'--------':>8}  {'---------':>9}  {'-----':>5}")
+            for row in months:
+                p = row["patients"]
+                r = row["revenue"]
+                clin_rev = r["assessment"] + r["monitoring"]
+                sub_rev = r.get("subscription", 0)
+                lines.append(
+                    f"  {row['month']:3d}  {p['newThisMonth']:3.0f}  {p['activePool']:4.0f}  {p['totalActive']:4.0f}"
+                    f"  {clin_rev:8,.0f}  {sub_rev:7,.0f}  {r['total']:8,.0f}  {row['cost']['total']:8,.0f}  {row['margin']:8,.0f}"
+                    f"  {row['cumulativeCashFlow']:9,.0f}  {row['clinicianUtilisation']:4.0f}%"
+                )
+        else:
+            lines.append(f"  {'Mo':>3}  {'New':>3}  {'Pool':>4}  {'Tot':>4}  {'Revenue':>8}  {'Cost':>8}  {'Margin':>8}  {'CumCF':>9}  {'Util':>5}")
+            lines.append(f"  {'---':>3}  {'---':>3}  {'----':>4}  {'----':>4}  {'--------':>8}  {'--------':>8}  {'--------':>8}  {'---------':>9}  {'-----':>5}")
+            for row in months:
+                p = row["patients"]
+                lines.append(
+                    f"  {row['month']:3d}  {p['newThisMonth']:3.0f}  {p['activePool']:4.0f}  {p['totalActive']:4.0f}"
+                    f"  {row['revenue']['total']:8,.0f}  {row['cost']['total']:8,.0f}  {row['margin']:8,.0f}"
+                    f"  {row['cumulativeCashFlow']:9,.0f}  {row['clinicianUtilisation']:4.0f}%"
+                )
     else:
         lines.append(f"  {'Mo':>3}  {'Daily':>5}  {'Revenue':>8}  {'Cost':>8}  {'Margin':>8}  {'CumCF':>9}")
         lines.append(f"  {'---':>3}  {'-----':>5}  {'--------':>8}  {'--------':>8}  {'--------':>8}  {'---------':>9}")
@@ -765,25 +1095,38 @@ def format_console(result):
 # =========================================================================
 
 SYSML_ILLUSTRATIVE = {
-    1:  {"revenue": 1200, "cost": 4488, "margin": -3288, "cumCF": -3288,   "patients": 4,  "util": 15},
-    6:  {"revenue": 2550, "cost": 4750, "margin": -2200, "cumCF": -15500,  "patients": 20, "util": 35},
-    12: {"revenue": 4800, "cost": 5050, "margin": -250,  "cumCF": -18500,  "patients": 38, "util": 55},
-    18: {"revenue": 7500, "cost": 6250, "margin": 1250,  "cumCF": -12500,  "patients": 52, "util": 72},
-    24: {"revenue": 10500, "cost": 6650, "margin": 3850, "cumCF": -1200,   "patients": 65, "util": 85},
+    "lean-clinical": {
+        1:  {"revenue": 1200, "cost": 4488, "margin": -3288, "cumCF": -3288,   "patients": 4,  "util": 15},
+        6:  {"revenue": 2550, "cost": 4750, "margin": -2200, "cumCF": -15500,  "patients": 20, "util": 35},
+        12: {"revenue": 4800, "cost": 5050, "margin": -250,  "cumCF": -18500,  "patients": 38, "util": 55},
+        18: {"revenue": 7500, "cost": 6250, "margin": 1250,  "cumCF": -12500,  "patients": 52, "util": 72},
+        24: {"revenue": 10500, "cost": 6650, "margin": 3850, "cumCF": -1200,   "patients": 65, "util": 85},
+    },
+    "full-platform": {
+        1:  {"revenue": 1900,  "cost": 8000,  "margin": -6100,  "cumCF": -6100,    "patients": 4,  "util": 15},
+        6:  {"revenue": 5400,  "cost": 13000, "margin": -7600,  "cumCF": -40000,   "patients": 20, "util": 25},
+        12: {"revenue": 9400,  "cost": 16500, "margin": -7100,  "cumCF": -80000,   "patients": 38, "util": 30},
+        18: {"revenue": 13500, "cost": 16000, "margin": -2500,  "cumCF": -100000,  "patients": 52, "util": 40},
+        24: {"revenue": 16500, "cost": 16000, "margin": 500,    "cumCF": -92000,   "patients": 65, "util": 50},
+    },
 }
 
 
-def verify_against_illustrative(result):
+def verify_against_illustrative(result, scenario_key):
+    illustrative = SYSML_ILLUSTRATIVE.get(scenario_key)
+    if not illustrative:
+        return f"\n  No illustrative values defined for scenario '{scenario_key}'.\n"
+
     lines = []
     lines.append("")
-    lines.append("Verification against SysML illustrative ProjectionOutput values:")
+    lines.append(f"Verification against SysML illustrative ProjectionOutput values ({scenario_key}):")
     lines.append(f"  {'Mo':>3}  {'Metric':>10}  {'Engine':>9}  {'SysML':>9}  {'Δ%':>7}  {'Status'}")
     lines.append(f"  {'---':>3}  {'----------':>10}  {'---------':>9}  {'---------':>9}  {'-------':>7}  {'------'}")
 
     months_by_num = {row["month"]: row for row in result["months"]}
     all_ok = True
 
-    for m, expected in sorted(SYSML_ILLUSTRATIVE.items()):
+    for m, expected in sorted(illustrative.items()):
         if m not in months_by_num:
             continue
         actual = months_by_num[m]
@@ -803,8 +1146,10 @@ def verify_against_illustrative(result):
             else:
                 pct = (eng_val - exp_val) / abs(exp_val) * 100
 
-            status = "✓" if abs(pct) <= 20 else "⚠ >20%"
-            if abs(pct) > 20:
+            # Wider tolerance for Variant B (hand-estimated, not calibrated)
+            tolerance = 20 if scenario_key == "lean-clinical" else 40
+            status = "✓" if abs(pct) <= tolerance else f"⚠ >{tolerance}%"
+            if abs(pct) > tolerance:
                 all_ok = False
 
             lines.append(
@@ -813,9 +1158,10 @@ def verify_against_illustrative(result):
 
     lines.append("")
     if all_ok:
-        lines.append("  All values within 20% tolerance. ✓")
+        tolerance = 20 if scenario_key == "lean-clinical" else 40
+        lines.append(f"  All values within {tolerance}% tolerance. ✓")
     else:
-        lines.append("  ⚠ Some values diverge >20% — see session report for analysis.")
+        lines.append("  ⚠ Some values diverge beyond tolerance — see session report for analysis.")
     lines.append("")
 
     return "\n".join(lines)
@@ -827,6 +1173,7 @@ def verify_against_illustrative(result):
 
 SCENARIOS = {
     "lean-clinical": LEAN_CLINICAL_PARAMS,
+    "full-platform": FULL_PLATFORM_PARAMS,
     "coffeeshop-kiosk": COFFEESHOP_KIOSK_PARAMS,
     "coffeeshop-cafe": COFFEESHOP_CAFE_PARAMS,
 }
@@ -834,7 +1181,7 @@ SCENARIOS = {
 
 def main():
     parser = argparse.ArgumentParser(
-        description="GenderSense Projection Engine — Phase 4"
+        description="GenderSense Projection Engine — Phases 4-5"
     )
     parser.add_argument(
         "--scenario", default="lean-clinical",
@@ -848,11 +1195,15 @@ def main():
     )
     parser.add_argument(
         "--sensitivity", action="store_true",
-        help="Run sensitivity analysis (lean-clinical only)",
+        help="Run sensitivity analysis",
     )
     parser.add_argument(
         "--verify", action="store_true",
-        help="Compare against SysML illustrative values (lean-clinical only)",
+        help="Compare against SysML illustrative values",
+    )
+    parser.add_argument(
+        "--compare", default=None,
+        help="Compare scenarios (comma-separated, e.g. lean-clinical,full-platform)",
     )
     parser.add_argument(
         "--output-dir", default=None,
@@ -865,6 +1216,38 @@ def main():
     output_dir = Path(args.output_dir) if args.output_dir else script_dir / "generated" / "projections"
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # -- Comparison mode --
+    if args.compare:
+        scenario_keys = [k.strip() for k in args.compare.split(",")]
+        for k in scenario_keys:
+            if k not in SCENARIOS:
+                print(f"Unknown scenario: {k}. Available: {', '.join(SCENARIOS.keys())}",
+                      file=sys.stderr)
+                sys.exit(1)
+        results = run_comparison(scenario_keys)
+
+        # Console output
+        print(format_comparison_console(results))
+
+        # Markdown output
+        md_str = format_comparison_markdown(results)
+        compare_name = "-vs-".join(scenario_keys)
+        md_path = output_dir / f"{compare_name}-comparison.md"
+        md_path.write_text(md_str, encoding="utf-8")
+        print(f"  Comparison markdown written to {md_path}", file=sys.stderr)
+
+        # JSON output
+        json_data = {k: {
+            "scenario": v["scenario"],
+            "summary": v["summary"],
+        } for k, v in results.items()}
+        json_path = output_dir / f"{compare_name}-comparison.json"
+        json_path.write_text(json.dumps(json_data, indent=2), encoding="utf-8")
+        print(f"  Comparison JSON written to {json_path}", file=sys.stderr)
+
+        return
+
+    # -- Single scenario mode --
     params = SCENARIOS[args.scenario]
     result = run_projection(params)
 
@@ -897,19 +1280,20 @@ def main():
         print(f"  Markdown written to {md_path}", file=sys.stderr)
 
     # -- Verification --
-    if args.verify and args.scenario == "lean-clinical":
-        print(verify_against_illustrative(result))
+    if args.verify:
+        print(verify_against_illustrative(result, args.scenario))
 
     # -- Sensitivity --
     if args.sensitivity:
-        if args.scenario != "lean-clinical":
-            print("Sensitivity analysis only available for lean-clinical scenario.",
+        variations = SENSITIVITY_BY_SCENARIO.get(args.scenario)
+        if not variations:
+            print(f"No sensitivity parameters defined for scenario '{args.scenario}'.",
                   file=sys.stderr)
             sys.exit(1)
-        sensitivity_results = run_sensitivity(params, SENSITIVITY_VARIATIONS)
-        sens_md = format_sensitivity_markdown(sensitivity_results)
+        sensitivity_results = run_sensitivity(params, variations)
+        sens_md = format_sensitivity_markdown(sensitivity_results, params["scenarioName"])
         print(sens_md)
-        sens_path = output_dir / "lean-clinical-sensitivity.md"
+        sens_path = output_dir / f"{args.scenario}-sensitivity.md"
         sens_path.write_text(sens_md, encoding="utf-8")
         print(f"  Sensitivity written to {sens_path}", file=sys.stderr)
 
