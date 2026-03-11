@@ -2,7 +2,7 @@
 
 Last updated:
 
-10/03/26
+11/03/26
 
 ---
 
@@ -197,6 +197,39 @@ Plan the transition from the development environment (`temporal server start-lit
 - Composition builder generator: OPT XML → TypeScript CDR composition builders
 - Outcome evaluator generator: `OutcomeDefinition` usages → TypeScript outcome evaluation functions
 - Prolog rule generator: `constraint def` → Tau Prolog rules (contingent on Tier 2 adoption)
+
+## Business Meta Model — Projection Engine (Phase 4)
+
+### Revenue model parameter gap
+
+- **`effectiveMonthlyRevenuePerPatient` as new SysML ProjectionParameter** — the existing `monitoringFeePerQuarter` (£150) captures only the quarterly blood review fee. The effective blended revenue is approximately £134/patient/month (~£400/quarter). A new parameter should be added to ScenarioModelling to make this explicit. Requires Ella to validate against actual clinical pricing intentions.
+
+### SysML model updates (after parameter validation)
+
+- Update illustrative `ProjectionOutput` values in `business-model.sysml` to match validated engine output
+- Consider splitting monitoring revenue into explicit initiation-period and stable-period fees
+- Consider renaming or generalising `activePatientsTotal` field in ProjectionOutput for domain-agnostic use (low priority — carried forward from Session 15)
+
+### Engine enhancements
+
+- Clinician utilisation model extension — include non-patient-facing activities (governance, CPD, admin, documentation). Current model captures only direct patient-facing hours.
+- Overhead percentage validation — 25% may be too high given the granular lab cost model
+- Plotting / visualisation (matplotlib or similar) — currently CSV export to spreadsheet is sufficient
+- Manifest integration — engine reads parameter values from generated System Model Manifest JSON
+- Projection generator — SysML `ProjectionFormula` usages → engine code. Deferred until formula patterns stabilise through hand-written implementation.
+- Comparison mode — side-by-side output for two scenarios (prep for Phase 5)
+
+### Phase 3 deferred items (carried forward from Session 15)
+
+- Formal `ref` from ScenarioDefinition to ServiceOffering (deferred to Phase 7)
+- Full 24-month ProjectionOutput time series — now produced by the engine; SysML illustrative values cover months 1, 6, 12, 18, 24 only
+- ScenarioComparison instantiation (Phase 5)
+- `VarianceSource` enum used as typed attribute (Phase 6)
+- Formal `satisfy` from StrategicObjective to Capability (Phase 7)
+- Full Platform ScenarioDefinition (Phase 5)
+- Variant C elaboration (beyond Phase 5)
+- File splitting strategy for `business-model.sysml` (Phase 5 planning)
+- PeriodActuals and VarianceAnalysis instantiation (Phase 6)
 
 ## Syntax Reference v3.7 (09.03.26)
 
