@@ -244,19 +244,31 @@ package Foundation {
         enum def DataSourceType {
             doc /* Authoritative data source for input derivation.
                  * Source-agnostic: same InputDerivation structure
-                 * works regardless of where data comes from. */
+                 * works regardless of where data comes from.
+                 *
+                 * Phase 6B: added accounting for financial actuals
+                 * from Xero via Operations::Finance. */
             cdr;         // openEHR CDR via AQL
             temporal;    // Temporal workflow state and history
             platform;    // Platform services (infrastructure, identity)
             entity;      // Entity lifecycle state (XState / Temporal)
+            accounting;  // Accounting system (Xero) via Operations::Finance
         }
 
         enum def DeficitDomain {
-            doc /* Domain classification for a deficit. */
+            doc /* Domain classification for a deficit.
+                 *
+                 * Phase 6B: added financial for deficits arising
+                 * from financial variance (revenue shortfall, cost
+                 * overrun, margin below forecast). Distinct from
+                 * operational (process state) because financial
+                 * deficits are about the money flowing through
+                 * processes, not the processes themselves. */
             clinical;
             operational;
             infrastructure;
             governance;
+            financial;
         }
 
         enum def RemediationCategory {
