@@ -13,11 +13,14 @@
 // Phase 6A Stage 3: PeriodActuals and VarianceAnalysis demonstrator.
 // Phase 6B Stage 4: VarianceSource enum typing, GoalProjection and
 // Deficit instantiations from Knowledge::LogicEngine.
+// Phase 7 Stage 5: StrategicObjective requirement and
+// ObjectiveCapabilityMapping demonstrator.
 
 package CoffeeshopScenarios {
     private import ScalarValues::*;
     private import BusinessScenarios::*;
     private import BusinessStrategy::*;
+    private import BusinessModel::ResourcePlanning::ObjectiveCapabilityMapping;
     private import Knowledge::LogicEngine::*;
     private import Foundation::CommonTypes::*;
 
@@ -49,7 +52,7 @@ package CoffeeshopScenarios {
              * low rent, targeting 50 drinks/day growing to 80. */
         attribute :>> scenarioName = "Small Kiosk";
         attribute :>> description = "1 barista, takeaway only, limited menu, low-rent location";
-        attribute :>> activeOfferings = "Hot drinks, Cold drinks";
+        attribute :>> activeOfferingsDescription = "Hot drinks, Cold drinks";
         attribute :>> variantLabel = "K";
         attribute :>> timelineMonths = 12;
         attribute :>> notes = "Illustrative figures for architectural validation";
@@ -60,7 +63,7 @@ package CoffeeshopScenarios {
              * seating, higher rent, targeting 200 drinks/day. */
         attribute :>> scenarioName = "Full Cafe";
         attribute :>> description = "3 baristas, dine-in seating, full food and drink menu, high street";
-        attribute :>> activeOfferings = "Hot drinks, Cold drinks, Food, Pastries";
+        attribute :>> activeOfferingsDescription = "Hot drinks, Cold drinks, Food, Pastries";
         attribute :>> variantLabel = "C";
         attribute :>> timelineMonths = 12;
         attribute :>> notes = "Illustrative figures for architectural validation";
@@ -231,7 +234,7 @@ package CoffeeshopScenarios {
     part cafeSubscriptionScenario : ScenarioDefinition {
         attribute :>> scenarioName = "Cafe with Subscription";
         attribute :>> description = "Full cafe plus monthly coffee subscription for regular customers";
-        attribute :>> activeOfferings = "Hot drinks, Cold drinks, Food, Pastries, Monthly Subscription";
+        attribute :>> activeOfferingsDescription = "Hot drinks, Cold drinks, Food, Pastries, Monthly Subscription";
         attribute :>> variantLabel = "S";
         attribute :>> timelineMonths = 12;
         attribute :>> notes = "Phase 5 demonstrator parity — validates subscription revenue formula pattern";
@@ -389,5 +392,33 @@ package CoffeeshopScenarios {
         attribute :>> detectedAt = "2026-03-17T18:00:00Z";
         attribute :>> remediationCategory = RemediationCategory::advisory;
         attribute :>> remediationDescription = "No action needed — weather-driven, not structural. Monitor next week for pattern.";
+    }
+
+    // =================================================================
+    // GOVERNANCE AND STRATEGY — Phase 7 demonstrator
+    // =================================================================
+    //
+    // StrategicObjective is a requirement def (Phase 7). One
+    // illustrative objective for the kiosk, plus an
+    // ObjectiveCapabilityMapping showing the traceability pattern.
+
+    requirement kioskProfitability : StrategicObjective {
+        doc /* Reach profitability within 6 months of opening.
+             * Validates that StrategicObjective (requirement def)
+             * works for a non-clinical business objective. */
+        attribute :>> objectiveName = "Kiosk profitability";
+        attribute :>> description = "Reach positive monthly margin within 6 months of opening";
+        attribute :>> targetDate = "Month 6";
+        attribute :>> successCriteria = "Monthly margin > £0 for two consecutive months";
+        attribute :>> status = "planned";
+    }
+
+    part kioskProfitabilityMapping : ObjectiveCapabilityMapping {
+        doc /* The kiosk's profitability objective is achieved
+             * through the drink-serving capability operating
+             * at sufficient volume. Validates the
+             * ObjectiveCapabilityMapping pattern for a
+             * non-clinical domain. */
+        attribute :>> objectiveRef = "kioskProfitability";
     }
 }

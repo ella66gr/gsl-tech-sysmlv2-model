@@ -422,11 +422,10 @@ package BusinessModel {
              * functions), capacity models (throughput relationships),
              * and constraints (limits on availability and use).
              *
-             * Cross-references to Platform capabilities and
-             * ServiceDelivery processes are via String attributes
-             * and doc blocks — consistent with ServiceConcept
-             * approach. Formal ref relationships deferred until
-             * shapes stabilise.
+             * Phase 7: satisfy relationships from StrategicObjective
+             * requirements (in BusinessStrategy) to Capability usages
+             * here. These must be in a different package from the
+             * requirement defs per Syside constraint.
              *
              * Source: gsl-service-business-meta-modelling.md section 3.3 */
 
@@ -465,12 +464,15 @@ package BusinessModel {
                  * you deliver it with "the ability to conduct a hormone
                  * therapy monitoring review."
                  *
-                 * Cross-reference: enabledOfferings maps to
-                 * ServiceConcept::ServiceOffering names. */
+                 * Phase 7: enabledServiceOfferings is a typed ref to
+                 * ServiceOffering[0..*] (same-file cross-package ref).
+                 * enabledOfferingsDescription retains the human-readable
+                 * summary. */
             attribute capabilityName : String;
             attribute description : String;
             attribute requiredResources : String;   // descriptive: "1 prescribing clinician + EHRbase CDR + lab interface"
-            attribute enabledOfferings : String;    // references ServiceOffering names
+            ref enabledServiceOfferings : ServiceConcept::ServiceOffering[0..*];
+            attribute enabledOfferingsDescription : String;
         }
 
         part def CapacityModel {
@@ -495,13 +497,17 @@ package BusinessModel {
                  * affects service delivery. May be regulatory,
                  * financial, temporal, or contractual.
                  *
-                 * Cross-reference: regulatory constraints map to
-                 * Enterprise::Regulation requirement defs. */
+                 * Phase 7: regulatorySourceDescription retains the
+                 * human-readable reference. Formal ref to
+                 * Enterprise::Regulation requirement defs is deferred
+                 * — ref to a requirement def (as opposed to a part
+                 * def) requires further investigation of the target
+                 * syntax. */
             attribute constraintName : String;
             attribute constraintType : String;     // regulatory, financial, temporal, contractual, practical
             attribute affectedResource : String;   // references a ResourceType by name
             attribute limit : String;
-            attribute regulatorySource : String;   // e.g. "Enterprise::Regulation" or empty
+            attribute regulatorySourceDescription : String;   // e.g. "Enterprise::Regulation" or empty
         }
 
         // -- GSL Lean Clinical resource instantiation ----------
@@ -599,21 +605,21 @@ package BusinessModel {
             attribute :>> capabilityName = "Prescribing and monitoring";
             attribute :>> description = "Prescribe, titrate, and monitor hormone therapy with full audit trail";
             attribute :>> requiredResources = "1 prescribing clinician + EHRbase CDR + lab interface + prescribing system";
-            attribute :>> enabledOfferings = "Hormone Therapy Initiation, Ongoing Monitoring";
+            attribute :>> enabledOfferingsDescription = "Hormone Therapy Initiation, Ongoing Monitoring";
         }
 
         part assessmentCapability : Capability {
             attribute :>> capabilityName = "Clinical assessment";
             attribute :>> description = "Comprehensive new patient assessment with structured clinical record";
             attribute :>> requiredResources = "1 prescribing clinician + video consulting + forms platform + EHRbase CDR";
-            attribute :>> enabledOfferings = "Initial Assessment";
+            attribute :>> enabledOfferingsDescription = "Initial Assessment";
         }
 
         part monitoringCapability : Capability {
             attribute :>> capabilityName = "Blood monitoring";
             attribute :>> description = "Order, receive, and review blood monitoring results";
             attribute :>> requiredResources = "Lab interface + EHRbase CDR + prescribing clinician for review";
-            attribute :>> enabledOfferings = "Hormone Therapy Initiation, Ongoing Monitoring";
+            attribute :>> enabledOfferingsDescription = "Hormone Therapy Initiation, Ongoing Monitoring";
         }
 
         part leanClinicalCapacity : CapacityModel {
@@ -631,7 +637,7 @@ package BusinessModel {
             attribute :>> constraintType = "practical";
             attribute :>> affectedResource = "Prescribing clinician";
             attribute :>> limit = "40 active patients per FTE clinician";
-            attribute :>> regulatorySource = "";
+            attribute :>> regulatorySourceDescription = "";
         }
 
         part prescribingQualification : ResourceConstraint {
@@ -642,7 +648,7 @@ package BusinessModel {
             attribute :>> constraintType = "regulatory";
             attribute :>> affectedResource = "Prescribing clinician";
             attribute :>> limit = "Must hold prescribing qualification and gender identity healthcare credential";
-            attribute :>> regulatorySource = "Enterprise::Regulation";
+            attribute :>> regulatorySourceDescription = "Enterprise::Regulation";
         }
 
         // -- Variant B (Full Platform) resource instantiation --
@@ -700,14 +706,14 @@ package BusinessModel {
             attribute :>> capabilityName = "Gender identity coaching";
             attribute :>> description = "Deliver structured coaching sessions supporting social transition and wellbeing";
             attribute :>> requiredResources = "1 gender identity coach + video consulting + scheduling platform";
-            attribute :>> enabledOfferings = "Coaching";
+            attribute :>> enabledOfferingsDescription = "Coaching";
         }
 
         part communityCapability : Capability {
             attribute :>> capabilityName = "Peer community platform";
             attribute :>> description = "Operate moderated peer forums, facilitated groups, and community events";
             attribute :>> requiredResources = "1 community moderator + community platform software + content moderation tools";
-            attribute :>> enabledOfferings = "Community";
+            attribute :>> enabledOfferingsDescription = "Community";
         }
 
         part fullPlatformCapacity : CapacityModel {
@@ -718,6 +724,57 @@ package BusinessModel {
             attribute :>> periodUnit = "concurrent active caseload";
             attribute :>> assumptions = "Clinical capacity doubled vs Variant A; coaching at 10 sessions/week; community moderation 1 day/week";
             attribute :>> bottleneck = "Prescribing clinician time (clinical); coach availability (coaching)";
+        }
+
+        // -- Objective → Capability traceability ----------------
+        //
+        // Phase 7. Structural traceability from strategic
+        // objectives to the capabilities that achieve them.
+        //
+        // Design note: SysML v2 satisfy requires the by-target
+        // to be a constraint or requirement usage (not a part
+        // usage). Capability usages are parts. Therefore the
+        // traceability is expressed via a dedicated mapping
+        // part def with typed refs, rather than satisfy.
+        //
+        // The StrategicObjective remains a requirement def
+        // (preserving formal correctness for future satisfy
+        // relationships to constraint usages if needed).
+
+        part def ObjectiveCapabilityMapping {
+            doc /* Maps a StrategicObjective to the Capability
+                 * usages that contribute to achieving it.
+                 * Phase 7 traceability pattern. */
+            attribute objectiveRef : String;
+            ref supportingCapabilities : Capability[1..*];
+        }
+
+        part patientCohortMapping : ObjectiveCapabilityMapping {
+            doc /* objectivePatientCohort is achieved through
+                 * prescribing, assessment, and monitoring. */
+            attribute :>> objectiveRef = "objectivePatientCohort";
+        }
+
+        part sharedCareMapping : ObjectiveCapabilityMapping {
+            doc /* objectiveSharedCare is achieved through
+                 * prescribing and monitoring capabilities
+                 * extended with GP shared care protocols. */
+            attribute :>> objectiveRef = "objectiveSharedCare";
+        }
+
+        part platformLaunchMapping : ObjectiveCapabilityMapping {
+            doc /* objectivePlatformLaunch is achieved through
+                 * assessment and prescribing capabilities
+                 * exposed via the patient portal. */
+            attribute :>> objectiveRef = "objectivePlatformLaunch";
+        }
+
+        part breakEvenMapping : ObjectiveCapabilityMapping {
+            doc /* objectiveBreakEven is a financial outcome
+                 * achieved through the combined operation of
+                 * all clinical capabilities at sufficient
+                 * volume. No single capability satisfies it. */
+            attribute :>> objectiveRef = "objectiveBreakEven";
         }
     }
 

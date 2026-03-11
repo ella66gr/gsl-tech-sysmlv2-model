@@ -14,12 +14,15 @@
 // Phase 6B (Session 18). Steering cycle wiring: VarianceSource enum
 // typing, cross-package imports to Knowledge::LogicEngine, illustrative
 // GoalProjection and Deficit instantiations.
+// Phase 7 (Session 19). Formal ref from ScenarioDefinition to
+// ServiceOffering. Import added from BusinessModel::ServiceConcept.
 // =========================================================================
 
 package BusinessScenarios {
     private import ScalarValues::*;
     private import Knowledge::LogicEngine::*;
     private import Foundation::CommonTypes::*;
+    private import BusinessModel::ServiceConcept::ServiceOffering;
 
     doc /* Provides the mechanics for driving the business model
          * vocabulary — computing projections, comparing alternatives,
@@ -59,9 +62,19 @@ package BusinessScenarios {
     // -- Part definitions: projection mechanics ------------
 
     part def ScenarioDefinition {
+        doc /* A named, self-contained configuration of a business
+             * model variant. Selects which ServiceOfferings are
+             * active, sets all parameters, specifies growth
+             * assumptions, and configures resource levels.
+             *
+             * Phase 7: activeServiceOfferings is a typed ref to
+             * ServiceOffering[0..*] (cross-package). The string
+             * attribute activeOfferingsDescription provides the
+             * human-readable summary. */
         attribute scenarioName : String;
         attribute description : String;
-        attribute activeOfferings : String;
+        ref activeServiceOfferings : ServiceOffering[0..*];
+        attribute activeOfferingsDescription : String;
         attribute variantLabel : String;
         attribute timelineMonths : Integer;
         attribute notes : String;
@@ -168,7 +181,7 @@ package BusinessScenarios {
     part leanClinicalScenario : ScenarioDefinition {
         attribute :>> scenarioName = "Lean Clinical (Variant A)";
         attribute :>> description = "Assessment and hormone therapy only. 1 clinician, per-episode pricing.";
-        attribute :>> activeOfferings = "Initial Assessment, Hormone Therapy Initiation, Ongoing Monitoring";
+        attribute :>> activeOfferingsDescription = "Initial Assessment, Hormone Therapy Initiation, Ongoing Monitoring";
         attribute :>> variantLabel = "A";
         attribute :>> timelineMonths = 24;
         attribute :>> notes = "Figures are illustrative best-estimates per meta-modelling section 7.2";
@@ -610,7 +623,7 @@ package BusinessScenarios {
     part fullPlatformScenario : ScenarioDefinition {
         attribute :>> scenarioName = "Full Platform (Variant B)";
         attribute :>> description = "Clinical care plus coaching, education, and community. 2 clinicians, subscription pricing alongside per-episode clinical fees.";
-        attribute :>> activeOfferings = "Initial Assessment, Hormone Therapy Initiation, Ongoing Monitoring, Coaching, Education, Community";
+        attribute :>> activeOfferingsDescription = "Initial Assessment, Hormone Therapy Initiation, Ongoing Monitoring, Coaching, Education, Community";
         attribute :>> variantLabel = "B";
         attribute :>> timelineMonths = 24;
         attribute :>> notes = "All values are illustrative placeholders. Subscription revenue is additive to clinical episode revenue.";

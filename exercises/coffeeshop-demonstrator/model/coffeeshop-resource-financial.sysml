@@ -54,7 +54,7 @@ package CoffeeshopResourceFinancial {
         attribute :>> capabilityName = "Serve a drink";
         attribute :>> description = "Prepare and serve a hot or cold drink to a customer at the counter";
         attribute :>> requiredResources = "1 barista + 1 espresso machine + ingredients + counter space";
-        attribute :>> enabledOfferings = "Drink order";
+        attribute :>> enabledOfferingsDescription = "Drink order";
     }
 
     // -- Capacity model ---------------------------------------
@@ -74,7 +74,7 @@ package CoffeeshopResourceFinancial {
         attribute :>> constraintType = "regulatory";
         attribute :>> affectedResource = "Barista";
         attribute :>> limit = "All food handlers must hold Level 2 Food Hygiene certificate";
-        attribute :>> regulatorySource = "Environmental Health / Food Standards Agency";
+        attribute :>> regulatorySourceDescription = "Environmental Health / Food Standards Agency";
     }
 
     // -- Revenue stream ---------------------------------------
