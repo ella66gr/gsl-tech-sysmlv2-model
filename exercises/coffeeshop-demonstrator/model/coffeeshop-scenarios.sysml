@@ -218,6 +218,135 @@ package CoffeeshopScenarios {
     }
 
     // =================================================================
+    // SUBSCRIPTION SCENARIO — Phase 5 demonstrator parity
+    // =================================================================
+    //
+    // Validates the subscription revenue ProjectionFormula pattern
+    // from the GSL Full Platform variant (Phase 5). The coffee shop
+    // equivalent: a monthly coffee subscription alongside per-drink
+    // pricing. Structural pattern: totalRevenue = drinkRevenue +
+    // subscriptionRevenue, mirroring totalRevenue = clinicalRevenue +
+    // subscriptionRevenue in the GSL model.
+
+    part cafeSubscriptionScenario : ScenarioDefinition {
+        doc /* Full café with a monthly subscription offering.
+             * Subscribers pay £25/month for 1 free drink per day
+             * (value: ~£4.20 × 26 = £109). Additive to walk-in
+             * drink revenue. Structurally identical to the GSL
+             * Full Platform subscription model. */
+        attribute :>> scenarioName = "Cafe with Subscription";
+        attribute :>> description = "Full cafe plus monthly coffee subscription for regular customers";
+        attribute :>> activeOfferings = "Hot drinks, Cold drinks, Food, Pastries, Monthly Subscription";
+        attribute :>> variantLabel = "S";
+        attribute :>> timelineMonths = 12;
+        attribute :>> notes = "Phase 5 demonstrator parity — validates subscription revenue formula pattern";
+    }
+
+    // Subscription parameters
+
+    part subMonthlyFee : ProjectionParameter {
+        attribute :>> parameterName = "subscriptionFeePerMonth";
+        attribute :>> parameterValue = 25.0;
+        attribute :>> unit = "£/month";
+        attribute :>> sourceRef = "";
+        attribute :>> temporalVariation = "";
+        attribute :>> notes = "£25/month for 1 free drink/day. Placeholder.";
+    }
+
+    part subMemberCount : ProjectionParameter {
+        doc /* Subscription members grow from 0 to 40 over 12
+             * months. These are a subset of total customers —
+             * regulars who commit to the subscription. */
+        attribute :>> parameterName = "subscriptionMembers";
+        attribute :>> parameterValue = 0.0;
+        attribute :>> unit = "members";
+        attribute :>> sourceRef = "GrowthAssumption";
+        attribute :>> temporalVariation = "Grows from 0 to 40 over 12 months";
+        attribute :>> notes = "Members also contribute to daily drink volume (their free drink is included in drink count but not in drink revenue)";
+    }
+
+    // Subscription growth assumption
+
+    part subMemberGrowth : GrowthAssumption {
+        attribute :>> assumptionName = "Subscription membership growth";
+        attribute :>> targetVariable = "subscriptionMembers";
+        attribute :>> growthShape = GrowthShape::linear;
+        attribute :>> startValue = 0.0;
+        attribute :>> endValue = 40.0;
+        attribute :>> inflectionMonth = 0;
+        attribute :>> trajectory = "Linear growth from 0 to 40 members over 12 months";
+        attribute :>> notes = "Regulars converting to subscription as awareness grows";
+    }
+
+    // Subscription revenue formula
+    //
+    // This is the key pattern being validated: an additive revenue
+    // stream with its own volume driver, structurally identical to
+    // formulaSubscriptionRevenue in the GSL model.
+
+    part formulaCafeSubscriptionRevenue : ProjectionFormula {
+        doc /* Coffee shop equivalent of GSL's
+             * formulaSubscriptionRevenue. Same structural pattern:
+             * volume driver × monthly fee = additive revenue stream.
+             * Validates that the ProjectionFormula vocabulary handles
+             * subscription revenue in a non-clinical domain. */
+        attribute :>> formulaName = "Monthly subscription revenue";
+        attribute :>> inputs = "subscriptionMembers, subscriptionFeePerMonth";
+        attribute :>> expression = "subscriptionMembers * subscriptionFeePerMonth";
+        attribute :>> outputVariable = "monthlySubscriptionRevenue";
+        attribute :>> outputUnit = "£/month";
+        attribute :>> notes = "Additive to drink revenue. Mirrors GSL formulaSubscriptionRevenue.";
+    }
+
+    part formulaCafeSubscriptionTotalRevenue : ProjectionFormula {
+        doc /* Extended total revenue composing drink revenue with
+             * subscription revenue. Mirrors GSL
+             * formulaFullPlatformTotalRevenue. */
+        attribute :>> formulaName = "Total monthly revenue (with subscription)";
+        attribute :>> inputs = "monthlyDrinkRevenue, monthlySubscriptionRevenue";
+        attribute :>> expression = "monthlyDrinkRevenue + monthlySubscriptionRevenue";
+        attribute :>> outputVariable = "totalMonthlyRevenue";
+        attribute :>> outputUnit = "£/month";
+        attribute :>> notes = "Extends per-drink formula with subscription term";
+    }
+
+    // Illustrative output — month 6 with subscription
+
+    part cafeSubMonth6 : ProjectionOutput {
+        doc /* Cafe with subscription at month 6: ~160 drinks/day
+             * plus ~20 subscribers at £25/month.
+             * Drink revenue: 160 × £4.20 × 26 = ~£17,472/mo.
+             * Subscription revenue: 20 × £25 = £500/mo.
+             * Total revenue: ~£17,972/mo.
+             * Cost: same as fullCafe + minor subscription admin.
+             * Margin: ~£2,572/month (£500 subscription uplift). */
+        attribute :>> periodLabel = "Month 6";
+        attribute :>> revenue = 17972.0;
+        attribute :>> cost = 15500.0;
+        attribute :>> margin = 2472.0;
+        attribute :>> cumulativeCashFlow = -7000.0;
+        attribute :>> activePatientsTotal = 0;
+        attribute :>> clinicianUtilisation = 0.0;
+        attribute :>> confidenceProfile = "moderate — subscription uptake assumption unvalidated";
+    }
+
+    // Subscription variant
+
+    part variantCafeSubscription : BusinessModelVariant {
+        doc /* Phase 5 demonstrator parity: a subscription variant
+             * for the coffee shop, mirroring the GSL Full Platform
+             * subscription model. */
+        attribute :>> variantName = "Cafe with Subscription";
+        attribute :>> variantLabel = "S";
+        attribute :>> description = "Full cafe plus monthly coffee subscription for regulars";
+        attribute :>> activeOfferings = "Hot drinks, Cold drinks, Food, Pastries, Monthly Subscription";
+        attribute :>> keyDifferentiator = "Subscription revenue diversification, customer loyalty";
+        attribute :>> investmentLevel = "~£42K";
+        attribute :>> riskProfile = "Same as Full Cafe plus subscription churn risk";
+        attribute :>> scenarioRef = "Cafe with Subscription";
+    }
+
+    // =================================================================
     // PIVOT SCENARIO
     // =================================================================
 
