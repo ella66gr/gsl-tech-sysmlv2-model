@@ -438,11 +438,12 @@ package Knowledge {
              * - ConstraintEvaluator: Tier 1 deterministic evaluation
              *   (InputResolver, ExpressionEvaluator, ExplanationBuilder)
              * - OperationalStateAggregator: Layer 2 operational state
-             *   queries across Temporal, CDR, and platform services
+             *   queries across Temporal, CDR, platform services, and
+             *   accounting systems
              * - GapAnalyser: Layer 4 comparison of operational state
              *   against goal state (GoalProjector)
              * - AssessmentOrchestrator: coordinates five-layer
-             *   SystemStateAssessment production
+             *   SystemStateAssessment production (clinical + business)
              * - SelfExplanationService: audience-appropriate rendering
              *   of evaluation results and assessments
              * - EvaluationSpecRegistry: runtime lookup of constraint
@@ -469,8 +470,18 @@ package Knowledge {
              * Tier 3 — ML/LLM advisory interface. Cannot override
              *   Tier 1/2 logic.
              *
-             * Elaborated Session 8 (Phase 1: data structures) and
-             * Session 9 (Phase 2: component model). */
+             * Phase 6B: Extended for business steering. The self-knowledge
+             * architecture handles financial goals and variances without
+             * new part defs — OperationalSnapshot gains financial
+             * attributes, SystemStateAssessment gains business structural
+             * counters, and OperationalStateAggregator gains a financial
+             * data query. GoalProjection and Deficit handle financial
+             * goals and variances without modification, validating the
+             * architecture as domain-agnostic.
+             *
+             * Elaborated Session 8 (Phase 1: data structures),
+             * Session 9 (Phase 2: component model),
+             * Session 18 (Phase 6B: business steering extension). */
 
         // =============================================================
         // Evaluation result structures (Phase 1 — Track A)
@@ -536,14 +547,23 @@ package Knowledge {
                  * from a single rule to any operational dimension.
                  *
                  * Each deficit references the goal it falls short of
-                 * (requirement, constraint, or outcome definition),
-                 * the actual state found, and the expected state.
-                 * Supporting EvaluationResult records provide the
-                 * evidence chain.
+                 * (requirement, constraint, outcome definition, or
+                 * projection formula), the actual state found, and
+                 * the expected state. Supporting EvaluationResult
+                 * records provide the evidence chain.
                  *
                  * Deficits are computed, not stored — they are the
                  * output of comparing Layer 2 (operational state)
-                 * against Layer 3 (goal state). */
+                 * against Layer 3 (goal state).
+                 *
+                 * Phase 6B: financial variances are deficits. A
+                 * revenue shortfall is a Deficit with deficitDomain =
+                 * DeficitDomain::financial. The existing Deficit
+                 * structure handles this without modification —
+                 * goalReference points to a ProjectionFormula,
+                 * actualState and expectedState carry the figures,
+                 * and description carries the variance decomposition.
+                 * This validates the domain-agnostic design. */
             attribute deficitDomain : DeficitDomain;
             attribute scope : AssessmentScope;
             attribute description : String;
@@ -560,12 +580,14 @@ package Knowledge {
         part def SystemStateAssessment {
             doc /* The composite output of the self-knowledge
                  * infrastructure. Aggregates across all five layers
-                 * to produce a whole-system picture.
+                 * to produce a whole-system picture: clinical
+                 * governance, operational health, and business
+                 * performance in a single assessment.
                  *
                  * Not a new data store — computed on demand by
                  * querying existing authoritative sources (Temporal,
-                 * CDR, platform services) and running existing
-                 * evaluation logic.
+                 * CDR, platform services, accounting system) and
+                 * running existing evaluation logic.
                  *
                  * Can be scoped: single patient, clinical pathway,
                  * domain, or entire system. Scheduled Temporal cron
@@ -574,19 +596,31 @@ package Knowledge {
                  *
                  * This is the primary artefact of the self-describing
                  * property: the system's own structured report on
-                 * itself. */
+                 * itself.
+                 *
+                 * Phase 6B: Layer 1 extended with business model
+                 * structural counters. Layer 2 OperationalSnapshot
+                 * extended with financial state. No changes to
+                 * Layers 3-5 — GoalProjection and Deficit already
+                 * handle financial goals and variances. */
             attribute assessmentId : String;
             attribute assessedAt : String;          // ISO datetime
             attribute scope : AssessmentScope;
             attribute scopeFilter : String;
             attribute modelVersion : String;
 
-            // Layer 1 — Structural summary
+            // Layer 1 — Structural summary (clinical)
             attribute packagesCount : Integer;
             attribute pathwaysCount : Integer;
             attribute constraintsCount : Integer;
             attribute requirementsCount : Integer;
             attribute entityLifecyclesCount : Integer;
+
+            // Layer 1 — Structural summary (business model, Phase 6B)
+            attribute serviceOfferingsCount : Integer;
+            attribute revenueStreamsCount : Integer;
+            attribute scenarioDefinitionsCount : Integer;
+            attribute strategicObjectivesCount : Integer;
 
             // Layer 2 — Operational snapshot
             part operationalSnapshot : OperationalSnapshot;
@@ -620,8 +654,9 @@ package Knowledge {
                  * Source-agnostic: the resolver dispatches based on
                  * the InputDerivation's sourceType attribute. The
                  * query format varies by source (AQL for CDR, API
-                 * call for Temporal, HTTP for platform services) but
-                 * the resolution pattern is identical.
+                 * call for Temporal, HTTP for platform services,
+                 * Xero API for accounting) but the resolution pattern
+                 * is identical.
                  *
                  * Produces EvaluatedInput records as output — these
                  * feed both the expression evaluator (for the
@@ -658,16 +693,18 @@ package Knowledge {
                  * as evaluated, and a human-readable explanation of
                  * the outcome.
                  *
-                 * Supports three audiences:
+                 * Supports multiple audiences:
                  * - Clinicians: technical but accessible explanation
                  *   of why a safety check passed or failed, with
                  *   data values
                  * - Patients: plain-language explanation suitable for
                  *   self-management interfaces
                  * - Auditors: full formal trace with data provenance
+                 * - Business steering: financial variance explanation
+                 *   for founder, investor, board (Phase 6B)
                  *
                  * The audience parameter determines explanation depth
-                 * and language register. All three are derived from
+                 * and language register. All audiences are views onto
                  * the same underlying EvaluatedInput and expression
                  * data — the difference is presentation, not
                  * content. */
@@ -725,7 +762,8 @@ package Knowledge {
                  *
                  * At runtime, implemented as a TypeScript function
                  * that calls the appropriate API (Temporal client,
-                 * EHRbase REST/AQL, platform health endpoint). */
+                 * EHRbase REST/AQL, platform health endpoint, Xero
+                 * accounting API). */
             attribute queryName : String;
             attribute sourceType : DataSourceType;
             attribute query : String;
@@ -741,7 +779,16 @@ package Knowledge {
                  * Not persisted as a separate data store — computed
                  * on demand. The snapshot captures the query results
                  * at a specific moment for comparison against
-                 * goals. */
+                 * goals.
+                 *
+                 * Phase 6B: extended with financial state summary.
+                 * The snapshot becomes a combined clinical + business
+                 * operational picture — process state, clinical data,
+                 * infrastructure health, and financial performance
+                 * in a single capture. Financial attributes are at
+                 * the same granularity as clinical (totals, not
+                 * per-stream breakdown — decomposition is in the
+                 * VarianceAnalysis, not the snapshot). */
             attribute capturedAt : String;          // ISO datetime
             attribute scope : AssessmentScope;
 
@@ -760,14 +807,24 @@ package Knowledge {
             attribute temporalStatus : ServiceHealthStatus;
             attribute externalIntegrationsHealthy : Integer;
             attribute externalIntegrationsTotal : Integer;
+
+            // Financial state summary (Phase 6B)
+            attribute financialPeriodLabel : String;       // which reporting period
+            attribute forecastRevenue : Real;              // projected revenue for this period
+            attribute actualRevenue : Real;                // actual revenue recorded
+            attribute forecastCost : Real;                 // projected cost for this period
+            attribute actualCost : Real;                   // actual cost recorded
+            attribute revenueVariance : Real;              // actual - forecast (negative = shortfall)
+            attribute costVariance : Real;                 // actual - forecast (negative = over budget)
+            attribute activeScenarioRef : String;          // which scenario is the active baseline
         }
 
         part def OperationalStateAggregator {
             doc /* Queries the system's operational state across all
                  * authoritative data sources: Temporal (process
                  * state), CDR (clinical data state), entity
-                 * lifecycle state, and platform services
-                 * (infrastructure health).
+                 * lifecycle state, platform services (infrastructure
+                 * health), and accounting system (financial actuals).
                  *
                  * Uses the same source-agnostic InputDerivation
                  * pattern as the ConstraintEvaluator, but scoped
@@ -791,6 +848,12 @@ package Knowledge {
                  * - Infrastructure health: CDR reachable, Temporal
                  *   workers running, external integrations
                  *   responding
+                 * - Financial actuals (accounting, Phase 6B):
+                 *   PeriodActuals from Xero via Operations::Finance.
+                 *   Revenue by stream, cost by driver, margin,
+                 *   active patient count. Compared against the
+                 *   active ForecastBaseline's ProjectionOutput
+                 *   for the same period.
                  *
                  * See architecture decision document, Section 3
                  * (Operational State Query Pattern). */
@@ -799,6 +862,7 @@ package Knowledge {
             part clinicalDataQuery : OperationalQuery;
             part entityStateQuery : OperationalQuery;
             part infrastructureQuery : OperationalQuery;
+            part financialDataQuery : OperationalQuery;
         }
 
         // =============================================================
@@ -811,13 +875,24 @@ package Knowledge {
                  * unit of comparison for gap analysis.
                  *
                  * Each projection names the goal source
-                 * (requirement, constraint, or outcome definition),
-                 * the expected condition, and the query needed to
-                 * check actual state. The gap analyser evaluates
-                 * the query and compares the result against the
-                 * expected condition. */
+                 * (requirement, constraint, outcome definition, or
+                 * projection formula), the expected condition, and
+                 * the query needed to check actual state. The gap
+                 * analyser evaluates the query and compares the
+                 * result against the expected condition.
+                 *
+                 * Phase 6B: financial goals are a fourth goal source.
+                 * A forecast figure from a ProjectionFormula is a
+                 * goal — "revenue should be £4,200 in month 6" is
+                 * structurally identical to "every patient should
+                 * have monitoring bloods within 12 weeks." The
+                 * GoalProjection structure handles both without
+                 * modification: goalSource references a
+                 * ProjectionFormula, expectedCondition states the
+                 * target, evaluationQuery describes how to check
+                 * Xero actuals. */
             attribute goalName : String;
-            attribute goalSource : String;         // requirement, constraint, or outcome def name
+            attribute goalSource : String;         // requirement, constraint, outcome def, or projection formula
             attribute expectedCondition : String;  // human-readable expected state
             attribute evaluationQuery : String;    // query to check actual state
             attribute scope : AssessmentScope;
@@ -825,8 +900,9 @@ package Knowledge {
 
         part def GoalProjector {
             doc /* Projects goals from model sources (requirements,
-                 * constraints, outcome definitions) into a
-                 * comparable shape against operational state.
+                 * constraints, outcome definitions, and projection
+                 * formulas) into a comparable shape against
+                 * operational state.
                  *
                  * Each goal is expressed as a GoalProjection: an
                  * expected condition that can be evaluated against
@@ -843,6 +919,13 @@ package Knowledge {
                  *   therapeutic range at 6-month measurement
                  *   point" -> AQL query against outcome
                  *   compositions
+                 * - Financial goals (Phase 6B): "month 6 revenue
+                 *   should be £4,200" -> Xero management accounts
+                 *   query for the period. The projection formula
+                 *   output for a given period becomes a goal.
+                 *   This is the structural connection between
+                 *   BusinessScenarios::ProjectionFormula and the
+                 *   self-knowledge architecture.
                  *
                  * The projector does not evaluate goals — it
                  * transforms them into a shape the gap analyser
@@ -854,8 +937,9 @@ package Knowledge {
             doc /* Compares the system's operational state (Layer 2,
                  * OperationalSnapshot) against its goal state
                  * (Layer 3, projected from requirements,
-                 * constraints, and outcome definitions) and
-                 * produces Deficit records for every unmet goal.
+                 * constraints, outcome definitions, and projection
+                 * formulas) and produces Deficit records for every
+                 * unmet goal.
                  *
                  * This is the direct generalisation of the Phase D
                  * governance audit: Phase D compared expected
@@ -873,6 +957,12 @@ package Knowledge {
                  * - Outcome definitions
                  *   (Knowledge::OutcomeFramework) -> expected
                  *   clinical target achievement
+                 * - Projection formulas (BusinessScenarios,
+                 *   Phase 6B) -> expected financial and activity
+                 *   targets per period. A revenue shortfall is
+                 *   a Deficit with deficitDomain = financial,
+                 *   structurally identical to a clinical
+                 *   monitoring gap.
                  *
                  * Each goal is projected as an expected condition.
                  * The analyser evaluates the condition against
@@ -919,6 +1009,13 @@ package Knowledge {
                  *   trace backward through the inference chain
                  *   to explain not just what the result is but
                  *   why the inputs have their current values
+                 * - Financial variance inference (Phase 6B):
+                 *   given a revenue deficit, chain backward
+                 *   through volume, price, mix, and timing
+                 *   factors to identify root causes. "Revenue
+                 *   is below plan because acquisition is 3/month
+                 *   vs projected 4/month" — each link draws on
+                 *   the same authoritative data sources.
                  *
                  * Runtime target: Tau Prolog (pure JS, embeddable
                  * in Temporal activities) or SWI-Prolog WASM.
@@ -980,7 +1077,7 @@ package Knowledge {
                  * system's self-knowledge and evaluation
                  * explanations.
                  *
-                 * Four consumer categories, each with different
+                 * Five consumer categories, each with different
                  * needs:
                  *
                  * - Clinician UI: point-of-care evaluation results
@@ -998,8 +1095,15 @@ package Knowledge {
                  *   provenance, constraint references, requirement
                  *   traceability. Exportable for regulatory
                  *   submission.
+                 * - Business steering (Phase 6B): financial
+                 *   variance explanations for founder, investor,
+                 *   board. "Revenue is below forecast because
+                 *   patient acquisition is running at 3/month vs
+                 *   projected 4/month." Same structured explanation
+                 *   pattern as clinical governance, different
+                 *   audience and presentation.
                  *
-                 * All four are views onto the same underlying data
+                 * All five are views onto the same underlying data
                  * (EvaluationResults, SystemStateAssessments). The
                  * service applies audience-appropriate filtering,
                  * explanation depth, and presentation format.
@@ -1017,13 +1121,18 @@ package Knowledge {
                  * Assessment production sequence:
                  * 1. Read System Model Manifest for Layer 1
                  *    (structural summary — packages, pathways,
-                 *    constraints, etc.)
+                 *    constraints, service offerings, revenue
+                 *    streams, scenario definitions)
                  * 2. Invoke OperationalStateAggregator for Layer 2
-                 *    (operational snapshot)
+                 *    (operational snapshot — clinical state AND
+                 *    financial actuals from accounting system)
                  * 3. Invoke GoalProjector for Layer 3 (project all
-                 *    in-scope goals)
+                 *    in-scope goals — clinical compliance,
+                 *    outcome targets, AND financial forecasts
+                 *    from projection formulas)
                  * 4. Invoke GapAnalyser for Layer 4 (compare
-                 *    Layers 2 and 3, produce Deficit records)
+                 *    Layers 2 and 3, produce Deficit records for
+                 *    clinical gaps AND financial variances)
                  * 5. Classify each Deficit's remediation category
                  *    for Layer 5
                  * 6. For Tier 1 deficits with deterministic
@@ -1033,11 +1142,19 @@ package Knowledge {
                  *    InferenceEvaluator (Tier 2) for reasoning
                  * 8. Assemble the composite SystemStateAssessment
                  *
+                 * The combined assessment covers both clinical
+                 * governance and business performance in a single
+                 * artefact. This is the operational expression of
+                 * the meta-modelling document section 4.7 insight:
+                 * operational steering is a domain extension of
+                 * self-knowledge, not a parallel build.
+                 *
                  * Invocation patterns (from architecture decision
                  * document, Section 6):
                  * - On-demand: platform API call, scoped by caller
                  * - Scheduled: Temporal cron workflow (daily
-                 *   clinical governance, weekly operational health)
+                 *   clinical governance, weekly operational health,
+                 *   monthly business steering review)
                  * - Triggered: critical deficit in point-of-care
                  *   evaluation triggers broader scoped assessment
                  *
@@ -1147,8 +1264,8 @@ package Knowledge {
                  *
                  * Component allocation:
                  * 1. GoalProjector projects all in-scope goals
-                 *    from requirements, constraints, and outcome
-                 *    definitions
+                 *    from requirements, constraints, outcome
+                 *    definitions, and projection formulas
                  * 2. OperationalStateAggregator captures current
                  *    state (or receives a pre-computed
                  *    OperationalSnapshot)
@@ -1163,7 +1280,7 @@ package Knowledge {
                  * - Pathway: all goals for a specific clinical
                  *   pathway
                  * - Domain: all goals within a domain (clinical,
-                 *   operational, infrastructure)
+                 *   operational, infrastructure, financial)
                  * - System: all goals across all domains
                  *
                  * Produces: a set of Deficit records. */
@@ -1178,10 +1295,13 @@ package Knowledge {
                  * Component allocation: AssessmentOrchestrator
                  * coordinates the full five-layer assembly:
                  * - Layer 1: reads System Model Manifest
-                 *   (structural)
+                 *   (structural — clinical and business model)
                  * - Layer 2: invokes OperationalStateAggregator
-                 * - Layer 3: invokes GoalProjector
-                 * - Layer 4: invokes GapAnalyser
+                 *   (clinical state + financial actuals)
+                 * - Layer 3: invokes GoalProjector (clinical
+                 *   goals + financial forecasts)
+                 * - Layer 4: invokes GapAnalyser (clinical
+                 *   deficits + financial variances)
                  * - Layer 5: classifies remediation categories
                  *
                  * Three invocation triggers:
@@ -1189,7 +1309,9 @@ package Knowledge {
                  * - Scheduled: Temporal cron workflow
                  * - Triggered: critical deficit escalation
                  *
-                 * Produces: one SystemStateAssessment. */
+                 * Produces: one SystemStateAssessment covering
+                 * both clinical governance and business
+                 * performance. */
         }
 
         use case def ExplainEvaluationResult {
@@ -1211,7 +1333,10 @@ package Knowledge {
                  *   requirement traceability, exportable format
                  * - Dashboard: summary statistics, trend
                  *   indicators, deficit inventory, compliance
-                 *   rates */
+                 *   rates
+                 * - Business steering (Phase 6B): financial
+                 *   variance decomposition, forecast-vs-actual
+                 *   comparison, re-baseline recommendations */
         }
     }
 
@@ -1288,16 +1413,6 @@ package Knowledge {
 
         // =============================================================
         // Regimen Selection Decision Table
-        //
-        // Maps baseline investigation results, patient preference,
-        // and contraindication status to the recommended hormone
-        // therapy regimen (medication, route, starting dose).
-        //
-        // Referenced by: @DecisionTable { tableName = "regimenSelection"; }
-        // on selectRegimen step in HormoneTherapy pathway.
-        //
-        // Consumed by: ConstraintEvaluator via EvaluationSpecRegistry.
-        // Validated against: RegimenWithinProtocolConstraint.
         // =============================================================
 
         part def RegimenSelectionRow {
@@ -1465,17 +1580,6 @@ package Knowledge {
 
         // =============================================================
         // Stability Assessment Decision Table
-        //
-        // Maps monitoring results, time on treatment, and patient-
-        // reported outcomes to a stability classification and
-        // recommended monitoring action.
-        //
-        // Referenced by: @DecisionTable { tableName = "stabilityAssessment"; }
-        // on assessStabilityDecision step in HormoneTherapy pathway.
-        //
-        // Drives the monitoring cycle branch: stable patients proceed
-        // to confirmStable; patients needing adjustment loop back
-        // to adjustDose -> scheduleMonitoringBloods.
         // =============================================================
 
         part def StabilityAssessmentRow {
@@ -1839,10 +1943,6 @@ package Knowledge {
 
         // =============================================================
         // Concrete outcome definitions — Hormone Therapy
-        //
-        // Representative clinically plausible values for modelling
-        // purposes. Actual clinical target ranges will be loaded
-        // from the validated prescribing protocol before runtime use.
         // =============================================================
 
         // --- Clinical outcomes ---
@@ -1927,14 +2027,7 @@ package Knowledge {
 
         part metabolicSafety : OutcomeDefinition {
             doc /* Metabolic safety monitoring: liver function tests
-                 * and lipid profile within acceptable limits. Both
-                 * oestrogen and testosterone therapy can affect
-                 * hepatic and lipid markers.
-                 *
-                 * This is a composite outcome — multiple lab values
-                 * are assessed. The evaluationQuery returns a set
-                 * of results; all must be within limits for the
-                 * outcome to be met.
+                 * and lipid profile within acceptable limits.
                  *
                  * Representative: LFTs within 3x upper limit of normal. */
             attribute :>> outcomeName = "MetabolicSafety";
@@ -1953,14 +2046,9 @@ package Knowledge {
 
         part monitoringAdherence : OutcomeDefinition {
             doc /* Whether monitoring bloods are completed within
-                 * the defined schedule. This is the longitudinal
-                 * pattern of the BloodMonitoringIntervalConstraint
-                 * — the constraint checks one point in time; this
-                 * outcome tracks the pattern across all measurement
-                 * points.
-                 *
-                 * Target: 100% of scheduled monitoring bloods
-                 * completed within the allowed window. */
+                 * the defined schedule. Target: 100% of scheduled
+                 * monitoring bloods completed within the allowed
+                 * window. */
             attribute :>> outcomeName = "MonitoringAdherence";
             attribute :>> description = "Monitoring blood tests completed at all scheduled measurement points";
             attribute :>> category = OutcomeCategory::adherence;
@@ -1976,10 +2064,7 @@ package Knowledge {
         part appointmentAdherence : OutcomeDefinition {
             doc /* Whether scheduled clinical appointments are
                  * attended. Missed appointments may indicate
-                 * disengagement, access barriers, or dissatisfaction.
-                 *
-                 * Target: all scheduled appointments attended or
-                 * rescheduled within acceptable window. */
+                 * disengagement, access barriers, or dissatisfaction. */
             attribute :>> outcomeName = "AppointmentAdherence";
             attribute :>> description = "Scheduled clinical appointments attended or rescheduled within window";
             attribute :>> category = OutcomeCategory::adherence;
@@ -1996,12 +2081,8 @@ package Knowledge {
 
         part adverseEventTracking : OutcomeDefinition {
             doc /* Tracking of adverse events during treatment.
-                 * Any adverse event of warning severity or above
-                 * is captured and evaluated.
-                 *
                  * Target: no critical adverse events. Warning-level
-                 * events are expected to be managed; critical events
-                 * trigger urgent clinical review. */
+                 * events are expected to be managed. */
             attribute :>> outcomeName = "AdverseEventTracking";
             attribute :>> description = "No critical adverse events; warning-level events managed and documented";
             attribute :>> category = OutcomeCategory::safety;
@@ -2019,11 +2100,7 @@ package Knowledge {
         part treatmentSatisfaction : OutcomeDefinition {
             doc /* Patient-reported treatment satisfaction, captured
                  * during monitoring consultations. Also an input to
-                 * the stabilityAssessment decision table.
-                 *
-                 * Target: patient satisfied or neutral. Dissatisfied
-                 * status triggers exploration of concerns and
-                 * potential pathway adjustment. */
+                 * the stabilityAssessment decision table. */
             attribute :>> outcomeName = "TreatmentSatisfaction";
             attribute :>> description = "Patient-reported satisfaction with treatment progress";
             attribute :>> category = OutcomeCategory::patientReported;
@@ -2039,15 +2116,8 @@ package Knowledge {
         part goalAttainment : OutcomeDefinition {
             doc /* Patient-reported goal attainment — whether the
                  * patient feels their personal treatment goals are
-                 * being met. This is distinct from clinical targets
-                 * (which are physiological) and from satisfaction
-                 * (which is about the service experience).
-                 *
-                 * Captured via structured self-assessment at 6-month
-                 * and 12-month points.
-                 *
-                 * Target: patient reports goals being met or
-                 * progressing. */
+                 * being met. Captured via structured self-assessment
+                 * at 6-month and 12-month points. */
             attribute :>> outcomeName = "GoalAttainment";
             attribute :>> description = "Patient-reported progress toward personal treatment goals";
             attribute :>> category = OutcomeCategory::patientReported;
@@ -2062,19 +2132,10 @@ package Knowledge {
 
         // =============================================================
         // Hormone Therapy Measurement Schedule
-        //
-        // Defines the measurement points for the hormone therapy
-        // initiation pathway and associates each point with the
-        // outcomes to be collected.
         // =============================================================
 
         part baselinePoint : MeasurementPoint {
-            doc /* Baseline measurements before treatment initiation.
-                 * Pre-treatment values establish the reference for
-                 * all subsequent outcome evaluation.
-                 *
-                 * Outcomes collected: all clinical (hormone levels,
-                 * haematology, metabolic), baseline PROs. */
+            doc /* Baseline measurements before treatment initiation. */
             attribute :>> pointName = "Baseline";
             attribute :>> timingWeeksFromInitiation = 0;
             attribute :>> description = "Pre-treatment baseline assessment. All clinical and safety bloods, initial PROs.";
@@ -2084,14 +2145,7 @@ package Knowledge {
 
         part threeMonthPoint : MeasurementPoint {
             doc /* First monitoring assessment at approximately
-                 * 12 weeks post-initiation.
-                 *
-                 * Primary focus: initial hormone response. Are
-                 * levels moving toward target? Any early side
-                 * effects or safety concerns?
-                 *
-                 * Outcomes collected: all clinical, adherence,
-                 * safety. PROs if concerns flagged. */
+                 * 12 weeks post-initiation. */
             attribute :>> pointName = "ThreeMonth";
             attribute :>> timingWeeksFromInitiation = 12;
             attribute :>> description = "First monitoring assessment. Initial hormone response, early safety review.";
@@ -2101,15 +2155,8 @@ package Knowledge {
 
         part sixMonthPoint : MeasurementPoint {
             doc /* Mid-term assessment at approximately 26 weeks.
-                 *
-                 * Primary focus: target achievement. Have therapeutic
-                 * ranges been reached? Stability assessment. Full
-                 * safety panel. Patient satisfaction and goal
-                 * attainment.
-                 *
-                 * This is the first point at which the
-                 * stabilityAssessment decision table may declare a
-                 * patient stable (12+ weeks on current dose). */
+                 * First point at which the stabilityAssessment
+                 * decision table may declare a patient stable. */
             attribute :>> pointName = "SixMonth";
             attribute :>> timingWeeksFromInitiation = 26;
             attribute :>> description = "Mid-term assessment. Target achievement, stability, full safety panel, PROs.";
@@ -2119,14 +2166,7 @@ package Knowledge {
 
         part twelveMonthPoint : MeasurementPoint {
             doc /* Long-term assessment at approximately 52 weeks.
-                 *
-                 * Primary focus: sustained target levels, long-term
-                 * safety, treatment satisfaction, readiness for
-                 * transition to annual monitoring or shared care.
-                 *
-                 * Successful outcomes at this point typically trigger
-                 * transition to ongoing care (annual monitoring,
-                 * potentially shared care with GP). */
+                 * Transition readiness. */
             attribute :>> pointName = "TwelveMonth";
             attribute :>> timingWeeksFromInitiation = 52;
             attribute :>> description = "Long-term assessment. Sustained targets, safety, transition readiness.";
@@ -2136,11 +2176,7 @@ package Knowledge {
 
         part annualMonitoringPoint : MeasurementPoint {
             doc /* Annual ongoing monitoring after stabilisation.
-                 * Repeats every 52 weeks from the 12-month point.
-                 *
-                 * Primary focus: continued target levels, emerging
-                 * long-term risks (metabolic, haematological),
-                 * continued satisfaction. */
+                 * Repeats every 52 weeks from the 12-month point. */
             attribute :>> pointName = "AnnualMonitoring";
             attribute :>> timingWeeksFromInitiation = 104;
             attribute :>> description = "Annual ongoing monitoring. Continued targets, long-term safety, satisfaction.";
@@ -2150,15 +2186,7 @@ package Knowledge {
 
         part hormoneTherapySchedule : MeasurementSchedule {
             doc /* Measurement schedule for the hormone therapy
-                 * initiation pathway.
-                 *
-                 * Defines the standard measurement points from
-                 * baseline through the first year and into ongoing
-                 * annual monitoring. Individual patients may have
-                 * additional ad-hoc measurement points triggered
-                 * by the stabilityAssessment decision table
-                 * (e.g. increased monitoring frequency if adjustment
-                 * needed). */
+                 * initiation pathway. */
             attribute :>> scheduleName = "HormoneTherapyInitiationSchedule";
             attribute :>> pathwayRef = "ServiceDelivery::ClinicalPathways::HormoneTherapy";
             attribute :>> description = "Standard measurement schedule for hormone therapy from baseline through annual monitoring";
@@ -2173,69 +2201,26 @@ package Knowledge {
                  * a specific measurement point. Data may enter via
                  * the workflow (Temporal activity commits composition)
                  * or via form entry (clinician or patient records
-                 * directly).
-                 *
-                 * Both paths produce the same CDR composition type.
-                 * The composition is tagged with the measurement
-                 * point and outcome definition references for
-                 * queryability. */
+                 * directly). */
         }
 
         use case def EvaluateOutcomeAgainstTarget {
             doc /* Evaluate a recorded outcome measurement against
                  * its defined target. Produces an
-                 * OutcomeEvaluationResult.
-                 *
-                 * This is conceptually parallel to EvaluateConstraint
-                 * in LogicEngine: both compare actual data against
-                 * an expected condition. The difference is that
-                 * constraint evaluation is point-in-time (is this
-                 * condition met right now?) while outcome evaluation
-                 * is longitudinal (is this target being met across
-                 * the measurement schedule?).
-                 *
-                 * At a population level, this use case feeds into
-                 * governance reporting: what proportion of patients
-                 * are achieving target at each measurement point? */
+                 * OutcomeEvaluationResult. */
         }
 
         use case def ProduceOutcomeReport {
             doc /* Generate an outcome report for a patient, cohort,
                  * or pathway. Aggregates OutcomeEvaluationResults
-                 * across measurement points to show the longitudinal
-                 * outcome profile.
-                 *
-                 * Three reporting scopes:
-                 * - Patient: individual outcome trajectory showing
-                 *   values at each measurement point against targets
-                 * - Cohort: population outcome summary showing what
-                 *   proportion of patients meet targets at each point
-                 * - Pathway: overall pathway effectiveness assessment
-                 *   across all outcome categories
-                 *
-                 * Reports are derivable from CDR data via AQL.
-                 * The report structure is a natural input to the
-                 * SystemStateAssessment (Layer 4 — unmet outcome
-                 * targets are deficits). */
+                 * across measurement points. */
         }
 
         use case def FeedOutcomeToLearningCycle {
             doc /* When outcome patterns indicate a potential
-                 * pathway issue (e.g. a significant proportion of
-                 * patients not reaching target on a regimen, or
-                 * emerging safety signals), package the evidence
-                 * as an OutcomeFeedbackRecord and feed it into
-                 * LearningCycles::ProposePathwayRefinement.
-                 *
-                 * This is the closing connection in the learning
-                 * loop: outcomes → evidence → proposal → governance
-                 * review → model update → regeneration.
-                 *
-                 * Detection can be automated (scheduled Temporal
-                 * workflow that analyses outcome patterns) or
-                 * manual (clinician notices a trend and initiates
-                 * feedback). The governance review step is always
-                 * human. */
+                 * pathway issue, package the evidence as an
+                 * OutcomeFeedbackRecord and feed it into
+                 * LearningCycles::ProposePathwayRefinement. */
         }
     }
 
@@ -2252,10 +2237,7 @@ package Knowledge {
              *
              * Input from OutcomeFramework:
              * OutcomeFeedbackRecord captures evidence of outcome patterns
-             * (e.g. cohort not reaching targets on a specific regimen)
-             * and feeds into ProposePathwayRefinement. Detection may be
-             * automated (scheduled Temporal workflow analysing outcome
-             * data) or clinician-initiated.
+             * and feeds into ProposePathwayRefinement.
              *
              * Input from SystemStateAssessment:
              * Advisory-category deficits identified in gap analysis
@@ -2264,11 +2246,7 @@ package Knowledge {
              * or protocol review.
              *
              * The governance review step is always human — the learning
-             * cycle does not automatically modify the model. This is
-             * consistent with the remediation boundary principle:
-             * automatic actions are limited to deterministic,
-             * pathway-defined steps; pathway changes require governance
-             * approval. */
+             * cycle does not automatically modify the model. */
 
         use case def ProposePathwayRefinement {
             doc /* Initiate a pathway change proposal based on outcome
