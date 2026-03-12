@@ -1,6 +1,6 @@
 # GSL — Next Steps and Deferred Items
 
-**Last updated:** 12 March 2026 (Session 22 — CSW Extension Phase 3 complete)
+**Last updated:** 12 March 2026 (Session 23 — CSW Extension Phase 4 complete)
 
 **Purpose:** Living tracker of carried-forward items, deferred decisions, and potential next workstreams. Completed items are removed at each update — completion is recorded in session reports.
 
@@ -11,7 +11,7 @@
 ### CSW Extension — Catalogue, Inventory & Frontend
 
 **Plan:** `gsl-plan-workstream-csw-extension-2026-03-12.md`
-**Status:** Phase 3 complete, Phase 4 next
+**Status:** Phase 4 complete, Phase 5 next
 
 | Phase | Status |
 |---|---|
@@ -19,8 +19,8 @@
 | 1: SysML domain model update | ✓ Complete (Session 20) |
 | 2: PostgreSQL foundation | ✓ Complete (Session 21) |
 | 3: Catalogue & inventory API routes | ✓ Complete (Session 22) |
-| 4: Frontend foundation (Tailwind v4 + Flowbite) | Next |
-| 5: Counter page (dynamic order form) | Planned |
+| 4: Frontend foundation (Tailwind v4 + Flowbite) | ✓ Complete (Session 23) |
+| 5: Counter page (dynamic order form) | Next |
 | 6: Manager GUI — stock & catalogue | Planned |
 | 7: Remaining operations pages | Planned |
 | 8: Data & insights pages | Planned |
@@ -47,7 +47,7 @@ Model a second clinical pathway (ongoing monitoring, shared care transition, or 
 
 ### Model Consolidation Review
 
-Step back and review the complete model across all packages for naming consistency, doc block gaps, structural simplification opportunities, and package hierarchy clarity. The model has grown substantially through 22 sessions.
+Step back and review the complete model across all packages for naming consistency, doc block gaps, structural simplification opportunities, and package hierarchy clarity. The model has grown substantially through 23 sessions.
 
 ### Variant C Elaboration
 
@@ -153,7 +153,26 @@ The `FulfilDrink` workflow is drink-specific. Food items (Ginger Biscuit, Oat Ba
 
 ---
 
-## 9. Syntax Reference — Unverified Patterns
+## 9. Frontend — Notes from Phase 4 (Session 23)
+
+### Flowbite Svelte component compatibility
+
+- `flowbite-svelte@1.31.0` works well with Svelte `5.53.7` and Tailwind `4.2.1`
+- `DarkMode` component works without the `invalid_default_snippet` warnings documented in sv10
+- `Sidebar` component's responsive behaviour is unreliable — hand-rolled CSS sidebar using standard Flowbite admin patterns is more predictable
+- `Card`, `Table`, `Badge`, `Button`, `Alert`, `Select`, `Input`, `Label`, `Spinner` all work correctly
+- `$app/stores` used for `$page` (not yet migrated to `$app/state` — Flowbite Svelte still uses stores internally)
+
+### Upgrade path to flowbite-svelte 2.0
+
+When `flowbite-svelte@2.0.0` ships as stable (currently at `next.9`), upgrade should be straightforward:
+- Peer deps: `svelte ^5.40.0` + `tailwindcss ^4.1.4` — both satisfied by current workspace
+- Component API is expected to be stable (same props/slots)
+- May support `$app/state` natively, allowing migration from `$app/stores`
+
+---
+
+## 10. Syntax Reference — Unverified Patterns
 
 Carried forward from syntax reference v3.11 TODO section.
 
@@ -171,7 +190,7 @@ Carried forward from syntax reference v3.11 TODO section.
 
 ---
 
-## 10. Major Completed Workstreams (Reference)
+## 11. Major Completed Workstreams (Reference)
 
 These are complete and documented in session reports. Listed here for orientation only.
 
@@ -186,7 +205,8 @@ These are complete and documented in session reports. Listed here for orientatio
 | CSW Extension Phase 1 (domain model) | 20 | Complete |
 | CSW Extension Phase 2 (PostgreSQL foundation) | 21 | Complete |
 | CSW Extension Phase 3 (catalogue & inventory API) | 22 | Complete |
+| CSW Extension Phase 4 (frontend foundation) | 23 | Complete |
 
 ---
 
-*Updated 12 March 2026 (Session 22). CSW Extension workstream active — Phase 3 complete, Phase 4 next.*
+*Updated 12 March 2026 (Session 23). CSW Extension workstream active — Phase 4 complete, Phase 5 next.*
