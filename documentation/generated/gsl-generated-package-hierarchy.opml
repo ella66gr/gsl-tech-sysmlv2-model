@@ -2,37 +2,38 @@
 <opml version="2.0">
   <head>
     <title>GenderSense Package Hierarchy</title>
-    <dateCreated>2026-03-10 23:55</dateCreated>
+    <dateCreated>2026-03-11 23:09</dateCreated>
   </head>
   <body>
     <outline text="GenderSense — Model-driven clinical service management platform">
       <outline text="Enterprise  — Defines the organisational, regulatory, strategic, and risk context." _note="enterprise.sysml:5">
         <outline text="Organisation  — Roles, teams, governance structure, board, leadership,  [3 parts]" _note="enterprise.sysml:12"/>
         <outline text="Regulation  — CQC fundamental standards, ICO/GDPR obligations,  [4 use cases, 8 requirements]" _note="enterprise.sysml:38"/>
-        <outline text="Strategy  — Partnerships, business model, ethos and values,  [2 parts]" _note="enterprise.sysml:207"/>
-        <outline text="Risk  — Clinical risk management, business continuity, safeguarding  [3 use cases]" _note="enterprise.sysml:227"/>
+        <outline text="Strategy  — Partnerships, strategic context, ethos and values,  [2 parts]" _note="enterprise.sysml:207"/>
+        <outline text="Risk  — Clinical risk management, business continuity, safeguarding  [3 use cases]" _note="enterprise.sysml:272"/>
       </outline>
       <outline text="Foundation  — Cross-cutting infrastructure that everything else imports." _note="foundation.sysml:5">
         <outline text="MetadataLibrary  — Metadata definitions for generator configuration and  [9 metadata]" _note="foundation.sysml:11"/>
         <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [2 parts, 25 enums]" _note="foundation.sysml:152"/>
-        <outline text="StatePatterns  — Reusable lifecycle state machine patterns.  [1 states]" _note="foundation.sysml:430"/>
-        <outline text="GenerationPipeline  — Generator configurations, template definitions, generation" _note="foundation.sysml:493"/>
+        <outline text="StatePatterns  — Reusable lifecycle state machine patterns.  [1 states]" _note="foundation.sysml:442"/>
+        <outline text="GenerationPipeline  — Generator configurations, template definitions, generation" _note="foundation.sysml:505"/>
       </outline>
       <outline text="Knowledge  — Explicit treatment of knowledge, decision logic, and adaptive" _note="knowledge.sysml:5">
         <outline text="ClinicalDecisionSupport  — Decision rules, eligibility criteria, monitoring protocols,  [3 parts, 3 use cases]" _note="knowledge.sysml:18"/>
         <outline text="ConstraintLibrary  — Composable clinical constraints, safety rules, drug  [8 constraints]" _note="knowledge.sysml:241"/>
         <outline text="LogicEngine  — Inference rules, Prolog-style reasoning, deterministic  [21 parts, 4 use cases]" _note="knowledge.sysml:428"/>
-        <outline text="DecisionModels  — DMN-style decision tables modelled as SysML part defs  [5 parts, 2 use cases, 1 enums]" _note="knowledge.sysml:1218"/>
-        <outline text="OutcomeFramework  — Outcome definitions, measurement points, structured outcome  [5 parts, 4 use cases]" _note="knowledge.sysml:1661"/>
-        <outline text="LearningCycles  — Pathway refinement process, evidence review, change control  [2 use cases]" _note="knowledge.sysml:2242"/>
-        <outline text="Analytics  — Data contracts for BI and predictive analytics, event stream  [1 parts]" _note="knowledge.sysml:2287"/>
+        <outline text="DecisionModels  — DMN-style decision tables modelled as SysML part defs  [5 parts, 2 use cases, 1 enums]" _note="knowledge.sysml:1343"/>
+        <outline text="OutcomeFramework  — Outcome definitions, measurement points, structured outcome  [5 parts, 4 use cases]" _note="knowledge.sysml:1765"/>
+        <outline text="LearningCycles  — Pathway refinement process, evidence review, change control  [2 use cases]" _note="knowledge.sysml:2227"/>
+        <outline text="Analytics  — Data contracts for BI and predictive analytics, event stream  [1 parts]" _note="knowledge.sysml:2265"/>
       </outline>
       <outline text="Operations  — Back office and growth functions." _note="operations.sysml:5">
-        <outline text="Finance  — Billing, accounts, Xero integration, financial reporting,  [2 use cases]" _note="operations.sysml:14"/>
-        <outline text="People  — HR, contracts, indemnity arrangements, personnel" _note="operations.sysml:30"/>
-        <outline text="Marketing  — Acquisition funnel, content production, community  [1 use cases]" _note="operations.sysml:37"/>
-        <outline text="CRM  — Prospect and patient relationship management," _note="operations.sysml:53"/>
-        <outline text="Reporting  — Business intelligence, operational dashboards, regulatory  [2 use cases]" _note="operations.sysml:60"/>
+        <outline text="Finance  — Operational accounting: invoice processing, payment  [1 parts, 4 use cases]" _note="operations.sysml:33"/>
+        <outline text="People  — Workforce management: roles, contracts, recruitment,  [1 parts, 4 use cases]" _note="operations.sysml:107"/>
+        <outline text="EstatesAndFacilities  — Premises, equipment, and procurement.  [2 parts, 1 use cases]" _note="operations.sysml:205"/>
+        <outline text="Marketing  — Acquisition funnel, content production, community  [1 use cases]" _note="operations.sysml:299"/>
+        <outline text="CRM  — Prospect and patient relationship management," _note="operations.sysml:322"/>
+        <outline text="Reporting  — Business intelligence, operational dashboards, regulatory  [3 use cases]" _note="operations.sysml:333"/>
       </outline>
       <outline text="Platform  — The technology systems that support service delivery." _note="platform.sysml:5">
         <outline text="PatientPortal  — Patient-facing web platform, self-management hub.  [2 use cases]" _note="platform.sysml:21">
@@ -80,13 +81,13 @@
         <outline text="ClinicalEntities  — Core domain entities: the nouns of the clinical domain.  [6 parts, 4 states]" _note="service-delivery.sysml:848"/>
       </outline>
       <outline text="BusinessModel  — The business model package captures the strategic logic of the" _note="business-model.sysml:6">
-        <outline text="ServiceConcept  — Defines the value proposition, customer segments, service  [5 parts]" _note="business-model.sysml:37"/>
-        <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-model.sysml:251"/>
-        <outline text="ResourcePlanning  — Defines the resources required to operate the service  [5 parts]" _note="business-model.sysml:359"/>
-        <outline text="FinancialPlanning  — Defines the financial structure of the business: how  [5 parts, 1 enums]" _note="business-model.sysml:597"/>
-        <outline text="ScenarioModelling  — Provides the mechanics for driving the business model  [11 parts, 2 enums]" _note="business-model.sysml:773"/>
-        <outline text="StrategyAndEvolution  — Strategic direction, business model variants, and  [3 parts]" _note="business-model.sysml:1336"/>
+        <outline text="ServiceConcept  — Defines the value proposition, customer segments, service  [5 parts]" _note="business-model.sysml:44"/>
+        <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-model.sysml:307"/>
+        <outline text="ResourcePlanning  — Defines the resources required to operate the service  [6 parts]" _note="business-model.sysml:415"/>
+        <outline text="FinancialPlanning  — Defines the financial structure of the business: how  [5 parts, 1 enums]" _note="business-model.sysml:785"/>
       </outline>
+      <outline text="BusinessScenarios  — Provides the mechanics for driving the business model  [11 parts, 2 enums]" _note="business-scenarios.sysml:21"/>
+      <outline text="BusinessStrategy  — Strategic direction, business model variants, and  [2 parts, 1 requirements]" _note="business-strategy.sysml:20"/>
     </outline>
     <outline text="Libraries (separate from main model)">
       <outline text="TemporalMetadata  — Metadata definitions for Temporal workflow generation.  [4 metadata]" _note="libraries/temporal-metadata/temporal-metadata.sysml:1"/>

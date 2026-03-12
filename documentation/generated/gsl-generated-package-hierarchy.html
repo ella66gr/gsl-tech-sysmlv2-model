@@ -42,7 +42,7 @@
 <body>
     <div id="banner">
         <span class="title">GenderSense — Package Hierarchy</span>
-        <span class="meta">Generated 2026-03-10 23:55 &nbsp;|&nbsp;
+        <span class="meta">Generated 2026-03-11 23:09 &nbsp;|&nbsp;
               Scroll to zoom &nbsp;|&nbsp; Drag to pan &nbsp;|&nbsp;
               Click nodes to collapse</span>
     </div>
@@ -56,7 +56,7 @@
 ## Enterprise — Defines the organisational, regulatory, strategic, and risk context.
 ### Organisation — Roles, teams, governance structure, board, leadership, *[3 parts]*
 ### Regulation — CQC fundamental standards, ICO/GDPR obligations, *[4 use cases, 8 requirements]*
-### Strategy — Partnerships, business model, ethos and values, *[2 parts]*
+### Strategy — Partnerships, strategic context, ethos and values, *[2 parts]*
 ### Risk — Clinical risk management, business continuity, safeguarding *[3 use cases]*
 ## Foundation — Cross-cutting infrastructure that everything else imports.
 ### MetadataLibrary — Metadata definitions for generator configuration and *[9 metadata]*
@@ -72,11 +72,12 @@
 ### LearningCycles — Pathway refinement process, evidence review, change control *[2 use cases]*
 ### Analytics — Data contracts for BI and predictive analytics, event stream *[1 parts]*
 ## Operations — Back office and growth functions.
-### Finance — Billing, accounts, Xero integration, financial reporting, *[2 use cases]*
-### People — HR, contracts, indemnity arrangements, personnel
+### Finance — Operational accounting: invoice processing, payment *[1 parts, 4 use cases]*
+### People — Workforce management: roles, contracts, recruitment, *[1 parts, 4 use cases]*
+### EstatesAndFacilities — Premises, equipment, and procurement. *[2 parts, 1 use cases]*
 ### Marketing — Acquisition funnel, content production, community *[1 use cases]*
 ### CRM — Prospect and patient relationship management,
-### Reporting — Business intelligence, operational dashboards, regulatory *[2 use cases]*
+### Reporting — Business intelligence, operational dashboards, regulatory *[3 use cases]*
 ## Platform — The technology systems that support service delivery.
 ### PatientPortal — Patient-facing web platform, self-management hub. *[2 use cases]*
 #### SelfManagement — Personal dashboard, progress tracking, alerts and *[3 use cases]*
@@ -119,10 +120,10 @@
 ## BusinessModel — The business model package captures the strategic logic of the
 ### ServiceConcept — Defines the value proposition, customer segments, service *[5 parts]*
 ### ActivityModel — Cross-cutting activity taxonomy and costing foundation. *[5 parts, 2 enums]*
-### ResourcePlanning — Defines the resources required to operate the service *[5 parts]*
+### ResourcePlanning — Defines the resources required to operate the service *[6 parts]*
 ### FinancialPlanning — Defines the financial structure of the business: how *[5 parts, 1 enums]*
-### ScenarioModelling — Provides the mechanics for driving the business model *[11 parts, 2 enums]*
-### StrategyAndEvolution — Strategic direction, business model variants, and *[3 parts]*
+## BusinessScenarios — Provides the mechanics for driving the business model *[11 parts, 2 enums]*
+## BusinessStrategy — Strategic direction, business model variants, and *[2 parts, 1 requirements]*
 ## Libraries
 ### TemporalMetadata — Metadata definitions for Temporal workflow generation. *[4 metadata]*`;
         try {

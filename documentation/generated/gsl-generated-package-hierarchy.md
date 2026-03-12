@@ -1,8 +1,8 @@
 # GenderSense Package Hierarchy (Generated)
 
-**Generated:** 2026-03-10 23:55  
+**Generated:** 2026-03-11 23:09  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
-**Total packages:** 71 (excluding root)  
+**Total packages:** 72 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
 
 This document is generated from the SysML model. Do not edit manually.
@@ -11,13 +11,13 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 GenderSense Package Hierarchy
-Generated 2026-03-10 23:55 from model/*.sysml (71 packages)
+Generated 2026-03-11 23:09 from model/*.sysml (72 packages)
 
 GenderSense
 ├── Enterprise                    Defines the organisational, regulatory, strategic, and risk context.
 │   ├── Organisation              Roles, teams, governance structure, board, leadership, — [3 parts]
 │   ├── Regulation                CQC fundamental standards, ICO/GDPR obligations, — [4 use cases, 8 requirements]
-│   ├── Strategy                  Partnerships, business model, ethos and values, — [2 parts]
+│   ├── Strategy                  Partnerships, strategic context, ethos and values, — [2 parts]
 │   └── Risk                      Clinical risk management, business continuity, safeguarding — [3 use cases]
 │
 ├── Foundation                    Cross-cutting infrastructure that everything else imports.
@@ -36,11 +36,12 @@ GenderSense
 │   └── Analytics                 Data contracts for BI and predictive analytics, event stream — [1 parts]
 │
 ├── Operations                    Back office and growth functions.
-│   ├── Finance                   Billing, accounts, Xero integration, financial reporting, — [2 use cases]
-│   ├── People                    HR, contracts, indemnity arrangements, personnel
+│   ├── Finance                   Operational accounting: invoice processing, payment — [1 parts, 4 use cases]
+│   ├── People                    Workforce management: roles, contracts, recruitment, — [1 parts, 4 use cases]
+│   ├── EstatesAndFacilities      Premises, equipment, and procurement. — [2 parts, 1 use cases]
 │   ├── Marketing                 Acquisition funnel, content production, community — [1 use cases]
 │   ├── CRM                       Prospect and patient relationship management,
-│   └── Reporting                 Business intelligence, operational dashboards, regulatory — [2 use cases]
+│   └── Reporting                 Business intelligence, operational dashboards, regulatory — [3 use cases]
 │
 ├── Platform                      The technology systems that support service delivery.
 │   ├── PatientPortal             Patient-facing web platform, self-management hub. — [2 use cases]
@@ -83,13 +84,15 @@ GenderSense
 │   ├── ClinicalGovernance        Policies, protocols, procedures, clinical audit, outcome — [3 use cases]
 │   └── ClinicalEntities          Core domain entities: the nouns of the clinical domain. — [6 parts, 4 states]
 │
-└── BusinessModel                 The business model package captures the strategic logic of the
-    ├── ServiceConcept            Defines the value proposition, customer segments, service — [5 parts]
-    ├── ActivityModel             Cross-cutting activity taxonomy and costing foundation. — [5 parts, 2 enums]
-    ├── ResourcePlanning          Defines the resources required to operate the service — [5 parts]
-    ├── FinancialPlanning         Defines the financial structure of the business: how — [5 parts, 1 enums]
-    ├── ScenarioModelling         Provides the mechanics for driving the business model — [11 parts, 2 enums]
-    └── StrategyAndEvolution      Strategic direction, business model variants, and — [3 parts]
+├── BusinessModel                 The business model package captures the strategic logic of the
+│   ├── ServiceConcept            Defines the value proposition, customer segments, service — [5 parts]
+│   ├── ActivityModel             Cross-cutting activity taxonomy and costing foundation. — [5 parts, 2 enums]
+│   ├── ResourcePlanning          Defines the resources required to operate the service — [6 parts]
+│   └── FinancialPlanning         Defines the financial structure of the business: how — [5 parts, 1 enums]
+│
+├── BusinessScenarios             Provides the mechanics for driving the business model — [11 parts, 2 enums]
+│
+└── BusinessStrategy              Strategic direction, business model variants, and — [2 parts, 1 requirements]
 
 Libraries (separate from main model):
   TemporalMetadata (libraries/temporal-metadata/temporal-metadata.sysml) — Metadata definitions for Temporal workflow generation. — [4 metadata]
@@ -97,4 +100,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-03-10 23:55 by `gen_package_hierarchy.py`.*
+*Generated 2026-03-11 23:09 by `gen_package_hierarchy.py`.*
