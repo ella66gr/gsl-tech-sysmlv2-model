@@ -1,23 +1,28 @@
 # =============================================================================
-# EHRbase CDR — Local Development Stack
-# Coffee Shop CDR Extension Exercise (Phase A)
+# Coffee Shop Demonstrator — Local Development Stack
 #
-# Runs EHRbase 2.11.0 with a preconfigured PostgreSQL instance.
-# Port 5433 avoids conflict with any local PostgreSQL on 5432.
-# Port 8080 for the EHRbase REST API and Swagger UI.
+# Three persistence layers:
+#   1. CDR — EHRbase 2.11.0 with PostgreSQL (port 5433)
+#   2. Business Database — PostgreSQL 16 (port 5434)
+#   3. Process Engine — Temporal (external, not in this compose file)
 #
 # Usage:
 #   docker compose -f docker-compose.ehrbase.yml up -d
 #   docker compose -f docker-compose.ehrbase.yml down
 #   docker compose -f docker-compose.ehrbase.yml down -v   # also removes data volumes
 #
-# Swagger UI:  http://localhost:8080/ehrbase/swagger-ui.html
-# Health check: curl http://localhost:8080/ehrbase/status
+# EHRbase:
+#   Swagger UI:  http://localhost:8080/ehrbase/swagger-ui.html
+#   Health check: curl http://localhost:8080/ehrbase/status
+#   Auth (basic): ehrbase-user / SuperSecretPassword
 #
-# Auth (basic): ehrbase-user / SuperSecretPassword
+# Business Database:
+#   Connection:  localhost:5434 / coffeeshop_business
+#   Auth:        coffeeshop / coffeeshop_dev
 # =============================================================================
 
 services:
+  # ── Clinical Data Repository ─────────────────────────────────
   ehrdb:
     image: ehrbase/ehrbase-v2-postgres:16.2
     environment:
@@ -60,5 +65,28 @@ services:
       retries: 12
       start_period: 30s
 
+  # ── Business Database ────────────────────────────────────────
+  # Separate PostgreSQL instance for business data (catalogue,
+  # inventory, pricing). Architecturally distinct from the CDR.
+  # Port 5434 to avoid conflict with EHRbase's PostgreSQL (5433)
+  # and any local PostgreSQL (5432).
+  coffeeshop-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: coffeeshop_business
+      POSTGRES_USER: coffeeshop
+      POSTGRES_PASSWORD: coffeeshop_dev
+    ports:
+      - "5434:5432"
+    volumes:
+      - coffeeshop-pg-data:/var/lib/postgresql/data
+      - ./sql/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U coffeeshop -d coffeeshop_business"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 volumes:
   ehrbase-pg-data:
+  coffeeshop-pg-data:
