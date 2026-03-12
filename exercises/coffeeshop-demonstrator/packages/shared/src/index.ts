@@ -54,3 +54,17 @@ export {
   PREPARATION_TEMPLATE_ID,
   type PreparationCompositionInput,
 } from './preparation-composition-builder.js';
+
+// PostgreSQL business database client — CSW Extension Phase 2
+export {
+  createPostgresClient,
+  DEFAULT_POSTGRES_CONFIG,
+  PostgresClientError,
+  type PostgresClient,
+  type PostgresConfig,
+  type MenuItemRow,
+  type CatalogueEntryRow,
+  type InventoryRecordRow,
+  type CatalogueItemView,
+  type InventoryItemView,
+} from './postgres-client.js';
