@@ -1,11 +1,28 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { Card, Button, Label, Input, Select, Alert } from 'flowbite-svelte';
 
   let customerName = $state('');
   let drinkType = $state('flat white');
   let size = $state('medium');
   let submitting = $state(false);
   let errorMessage = $state('');
+
+  const drinkOptions = [
+    { value: 'flat white', name: 'Flat White' },
+    { value: 'latte', name: 'Latte' },
+    { value: 'americano', name: 'Americano' },
+    { value: 'cappuccino', name: 'Cappuccino' },
+    { value: 'espresso', name: 'Espresso' },
+    { value: 'iced latte', name: 'Iced Latte' },
+    { value: 'cold brew', name: 'Cold Brew' },
+  ];
+
+  const sizeOptions = [
+    { value: 'small', name: 'Small' },
+    { value: 'medium', name: 'Medium' },
+    { value: 'large', name: 'Large' },
+  ];
 
   async function placeOrder() {
     submitting = true;
@@ -34,52 +51,36 @@
   }
 </script>
 
-<h1>Coffee Shop Demonstrator</h1>
-<p>SysML v2 Model-Driven Execution — Phase D: Governance Outputs</p>
-
-<hr />
-
-<h2>Place an Order</h2>
-
-{#if errorMessage}
-  <p style="color: red;"><strong>Error:</strong> {errorMessage}</p>
-{/if}
-
-<div>
-  <label>
-    Customer Name:
-    <input type="text" bind:value={customerName} placeholder="Enter name" />
-  </label>
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-secondary-800 dark:text-white">Counter</h1>
+  <p class="text-sm text-secondary-500 dark:text-secondary-400">SysML v2 Model-Driven Execution — Coffee Shop Demonstrator</p>
 </div>
 
-<div>
-  <label>
-    Drink Type:
-    <select bind:value={drinkType}>
-      <option value="flat white">Flat White</option>
-      <option value="latte">Latte</option>
-      <option value="americano">Americano</option>
-      <option value="cappuccino">Cappuccino</option>
-      <option value="espresso">Espresso</option>
-      <option value="iced latte">Iced Latte</option>
-      <option value="cold brew">Cold Brew</option>
-    </select>
-  </label>
-</div>
+<Card class="max-w-lg">
+  <h2 class="mb-4 text-lg font-semibold text-secondary-700 dark:text-secondary-300">Place an Order</h2>
 
-<div>
-  <label>
-    Size:
-    <select bind:value={size}>
-      <option value="small">Small</option>
-      <option value="medium">Medium</option>
-      <option value="large">Large</option>
-    </select>
-  </label>
-</div>
+  {#if errorMessage}
+    <Alert color="red" class="mb-4">
+      <span class="font-medium">Error:</span> {errorMessage}
+    </Alert>
+  {/if}
 
-<div style="margin-top: 1em;">
-  <button onclick={placeOrder} disabled={submitting || !customerName}>
+  <div class="mb-4">
+    <Label for="customerName" class="mb-2">Customer Name</Label>
+    <Input id="customerName" bind:value={customerName} placeholder="Enter name" />
+  </div>
+
+  <div class="mb-4">
+    <Label for="drinkType" class="mb-2">Drink Type</Label>
+    <Select id="drinkType" bind:value={drinkType} items={drinkOptions} />
+  </div>
+
+  <div class="mb-4">
+    <Label for="size" class="mb-2">Size</Label>
+    <Select id="size" bind:value={size} items={sizeOptions} />
+  </div>
+
+  <Button color="primary" onclick={placeOrder} disabled={submitting || !customerName} class="w-full">
     {submitting ? 'Placing order…' : 'Place Order'}
-  </button>
-</div>
+  </Button>
+</Card>

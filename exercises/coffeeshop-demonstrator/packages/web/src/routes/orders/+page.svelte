@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { Badge, Button, Spinner, Alert, Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell } from 'flowbite-svelte';
 
   interface WorkflowSummary {
     workflowId: string;
@@ -9,13 +10,13 @@
     closeTime: string | null;
   }
 
-  const STATUS_LABELS: Record<string, string> = {
-    RUNNING: '🟢 Running',
-    COMPLETED: '✅ Completed',
-    FAILED: '❌ Failed',
-    CANCELLED: '🚫 Cancelled',
-    TERMINATED: '🛑 Terminated',
-    TIMED_OUT: '⏰ Timed out',
+  const STATUS_CONFIG: Record<string, { label: string; color: 'green' | 'yellow' | 'red' | 'dark' | 'blue' }> = {
+    RUNNING: { label: 'Running', color: 'green' },
+    COMPLETED: { label: 'Completed', color: 'blue' },
+    FAILED: { label: 'Failed', color: 'red' },
+    CANCELLED: { label: 'Cancelled', color: 'dark' },
+    TERMINATED: { label: 'Terminated', color: 'red' },
+    TIMED_OUT: { label: 'Timed out', color: 'yellow' },
   };
 
   let workflows = $state<WorkflowSummary[]>([]);
@@ -30,13 +31,11 @@
   async function fetchOrders() {
     try {
       const response = await fetch('/api/orders/list');
-
       if (!response.ok) {
         const data = await response.json();
         errorMessage = data.message || `Error: ${response.status}`;
         return;
       }
-
       const data = await response.json();
       workflows = data.workflows;
     } catch (err) {
@@ -46,51 +45,67 @@
     }
   }
 
-  onMount(() => {
-    fetchOrders();
-  });
+  onMount(() => { fetchOrders(); });
 </script>
 
-<h1>Orders</h1>
-<p><a href="/">&larr; Home</a></p>
-
-<hr />
+<div class="mb-6">
+  <h1 class="text-2xl font-bold text-secondary-800 dark:text-white">Order Board</h1>
+  <p class="text-sm text-secondary-500 dark:text-secondary-400">
+    All orders from Temporal workflow history.
+    <a href="/" class="text-primary-600 hover:underline dark:text-primary-400">Place a new order</a>
+  </p>
+</div>
 
 {#if loading}
-  <p>Loading orders…</p>
+  <div class="flex items-center gap-2 text-secondary-500">
+    <Spinner size="5" /> Loading orders…
+  </div>
 {:else if errorMessage}
-  <p style="color: red;"><strong>Error:</strong> {errorMessage}</p>
+  <Alert color="red">
+    <span class="font-medium">Error:</span> {errorMessage}
+  </Alert>
 {:else if workflows.length === 0}
-  <p>No orders found. <a href="/">Place a new order</a> to get started.</p>
+  <Alert color="blue">
+    No orders found. <a href="/" class="font-medium underline">Place a new order</a> to get started.
+  </Alert>
 {:else}
-  <p>{workflows.length} order{workflows.length !== 1 ? 's' : ''} found.</p>
+  <p class="mb-3 text-sm text-secondary-500 dark:text-secondary-400">
+    {workflows.length} order{workflows.length !== 1 ? 's' : ''} found.
+  </p>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Case Ref</th>
-        <th>Status</th>
-        <th>Started</th>
-        <th>Completed</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
+  <Table striped={true}>
+    <TableHead>
+      <TableHeadCell>Case Ref</TableHeadCell>
+      <TableHeadCell>Status</TableHeadCell>
+      <TableHeadCell>Started</TableHeadCell>
+      <TableHeadCell>Completed</TableHeadCell>
+      <TableHeadCell>Actions</TableHeadCell>
+    </TableHead>
+    <TableBody>
       {#each workflows as wf}
-        <tr>
-          <td><code>{wf.caseRef}</code></td>
-          <td>{STATUS_LABELS[wf.status] ?? wf.status}</td>
-          <td style="font-size: 0.85em;">{formatTimestamp(wf.startTime)}</td>
-          <td style="font-size: 0.85em;">{formatTimestamp(wf.closeTime)}</td>
-          <td>
-            <a href="/orders/{wf.workflowId}">Status</a>
-            {#if wf.status === 'COMPLETED'}
-              &nbsp;|&nbsp;
-              <a href="/orders/{wf.workflowId}/audit">Audit</a>
+        <TableBodyRow>
+          <TableBodyCell>
+            <code class="text-sm">{wf.caseRef}</code>
+          </TableBodyCell>
+          <TableBodyCell>
+            {@const cfg = STATUS_CONFIG[wf.status]}
+            {#if cfg}
+              <Badge color={cfg.color}>{cfg.label}</Badge>
+            {:else}
+              <Badge color="dark">{wf.status}</Badge>
             {/if}
-          </td>
-        </tr>
+          </TableBodyCell>
+          <TableBodyCell class="text-xs">{formatTimestamp(wf.startTime)}</TableBodyCell>
+          <TableBodyCell class="text-xs">{formatTimestamp(wf.closeTime)}</TableBodyCell>
+          <TableBodyCell>
+            <a href="/orders/{wf.workflowId}" class="text-primary-600 hover:underline dark:text-primary-400">Status</a>
+            {#if wf.status === 'COMPLETED'}
+              <span class="mx-1 text-secondary-300">|</span>
+              <a href="/orders/{wf.workflowId}/audit" class="text-primary-600 hover:underline dark:text-primary-400">Audit</a>
+            {/if}
+          </TableBodyCell>
+        </TableBodyRow>
       {/each}
-    </tbody>
-  </table>
+    </TableBody>
+  </Table>
 {/if}

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { onMount } from 'svelte';
+  import { Card, Badge, Alert, Spinner, Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell } from 'flowbite-svelte';
 
   interface AuditStep {
     stepId: string;
@@ -23,11 +24,11 @@
     steps: AuditStep[];
   }
 
-  const COMPLIANCE_LABELS: Record<string, string> = {
-    within_target: '✅ Within target',
-    exceeded: '⚠️ Exceeded',
-    no_target: '—',
-    pending: '⏳ Pending',
+  const COMPLIANCE_CONFIG: Record<string, { label: string; color: 'green' | 'yellow' | 'dark' | 'blue' }> = {
+    within_target: { label: 'Within target', color: 'green' },
+    exceeded: { label: 'Exceeded', color: 'yellow' },
+    no_target: { label: '—', color: 'dark' },
+    pending: { label: 'Pending', color: 'blue' },
   };
 
   let orderId = $derived(page.params.id ?? '');
@@ -37,8 +38,7 @@
 
   function formatTimestamp(iso: string | null): string {
     if (!iso) return '—';
-    const d = new Date(iso);
-    return d.toLocaleString();
+    return new Date(iso).toLocaleString();
   }
 
   function formatDuration(seconds: number | null): string {
@@ -57,16 +57,13 @@
 
   async function fetchAudit() {
     if (!orderId) return;
-
     try {
       const response = await fetch(`/api/orders/${orderId}/audit`);
-
       if (!response.ok) {
         const data = await response.json();
         errorMessage = data.message || `Error: ${response.status}`;
         return;
       }
-
       report = await response.json();
     } catch (err) {
       errorMessage = err instanceof Error ? err.message : 'Failed to fetch audit report';
@@ -75,97 +72,89 @@
     }
   }
 
-  onMount(() => {
-    fetchAudit();
-  });
+  onMount(() => { fetchAudit(); });
 </script>
 
-<h1>Audit Report</h1>
-<p>
-  <a href="/orders/{orderId}">&larr; Back to order status</a>
-  &nbsp;|&nbsp;
-  <a href="/orders">All orders</a>
-</p>
-
-<hr />
+<div class="mb-4">
+  <h1 class="text-2xl font-bold text-secondary-800 dark:text-white">Audit Report</h1>
+  <div class="flex gap-3 text-sm">
+    <a href="/orders/{orderId}" class="text-primary-600 hover:underline dark:text-primary-400">&larr; Order status</a>
+    <a href="/orders" class="text-primary-600 hover:underline dark:text-primary-400">All orders</a>
+  </div>
+</div>
 
 {#if loading}
-  <p>Loading audit report…</p>
+  <div class="flex items-center gap-2 text-secondary-500">
+    <Spinner size="5" /> Loading audit report…
+  </div>
 {:else if errorMessage}
-  <p style="color: red;"><strong>Error:</strong> {errorMessage}</p>
-  <p>
+  <Alert color="red" class="mb-4">
+    <span class="font-medium">Error:</span> {errorMessage}
+  </Alert>
+  <p class="text-sm text-secondary-500">
     The audit report is only available for workflows with execution history.
-    Ensure the workflow has been started and has progressed through at least one step.
   </p>
 {:else if report}
-  <table>
-    <tbody>
-      <tr>
-        <td><strong>Case Reference</strong></td>
-        <td><code>{report.caseRef}</code></td>
-      </tr>
-      <tr>
-        <td><strong>Workflow Status</strong></td>
-        <td>{report.workflowStatus}</td>
-      </tr>
-      <tr>
-        <td><strong>Process Started</strong></td>
-        <td>{formatTimestamp(report.startTime)}</td>
-      </tr>
-      <tr>
-        <td><strong>Process Completed</strong></td>
-        <td>{formatTimestamp(report.endTime)}</td>
-      </tr>
-    </tbody>
-  </table>
+  <Card class="mb-6 max-w-3xl">
+    <div class="grid grid-cols-2 gap-3 text-sm">
+      <span class="text-secondary-500 dark:text-secondary-400">Case Reference</span>
+      <code>{report.caseRef}</code>
+      <span class="text-secondary-500 dark:text-secondary-400">Workflow Status</span>
+      <span>{report.workflowStatus}</span>
+      <span class="text-secondary-500 dark:text-secondary-400">Process Started</span>
+      <span>{formatTimestamp(report.startTime)}</span>
+      <span class="text-secondary-500 dark:text-secondary-400">Process Completed</span>
+      <span>{formatTimestamp(report.endTime)}</span>
+    </div>
+  </Card>
 
-  <h2>Compliance Table</h2>
-  <p style="font-size: 0.85em; color: #666;">
-    Expected timings are defined in the SysML model (<code>@TemporalSignal</code> annotations).
-    Actual timings are from the Temporal workflow execution history.
-  </p>
+  <div class="max-w-5xl">
+    <h2 class="mb-2 text-lg font-semibold text-secondary-700 dark:text-secondary-300">Compliance Table</h2>
+    <p class="mb-3 text-xs text-secondary-400">
+      Expected timings from SysML model annotations. Actual timings from Temporal execution history.
+    </p>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Step</th>
-        <th>Type</th>
-        <th>Started</th>
-        <th>Completed</th>
-        <th>Duration</th>
-        <th>Expected</th>
-        <th>Compliance</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each report.steps as step}
-        <tr>
-          <td><strong>{step.label}</strong></td>
-          <td>{step.type === 'signal' ? 'Signal wait' : 'Activity'}</td>
-          <td style="font-size: 0.85em;">{formatTimestamp(step.startTime)}</td>
-          <td style="font-size: 0.85em;">{formatTimestamp(step.endTime)}</td>
-          <td>{formatDuration(step.durationSeconds)}</td>
-          <td>{formatExpected(step.expectedMinutes)}</td>
-          <td>{COMPLIANCE_LABELS[step.compliance] ?? step.compliance}</td>
-        </tr>
-      {/each}
-    </tbody>
-  </table>
+    <Table striped={true}>
+      <TableHead>
+        <TableHeadCell>Step</TableHeadCell>
+        <TableHeadCell>Type</TableHeadCell>
+        <TableHeadCell>Started</TableHeadCell>
+        <TableHeadCell>Completed</TableHeadCell>
+        <TableHeadCell>Duration</TableHeadCell>
+        <TableHeadCell>Expected</TableHeadCell>
+        <TableHeadCell>Compliance</TableHeadCell>
+      </TableHead>
+      <TableBody>
+        {#each report.steps as step}
+          <TableBodyRow>
+            <TableBodyCell class="font-medium">{step.label}</TableBodyCell>
+            <TableBodyCell>
+              <Badge color={step.type === 'signal' ? 'blue' : 'dark'}>{step.type === 'signal' ? 'Signal wait' : 'Activity'}</Badge>
+            </TableBodyCell>
+            <TableBodyCell class="text-xs">{formatTimestamp(step.startTime)}</TableBodyCell>
+            <TableBodyCell class="text-xs">{formatTimestamp(step.endTime)}</TableBodyCell>
+            <TableBodyCell>{formatDuration(step.durationSeconds)}</TableBodyCell>
+            <TableBodyCell>{formatExpected(step.expectedMinutes)}</TableBodyCell>
+            <TableBodyCell>
+              {@const cfg = COMPLIANCE_CONFIG[step.compliance]}
+              {#if cfg}
+                <Badge color={cfg.color}>{cfg.label}</Badge>
+              {:else}
+                <Badge color="dark">{step.compliance}</Badge>
+              {/if}
+            </TableBodyCell>
+          </TableBodyRow>
+        {/each}
+      </TableBody>
+    </Table>
+  </div>
 
-  <hr />
+  <div class="mt-6 max-w-3xl rounded-lg border border-secondary-200 bg-secondary-50 p-4 text-sm text-secondary-600 dark:border-secondary-700 dark:bg-secondary-800 dark:text-secondary-400">
+    <p class="mb-2"><strong>Governance note:</strong> This report is generated from the Temporal workflow execution history for case <code>{report.caseRef}</code>.</p>
+    <p>The process definition is generated from the SysML v2 model — see the <a href="/pathway" class="text-primary-600 hover:underline dark:text-primary-400">pathway diagram</a>.</p>
+  </div>
 
-  <p style="font-size: 0.85em; color: #666;">
-    <strong>Governance note:</strong> This report is generated from the Temporal
-    workflow execution history for case <code>{report.caseRef}</code>.
-    The process definition is generated from the SysML v2 model — see the
-    <a href="/pathway">pathway diagram</a> for the defined process.
-    Customer identifiers are anonymised.
-  </p>
-
-  <p style="font-size: 0.85em; color: #666;">
-    Temporal Web UI:
-    <a href="http://localhost:8233/namespaces/default/workflows/{report.workflowId}" target="_blank">
-      View raw execution history
-    </a>
+  <p class="mt-4 text-xs text-secondary-400">
+    Temporal Web UI: <a href="http://localhost:8233/namespaces/default/workflows/{report.workflowId}" target="_blank" class="hover:underline">View raw execution history</a>
   </p>
 {/if}

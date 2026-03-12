@@ -1,8 +1,8 @@
 <script lang="ts">
   import { page } from '$app/state';
   import { onMount } from 'svelte';
+  import { Card, Badge, Button, Alert, Spinner, Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell } from 'flowbite-svelte';
 
-  // State-to-action mapping: which signal can be sent from each state.
   const STATE_ACTIONS: Record<string, { signal: string; label: string } | null> = {
     placed: { signal: 'baristaStarted', label: 'Barista: Start Preparation' },
     inPreparation: { signal: 'drinkReady', label: 'Barista: Mark Ready' },
@@ -20,6 +20,15 @@
     unknown: 'Unknown',
   };
 
+  const STATE_COLORS: Record<string, 'blue' | 'yellow' | 'green' | 'dark' | 'red'> = {
+    placed: 'blue',
+    inPreparation: 'yellow',
+    ready: 'green',
+    collected: 'dark',
+    cancelled: 'red',
+    unknown: 'dark',
+  };
+
   let orderId = $derived(page.params.id ?? '');
   let currentState = $state('unknown');
   let workflowStatus = $state('unknown');
@@ -31,6 +40,7 @@
 
   let action = $derived(STATE_ACTIONS[currentState] ?? null);
   let stateLabel = $derived(STATE_LABELS[currentState] ?? currentState);
+  let stateColor = $derived(STATE_COLORS[currentState] ?? 'dark');
   let isTerminal = $derived(
     currentState === 'collected' ||
     currentState === 'cancelled' ||
@@ -39,34 +49,21 @@
 
   async function fetchState() {
     if (!orderId) return;
-
     try {
       const response = await fetch(`/api/orders/${orderId}`);
-
       if (!response.ok) {
         const data = await response.json();
         errorMessage = data.message || `Error: ${response.status}`;
         return;
       }
-
       const data = await response.json();
       const previousState = currentState;
       currentState = data.state;
       workflowStatus = data.workflowStatus;
-
-      if (
-        currentState !== previousState &&
-        currentState !== 'unknown' &&
-        !stateHistory.some((h) => h.state === currentState)
-      ) {
+      if (currentState !== previousState && currentState !== 'unknown' && !stateHistory.some((h) => h.state === currentState)) {
         stateHistory = [...stateHistory, { state: currentState, timestamp: new Date().toLocaleTimeString() }];
       }
-
-      // Stop polling when workflow is terminal.
-      if (isTerminal && pollInterval) {
-        clearInterval(pollInterval);
-        pollInterval = null;
-      }
+      if (isTerminal && pollInterval) { clearInterval(pollInterval); pollInterval = null; }
     } catch (err) {
       errorMessage = err instanceof Error ? err.message : 'Failed to fetch state';
     } finally {
@@ -77,36 +74,27 @@
   async function sendSignal(signalName: string) {
     signalSending = true;
     errorMessage = '';
-
     try {
       const response = await fetch(`/api/orders/${orderId}/signal`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ signal: signalName }),
       });
-
       if (!response.ok) {
         const data = await response.json();
         errorMessage = data.message || `Error: ${response.status}`;
         return;
       }
-
       const data = await response.json();
       currentState = data.state;
       workflowStatus = data.workflowStatus;
-
       if (!stateHistory.some((h) => h.state === currentState)) {
         stateHistory = [...stateHistory, { state: currentState, timestamp: new Date().toLocaleTimeString() }];
       }
-
-      // If terminal, do one final fetch to catch the COMPLETED workflow status.
       if (isTerminal) {
         await new Promise((r) => setTimeout(r, 500));
         await fetchState();
-        if (pollInterval) {
-          clearInterval(pollInterval);
-          pollInterval = null;
-        }
+        if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
       }
     } catch (err) {
       errorMessage = err instanceof Error ? err.message : 'Failed to send signal';
@@ -118,85 +106,87 @@
   onMount(() => {
     fetchState();
     pollInterval = setInterval(fetchState, 2000);
-
-    return () => {
-      if (pollInterval) {
-        clearInterval(pollInterval);
-      }
-    };
+    return () => { if (pollInterval) clearInterval(pollInterval); };
   });
 </script>
 
-<h1>Order Status</h1>
-<p><a href="/">&larr; Back to order form</a> &nbsp;|&nbsp; <a href="/orders">All orders</a></p>
-
-<hr />
+<div class="mb-4">
+  <h1 class="text-2xl font-bold text-secondary-800 dark:text-white">Order Status</h1>
+  <div class="flex gap-3 text-sm">
+    <a href="/" class="text-primary-600 hover:underline dark:text-primary-400">&larr; Counter</a>
+    <a href="/orders" class="text-primary-600 hover:underline dark:text-primary-400">All orders</a>
+  </div>
+</div>
 
 {#if loading}
-  <p>Loading order state…</p>
+  <div class="flex items-center gap-2 text-secondary-500">
+    <Spinner size="5" /> Loading order state…
+  </div>
 {:else}
-  <table>
-    <tbody>
-      <tr>
-        <td><strong>Order ID</strong></td>
-        <td><code>{orderId}</code></td>
-      </tr>
-      <tr>
-        <td><strong>Current State</strong></td>
-        <td>
-          <strong style="font-size: 1.2em;">{stateLabel}</strong>
-        </td>
-      </tr>
-      <tr>
-        <td><strong>Workflow Status</strong></td>
-        <td>{workflowStatus}</td>
-      </tr>
-    </tbody>
-  </table>
+  <Card class="mb-4 max-w-2xl">
+    <div class="space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-secondary-500 dark:text-secondary-400">Order ID</span>
+        <code class="text-sm">{orderId}</code>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-secondary-500 dark:text-secondary-400">Current State</span>
+        <Badge color={stateColor} large>{stateLabel}</Badge>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-secondary-500 dark:text-secondary-400">Workflow Status</span>
+        <span class="text-sm">{workflowStatus}</span>
+      </div>
+    </div>
+  </Card>
 
   {#if errorMessage}
-    <p style="color: red;"><strong>Error:</strong> {errorMessage}</p>
+    <Alert color="red" class="mb-4 max-w-2xl">
+      <span class="font-medium">Error:</span> {errorMessage}
+    </Alert>
   {/if}
 
-  <div style="margin-top: 1em;">
+  <div class="mb-6 max-w-2xl">
     {#if action}
-      <button
-        onclick={() => action && sendSignal(action.signal)}
-        disabled={signalSending}
-      >
+      <Button color="primary" onclick={() => action && sendSignal(action.signal)} disabled={signalSending}>
         {signalSending ? 'Sending…' : action.label}
-      </button>
+      </Button>
     {:else if isTerminal}
-      <p><em>Order complete. No further actions available.</em></p>
-      <p><a href="/orders/{orderId}/audit"><strong>View Audit Report</strong></a></p>
+      <p class="text-sm text-secondary-500 dark:text-secondary-400">
+        Order complete. No further actions available.
+      </p>
+      <a href="/orders/{orderId}/audit" class="mt-2 inline-block text-primary-600 font-medium hover:underline dark:text-primary-400">
+        View Audit Report &rarr;
+      </a>
     {:else}
-      <p><em>Waiting for state update…</em></p>
+      <p class="text-sm text-secondary-400 italic">Waiting for state update…</p>
     {/if}
   </div>
 
   {#if stateHistory.length > 0}
-    <h3>State History</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>State</th>
-        </tr>
-      </thead>
-      <tbody>
-        {#each stateHistory as entry}
-          <tr>
-            <td>{entry.timestamp}</td>
-            <td>{STATE_LABELS[entry.state] ?? entry.state}</td>
-          </tr>
-        {/each}
-      </tbody>
-    </table>
+    <div class="max-w-2xl">
+      <h3 class="mb-2 text-lg font-semibold text-secondary-700 dark:text-secondary-300">State History</h3>
+      <Table>
+        <TableHead>
+          <TableHeadCell>Time</TableHeadCell>
+          <TableHeadCell>State</TableHeadCell>
+        </TableHead>
+        <TableBody>
+          {#each stateHistory as entry}
+            <TableBodyRow>
+              <TableBodyCell class="text-sm">{entry.timestamp}</TableBodyCell>
+              <TableBodyCell>
+                <Badge color={STATE_COLORS[entry.state] ?? 'dark'}>{STATE_LABELS[entry.state] ?? entry.state}</Badge>
+              </TableBodyCell>
+            </TableBodyRow>
+          {/each}
+        </TableBody>
+      </Table>
+    </div>
   {/if}
 
-  <hr />
-  <p style="font-size: 0.85em; color: #666;">
-    Temporal Web UI: <a href="http://localhost:8233/namespaces/default/workflows/{orderId}" target="_blank">
+  <p class="mt-6 text-xs text-secondary-400">
+    Temporal Web UI: <a href="http://localhost:8233/namespaces/default/workflows/{orderId}" target="_blank" class="hover:underline">
       View workflow execution
     </a>
   </p>
