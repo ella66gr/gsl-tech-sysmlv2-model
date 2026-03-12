@@ -25,6 +25,26 @@ export enum ItemCategory {
   food = "food",
 }
 
+export enum AvailabilityStatus {
+  discontinued = "discontinued",
+  seasonal = "seasonal",
+  temporarilyUnavailable = "temporarilyUnavailable",
+}
+
+export enum ProvisionType {
+  * bought-in items track finished products. */
+        prepared = "* bought-in items track finished products. */
+        prepared",
+  boughtIn = "boughtIn",
+  hybrid = "hybrid",
+}
+
+export enum StockStatus {
+  low = "low",
+  outOfStock = "outOfStock",
+  onOrder = "onOrder",
+}
+
 export enum StaffRole {
   barista = "barista",
   manager = "manager",
@@ -39,21 +59,48 @@ export enum OrderStatus {
   cancelled = "cancelled",
 }
 
+export interface ExternalReference {
+  referenceType: string;
+  referenceId: string;
+  referenceSource: string;
+  referenceNotes: string;
+}
+
 export interface MenuItem {
   name: string;
-  price: number;
   category: ItemCategory;
   isVegan: boolean;
+  description: string;
 }
 
 export interface Drink extends MenuItem {
   size: DrinkSize;
   milkChoice: MilkOption;
+  isCaffeinated: boolean;
 }
 
 export interface FoodItem extends MenuItem {
   isGlutenFree: boolean;
   servedWarm: boolean;
+}
+
+export interface CatalogueEntry {
+  pricePence: number;
+  priceDisplay: string;
+  availability: AvailabilityStatus;
+  provisionType: ProvisionType;
+  effectiveDate: string;
+  statusNotes: string;
+  item: MenuItem;
+}
+
+export interface InventoryRecord {
+  quantityOnHand: number;
+  stockStatus: StockStatus;
+  lowStockThreshold: number;
+  lastRestocked: string;
+  quantityNotes: string;
+  catalogueEntry: CatalogueEntry;
 }
 
 export interface Person {
