@@ -10,13 +10,20 @@
   },
   "dependencies": {
     "@coffeeshop/shared": "workspace:*",
-    "@temporalio/client": "^1.15.0"
+    "@temporalio/client": "^1.15.0",
+    "clsx": "^2.1.1",
+    "flowbite": "^3.1.2",
+    "flowbite-svelte": "^1.31.0",
+    "flowbite-svelte-icons": "^2.3.0",
+    "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "latest",
     "@sveltejs/kit": "latest",
     "@sveltejs/vite-plugin-svelte": "latest",
+    "@tailwindcss/vite": "^4.2.1",
     "svelte": "latest",
+    "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
     "vite": "latest"
   }

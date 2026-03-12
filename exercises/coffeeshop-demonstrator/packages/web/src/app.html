@@ -3,6 +3,20 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script>
+			(function () {
+				try {
+					const stored = localStorage.getItem("color-theme");
+					const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+					const shouldBeDark = stored === "dark" || (!stored && prefersDark);
+					if (shouldBeDark) {
+						document.documentElement.classList.add("dark");
+					} else {
+						document.documentElement.classList.remove("dark");
+					}
+				} catch (e) {}
+			})();
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

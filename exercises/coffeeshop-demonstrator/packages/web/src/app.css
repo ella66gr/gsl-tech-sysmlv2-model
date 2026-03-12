@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+/* Flowbite plugin and component scanning */
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite-svelte/dist";
+@source "../node_modules/flowbite-svelte-icons/dist";
+
+/* Dark mode variant for Flowbite compatibility */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Coffee shop theme palette */
+@theme {
+  /* Warm neutrals — coffee shop feel */
+  --color-primary-50:  #faf6f1;
+  --color-primary-100: #f0e6d6;
+  --color-primary-200: #e0ccad;
+  --color-primary-300: #cba87a;
+  --color-primary-400: #b88a52;
+  --color-primary-500: #a67639;
+  --color-primary-600: #8c5f2c;
+  --color-primary-700: #724b24;
+  --color-primary-800: #5e3d22;
+  --color-primary-900: #4e331f;
+
+  /* Accent — espresso/charcoal */
+  --color-secondary-50:  #f5f5f4;
+  --color-secondary-100: #e7e5e4;
+  --color-secondary-200: #d6d3d1;
+  --color-secondary-300: #a8a29e;
+  --color-secondary-400: #78716c;
+  --color-secondary-500: #57534e;
+  --color-secondary-600: #44403c;
+  --color-secondary-700: #373330;
+  --color-secondary-800: #292524;
+  --color-secondary-900: #1c1917;
+}
