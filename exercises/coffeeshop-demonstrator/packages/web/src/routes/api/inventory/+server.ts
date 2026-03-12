@@ -1,18 +1,21 @@
 /**
- * GET /api/inventory — Inventory records
+ * Inventory API Routes — CSW Extension Phase 3
  *
- * Phase 2: Verification endpoint. Returns all inventory records
- * joined with catalogue and menu item details.
- *
- * Phase 3 will add PUT for stock adjustments.
+ * GET /api/inventory           — All inventory records with catalogue item details
+ * GET /api/inventory?low=true  — Low-stock items only
  */
 
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getPostgresClient } from '$lib/server/postgres';
 
-export const GET: RequestHandler = async () => {
+export const GET: RequestHandler = async ({ url }) => {
   const db = getPostgresClient();
-  const inventory = await db.getInventory();
+  const lowOnly = url.searchParams.get('low') === 'true';
+
+  const inventory = lowOnly
+    ? await db.getLowStockItems()
+    : await db.getInventory();
+
   return json(inventory);
 };
