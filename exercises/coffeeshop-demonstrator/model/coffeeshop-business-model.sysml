@@ -1,19 +1,24 @@
 // =========================================================================
-// Coffee Shop Business Model Extension — Phase 1 Demonstrator
+// Coffee Shop Business Model Extension
 // =========================================================================
 // Validates that the BusinessModel::ServiceConcept and
 // BusinessModel::ActivityModel part defs accommodate a simple service
 // business. Tests cross-project import from the main model.
 //
-// Date: 10 March 2026 (Session 14)
-// Companion: gsl-plan-coffeeshop-demonstrator-integration-2026-03-10.md
-//   section 5, Phase 1 Extension
+// Phase 1 demonstrator (Session 14, 10 March 2026):
+//   ServiceConcept, ActivityModel, ActivityGranularity usages.
+// CSW Extension Phase 1 (Session 20, 12 March 2026):
+//   CatalogueEntry usages for all 11 menu items.
+//   catalogueMaintenance activity type.
+//
+// Companion: gsl-plan-workstream-csw-extension-2026-03-12.md
 // =========================================================================
 
 package CoffeeShopBusinessModel {
     private import ScalarValues::*;
     private import BusinessModel::ServiceConcept::*;
     private import BusinessModel::ActivityModel::*;
+    private import CoffeeShop::*;
 
     doc /* Coffee shop business model extension. Instantiates the
          * ServiceConcept and ActivityModel part defs from the main
@@ -104,6 +109,17 @@ package CoffeeShopBusinessModel {
         attribute :>> frequencyNotes = "Daily — closing";
     }
 
+    part catalogueMaintenance : ActivityType {
+        doc /* Administrative data management: maintaining the
+             * product catalogue, updating prices, managing
+             * availability status and inventory records. */
+        attribute :>> activityTypeName = "Catalogue maintenance";
+        attribute :>> activityCategory = ActivityCategory::overhead;
+        attribute :>> description = "Add, edit, and manage menu items, pricing, and stock levels";
+        attribute :>> expectedDurationMinutes = 15;
+        attribute :>> frequencyNotes = "As needed — typically weekly or when menu changes";
+    }
+
     // -- Granularity policy ------------------------------------
 
     part serviceDeliveryGranularity : ActivityGranularity {
@@ -142,5 +158,127 @@ package CoffeeShopBusinessModel {
         attribute :>> currentLevel = GranularityLevel::envelope;
         attribute :>> targetLevel = GranularityLevel::envelope;
         attribute :>> migrationNotes = "Low volume routine admin — envelope adequate";
+    }
+
+    // -- Catalogue Entries ------------------------------------
+    //
+    // Business decisions about what to offer and at what price.
+    // Each entry references a menu item and adds business context.
+    // Provision type classification determines inventory semantics.
+    // The item ref is structural — specific MenuItem binding is a
+    // runtime/database concern, not modelled here.
+
+    // -- Hot drinks --
+
+    part flatWhiteCatalogue : CatalogueEntry {
+        doc /* Flat White — flagship espresso drink. */
+        attribute :>> pricePence = 280;
+        attribute :>> priceDisplay = "£2.80";
+        attribute :>> availability = AvailabilityStatus::active;
+        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> effectiveDate = "2026-03-12";
+        attribute :>> statusNotes = "Core menu item";
+    }
+
+    part latteCatalogue : CatalogueEntry {
+        attribute :>> pricePence = 280;
+        attribute :>> priceDisplay = "£2.80";
+        attribute :>> availability = AvailabilityStatus::active;
+        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> effectiveDate = "2026-03-12";
+        attribute :>> statusNotes = "Core menu item";
+    }
+
+    part americanoCatalogue : CatalogueEntry {
+        attribute :>> pricePence = 250;
+        attribute :>> priceDisplay = "£2.50";
+        attribute :>> availability = AvailabilityStatus::active;
+        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> effectiveDate = "2026-03-12";
+        attribute :>> statusNotes = "Core menu item";
+    }
+
+    part cappuccinoCatalogue : CatalogueEntry {
+        attribute :>> pricePence = 280;
+        attribute :>> priceDisplay = "£2.80";
+        attribute :>> availability = AvailabilityStatus::active;
+        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> effectiveDate = "2026-03-12";
+        attribute :>> statusNotes = "Core menu item";
+    }
+
+    part espressoCatalogue : CatalogueEntry {
+        attribute :>> pricePence = 200;
+        attribute :>> priceDisplay = "£2.00";
+        attribute :>> availability = AvailabilityStatus::active;
+        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> effectiveDate = "2026-03-12";
+        attribute :>> statusNotes = "Core menu item — single size only";
+    }
+
+    // -- Cold drinks --
+
+    part icedLatteCatalogue : CatalogueEntry {
+        attribute :>> pricePence = 320;
+        attribute :>> priceDisplay = "£3.20";
+        attribute :>> availability = AvailabilityStatus::active;
+        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> effectiveDate = "2026-03-12";
+        attribute :>> statusNotes = "Seasonal favourite";
+    }
+
+    part coldBrewCatalogue : CatalogueEntry {
+        attribute :>> pricePence = 300;
+        attribute :>> priceDisplay = "£3.00";
+        attribute :>> availability = AvailabilityStatus::active;
+        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> effectiveDate = "2026-03-12";
+        attribute :>> statusNotes = "Slow-steeped — 12hr preparation";
+    }
+
+    // -- New drinks --
+
+    part mochaLatteCatalogue : CatalogueEntry {
+        doc /* Mocha Latte — new addition, March 2026. */
+        attribute :>> pricePence = 380;
+        attribute :>> priceDisplay = "£3.80";
+        attribute :>> availability = AvailabilityStatus::active;
+        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> effectiveDate = "2026-03-12";
+        attribute :>> statusNotes = "New menu item — espresso with chocolate and steamed milk";
+    }
+
+    part frappeCatalogue : CatalogueEntry {
+        doc /* Frappe — new addition, March 2026. */
+        attribute :>> pricePence = 420;
+        attribute :>> priceDisplay = "£4.20";
+        attribute :>> availability = AvailabilityStatus::active;
+        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> effectiveDate = "2026-03-12";
+        attribute :>> statusNotes = "New menu item — blended iced coffee";
+    }
+
+    // -- Food items (bought-in) --
+
+    part gingerBiscuitCatalogue : CatalogueEntry {
+        doc /* Ginger Biscuit — new addition, March 2026.
+             * First bought-in item. Inventory tracking applies. */
+        attribute :>> pricePence = 180;
+        attribute :>> priceDisplay = "£1.80";
+        attribute :>> availability = AvailabilityStatus::active;
+        attribute :>> provisionType = ProvisionType::boughtIn;
+        attribute :>> effectiveDate = "2026-03-12";
+        attribute :>> statusNotes = "New menu item — bought-in, stock tracked";
+    }
+
+    part oatBarCatalogue : CatalogueEntry {
+        doc /* Oat Bar — new addition, March 2026.
+             * Bought-in, vegan, gluten-free. */
+        attribute :>> pricePence = 220;
+        attribute :>> priceDisplay = "£2.20";
+        attribute :>> availability = AvailabilityStatus::active;
+        attribute :>> provisionType = ProvisionType::boughtIn;
+        attribute :>> effectiveDate = "2026-03-12";
+        attribute :>> statusNotes = "New menu item — bought-in, vegan, GF, stock tracked";
     }
 }
