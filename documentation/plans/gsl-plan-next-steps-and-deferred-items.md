@@ -1,22 +1,43 @@
 # GSL — Next Steps and Deferred Items
 
-**Last updated:** 11 March 2026 (Session 19 — Business Meta Model Phase 7 complete)
+**Last updated:** 12 March 2026 (Session 22 — CSW Extension Phase 3 complete)
 
 **Purpose:** Living tracker of carried-forward items, deferred decisions, and potential next workstreams. Completed items are removed at each update — completion is recorded in session reports.
 
 ---
 
-## 1. Candidate Next Workstreams
+## 1. Active Workstream
 
-These are the natural next directions after completing the Business Meta Model (Phases 1–7) and Knowledge Layer Elaboration (Phases 1–5). Not prioritised — selection depends on what feels most valuable at session planning time.
+### CSW Extension — Catalogue, Inventory & Frontend
+
+**Plan:** `gsl-plan-workstream-csw-extension-2026-03-12.md`
+**Status:** Phase 3 complete, Phase 4 next
+
+| Phase | Status |
+|---|---|
+| 0: Conceptual modelling | ✓ Complete |
+| 1: SysML domain model update | ✓ Complete (Session 20) |
+| 2: PostgreSQL foundation | ✓ Complete (Session 21) |
+| 3: Catalogue & inventory API routes | ✓ Complete (Session 22) |
+| 4: Frontend foundation (Tailwind v4 + Flowbite) | Next |
+| 5: Counter page (dynamic order form) | Planned |
+| 6: Manager GUI — stock & catalogue | Planned |
+| 7: Remaining operations pages | Planned |
+| 8: Data & insights pages | Planned |
+| 9: System pages | Planned |
+| 10: Meta model update | Planned |
+
+---
+
+## 2. Candidate Next Workstreams (After CSW Extension)
 
 ### Coffee Shop Knowledge Layer Increments
 
-Three increments from the demonstrator integration plan, not yet executed. These exercise the Knowledge layer in a running system (Temporal workflows, generated evaluators, SvelteKit UI).
+Three increments from the demonstrator integration plan, not yet executed. The CSW Extension frontend (Phases 4–9) creates the UI landing zones for these increments.
 
-- **Increment 1 — Constraint evaluation at a pathway step.** Full chain: SysML constraint def → generated evaluator → Temporal activity → structured EvaluationResult. Tests generator domain-agnosticism.
-- **Increment 2 — Decision table for drink routing.** Decision table pattern producing explainable recommendations in a non-clinical domain.
-- **Increment 3 — System self-assessment.** Five-layer self-knowledge pattern simplified but genuine. Dashboard: "The coffee shop has processed 47 orders today. 3 orders are awaiting preparation beyond the 10-minute target."
+- **Increment 1 — Constraint evaluation at a pathway step.** Full chain: SysML constraint def → generated evaluator → Temporal activity → structured EvaluationResult. Landing zone: Order Timeline page (Phase 7).
+- **Increment 2 — Decision table for drink routing.** Decision table pattern producing explainable recommendations. Landing zone: Counter page (Phase 5).
+- **Increment 3 — System self-assessment.** Five-layer self-knowledge pattern. Landing zone: System Status page (Phase 9).
 
 Source: `gsl-plan-coffeeshop-demonstrator-integration-2026-03-10.md` section 4.
 
@@ -26,7 +47,7 @@ Model a second clinical pathway (ongoing monitoring, shared care transition, or 
 
 ### Model Consolidation Review
 
-Step back and review the complete model across all packages for naming consistency, doc block gaps, structural simplification opportunities, and package hierarchy clarity. The model has grown substantially through 19 sessions.
+Step back and review the complete model across all packages for naming consistency, doc block gaps, structural simplification opportunities, and package hierarchy clarity. The model has grown substantially through 22 sessions.
 
 ### Variant C Elaboration
 
@@ -34,7 +55,7 @@ Step back and review the complete model across all packages for naming consisten
 
 ---
 
-## 2. SysML Model — Deferred Structural Items
+## 3. SysML Model — Deferred Structural Items
 
 ### Cross-references not yet formalised
 
@@ -53,7 +74,7 @@ Step back and review the complete model across all packages for naming consisten
 
 ---
 
-## 3. Knowledge Layer — Deferred Items
+## 4. Knowledge Layer — Deferred Items
 
 - **Prolog implementation** — explored and evaluated, not built until clinical rules demand inference capabilities beyond boolean constraints
 - **DMN engine integration** — decision tables modelled in SysML; dedicated DMN engine is an optimisation
@@ -65,7 +86,7 @@ Step back and review the complete model across all packages for naming consisten
 
 ---
 
-## 4. Projection Engine — Deferred Items
+## 5. Projection Engine — Deferred Items
 
 ### Parameter validation (requires Ella's clinical input)
 
@@ -88,7 +109,7 @@ Step back and review the complete model across all packages for naming consisten
 
 ---
 
-## 5. CDR / openEHR — Deferred Items
+## 6. CDR / openEHR — Deferred Items
 
 These were identified during the Coffee Shop CDR Exercise (Sessions 1–6) and are relevant when moving to clinical data implementation.
 
@@ -103,7 +124,7 @@ These were identified during the Coffee Shop CDR Exercise (Sessions 1–6) and a
 
 ---
 
-## 6. Generators — Designed but Not Built
+## 7. Generators — Designed but Not Built
 
 - **Temporal workflow generator extension** — emit `evaluationEngine.evaluate()` calls from `@LogicRule` / `@SafetyConstraint` metadata
 - **Composition builder generator** — OPT XML → TypeScript CDR composition builders
@@ -111,9 +132,28 @@ These were identified during the Coffee Shop CDR Exercise (Sessions 1–6) and a
 - **Prolog rule generator** — `constraint def` → Tau Prolog rules (contingent on Tier 2 adoption)
 - **Projection generator** — `ProjectionFormula` usages → projection engine code
 
+### Generator bugs (found Session 20)
+
+- **`gen_typescript_types.py` — enum doc block parsing:** Multi-line doc blocks inside `enum def` cause the first literal after the doc block to be dropped or concatenated with doc text. Root cause: the regex-based variant filter strips lines starting with `doc` or `/*` but doesn't properly handle multi-line `/* ... */` blocks where continuation lines start with `*`.
+- **`gen_typescript_types.py` — space before multiplicity bracket:** The part regex expects `Type[0..*]` (no space) but SysML idiom is `Type [0..*]` (with space). `part externalRefs : ExternalReference [0..*]` was not matched by the generator.
+
+Both bugs were worked around by hand-fixing the generated output. The generator is documented as a lightweight text-based parser; the long-term fix is to replace it with Syside Automator for proper semantic model access.
+
 ---
 
-## 7. Syntax Reference — Unverified Patterns
+## 8. Deferred Items from Phase 3 (Session 22)
+
+### CDR price mismatch
+
+The order composition builder (`composition-builder.ts`) uses hardcoded coded price terms (`at0020`–`at0023` mapping to £1.25–£2.85) that don't match the catalogue prices (e.g. Flat White is £2.80 in the catalogue). The catalogue (PostgreSQL) is now the authoritative price source. The CDR records an approximate price bracket. Resolution options: update the archetype to accept `DV_QUANTITY` with currency, or add new coded terms matching the full price list. Tagged as TODO for Phase 10 (meta model update).
+
+### Food item workflow limitation
+
+The `FulfilDrink` workflow is drink-specific. Food items (Ginger Biscuit, Oat Bar) can be ordered via the catalogue-validated `POST /api/orders`, and their inventory is correctly decremented, but the Temporal workflow will fail during drink-specific activities. A separate `FulfilFoodOrder` workflow or a generic `FulfilOrder` with item-type-aware routing is a future concern. Not blocking for the current exercise — the catalogue validation and inventory mechanics are the demonstration targets.
+
+---
+
+## 9. Syntax Reference — Unverified Patterns
 
 Carried forward from syntax reference v3.11 TODO section.
 
@@ -131,7 +171,7 @@ Carried forward from syntax reference v3.11 TODO section.
 
 ---
 
-## 8. Major Completed Workstreams (Reference)
+## 10. Major Completed Workstreams (Reference)
 
 These are complete and documented in session reports. Listed here for orientation only.
 
@@ -143,7 +183,10 @@ These are complete and documented in session reports. Listed here for orientatio
 | Knowledge Layer Elaboration (Phases 1–5) | 8–12 | Complete |
 | Business Meta Model (Phases 1–7) | 13–19 | Complete |
 | Coffee Shop Business Model Extensions | 14–19 | Complete (per-phase parity) |
+| CSW Extension Phase 1 (domain model) | 20 | Complete |
+| CSW Extension Phase 2 (PostgreSQL foundation) | 21 | Complete |
+| CSW Extension Phase 3 (catalogue & inventory API) | 22 | Complete |
 
 ---
 
-*Restructured 11 March 2026 (Session 19). Previous version was an accumulation of per-session findings; this version is a clean carried-forward tracker.*
+*Updated 12 March 2026 (Session 22). CSW Extension workstream active — Phase 3 complete, Phase 4 next.*
