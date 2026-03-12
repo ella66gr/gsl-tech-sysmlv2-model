@@ -66,6 +66,13 @@ const MILK_CHOICE_TERMS: Record<string, CodedTerm> = {
 /**
  * Price: at0019, coded values at0020–at0023
  * Maps from size to price — in this exercise, price is determined by size.
+ *
+ * TODO Phase 10: CDR order archetype uses these coded price terms which
+ * don't match catalogue prices (e.g. Flat White is £2.80 in catalogue but
+ * size-based here at £1.75 medium). The catalogue (PostgreSQL) is the
+ * authoritative price source. The CDR records an approximate price bracket.
+ * Resolution: update the archetype to accept DV_QUANTITY with currency,
+ * or add new coded terms matching the full price list.
  */
 const PRICE_BY_SIZE: Record<string, CodedTerm> = {
   'small':  { code: 'at0020', text: '£1.25' },

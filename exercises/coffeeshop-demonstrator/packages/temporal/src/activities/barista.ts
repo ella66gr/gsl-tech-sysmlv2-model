@@ -34,6 +34,11 @@ export interface OrderDetails {
   milkChoice?: string;
   /** Free-text extras (e.g. "Extra shot") */
   extras?: string;
+  // Phase 3: catalogue-sourced fields (optional for backward compatibility)
+  catalogueEntryId?: string;
+  pricePence?: number;
+  priceDisplay?: string;
+  provisionType?: string;
 }
 
 export interface OrderResult {
