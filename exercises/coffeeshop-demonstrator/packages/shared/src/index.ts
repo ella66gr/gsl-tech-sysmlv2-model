@@ -55,7 +55,7 @@ export {
   type PreparationCompositionInput,
 } from './preparation-composition-builder.js';
 
-// PostgreSQL business database client — CSW Extension Phase 2
+// PostgreSQL business database client — CSW Extension Phase 2 + Phase 3
 export {
   createPostgresClient,
   DEFAULT_POSTGRES_CONFIG,
@@ -67,4 +67,9 @@ export {
   type InventoryRecordRow,
   type CatalogueItemView,
   type InventoryItemView,
+  type CreateMenuItemInput,
+  type CreateCatalogueItemInput,
+  type UpdateCatalogueEntryInput,
+  type UpdateInventoryInput,
+  type CatalogueLookupResult,
 } from './postgres-client.js';
