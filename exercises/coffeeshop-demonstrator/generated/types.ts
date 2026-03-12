@@ -2,6 +2,7 @@
 // Generated from SysML v2 model — DO NOT EDIT
 // Source: model/domain/coffeeshop.sysml
 // Generator: gen_typescript_types.py
+// Hand-fixed: enum doc block parsing, externalRefs
 // ==============================================
 
 export enum DrinkSize {
@@ -26,20 +27,20 @@ export enum ItemCategory {
 }
 
 export enum AvailabilityStatus {
+  active = "active",
   discontinued = "discontinued",
   seasonal = "seasonal",
   temporarilyUnavailable = "temporarilyUnavailable",
 }
 
 export enum ProvisionType {
-  * bought-in items track finished products. */
-        prepared = "* bought-in items track finished products. */
-        prepared",
+  prepared = "prepared",
   boughtIn = "boughtIn",
   hybrid = "hybrid",
 }
 
 export enum StockStatus {
+  inStock = "inStock",
   low = "low",
   outOfStock = "outOfStock",
   onOrder = "onOrder",
@@ -71,6 +72,7 @@ export interface MenuItem {
   category: ItemCategory;
   isVegan: boolean;
   description: string;
+  externalRefs: ExternalReference[];
 }
 
 export interface Drink extends MenuItem {
