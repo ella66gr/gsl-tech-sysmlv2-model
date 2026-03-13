@@ -39,7 +39,7 @@
 </svelte:head>
 
 <!-- Top navbar -->
-<nav class="fixed top-0 z-50 w-full border-b border-secondary-200 bg-white dark:border-secondary-700 dark:bg-secondary-800">
+<nav class="fixed top-0 z-50 w-full border-b border-secondary-200 bg-white dark:border-secondary-600 dark:bg-secondary-900">
   <div class="flex items-center justify-between px-3 py-3 lg:px-5 lg:pl-3">
     <div class="flex items-center gap-3">
       <button
@@ -77,64 +77,64 @@
 </nav>
 
 <!-- Sidebar -->
-<aside class="fixed top-0 left-0 z-40 h-screen w-64 border-r border-secondary-200 bg-white pt-16 transition-transform dark:border-secondary-700 dark:bg-secondary-800 md:translate-x-0" class:translate-x-0={sidebarOpen} class:-translate-x-full={!sidebarOpen}>
+<aside class="fixed top-0 left-0 z-40 h-screen w-64 border-r border-secondary-200 bg-white pt-16 transition-transform dark:border-secondary-600 dark:bg-secondary-900 md:translate-x-0" class:translate-x-0={sidebarOpen} class:-translate-x-full={!sidebarOpen}>
   <div class="h-full overflow-y-auto px-3 py-4">
     <ul class="space-y-1 font-medium">
       <!-- Operations -->
-      <li class="mb-1 px-3 pt-2 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500">Operations</li>
+      <li class="mb-1 px-3 pt-2 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-400">Operations</li>
       <li>
-        <a href="/" class="flex items-center rounded-lg p-2 {isActive('/') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-400 dark:hover:bg-secondary-700'}">
+        <a href="/" class="flex items-center rounded-lg p-2 {isActive('/') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <MugHotOutline class="h-5 w-5" />
           <span class="ms-3">Counter</span>
         </a>
       </li>
       <li>
-        <a href="/orders" class="flex items-center rounded-lg p-2 {isActive('/orders') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-400 dark:hover:bg-secondary-700'}">
+        <a href="/orders" class="flex items-center rounded-lg p-2 {isActive('/orders') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <ClipboardListOutline class="h-5 w-5" />
           <span class="ms-3">Order Board</span>
         </a>
       </li>
 
       <!-- Management -->
-      <li class="mb-1 px-3 pt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500">Management</li>
+      <li class="mb-1 px-3 pt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-400">Management</li>
       <li>
-        <a href="/management/catalogue" class="flex items-center rounded-lg p-2 {isActive('/management') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-400 dark:hover:bg-secondary-700'}">
+        <a href="/management/catalogue" class="flex items-center rounded-lg p-2 {isActive('/management') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <ArchiveOutline class="h-5 w-5" />
           <span class="ms-3">Stock & Catalogue</span>
         </a>
       </li>
 
       <!-- Data & Insights -->
-      <li class="mb-1 px-3 pt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500">Data & Insights</li>
+      <li class="mb-1 px-3 pt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-400">Data & Insights</li>
       <li>
-        <a href="/entity" class="flex items-center rounded-lg p-2 {isActive('/entity') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-400 dark:hover:bg-secondary-700'}">
+        <a href="/entity" class="flex items-center rounded-lg p-2 {isActive('/entity') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <DatabaseOutline class="h-5 w-5" />
           <span class="ms-3">Records</span>
         </a>
       </li>
       <li>
-        <a href="/governance" class="flex items-center rounded-lg p-2 {isActive('/governance') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-400 dark:hover:bg-secondary-700'}">
+        <a href="/governance" class="flex items-center rounded-lg p-2 {isActive('/governance') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <ShieldCheckOutline class="h-5 w-5" />
           <span class="ms-3">Audit Dashboard</span>
         </a>
       </li>
       <li>
-        <a href="/feedback" class="flex items-center rounded-lg p-2 {isActive('/feedback') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-400 dark:hover:bg-secondary-700'}">
+        <a href="/feedback" class="flex items-center rounded-lg p-2 {isActive('/feedback') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <MessageDotsOutline class="h-5 w-5" />
           <span class="ms-3">Customer Voice</span>
         </a>
       </li>
 
       <!-- System -->
-      <li class="mb-1 px-3 pt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500">System</li>
+      <li class="mb-1 px-3 pt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-400">System</li>
       <li>
-        <a href="/pathway" class="flex items-center rounded-lg p-2 {isActive('/pathway') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-400 dark:hover:bg-secondary-700'}">
+        <a href="/pathway" class="flex items-center rounded-lg p-2 {isActive('/pathway') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <CodeBranchOutline class="h-5 w-5" />
           <span class="ms-3">Process Model</span>
         </a>
       </li>
       <li>
-        <a href="/system" class="flex items-center rounded-lg p-2 {isActive('/system') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-400 dark:hover:bg-secondary-700'}">
+        <a href="/system" class="flex items-center rounded-lg p-2 {isActive('/system') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <ServerOutline class="h-5 w-5" />
           <span class="ms-3">System Status</span>
         </a>
