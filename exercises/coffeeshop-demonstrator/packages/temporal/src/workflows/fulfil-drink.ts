@@ -23,7 +23,10 @@ import {
   transition,
 } from 'xstate';
 
-import { orderLifecycleMachine } from '@coffeeshop/shared';
+// Import directly from the generated file to avoid pulling in
+// pg/node modules via the shared barrel export — Temporal's V8
+// sandbox blocks disallowed modules.
+import { orderLifecycleMachine } from '@coffeeshop/shared/dist/generated/order-lifecycle-machine.js';
 import type { OrderEvent } from '@coffeeshop/shared';
 
 import type * as activities from '../activities/barista.js';
