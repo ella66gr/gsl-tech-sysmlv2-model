@@ -305,7 +305,7 @@
           >
             <div class="mb-1 font-semibold text-secondary-800 dark:text-secondary-100">{item.name}</div>
             <div class="mb-2 text-lg font-bold text-primary-600 dark:text-primary-400">{item.priceDisplay}</div>
-            <div class="flex flex-wrap gap-1">
+            <div class="flex min-h-6 flex-wrap gap-1">
               {#if item.isVegan}
                 <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">V</span>
               {/if}

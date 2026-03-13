@@ -1,6 +1,6 @@
 # GSL — Next Steps and Deferred Items
 
-**Last updated:** 12 March 2026 (Session 23 — CSW Extension Phase 4 complete)
+**Last updated:** 13 March 2026 (Session 24 — CSW Extension Phase 5 complete)
 
 **Purpose:** Living tracker of carried-forward items, deferred decisions, and potential next workstreams. Completed items are removed at each update — completion is recorded in session reports.
 
@@ -11,7 +11,7 @@
 ### CSW Extension — Catalogue, Inventory & Frontend
 
 **Plan:** `gsl-plan-workstream-csw-extension-2026-03-12.md`
-**Status:** Phase 4 complete, Phase 5 next
+**Status:** Phase 5 complete, Phase 6 next
 
 | Phase | Status |
 |---|---|
@@ -20,8 +20,8 @@
 | 2: PostgreSQL foundation | ✓ Complete (Session 21) |
 | 3: Catalogue & inventory API routes | ✓ Complete (Session 22) |
 | 4: Frontend foundation (Tailwind v4 + Flowbite) | ✓ Complete (Session 23) |
-| 5: Counter page (dynamic order form) | Next |
-| 6: Manager GUI — stock & catalogue | Planned |
+| 5: Counter page (dynamic order form) | ✓ Complete (Session 24) |
+| 6: Manager GUI — stock & catalogue | Next |
 | 7: Remaining operations pages | Planned |
 | 8: Data & insights pages | Planned |
 | 9: System pages | Planned |
@@ -36,7 +36,7 @@
 Three increments from the demonstrator integration plan, not yet executed. The CSW Extension frontend (Phases 4–9) creates the UI landing zones for these increments.
 
 - **Increment 1 — Constraint evaluation at a pathway step.** Full chain: SysML constraint def → generated evaluator → Temporal activity → structured EvaluationResult. Landing zone: Order Timeline page (Phase 7).
-- **Increment 2 — Decision table for drink routing.** Decision table pattern producing explainable recommendations. Landing zone: Counter page (Phase 5).
+- **Increment 2 — Decision table for drink routing.** Decision table pattern producing explainable recommendations. Landing zone: Counter page (Phase 5). **Now unblocked** — Counter page complete (Session 24).
 - **Increment 3 — System self-assessment.** Five-layer self-knowledge pattern. Landing zone: System Status page (Phase 9).
 
 Source: `gsl-plan-coffeeshop-demonstrator-integration-2026-03-10.md` section 4.
@@ -153,7 +153,7 @@ The `FulfilDrink` workflow is drink-specific. Food items (Ginger Biscuit, Oat Ba
 
 ---
 
-## 9. Frontend — Notes from Phase 4 (Session 23)
+## 9. Frontend — Notes from Phases 4–5 (Sessions 23–24)
 
 ### Flowbite Svelte component compatibility
 
@@ -162,6 +162,14 @@ The `FulfilDrink` workflow is drink-specific. Food items (Ginger Biscuit, Oat Ba
 - `Sidebar` component's responsive behaviour is unreliable — hand-rolled CSS sidebar using standard Flowbite admin patterns is more predictable
 - `Card`, `Table`, `Badge`, `Button`, `Alert`, `Select`, `Input`, `Label`, `Spinner` all work correctly
 - `$app/stores` used for `$page` (not yet migrated to `$app/state` — Flowbite Svelte still uses stores internally)
+
+### Temporal sandbox sensitivity to barrel export (Session 24)
+
+Adding the PostgreSQL client to `@coffeeshop/shared` caused Temporal's V8 sandbox to reject workflow imports via the barrel export (transitive Node.js module pull-in from `pg`). Fixed by changing `fulfil-drink.ts` to import `orderLifecycleMachine` directly from `@coffeeshop/shared/dist/generated/order-lifecycle-machine.js`. Future mitigation options: package splitting (`shared-types` vs `shared-clients`) or the two-phase generation pipeline's manifest-driven selective imports.
+
+### Dark mode palette (Session 24)
+
+The default secondary palette (charcoal/stone) was too dark at the 800/900 end for dark mode. Shifted to warmer, lighter tones: `secondary-800` from `#292524` to `#3d3835`, `secondary-900` from `#1c1917` to `#342f2c`. CSS overrides with `!important` needed for Flowbite Input/Select components that apply their own dark classes internally.
 
 ### Upgrade path to flowbite-svelte 2.0
 
@@ -206,7 +214,14 @@ These are complete and documented in session reports. Listed here for orientatio
 | CSW Extension Phase 2 (PostgreSQL foundation) | 21 | Complete |
 | CSW Extension Phase 3 (catalogue & inventory API) | 22 | Complete |
 | CSW Extension Phase 4 (frontend foundation) | 23 | Complete |
+| CSW Extension Phase 5 (Counter page) | 24 | Complete |
 
 ---
 
-*Updated 12 March 2026 (Session 23). CSW Extension workstream active — Phase 4 complete, Phase 5 next.*
+## 12. Two-Phase Generation Pipeline (Session 24)
+
+Discussion paper produced: `gsl-discussion-two-phase-generation-pipeline-2026-03-13.md` (in `documentation/architecture/`). Captures architectural thinking about separating generation into domain generators (model-aware, framework-agnostic) and integration generators (framework-aware, model-agnostic) with a manifest contract between them. Positioned as a workstream after CSW Extension Phase 10, before clinical pathway work begins. Not yet a committed workstream.
+
+---
+
+*Updated 13 March 2026 (Session 24). CSW Extension workstream active — Phase 5 complete, Phase 6 next. KL Increment 2 unblocked.*
