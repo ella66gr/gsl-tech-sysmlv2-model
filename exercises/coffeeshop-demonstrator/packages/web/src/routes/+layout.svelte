@@ -154,7 +154,7 @@
 
 <!-- Main content area -->
 <div class="mt-16 p-4 md:ml-64">
-  <main class="mx-auto max-w-6xl">
+  <main class="mx-auto max-w-7xl">
     {@render children()}
   </main>
 </div>
