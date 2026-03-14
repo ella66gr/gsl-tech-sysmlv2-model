@@ -18,6 +18,9 @@ package CoffeeShopBusinessModel {
     private import ScalarValues::*;
     private import BusinessModel::ServiceConcept::*;
     private import BusinessModel::ActivityModel::*;
+    private import Foundation::CommonTypes::PersistencePolicy;
+    private import Foundation::CommonTypes::PersistenceLayer;
+    private import Foundation::CommonTypes::DataCharacteristic;
     private import CoffeeShop::*;
 
     doc /* Coffee shop business model extension. Instantiates the
@@ -280,5 +283,65 @@ package CoffeeShopBusinessModel {
         attribute :>> provisionType = ProvisionType::boughtIn;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "New menu item — bought-in, vegan, GF, stock tracked";
+    }
+
+    // -- Persistence Policies ---------------------------------
+    //
+    // Business system meta model instantiation: explicit
+    // architectural reasoning for where each CSW domain concept
+    // is persisted and why. Makes the three-persistence-layer
+    // architecture queryable and auditable.
+    //
+    // Added Session 29: CSW Extension Phase 10 (item 8.3).
+    // Source: gsl-spec-catalogue-inventory-v2.1.md §8.3
+
+    part catalogueEntryPolicy : PersistencePolicy {
+        doc /* Business reference data. Simple CRUD, relational
+             * joins to menu items and inventory. No clinical
+             * significance. */
+        attribute :>> domainConcept = "CatalogueEntry";
+        attribute :>> targetLayer = PersistenceLayer::businessDatabase;
+        attribute :>> rationale = "Business reference data. Simple CRUD, relational joins. No clinical significance.";
+    }
+
+    part inventoryRecordPolicy : PersistencePolicy {
+        doc /* Operational state. Atomic decrement on sale. No
+             * archetype validation needed. */
+        attribute :>> domainConcept = "InventoryRecord";
+        attribute :>> targetLayer = PersistenceLayer::businessDatabase;
+        attribute :>> rationale = "Operational state. Atomic decrement on sale. No archetype validation needed.";
+    }
+
+    part orderRecordPolicy : PersistencePolicy {
+        doc /* Clinical analogue. Benefits from archetype validation,
+             * immutable versioning, audit trail. */
+        attribute :>> domainConcept = "OrderRecord";
+        attribute :>> targetLayer = PersistenceLayer::clinicalDataRepository;
+        attribute :>> rationale = "Clinical analogue. Archetype validation, immutable versioning, audit trail.";
+    }
+
+    part feedbackRecordPolicy : PersistencePolicy {
+        doc /* Qualitative assessment. Archetype-validated, versioned,
+             * queryable via AQL. */
+        attribute :>> domainConcept = "FeedbackRecord";
+        attribute :>> targetLayer = PersistenceLayer::clinicalDataRepository;
+        attribute :>> rationale = "Qualitative assessment. Archetype-validated, versioned, queryable via AQL.";
+    }
+
+    part orderWorkflowPolicy : PersistencePolicy {
+        doc /* Stateful process. Durable execution, signal handling,
+             * activity orchestration. */
+        attribute :>> domainConcept = "OrderWorkflow";
+        attribute :>> targetLayer = PersistenceLayer::processEngine;
+        attribute :>> rationale = "Stateful process. Durable execution, signal handling, activity orchestration.";
+    }
+
+    part externalKnowledgePolicy : PersistencePolicy {
+        doc /* Knowledge the system links to but does not own.
+             * Coffee shop: supplier datasheets.
+             * GSL: SPCs, BNF entries, NICE guidance. */
+        attribute :>> domainConcept = "ExternalKnowledge";
+        attribute :>> targetLayer = PersistenceLayer::externalReference;
+        attribute :>> rationale = "Knowledge the system links to but does not own.";
     }
 }
