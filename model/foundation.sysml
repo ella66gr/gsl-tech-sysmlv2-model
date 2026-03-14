@@ -147,6 +147,62 @@ package Foundation {
                  * Verified on part defs in Syside 0.8.5 (8 March 2026). */
             attribute templateId : String;
         }
+
+        // -- Agency classification metadata -----------------------
+        // Business system meta model concepts: annotate pathway
+        // action nodes with the agent who performs them.
+        // Prerequisite for all four generations of self-service.
+        // Added Session 29: CSW Extension Phase 10 (items 9.1, 9.2).
+        // Source: gsl-discussion-model-self-service-enabling-
+        //   architecture-2026-03-14.md §7
+        // Meta model: Business System (placed in Foundation
+        // MetadataLibrary as cross-cutting metadata).
+
+        enum def AgencyType {
+            doc /* Who performs an action in a pathway. Applies to
+                 * both clinical and non-clinical contexts.
+                 *
+                 * Coffee shop: customer (self-service kiosk), staff
+                 * (barista makes drink), system (order routing),
+                 * collaborative (customer and barista discuss).
+                 *
+                 * Clinical: patient, clinician, system, collaborative
+                 * (e.g. ICE-supported shared decision-making).
+                 *
+                 * Business system meta model concept. */
+            patient;
+            clinician;
+            system;
+            collaborative;
+        }
+
+        metadata def AgencyClassification {
+            doc /* Annotates a pathway action node with the agent who
+                 * performs it. Applied via @AgencyClassification on
+                 * action usages within action defs.
+                 *
+                 * The authorityModelVersion attribute records which
+                 * generation's authority rules were in effect when
+                 * this classification was assigned. Supports
+                 * governance traceability as the self-service model
+                 * evolves through generations.
+                 *
+                 * Initial version: "G1-clinician-authority" — all
+                 * clinical decisions made by clinician, patient role
+                 * is to provide information and give consent.
+                 *
+                 * Business system meta model concept.
+                 *
+                 * Source: gsl-discussion-model-self-service-enabling-
+                 *   architecture-2026-03-14.md §7
+                 *
+                 * SYNTAX NOTE (Session 29): enum-typed attribute on
+                 * metadata def. If agencyType : AgencyType fails in
+                 * Syside, fall back to agencyType : String. */
+            attribute agencyType : AgencyType;
+            attribute authorityModelVersion : String;
+            attribute agencyNotes : String;
+        }
     }
 
     package CommonTypes {
@@ -436,6 +492,76 @@ package Foundation {
             greaterThan;
             lessThan;
             equalTo;
+        }
+        // -- Persistence architecture types -------------------------
+        // Business system meta model concepts: describe where domain
+        // data lives and why. Cross-cutting — importable by any package.
+        // Added Session 29: CSW Extension Phase 10.
+        // Source: gsl-spec-catalogue-inventory-v2.1.md §8.3
+        // Meta model: Business System (placed in Foundation for
+        // practical cross-cutting access; will migrate when the
+        // system meta model is extracted as a named package).
+
+        enum def PersistenceLayer {
+            doc /* The persistence technology layer where a domain
+                 * concept is stored. Each layer has distinct
+                 * characteristics:
+                 * - clinicalDataRepository: archetype-validated,
+                 *   terminology-bound, versioned (openEHR)
+                 * - businessDatabase: relational CRUD, transactional
+                 *   integrity (PostgreSQL)
+                 * - processEngine: durable execution, signal handling
+                 *   (Temporal)
+                 * - externalReference: knowledge the system links to
+                 *   but does not own
+                 *
+                 * Business system meta model concept. */
+            clinicalDataRepository;
+            businessDatabase;
+            processEngine;
+            externalReference;
+        }
+
+        enum def DataCharacteristic {
+            doc /* Distinguishing characteristics that determine the
+                 * natural persistence home for a domain concept.
+                 * A concept's characteristic profile maps to a
+                 * persistence layer.
+                 *
+                 * Business system meta model concept. */
+            clinicalSignificance;
+            terminologyBound;
+            requiresVersioning;
+            highFrequencyUpdate;
+            transactionalIntegrity;
+            relationalJoins;
+            archetypeValidated;
+            durableExecution;
+            eventDriven;
+            referenceData;
+            regulatoryAudit;
+        }
+
+        part def PersistencePolicy {
+            doc /* Maps a domain concept to its persistence layer,
+                 * with explicit rationale expressed as distinguishing
+                 * characteristics. Makes architectural reasoning
+                 * queryable and auditable — the system can explain
+                 * why each concept lives where it does.
+                 *
+                 * Business system meta model concept: describes how
+                 * the system is architected, not what the business
+                 * offers. Any service business system that uses
+                 * multiple persistence technologies needs this.
+                 *
+                 * Instantiated per domain concept in each domain's
+                 * business model (e.g. CoffeeShopBusinessModel).
+                 *
+                 * Source: gsl-spec-catalogue-inventory-v2.1.md §8.3 */
+            attribute domainConcept : String;
+            attribute targetLayer : PersistenceLayer;
+            attribute rationale : String;
+            attribute characteristics : DataCharacteristic [1..*];
         }
     }
 
