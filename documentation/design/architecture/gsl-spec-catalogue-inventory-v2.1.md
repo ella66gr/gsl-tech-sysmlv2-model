@@ -404,6 +404,8 @@ See v1 of this spec (catalogue-inventory-archetype-spec.md) for the full maximal
 
 ## 8. Meta Model Implications
 
+> **Clarification (Session 29, 14 March 2026):** The meta model implications below span two distinct meta models. Items in §8.1 (CatalogueEntry, ExternalReference, InventoryRecord, ActivityType) are **business meta model** concepts — they describe what the business offers and what resources it needs. Items in §8.3 (PersistencePolicy) are **business system meta model** concepts — they describe how the system is architected. See `gsl-architecture-clarification-two-meta-models-2026-03-14.md` for the authoritative statement of this distinction.
+
 ### 8.1 New concepts needed in BusinessModel
 
 | Gap | Current state | Proposed addition |

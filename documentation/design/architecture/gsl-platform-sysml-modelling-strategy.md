@@ -10,6 +10,10 @@ Ella · GenderSense Development Programme
 
 ---
 
+> **Bridging note (Session 29, 14 March 2026):** This document predates the Service Business Meta Modelling discussion paper (10 March 2026), which establishes that the project maintains **two distinct meta models**: a Business Meta Model (what a service business *is* — service concept, financial model, resources, activities, governance) and a Business System Meta Model (how a business system *works* — processes, platform, data architecture, knowledge, operations). The package structure in §7 below implicitly describes what has since been recognised as the business system meta model: Foundation, ServiceDelivery, Platform, Operations, and Knowledge are all system meta model concerns. The `BusinessModel` package (added later, Sessions 13–19) is the business meta model. See `gsl-service-business-meta-modelling.md` §1 and `gsl-architecture-clarification-two-meta-models-2026-03-14.md` for the authoritative statement of this distinction.
+
+---
+
 ## 1. Executive Summary
 
 This report captures a strategic discussion about the use of SysML v2 as the unified modelling language for the entire GenderSense business system. The discussion took place following the successful completion of the Coffee Shop Action Flow Demonstrator, which validated a model-driven architecture in which SysML v2 models serve as the single source of truth for business processes, generating both executable runtime code and governance documentation from the same source.
