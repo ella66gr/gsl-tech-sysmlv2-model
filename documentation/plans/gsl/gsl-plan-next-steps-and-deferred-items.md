@@ -1,6 +1,6 @@
 # GSL — Next Steps and Deferred Items
 
-**Last updated:** 14 March 2026 (Session 25 — CSW Extension Phase 6 complete)
+**Last updated:** 14 March 2026 (Session 26 — CSW Extension Phase 7 complete)
 
 **Purpose:** Living tracker of carried-forward items, deferred decisions, and potential next workstreams. Completed items are removed at each update — completion is recorded in session reports.
 
@@ -11,7 +11,7 @@
 ### CSW Extension — Catalogue, Inventory & Frontend
 
 **Plan:** `gsl-plan-workstream-csw-extension-2026-03-12.md`
-**Status:** Phase 5 complete, Phase 6 next
+**Status:** Phase 7 complete, Phase 8 next
 
 | Phase | Status |
 |---|---|
@@ -22,8 +22,8 @@
 | 4: Frontend foundation (Tailwind v4 + Flowbite) | ✓ Complete (Session 23) |
 | 5: Counter page (dynamic order form) | ✓ Complete (Session 24) |
 | 6: Manager GUI — stock & catalogue | ✓ Complete (Session 25) |
-| 7: Remaining operations pages | Next |
-| 8: Data & insights pages | Planned |
+| 7: Order Board & Order Timeline | ✓ Complete (Session 26) |
+| 8: Data & insights pages | Next |
 | 9: System pages | Planned |
 | 10: Meta model update | Planned |
 
@@ -35,7 +35,7 @@
 
 Three increments from the demonstrator integration plan, not yet executed. The CSW Extension frontend (Phases 4–9) creates the UI landing zones for these increments.
 
-- **Increment 1 — Constraint evaluation at a pathway step.** Full chain: SysML constraint def → generated evaluator → Temporal activity → structured EvaluationResult. Landing zone: Order Timeline page (Phase 7).
+- **Increment 1 — Constraint evaluation at a pathway step.** Full chain: SysML constraint def → generated evaluator → Temporal activity → structured EvaluationResult. Landing zone: Order Timeline page (Phase 7). **Now unblocked** — Order Timeline complete (Session 26).
 - **Increment 2 — Decision table for drink routing.** Decision table pattern producing explainable recommendations. Landing zone: Counter page (Phase 5). **Now unblocked** — Counter page complete (Session 24).
 - **Increment 3 — System self-assessment.** Five-layer self-knowledge pattern. Landing zone: System Status page (Phase 9).
 
@@ -180,6 +180,10 @@ The `FulfilDrink` workflow is drink-specific. Food items (Ginger Biscuit, Oat Ba
 ### Temporal sandbox sensitivity to barrel export (Session 24)
 
 Adding the PostgreSQL client to `@coffeeshop/shared` caused Temporal's V8 sandbox to reject workflow imports via the barrel export (transitive Node.js module pull-in from `pg`). Fixed by changing `fulfil-drink.ts` to import `orderLifecycleMachine` directly from `@coffeeshop/shared/dist/generated/order-lifecycle-machine.js`. Future mitigation options: package splitting (`shared-types` vs `shared-clients`) or the two-phase generation pipeline's manifest-driven selective imports.
+
+### Barrel export SSR failure (Session 26)
+
+Importing `anonymiseCaseRef` from the `@coffeeshop/shared` barrel export on page components causes a 500 during SSR — the transitive `pg` import fails in the server-side render context (same root cause as the Temporal sandbox issue from Session 24, different manifestation). Fix: import directly from `@coffeeshop/shared/dist/workflow-constants.js`. This reinforces the case for the two-phase generation pipeline's package splitting approach.
 
 ### Dark mode palette (Session 24)
 
