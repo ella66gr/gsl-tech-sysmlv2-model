@@ -45,9 +45,23 @@ Source: `gsl-plan-coffeeshop-demonstrator-integration-2026-03-10.md` section 4.
 
 Model a second clinical pathway (ongoing monitoring, shared care transition, or follow-up assessment). Tests whether the architecture generalises and triggers cross-pathway rule sharing. Would also validate the ServiceOffering→ClinicalPathway mapping that is currently string-referenced.
 
+### Pattern Catalogue and Cross-Domain Concept Registry (Phase 10 companion)
+
+The project has reached a scale where the web of relationships between architectural patterns, domain concepts, deferred items, and their cross-domain analogues exceeds working memory. A formal concept registry is needed — primarily in SysML, with Obsidian as the navigation and exploration layer.
+
+**SysML layer (formal):** A `Foundation::PatternCatalogue` package defining abstract architectural patterns as `part def`s. Each pattern carries metadata: maturity level (discussion / designed / implemented / validated), which domains it's been instantiated in, what it relates to. Domain-specific instantiations (CSW's kanban, GSL's clinical pathway dashboard) are usages of or references to these pattern defs. The meta model models its own patterns.
+
+**Obsidian layer (exploratory):** Vault structure with templates and frontmatter for patterns, discussion papers, deferred decisions. Linked to model elements by naming convention. MCP bridge (obsidian-mcp-tools plugin) to allow Claude to read vault contents during sessions.
+
+**Multi-service motivation:** The architecture must accommodate multiple service offerings (gender-affirming care, addictions/drug and alcohol, others) without duplicating the meta model. Patterns are domain-agnostic; instantiations are domain-specific. The pattern catalogue makes this explicit and navigable.
+
+**Scope:** 2 sessions. Deliverables: PatternCatalogue SysML package, Obsidian vault structure, MCP bridge setup, design rationale discussion paper. Positioned as a Phase 10 companion workstream.
+
+Source: Session 26 discussion.
+
 ### Model Consolidation Review
 
-Step back and review the complete model across all packages for naming consistency, doc block gaps, structural simplification opportunities, and package hierarchy clarity. The model has grown substantially through 23 sessions.
+Step back and review the complete model across all packages for naming consistency, doc block gaps, structural simplification opportunities, and package hierarchy clarity. The model has grown substantially through 26 sessions.
 
 ### Variant C Elaboration
 
