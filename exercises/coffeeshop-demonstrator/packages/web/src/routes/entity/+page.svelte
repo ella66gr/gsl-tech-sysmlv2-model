@@ -83,7 +83,6 @@
     if (tab !== 'customer') {
       fetchOrders(tab);
     } else {
-      // Clear results when switching to customer tab — user needs to enter EHR ID
       orders = [];
       viewMeta = {};
       loading = false;
@@ -97,6 +96,12 @@
   });
 
   // ── Helpers ──
+
+  /** Format milk choice for display — filter out "None" which the CDR stores as a coded term */
+  function displayMilk(milk: string | null | undefined): string | null {
+    if (!milk || milk === 'None' || milk === 'none') return null;
+    return milk;
+  }
 
   function formatOrderTime(iso: string): string {
     try {
@@ -114,10 +119,6 @@
     } catch {
       return iso;
     }
-  }
-
-  function formatTimestamp(iso: string): string {
-    try { return new Date(iso).toLocaleString(); } catch { return iso; }
   }
 </script>
 
@@ -225,7 +226,6 @@
     <Spinner size="5" /> Loading records from CDR…
   </div>
 {:else if orders.length === 0 && Object.keys(viewMeta).length > 0}
-  <!-- Empty state (after a query returned 0 results) -->
   <div class="rounded-lg border-2 border-dashed border-secondary-200 p-8 text-center text-sm text-secondary-400 dark:border-secondary-700 dark:text-secondary-500">
     {#if activeTab === 'today'}
       No orders placed today.
@@ -236,7 +236,6 @@
     {/if}
   </div>
 {:else if orders.length === 0 && activeTab === 'customer'}
-  <!-- Waiting for customer input -->
   <div class="rounded-lg border-2 border-dashed border-secondary-200 p-8 text-center text-sm text-secondary-400 dark:border-secondary-700 dark:text-secondary-500">
     Enter an EHR ID above to view customer records.
   </div>
@@ -245,18 +244,15 @@
   <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
     {#each orders as order}
       <div class="rounded-lg border border-secondary-200 bg-white p-4 dark:border-secondary-700 dark:bg-secondary-800">
-        <!-- Header: drink name + price -->
         <div class="mb-2 flex items-start justify-between">
           <div>
             <h3 class="font-semibold text-secondary-800 dark:text-white">{order.drinkName}</h3>
             <p class="text-sm text-secondary-500 dark:text-secondary-400">
-              {order.drinkSize}{#if order.milkChoice} · {order.milkChoice}{/if}
+              {order.drinkSize}{#if displayMilk(order.milkChoice)} · {displayMilk(order.milkChoice)}{/if}
             </p>
           </div>
           <span class="text-lg font-bold text-primary-700 dark:text-primary-300">{order.price}</span>
         </div>
-
-        <!-- Metadata -->
         <div class="flex flex-wrap gap-x-2 gap-y-1 text-xs text-secondary-400 dark:text-secondary-500">
           <span>{formatOrderTime(order.orderTime)}</span>
           {#if order.ehrId}
@@ -290,7 +286,7 @@
           <TableBodyCell>{order.drinkName}</TableBodyCell>
           <TableBodyCell>{order.drinkSize}</TableBodyCell>
           {#if activeTab === 'customer'}
-            <TableBodyCell>{order.milkChoice ?? '—'}</TableBodyCell>
+            <TableBodyCell>{displayMilk(order.milkChoice) ?? '—'}</TableBodyCell>
           {/if}
           <TableBodyCell>{order.price}</TableBodyCell>
           <TableBodyCell class="hidden sm:table-cell"><code class="text-xs">{order.compositionUid.substring(0, 12)}…</code></TableBodyCell>
