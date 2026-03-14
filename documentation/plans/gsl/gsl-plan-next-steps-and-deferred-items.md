@@ -1,6 +1,6 @@
 # GSL — Next Steps and Deferred Items
 
-**Last updated:** 14 March 2026 (Session 26 — CSW Extension Phase 7 complete)
+**Last updated:** 14 March 2026 (Session 27 — CSW Extension Phase 8 complete)
 
 **Purpose:** Living tracker of carried-forward items, deferred decisions, and potential next workstreams. Completed items are removed at each update — completion is recorded in session reports.
 
@@ -11,7 +11,7 @@
 ### CSW Extension — Catalogue, Inventory & Frontend
 
 **Plan:** `gsl-plan-workstream-csw-extension-2026-03-12.md`
-**Status:** Phase 7 complete, Phase 8 next
+**Status:** Phase 8 complete, Phase 9 next
 
 | Phase | Status |
 |---|---|
@@ -23,8 +23,8 @@
 | 5: Counter page (dynamic order form) | ✓ Complete (Session 24) |
 | 6: Manager GUI — stock & catalogue | ✓ Complete (Session 25) |
 | 7: Order Board & Order Timeline | ✓ Complete (Session 26) |
-| 8: Data & insights pages | Next |
-| 9: System pages | Planned |
+| 8: Data & insights pages | ✓ Complete (Session 27) |
+| 9: System pages | **Next** |
 | 10: Meta model update | Planned |
 
 ---
@@ -61,7 +61,7 @@ Source: Session 26 discussion.
 
 ### Model Consolidation Review
 
-Step back and review the complete model across all packages for naming consistency, doc block gaps, structural simplification opportunities, and package hierarchy clarity. The model has grown substantially through 26 sessions.
+Step back and review the complete model across all packages for naming consistency, doc block gaps, structural simplification opportunities, and package hierarchy clarity. The model has grown substantially through 27 sessions.
 
 ### Variant C Elaboration
 
@@ -181,7 +181,7 @@ The `FulfilDrink` workflow is drink-specific. Food items (Ginger Biscuit, Oat Ba
 
 ---
 
-## 9. Frontend — Notes from Phases 4–5 (Sessions 23–24)
+## 9. Frontend — Notes from Phases 4–8 (Sessions 23–27)
 
 ### Flowbite Svelte component compatibility
 
@@ -190,6 +190,10 @@ The `FulfilDrink` workflow is drink-specific. Food items (Ginger Biscuit, Oat Ba
 - `Sidebar` component's responsive behaviour is unreliable — hand-rolled CSS sidebar using standard Flowbite admin patterns is more predictable
 - `Card`, `Table`, `Badge`, `Button`, `Alert`, `Select`, `Input`, `Label`, `Spinner` all work correctly
 - `$app/stores` used for `$page` (not yet migrated to `$app/state` — Flowbite Svelte still uses stores internally)
+
+### Svelte 5 `{@const}` placement constraint (Session 27)
+
+`{@const}` must be the immediate child of `{#if}`, `{#each}`, `{:else}`, `{:then}`, `{:catch}`, `<svelte:fragment>` or `<Component>`. Cannot be placed at the top level of a template block outside these control flow structures. Workaround: use `$derived` reactive declarations in the script block instead. This was encountered when placing `{@const}` for compliance rate calculations directly inside the summary cards grid on the Audit Dashboard page.
 
 ### Temporal sandbox sensitivity to barrel export (Session 24)
 
@@ -210,6 +214,10 @@ The `<svelte:fragment slot="footer">` pattern for Flowbite Modal does not render
 ### Layout max-width (Session 25)
 
 Increased the main content area `max-w` from `6xl` (1152px) to `7xl` (1280px) in `+layout.svelte`. The split-view pages (Counter, Manager) with table + side panel need the extra 128px to avoid column clipping. All pages benefit without being overly wide.
+
+### CDR "None" milk choice display (Session 27)
+
+The CDR stores the milk choice as a coded term, including "None" as a valid value for orders placed without a milk preference. This renders as "Large · None" in the entity view. Fix: a `displayMilk()` helper filters out "None" values before display. The underlying data is correct — this is a display-layer concern.
 
 ### Upgrade path to flowbite-svelte 2.0
 
@@ -256,6 +264,8 @@ These are complete and documented in session reports. Listed here for orientatio
 | CSW Extension Phase 4 (frontend foundation) | 23 | Complete |
 | CSW Extension Phase 5 (Counter page) | 24 | Complete |
 | CSW Extension Phase 6 (Manager GUI) | 25 | Complete |
+| CSW Extension Phase 7 (Order Board & Timeline) | 26 | Complete |
+| CSW Extension Phase 8 (Data & Insights pages) | 27 | Complete |
 
 ---
 
@@ -265,4 +275,4 @@ Discussion paper produced: `gsl-discussion-two-phase-generation-pipeline-2026-03
 
 ---
 
-*Updated 13 March 2026 (Session 24). CSW Extension workstream active — Phase 5 complete, Phase 6 next. KL Increment 2 unblocked.*
+*Updated 14 March 2026 (Session 27). CSW Extension workstream active — Phase 8 complete, Phase 9 next.*
