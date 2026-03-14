@@ -35,7 +35,13 @@ package BusinessModel {
          *   StrategyAndEvolution promoted to BusinessStrategy
          *   (business-strategy.sysml). This file retains
          *   ServiceConcept, ActivityModel, ResourcePlanning,
-         *   and FinancialPlanning. */
+         *   and FinancialPlanning.
+         * Phase 10: CatalogueEntry, ExternalReference (ServiceConcept),
+         *   InventoryRecord (ResourcePlanning) from CSW Extension.
+         *   These are business meta model concepts — they describe
+         *   what any service business offers and what resources it
+         *   needs. System meta model concepts (PersistencePolicy,
+         *   AgencyClassification) are in Foundation. */
 
     // =================================================================
     // SERVICE CONCEPT — What value is delivered, to whom, and why
@@ -118,6 +124,59 @@ package BusinessModel {
             attribute statement : String;
             attribute basis : String;
             attribute testability : String;
+        }
+
+        // -- Catalogue and external reference abstractions ------
+        // Business meta model concepts: what any service business
+        // offers and how it links to external knowledge.
+        // Added Session 29: CSW Extension Phase 10 (items 8.1).
+        // Source: gsl-spec-catalogue-inventory-v2.1.md §8.1
+        // The four-layer model:
+        //   Item definition → CatalogueEntry → InventoryRecord →
+        //   ExternalReference
+        // Domain-specific types (e.g. CoffeeShop::CatalogueEntry
+        // with ref item : MenuItem) are typed specialisations of
+        // these generic shapes.
+
+        part def CatalogueEntry {
+            doc /* The business decision to offer an item for sale or
+                 * use within a service. References an item definition
+                 * and adds business-context properties.
+                 *
+                 * The four-layer model separates what something
+                 * intrinsically is (item definition) from how the
+                 * business offers it (catalogue entry) from its
+                 * operational stock state (inventory record) from
+                 * links to external knowledge (external reference).
+                 *
+                 * Business meta model concept. Domain-agnostic:
+                 * works for coffee shop menus, clinical formularies,
+                 * course catalogues, service engagements.
+                 *
+                 * Source: gsl-spec-catalogue-inventory-v2.1.md §8.1 */
+            attribute entryName : String;
+            attribute itemReference : String;
+            attribute pricingDescription : String;
+            attribute availabilityStatus : String;
+            attribute provisionType : String;
+            attribute effectiveDate : String;
+            attribute statusNotes : String;
+        }
+
+        part def ExternalReference {
+            doc /* A link to knowledge that lives outside the system.
+                 * The system does not own this data; it points to it.
+                 *
+                 * Business meta model concept. Domain-agnostic:
+                 *   Coffee shop: supplier datasheet, origin cert
+                 *   Healthcare: SPC, BNF, NICE guidance
+                 *   Education: accreditation body, curriculum standard
+                 *
+                 * Source: gsl-spec-catalogue-inventory-v2.1.md §2.3 */
+            attribute referenceType : String;
+            attribute referenceId : String;
+            attribute referenceSource : String;
+            attribute referenceNotes : String;
         }
 
         // -- GSL Service Concept instantiation -----------------
@@ -508,6 +567,37 @@ package BusinessModel {
             attribute affectedResource : String;   // references a ResourceType by name
             attribute limit : String;
             attribute regulatorySourceDescription : String;   // e.g. "Enterprise::Regulation" or empty
+        }
+
+        // -- Inventory tracking abstraction ----------------------
+        // Business meta model concept: operational stock tracking
+        // for any business that stocks things.
+        // Added Session 29: CSW Extension Phase 10 (item 8.2).
+        // Source: gsl-spec-catalogue-inventory-v2.1.md §8.2
+
+        part def InventoryRecord {
+            doc /* A point-in-time record of stock level for an item
+                 * in the catalogue. References a catalogue entry
+                 * because inventory is scoped to what the business
+                 * currently offers.
+                 *
+                 * Distinct from ResourceInstance (planning-level):
+                 * ResourceInstance models "we have 0.5 FTE of
+                 * clinician capacity." InventoryRecord models "we
+                 * have 47 tablets of Estradiol Valerate in stock."
+                 *
+                 * ResourceInstance is strategic planning.
+                 * InventoryRecord is operational tracking.
+                 *
+                 * Business meta model concept.
+                 *
+                 * Source: gsl-spec-catalogue-inventory-v2.1.md §8.2 */
+            attribute catalogueEntryReference : String;
+            attribute quantityOnHand : Integer;
+            attribute stockStatus : String;
+            attribute lowStockThreshold : Integer;
+            attribute lastRestocked : String;
+            attribute quantityNotes : String;
         }
 
         // -- GSL Lean Clinical resource instantiation ----------
