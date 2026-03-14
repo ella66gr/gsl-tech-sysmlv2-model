@@ -147,6 +147,20 @@ Both bugs were worked around by hand-fixing the generated output. The generator 
 
 The order composition builder (`composition-builder.ts`) uses hardcoded coded price terms (`at0020`–`at0023` mapping to £1.25–£2.85) that don't match the catalogue prices (e.g. Flat White is £2.80 in the catalogue). The catalogue (PostgreSQL) is now the authoritative price source. The CDR records an approximate price bracket. Resolution options: update the archetype to accept `DV_QUANTITY` with currency, or add new coded terms matching the full price list. Tagged as TODO for Phase 10 (meta model update).
 
+### Composite orders (multi-item baskets)
+
+Currently one order = one workflow = one item. The `POST /api/orders` takes a single item, starts a single `fulfilDrink` workflow, and the XState machine tracks that single item through its lifecycle. A customer ordering multiple items places multiple independent orders.
+
+A composite order model would introduce an `Order` containing multiple `OrderLineItem`s, each spawning its own fulfilment workflow but grouped under a shared order reference. This requires:
+
+- **CSW domain model:** `Order` part def containing `OrderLineItem [1..*]`, with a shared `orderRef` linking the group
+- **Workflow orchestration:** A parent workflow or saga that spawns child fulfilment workflows per item and tracks group completion
+- **UI:** Basket/cart pattern on the Counter page; grouped display on the Order Board
+
+**Clinical analogue:** A clinical plan (e.g. hormone therapy initiation) that triggers multiple concurrent workflows — blood test request, prescription, monitoring schedule — linked by the concept that they are part of the same plan. The plan is the composite; the individual workflows are the line items. This is architecturally important for GSL: a single clinical decision can kickstart several linked pathways or sub-workflows that need to be tracked both individually and as a group.
+
+Not blocking for the current demonstrator exercise (independent orders are realistic for a coffee shop), but important for the clinical platform architecture. Candidate for the Phase 10 meta model update or a post-CSW-Extension workstream.
+
 ### Food item workflow limitation
 
 The `FulfilDrink` workflow is drink-specific. Food items (Ginger Biscuit, Oat Bar) can be ordered via the catalogue-validated `POST /api/orders`, and their inventory is correctly decremented, but the Temporal workflow will fail during drink-specific activities. A separate `FulfilFoodOrder` workflow or a generic `FulfilOrder` with item-type-aware routing is a future concern. Not blocking for the current exercise — the catalogue validation and inventory mechanics are the demonstration targets.

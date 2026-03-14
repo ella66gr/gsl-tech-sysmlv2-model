@@ -78,8 +78,8 @@
 <div class="mb-4">
   <h1 class="text-2xl font-bold text-secondary-800 dark:text-white">Audit Report</h1>
   <div class="flex gap-3 text-sm">
-    <a href="/orders/{orderId}" class="text-primary-600 hover:underline dark:text-primary-400">&larr; Order status</a>
-    <a href="/orders" class="text-primary-600 hover:underline dark:text-primary-400">All orders</a>
+    <a href="/orders/{orderId}" class="text-primary-600 hover:underline dark:text-primary-400">&larr; Order Timeline</a>
+    <a href="/orders" class="text-primary-600 hover:underline dark:text-primary-400">Order Board</a>
   </div>
 </div>
 
