@@ -163,16 +163,21 @@ package Foundation {
                  * both clinical and non-clinical contexts.
                  *
                  * Coffee shop: customer (self-service kiosk), staff
-                 * (barista makes drink), system (order routing),
+                 * (barista makes drink), automated (order routing),
                  * collaborative (customer and barista discuss).
                  *
-                 * Clinical: patient, clinician, system, collaborative
-                 * (e.g. ICE-supported shared decision-making).
+                 * Clinical: patientAgent, clinicianAgent, automated,
+                 * collaborative (e.g. ICE-supported shared decision).
                  *
-                 * Business system meta model concept. */
-            patient;
-            clinician;
-            system;
+                 * Business system meta model concept.
+                 *
+                 * NOTE: 'system' is a KerML reserved word and cannot
+                 * be used as an enum literal. 'automated' is used
+                 * instead. 'patient' and 'clinician' are suffixed
+                 * with 'Agent' to avoid potential conflicts. */
+            patientAgent;
+            clinicianAgent;
+            automated;
             collaborative;
         }
 
