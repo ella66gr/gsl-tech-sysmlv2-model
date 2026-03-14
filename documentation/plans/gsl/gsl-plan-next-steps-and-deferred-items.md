@@ -1,6 +1,6 @@
 # GSL — Next Steps and Deferred Items
 
-**Last updated:** 13 March 2026 (Session 24 — CSW Extension Phase 5 complete)
+**Last updated:** 14 March 2026 (Session 25 — CSW Extension Phase 6 complete)
 
 **Purpose:** Living tracker of carried-forward items, deferred decisions, and potential next workstreams. Completed items are removed at each update — completion is recorded in session reports.
 
@@ -21,8 +21,8 @@
 | 3: Catalogue & inventory API routes | ✓ Complete (Session 22) |
 | 4: Frontend foundation (Tailwind v4 + Flowbite) | ✓ Complete (Session 23) |
 | 5: Counter page (dynamic order form) | ✓ Complete (Session 24) |
-| 6: Manager GUI — stock & catalogue | Next |
-| 7: Remaining operations pages | Planned |
+| 6: Manager GUI — stock & catalogue | ✓ Complete (Session 25) |
+| 7: Remaining operations pages | Next |
 | 8: Data & insights pages | Planned |
 | 9: System pages | Planned |
 | 10: Meta model update | Planned |
@@ -171,6 +171,14 @@ Adding the PostgreSQL client to `@coffeeshop/shared` caused Temporal's V8 sandbo
 
 The default secondary palette (charcoal/stone) was too dark at the 800/900 end for dark mode. Shifted to warmer, lighter tones: `secondary-800` from `#292524` to `#3d3835`, `secondary-900` from `#1c1917` to `#342f2c`. CSS overrides with `!important` needed for Flowbite Input/Select components that apply their own dark classes internally.
 
+### Flowbite Modal footer slot (Session 25)
+
+The `<svelte:fragment slot="footer">` pattern for Flowbite Modal does not render in the current setup (flowbite-svelte 1.31.0, Svelte 5.53.7). The footer content is silently swallowed. Workaround: place the action buttons inside the modal body with a `border-t` separator div, rather than using the named `footer` slot. This applies to any Flowbite component that uses named slots — test each one before relying on it.
+
+### Layout max-width (Session 25)
+
+Increased the main content area `max-w` from `6xl` (1152px) to `7xl` (1280px) in `+layout.svelte`. The split-view pages (Counter, Manager) with table + side panel need the extra 128px to avoid column clipping. All pages benefit without being overly wide.
+
 ### Upgrade path to flowbite-svelte 2.0
 
 When `flowbite-svelte@2.0.0` ships as stable (currently at `next.9`), upgrade should be straightforward:
@@ -215,6 +223,7 @@ These are complete and documented in session reports. Listed here for orientatio
 | CSW Extension Phase 3 (catalogue & inventory API) | 22 | Complete |
 | CSW Extension Phase 4 (frontend foundation) | 23 | Complete |
 | CSW Extension Phase 5 (Counter page) | 24 | Complete |
+| CSW Extension Phase 6 (Manager GUI) | 25 | Complete |
 
 ---
 

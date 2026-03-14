@@ -1,9 +1,9 @@
 # GSL — Systematic Work Analysis and Priorities
 
 **Date:** 14 March 2026 (updated from 12 March 2026)
-**Context:** Post Business Meta Model (Phases 1–7), post Knowledge Layer Elaboration (Phases 1–5), post CSW Extension Phase 5 (Session 24). 72-package model, 364KB SysML, 25 sessions, working generation pipeline, running coffee shop demonstrator with catalogue-driven Counter page. Active CSW Extension workstream underway. Self-service enabling architecture discussion paper complete (Session 25).
+**Context:** Post Business Meta Model (Phases 1–7), post Knowledge Layer Elaboration (Phases 1–5), post CSW Extension Phase 6 (Session 25). 72-package model, 364KB SysML, 25 sessions, working generation pipeline, running coffee shop demonstrator with catalogue-driven Counter page and full Manager GUI. Active CSW Extension workstream underway. Self-service enabling architecture discussion paper complete (Session 25).
 **Purpose:** Systematic analysis of all deferred and outstanding work, organised to support prioritisation decisions. Assessed against stated priorities: robust formalised constructs, correct SysML usage, best-practice approaches, reusable modular architecture.
-**Changes from previous version:** New Workstream 9 (Self-Service Enabling Architecture) added with six items from Session 25 discussion paper. Items 9.1–9.2 integrated into CSW Extension Phase 10 timing. Item 9.4 added to Knowledge Layer increment sequence. Priority matrix and suggested sequencing updated. Context line updated to reflect Session 25 and CSW Extension Phase 5 completion.
+**Changes from previous version:** CSW Extension Phase 6 complete — Manager GUI for stock and catalogue management. Catalogue constraint (cannot discontinue with active orders) now unblocked. Context updated. Workstream 9 (Self-Service Enabling Architecture) added in earlier Session 25 update.
 
 ---
 
@@ -26,7 +26,7 @@ Items are grouped into nine workstreams (seven original + two new), each contain
 
 *This workstream is currently in progress. Full plan: `gsl-workstream-csw-extension-2026-03-12.md`. Specification: `catalogue-inventory-spec-v2.md`.*
 
-**Status:** Phases 1–5 complete. Phases 6–10 planned.
+**Status:** Phases 1–6 complete. Phases 7–10 planned.
 
 **Summary:** Extending the coffee shop demonstrator with catalogue management, inventory tracking, PostgreSQL business database, and a frontend reboot (Tailwind v4 + Flowbite Svelte). Exercises new architectural patterns and surfaces meta model gaps. Creates landing zones for Knowledge Layer Increments 1–3.
 
