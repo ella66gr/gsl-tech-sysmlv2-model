@@ -1,6 +1,6 @@
 # GSL — Next Steps and Deferred Items
 
-**Last updated:** 14 March 2026 (Session 27 — CSW Extension Phase 8 complete)
+**Last updated:** 14 March 2026 (Session 28 — CSW Extension Phase 9 complete)
 
 **Purpose:** Living tracker of carried-forward items, deferred decisions, and potential next workstreams. Completed items are removed at each update — completion is recorded in session reports.
 
@@ -11,7 +11,7 @@
 ### CSW Extension — Catalogue, Inventory & Frontend
 
 **Plan:** `gsl-plan-workstream-csw-extension-2026-03-12.md`
-**Status:** Phase 8 complete, Phase 9 next
+**Status:** Phase 9 complete, Phase 10 next
 
 | Phase | Status |
 |---|---|
@@ -24,8 +24,8 @@
 | 6: Manager GUI — stock & catalogue | ✓ Complete (Session 25) |
 | 7: Order Board & Order Timeline | ✓ Complete (Session 26) |
 | 8: Data & insights pages | ✓ Complete (Session 27) |
-| 9: System pages | **Next** |
-| 10: Meta model update | Planned |
+| 9: System pages | ✓ Complete (Session 28) |
+| 10: Meta model update | **Next** |
 
 ---
 
@@ -37,7 +37,7 @@ Three increments from the demonstrator integration plan, not yet executed. The C
 
 - **Increment 1 — Constraint evaluation at a pathway step.** Full chain: SysML constraint def → generated evaluator → Temporal activity → structured EvaluationResult. Landing zone: Order Timeline page (Phase 7). **Now unblocked** — Order Timeline complete (Session 26).
 - **Increment 2 — Decision table for drink routing.** Decision table pattern producing explainable recommendations. Landing zone: Counter page (Phase 5). **Now unblocked** — Counter page complete (Session 24).
-- **Increment 3 — System self-assessment.** Five-layer self-knowledge pattern. Landing zone: System Status page (Phase 9).
+- **Increment 3 — System self-assessment.** Five-layer self-knowledge pattern. Landing zone: System Status page (Phase 9). **Now unblocked** — System Status page complete with KL3 placeholder panel (Session 28).
 
 Source: `gsl-plan-coffeeshop-demonstrator-integration-2026-03-10.md` section 4.
 
@@ -191,6 +191,14 @@ The `FulfilDrink` workflow is drink-specific. Food items (Ginger Biscuit, Oat Ba
 - `Card`, `Table`, `Badge`, `Button`, `Alert`, `Select`, `Input`, `Label`, `Spinner` all work correctly
 - `$app/stores` used for `$page` (not yet migrated to `$app/state` — Flowbite Svelte still uses stores internally)
 
+### Hand-crafted SVG pathway (Session 28)
+
+The Process Model page uses a hand-crafted SVG pathway rather than the Mermaid-generated SVG. The Mermaid SVG has hardcoded colours, opaque internal node IDs, and no click handlers. A hand-crafted SVG themed to the coffee shop palette with `onclick` handlers per node gives full control over interactivity and dark mode. The pathway is stable (8 nodes, 9 edges from the SysML `FulfilDrink` action def) so this is a one-time effort. Node positions are declared as a `Record<string, NodePosition>` and edge paths are computed as cubic Bézier curves.
+
+### Direct module imports for new API routes (Session 28)
+
+The health check API route imports `WORKFLOW_NAME` from `@coffeeshop/shared/dist/workflow-constants.js` (direct path) rather than the barrel export, continuing the pattern established in Sessions 24 and 26 to avoid the transitive `pg` dependency issue.
+
 ### Svelte 5 `{@const}` placement constraint (Session 27)
 
 `{@const}` must be the immediate child of `{#if}`, `{#each}`, `{:else}`, `{:then}`, `{:catch}`, `<svelte:fragment>` or `<Component>`. Cannot be placed at the top level of a template block outside these control flow structures. Workaround: use `$derived` reactive declarations in the script block instead. This was encountered when placing `{@const}` for compliance rate calculations directly inside the summary cards grid on the Audit Dashboard page.
@@ -266,6 +274,7 @@ These are complete and documented in session reports. Listed here for orientatio
 | CSW Extension Phase 6 (Manager GUI) | 25 | Complete |
 | CSW Extension Phase 7 (Order Board & Timeline) | 26 | Complete |
 | CSW Extension Phase 8 (Data & Insights pages) | 27 | Complete |
+| CSW Extension Phase 9 (System pages) | 28 | Complete |
 
 ---
 
@@ -275,4 +284,4 @@ Discussion paper produced: `gsl-discussion-two-phase-generation-pipeline-2026-03
 
 ---
 
-*Updated 14 March 2026 (Session 27). CSW Extension workstream active — Phase 8 complete, Phase 9 next.*
+*Updated 14 March 2026 (Session 28). CSW Extension workstream active — Phase 9 complete, Phase 10 next.*

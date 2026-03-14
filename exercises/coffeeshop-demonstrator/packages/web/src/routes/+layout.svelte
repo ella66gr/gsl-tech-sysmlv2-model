@@ -56,7 +56,12 @@
       </a>
     </div>
     <div class="flex items-center gap-3">
-      <!-- Connection status indicators (placeholders) -->
+      <!-- Connection status indicators
+           TODO Phase 9: These are static green dots. The System Status page
+           (/system) provides live health checks via /api/system/health.
+           To make these live: poll the health endpoint every 60s and update
+           dot colours. Deferred because the health check pings three services,
+           which is heavyweight for every page navigation. -->
       <div class="hidden items-center gap-2 text-xs sm:flex">
         <span class="flex items-center gap-1 text-secondary-500 dark:text-secondary-400">
           <span class="inline-block h-2 w-2 rounded-full bg-green-500"></span>
