@@ -26,6 +26,7 @@ gsl-sysml-model/
 │   │                              Payments, Documents, Identity, Orchestration, Integration
 │   ├── service-delivery.sysml     PatientJourney, ClinicalPathways (+4), Consent, Coaching,
 │   │                              Governance, ClinicalEntities
+│   ├── pattern-catalogue.sysml    PatternCatalogue: cross-domain concept registry
 │   └── syntax-tests/              Isolated syntax verification files
 ├── libraries/
 │   └── temporal-metadata/
@@ -188,4 +189,58 @@ Allowed directories: `~/Desktop`, `~/Developer`, `~/Downloads`, `~/Obsidian/Gend
 
 ---
 
-*Extracted from monolithic syntax reference 8 March 2026 (Session 8). See also the `gsl` toolkit guide in `documentation/guides/`.*
+---
+
+## 9. Import Collision Convention
+
+**Convention (Session 30):** When a `.sysml` file imports both a domain package (e.g. `CoffeeShop::*`) and a meta model package (e.g. `BusinessModel::ServiceConcept::*`) via wildcards, and both export types with the same name, always use the fully qualified domain type for usages (e.g. `CoffeeShop::CatalogueEntry`, not bare `CatalogueEntry`).
+
+Syside resolves ambiguous names silently — no warning at the import site. The error surfaces downstream as a type-mismatch on `:>>` redefinition, distant from the root cause.
+
+**Known collision-prone names:** `CatalogueEntry`, `ExternalReference`, `InventoryRecord`. This list will grow as meta model concepts are added.
+
+**When adding a new meta model `part def`:** check the name against all domain packages. If it shares a name with a domain type, add it to this list and add a comment to any domain business model file that imports both namespaces.
+
+See `gsl-analysis-wildcard-import-collision-2026-03-15.md` for full analysis.
+
+---
+
+## 10. PatternCatalogue — Obsidian Cross-Reference Convention
+
+**SysML layer:** `PatternCatalogue` package in `model/pattern-catalogue.sysml`. Contains `Pattern` and `DomainInstantiation` part defs with classification enums.
+
+**Obsidian layer:** `02 ARCHITECTURE & MODELLING/Concept Graph/` in the GenderSense vault.
+
+### Naming convention
+
+| SysML element | Obsidian note | Rule |
+|---|---|---|
+| `part fourLayerItemModel : Pattern` | `patterns/pattern-four-layer-item-model.md` | camelCase → kebab-case, `pattern-` prefix |
+| `part cswFourLayerItemModel : DomainInstantiation` | (included in the pattern note’s "Domain Instantiations" section) | Domain instantiations don’t get separate notes |
+| `part def CatalogueEntry` (in BusinessModel) | `concepts/concept-catalogue-entry.md` | PascalCase → kebab-case, `concept-` prefix |
+| Deferred item (no SysML element yet) | `deferred/deferred-composite-orders.md` | kebab-case, `deferred-` prefix |
+
+### Frontmatter
+
+Every Obsidian concept graph note has a `sysml_element` field in frontmatter linking to the fully qualified SysML path. Empty string if no SysML element exists yet.
+
+### Tags
+
+- Entity type: `#pattern`, `#concept`, `#deferred`
+- Meta model: `#meta-model/business`, `#meta-model/system`, `#meta-model/cross-cutting`
+- Domain: `#domain/csw`, `#domain/gsl`, `#domain/addictions`
+- Maturity: `#maturity/discussion`, `#maturity/designed`, `#maturity/implemented`, `#maturity/validated`
+
+### Source of truth
+
+SysML is the source of truth for what patterns exist, their maturity, and their classification. Obsidian is the navigation and discursive layer. If a pattern exists in Obsidian but not in SysML, it’s a discussion topic. If it exists in SysML, it’s formalised.
+
+---
+
+## 11. Periodic Code and Model Reviews
+
+The project conducts proactive reviews at workstream boundaries and after findings that reveal silent failure classes. See `gsl-plan-next-steps-and-deferred-items.md` §2 for full convention, scope, and triggers.
+
+---
+
+*Extracted from monolithic syntax reference 8 March 2026 (Session 8). Updated 15 March 2026 (Session 30: import collision convention, PatternCatalogue–Obsidian cross-reference, periodic reviews). See also the `gsl` toolkit guide in `documentation/guides/`.*

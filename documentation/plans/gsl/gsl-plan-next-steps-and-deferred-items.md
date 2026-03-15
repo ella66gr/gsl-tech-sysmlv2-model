@@ -31,7 +31,28 @@
 
 ---
 
-## 2. Candidate Next Workstreams
+## 2. Standing Practice: Periodic Code and Model Reviews
+
+**Convention (established Session 30):** The project conducts proactive code and model reviews at suitable pauses — typically after completing a workstream, before starting a new one, or when the model has grown significantly. Reviews cover:
+
+- **Type safety:** Wildcard import collisions, enum-vs-String mismatches, unqualified ambiguous types (see `gsl-analysis-wildcard-import-collision-2026-03-15.md`).
+- **Naming consistency:** Reserved word traps, domain-agnostic naming in meta model, compound naming convention.
+- **Structural integrity:** Doc block gaps, cross-reference formalisation status, package hierarchy clarity.
+- **Silent failure detection:** Syside parse anomalies, cascading reference-errors from upstream issues, unused imports.
+- **Convention compliance:** Import collision convention, two meta model classification in doc blocks, commit message format.
+
+**Triggers for review:**
+- Completion of a workstream (natural pause point)
+- Model growth exceeding ~50 new elements since last review
+- Before starting a workstream that builds heavily on existing model elements
+- After any finding that reveals a class of silent failure (e.g. the Session 30 wildcard collision discovery)
+
+**Last review:** Partial — Session 30 (wildcard import collision audit across all `.sysml` files).
+**Next recommended review:** After Concept Graph workstream completion (Session 31), covering the full model.
+
+---
+
+## 3. Candidate Next Workstreams
 
 ### Coffee Shop Knowledge Layer Increments
 
@@ -69,9 +90,19 @@ The business system meta model is currently implicit across Foundation, Platform
 
 "Consultancy + Platform Licence" — dual revenue streams (clinical + SaaS). Requires modelling licence pricing, platform deployment for licensees, and support cost structures.
 
+### Tooling Evolution: Claude Code, Cowork, Obsidian Integrations
+
+**Claude Code** — explore for implementation-heavy phases. Key value: `CLAUDE.md` project file encoding architecture rules (two meta model distinction, import collision convention, naming rules) as living constraints enforced across sessions. Custom `/commands` for recurring workflows. Not urgent — current Chat workflow is productive and fine-grained. Explore when a suitable implementation phase arises (e.g. Knowledge Layer Increment).
+
+**Claude Cowork** — explore for batch cross-file operations (weekly digests, automated report generation) if/when those become a bottleneck. Not currently needed.
+
+**Obsidian integrations** — explore when Ella returns to broader Obsidian use for business development work. Options: CAO (chat-in-notes), Agent Client (Claude Code inside Obsidian), Claude Sidebar, Obsidian MCP tools plugin (vault-aware search/linking beyond filesystem access). See Perplexity discussion document for full landscape survey.
+
+Source: Session 30 discussion, Perplexity landscape survey (`Claude_options.md`).
+
 ---
 
-## 3. SysML Model — Deferred Structural Items
+## 4. SysML Model — Deferred Structural Items
 
 ### Cross-references not yet formalised
 
@@ -91,7 +122,7 @@ The business system meta model is currently implicit across Foundation, Platform
 
 ---
 
-## 4. Knowledge Layer — Deferred Items
+## 5. Knowledge Layer — Deferred Items
 
 - **Prolog implementation** — deferred until clinical rules demand inference
 - **DMN engine integration** — decision tables modelled; dedicated engine is an optimisation
@@ -103,7 +134,7 @@ The business system meta model is currently implicit across Foundation, Platform
 
 ---
 
-## 5. Projection Engine — Deferred Items
+## 6. Projection Engine — Deferred Items
 
 ### Parameter validation (requires Ella's clinical input)
 
@@ -120,13 +151,13 @@ The business system meta model is currently implicit across Foundation, Platform
 
 ---
 
-## 6. CDR / openEHR — Deferred Items
+## 7. CDR / openEHR — Deferred Items
 
 - Clinical archetype design, SNOMED CT binding, CDR hosting, openEHR SDK, FHIR bridge, Folders, versioning/contributions, generator updates — all deferred per previous sessions.
 
 ---
 
-## 7. Generators — Designed but Not Built
+## 8. Generators — Designed but Not Built
 
 - Temporal workflow generator extension (evaluation calls)
 - Composition builder generator
@@ -141,7 +172,7 @@ The business system meta model is currently implicit across Foundation, Platform
 
 ---
 
-## 8. Deferred Items from Phase 3 (Session 22)
+## 9. Deferred Items from Phase 3 (Session 22)
 
 ### CDR price mismatch
 
@@ -157,15 +188,22 @@ Currently one order = one workflow = one item. Composite order model deferred.
 
 ---
 
-## 9. Frontend — Notes from Phases 4–9 (Sessions 23–28)
+## 10. Frontend — Notes from Phases 4–9 (Sessions 23–28)
 
 All frontend findings from previous sessions remain current (Flowbite component compatibility, hand-crafted SVG pathway, direct module imports, Svelte 5 `{@const}`, Temporal sandbox, barrel export SSR failure, dark mode palette, Modal footer slot, layout max-width, CDR "None" milk display, upgrade path to flowbite-svelte 2.0).
 
 ---
 
-## 10. Syntax Reference — Findings Requiring Update
+## 11. Syntax Reference — Findings Requiring Update
 
-**Session 29 findings (new — not yet in syntax reference):**
+**Session 30 findings (new):**
+
+- [ ] `ref x : MetadataDef;` — verified ✓ (singular and multi-valued)
+- [ ] `ref x : EnumDef;` — verified ✓ (singular and multi-valued)
+- [ ] Wildcard import name collision — when two `private import X::*;` bring in identically-named types, Syside silently picks one. Type-errors appear downstream on `:>>` redefinitions, not at the ambiguous import. Fix: qualify with full path (e.g. `CoffeeShop::CatalogueEntry`). Convention: see `gsl-analysis-wildcard-import-collision-2026-03-15.md`.
+- [ ] Top-level `PatternCatalogue` package in separate file — verified ✓ (consistent with existing pattern; nesting inside Foundation not attempted, known to fail per syntax reference §1)
+
+**Session 29 findings (not yet in syntax reference):**
 
 - [ ] `system` is a KerML reserved word — cannot be used as an enum literal. Silent parse failure.
 - [ ] Enum-typed attribute on metadata def — verified ✓
@@ -188,7 +226,7 @@ All frontend findings from previous sessions remain current (Flowbite component 
 
 ---
 
-## 11. Major Completed Workstreams (Reference)
+## 12. Major Completed Workstreams (Reference)
 
 | Workstream | Sessions | Status |
 |---|---|---|
@@ -202,7 +240,7 @@ All frontend findings from previous sessions remain current (Flowbite component 
 
 ---
 
-## 12. Two-Phase Generation Pipeline (Session 24)
+## 13. Two-Phase Generation Pipeline (Session 24)
 
 Discussion paper: `gsl-discussion-two-phase-generation-pipeline-2026-03-13.md`. Not yet a committed workstream.
 
