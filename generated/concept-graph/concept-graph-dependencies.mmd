@@ -1,0 +1,54 @@
+graph TD
+
+    twoLayerActionFlow["Two-layer pathway modelling"]:::validated
+    processDomainGovernanceUnifiedView["Process + domain + governance unified view"]:::validated
+    selfAssessmentDashboard["Self-assessment dashboard (KL Increment 3)"]:::designed
+    agencyClassificationOnActions["Agency classification on pathway actions"]:::designed
+    categoryConditionalFormFields["Category-conditional form fields"]:::validated
+    multiSourceMetricsAggregation["Multi-source metrics aggregation with graceful degradation"]:::validated
+    kanbanAsProcessDashboard["Kanban-as-process-dashboard"]:::validated
+    crossPageDataConsistency["Cross-page data consistency"]:::validated
+    twoLayerModelVisualisation["Two-layer model visualisation in the UI"]:::validated
+    catalogueAsUiContract["Catalogue-as-UI-contract"]:::validated
+    cdrSourceProvenanceBadges["CDR source provenance badges"]:::validated
+    xstateInTemporal["XState in Temporal"]:::validated
+    dataReleaseModel["Data release model (patient-facing)"]:::discussion
+    persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]:::validated
+    autoLoadingEntityViews["Auto-loading entity views"]:::validated
+    threeLayerPersistence["Three-persistence-layer architecture"]:::validated
+    compositeOrderOrchestration["Composite order / multi-workflow orchestration"]:::discussion
+    fourLayerItemModel["Four-layer item model"]:::validated
+    infrastructureHealthAsAppConcern["Infrastructure health as application-level concern"]:::validated
+    notificationTriggersOnTransitions["Notification triggers on state transitions"]:::discussion
+    fiveLayerSelfKnowledge["Five-layer self-knowledge architecture"]:::validated
+    optionEvaluatorHelpMeChoose["OptionEvaluator / Help Me Choose"]:::designed
+    auditAsTimelineDataSource["Audit-as-timeline data source"]:::validated
+
+    persistencePolicyAsReasoning --> fourLayerItemModel
+    persistencePolicyAsReasoning --> threeLayerPersistence
+    catalogueAsUiContract --> fourLayerItemModel
+    kanbanAsProcessDashboard --> xstateInTemporal
+    categoryConditionalFormFields --> catalogueAsUiContract
+    crossPageDataConsistency --> catalogueAsUiContract
+    auditAsTimelineDataSource --> twoLayerActionFlow
+    processDomainGovernanceUnifiedView --> twoLayerActionFlow
+    processDomainGovernanceUnifiedView --> xstateInTemporal
+    cdrSourceProvenanceBadges --> threeLayerPersistence
+    autoLoadingEntityViews --> threeLayerPersistence
+    multiSourceMetricsAggregation --> threeLayerPersistence
+    multiSourceMetricsAggregation --> infrastructureHealthAsAppConcern
+    twoLayerModelVisualisation --> twoLayerActionFlow
+    compositeOrderOrchestration --> xstateInTemporal
+    compositeOrderOrchestration --> twoLayerActionFlow
+    agencyClassificationOnActions --> twoLayerActionFlow
+    selfAssessmentDashboard --> fiveLayerSelfKnowledge
+    selfAssessmentDashboard --> infrastructureHealthAsAppConcern
+    optionEvaluatorHelpMeChoose --> fiveLayerSelfKnowledge
+    dataReleaseModel --> threeLayerPersistence
+    dataReleaseModel --> agencyClassificationOnActions
+    notificationTriggersOnTransitions --> xstateInTemporal
+
+    classDef validated fill:#2d6a4f,color:#fff,stroke:#1b4332
+    classDef implemented fill:#40916c,color:#fff,stroke:#2d6a4f
+    classDef designed fill:#e9c46a,color:#000,stroke:#f4a261
+    classDef discussion fill:#e76f51,color:#fff,stroke:#e63946

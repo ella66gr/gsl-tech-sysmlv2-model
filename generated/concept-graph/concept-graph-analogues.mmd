@@ -1,0 +1,37 @@
+graph LR
+
+    subgraph CSW["Coffee Shop (CSW)"]
+        direction TB
+        cswActivityTaxonomy["Csw Activity Taxonomy"]:::csw
+        cswCatalogueAsUiContract["Csw Catalogue As Ui Contract"]:::csw
+        cswFiveLayerSelfKnowledge["Csw Five Layer Self Knowledge"]:::csw
+        cswFourLayerItemModel["Csw Four Layer Item Model"]:::csw
+        cswScenarioComparison["Csw Scenario Comparison"]:::csw
+        cswSysmlAsSingleSourceOfTruth["Csw Sysml As Single Source Of Truth"]:::csw
+        cswThreeLayerPersistence["Csw Three Layer Persistence"]:::csw
+        cswTwoLayerActionFlow["Csw Two Layer Action Flow"]:::csw
+    end
+
+    subgraph GSL["Gender-Affirming Care (GSL)"]
+        direction TB
+        gslActivityTaxonomy["Gsl Activity Taxonomy"]:::gsl
+        gslCatalogueAsUiContract["Gsl Catalogue As Ui Contract"]:::gsl
+        gslFiveLayerSelfKnowledge["Gsl Five Layer Self Knowledge"]:::gsl
+        gslFourLayerItemModel["Gsl Four Layer Item Model"]:::gsl
+        gslScenarioComparison["Gsl Scenario Comparison"]:::gsl
+        gslSysmlAsSingleSourceOfTruth["Gsl Sysml As Single Source Of Truth"]:::gsl
+        gslThreeLayerPersistence["Gsl Three Layer Persistence"]:::gsl
+        gslTwoLayerActionFlow["Gsl Two Layer Action Flow"]:::gsl
+    end
+
+    cswActivityTaxonomy <-.->|Activity Taxonomy| gslActivityTaxonomy
+    cswCatalogueAsUiContract <-.->|Catalogue As Ui Contract| gslCatalogueAsUiContract
+    cswFiveLayerSelfKnowledge <-.->|Five Layer Self Knowledge| gslFiveLayerSelfKnowledge
+    cswFourLayerItemModel <-.->|Four Layer Item Model| gslFourLayerItemModel
+    cswScenarioComparison <-.->|Scenario Comparison| gslScenarioComparison
+    cswSysmlAsSingleSourceOfTruth <-.->|Sysml As Single Source Of Truth| gslSysmlAsSingleSourceOfTruth
+    cswThreeLayerPersistence <-.->|Three Layer Persistence| gslThreeLayerPersistence
+    cswTwoLayerActionFlow <-.->|Two Layer Action Flow| gslTwoLayerActionFlow
+
+    classDef csw fill:#d4edda,stroke:#28a745
+    classDef gsl fill:#cce5ff,stroke:#007bff

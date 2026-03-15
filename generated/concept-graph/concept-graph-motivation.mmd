@@ -1,0 +1,40 @@
+graph LR
+
+    subgraph PRIN["Architectural Principles"]
+        direction TB
+        separationOfRepresentationAndExecution[["Separation of representation and execution"]]:::principle
+        selfDescribingSystem[["Self-describing system"]]:::principle
+        modelGeneratesEverything[["Model generates everything"]]:::principle
+        coffeeshopFirst[["Validate in coffee shop before clinical"]]:::principle
+        deterministicOverProbabilistic[["Deterministic/auditable reasoning over probabilistic inference"]]:::principle
+        patientAutonomy[["Patient autonomy and informed choice"]]:::principle
+        clinicalGovernanceAsFirstClass[["Clinical governance as first-class system concern"]]:::principle
+    end
+
+    subgraph PAT["Patterns"]
+        direction TB
+        persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]
+        agencyClassificationOnActions["Agency classification on pathway actions"]
+        dataReleaseModel["Data release model (patient-facing)"]
+        sysmlAsSingleSourceOfTruth["SysML v2 as single source of truth"]
+        twoLayerActionFlow["Two-layer pathway modelling"]
+        fiveLayerSelfKnowledge["Five-layer self-knowledge architecture"]
+        coffeeshopDemonstratorAsPractice["Coffee shop demonstrator as standing validation practice"]
+        optionEvaluatorHelpMeChoose["OptionEvaluator / Help Me Choose"]
+        auditAsTimelineDataSource["Audit-as-timeline data source"]
+    end
+
+    persistencePolicyAsReasoning -->|motivated by| selfDescribingSystem
+    sysmlAsSingleSourceOfTruth -->|motivated by| separationOfRepresentationAndExecution
+    sysmlAsSingleSourceOfTruth -->|motivated by| modelGeneratesEverything
+    twoLayerActionFlow -->|motivated by| clinicalGovernanceAsFirstClass
+    fiveLayerSelfKnowledge -->|motivated by| selfDescribingSystem
+    coffeeshopDemonstratorAsPractice -->|motivated by| coffeeshopFirst
+    auditAsTimelineDataSource -->|motivated by| clinicalGovernanceAsFirstClass
+    agencyClassificationOnActions -->|motivated by| patientAutonomy
+    optionEvaluatorHelpMeChoose -->|motivated by| patientAutonomy
+    optionEvaluatorHelpMeChoose -->|motivated by| deterministicOverProbabilistic
+    dataReleaseModel -->|motivated by| patientAutonomy
+    dataReleaseModel -->|motivated by| clinicalGovernanceAsFirstClass
+
+    classDef principle fill:#e8daef,stroke:#7d3c98
