@@ -237,6 +237,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "BusinessModel::ServiceConcept::CatalogueEntry, BusinessModel::ServiceConcept::ExternalReference, BusinessModel::ResourcePlanning::InventoryRecord";
         attribute :>> sourceSession = "Session 20 (CSW Phase 1)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> enables = (persistencePolicyAsReasoning, catalogueAsUiContract);
     }
 
     part activityTaxonomy : Pattern {
@@ -276,6 +278,9 @@ package PatternCatalogue {
         attribute :>> relatedElements = "Foundation::CommonTypes::PersistencePolicy, Foundation::CommonTypes::PersistenceLayer, Foundation::CommonTypes::DataCharacteristic";
         attribute :>> sourceSession = "Session 20 (CSW Phase 1), formalised Session 29 (Phase 10)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> dependsOn = (fourLayerItemModel, threeLayerPersistence);
+        ref :>> motivatedBy = (selfDescribingSystem);
     }
 
     // ================================================================
@@ -293,6 +298,10 @@ package PatternCatalogue {
         attribute :>> relatedElements = "Foundation::GenerationPipeline";
         attribute :>> sourceSession = "Session 1";
         attribute :>> validatedIn = "CSW, GSL";
+        // Semantic relationships
+        ref :>> enables = (metadataDrivenGeneration);
+        ref :>> motivatedBy = (separationOfRepresentationAndExecution,
+                               modelGeneratesEverything);
     }
 
     part twoLayerActionFlow : Pattern {
@@ -306,6 +315,9 @@ package PatternCatalogue {
         attribute :>> relatedElements = "ServiceDelivery::ClinicalPathways, Foundation::MetadataLibrary::TemporalWorkflow";
         attribute :>> sourceSession = "Session 1";
         attribute :>> validatedIn = "CSW, GSL";
+        // Semantic relationships
+        ref :>> motivatedBy = (clinicalGovernanceAsFirstClass);
+        ref :>> generalises = (compositeOrderOrchestration);
     }
 
     part fiveLayerSelfKnowledge : Pattern {
@@ -320,6 +332,9 @@ package PatternCatalogue {
         attribute :>> relatedElements = "Knowledge::SelfKnowledge";
         attribute :>> sourceSession = "Session 10 (Knowledge Layer Phase 3)";
         attribute :>> validatedIn = "GSL";
+        // Semantic relationships
+        ref :>> enables = (scenarioComparisonProjection);
+        ref :>> motivatedBy = (selfDescribingSystem);
     }
 
     part coffeeshopDemonstratorAsPractice : Pattern {
@@ -333,6 +348,10 @@ package PatternCatalogue {
         attribute :>> relatedElements = "CoffeeShop (exercises directory)";
         attribute :>> sourceSession = "Session 1";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> motivatedBy = (coffeeshopFirst);
+        ref :>> validatedBy = (twoLayerActionFlow, fourLayerItemModel,
+                               threeLayerPersistence, catalogueAsUiContract);
     }
 
     part threeLayerPersistence : Pattern {
@@ -346,6 +365,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "Foundation::CommonTypes::PersistenceLayer";
         attribute :>> sourceSession = "Session 20 (CSW Phase 1)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> enables = (persistencePolicyAsReasoning);
     }
 
     part metadataDrivenGeneration : Pattern {
@@ -360,6 +381,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "Foundation::MetadataLibrary, Foundation::GenerationPipeline";
         attribute :>> sourceSession = "Session 2";
         attribute :>> validatedIn = "CSW, GSL";
+        // Semantic relationships
+        ref :>> enables = (xstateInTemporal, twoLayerActionFlow);
     }
 
     part xstateInTemporal : Pattern {
@@ -385,6 +408,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "CoffeeShop::CatalogueEntry, BusinessModel::ServiceConcept::CatalogueEntry";
         attribute :>> sourceSession = "Session 24 (CSW Phase 5)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> dependsOn = (fourLayerItemModel);
     }
 
     part kanbanAsProcessDashboard : Pattern {
@@ -397,6 +422,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "Foundation::StatePatterns::EntityLifecycle";
         attribute :>> sourceSession = "Session 26 (CSW Phase 7)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> dependsOn = (xstateInTemporal);
     }
 
     part splitViewManagementLayout : Pattern {
@@ -410,6 +437,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "";
         attribute :>> sourceSession = "Session 25 (CSW Phase 6)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> composedWith = (kanbanAsProcessDashboard, autoLoadingEntityViews);
     }
 
     part categoryConditionalFormFields : Pattern {
@@ -422,6 +451,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "CoffeeShop::Drink, CoffeeShop::FoodItem";
         attribute :>> sourceSession = "Session 24 (CSW Phase 5)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> dependsOn = (catalogueAsUiContract);
     }
 
     part crossPageDataConsistency : Pattern {
@@ -434,6 +465,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "";
         attribute :>> sourceSession = "Session 24 (CSW Phase 5)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> dependsOn = (catalogueAsUiContract);
     }
 
     part auditAsTimelineDataSource : Pattern {
@@ -447,6 +480,9 @@ package PatternCatalogue {
         attribute :>> relatedElements = "ServiceDelivery::Governance";
         attribute :>> sourceSession = "Session 26 (CSW Phase 7)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> dependsOn = (twoLayerActionFlow);
+        ref :>> motivatedBy = (clinicalGovernanceAsFirstClass);
     }
 
     part processDomainGovernanceUnifiedView : Pattern {
@@ -459,6 +495,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "ServiceDelivery::ClinicalPathways, Foundation::MetadataLibrary";
         attribute :>> sourceSession = "Session 26 (CSW Phase 7)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> dependsOn = (twoLayerActionFlow, xstateInTemporal);
     }
 
     part cdrSourceProvenanceBadges : Pattern {
@@ -472,6 +510,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "";
         attribute :>> sourceSession = "Session 27 (CSW Phase 8)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> dependsOn = (threeLayerPersistence);
     }
 
     part autoLoadingEntityViews : Pattern {
@@ -485,6 +525,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "";
         attribute :>> sourceSession = "Session 27 (CSW Phase 8)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> dependsOn = (threeLayerPersistence);
     }
 
     part infrastructureHealthAsAppConcern : Pattern {
@@ -511,6 +553,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "";
         attribute :>> sourceSession = "Session 28 (CSW Phase 9)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> dependsOn = (threeLayerPersistence, infrastructureHealthAsAppConcern);
     }
 
     part twoLayerModelVisualisation : Pattern {
@@ -524,6 +568,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "ServiceDelivery::ClinicalPathways";
         attribute :>> sourceSession = "Session 28 (CSW Phase 9)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> dependsOn = (twoLayerActionFlow);
     }
 
     part handCraftedSvgForStablePathways : Pattern {
@@ -537,6 +583,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "";
         attribute :>> sourceSession = "Session 28 (CSW Phase 9)";
         attribute :>> validatedIn = "CSW";
+        // Semantic relationships
+        ref :>> extends = (twoLayerModelVisualisation);
     }
 
     // ================================================================
@@ -555,6 +603,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "ServiceDelivery::ClinicalPathways (future multi-pathway)";
         attribute :>> sourceSession = "Session 22 (deferred)";
         attribute :>> validatedIn = "";
+        // Semantic relationships
+        ref :>> dependsOn = (xstateInTemporal, twoLayerActionFlow);
     }
 
     part agencyClassificationOnActions : Pattern {
@@ -568,6 +618,10 @@ package PatternCatalogue {
         attribute :>> relatedElements = "Foundation::MetadataLibrary::AgencyClassification, Foundation::MetadataLibrary::AgencyType";
         attribute :>> sourceSession = "Session 25 (self-service paper), formalised Session 29";
         attribute :>> validatedIn = "";
+        // Semantic relationships
+        ref :>> dependsOn = (twoLayerActionFlow);
+        ref :>> enables = (optionEvaluatorHelpMeChoose);
+        ref :>> motivatedBy = (patientAutonomy);
     }
 
     part selfAssessmentDashboard : Pattern {
@@ -581,6 +635,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "Knowledge::SelfKnowledge";
         attribute :>> sourceSession = "Session 10 (KL Phase 3), landing zone Session 28";
         attribute :>> validatedIn = "";
+        // Semantic relationships
+        ref :>> dependsOn = (fiveLayerSelfKnowledge, infrastructureHealthAsAppConcern);
     }
 
     part optionEvaluatorHelpMeChoose : Pattern {
@@ -594,6 +650,9 @@ package PatternCatalogue {
         attribute :>> relatedElements = "Knowledge::DecisionModels";
         attribute :>> sourceSession = "Session 25 (self-service paper)";
         attribute :>> validatedIn = "";
+        // Semantic relationships
+        ref :>> dependsOn = (fiveLayerSelfKnowledge);
+        ref :>> motivatedBy = (patientAutonomy, deterministicOverProbabilistic);
     }
 
     part dataReleaseModel : Pattern {
@@ -607,6 +666,9 @@ package PatternCatalogue {
         attribute :>> relatedElements = "";
         attribute :>> sourceSession = "Session 25 (self-service paper section 12.2)";
         attribute :>> validatedIn = "";
+        // Semantic relationships
+        ref :>> dependsOn = (threeLayerPersistence, agencyClassificationOnActions);
+        ref :>> motivatedBy = (patientAutonomy, clinicalGovernanceAsFirstClass);
     }
 
     part notificationTriggersOnTransitions : Pattern {
@@ -620,6 +682,8 @@ package PatternCatalogue {
         attribute :>> relatedElements = "Foundation::StatePatterns::EntityLifecycle, Foundation::MetadataLibrary::StateTransitionTrigger";
         attribute :>> sourceSession = "Identified across sessions";
         attribute :>> validatedIn = "";
+        // Semantic relationships
+        ref :>> dependsOn = (xstateInTemporal);
     }
 
     // ================================================================
