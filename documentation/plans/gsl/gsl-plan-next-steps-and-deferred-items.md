@@ -1,6 +1,6 @@
 # GSL — Next Steps and Deferred Items
 
-**Last updated:** 14 March 2026 (Session 29 — CSW Extension Phase 10 complete, workstream complete)
+**Last updated:** 15 March 2026 (Session 31 — Concept Graph workstream complete, Knowledge Graph Enhancement planned)
 
 **Purpose:** Living tracker of carried-forward items, deferred decisions, and potential next workstreams. Completed items are removed at each update — completion is recorded in session reports.
 
@@ -96,6 +96,35 @@ The business system meta model is currently implicit across Foundation, Platform
 ### Variant C Elaboration
 
 "Consultancy + Platform Licence" — dual revenue streams (clinical + SaaS). Requires modelling licence pricing, platform deployment for licensees, and support cost structures.
+
+### Knowledge Graph Enhancement — SysML-Native Semantic Relationships
+
+Extend the PatternCatalogue with typed `ref` relationships between patterns and new `ArchitecturalPrinciple` part defs. Build a generator that reads SysML and produces Mermaid visualisations. The model describes its own patterns *and how they relate*.
+
+**Plan:** `gsl-plan-knowledge-graph-implementation-2026-03-15.md`
+**Discussion:** `gsl-discussion-knowledge-graph-architecture-2026-03-15.md`
+**Estimated effort:** 6 stages, 2.5–3 hours.
+**Prerequisites:** Syntax test for `ref :>>` tuple redefinition.
+
+### Hookmark Cross-Desktop Linking Spike
+
+Hookmark is installed and licensed. Spike: hook key artefacts together (pattern notes ↔ `.sysml` files, session reports ↔ discussion papers), evaluate whether the navigation payoff justifies the manual practice. Configure `hook://file/` URI scheme for Obsidian. Cannot be programmatically controlled — manual practice only.
+
+**Effort:** 1 hour spike.
+**Dependencies:** None.
+
+### Visualisation: Tom Sawyer SysML v2 Viewer (Horizon)
+
+Investigate the standalone Tom Sawyer SysML v2 Viewer for stakeholder-facing interactive model views. Requires a SysML v2 API-compliant repository. Options: on-premises, AWS deployment, or OEM licensing within Syside. Version 2.0 adds sequence diagrams, expanded compartment types, AI browser compatibility.
+
+**When:** When stakeholder communication becomes a priority.
+**See also:** Tom Sawyer views in VS Code (beyond Syside built-in); web-based visualisation of repo sources.
+
+### Visualisation: Alternative Diagramming Approaches (Horizon)
+
+D2, Graphviz/DOT, and Structurizr as complementary diagramming options alongside Mermaid. D2 for architecture overviews; Graphviz for algorithmic graph layouts; Structurizr for C4 model alignment.
+
+**When:** When specific view types exceed what Mermaid can adequately represent.
 
 ### Tooling Evolution: Claude Code, Cowork, Obsidian Integrations
 
