@@ -599,4 +599,198 @@ package PatternCatalogue {
         attribute :>> sessionRef = "Session 26 (CSW Phase 7)";
         attribute :>> notes = "Historical orders in filterable table below kanban.";
     }
+
+    // -- SysML as single source of truth instantiations ----------
+
+    part cswSysmlAsSingleSourceOfTruth : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "4 generators: TypeScript types, XState machines, Temporal workflows, Mermaid diagrams. All derived from coffeeshop.sysml domain model.";
+        attribute :>> sessionRef = "Sessions 1-4";
+        attribute :>> notes = "Full generation pipeline operational. Model changes propagate to running code.";
+    }
+
+    part gslSysmlAsSingleSourceOfTruth : DomainInstantiation {
+        attribute :>> domain = "GSL";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "Same 4 generators applicable. Clinical pathway model generates Mermaid diagrams. Projection engine reads model parameters.";
+        attribute :>> sessionRef = "Sessions 5-12";
+        attribute :>> notes = "Generators validated on clinical domain model. Full pipeline not yet exercised end-to-end for GSL.";
+    }
+
+    // -- Metadata-driven generation instantiations --------------
+
+    part cswMetadataDrivenGeneration : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "@TemporalWorkflow, @TemporalActivity, @TemporalSignal, @StateTransitionTrigger on orchestration actions. gen_temporal_workflow.py and gen_state_machines.py read these.";
+        attribute :>> sessionRef = "Sessions 2-3";
+        attribute :>> notes = "Metadata annotations drive TypeScript workflow scaffold and XState machine generation.";
+    }
+
+    // -- XState in Temporal instantiation ------------------------
+
+    part cswXstateInTemporal : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "FulfilDrink Temporal workflow with XState v5 OrderLifecycle state machine. State machine guards transitions; Temporal provides durability.";
+        attribute :>> sessionRef = "Session 3 (CSW Phase C)";
+        attribute :>> notes = "Single workflow operational. State machine generated from SysML state def.";
+    }
+
+    // -- Split-view management layout instantiation --------------
+
+    part cswSplitViewManagementLayout : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "Manager GUI (Phase 6), Order Board (Phase 7), Records (Phase 8). Main panel + side panel layout.";
+        attribute :>> sessionRef = "Sessions 25-27";
+        attribute :>> notes = "Consistent layout pattern across operational and management pages.";
+    }
+
+    // -- Category-conditional form fields instantiation ----------
+
+    part cswCategoryConditionalFormFields : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "Counter page — Drink vs Food category determines visible form fields (sizes/milk/caffeinated vs gluten-free/served-warm).";
+        attribute :>> sessionRef = "Session 24 (CSW Phase 5)";
+        attribute :>> notes = "Domain model hierarchy (Drink :> MenuItem, FoodItem :> MenuItem) drives form structure.";
+    }
+
+    // -- Cross-page data consistency instantiation ---------------
+
+    part cswCrossPageDataConsistency : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "All 9 pages read from shared API layer. Counter, Manager GUI, Order Board, Records all show consistent catalogue/order data.";
+        attribute :>> sessionRef = "Sessions 24-28";
+        attribute :>> notes = "No client-side state synchronisation. Single source of truth via API.";
+    }
+
+    // -- Audit-as-timeline instantiation -------------------------
+
+    part cswAuditAsTimeline : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "Order Timeline page — governance audit endpoint provides step-by-step timing for event timeline. Same endpoint serves Audit Dashboard for compliance reporting.";
+        attribute :>> sessionRef = "Session 26 (CSW Phase 7)";
+        attribute :>> notes = "Single data source, two presentation modes: individual timeline and population compliance.";
+    }
+
+    // -- Process + domain + governance unified view instantiation -
+
+    part cswProcessDomainGovernanceUnified : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "Order Timeline page — Temporal workflow state, XState lifecycle, SysML domain annotations visible in a single page.";
+        attribute :>> sessionRef = "Session 26 (CSW Phase 7)";
+        attribute :>> notes = "Three concerns unified for operational visibility.";
+    }
+
+    // -- CDR source provenance badges instantiation --------------
+
+    part cswCdrProvenanceBadges : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "Records page, Order Detail page — indigo badges distinguish CDR entity-view data from operational/management data.";
+        attribute :>> sessionRef = "Session 27 (CSW Phase 8)";
+        attribute :>> notes = "Data provenance visually communicated.";
+    }
+
+    // -- Auto-loading entity views instantiation -----------------
+
+    part cswAutoLoadingEntityViews : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "Records page — CDR data loads on page mount. Entity views are live dashboards, not search interfaces.";
+        attribute :>> sessionRef = "Session 27 (CSW Phase 8)";
+        attribute :>> notes = "Shift from query tool to operational view pattern.";
+    }
+
+    // -- Infrastructure health instantiation ---------------------
+
+    part cswInfrastructureHealth : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "System Status page + GET /api/system/health. Pings EHRbase (AQL), PostgreSQL (SELECT 1), Temporal (workflow.list) independently.";
+        attribute :>> sessionRef = "Session 28 (CSW Phase 9)";
+        attribute :>> notes = "Each service checked independently with response time tracking.";
+    }
+
+    // -- Multi-source metrics instantiation ----------------------
+
+    part cswMultiSourceMetrics : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "System Status page + GET /api/system/metrics. Aggregates from 7 data sources across 3 persistence layers via Promise.allSettled.";
+        attribute :>> sessionRef = "Session 28 (CSW Phase 9)";
+        attribute :>> notes = "Individual source failures do not block the response.";
+    }
+
+    // -- Two-layer model visualisation instantiation -------------
+
+    part cswTwoLayerModelVisualisation : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "Process Model page — interactive SVG with click-to-modal showing domain layer, orchestration layer, and clinical analogy per step.";
+        attribute :>> sessionRef = "Session 28 (CSW Phase 9)";
+        attribute :>> notes = "Makes the domain/orchestration distinction visible and interactive in the UI.";
+    }
+
+    // -- Hand-crafted SVG instantiation --------------------------
+
+    part cswHandCraftedSvg : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "Process Model page — 8 nodes, 9 edges, themed to coffee shop palette. Click handlers per node. Replaced generated Mermaid.";
+        attribute :>> sessionRef = "Session 28 (CSW Phase 9)";
+        attribute :>> notes = "Better interactivity and theming control than Mermaid for stable pathways.";
+    }
+
+    // -- Activity taxonomy instantiations -----------------------
+
+    part cswActivityTaxonomy : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "CoffeeShopBusinessModel — 6 ActivityType usages across all 5 categories. ActivityGranularity policy per business area.";
+        attribute :>> sessionRef = "Session 14, extended Session 20";
+        attribute :>> notes = "Full five-category taxonomy instantiated for a simple service business.";
+    }
+
+    part gslActivityTaxonomy : DomainInstantiation {
+        attribute :>> domain = "GSL";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "BusinessModel::ActivityModel — ActivityCategory enum, ActivityType part def. Clinical activity types.";
+        attribute :>> sessionRef = "Session 15 (Business Meta Model Phase 3)";
+        attribute :>> notes = "Activity taxonomy designed as domain-agnostic from the start.";
+    }
+
+    // -- Scenario comparison instantiation -----------------------
+
+    part gslScenarioComparison : DomainInstantiation {
+        attribute :>> domain = "GSL";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "BusinessScenarios package — Lean Clinical vs Full Platform. Python projection engine with sensitivity analysis.";
+        attribute :>> sessionRef = "Sessions 17-18 (Business Meta Model Phases 5-6)";
+        attribute :>> notes = "Two-variant comparison with 24-month projections and break-even analysis.";
+    }
+
+    part cswScenarioComparison : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "CoffeeshopScenarios package — Small Kiosk vs Full Cafe vs Subscription. Growth assumptions, variance analysis, steering cycle.";
+        attribute :>> sessionRef = "Sessions 16-19";
+        attribute :>> notes = "Full scenario modelling including PeriodActuals, VarianceAnalysis, and GoalProjection.";
+    }
+
+    // -- Persistence policy instantiation ------------------------
+
+    part cswPersistencePolicy : DomainInstantiation {
+        attribute :>> domain = "CSW";
+        attribute :>> maturity = PatternMaturity::validated;
+        attribute :>> implementationRef = "CoffeeShopBusinessModel — 6 PersistencePolicy instances mapping domain concepts to persistence layers with rationale.";
+        attribute :>> sessionRef = "Session 29 (CSW Phase 10)";
+        attribute :>> notes = "Architectural reasoning queryable and auditable.";
+    }
 }
