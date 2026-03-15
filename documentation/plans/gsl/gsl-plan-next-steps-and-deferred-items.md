@@ -27,6 +27,13 @@
 | 9: System pages | ✓ Complete (Session 28) |
 | 10: Meta model update | ✓ Complete (Session 29) |
 
+### Concept Graph — Complete
+
+**Plan:** `gsl-plan-concept-graph-implementation-2026-03-15.md`
+**Status:** All 8 stages complete (Sessions 30–31). Workstream closed.
+
+Deliverables: `PatternCatalogue` SysML package (28 patterns, 33 domain instantiations), Obsidian vault concept graph (34 notes), syntax reference v3.12, three new standing conventions.
+
 **No active workstream.** Next session should select from candidates below.
 
 ---
@@ -196,20 +203,20 @@ All frontend findings from previous sessions remain current (Flowbite component 
 
 ## 11. Syntax Reference — Findings Requiring Update
 
-**Session 30 findings (new):**
+**Session 30 findings (incorporated into v3.12):**
 
-- [ ] `ref x : MetadataDef;` — verified ✓ (singular and multi-valued)
-- [ ] `ref x : EnumDef;` — verified ✓ (singular and multi-valued)
-- [ ] Wildcard import name collision — when two `private import X::*;` bring in identically-named types, Syside silently picks one. Type-errors appear downstream on `:>>` redefinitions, not at the ambiguous import. Fix: qualify with full path (e.g. `CoffeeShop::CatalogueEntry`). Convention: see `gsl-analysis-wildcard-import-collision-2026-03-15.md`.
+- [x] `ref x : MetadataDef;` — verified ✓ (singular and multi-valued)
+- [x] `ref x : EnumDef;` — verified ✓ (singular and multi-valued)
+- [x] Wildcard import name collision — when two `private import X::*;` bring in identically-named types, Syside silently picks one. Type-errors appear downstream on `:>>` redefinitions, not at the ambiguous import. Fix: qualify with full path (e.g. `CoffeeShop::CatalogueEntry`). Convention: see `gsl-analysis-wildcard-import-collision-2026-03-15.md`.
 - [ ] Top-level `PatternCatalogue` package in separate file — verified ✓ (consistent with existing pattern; nesting inside Foundation not attempted, known to fail per syntax reference §1)
 
-**Session 29 findings (not yet in syntax reference):**
+**Session 29 findings (incorporated into v3.12):**
 
-- [ ] `system` is a KerML reserved word — cannot be used as an enum literal. Silent parse failure.
-- [ ] Enum-typed attribute on metadata def — verified ✓
-- [ ] Cross-project specific named imports — do not work. Use wildcards.
-- [ ] Multi-valued enum attribute on part def (definition level) — verified ✓
-- [ ] Multi-valued enum `:>>` redefinition with tuple syntax on instances — untested
+- [x] `system` is a KerML reserved word — cannot be used as an enum literal. Silent parse failure.
+- [x] Enum-typed attribute on metadata def — verified ✓
+- [x] Cross-project specific named imports — do not work. Use wildcards.
+- [x] Multi-valued enum attribute on part def (definition level) — verified ✓
+- [ ] Multi-valued enum `:>>` redefinition with tuple syntax on instances — untested (carried forward)
 
 **Previous TODO items (unchanged):**
 
