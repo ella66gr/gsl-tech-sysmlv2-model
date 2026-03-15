@@ -18,10 +18,14 @@ package CoffeeShopBusinessModel {
     private import ScalarValues::*;
     private import BusinessModel::ServiceConcept::*;
     private import BusinessModel::ActivityModel::*;
-    private import Foundation::CommonTypes::PersistencePolicy;
-    private import Foundation::CommonTypes::PersistenceLayer;
-    private import Foundation::CommonTypes::DataCharacteristic;
+    private import Foundation::CommonTypes::*;
     private import CoffeeShop::*;
+
+    // Import note: Both CoffeeShop and BusinessModel::ServiceConcept
+    // export CatalogueEntry and ExternalReference (name collision
+    // introduced Session 29 when meta model CatalogueEntry was added).
+    // Catalogue entry usages below use fully qualified
+    // CoffeeShop::CatalogueEntry to resolve the ambiguity.
 
     doc /* Coffee shop business model extension. Instantiates the
          * ServiceConcept and ActivityModel part defs from the main
@@ -173,7 +177,7 @@ package CoffeeShopBusinessModel {
 
     // -- Hot drinks --
 
-    part flatWhiteCatalogue : CatalogueEntry {
+    part flatWhiteCatalogue : CoffeeShop::CatalogueEntry {
         doc /* Flat White — flagship espresso drink. */
         attribute :>> pricePence = 280;
         attribute :>> priceDisplay = "£2.80";
@@ -183,7 +187,7 @@ package CoffeeShopBusinessModel {
         attribute :>> statusNotes = "Core menu item";
     }
 
-    part latteCatalogue : CatalogueEntry {
+    part latteCatalogue : CoffeeShop::CatalogueEntry {
         attribute :>> pricePence = 280;
         attribute :>> priceDisplay = "£2.80";
         attribute :>> availability = AvailabilityStatus::active;
@@ -192,7 +196,7 @@ package CoffeeShopBusinessModel {
         attribute :>> statusNotes = "Core menu item";
     }
 
-    part americanoCatalogue : CatalogueEntry {
+    part americanoCatalogue : CoffeeShop::CatalogueEntry {
         attribute :>> pricePence = 250;
         attribute :>> priceDisplay = "£2.50";
         attribute :>> availability = AvailabilityStatus::active;
@@ -201,7 +205,7 @@ package CoffeeShopBusinessModel {
         attribute :>> statusNotes = "Core menu item";
     }
 
-    part cappuccinoCatalogue : CatalogueEntry {
+    part cappuccinoCatalogue : CoffeeShop::CatalogueEntry {
         attribute :>> pricePence = 280;
         attribute :>> priceDisplay = "£2.80";
         attribute :>> availability = AvailabilityStatus::active;
@@ -210,7 +214,7 @@ package CoffeeShopBusinessModel {
         attribute :>> statusNotes = "Core menu item";
     }
 
-    part espressoCatalogue : CatalogueEntry {
+    part espressoCatalogue : CoffeeShop::CatalogueEntry {
         attribute :>> pricePence = 200;
         attribute :>> priceDisplay = "£2.00";
         attribute :>> availability = AvailabilityStatus::active;
@@ -221,7 +225,7 @@ package CoffeeShopBusinessModel {
 
     // -- Cold drinks --
 
-    part icedLatteCatalogue : CatalogueEntry {
+    part icedLatteCatalogue : CoffeeShop::CatalogueEntry {
         attribute :>> pricePence = 320;
         attribute :>> priceDisplay = "£3.20";
         attribute :>> availability = AvailabilityStatus::active;
@@ -230,7 +234,7 @@ package CoffeeShopBusinessModel {
         attribute :>> statusNotes = "Seasonal favourite";
     }
 
-    part coldBrewCatalogue : CatalogueEntry {
+    part coldBrewCatalogue : CoffeeShop::CatalogueEntry {
         attribute :>> pricePence = 300;
         attribute :>> priceDisplay = "£3.00";
         attribute :>> availability = AvailabilityStatus::active;
@@ -241,7 +245,7 @@ package CoffeeShopBusinessModel {
 
     // -- New drinks --
 
-    part mochaLatteCatalogue : CatalogueEntry {
+    part mochaLatteCatalogue : CoffeeShop::CatalogueEntry {
         doc /* Mocha Latte — new addition, March 2026. */
         attribute :>> pricePence = 380;
         attribute :>> priceDisplay = "£3.80";
@@ -251,7 +255,7 @@ package CoffeeShopBusinessModel {
         attribute :>> statusNotes = "New menu item — espresso with chocolate and steamed milk";
     }
 
-    part frappeCatalogue : CatalogueEntry {
+    part frappeCatalogue : CoffeeShop::CatalogueEntry {
         doc /* Frappe — new addition, March 2026. */
         attribute :>> pricePence = 420;
         attribute :>> priceDisplay = "£4.20";
@@ -263,7 +267,7 @@ package CoffeeShopBusinessModel {
 
     // -- Food items (bought-in) --
 
-    part gingerBiscuitCatalogue : CatalogueEntry {
+    part gingerBiscuitCatalogue : CoffeeShop::CatalogueEntry {
         doc /* Ginger Biscuit — new addition, March 2026.
              * First bought-in item. Inventory tracking applies. */
         attribute :>> pricePence = 180;
@@ -274,7 +278,7 @@ package CoffeeShopBusinessModel {
         attribute :>> statusNotes = "New menu item — bought-in, stock tracked";
     }
 
-    part oatBarCatalogue : CatalogueEntry {
+    part oatBarCatalogue : CoffeeShop::CatalogueEntry {
         doc /* Oat Bar — new addition, March 2026.
              * Bought-in, vegan, gluten-free. */
         attribute :>> pricePence = 220;
