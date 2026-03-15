@@ -1,0 +1,83 @@
+// =========================================================================
+// SYNTAX TEST: ref :>> tuple redefinition between peer part usages
+//
+// Tests whether Syside 0.8.5 supports:
+// 1. ref :>> redefinition with a single target part usage
+// 2. ref :>> redefinition with a tuple of targets: (partA, partB)
+// 3. Circular ref between peer parts
+// 4. ref :>> redefinition targeting ArchitecturalPrinciple-typed parts
+//
+// Session 31, Knowledge Graph Enhancement — Stage 1.
+// =========================================================================
+
+package SyntaxTestRefTuple {
+    private import ScalarValues::*;
+
+    // -- Minimal type system mirroring PatternCatalogue ------
+
+    part def Principle {
+        attribute principleName : String;
+    }
+
+    part def Thing {
+        attribute thingName : String;
+        ref relatedThings : Thing[0..*];
+        ref motivatedBy : Principle[0..*];
+    }
+
+    // -- Principle instances ----------------------------------
+
+    part principleAlpha : Principle {
+        attribute :>> principleName = "Alpha";
+    }
+
+    part principleBeta : Principle {
+        attribute :>> principleName = "Beta";
+    }
+
+    // -- Part instances for testing ---------------------------
+
+    part thingA : Thing {
+        attribute :>> thingName = "A";
+    }
+
+    part thingB : Thing {
+        attribute :>> thingName = "B";
+    }
+
+    // TEST 1: Single-target ref :>> redefinition
+    part thingC : Thing {
+        attribute :>> thingName = "C";
+        ref :>> relatedThings = (thingA);
+    }
+
+    // TEST 2: Multi-valued tuple ref :>> redefinition
+    part thingD : Thing {
+        attribute :>> thingName = "D";
+        ref :>> relatedThings = (thingA, thingB);
+    }
+
+    // TEST 3: Circular ref — thingE refs thingF, thingF refs thingE
+    part thingE : Thing {
+        attribute :>> thingName = "E";
+        ref :>> relatedThings = (thingF);
+    }
+
+    part thingF : Thing {
+        attribute :>> thingName = "F";
+        ref :>> relatedThings = (thingE);
+    }
+
+    // TEST 4: Cross-type ref :>> to Principle instances
+    part thingG : Thing {
+        attribute :>> thingName = "G";
+        ref :>> relatedThings = (thingA, thingB);
+        ref :>> motivatedBy = (principleAlpha, principleBeta);
+    }
+
+    // TEST 5: Single principle ref :>>
+    part thingH : Thing {
+        attribute :>> thingName = "H";
+        ref :>> motivatedBy = (principleAlpha);
+    }
+}
