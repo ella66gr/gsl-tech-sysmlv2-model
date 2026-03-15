@@ -1,6 +1,6 @@
 # GSL — Next Steps and Deferred Items
 
-**Last updated:** 15 March 2026 (Session 31 — Concept Graph workstream complete, Knowledge Graph Enhancement planned)
+**Last updated:** 15 March 2026 (Session 31 — Knowledge Graph Enhancement complete. Concept Graph workstream fully closed.)
 
 **Purpose:** Living tracker of carried-forward items, deferred decisions, and potential next workstreams. Completed items are removed at each update — completion is recorded in session reports.
 
@@ -8,33 +8,15 @@
 
 ## 1. Active Workstream
 
-### CSW Extension — Complete
+**No active workstream.** Next session should select from candidates below. A periodic model review is recommended at this workstream boundary.
 
-**Plan:** `gsl-plan-workstream-csw-extension-2026-03-12.md`
-**Status:** All 10 phases complete (Sessions 20–29). Workstream closed.
+### Recently Completed
 
-| Phase | Status |
-|---|---|
-| 0: Conceptual modelling | ✓ Complete |
-| 1: SysML domain model update | ✓ Complete (Session 20) |
-| 2: PostgreSQL foundation | ✓ Complete (Session 21) |
-| 3: Catalogue & inventory API routes | ✓ Complete (Session 22) |
-| 4: Frontend foundation (Tailwind v4 + Flowbite) | ✓ Complete (Session 23) |
-| 5: Counter page (dynamic order form) | ✓ Complete (Session 24) |
-| 6: Manager GUI — stock & catalogue | ✓ Complete (Session 25) |
-| 7: Order Board & Order Timeline | ✓ Complete (Session 26) |
-| 8: Data & insights pages | ✓ Complete (Session 27) |
-| 9: System pages | ✓ Complete (Session 28) |
-| 10: Meta model update | ✓ Complete (Session 29) |
-
-### Concept Graph — Complete
-
-**Plan:** `gsl-plan-concept-graph-implementation-2026-03-15.md`
-**Status:** All 8 stages complete (Sessions 30–31). Workstream closed.
-
-Deliverables: `PatternCatalogue` SysML package (28 patterns, 33 domain instantiations), Obsidian vault concept graph (34 notes), syntax reference v3.12, three new standing conventions.
-
-**No active workstream.** Next session should select from candidates below.
+| Workstream | Sessions | Closed |
+|---|---|---|
+| CSW Extension (Phases 1–10) | 20–29 | Session 29 |
+| Concept Graph (Stages 1–8) | 30–31 | Session 31 |
+| Knowledge Graph Enhancement (Stages 1–6) | 31 | Session 31 |
 
 ---
 
@@ -42,20 +24,14 @@ Deliverables: `PatternCatalogue` SysML package (28 patterns, 33 domain instantia
 
 **Convention (established Session 30):** The project conducts proactive code and model reviews at suitable pauses — typically after completing a workstream, before starting a new one, or when the model has grown significantly. Reviews cover:
 
-- **Type safety:** Wildcard import collisions, enum-vs-String mismatches, unqualified ambiguous types (see `gsl-analysis-wildcard-import-collision-2026-03-15.md`).
+- **Type safety:** Wildcard import collisions, enum-vs-String mismatches, unqualified ambiguous types.
 - **Naming consistency:** Reserved word traps, domain-agnostic naming in meta model, compound naming convention.
 - **Structural integrity:** Doc block gaps, cross-reference formalisation status, package hierarchy clarity.
 - **Silent failure detection:** Syside parse anomalies, cascading reference-errors from upstream issues, unused imports.
 - **Convention compliance:** Import collision convention, two meta model classification in doc blocks, commit message format.
 
-**Triggers for review:**
-- Completion of a workstream (natural pause point)
-- Model growth exceeding ~50 new elements since last review
-- Before starting a workstream that builds heavily on existing model elements
-- After any finding that reveals a class of silent failure (e.g. the Session 30 wildcard collision discovery)
-
 **Last review:** Partial — Session 30 (wildcard import collision audit across all `.sysml` files).
-**Next recommended review:** After Concept Graph workstream completion (Session 31), covering the full model.
+**Next recommended review:** Now — workstream boundary after Knowledge Graph Enhancement. Full model review covering 11 `.sysml` files.
 
 ---
 
@@ -73,68 +49,43 @@ Source: `gsl-plan-coffeeshop-demonstrator-integration-2026-03-10.md` section 4.
 
 ### Second Clinical Pathway
 
-Model a second clinical pathway (ongoing monitoring, shared care transition, or follow-up assessment). Tests whether the architecture generalises and triggers cross-pathway rule sharing. Would also validate the ServiceOffering→ClinicalPathway mapping that is currently string-referenced. Should include `NotificationTrigger` metadata (item 9.3) and `AgencyClassification` annotations (item 9.1, now available in MetadataLibrary).
-
-### Pattern Catalogue and Cross-Domain Concept Registry (CSW Phase 10 companion)
-
-The project has reached a scale where the web of relationships between architectural patterns, domain concepts, deferred items, and their cross-domain analogues exceeds working memory. A formal concept registry is needed — primarily in SysML, with Obsidian as the navigation and exploration layer.
-
-**SysML layer:** `Foundation::PatternCatalogue` package defining abstract architectural patterns as `part def`s. The two meta model distinction should be a top-level organising principle — patterns are classified as business meta model patterns or system meta model patterns.
-
-**Obsidian layer:** Vault structure with templates and frontmatter. MCP bridge for Claude access during sessions.
-
-**Scope:** 2 sessions. Source: Session 26 discussion.
+Model a second clinical pathway (ongoing monitoring, shared care transition, or follow-up assessment). Tests whether the architecture generalises and triggers cross-pathway rule sharing. Would also validate the ServiceOffering→ClinicalPathway mapping that is currently string-referenced. Should include `NotificationTrigger` metadata and `AgencyClassification` annotations (now available in MetadataLibrary).
 
 ### Model Consolidation Review
 
-The model has grown substantially across 29 sessions. Review for naming consistency, doc block gaps, structural simplification opportunities, package hierarchy clarity. Workstream 6 items in the work analysis.
+The model has grown substantially across 31 sessions. Review for naming consistency, doc block gaps, structural simplification opportunities, package hierarchy clarity.
 
 ### System Meta Model Extraction
 
-The business system meta model is currently implicit across Foundation, Platform, ServiceDelivery, Knowledge, and Operations. Phase 10 added to it (PersistencePolicy, AgencyClassification) with explicit doc blocks. A future workstream could promote these concepts into a named, navigable meta model structure. This is a longer-term architectural evolution, not an urgent need.
+The business system meta model is currently implicit across Foundation, Platform, ServiceDelivery, Knowledge, and Operations. Phase 10 added to it (PersistencePolicy, AgencyClassification) with explicit doc blocks. A future workstream could promote these concepts into a named, navigable meta model structure.
 
 ### Variant C Elaboration
 
 "Consultancy + Platform Licence" — dual revenue streams (clinical + SaaS). Requires modelling licence pricing, platform deployment for licensees, and support cost structures.
 
-### Knowledge Graph Enhancement — SysML-Native Semantic Relationships
-
-Extend the PatternCatalogue with typed `ref` relationships between patterns and new `ArchitecturalPrinciple` part defs. Build a generator that reads SysML and produces Mermaid visualisations. The model describes its own patterns *and how they relate*.
-
-**Plan:** `gsl-plan-knowledge-graph-implementation-2026-03-15.md`
-**Discussion:** `gsl-discussion-knowledge-graph-architecture-2026-03-15.md`
-**Estimated effort:** 6 stages, 2.5–3 hours.
-**Prerequisites:** Syntax test for `ref :>>` tuple redefinition.
-
 ### Hookmark Cross-Desktop Linking Spike
 
-Hookmark is installed and licensed. Spike: hook key artefacts together (pattern notes ↔ `.sysml` files, session reports ↔ discussion papers), evaluate whether the navigation payoff justifies the manual practice. Configure `hook://file/` URI scheme for Obsidian. Cannot be programmatically controlled — manual practice only.
+Hookmark is installed and licensed. Spike: hook key artefacts together (pattern notes ↔ `.sysml` files, session reports ↔ discussion papers), evaluate navigation payoff. Configure `hook://file/` URI scheme for Obsidian. Cannot be programmatically controlled — manual practice only.
 
 **Effort:** 1 hour spike.
-**Dependencies:** None.
 
 ### Visualisation: Tom Sawyer SysML v2 Viewer (Horizon)
 
-Investigate the standalone Tom Sawyer SysML v2 Viewer for stakeholder-facing interactive model views. Requires a SysML v2 API-compliant repository. Options: on-premises, AWS deployment, or OEM licensing within Syside. Version 2.0 adds sequence diagrams, expanded compartment types, AI browser compatibility.
+Investigate the standalone Tom Sawyer SysML v2 Viewer for stakeholder-facing interactive model views. Requires a SysML v2 API-compliant repository. 
 
 **When:** When stakeholder communication becomes a priority.
-**See also:** Tom Sawyer views in VS Code (beyond Syside built-in); web-based visualisation of repo sources.
 
-### Visualisation: Alternative Diagramming Approaches (Horizon)
+### Visualisation: Alternative Diagramming (Horizon)
 
-D2, Graphviz/DOT, and Structurizr as complementary diagramming options alongside Mermaid. D2 for architecture overviews; Graphviz for algorithmic graph layouts; Structurizr for C4 model alignment.
-
-**When:** When specific view types exceed what Mermaid can adequately represent.
+D2, Graphviz/DOT, Structurizr as complementary diagramming alongside Mermaid.
 
 ### Tooling Evolution: Claude Code, Cowork, Obsidian Integrations
 
-**Claude Code** — explore for implementation-heavy phases. Key value: `CLAUDE.md` project file encoding architecture rules (two meta model distinction, import collision convention, naming rules) as living constraints enforced across sessions. Custom `/commands` for recurring workflows. Not urgent — current Chat workflow is productive and fine-grained. Explore when a suitable implementation phase arises (e.g. Knowledge Layer Increment).
+**Claude Code** — validated for implementation-heavy tasks (Session 31 Stage 4 handoff successful). Explore `CLAUDE.md` project file encoding architecture rules. Custom `/commands` for recurring workflows. Not urgent — current hybrid workflow (Chat for SysML + Code for Python) is productive.
 
-**Claude Cowork** — explore for batch cross-file operations (weekly digests, automated report generation) if/when those become a bottleneck. Not currently needed.
+**Claude Cowork** — explore for batch cross-file operations when needed.
 
-**Obsidian integrations** — explore when Ella returns to broader Obsidian use for business development work. Options: CAO (chat-in-notes), Agent Client (Claude Code inside Obsidian), Claude Sidebar, Obsidian MCP tools plugin (vault-aware search/linking beyond filesystem access). See Perplexity discussion document for full landscape survey.
-
-Source: Session 30 discussion, Perplexity landscape survey (`Claude_options.md`).
+**Obsidian integrations** — explore when broader Obsidian use develops. See Perplexity landscape survey.
 
 ---
 
@@ -232,20 +183,13 @@ All frontend findings from previous sessions remain current (Flowbite component 
 
 ## 11. Syntax Reference — Findings Requiring Update
 
-**Session 30 findings (incorporated into v3.12):**
+**Session 31 findings (for v3.13):**
 
-- [x] `ref x : MetadataDef;` — verified ✓ (singular and multi-valued)
-- [x] `ref x : EnumDef;` — verified ✓ (singular and multi-valued)
-- [x] Wildcard import name collision — when two `private import X::*;` bring in identically-named types, Syside silently picks one. Type-errors appear downstream on `:>>` redefinitions, not at the ambiguous import. Fix: qualify with full path (e.g. `CoffeeShop::CatalogueEntry`). Convention: see `gsl-analysis-wildcard-import-collision-2026-03-15.md`.
-- [ ] Top-level `PatternCatalogue` package in separate file — verified ✓ (consistent with existing pattern; nesting inside Foundation not attempted, known to fail per syntax reference §1)
-
-**Session 29 findings (incorporated into v3.12):**
-
-- [x] `system` is a KerML reserved word — cannot be used as an enum literal. Silent parse failure.
-- [x] Enum-typed attribute on metadata def — verified ✓
-- [x] Cross-project specific named imports — do not work. Use wildcards.
-- [x] Multi-valued enum attribute on part def (definition level) — verified ✓
-- [ ] Multi-valued enum `:>>` redefinition with tuple syntax on instances — untested (carried forward)
+- [x] `ref :>> fieldName = (target);` — single-target tuple redefinition ✅
+- [x] `ref :>> fieldName = (targetA, targetB);` — multi-valued tuple redefinition ✅
+- [x] Circular `ref :>>` between peer part usages ✅
+- [x] Cross-type `ref :>>` (Pattern instance referencing ArchitecturalPrinciple peer parts) ✅
+- [x] Forward reference in `ref :>>` ✅
 
 **Previous TODO items (unchanged):**
 
@@ -259,6 +203,7 @@ All frontend findings from previous sessions remain current (Flowbite component 
 - [ ] Generator: `Promise.all()` from SysML `fork`/`join`
 - [ ] Nested `:>>` redefinition inside contained parts inside part usages
 - [ ] `ref` to a `requirement def` as a type
+- [ ] Multi-valued enum `:>>` redefinition with tuple syntax on instances
 
 ---
 
@@ -272,7 +217,8 @@ All frontend findings from previous sessions remain current (Flowbite component 
 | Knowledge Layer Elaboration (Phases 1–5) | 8–12 | Complete |
 | Business Meta Model (Phases 1–7) | 13–19 | Complete |
 | Coffee Shop Business Model Extensions | 14–19 | Complete |
-| **CSW Extension (Phases 1–10)** | **20–29** | **Complete** |
+| CSW Extension (Phases 1–10) | 20–29 | Complete |
+| **Concept Graph + Knowledge Graph Enhancement** | **30–31** | **Complete** |
 
 ---
 
@@ -282,4 +228,4 @@ Discussion paper: `gsl-discussion-two-phase-generation-pipeline-2026-03-13.md`. 
 
 ---
 
-*Updated 14 March 2026 (Session 29). CSW Extension workstream complete. No active workstream — next session selects from candidates.*
+*Updated 15 March 2026 (Session 31). Knowledge Graph Enhancement complete. No active workstream.*
