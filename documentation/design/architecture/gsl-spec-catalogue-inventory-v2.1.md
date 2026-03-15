@@ -1,4 +1,4 @@
-# Catalogue & Inventory — Domain Model and Implementation Specification
+# CSW Catalogue & Inventory — Domain Model and Implementation Specification
 
 **Project:** GenderSense (GSL) — Coffee Shop Demonstrator
 **Date:** 12 March 2026
