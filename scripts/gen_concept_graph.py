@@ -24,6 +24,7 @@ Output:
     --output=terminal     Print to stdout (default)
     --save                Save to generated/concept-graph/
     --save-all            Save all views
+    --update-obsidian     Embed per-pattern Mermaid subgraphs in Obsidian notes
 
 No dependencies beyond PyYAML (pip install pyyaml) — only needed for
 --source=yaml fallback.
@@ -47,11 +48,26 @@ GENERATED_DIR = REPO_ROOT / "generated" / "concept-graph"
 PATTERN_CATALOGUE_FILE = MODEL_DIR / "pattern-catalogue.sysml"
 RELATIONSHIPS_FILE = CONCEPT_GRAPH_DIR / "concept-graph-relationships.yaml"
 
+# Obsidian vault — concept graph pattern notes
+OBSIDIAN_PATTERNS_DIR = pathlib.Path.home() / "Obsidian" / "GenderSense" / "02 ARCHITECTURE & MODELLING" / "Concept Graph" / "patterns"
+
 # Relationship predicates that are ref fields on Pattern
 REF_PREDICATES = (
     "dependsOn", "enables", "motivatedBy", "generalises",
     "constrains", "extends", "validatedBy", "composedWith",
 )
+
+# Markers for generated content in Obsidian notes
+GENERATED_BEGIN = "<!-- GENERATED:SUBGRAPH:BEGIN -->"
+GENERATED_END = "<!-- GENERATED:SUBGRAPH:END -->"
+
+# camelCase pattern name → kebab-case Obsidian filename
+def pattern_to_obsidian_filename(name):
+    """Convert camelCase pattern name to pattern-kebab-case.md filename."""
+    # Insert hyphens before uppercase letters
+    kebab = re.sub(r'([a-z])([A-Z])', r'\1-\2', name).lower()
+    return f"pattern-{kebab}.md"
+
 
 # ---------------------------------------------------------------
 # SysML parser — extract patterns, principles, instantiations,
@@ -76,7 +92,7 @@ def parse_pattern_catalogue(filepath):
         attrs = parse_attributes(body)
         principles[name] = attrs
 
-    # Match pattern instances: part <name> : Pattern { ... }
+    # Match pattern instances: part <n> : Pattern { ... }
     pattern_re = re.compile(
         r'part\s+(\w+)\s*:\s*Pattern\s*\{(.*?)\n    \}',
         re.DOTALL
@@ -88,7 +104,7 @@ def parse_pattern_catalogue(filepath):
         attrs["_refs"] = parse_ref_redefinitions(body)
         patterns[name] = attrs
 
-    # Match domain instantiations: part <name> : DomainInstantiation { ... }
+    # Match domain instantiations: part <n> : DomainInstantiation { ... }
     inst_re = re.compile(
         r'part\s+(\w+)\s*:\s*DomainInstantiation\s*\{(.*?)\n    \}',
         re.DOTALL
@@ -142,11 +158,7 @@ def parse_ref_redefinitions(body):
 # ---------------------------------------------------------------
 
 def build_relationships_from_sysml(patterns, principles, instantiations):
-    """Build a YAML-compatible data dict from parsed SysML refs.
-
-    Returns a dict with 'relationships', 'principles', and 'analogues'
-    keys that the Mermaid generators can consume.
-    """
+    """Build a YAML-compatible data dict from parsed SysML refs."""
     relationships = []
 
     for pattern_name, attrs in patterns.items():
@@ -179,29 +191,21 @@ def build_relationships_from_sysml(patterns, principles, instantiations):
 
 
 def infer_analogues(instantiations):
-    """Infer cross-domain analogue pairs from DomainInstantiation names.
-
-    Convention: cswFourLayerItemModel and gslFourLayerItemModel share
-    the pattern name 'fourLayerItemModel' → analogues in CSW and GSL.
-    """
-    # Group instantiations by their pattern name suffix
-    # e.g. cswFourLayerItemModel → prefix=csw, suffix=FourLayerItemModel
+    """Infer cross-domain analogue pairs from DomainInstantiation names."""
     domain_prefixes = {"csw": "CSW", "gsl": "GSL"}
-    by_pattern = {}  # pattern_suffix → {domain: inst_name}
+    by_pattern = {}
 
     for inst_name, attrs in instantiations.items():
         domain = attrs.get("domain", "")
         for prefix, domain_label in domain_prefixes.items():
             if inst_name.startswith(prefix) and inst_name[len(prefix):len(prefix)+1].isupper():
                 suffix = inst_name[len(prefix):]
-                # Convert first char to lowercase to get the pattern name
                 pattern_key = suffix[0].lower() + suffix[1:]
                 if pattern_key not in by_pattern:
                     by_pattern[pattern_key] = {}
                 by_pattern[pattern_key][domain_label] = inst_name
                 break
 
-    # For each pattern that exists in both CSW and GSL, create an analogue pair
     analogues = []
     for pattern_key, domains in sorted(by_pattern.items()):
         if "CSW" in domains and "GSL" in domains:
@@ -260,21 +264,221 @@ def safe_id(s):
 
 
 # ---------------------------------------------------------------
-# Maturity → colour mapping
+# Maturity → colour/style mapping
 # ---------------------------------------------------------------
 
 MATURITY_COLOURS = {
-    "validated":   "#2d6a4f",  # deep green
-    "implemented": "#40916c",  # green
-    "designed":    "#e9c46a",  # amber
-    "discussion":  "#e76f51",  # coral
+    "validated":   "#2d6a4f",
+    "implemented": "#40916c",
+    "designed":    "#e9c46a",
+    "discussion":  "#e76f51",
 }
 
-META_MODEL_COLOURS = {
-    "business":       "#264653",  # dark teal
-    "businessSystem": "#2a9d8f",  # teal
-    "crossCutting":   "#8338ec",  # purple
-}
+
+# ---------------------------------------------------------------
+# Per-pattern subgraph generator
+# ---------------------------------------------------------------
+
+def generate_pattern_subgraph(target, patterns, principles, data):
+    """Generate a Mermaid subgraph showing a pattern's immediate relationships.
+
+    The target pattern is the focal node. All directly connected patterns
+    and principles are shown with labelled edges.
+    """
+    rels = data.get("relationships", [])
+    principle_map = {p["id"]: p["label"] for p in data.get("principles", [])}
+
+    # Collect all edges involving this pattern (outgoing and incoming)
+    outgoing = []  # (predicate, target_name)
+    incoming = []  # (predicate, source_name)
+
+    for r in rels:
+        subj = r.get("subject", "")
+        obj = r.get("object", "")
+        pred = r.get("predicate", "")
+
+        if subj == target:
+            outgoing.append((pred, obj))
+        elif obj == target:
+            incoming.append((pred, subj))
+
+    # Collect all referenced nodes
+    connected_patterns = set()
+    connected_principles = set()
+
+    for pred, name in outgoing:
+        if pred == "motivatedBy":
+            connected_principles.add(name)
+        elif name in patterns:
+            connected_patterns.add(name)
+
+    for pred, name in incoming:
+        if name in patterns:
+            connected_patterns.add(name)
+
+    # If no connections, return empty
+    if not connected_patterns and not connected_principles:
+        return None
+
+    lines = ["graph LR"]
+    lines.append("")
+
+    # Focal pattern node — styled distinctly
+    target_label = pattern_label(target, patterns)
+    target_mat = patterns[target].get("maturity", "discussion")
+    lines.append(f"    {safe_id(target)}[[\"{target_label}\"]]:::focal")
+
+    # Connected pattern nodes
+    for name in sorted(connected_patterns):
+        label = pattern_label(name, patterns)
+        mat = patterns[name].get("maturity", "discussion")
+        lines.append(f"    {safe_id(name)}[\"{label}\"]:::{mat}")
+
+    # Principle nodes (stadium/pill shape — avoids Mermaid hexagon brace escaping)
+    for name in sorted(connected_principles):
+        label = principle_map.get(name, camel_to_title(name))
+        # Truncate long labels for diagram readability
+        if len(label) > 35:
+            label = label[:32] + "..."
+        node_id = safe_id(name)
+        lines.append("    " + node_id + '(["' + label + '"]):::principle')
+
+    lines.append("")
+
+    # Outgoing edges
+    PRED_LABELS = {
+        "dependsOn": "depends on",
+        "enables": "enables",
+        "motivatedBy": "motivated by",
+        "generalises": "generalises",
+        "constrains": "constrains",
+        "extends": "extends",
+        "validatedBy": "validates",
+        "composedWith": "composed with",
+    }
+    PRED_STYLES = {
+        "dependsOn": "-->",
+        "enables": "-.->",
+        "motivatedBy": "-->",
+        "generalises": "-->",
+        "constrains": "-->",
+        "extends": "-->",
+        "validatedBy": "-.->",
+        "composedWith": "<-->",
+    }
+
+    for pred, name in outgoing:
+        edge = PRED_STYLES.get(pred, "-->")
+        label = PRED_LABELS.get(pred, pred)
+        lines.append(f"    {safe_id(target)} {edge}|{label}| {safe_id(name)}")
+
+    # Incoming edges (reverse direction — other pattern → this pattern)
+    INVERSE_LABELS = {
+        "dependsOn": "needs",
+        "enables": "enabled by",
+        "motivatedBy": "motivates",
+        "generalises": "generalised by",
+        "constrains": "constrained by",
+        "extends": "extends",
+        "validatedBy": "validated by",
+        "composedWith": "with",
+    }
+
+    for pred, name in incoming:
+        label = INVERSE_LABELS.get(pred, pred)
+        lines.append(f"    {safe_id(name)} -.->|{label}| {safe_id(target)}")
+
+    # Style classes
+    lines.append("")
+    lines.append("    classDef focal fill:#1d3557,color:#fff,stroke:#0d1b2a,stroke-width:3px")
+    lines.append("    classDef principle fill:#e8daef,stroke:#7d3c98")
+    lines.append("    classDef validated fill:#2d6a4f,color:#fff,stroke:#1b4332")
+    lines.append("    classDef implemented fill:#40916c,color:#fff,stroke:#2d6a4f")
+    lines.append("    classDef designed fill:#e9c46a,color:#000,stroke:#f4a261")
+    lines.append("    classDef discussion fill:#e76f51,color:#fff,stroke:#e63946")
+
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------
+# Obsidian note updater
+# ---------------------------------------------------------------
+
+def update_obsidian_notes(patterns, principles, data):
+    """Embed per-pattern Mermaid subgraphs into Obsidian pattern notes.
+
+    Inserts or replaces content between GENERATED:SUBGRAPH:BEGIN/END
+    markers. Places the block after the ## Semantic Relationships heading.
+    """
+    if not OBSIDIAN_PATTERNS_DIR.exists():
+        print(f"  WARNING: Obsidian patterns directory not found: {OBSIDIAN_PATTERNS_DIR}")
+        return 0
+
+    updated = 0
+    skipped = 0
+
+    for pattern_name in sorted(patterns.keys()):
+        filename = pattern_to_obsidian_filename(pattern_name)
+        filepath = OBSIDIAN_PATTERNS_DIR / filename
+
+        if not filepath.exists():
+            # Try common variations
+            skipped += 1
+            continue
+
+        mermaid = generate_pattern_subgraph(pattern_name, patterns, principles, data)
+        if mermaid is None:
+            continue  # No connections — skip
+
+        # Build the generated block
+        generated_block = "\n".join([
+            GENERATED_BEGIN,
+            "",
+            "```mermaid",
+            mermaid,
+            "```",
+            "",
+            f"*Generated from `pattern-catalogue.sysml` — do not edit manually.*",
+            "",
+            GENERATED_END,
+        ])
+
+        content = filepath.read_text(encoding="utf-8")
+
+        # Check if markers already exist — replace
+        if GENERATED_BEGIN in content and GENERATED_END in content:
+            before = content[:content.index(GENERATED_BEGIN)]
+            after = content[content.index(GENERATED_END) + len(GENERATED_END):]
+            new_content = before + generated_block + after
+        else:
+            # Insert after ## Semantic Relationships heading
+            sem_heading = "## Semantic Relationships"
+            if sem_heading in content:
+                idx = content.index(sem_heading)
+                # Find end of the heading line
+                newline_after = content.index("\n", idx)
+                before = content[:newline_after + 1]
+                after = content[newline_after + 1:]
+                new_content = before + "\n" + generated_block + "\n" + after
+            else:
+                # No semantic relationships section — insert before ## Cross-Domain
+                # or ## Domain Instantiations or at end of file
+                for fallback_heading in ["## Cross-Domain", "## Domain Instantiations", "## Related Patterns", "## Source"]:
+                    if fallback_heading in content:
+                        idx = content.index(fallback_heading)
+                        before = content[:idx]
+                        after = content[idx:]
+                        new_content = before + "## Relationship Graph\n\n" + generated_block + "\n\n" + after
+                        break
+                else:
+                    # Append at end
+                    new_content = content.rstrip() + "\n\n## Relationship Graph\n\n" + generated_block + "\n"
+
+        filepath.write_text(new_content, encoding="utf-8")
+        updated += 1
+
+    return updated, skipped
+
 
 # ---------------------------------------------------------------
 # Mermaid generators — one per view
@@ -285,7 +489,6 @@ def generate_overview(patterns, relationships, data):
     lines = ["graph TD"]
     lines.append("")
 
-    # Classify patterns by meta model
     business = []
     system = []
     cross = []
@@ -303,7 +506,6 @@ def generate_overview(patterns, relationships, data):
         else:
             cross.append(name)
 
-    # Subgraphs by meta model
     lines.append("    subgraph BM[\"Business Meta Model\"]")
     lines.append("        direction TB")
     for name in business:
@@ -338,14 +540,12 @@ def generate_overview(patterns, relationships, data):
         lines.append("    end")
         lines.append("")
 
-    # Edges from relationships
     rels = data.get("relationships", [])
     for rel in rels:
         subj = rel.get("subject", "")
         obj = rel.get("object", "")
         pred = rel.get("predicate", "")
 
-        # Only pattern-to-pattern edges (skip principles and domain analogues)
         if "::" in subj or "::" in obj:
             continue
         if subj not in patterns or obj not in patterns:
@@ -364,7 +564,6 @@ def generate_overview(patterns, relationships, data):
         elif pred == "validatedBy":
             lines.append(f"    {safe_id(subj)} -.->|validates| {safe_id(obj)}")
 
-    # Style classes
     lines.append("")
     lines.append("    classDef deferred stroke-dasharray: 5 5,fill:#fce4ec")
 
@@ -379,15 +578,12 @@ def generate_motivation(patterns, relationships, data):
     principle_list = data.get("principles", [])
     rels = data.get("relationships", [])
 
-    # Collect only motivation relationships
     motiv_rels = [r for r in rels if r.get("predicate") == "motivatedBy"]
 
-    # Find referenced principles
     referenced_principles = set()
     for r in motiv_rels:
         referenced_principles.add(r["object"])
 
-    # Principle nodes
     lines.append("    subgraph PRIN[\"Architectural Principles\"]")
     lines.append("        direction TB")
     for p in principle_list:
@@ -396,7 +592,6 @@ def generate_motivation(patterns, relationships, data):
     lines.append("    end")
     lines.append("")
 
-    # Pattern nodes — only those that have motivation edges
     motivated_patterns = set()
     for r in motiv_rels:
         motivated_patterns.add(r["subject"])
@@ -410,7 +605,6 @@ def generate_motivation(patterns, relationships, data):
     lines.append("    end")
     lines.append("")
 
-    # Motivation edges
     for r in motiv_rels:
         subj = r["subject"]
         obj = r["object"]
@@ -424,17 +618,15 @@ def generate_motivation(patterns, relationships, data):
 
 
 def generate_analogues(patterns, relationships, data):
-    """Cross-domain analogue map — inferred from DomainInstantiation parentage."""
+    """Cross-domain analogue map."""
     lines = ["graph LR"]
     lines.append("")
 
     analogues = data.get("analogues", [])
 
     if not analogues:
-        # Fallback for YAML source: use explicit analogueTo relationships
         rels = data.get("relationships", [])
         analogue_rels = [r for r in rels if r.get("predicate") == "analogueTo"]
-
         csw_items = set()
         gsl_items = set()
         for r in analogue_rels:
@@ -448,7 +640,6 @@ def generate_analogues(patterns, relationships, data):
             lines.append(f"        {safe_id(item)}[\"{short}\"]:::csw")
         lines.append("    end")
         lines.append("")
-
         lines.append("    subgraph GSL[\"Gender-Affirming Care (GSL)\"]")
         lines.append("        direction TB")
         for item in sorted(gsl_items):
@@ -456,18 +647,10 @@ def generate_analogues(patterns, relationships, data):
             lines.append(f"        {safe_id(item)}[\"{short}\"]:::gsl")
         lines.append("    end")
         lines.append("")
-
         for r in analogue_rels:
             note = r.get("note", "")
             lines.append(f"    {safe_id(r['subject'])} <-.->|{note}| {safe_id(r['object'])}")
     else:
-        # SysML source: inferred analogues from shared DomainInstantiation parentage
-        csw_names = []
-        gsl_names = []
-        for a in analogues:
-            csw_names.append(a["csw"])
-            gsl_names.append(a["gsl"])
-
         lines.append("    subgraph CSW[\"Coffee Shop (CSW)\"]")
         lines.append("        direction TB")
         for a in analogues:
@@ -475,7 +658,6 @@ def generate_analogues(patterns, relationships, data):
             lines.append(f"        {safe_id(a['csw'])}[\"{csw_label}\"]:::csw")
         lines.append("    end")
         lines.append("")
-
         lines.append("    subgraph GSL[\"Gender-Affirming Care (GSL)\"]")
         lines.append("        direction TB")
         for a in analogues:
@@ -483,7 +665,6 @@ def generate_analogues(patterns, relationships, data):
             lines.append(f"        {safe_id(a['gsl'])}[\"{gsl_label}\"]:::gsl")
         lines.append("    end")
         lines.append("")
-
         for a in analogues:
             pattern_label_str = camel_to_title(a["pattern"])
             lines.append(f"    {safe_id(a['csw'])} <-.->|{pattern_label_str}| {safe_id(a['gsl'])}")
@@ -521,7 +702,6 @@ def generate_impact(patterns, relationships, data, target_pattern):
 
     rels = data.get("relationships", [])
 
-    # Find all patterns that depend on target (direct and transitive)
     dependents = set()
     frontier = {target_pattern}
     visited = set()
@@ -538,16 +718,13 @@ def generate_impact(patterns, relationships, data, target_pattern):
                     dependents.add(dep)
                     frontier.add(dep)
 
-    # Target node
     target_label = pattern_label(target_pattern, patterns)
     lines.append(f"    {safe_id(target_pattern)}[\"{target_label}\"]:::target")
 
-    # Dependent nodes
     for dep in dependents:
         dep_label = pattern_label(dep, patterns)
         lines.append(f"    {safe_id(dep)}[\"{dep_label}\"]:::impacted")
 
-    # Edges
     for r in rels:
         if r.get("predicate") == "dependsOn":
             subj = r["subject"]
@@ -571,7 +748,6 @@ def generate_dependencies(patterns, relationships, data):
     dep_rels = [r for r in rels if r.get("predicate") == "dependsOn"
                 and r.get("subject") in patterns and r.get("object") in patterns]
 
-    # Collect referenced patterns
     referenced = set()
     for r in dep_rels:
         referenced.add(r["subject"])
@@ -632,9 +808,13 @@ def main():
         "--save-all", action="store_true",
         help="Save all views to generated/concept-graph/"
     )
+    parser.add_argument(
+        "--update-obsidian", action="store_true",
+        help="Embed per-pattern Mermaid subgraphs into Obsidian pattern notes"
+    )
     args = parser.parse_args()
 
-    # Parse SysML catalogue (always needed for pattern metadata)
+    # Parse SysML catalogue
     if not PATTERN_CATALOGUE_FILE.exists():
         print(f"ERROR: {PATTERN_CATALOGUE_FILE} not found")
         sys.exit(1)
@@ -662,7 +842,13 @@ def main():
 
     analogue_count = len(data.get("analogues", []))
     if analogue_count:
-        print(f"  Inferred {analogue_count} cross-domain analogue pairs from DomainInstantiation naming")
+        print(f"  Inferred {analogue_count} cross-domain analogue pairs")
+
+    # Handle --update-obsidian
+    if args.update_obsidian:
+        updated, skipped = update_obsidian_notes(patterns, principles, data)
+        print(f"  Updated {updated} Obsidian pattern notes ({skipped} not found)")
+        return
 
     if args.save_all:
         GENERATED_DIR.mkdir(parents=True, exist_ok=True)
@@ -672,7 +858,6 @@ def main():
             outpath.write_text(mermaid, encoding="utf-8")
             print(f"  Saved: {outpath}")
 
-        # Also generate a combined markdown file for Obsidian embedding
         md_lines = [
             "# Concept Graph — Generated Views",
             "",

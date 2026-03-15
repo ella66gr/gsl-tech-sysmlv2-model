@@ -1,3 +1,6 @@
+```mermaid
+
+
 graph LR
 
     subgraph CSW["Coffee Shop (CSW)"]
@@ -11,7 +14,7 @@ graph LR
         cswThreeLayerPersistence["Csw Three Layer Persistence"]:::csw
         cswTwoLayerActionFlow["Csw Two Layer Action Flow"]:::csw
     end
-
+    
     subgraph GSL["Gender-Affirming Care (GSL)"]
         direction TB
         gslActivityTaxonomy["Gsl Activity Taxonomy"]:::gsl
@@ -23,7 +26,7 @@ graph LR
         gslThreeLayerPersistence["Gsl Three Layer Persistence"]:::gsl
         gslTwoLayerActionFlow["Gsl Two Layer Action Flow"]:::gsl
     end
-
+    
     cswActivityTaxonomy <-.->|Activity Taxonomy| gslActivityTaxonomy
     cswCatalogueAsUiContract <-.->|Catalogue As Ui Contract| gslCatalogueAsUiContract
     cswFiveLayerSelfKnowledge <-.->|Five Layer Self Knowledge| gslFiveLayerSelfKnowledge
@@ -32,6 +35,9 @@ graph LR
     cswSysmlAsSingleSourceOfTruth <-.->|Sysml As Single Source Of Truth| gslSysmlAsSingleSourceOfTruth
     cswThreeLayerPersistence <-.->|Three Layer Persistence| gslThreeLayerPersistence
     cswTwoLayerActionFlow <-.->|Two Layer Action Flow| gslTwoLayerActionFlow
-
+    
     classDef csw fill:#d4edda,stroke:#28a745
     classDef gsl fill:#cce5ff,stroke:#007bff
+
+```
+
