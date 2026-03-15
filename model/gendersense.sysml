@@ -9,6 +9,7 @@ package GenderSense {
     private import BusinessModel::*;
     private import BusinessScenarios::*;
     private import BusinessStrategy::*;
+    private import PatternCatalogue::*;
 
     doc /* GenderSense: Model-driven clinical service management platform
          * for gender-affirming healthcare.
@@ -35,6 +36,7 @@ package GenderSense {
          *   business-model.sysml       — ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning
          *   business-scenarios.sysml   — ScenarioDefinitions, ProjectionParameters, Formulas, Outputs, Comparisons, Steering
          *   business-strategy.sysml    — StrategicObjectives, BusinessModelVariants, PivotScenarios
+         *   pattern-catalogue.sysml    — PatternCatalogue: cross-domain concept registry and pattern catalogue
          *
          * Phase 6A split: BusinessModel was ~1,900 lines. ScenarioModelling
          * promoted to BusinessScenarios, StrategyAndEvolution promoted to
