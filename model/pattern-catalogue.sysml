@@ -1,7 +1,8 @@
 // =========================================================================
-// PATTERN CATALOGUE — Cross-domain concept registry
+// PATTERN CATALOGUE — Cross-domain concept registry and knowledge graph
 //
-// The model describes its own architectural patterns.
+// The model describes its own architectural patterns and the semantic
+// relationships between them.
 //
 // Business system meta model concept — this package describes how the
 // system is structured, not what the business offers. Placed as a
@@ -10,14 +11,14 @@
 // part of Foundation; structurally a sibling.
 //
 // Source: Session 26 discussion, Session 29 workstream plan,
-//         Session 30 implementation.
+//         Session 30 implementation, Session 31 knowledge graph.
 // =========================================================================
 
 package PatternCatalogue {
     private import ScalarValues::*;
 
-    doc /* Cross-domain concept registry and architectural pattern
-         * catalogue. The model describes its own patterns.
+    doc /* Cross-domain concept registry, architectural pattern catalogue,
+         * and knowledge graph of semantic relationships.
          *
          * Business system meta model concept — this package is
          * itself part of the system meta model (it describes how
@@ -25,14 +26,21 @@ package PatternCatalogue {
          * Placed as a top-level sibling to Foundation because Syside
          * does not merge same-named packages across files.
          *
-         * Two kinds of entries:
+         * Three kinds of entries:
          * - Patterns: reusable architectural or business model
          *   templates (e.g. "catalogue-as-UI-contract")
          * - Domain instantiations: where a pattern has been
          *   implemented in a specific domain (e.g. CSW Counter
          *   page, GSL formulary)
+         * - Architectural principles: foundational commitments
+         *   that motivate one or more patterns
          *
-         * Source: Session 26 discussion, Sessions 29-30. */
+         * Patterns carry typed ref fields for semantic relationships
+         * (dependsOn, enables, motivatedBy, etc.) — verified Session 31.
+         * The generator pipeline reads these refs to produce Mermaid
+         * views and Obsidian note content.
+         *
+         * Source: Session 26 discussion, Sessions 29-31. */
 
     // -- Classification enums -----------------------------------
 
@@ -59,7 +67,37 @@ package PatternCatalogue {
         guidance;
     }
 
+    enum def RelationshipKind {
+        doc /* Semantic relationship types between patterns.
+             * Each predicate has an inverse (see discussion paper §4).
+             * Used for future structured relationship parts if needed.
+             * Currently, each predicate is a typed ref field on Pattern. */
+        dependsOn;
+        enables;
+        motivatedBy;
+        generalises;
+        specialises;
+        constrains;
+        extends;
+        validatedBy;
+        composedWith;
+    }
+
     // -- Core type definitions ----------------------------------
+
+    part def ArchitecturalPrinciple {
+        doc /* A foundational architectural commitment that motivates
+             * one or more patterns. Cross-cutting — principles span
+             * both business and system meta models.
+             *
+             * Business system meta model concept — describes the
+             * reasoning behind how the system is structured.
+             *
+             * Source: Session 31, Knowledge Graph Enhancement. */
+        attribute principleName : String;
+        attribute description : String;
+        attribute sourceDocument : String;
+    }
 
     part def Pattern {
         doc /* A reusable architectural or business model template.
@@ -67,11 +105,17 @@ package PatternCatalogue {
              * approach that applies across domains.
              *
              * The relatedElements attribute uses String references
-             * to meta model elements (package paths). If future syntax
-             * investigation confirms typed cross-element refs work,
-             * these can be upgraded to typed ref links.
+             * to meta model elements (package paths). Typed cross-element
+             * refs verified (Session 30) but retained as String for
+             * pragmatic cross-package referencing.
              *
-             * Source: Session 26 discussion, Session 29 workstream plan. */
+             * Semantic relationship ref fields (Session 31):
+             * Each relationship predicate is a typed ref with [0..*]
+             * multiplicity. Patterns carry refs to other patterns;
+             * motivatedBy refs to ArchitecturalPrinciple instances.
+             * Tuple syntax verified: ref :>> dependsOn = (a, b);
+             *
+             * Source: Session 26 discussion, Sessions 29-31. */
         attribute patternName : String;
         attribute description : String;
         attribute maturity : PatternMaturity;
@@ -80,6 +124,16 @@ package PatternCatalogue {
         attribute relatedElements : String;
         attribute sourceSession : String;
         attribute validatedIn : String;
+
+        // Semantic relationships — typed ref fields (Session 31)
+        ref dependsOn : Pattern[0..*];
+        ref enables : Pattern[0..*];
+        ref motivatedBy : ArchitecturalPrinciple[0..*];
+        ref generalises : Pattern[0..*];
+        ref constrains : Pattern[0..*];
+        ref extends : Pattern[0..*];
+        ref validatedBy : Pattern[0..*];
+        ref composedWith : Pattern[0..*];
     }
 
     part def DomainInstantiation {
@@ -92,6 +146,78 @@ package PatternCatalogue {
         attribute implementationRef : String;
         attribute sessionRef : String;
         attribute notes : String;
+    }
+
+    // ================================================================
+    // ARCHITECTURAL PRINCIPLES
+    // ================================================================
+
+    part separationOfRepresentationAndExecution : ArchitecturalPrinciple {
+        doc /* The foundational architectural commitment: knowledge
+             * lives in the representation layer (SysML model),
+             * execution is derived from it. */
+        attribute :>> principleName = "Separation of representation and execution";
+        attribute :>> description = "Knowledge lives in the representation layer (SysML model). Execution is derived from it via generation or configuration. The model is the source of truth; the running system is a projection of the model.";
+        attribute :>> sourceDocument = "gsl-platform-architecture-principles.md";
+    }
+
+    part selfDescribingSystem : ArchitecturalPrinciple {
+        doc /* The system knows what it is, what it should be,
+             * and what the gap is. Self-knowledge is structural,
+             * not bolt-on. */
+        attribute :>> principleName = "Self-describing system";
+        attribute :>> description = "The system carries knowledge about itself: what it is (OperationalStateAggregator), what it should be (GoalProjector), and what the gap is (GapAnalyser). Self-knowledge is structural, not bolted on.";
+        attribute :>> sourceDocument = "gsl-discussion-concept-graph-2026-03-14.md";
+    }
+
+    part modelGeneratesEverything : ArchitecturalPrinciple {
+        doc /* Corollary of separation: SysML as single source
+             * of truth. Generators emit TypeScript, XState,
+             * Temporal, Mermaid, and more. */
+        attribute :>> principleName = "Model generates everything";
+        attribute :>> description = "Practical corollary of separation: the SysML model generates TypeScript types, XState machines, Temporal workflows, Mermaid diagrams, and more. Changes to the model propagate to the running system.";
+        attribute :>> sourceDocument = "gsl-platform-architecture-principles.md";
+    }
+
+    part twoMetaModelDistinction : ArchitecturalPrinciple {
+        doc /* Business meta model (what the business is) and
+             * business system meta model (how the system works)
+             * are distinct and independently iterable. */
+        attribute :>> principleName = "Two meta model distinction";
+        attribute :>> description = "Business meta model (what the business is and offers) and business system meta model (how the system is structured and operates) are distinct. Each can iterate independently. Per gsl-architecture-clarification-two-meta-models.";
+        attribute :>> sourceDocument = "gsl-architecture-clarification-two-meta-models-2026-03-14.md";
+    }
+
+    part coffeeshopFirst : ArchitecturalPrinciple {
+        doc /* Validate in coffee shop before clinical. Every new
+             * architectural capability gets a CSW equivalent first. */
+        attribute :>> principleName = "Validate in coffee shop before clinical";
+        attribute :>> description = "Standing practice since Session 1: every new architectural capability gets a coffee shop demonstrator equivalent before clinical implementation. The simpler domain validates the pattern before committing to clinical complexity.";
+        attribute :>> sourceDocument = "Session 1 standing practice";
+    }
+
+    part deterministicOverProbabilistic : ArchitecturalPrinciple {
+        doc /* Clinical decisions use deterministic, inspectable,
+             * auditable logic — not probabilistic LLM inference. */
+        attribute :>> principleName = "Deterministic/auditable reasoning over probabilistic inference";
+        attribute :>> description = "Clinical decision support uses deterministic, inspectable, auditable logic (constraint evaluation, decision tables, Prolog rules). Probabilistic LLM inference is not acceptable for safety-critical clinical reasoning.";
+        attribute :>> sourceDocument = "Architectural commitment";
+    }
+
+    part patientAutonomy : ArchitecturalPrinciple {
+        doc /* The generational self-service roadmap supports
+             * increasing patient autonomy and informed choice. */
+        attribute :>> principleName = "Patient autonomy and informed choice";
+        attribute :>> description = "The system supports a generational roadmap from clinician-gated (Gen 1) to patient-initiated (Gen 3) self-service. Patient autonomy is a design goal, not an afterthought. Informed choice requires the system to explain its reasoning.";
+        attribute :>> sourceDocument = "gsl-discussion-model-self-service-enabling-architecture-2026-03-14.md";
+    }
+
+    part clinicalGovernanceAsFirstClass : ArchitecturalPrinciple {
+        doc /* Auditability is structural, not bolted on. Clinical
+             * governance is a first-class system concern. */
+        attribute :>> principleName = "Clinical governance as first-class system concern";
+        attribute :>> description = "Auditability is structural, not bolted on. The domain layer exists specifically to be auditable for clinical governance. Audit trails, provenance tracking, and governance dashboards are architectural commitments, not features.";
+        attribute :>> sourceDocument = "gsl-platform-architecture-principles.md";
     }
 
     // ================================================================
