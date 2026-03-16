@@ -1,161 +1,133 @@
-# Session 28 Report — CSW Extension Phase 9: System Pages
+# Session 25 Report — CSW Extension Phase 6: Manager GUI — Stock & Catalogue
 
 **Date:** 14 March 2026
-**Session number:** 28
-**Workstream:** CSW Extension — Catalogue, Inventory & Frontend (Phase 9 of 10)
-**Plan:** `gsl-plan-csw-extension-phase9-implementation-2026-03-14.md`
+**Session number:** 25
+**Workstream:** CSW Extension — Catalogue, Inventory & Frontend (Phase 6 of 10)
+**Plan:** `gsl-plan-csw-extension-phase6-implementation-2026-03-14.md`
 
 ---
 
 ## Summary
 
-Executed Phase 9 of the CSW Extension workstream: the two System pages — Process Model (`/pathway`) and System Status (`/system`). These are the final frontend pages in the workstream. Phase 9 also introduced the first new backend routes since Phase 3 — a health check endpoint and an operational metrics aggregation endpoint.
+Executed Phase 6 of the CSW Extension workstream: the Manager GUI for stock and catalogue management. The placeholder "Coming in Phase 6" card at `/management/catalogue` is now a fully functional management page with a catalogue table (11 → 12 items during testing), category-aware add item modal, inline editing panel, and inventory management panel with stock level bars and low-stock alerting. The full CRUD cycle was validated end-to-end, including cross-page verification: items added or modified in the Manager GUI are immediately reflected on the Counter page.
 
-Additionally: a Phase 9 detailed implementation plan was created before execution.
+Additionally: a self-service enabling architecture discussion paper was produced earlier in the session, and the Phase 6 detailed implementation plan was created before execution began.
+
+This phase required no backend changes — all Phase 3 API routes were consumed as-is.
 
 ---
 
 ## Work Completed
 
-### Pre-Session: Phase 9 Plan
+### Pre-Session: Discussion Paper and Phase 6 Plan
 
-**Phase 9 Detailed Implementation Plan** (`gsl-plan-csw-extension-phase9-implementation-2026-03-14.md`) — 5-stage plan covering health check API, metrics API, interactive Process Model, System Status dashboard, and polish. The plan identified two risk areas (EHRbase client baseUrl access, PostgreSQL raw query access) and resolved both through interface investigation before coding began.
+Two documents produced before execution began:
 
-### Stage 1: Health Check API Route
+1. **Self-Service Enabling Architecture Discussion Paper** (`gsl-discussion-self-service-enabling-architecture-2026-03-14.md`) — captures architectural thinking about patient self-service as a foundational design principle. Covers the Apperta CoPHR Blueprint heritage, clinical authority problem, harm reduction principles in trans healthcare, six generational stages of self-service, and six architecture recommendations for immediate adoption (AgencyClassification metadata, authority model versioning, NotificationTrigger metadata, OptionEvaluator, CoPHR governance principles, data release model).
 
-**Created: `src/routes/api/system/health/+server.ts`** — Infrastructure health endpoint that pings all three persistence layers in parallel.
+2. **Phase 6 Detailed Implementation Plan** (`gsl-plan-csw-extension-phase6-implementation-2026-03-14.md`) — 5-stage plan covering catalogue table with filtering, add item modal, inline editing, inventory panel, and polish. The plan confirmed that no backend changes were needed — all API routes from Phase 3 were already complete.
 
-**EHRbase:** Uses `executeAql('SELECT e/ehr_id/value FROM EHR e LIMIT 1')` as the health probe — exercises the full CDR query path (connection, auth, AQL engine).
+### Manager GUI Page
 
-**PostgreSQL:** Uses `db.query('SELECT 1')` — the `PostgresClient` interface exposes a raw parameterised query method.
+**Rewritten: `src/routes/management/catalogue/+page.svelte`** — Complete Manager GUI replacing the Phase 4 placeholder card. Single file, ~900 lines. All state management, data fetching, and interactive behaviour in one page component.
 
-**Temporal:** Lists workflows with `pageSize: 1` to verify gRPC connectivity without heavy iteration.
+#### Catalogue Table (Stages 1 + 3)
 
-**Import pattern:** `WORKFLOW_NAME` imported from `@coffeeshop/shared/dist/workflow-constants.js` (direct path) rather than the barrel export, continuing the pattern from Sessions 24 and 26 to avoid the transitive `pg` dependency issue.
+- **Category filter tabs:** Pill-style buttons for All Items (12), Hot Drinks (6), Cold Drinks (4), Food (2). Same visual pattern as Counter page.
+- **Sort toggle:** Name (default) or Price, as text links above the table.
+- **Flowbite Table:** Columns for name, category (with emoji icon), price (monospaced, right-aligned), availability status badge, provision type, dietary badges (V, GF). Hidden columns on mobile for responsive layout.
+- **Clickable rows:** Each row opens the inline edit panel below the table.
+- **Inline edit panel:** Edits business decisions only — price (pence input with live preview), availability (Active / Seasonal / Temporarily Unavailable / Discontinued), status notes. Read-only summary of item's intrinsic properties (category, provision type, description). PUT to `/api/catalogue/[id]`.
 
-**Response shape:** `{ overall: 'healthy' | 'degraded' | 'unavailable', services: [...], checkedAt }` — all three checks run via `Promise.all` so a single failure doesn't block the others.
+#### Add Item Modal (Stage 2)
 
-### Stage 2: Metrics API Route
+- **Flowbite Modal** with category-aware conditional field sets.
+- **Common fields:** Name, category (select), description, price in pence with display preview, provision type (select), vegan (checkbox).
+- **Drink fields** (shown for hot_drink, cold_drink): Available sizes (multi-select toggle buttons), default milk (select), caffeinated (checkbox).
+- **Food fields** (shown for food): Gluten-free (checkbox), served warm (checkbox).
+- **Initial inventory** (shown when provision type is "bought_in"): Initial stock quantity, low-stock threshold.
+- **Category change side-effects:** Selecting "Food" sets provision to "bought_in", clears drink fields. Selecting drink categories sets defaults (hot drink → all 3 sizes, cold drink → medium/large).
+- POST to `/api/catalogue` with `CreateCatalogueItemInput`.
 
-**Created: `src/routes/api/system/metrics/+server.ts`** — Operational metrics aggregation from seven data sources.
+#### Inventory Panel (Stage 4)
 
-**Data sources:** PostgreSQL catalogue (all + active), PostgreSQL inventory, CDR entity orders (all + today), Temporal active orders, CDR governance audit. All queries run in parallel via `Promise.allSettled` for graceful degradation.
+- **Right column** (desktop) / stacked below (mobile). Mirrors Counter page's active orders panel layout.
+- **Inventory cards** for each bought-in item: name, stock status badge (In Stock / Low / Out of Stock / On Order), stock level bar with colour coding (green → yellow → red), price, last restocked date.
+- **Inline restock/adjust forms:** Click "Restock" or "Adjust" to expand an inline form within the card. Restock defaults to 24; adjust starts at current level. PUT to `/api/inventory/[id]`.
 
-**Response shape:** Orders (total, today, active), catalogue (total, active, category breakdown), inventory (tracked, low stock, out of stock), governance (compliance rate, data gaps).
+#### Low-Stock Alerts and Polish (Stage 5)
 
-**Observation:** `totalOrders: 0` with `activeOrders: 3` is expected — the Temporal in-memory DB was restarted, so no CDR compositions exist from current orders. The metrics faithfully report what each persistence layer knows.
+- **Yellow alert banner** at page top when any items are below their low-stock threshold. Data from `GET /api/inventory?low=true`.
+- **Page summary:** "12 items in catalogue — 12 active, 2 tracked in inventory".
+- **Success messages** after add, edit, and stock adjustment operations.
 
-### Stage 3: Process Model Page
+### Layout Width Adjustment
 
-**Rewritten: `src/routes/pathway/+page.svelte`** — Complete rewrite replacing the static SVG + table with an interactive pathway view.
+- **`+layout.svelte`:** Increased main content area `max-w` from `6xl` (1152px) to `7xl` (1280px). The split-view pages (Counter, Manager) with table + side panel needed the extra width to avoid column clipping.
 
-**Hand-crafted SVG pathway:** Rather than manipulating the Mermaid-generated SVG (which has hardcoded colours, opaque internal IDs, and no click handlers), the page uses a hand-crafted SVG themed to the coffee shop palette. Node positions are declared as a `Record<string, NodePosition>` and edge paths are computed as cubic Bézier curves. The pathway is stable (8 nodes, 9 edges from the SysML `FulfilDrink` action def) so this is a one-time effort with full control over interactivity and theming.
+**Commit:** `ef63e6d` — CSW frontend: Manager catalogue table, add item modal, inline editing, and inventory panel
 
-**Node types:** Start nodes (green stadium shape), end nodes (blue stadium shape), decision nodes (amber rectangle with heavier border), action nodes (light cream rectangle). All nodes are clickable.
-
-**Step metadata modals:** Clicking any node opens a Flowbite Modal showing up to three panels:
-- **Domain Layer** (green) — doc block from `drink-fulfilment.sysml`, e.g. "Combine the base and milk (if needed), add any extras, and finish the drink."
-- **Orchestration Layer** (blue) — mapped workflow step from `fulfil-drink-orchestration.sysml`, with signal name and timeout metadata, e.g. "waitDrinkReady · Signal: drinkReady · Timeout: 15 min"
-- **Clinical Analogy** (neutral) — the clinical mapping, e.g. "Lab results returned."
-
-Decision nodes (Check Drink Type, Check Milk) show only domain layer and clinical analogy — they don't map to a Temporal workflow step.
-
-**Active orders section:** Fetches `/api/orders/active` on mount and displays current orders with their XState lifecycle state mapped to orchestration step labels (placed → "Validate Order", preparing → "Prepare Drink", ready → "Wait for Collection").
-
-**Two-layer reference:** Collapsible sections showing the domain and orchestration layer descriptions with SysML source file references. The orchestration workflow steps table is retained inside a collapsible.
-
-### Stage 4: System Status Page
-
-**Rewritten: `src/routes/system/+page.svelte`** — Complete rewrite replacing the placeholder card with a full operational dashboard.
-
-**Infrastructure Health:** Three cards (EHRbase, PostgreSQL, Temporal) with live status indicator (green/yellow/red dot), service name, status text, and response time in milliseconds. Green background for healthy, yellow for degraded, red for unavailable. "↻ Check" button for re-running. Timestamp shows when last checked.
-
-**Operational Metrics:** Five summary cards (Total Orders, Orders Today, Active Orders, Menu Items, Compliance Rate with progress bar) in a responsive grid. The compliance bar uses `$derived` for the rate calculation and conditional colour, following the Audit Dashboard pattern from Session 27.
-
-**Catalogue & Inventory:** Category breakdown (Cold Drink: 4, Food: 2, Hot Drink: 6) as pill badges, stock alerts (1 low stock), tracked items count, and a "Manage stock" link to the Manager GUI.
-
-**Structural Inventory:** Static metadata grid showing the system's scale — 3 persistence layers, 72 SysML packages, 10 model files, 19 API routes, 9 frontend pages, 1 Temporal workflow, 3 CDR archetypes, 4 PostgreSQL tables. Noted as static values from the strategic snapshot, with a future note about the System Model Manifest generator.
-
-**Self-Assessment Placeholder:** Prominent dashed-border panel labelled "Knowledge Layer Increment 3 — Placeholder". Lists all five layers of the self-knowledge architecture with their coffee shop equivalents (ConstraintEvaluator, OperationalStateAggregator, GoalProjector, GapAnalyser, RemediationPlanner). Clinical analogy note explains the mapping.
-
-**Cross-page links:** Footer links to Audit Dashboard, Stock & Catalogue, Process Model, and Order Board.
-
-### Stage 5: Polish
-
-**Layout TODO comment:** Added a detailed comment to `+layout.svelte` explaining that the navbar health indicators are static green dots, with the rationale for deferring live polling and the upgrade path via `/api/system/health`.
+**Commit:** `51832ac` — Layout width increase (6xl → 7xl)
 
 ---
 
 ## Findings
 
-### EHRbase Health Check via AQL
+### Flowbite Modal Footer Slot Failure
 
-Using `executeAql('SELECT e/ehr_id/value FROM EHR e LIMIT 1')` as the EHRbase health probe is more robust than hitting the `/ehrbase/status` endpoint directly, because it exercises the full query path (connection, authentication, AQL engine) rather than just the HTTP server. The `EhrbaseClient` interface doesn't directly expose the base URL, so deriving it for a raw fetch would have required string manipulation on the OpenEHR API path.
+The `<svelte:fragment slot="footer">` pattern does not render with the current stack (flowbite-svelte 1.31.0, Svelte 5.53.7). The footer content is silently swallowed — no error, no warning, the buttons simply don't appear. This is likely a Svelte 5 snippet/slot compatibility issue in the Flowbite component.
 
-### PostgresClient Exposes `query()` Method
+**Workaround:** Place action buttons inside the modal body content with a `border-t` separator div. This is visually equivalent and fully reliable. The finding is documented in `gsl-plan-next-steps-and-deferred-items.md` §9 as a general caution: test each Flowbite named slot before relying on it.
 
-The `PostgresClient` interface includes a `query<T>(sql, params?)` method as an "escape hatch for queries not covered by the typed methods." This made `SELECT 1` trivial for the health check. The interface was well-designed for extensibility — the Phase 2/3 work anticipated this kind of use.
+### Category-Conditional Form Fields Validate Domain Model Hierarchy
 
-### Phase 3 API Layer Continues to Hold
+The add item modal's conditional field rendering directly mirrors the SysML domain model's `Drink` / `FoodItem` specialisation hierarchy. Selecting "Food" hides drink-specific fields and shows food-specific ones; selecting a drink category does the reverse. The side-effects (food → bought_in provision, cold drink → medium/large sizes only) encode domain knowledge at the UI level.
 
-The metrics route consumes seven existing endpoints and direct database queries without any modifications. This extends the streak: zero backend changes across Phases 5, 6, 7, 8, and the frontend portions of Phase 9. The 17 API routes built in Phases A–D and Phase 3, plus the 2 new system routes (19 total), serve every current frontend need.
+This validates the "model drives the form" pattern: the domain model's type hierarchy determines which fields are relevant, and the UI respects that hierarchy. The clinical analogue is a prescribing form where selecting "hormone" vs "blocker" vs "supplement" reveals different field sets (dosing regimen, monitoring requirements, interaction checks).
 
-### Hand-Crafted SVG vs Mermaid
+### No Backend Changes Required
 
-The hand-crafted SVG pathway is significantly better than the Mermaid-generated version for interactive use:
-- Full control over node colours, matching the coffee shop palette
-- Click handlers on every node — not possible with the Mermaid SVG without fragile overlay positioning
-- Dark mode support via CSS variables (Mermaid hardcodes `fill:#ECECFF` etc.)
-- Smaller payload — the Mermaid SVG is 45KB of verbose path data; the hand-crafted version is ~3KB of component code
+Phase 6 consumed all seven Phase 3 API endpoints without modification. The `GET /api/catalogue?all=true` query parameter (added in Phase 3 for the manager view), the `POST /api/catalogue` transaction (menu item + catalogue entry + optional inventory), and the `PUT` update endpoints all worked exactly as designed. This confirms that the Phase 3 API design was comprehensive and forward-looking.
 
-The tradeoff is maintainability: if the SysML action flow changes, both the generated Mermaid and the hand-crafted SVG need updating. In practice, the domain pathway is stable — it has not changed since Session 1.
+### Cross-Page Data Flow Verified
 
-### Promise.allSettled for Metrics Aggregation
+Items added or modified in the Manager GUI are immediately visible on the Counter page (after a page refresh, since the Counter uses a `+page.ts` load function rather than polling). This validates the single-source-of-truth pattern: both pages read from the same catalogue API, which reads from the same PostgreSQL database. There is no state duplication to synchronise.
 
-Using `Promise.allSettled` (not `Promise.all`) for the metrics route means individual query failures degrade gracefully. If EHRbase is down, the CDR-sourced metrics (order counts, governance) show as 0/N/A while the PostgreSQL-sourced metrics (catalogue, inventory) still populate correctly. This is the right pattern for a dashboard that aggregates across independent data sources.
+### Split-View Layout Pattern Stabilised
+
+Both the Counter page (tiles + active orders) and the Manager page (table + inventory) use the same layout pattern: `flex flex-col gap-6 lg:flex-row` with `flex-1 min-w-0` for the main panel and `w-full lg:w-96 shrink-0` for the side panel. This is now a proven pattern for the clinical dashboard layout (consultation form + patient queue, formulary table + stock panel).
 
 ---
 
 ## Coffee Shop Demonstrator Extension
 
-**Capability demonstrated:** System self-awareness — live infrastructure health monitoring across all three persistence layers, operational metrics aggregation, interactive process model visualisation with two-layer domain/orchestration annotation, and a structured landing zone for the five-layer self-knowledge architecture.
+**Capability demonstrated:** Reference data management GUI — the system's catalogue and inventory are managed through a structured interface that respects the domain model's four-layer conceptual separation (item definition → catalogue entry → inventory record → external references).
 
-**What was built:** Health check API pinging Temporal, EHRbase, and PostgreSQL. Metrics API aggregating orders, catalogue, inventory, and governance data. Process Model page with hand-crafted interactive SVG, step metadata modals, and active order tracking. System Status dashboard with health cards, operational metrics, catalogue/inventory summary, structural inventory, and KL3 self-assessment placeholder.
+**What was built:** Full Manager GUI with catalogue table, category filtering, add item modal with category-aware fields, inline editing of business decisions (price, availability, notes), inventory panel with stock level bars and restock/adjust controls, low-stock alerting.
 
 **What was learned:**
-- AQL query is more robust than HTTP status check for EHRbase health probing
-- Hand-crafted SVG gives full interactivity control for stable pathway diagrams
-- `Promise.allSettled` is the right aggregation pattern for multi-source dashboards
-- The two-layer model presentation (domain + orchestration) is clear and informative in the modal UI
+- Flowbite Modal named slots don't work in the current Svelte 5 stack — use in-body buttons instead
+- Category-conditional form fields effectively mirror the SysML domain model's type hierarchy
+- The Phase 3 API design was comprehensive — zero backend changes needed for the full management GUI
+- Cross-page data consistency (Manager → Counter) works via the single-source-of-truth pattern
+- The split-view layout pattern (main panel + side panel) is now established for both operational and management pages
 
-**Clinical implementation confidence:** High. The patterns map directly to:
-- **Infrastructure health:** Monitor EHRbase CDR uptime, Temporal workflow engine health, and business database — critical for a clinical service where system availability affects patient care.
-- **Operational metrics:** "N patients in active pathways, N awaiting monitoring bloods, compliance rate for 3-month milestone."
-- **Process Model:** Clinical pathway visualisation. Clicking "Initial Assessment" shows domain-level clinical actions (history, examination, consent) and orchestration-level workflow steps (schedule appointment, await results, update record).
-- **Self-assessment:** The KL Increment 3 landing zone becomes the clinical service's self-knowledge dashboard.
+**Clinical implementation confidence:** High. The pattern — reference data table with filtering and status badges, category-aware creation form, inline editing of business decisions, side-panel operational monitoring with alerting — maps directly to formulary management and pharmacy stock tracking.
 
 ---
 
 ## Architecture Notes
 
-### New Files
-
-| File | Purpose |
-|---|---|
-| `src/routes/api/system/health/+server.ts` | Infrastructure health check — pings Temporal, EHRbase, PostgreSQL |
-| `src/routes/api/system/metrics/+server.ts` | Operational metrics aggregation from 7 data sources |
-
 ### Modified Files
 
 | File | Change |
 |---|---|
-| `src/routes/pathway/+page.svelte` | **Rewritten** — interactive SVG pathway with step modals and active orders |
-| `src/routes/system/+page.svelte` | **Rewritten** — operational dashboard with health, metrics, inventory, KL3 placeholder |
-| `src/routes/+layout.svelte` | TODO comment on navbar health indicators |
+| `src/routes/management/catalogue/+page.svelte` | **Rewritten** — full Manager GUI replacing placeholder |
+| `src/routes/+layout.svelte` | max-w-6xl → max-w-7xl |
 
-### API Route Count
+### No New API Routes
 
-Total API routes: **19** (17 from Phases A–D and Phase 3, plus 2 new system routes).
+All operations use existing Phase 3 endpoints. No backend changes in this phase.
 
 ---
 
@@ -163,28 +135,19 @@ Total API routes: **19** (17 from Phases A–D and Phase 3, plus 2 new system ro
 
 | Commit | Description |
 |---|---|
-| `[committed]` | CSW backend: system health and metrics API routes (Phase 9, Stages 1-2) |
-| `[committed]` | CSW frontend: interactive Process Model with step metadata modals and active order state (Phase 9, Stage 3) |
-| `[committed]` | CSW frontend: System Status dashboard with live health, metrics, and KL3 placeholder (Phase 9, Stage 4) |
-| `[committed]` | CSW frontend: Phase 9 polish — navbar health TODO, cross-page links |
-| `[committed]` | Documentation: Phase 9 plan, next-steps update (Session 28) |
+| `ef63e6d` | CSW frontend: Manager catalogue table, add item modal, inline editing, and inventory panel |
+| `51832ac` | Layout max-width 6xl → 7xl |
 
 ---
 
 ## Next Session
 
-Continue CSW Extension workstream — **Phase 10: Meta Model Update**:
-- Incorporate findings from the CSW Extension exercise into the GSL business meta model SysML
-- CatalogueEntry, InventoryRecord, PersistencePolicy part defs
-- Consider whether "maintain catalogue" warrants a new ActivityType
-- Update the CSW business model with persistence policy instances
+Continue CSW Extension workstream — **Phase 7: Remaining Operations Pages**:
+- Order Board: Kanban columns by lifecycle state (Placed → In Preparation → Ready → Collected → Cancelled)
+- Order Timeline: Visual state machine, event timeline, CDR record alongside workflow state
+- Both use existing API routes — no backend changes expected
 
-Phase 10 detailed implementation plan to be created at start of next session.
-
-All three Knowledge Layer Increments are now unblocked with their UI landing zones built:
-- KL Increment 1 → Order Timeline (Phase 7)
-- KL Increment 2 → Counter page (Phase 5)
-- KL Increment 3 → System Status (Phase 9)
+Phase 7 detailed implementation plan to be created at start of next session.
 
 ---
 
@@ -194,4 +157,4 @@ No update required — no SysML changes in this phase.
 
 ---
 
-*Session 28 report prepared 14 March 2026.*
+*Session 25 report prepared 14 March 2026.*

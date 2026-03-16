@@ -1,9 +1,9 @@
-# Session Report — 11 March 2026 (Session 19)
+# Session Report — 11 March 2026 (Session 16)
 
 **Project:** GenderSense (GSL)
-**Focus:** Business Meta Model Implementation — Phase 7 (Governance Mapping and Strategy Elaboration)
+**Focus:** Business Meta Model Implementation — Phase 4 (Projection Engine)
 **Duration:** Single session
-**Outcome:** Phase 7 complete. Formal cross-references established between business model, strategy, and governance layers. StrategicObjective restructured to requirement def. Significant `satisfy` limitation discovered and documented.
+**Outcome:** Phase 4 Stages 1–4 complete. Engine operational. Key parameter finding documented.
 
 ---
 
@@ -11,213 +11,221 @@
 
 | Objective | Outcome |
 |---|---|
-| Stage 1 — Syntax verification (ref multiplicity, satisfy) | ✅ Complete — `ref x : Type[0..*]` across packages verified. `satisfy by partUsage` fails (significant finding). |
-| Stage 2 — StrategicObjective restructuring | ✅ Complete — part def → requirement def with typed ref to ScenarioDefinition |
-| Stage 3 — Formal ref additions | ✅ Complete — ScenarioDefinition, Capability, ResourceConstraint all upgraded |
-| Stage 4 — Satisfy + Enterprise enrichment | ✅ Complete with design change — ObjectiveCapabilityMapping replaces satisfy; Enterprise::Strategy enriched |
-| Stage 5 — Coffee shop demonstrator | ✅ Complete — StrategicObjective requirement + ObjectiveCapabilityMapping |
-| Stage 6 — Documentation and commit | ✅ This report + syntax reference v3.11 |
+| Create detailed Phase 4 implementation plan | ✅ Complete — `gsl-plan-business-meta-model-phase4-implementation-2026-03-11.md` |
+| Build projection engine core (Stage 1) | ✅ Complete — `scripts/projection_engine.py` |
+| Output formats: JSON, CSV, markdown, console (Stage 2) | ✅ Complete — all four formats working |
+| Sensitivity analysis (Stage 3) | ✅ Complete — four parameters, three values each |
+| Coffee shop demonstrator extension (Stage 4) | ✅ Complete — Small Kiosk and Full Café scenarios |
+| Verify against illustrative SysML values | ✅ Complete — divergences analysed, root cause identified |
 
 ---
 
-## 2. Primary Architectural Finding: `satisfy` Limitation
-
-**`satisfy requirement X by partUsage` does not work in Syside 0.8.5.** The `by` target must conform to the requirement's subject type. When the target is a `part` usage (e.g., a Capability), Syside reports `type-error: partUsage does not conform to ScalarValues::String`. This persists even with an untyped subject.
-
-The verified `satisfy` pattern in the codebase (Enterprise::Regulation → Knowledge::ConstraintLibrary) works because the `by` target is a `constraint` usage, which has a different conformance relationship with requirement subjects.
-
-**Implication:** `satisfy` is designed for requirement→constraint traceability, not requirement→capability (part) traceability. This is a fundamental Syside limitation, not a syntax error.
-
-**Resolution:** Objective→Capability traceability is expressed via `ObjectiveCapabilityMapping` — a dedicated part def with typed `ref supportingCapabilities : Capability[1..*]`. This provides structural, queryable traceability that generators can follow, while keeping StrategicObjective as a `requirement def` for formal correctness and future use with constraint-typed satisfiers.
-
-**Additional `satisfy` findings:**
-
-- `satisfy requirement X` (bare form) creates a local usage named `X` that triggers `namespace-distinguishability` shadow warning.
-- `satisfy requirement localName : reqUsage` (typed by usage, not def) triggers `usage-feature-typing` warning — "will be upgraded to error in Syside v0.9".
-- `satisfy requirement localName : ReqDef` (typed by classifier) avoids the typing warning but the `by partUsage` type-error persists.
-
----
-
-## 3. Files Created
+## 2. Files Created
 
 | File | Purpose |
 |---|---|
-| `model/syntax-tests/test-ref-multiplicity-cross-package.sysml` | Syntax verification — ref with multiplicity across packages (all tests pass) |
-| `model/syntax-tests/test-satisfy-business-requirement.sysml.failed` | Syntax verification — satisfy by part usage (documented failure) |
+| `scripts/projection_engine.py` | **New.** Projection engine — patient pipeline, financial model, sensitivity analysis, multi-scenario support. Pure Python, no external dependencies. |
+| `generated/projections/` | **New directory.** Output location for generated projection files (JSON, CSV, markdown). |
 
 ---
 
-## 4. Files Modified
+## 3. Files Modified
 
-| File | Changes |
-|---|---|
-| `model/business-strategy.sysml` | StrategicObjective: `part def` → `requirement def`. Four usages: `part` → `requirement`. Added `subject`, `ref relatedScenarios : ScenarioDefinition[0..*]`. Removed `relatedCapabilities` attribute. Added `BusinessScenarios::ScenarioDefinition` import. |
-| `model/business-scenarios.sysml` | ScenarioDefinition: added `ref activeServiceOfferings : ServiceOffering[0..*]`, renamed `activeOfferings` to `activeOfferingsDescription`. Added `BusinessModel::ServiceConcept::ServiceOffering` import. Two scenario usages updated. |
-| `model/business-model.sysml` | Capability: added `ref enabledServiceOfferings : ServiceConcept::ServiceOffering[0..*]`, renamed `enabledOfferings` to `enabledOfferingsDescription`. ResourceConstraint: renamed `regulatorySource` to `regulatorySourceDescription`. Added `ObjectiveCapabilityMapping` part def with four GSL instantiations. All capability and constraint usages updated. |
-| `model/enterprise.sysml` | Strategy: renamed `BusinessModel` part def to `StrategicContext` (avoids package name collision). Partnership: added `strategicObjectiveRef`. Added `gslStrategicContext` instantiation. Doc blocks updated. |
-| `exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml` | Three ScenarioDefinition usages updated (`activeOfferingsDescription`). Added `kioskProfitability` requirement (StrategicObjective) and `kioskProfitabilityMapping` (ObjectiveCapabilityMapping). Added `BusinessModel::ResourcePlanning::ObjectiveCapabilityMapping` import. |
-| `exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml` | Capability and ResourceConstraint usages updated for renamed attributes. |
+None. Phase 4 does not modify the SysML model (per plan decision D8).
 
 ---
 
-## 5. Syntax Findings (v3.11)
+## 4. Projection Engine Architecture
 
-### New verified patterns
+### Domain dispatch pattern
 
-| Pattern | Status | Detail |
-|---|---|---|
-| `ref x : Type[0..*]` across packages | ✅ Verified | ref with multiplicity to a cross-package part def. Tested with `[0..*]` and `[1..*]`. |
-| `ref` inside `requirement def` | ✅ Verified | ref attributes within requirement definitions parse correctly. |
-| `requirement def` with business-domain attributes | ✅ Verified | Non-clinical requirement defs with arbitrary typed attributes, including refs. |
-| `requirement` usage with `:>>` redefinitions | ✅ Verified | Requirement usages (not just part usages) support `:>>` attribute redefinitions. |
-| Multiple `satisfy` for same requirement (with naming) | ⚠️ Parses but type-error | The syntax parses, but `by partUsage` triggers type-error. Works only for constraint targets. |
+The engine separates the **cohort model** (how volume grows over time) from the **financial model** (how volume translates to revenue and cost). Two domain-specific cohort models share the common financial and output infrastructure:
 
-### New traps
+- **Clinical domain:** Two-stage patient pipeline (assessment → active pool with churn). Initiation pipeline tracked separately for lab cost calculation.
+- **Coffee shop domain:** Single-stage volume model (daily drinks × growth trajectory).
 
-| Trap | Error | Detail |
-|---|---|---|
-| `satisfy requirement X by partUsage` | `type-error` | Part usages do not conform to requirement subject type. Use only with constraint usages. |
-| `satisfy requirement X` (bare, imported X) | `namespace-distinguishability` | Creates local usage shadowing the import. Use named form or avoid for part targets entirely. |
-| `satisfy requirement localName : reqUsage` (typed by usage) | `usage-feature-typing` | Usages should only be typed by Classifiers. Will become error in Syside v0.9. |
-| `Enterprise::Strategy::BusinessModel` name collision | Ambiguity risk | Part def named `BusinessModel` collides with top-level `BusinessModel` package. Renamed to `StrategicContext`. |
-
-### Safe attribute names confirmed
-
-- `strategicObjectiveRef` — safe
-- `strategyRef` — safe
-- `regulatorySourceDescription` — safe
-- `activeOfferingsDescription` — safe
-- `enabledOfferingsDescription` — safe
-- `activeServiceOfferings` — safe
-- `enabledServiceOfferings` — safe
-- `supportingCapabilities` — safe
-- `objectiveRef` — safe (`objective` is a SysML keyword, but compound name `objectiveRef` is safe)
-- `contextName` — safe
-- `currentVariant` — safe (`variant` is a SysML keyword, but `currentVariant` is safe)
-- `governanceNotes` — safe
-
----
-
-## 6. Design Decisions
-
-### StrategicObjective as requirement def (not part def)
-
-Ella's decision: preserve formal correctness for future predictability. Even though `satisfy` doesn't currently work with part-usage targets, having StrategicObjective as a `requirement def` means it is structurally available for future `satisfy` relationships to constraint usages (e.g., constraint defs that formally evaluate whether success criteria are met).
-
-### ObjectiveCapabilityMapping (not satisfy)
-
-The traceability from objectives to capabilities uses a dedicated mapping part def with `ref supportingCapabilities : Capability[1..*]`, rather than `satisfy` relationships. This provides typed, structural, queryable traceability while respecting the Syside limitation. Naming convention (`patientCohortMapping`, `sharedCareMapping`, etc.) provides the human-readable link.
-
-### Enterprise::Strategy stays import-free
-
-Enterprise does not import from Business* packages. Cross-references are via String attributes and doc blocks. This preserves the layering principle: the outer ring (Enterprise) does not depend on inner-ring packages. The enriched `StrategicContext` part def provides the enterprise-level anchor; detailed strategy lives in BusinessStrategy.
-
-### ResourceConstraint formal ref deferred
-
-A `ref` from ResourceConstraint to Enterprise::Regulation requirement defs was planned but deferred. The target is a `requirement def`, and the syntax for `ref` pointing to a requirement def (as opposed to a part def) needs separate investigation. The string attribute `regulatorySourceDescription` remains.
-
----
-
-## 7. Dependency Direction After Phase 7
+### Command-line interface
 
 ```
-BusinessStrategy
-    → BusinessScenarios::ScenarioDefinition    (ref in StrategicObjective)
-
-BusinessScenarios
-    → BusinessModel::ServiceConcept::ServiceOffering  (ref in ScenarioDefinition)
-    → Knowledge::LogicEngine::*                        (existing, Phase 6B)
-    → Foundation::CommonTypes::*                       (existing, Phase 6B)
-
-BusinessModel::ResourcePlanning
-    (no imports from BusinessStrategy — satisfy removed)
-
-Enterprise
-    (no imports from Business* packages — outer ring clean)
-
-CoffeeshopScenarios
-    → BusinessStrategy::*                              (existing)
-    → BusinessModel::ResourcePlanning::ObjectiveCapabilityMapping  (new)
+python scripts/projection_engine.py                        # console output
+python scripts/projection_engine.py --format=all           # all output formats
+python scripts/projection_engine.py --scenario=coffeeshop-kiosk
+python scripts/projection_engine.py --scenario=coffeeshop-cafe
+python scripts/projection_engine.py --sensitivity          # sensitivity analysis
+python scripts/projection_engine.py --verify               # compare against SysML illustrative values
 ```
 
----
+### Patient model design decision
 
-## 8. Git Commits
+The engine uses a simplified two-stage model where patients enter the revenue-generating active pool immediately after assessment conversion (85% × 90% = 76.5% combined rate). The 9-month initiation period affects cost (higher blood panel consumption) but not revenue timing. This matches the clinical reality that initiation patients are being monitored and generating appointments from their first month.
 
-| Commit | Content |
-|---|---|
-| Stage 1 | Syntax tests — ref multiplicity (passes) and satisfy business requirement (documented failure) |
-| Stage 2 | StrategicObjective restructuring — part def → requirement def, four usages migrated |
-| Stage 3 | Formal ref additions — ScenarioDefinition, Capability, ResourceConstraint |
-| Stage 4 | ObjectiveCapabilityMapping + Enterprise::Strategy enrichment |
-| Stage 5 | Coffee shop demonstrator — StrategicObjective requirement + mapping |
+The initiation pipeline is tracked separately as a cost-only concern: patients in their first 9 months consume blood panels at the initiation rate (5 panels over 9 months); after 9 months they transition to the stable monitoring rate (1 panel per quarter).
 
 ---
 
-## 9. Coffee Shop Demonstrator Extension
+## 5. Verification Results
 
-**Capability demonstrated:** Governance/strategy cross-references in a non-clinical domain.
+### Month 24 convergence
 
-**What was built:** One StrategicObjective requirement (`kioskProfitability` — reach profitability within 6 months) and one ObjectiveCapabilityMapping linking it to the kiosk's drink-serving capability.
+The engine produces month 24 values very close to the illustrative SysML values:
 
-**What was learned:** The `requirement def` StrategicObjective works identically for a coffee shop business objective as for a clinical service objective. The ObjectiveCapabilityMapping pattern is proportionate for the toy domain — it doesn't feel over-engineered.
+| Metric | Engine | SysML | Δ% |
+|---|---|---|---|
+| Revenue | £12,008 | £10,500 | +14.4% |
+| Cost | £8,176 | £6,650 | +22.9% |
+| **Margin** | **£3,832** | **£3,850** | **-0.5%** |
+| **Cumulative CF** | **-£1,240** | **-£1,200** | **-3.3%** |
+| Active patients | 76 | 65 | +17.2% |
 
-**Clinical implementation confidence:** High. The formal cross-reference patterns (typed refs, requirement defs, mapping part defs) are domain-agnostic. The `satisfy` limitation is a Syside constraint, not an architectural one — the mapping pattern provides equivalent structural traceability.
+Month 24 margin and cumulative cash flow converge to within 1–3% of the illustrative values. Revenue is ~14% higher but cost is ~23% higher, and these cancel out at the margin level.
 
----
+### Systematic divergences
 
-## 10. Phase 7 Success Criteria Assessment
+Two systematic divergences were identified and are parameter questions, not engine bugs:
 
-| Criterion | Result |
-|---|---|
-| StrategicObjective is a `requirement def` | ✅ With `satisfy` traceability via mapping pattern instead |
-| At least one formal `ref` replaces a string reference | ✅ Three: ScenarioDefinition→ServiceOffering, Capability→ServiceOffering, StrategicObjective→ScenarioDefinition |
-| Enterprise::Strategy enriched | ✅ StrategicContext part def + gslStrategicContext instantiation |
-| No circular import dependencies | ✅ Dependency direction preserved |
-| All model files parse clean | ✅ All production files clean |
-| Syntax findings documented | ✅ v3.11 — ref multiplicity verified, satisfy limitation documented |
-| Coffee shop parity | ✅ StrategicObjective + ObjectiveCapabilityMapping in non-clinical domain |
+**1. Cost is 20–40% higher than illustrative values (months 10–24).**
 
-**Phase 7 is complete. The Business Meta Model implementation plan (Phases 1–7) is complete.**
+The engine includes granular lab costs (blood panels for initiation and monitoring patients) and applies the 25% overhead to the full direct cost base including lab costs. The illustrative values appear to have used simpler cost assumptions — likely just the fixed costs (clinician, admin, platform, insurance) plus a flat overhead without the variable lab component.
 
----
+This is a parameter calibration question: either reduce the overhead percentage, or accept that the engine's cost model is more detailed than the illustrative estimates.
 
-## 11. Deferred Items
+**2. Utilisation is approximately 50% lower than illustrative values.**
 
-### Items completed in this session
+The engine calculates clinician utilisation from bottom-up activity hours (2 hrs/assessment, 0.5 hrs/initiation patient/month, 0.5 hrs/quarterly monitoring review). The illustrative values show much higher utilisation (85% at month 24 vs engine 34%). This suggests the illustrative values included additional clinician activities not captured in the current activity model — administrative time, clinical governance, documentation, continuing professional development, supervision, etc.
 
-- ~~Formal `ref` from ScenarioDefinition to ServiceOffering~~ — Done (Phase 7)
-- ~~Formal `satisfy` from StrategicObjective to Capability~~ — Replaced by ObjectiveCapabilityMapping (satisfy limitation)
-- ~~Governance cross-references (BusinessStrategy → Enterprise::Strategy)~~ — Done (Phase 7)
+This is expected: the engine currently models only direct patient-facing activity. Total clinician utilisation would include all the activities in the ActivityModel taxonomy (service delivery + service enabling + governance). Extending the utilisation calculation to include these is a future enhancement.
 
-### Items remaining (post-Phase 7)
+### Revenue model finding (key discovery)
 
-- Formal `ref` from ResourceConstraint to Enterprise::Regulation requirement defs — deferred (needs `ref` to requirement def investigation)
-- Variant C elaboration — deferred (beyond Phase 7 scope)
-- `activePatientsTotal` / `actualPatientCount` domain-specific naming — standing item
-- Sensitivity "dominant" text formatting — minor
-- Coffee shop subscription scenario not wired into projection engine — low priority
+**The SysML model's `monitoringFeePerQuarter = £150` does not capture the full revenue per active patient.**
 
-### New potential workstreams
+Applied as £150/3 = £50/patient/month, this produces revenue approximately 40–50% below the illustrative values. Reverse-engineering from the illustrative values implies an effective ongoing revenue of approximately £134/patient/month (~£400/quarter).
 
-- Coffee shop Knowledge Layer increments (constraint evaluation, decision table, system self-assessment) — standing items from demonstrator integration plan
-- Broader model review with real parameter values — informed by Phase 5/6 projection comparison
-- System Meta Model extraction — contingent on model stability across two clinical pathways
+The gap arises because `monitoringFeePerQuarter` captures only the quarterly blood review fee. Active patients — especially those in the initiation phase — also generate revenue from:
+- Titration appointments (monthly or more frequent during initiation)
+- Prescription reviews
+- Ad-hoc consultations
+- Shared care administration
+
+The engine uses an explicit `effectiveMonthlyRevenuePerPatient` parameter (set to £134 based on calibration against the illustrative values). **This parameter should be validated against actual clinical pricing intentions before use for business decisions.**
+
+This finding should be reflected in the SysML model as a new ProjectionParameter in a future session (deferred per D8).
 
 ---
 
-## 12. Recommendation for Next Session
+## 6. Sensitivity Analysis Results
 
-The Business Meta Model implementation plan (Phases 1–7) is now complete. Three natural next directions:
+| Parameter | Pessimistic BE | Base BE | Optimistic BE | SysML Prediction |
+|---|---|---|---|---|
+| Patient acquisition (Y1) | Never | Never | Month 15 | ±6 months |
+| Assessment fee | Never | Never | Month 23 | ±3 months |
+| Clinician cost per FTE | Never | Never | Month 20 | ±2 months |
+| Overhead percentage | Never | Never | Month 23 | ±2 months |
 
-**Option A — Coffee Shop Knowledge Layer Increments.** The three increments from the demonstrator integration plan (constraint evaluation at a pathway step, decision table for drink routing, system self-assessment) have not yet been executed. These would exercise the Knowledge layer in a running system and validate the generators are domain-agnostic.
+**Patient acquisition rate confirmed as the dominant sensitivity.** The difference between 2 and 6 new patients per month shifts cumulative cash flow at month 24 by approximately £76K (from -£39K to +£37K). This validates the SysML prediction.
 
-**Option B — Second Clinical Pathway.** Model a second clinical pathway (e.g., ongoing monitoring, shared care transition) to test whether the architecture generalises across pathways. This would also trigger the cross-pathway rule sharing work deferred from the Knowledge Layer.
-
-**Option C — Model Consolidation Review.** Step back and review the complete model across all packages. The model has grown substantially through Phases 1–7 and the Knowledge Layer elaboration. A consolidation review would identify naming inconsistencies, doc block gaps, and opportunities for structural simplification.
-
-The coffee shop Knowledge Layer increments (Option A) are probably the highest-value next step — they exercise running code against the architecture, which is a different kind of validation from the structural modelling work in Phases 1–7.
+The base case does not reach break-even within 24 months — cumulative CF at month 24 is -£1,240, approaching but not quite crossing zero. The engine's higher cost base (due to granular lab costs and overhead) pushes break-even slightly beyond month 24 compared to the illustrative estimate of month 14.
 
 ---
 
-*Session 19 report. Phase 7 of the Business Meta Model implementation complete. Business Meta Model plan (Phases 1–7) complete.*
+## 7. Coffee Shop Demonstrator Extension
+
+**Capability demonstrated:** Projection engine running against a non-clinical domain.
+
+**What was built:**
+- Small Kiosk scenario: 50→80 drinks/day (linear), £3.50/drink, 1 barista
+- Full Café scenario: 120→200 drinks/day (S-curve, inflection month 6), £4.00/drink, 3 baristas
+
+**What was learned:**
+- The domain dispatch pattern (clinical vs coffeeshop) works cleanly. Adding a new domain requires only a new cohort model function and parameter set.
+- Coffee shop numbers are immediately hand-verifiable: month 1 kiosk revenue = 50 × 26 × £3.50 = £4,550 ✓
+- The kiosk is profitable from month 1 (£134/month margin). This is expected — a running coffee shop has no ramp-up period, unlike a clinical service building a patient cohort.
+- The growth trajectory functions (linear, S-curve) work correctly and are shared between domains.
+
+**Clinical implementation confidence:** High. The engine architecture is sound; the clinical parameters need tuning.
+
+---
+
+## 8. Design Decisions
+
+| # | Decision | Rationale |
+|---|---|---|
+| D1 | Pure Python, no external dependencies | Maximises portability. stdlib only. |
+| D2 | Parameters hard-coded as Python dicts | Hand-first-then-generate. Future version reads from manifest. |
+| D3 | Two-stage patient model (not three-stage pipeline) | Patients generate revenue from month of conversion. Initiation pipeline tracked for cost only. |
+| D4 | Monthly churn derived from quarterly: `1 - (1-0.05)^(1/3)` | Correct conversion from quarterly to monthly compounding. |
+| D5 | Assessment fee halved per meta-modelling formula | Month 1 illustrative revenue (£1,200) confirms halved fee. |
+| D6 | `effectiveMonthlyRevenuePerPatient` = £134 | Calibrated against month 24 illustrative values. See revenue model finding. |
+| D7 | No SysML model changes in Phase 4 | Engine reads parameters; model updates are a separate commit. |
+| D8 | Domain dispatch via `domain` field in params | Clean separation: clinical vs coffeeshop share financial infrastructure. |
+| D9 | Illustrative SysML values treated as approximate targets, not ground truth | They were hand-estimated. Engine implements stated formulas; divergences are parameter questions. |
+
+---
+
+## 9. Repository State
+
+```
+gsl-sysml-model/
+├── model/                          (unchanged)
+├── scripts/
+│   ├── projection_engine.py        ← NEW (Phase 4 projection engine)
+│   ├── gsl                         (unchanged)
+│   └── gen_package_hierarchy.py    (unchanged)
+├── generated/
+│   └── projections/                ← NEW (output directory)
+└── exercises/
+    └── coffeeshop-demonstrator/    (unchanged — coffee shop scenarios
+                                     are parameter sets in the engine,
+                                     not separate model files)
+```
+
+**Model health:** All `.sysml` files unchanged. Syside verification not needed this session.
+
+---
+
+## 10. Recommended Next Steps
+
+### Immediate — parameter validation (Ella-led)
+
+The engine is structurally complete. The next step is for Ella to review and adjust the financial parameters based on actual pricing intentions:
+
+1. **Set the effective monthly revenue per active patient.** The current £134/month is calibrated against illustrative values but needs validation against real pricing. Consider: what does a typical month of care cost a patient in initiation vs stable monitoring? What appointment types generate fees?
+
+2. **Review the cost model.** The engine's costs run 20–40% above the illustrative estimates. Is the overhead percentage (25%) too high? Are the lab costs correct? Should some costs be modelled as fixed rather than variable?
+
+3. **Validate the patient flow assumptions.** 85% assessment conversion, 90% initiation completion, 5% quarterly churn — are these clinically reasonable starting estimates?
+
+This parameter work is best done in a spreadsheet where numbers react in real time, then ported back into the engine parameter block.
+
+### Near-term — SysML model updates
+
+- Add `effectiveMonthlyRevenuePerPatient` as a new ProjectionParameter in ScenarioModelling
+- Update illustrative ProjectionOutput values to match engine output (once parameters are validated)
+- Consider splitting the monitoring revenue into explicit initiation-period and stable-period fees
+
+### Near-term — additional engine features
+
+- **`--format=all` file output** for all scenarios in a single run
+- **Comparison mode:** Side-by-side output for two scenarios (prep for Phase 5)
+- **Plotting:** Optional matplotlib charts (deferred — CSV export to spreadsheet is sufficient for now)
+
+### Phase 5 readiness
+
+Phase 5 (Full Platform scenario) can proceed once the Lean Clinical parameters are validated. The engine already supports multiple scenarios via `--scenario`.
+
+---
+
+## 11. Deferred Items (to add to master list)
+
+- `effectiveMonthlyRevenuePerPatient` as new SysML ProjectionParameter
+- Illustrative ProjectionOutput value updates (after parameter validation)
+- Clinician utilisation model extension (include non-patient-facing activities)
+- Overhead percentage validation (25% may be too high given the granular cost model)
+- Initiation-period vs stable-period fee split in the revenue model
+- Plotting / visualisation (matplotlib or similar)
+- Manifest integration (engine reads params from generated JSON)
+- Projection generator (SysML → engine code — deferred until formula patterns stabilise)
+
+---
+
+*Session report prepared 11 March 2026 (Session 16). Business Meta Model Phase 4 complete.*
