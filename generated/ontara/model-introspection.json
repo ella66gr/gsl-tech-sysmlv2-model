@@ -1,41 +1,46 @@
 {
-  "generatedAt": "2026-03-19T17:51:43.432542",
+  "generatedAt": "2026-03-19T20:08:30.154234",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 430
+      "elementCount": 457
     },
     "csw": {
       "label": "Cafe (Coffee Shop)",
       "description": "Cafe demonstrator \u2014 reference validation domain",
-      "elementCount": 110
+      "elementCount": 119
     },
     "suds": {
       "label": "Suds (Laundry)",
       "description": "Laundry service demonstrator \u2014 cross-domain validation",
-      "elementCount": 50
+      "elementCount": 61
     }
   },
   "summary": {
-    "totalElements": 590,
+    "totalElements": 637,
     "byKind": {
-      "part_def": 116,
-      "part": 406,
+      "part_def": 117,
+      "part": 410,
       "enum_def": 51,
-      "requirement": 5,
-      "metadata_def": 12
+      "requirement_def": 15,
+      "requirement": 6,
+      "metadata_def": 12,
+      "constraint_def": 14,
+      "constraint": 10,
+      "satisfy": 2
     },
     "byLayer": {
-      "bmm": 185,
-      "domain": 183,
-      "bsmm": 222
+      "bmm": 188,
+      "domain": 202,
+      "bsmm": 238,
+      "unknown": 9
     },
     "byDomain": {
-      "core": 430,
-      "csw": 110,
-      "suds": 50
+      "core": 457,
+      "csw": 119,
+      "suds": 61
     }
   },
   "facets": {
@@ -43,6 +48,7 @@
       "values": [
         "ActivityModel",
         "FinancialModel",
+        "Governance",
         "ResourceCapability",
         "ServiceConcept"
       ],
@@ -50,24 +56,25 @@
         "ServiceConcept": 7,
         "ActivityModel": 5,
         "ResourceCapability": 7,
-        "FinancialModel": 5
+        "FinancialModel": 5,
+        "Governance": 2
       },
-      "total": 24
+      "total": 26
     },
     "classification": {
       "values": [
         "General"
       ],
       "counts": {
-        "General": 24
+        "General": 26
       },
-      "total": 24
+      "total": 26
     }
   },
   "comprehension": {
-    "catalogueTaggedCount": 24,
-    "userFacingCount": 10,
-    "coveragePercent": 41.7,
+    "catalogueTaggedCount": 26,
+    "userFacingCount": 12,
+    "coveragePercent": 46.2,
     "missingUserFacing": [
       {
         "name": "Channel",
@@ -124,6 +131,676 @@
       {
         "name": "FinancialProjection",
         "package": "FinancialPlanning"
+      }
+    ]
+  },
+  "governanceTraceability": {
+    "requirementDefs": [
+      {
+        "name": "GovernanceRequirement",
+        "package": "GovernanceMapping",
+        "layer": "bmm",
+        "doc": "A regulatory, legal, or standards obligation that\nthe business must satisfy. General vocabulary \u2014\napplicable to COSHH, CQC, GDPR, food hygiene,\nprofessional standards, or any regulatory context.\nDomain-specific requirement usages redefine these\nattributes with concrete values. The satisfy chain\nconn",
+        "attributes": [
+          {
+            "name": "requirementId",
+            "type": "String",
+            "isRedefinition": false
+          },
+          {
+            "name": "title",
+            "type": "String",
+            "isRedefinition": false
+          },
+          {
+            "name": "regulatorySource",
+            "type": "String",
+            "isRedefinition": false
+          },
+          {
+            "name": "complianceDescription",
+            "type": "String",
+            "isRedefinition": false
+          },
+          {
+            "name": "evidenceRequired",
+            "type": "String",
+            "isRedefinition": false
+          }
+        ],
+        "catalogueTag": {
+          "bmmConcern": "Governance",
+          "classification": "General"
+        },
+        "userFacing": {
+          "friendlyName": "Governance Requirement",
+          "shortDescription": "A regulatory or standards obligation that the business must satisfy, with defined evidence."
+        }
+      },
+      {
+        "name": "StrategicObjective",
+        "package": "BusinessStrategy",
+        "layer": "bmm",
+        "doc": "A defined business goal with a timeframe, success\ncriteria, and traceability to capabilities that\nsatisfy it and scenarios that parameterise it.\nModelled as requirement def (not part def) to enable\nformal satisfy relationships from objectives to\nCapability usages in ResourcePlanning. This preserves\n",
+        "attributes": [
+          {
+            "name": "objectiveName",
+            "type": "String",
+            "isRedefinition": false
+          },
+          {
+            "name": "description",
+            "type": "String",
+            "isRedefinition": false
+          },
+          {
+            "name": "targetDate",
+            "type": "String",
+            "isRedefinition": false
+          },
+          {
+            "name": "successCriteria",
+            "type": "String",
+            "isRedefinition": false
+          },
+          {
+            "name": "status",
+            "type": "String",
+            "isRedefinition": false
+          },
+          {
+            "name": "relatedScenarios",
+            "type": "ScenarioDefinition[0..*]",
+            "isRef": true
+          }
+        ],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "ConsentBeforeTreatment",
+        "package": "Regulation",
+        "layer": "domain",
+        "doc": "Informed consent must be obtained and recorded\nbefore any treatment is initiated. Consent must\nbe specific to the proposed treatment, documented\nin the clinical record, and include evidence that\nthe patient had capacity at the time of consent.\nRegulatory basis: GMC Good Medical Practice,\nMontgomery ",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "InformedConsentRequiresInformation",
+        "package": "Regulation",
+        "layer": "domain",
+        "doc": "Before consent can be considered informed, the patient\nmust have received and had opportunity to consider\nrelevant information about the proposed treatment,\nincluding expected effects, potential risks, alternative\noptions, and the consequences of not proceeding.\nThis is a precondition of ConsentBefo",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "BaselineInvestigationsBeforePrescribing",
+        "package": "Regulation",
+        "layer": "domain",
+        "doc": "Baseline blood tests must be completed, resulted,\nand reviewed by a clinician before a hormone therapy\nprescription is authorised. The required baseline\npanel includes FBC, U&Es, LFTs, lipid profile,\nfasting glucose, prolactin, and baseline hormone\nlevels (testosterone, oestradiol).\n'Reviewed' means",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "ClinicalReviewBeforePrescribing",
+        "package": "Regulation",
+        "layer": "domain",
+        "doc": "A clinician with appropriate competence must conduct\na clinical review before authorising a hormone therapy\nprescription. The review must consider baseline\ninvestigations, patient history, contraindications,\nand the proposed regimen.\nThis applies to both initial prescribing and any\nsubsequent dose a",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "PrescribingProtocolAdherence",
+        "package": "Regulation",
+        "layer": "domain",
+        "doc": "Prescribing must follow an approved clinical protocol.\nThe protocol defines eligible medications, routes of\nadministration, starting doses, titration schedules,\nand therapeutic target ranges.\nDeviations from protocol must be clinically justified\nand documented in the clinical record.\nRegulatory basi",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "BloodMonitoringRequired",
+        "package": "Regulation",
+        "layer": "domain",
+        "doc": "Patients on hormone therapy must have blood tests\nperformed at defined monitoring intervals. The\nmonitoring schedule is determined by the prescribing\nprotocol and the patient's clinical stability.\nInitial monitoring is typically at 3 months post-\ninitiation, then at intervals determined by clinical\n",
+        "attributes": [
+          {
+            "name": "monitoringIntervalWeeks",
+            "type": "Integer",
+            "isRedefinition": false
+          }
+        ],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "ClinicalReviewBeforeDoseAdjustment",
+        "package": "Regulation",
+        "layer": "domain",
+        "doc": "Any change to hormone therapy dosage must be preceded\nby a clinical review that considers current blood\nresults, symptom assessment, side effect evaluation,\nand the patient's overall clinical picture.\nDose adjustments without clinical review are not\npermitted, even when blood results suggest a chang",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "SharedCareCommunication",
+        "package": "Regulation",
+        "layer": "domain",
+        "doc": "When hormone therapy monitoring is transitioned to\nshared care with the patient's GP, the GP must receive\na shared care protocol document that includes the\ncurrent regimen, monitoring schedule, therapeutic\ntarget ranges, action thresholds, and clear guidance\non when to refer back.\nShared care must n",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "LoyaltyDiscountRequired",
+        "package": "BusinessRules",
+        "layer": "unknown",
+        "doc": "Members of the loyalty scheme must receive\na minimum 10% discount on every order.",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "MinimumOrderSize",
+        "package": "BusinessRules",
+        "layer": "unknown",
+        "doc": "Orders must contain at least one item.",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "MaximumOrderSize",
+        "package": "BusinessRules",
+        "layer": "unknown",
+        "doc": "Orders must contain no more than 10 items\nto avoid barista overload.",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "veganMilkDrinkRule",
+        "package": "BusinessRules",
+        "layer": "unknown",
+        "doc": "Any drink marked as vegan must not use\ndairy milk \u2014 only oat, soy, or almond.",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      },
+      {
+        "name": "BaristaMinimumHours",
+        "package": "BusinessRules",
+        "layer": "unknown",
+        "doc": "Staff members in the barista role must be\ncontracted for at least 12 hours per week.",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {}
+      }
+    ],
+    "constraintDefs": [
+      {
+        "name": "ConsentRecordedConstraint",
+        "package": "ConstraintLibrary",
+        "sourceDomain": "core",
+        "doc": "Evaluable rule: a valid consent record must exist\nfor the specified treatment before it can proceed.\nAt runtime, consentRecorded is derived from the\nCDR: a consent composition exists for this patient\nand treatment type with status 'given'.",
+        "attributes": []
+      },
+      {
+        "name": "PatientInformationProvidedConstraint",
+        "package": "ConstraintLibrary",
+        "sourceDomain": "core",
+        "doc": "Evaluable rule: the patient must have been provided\nwith treatment information before consent is obtained.\nAt runtime, informationProvided is derived from the\nCDR: an information-provision event is recorded for\nthis patient and treatment type, with a timestamp\nbefore the consent timestamp.",
+        "attributes": []
+      },
+      {
+        "name": "BaselineBloodsReviewedConstraint",
+        "package": "ConstraintLibrary",
+        "sourceDomain": "core",
+        "doc": "Evaluable rule: all required baseline blood tests\nmust have reached the 'reviewed' state before a\nhormone therapy prescription can be authorised.\nThis checks two conditions:\n1. All required tests have been performed (no\n   outstanding orders)\n2. All results have been clinically reviewed (not\n   just",
+        "attributes": []
+      },
+      {
+        "name": "ClinicalReviewCompletedConstraint",
+        "package": "ConstraintLibrary",
+        "sourceDomain": "core",
+        "doc": "Evaluable rule: a clinical review must have been\ncompleted and documented before a prescribing\ndecision can proceed.\nAt runtime, reviewCompleted is derived from the\nCDR: a consultation composition exists for this\nepisode with a review outcome recorded.",
+        "attributes": []
+      },
+      {
+        "name": "RegimenWithinProtocolConstraint",
+        "package": "ConstraintLibrary",
+        "sourceDomain": "core",
+        "doc": "Evaluable rule: the proposed medication, route, and\ndose must fall within the bounds of an approved\nprescribing protocol.\nAt runtime, this evaluates the proposed regimen\nagainst the protocol decision table in\nKnowledge::DecisionModels. A regimen is within\nprotocol if all three components match an ap",
+        "attributes": []
+      },
+      {
+        "name": "BloodMonitoringIntervalConstraint",
+        "package": "ConstraintLibrary",
+        "sourceDomain": "core",
+        "doc": "Evaluable rule: the number of weeks since the last\nblood test must not exceed the required monitoring\ninterval.\nAt runtime, weeksSinceLastTest is derived from the\nCDR: the most recent LabResult for this patient\nwith the relevant test name. requiredIntervalWeeks\ncomes from the prescribing protocol.",
+        "attributes": []
+      },
+      {
+        "name": "DoseAdjustmentReviewedConstraint",
+        "package": "ConstraintLibrary",
+        "sourceDomain": "core",
+        "doc": "Evaluable rule: a clinical review must have been\ncompleted, with current blood results reviewed,\nbefore a dose adjustment can be authorised.\nThis is a compound check: both the clinical review\nand the blood result review must be complete.",
+        "attributes": []
+      },
+      {
+        "name": "SharedCareAcceptedConstraint",
+        "package": "ConstraintLibrary",
+        "sourceDomain": "core",
+        "doc": "Evaluable rule: shared care must not commence until\nthe GP practice has confirmed acceptance of the\nshared care arrangement and the shared care protocol\ndocument has been sent.\nAt runtime, both inputs are derived from the\nReferral lifecycle state (referralAccepted) and\na document-sent event in the C",
+        "attributes": []
+      },
+      {
+        "name": "LoyaltyDiscountConstraint",
+        "package": "BusinessRules",
+        "sourceDomain": "csw",
+        "doc": "Formalises the loyalty discount rule:\nif the customer is a member, discount >= 10%.",
+        "attributes": []
+      },
+      {
+        "name": "OrderSizeConstraint",
+        "package": "BusinessRules",
+        "sourceDomain": "csw",
+        "doc": "Formalises the order size rules:\nquantity of items must be between 1 and 10.",
+        "attributes": []
+      },
+      {
+        "name": "VeganMilkConstraint",
+        "package": "BusinessRules",
+        "sourceDomain": "csw",
+        "doc": "Formalises the vegan milk rule:\nif the drink is vegan, milk choice must not be dairy.",
+        "attributes": []
+      },
+      {
+        "name": "BaristaHoursConstraint",
+        "package": "BusinessRules",
+        "sourceDomain": "csw",
+        "doc": "Baristas must work at least 12 hours per week.",
+        "attributes": []
+      },
+      {
+        "name": "CoshhStorageConstraint",
+        "package": "SudsGovernance",
+        "sourceDomain": "suds",
+        "doc": "Testable condition: all cleaning chemicals are stored\nin compliance with COSHH requirements. Requires:\nall substances have current safety data sheets, and\nthe storage area meets ventilation and security\nstandards.",
+        "attributes": []
+      },
+      {
+        "name": "CoshhTrainingConstraint",
+        "package": "SudsGovernance",
+        "sourceDomain": "suds",
+        "doc": "Testable condition: all staff who handle chemicals\nhave completed COSHH awareness training within the\nrequired interval. Training must be refreshed\nannually.",
+        "attributes": []
+      }
+    ],
+    "satisfyChains": [
+      {
+        "satisfyName": "coshhStorageSatisfied",
+        "requirementDef": "GovernanceRequirement",
+        "constraintUsage": "coshhStorageCheck",
+        "constraintDef": "CoshhStorageConstraint",
+        "sourceDomain": "suds",
+        "package": "SudsGovernance"
+      },
+      {
+        "satisfyName": "coshhTrainingSatisfied",
+        "requirementDef": "GovernanceRequirement",
+        "constraintUsage": "coshhTrainingCheck",
+        "constraintDef": "CoshhTrainingConstraint",
+        "sourceDomain": "suds",
+        "package": "SudsGovernance"
+      }
+    ],
+    "requirementInstances": [
+      {
+        "name": "objectivePatientCohort",
+        "typedBy": "StrategicObjective",
+        "sourceDomain": "core",
+        "package": "BusinessStrategy",
+        "doc": "",
+        "attributes": [
+          {
+            "name": "objectiveName",
+            "value": "Build active patient cohort",
+            "isRedefinition": true
+          },
+          {
+            "name": "description",
+            "value": "Reach 200 active patients across assessment, initiation, and monitoring",
+            "isRedefinition": true
+          },
+          {
+            "name": "targetDate",
+            "value": "Month 18",
+            "isRedefinition": true
+          },
+          {
+            "name": "successCriteria",
+            "value": "200+ patients in active monitoring or initiation by month 18",
+            "isRedefinition": true
+          },
+          {
+            "name": "status",
+            "value": "planned",
+            "isRedefinition": true
+          }
+        ]
+      },
+      {
+        "name": "objectiveSharedCare",
+        "typedBy": "StrategicObjective",
+        "sourceDomain": "core",
+        "package": "BusinessStrategy",
+        "doc": "",
+        "attributes": [
+          {
+            "name": "objectiveName",
+            "value": "Establish shared care network",
+            "isRedefinition": true
+          },
+          {
+            "name": "description",
+            "value": "Build shared care agreements with GP practices for ongoing monitoring",
+            "isRedefinition": true
+          },
+          {
+            "name": "targetDate",
+            "value": "Month 24",
+            "isRedefinition": true
+          },
+          {
+            "name": "successCriteria",
+            "value": "50+ signed shared care protocols with GP practices",
+            "isRedefinition": true
+          },
+          {
+            "name": "status",
+            "value": "planned",
+            "isRedefinition": true
+          }
+        ]
+      },
+      {
+        "name": "objectiveBreakEven",
+        "typedBy": "StrategicObjective",
+        "sourceDomain": "core",
+        "package": "BusinessStrategy",
+        "doc": "",
+        "attributes": [
+          {
+            "name": "objectiveName",
+            "value": "Financial break-even",
+            "isRedefinition": true
+          },
+          {
+            "name": "description",
+            "value": "Reach the point where cumulative cash flow turns positive",
+            "isRedefinition": true
+          },
+          {
+            "name": "targetDate",
+            "value": "Month 24",
+            "isRedefinition": true
+          },
+          {
+            "name": "successCriteria",
+            "value": "Cumulative cash flow >= \u00a30",
+            "isRedefinition": true
+          },
+          {
+            "name": "status",
+            "value": "planned",
+            "isRedefinition": true
+          }
+        ]
+      },
+      {
+        "name": "objectivePlatformLaunch",
+        "typedBy": "StrategicObjective",
+        "sourceDomain": "core",
+        "package": "BusinessStrategy",
+        "doc": "",
+        "attributes": [
+          {
+            "name": "objectiveName",
+            "value": "Patient portal operational",
+            "isRedefinition": true
+          },
+          {
+            "name": "description",
+            "value": "Launch the patient-facing portal with pathway visibility, journal, and document access",
+            "isRedefinition": true
+          },
+          {
+            "name": "targetDate",
+            "value": "Month 6",
+            "isRedefinition": true
+          },
+          {
+            "name": "successCriteria",
+            "value": "Portal live with pathway visibility, journal, and document access features",
+            "isRedefinition": true
+          },
+          {
+            "name": "status",
+            "value": "planned",
+            "isRedefinition": true
+          }
+        ]
+      },
+      {
+        "name": "kioskProfitability",
+        "typedBy": "StrategicObjective",
+        "sourceDomain": "csw",
+        "package": "CoffeeshopScenarios",
+        "doc": "Reach profitability within 6 months of opening.\nValidates that StrategicObjective (requirement def)\nworks for a non-clinical business objective.",
+        "attributes": [
+          {
+            "name": "objectiveName",
+            "value": "Kiosk profitability",
+            "isRedefinition": true
+          },
+          {
+            "name": "description",
+            "value": "Reach positive monthly margin within 6 months of opening",
+            "isRedefinition": true
+          },
+          {
+            "name": "targetDate",
+            "value": "Month 6",
+            "isRedefinition": true
+          },
+          {
+            "name": "successCriteria",
+            "value": "Monthly margin > \u00a30 for two consecutive months",
+            "isRedefinition": true
+          },
+          {
+            "name": "status",
+            "value": "planned",
+            "isRedefinition": true
+          }
+        ]
+      },
+      {
+        "name": "coshhCompliance",
+        "typedBy": "GovernanceRequirement",
+        "sourceDomain": "suds",
+        "package": "SudsGovernance",
+        "doc": "Control of Substances Hazardous to Health Regulations 2002.\nRequires employers to control substances that are hazardous\nto health. For a laundry service: cleaning chemicals,\ndetergents, stain removers, and specialist products.\nThis exercises the governance traceability architecture\n(A8) in a non-hea",
+        "attributes": [
+          {
+            "name": "requirementId",
+            "value": "SUDS-GOV-001",
+            "isRedefinition": true
+          },
+          {
+            "name": "title",
+            "value": "COSHH compliance for cleaning chemicals",
+            "isRedefinition": true
+          },
+          {
+            "name": "regulatorySource",
+            "value": "Health and Safety Executive \u2014 COSHH Regulations 2002",
+            "isRedefinition": true
+          },
+          {
+            "name": "complianceDescription",
+            "value": "All cleaning chemicals used in the laundry service must be subject to COSHH risk assessment. Current safety data sheets must be maintained for all substances. Staff must receive COSHH awareness training before handling chemicals. Chemicals must be stored in a ventilated, locked area with appropriate PPE available.",
+            "isRedefinition": true
+          },
+          {
+            "name": "evidenceRequired",
+            "value": "COSHH risk assessment document, safety data sheet register, staff training records, storage inspection log",
+            "isRedefinition": true
+          }
+        ]
+      }
+    ],
+    "auditEvidenceInstances": [
+      {
+        "name": "coshhRiskAssessment",
+        "typedBy": "AuditEvidenceRecord",
+        "sourceDomain": "suds",
+        "package": "SudsGovernance",
+        "doc": "Documented COSHH risk assessment for all chemicals\nused in the laundry service. Must be reviewed\nannually and whenever a new chemical is introduced.",
+        "attributes": [
+          {
+            "name": "evidenceType",
+            "value": "risk assessment",
+            "isRedefinition": true
+          },
+          {
+            "name": "evidenceDescription",
+            "value": "COSHH risk assessment covering all cleaning chemicals, detergents, and specialist products used in the laundry. Identifies hazards, exposure routes, control measures, and emergency procedures.",
+            "isRedefinition": true
+          },
+          {
+            "name": "retentionPeriod",
+            "value": "5 years from date of assessment",
+            "isRedefinition": true
+          },
+          {
+            "name": "responsibleRole",
+            "value": "Shop manager",
+            "isRedefinition": true
+          },
+          {
+            "name": "frequency",
+            "value": "Annually and on introduction of new chemicals",
+            "isRedefinition": true
+          }
+        ]
+      },
+      {
+        "name": "sdsRegister",
+        "typedBy": "AuditEvidenceRecord",
+        "sourceDomain": "suds",
+        "package": "SudsGovernance",
+        "doc": "Register of current Safety Data Sheets for every\nchemical substance used. COSHH requires SDS to be\navailable at the point of use and kept current.",
+        "attributes": [
+          {
+            "name": "evidenceType",
+            "value": "document register",
+            "isRedefinition": true
+          },
+          {
+            "name": "evidenceDescription",
+            "value": "Index of all Safety Data Sheets held, with product name, supplier, date of issue, and location of physical/digital copy. Cross-referenced to chemical inventory.",
+            "isRedefinition": true
+          },
+          {
+            "name": "retentionPeriod",
+            "value": "Duration of use plus 3 years",
+            "isRedefinition": true
+          },
+          {
+            "name": "responsibleRole",
+            "value": "Shop manager",
+            "isRedefinition": true
+          },
+          {
+            "name": "frequency",
+            "value": "Updated on receipt of new SDS or change of supplier",
+            "isRedefinition": true
+          }
+        ]
+      },
+      {
+        "name": "staffTrainingRecord",
+        "typedBy": "AuditEvidenceRecord",
+        "sourceDomain": "suds",
+        "package": "SudsGovernance",
+        "doc": "Individual training records for each staff member\nwho handles cleaning chemicals. COSHH requires\ndocumented evidence of training and competency.",
+        "attributes": [
+          {
+            "name": "evidenceType",
+            "value": "training record",
+            "isRedefinition": true
+          },
+          {
+            "name": "evidenceDescription",
+            "value": "Per-employee record of COSHH awareness training: date completed, trainer, topics covered, competency assessment outcome. Refresher training tracked separately.",
+            "isRedefinition": true
+          },
+          {
+            "name": "retentionPeriod",
+            "value": "Duration of employment plus 6 years",
+            "isRedefinition": true
+          },
+          {
+            "name": "responsibleRole",
+            "value": "Shop manager",
+            "isRedefinition": true
+          },
+          {
+            "name": "frequency",
+            "value": "On induction and annually thereafter",
+            "isRedefinition": true
+          }
+        ]
+      },
+      {
+        "name": "storageInspectionLog",
+        "typedBy": "AuditEvidenceRecord",
+        "sourceDomain": "suds",
+        "package": "SudsGovernance",
+        "doc": "Log of periodic inspections of the chemical storage\narea. Checks ventilation, locked access, labelling,\nPPE availability, and spill containment.",
+        "attributes": [
+          {
+            "name": "evidenceType",
+            "value": "inspection log",
+            "isRedefinition": true
+          },
+          {
+            "name": "evidenceDescription",
+            "value": "Dated record of chemical storage area inspection: ventilation status, lock integrity, labelling compliance, PPE stock check, spill kit presence, any corrective actions required.",
+            "isRedefinition": true
+          },
+          {
+            "name": "retentionPeriod",
+            "value": "5 years",
+            "isRedefinition": true
+          },
+          {
+            "name": "responsibleRole",
+            "value": "Shop manager or designated safety officer",
+            "isRedefinition": true
+          },
+          {
+            "name": "frequency",
+            "value": "Monthly",
+            "isRedefinition": true
+          }
+        ]
       }
     ]
   },
@@ -1167,6 +1844,40 @@
           {
             "name": "fullPlatformProjection",
             "package": "FinancialPlanning"
+          }
+        ]
+      }
+    },
+    "AuditEvidenceRecord": {
+      "name": "AuditEvidenceRecord",
+      "layer": "bmm",
+      "package": "GovernanceMapping",
+      "doc": "A record or document that provides evidence of\ncompliance with a governance requirement. The\naudit trail: what was checked, when, by whom,\nand how often.\nGeneral vocabulary \u2014 applicable to any regulat",
+      "catalogueTag": {
+        "bmmConcern": "Governance",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Audit Evidence Record",
+        "shortDescription": "A record that demonstrates compliance with a governance requirement \u2014 the proof that obligations are met."
+      },
+      "domains": {
+        "suds": [
+          {
+            "name": "coshhRiskAssessment",
+            "package": "SudsGovernance"
+          },
+          {
+            "name": "sdsRegister",
+            "package": "SudsGovernance"
+          },
+          {
+            "name": "staffTrainingRecord",
+            "package": "SudsGovernance"
+          },
+          {
+            "name": "storageInspectionLog",
+            "package": "SudsGovernance"
           }
         ]
       }
@@ -6480,6 +7191,128 @@
       ]
     },
     {
+      "kind": "requirement_def",
+      "name": "GovernanceRequirement",
+      "parentPackage": "GovernanceMapping",
+      "doc": "A regulatory, legal, or standards obligation that\nthe business must satisfy. General vocabulary \u2014\napplicable to COSHH, CQC, GDPR, food hygiene,\nprofessional standards, or any regulatory context.\nDomain-specific requirement usages redefine these\nattributes with concrete values. The satisfy chain\nconn",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 1211,
+      "attributes": [
+        {
+          "name": "requirementId",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "title",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "regulatorySource",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "complianceDescription",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "evidenceRequired",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "Governance",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Governance Requirement",
+        "shortDescription": "A regulatory or standards obligation that the business must satisfy, with defined evidence."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "Governance",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Governance Requirement",
+            "shortDescription": "A regulatory or standards obligation that the business must satisfy, with defined evidence."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "AuditEvidenceRecord",
+      "parentPackage": "GovernanceMapping",
+      "doc": "A record or document that provides evidence of\ncompliance with a governance requirement. The\naudit trail: what was checked, when, by whom,\nand how often.\nGeneral vocabulary \u2014 applicable to any regulated\nbusiness. COSHH risk assessments, CQC inspection\nrecords, GDPR processing logs, staff training\nre",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 1237,
+      "attributes": [
+        {
+          "name": "evidenceType",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "evidenceDescription",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "retentionPeriod",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "responsibleRole",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "frequency",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "Governance",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Audit Evidence Record",
+        "shortDescription": "A record that demonstrates compliance with a governance requirement \u2014 the proof that obligations are met."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "Governance",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Audit Evidence Record",
+            "shortDescription": "A record that demonstrates compliance with a governance requirement \u2014 the proof that obligations are met."
+          }
+        }
+      ]
+    },
+    {
       "kind": "enum_def",
       "name": "GrowthShape",
       "parentPackage": "BusinessScenarios",
@@ -10284,6 +11117,48 @@
       ]
     },
     {
+      "kind": "requirement_def",
+      "name": "StrategicObjective",
+      "parentPackage": "BusinessStrategy",
+      "doc": "A defined business goal with a timeframe, success\ncriteria, and traceability to capabilities that\nsatisfy it and scenarios that parameterise it.\nModelled as requirement def (not part def) to enable\nformal satisfy relationships from objectives to\nCapability usages in ResourcePlanning. This preserves\n",
+      "sourceFile": "model/business-strategy.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 52,
+      "attributes": [
+        {
+          "name": "objectiveName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "targetDate",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "successCriteria",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "status",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "relatedScenarios",
+          "type": "ScenarioDefinition[0..*]",
+          "isRef": true
+        }
+      ]
+    },
+    {
       "kind": "part_def",
       "name": "BusinessModelVariant",
       "parentPackage": "BusinessStrategy",
@@ -10806,6 +11681,93 @@
           "isRedefinition": false
         }
       ]
+    },
+    {
+      "kind": "requirement_def",
+      "name": "ConsentBeforeTreatment",
+      "parentPackage": "Regulation",
+      "doc": "Informed consent must be obtained and recorded\nbefore any treatment is initiated. Consent must\nbe specific to the proposed treatment, documented\nin the clinical record, and include evidence that\nthe patient had capacity at the time of consent.\nRegulatory basis: GMC Good Medical Practice,\nMontgomery ",
+      "sourceFile": "model/enterprise.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "domain",
+      "lineNumber": 77
+    },
+    {
+      "kind": "requirement_def",
+      "name": "InformedConsentRequiresInformation",
+      "parentPackage": "Regulation",
+      "doc": "Before consent can be considered informed, the patient\nmust have received and had opportunity to consider\nrelevant information about the proposed treatment,\nincluding expected effects, potential risks, alternative\noptions, and the consequences of not proceeding.\nThis is a precondition of ConsentBefo",
+      "sourceFile": "model/enterprise.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "domain",
+      "lineNumber": 89
+    },
+    {
+      "kind": "requirement_def",
+      "name": "BaselineInvestigationsBeforePrescribing",
+      "parentPackage": "Regulation",
+      "doc": "Baseline blood tests must be completed, resulted,\nand reviewed by a clinician before a hormone therapy\nprescription is authorised. The required baseline\npanel includes FBC, U&Es, LFTs, lipid profile,\nfasting glucose, prolactin, and baseline hormone\nlevels (testosterone, oestradiol).\n'Reviewed' means",
+      "sourceFile": "model/enterprise.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "domain",
+      "lineNumber": 107
+    },
+    {
+      "kind": "requirement_def",
+      "name": "ClinicalReviewBeforePrescribing",
+      "parentPackage": "Regulation",
+      "doc": "A clinician with appropriate competence must conduct\na clinical review before authorising a hormone therapy\nprescription. The review must consider baseline\ninvestigations, patient history, contraindications,\nand the proposed regimen.\nThis applies to both initial prescribing and any\nsubsequent dose a",
+      "sourceFile": "model/enterprise.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "domain",
+      "lineNumber": 126
+    },
+    {
+      "kind": "requirement_def",
+      "name": "PrescribingProtocolAdherence",
+      "parentPackage": "Regulation",
+      "doc": "Prescribing must follow an approved clinical protocol.\nThe protocol defines eligible medications, routes of\nadministration, starting doses, titration schedules,\nand therapeutic target ranges.\nDeviations from protocol must be clinically justified\nand documented in the clinical record.\nRegulatory basi",
+      "sourceFile": "model/enterprise.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "domain",
+      "lineNumber": 141
+    },
+    {
+      "kind": "requirement_def",
+      "name": "BloodMonitoringRequired",
+      "parentPackage": "Regulation",
+      "doc": "Patients on hormone therapy must have blood tests\nperformed at defined monitoring intervals. The\nmonitoring schedule is determined by the prescribing\nprotocol and the patient's clinical stability.\nInitial monitoring is typically at 3 months post-\ninitiation, then at intervals determined by clinical\n",
+      "sourceFile": "model/enterprise.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "domain",
+      "lineNumber": 157,
+      "attributes": [
+        {
+          "name": "monitoringIntervalWeeks",
+          "type": "Integer",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "requirement_def",
+      "name": "ClinicalReviewBeforeDoseAdjustment",
+      "parentPackage": "Regulation",
+      "doc": "Any change to hormone therapy dosage must be preceded\nby a clinical review that considers current blood\nresults, symptom assessment, side effect evaluation,\nand the patient's overall clinical picture.\nDose adjustments without clinical review are not\npermitted, even when blood results suggest a chang",
+      "sourceFile": "model/enterprise.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "domain",
+      "lineNumber": 173
+    },
+    {
+      "kind": "requirement_def",
+      "name": "SharedCareCommunication",
+      "parentPackage": "Regulation",
+      "doc": "When hormone therapy monitoring is transitioned to\nshared care with the patient's GP, the GP must receive\na shared care protocol document that includes the\ncurrent regimen, monitoring schedule, therapeutic\ntarget ranges, action thresholds, and clear guidance\non when to refer back.\nShared care must n",
+      "sourceFile": "model/enterprise.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "domain",
+      "lineNumber": 190
     },
     {
       "kind": "part_def",
@@ -12323,6 +13285,174 @@
           "isRedefinition": true
         }
       ]
+    },
+    {
+      "kind": "constraint_def",
+      "name": "ConsentRecordedConstraint",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "Evaluable rule: a valid consent record must exist\nfor the specified treatment before it can proceed.\nAt runtime, consentRecorded is derived from the\nCDR: a consent composition exists for this patient\nand treatment type with status 'given'.",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 260
+    },
+    {
+      "kind": "constraint_def",
+      "name": "PatientInformationProvidedConstraint",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "Evaluable rule: the patient must have been provided\nwith treatment information before consent is obtained.\nAt runtime, informationProvided is derived from the\nCDR: an information-provision event is recorded for\nthis patient and treatment type, with a timestamp\nbefore the consent timestamp.",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 272
+    },
+    {
+      "kind": "constraint_def",
+      "name": "BaselineBloodsReviewedConstraint",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "Evaluable rule: all required baseline blood tests\nmust have reached the 'reviewed' state before a\nhormone therapy prescription can be authorised.\nThis checks two conditions:\n1. All required tests have been performed (no\n   outstanding orders)\n2. All results have been clinically reviewed (not\n   just",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 287
+    },
+    {
+      "kind": "constraint_def",
+      "name": "ClinicalReviewCompletedConstraint",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "Evaluable rule: a clinical review must have been\ncompleted and documented before a prescribing\ndecision can proceed.\nAt runtime, reviewCompleted is derived from the\nCDR: a consultation composition exists for this\nepisode with a review outcome recorded.",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 308
+    },
+    {
+      "kind": "constraint_def",
+      "name": "RegimenWithinProtocolConstraint",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "Evaluable rule: the proposed medication, route, and\ndose must fall within the bounds of an approved\nprescribing protocol.\nAt runtime, this evaluates the proposed regimen\nagainst the protocol decision table in\nKnowledge::DecisionModels. A regimen is within\nprotocol if all three components match an ap",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 321
+    },
+    {
+      "kind": "constraint_def",
+      "name": "BloodMonitoringIntervalConstraint",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "Evaluable rule: the number of weeks since the last\nblood test must not exceed the required monitoring\ninterval.\nAt runtime, weeksSinceLastTest is derived from the\nCDR: the most recent LabResult for this patient\nwith the relevant test name. requiredIntervalWeeks\ncomes from the prescribing protocol.",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 340
+    },
+    {
+      "kind": "constraint_def",
+      "name": "DoseAdjustmentReviewedConstraint",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "Evaluable rule: a clinical review must have been\ncompleted, with current blood results reviewed,\nbefore a dose adjustment can be authorised.\nThis is a compound check: both the clinical review\nand the blood result review must be complete.",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 355
+    },
+    {
+      "kind": "constraint_def",
+      "name": "SharedCareAcceptedConstraint",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "Evaluable rule: shared care must not commence until\nthe GP practice has confirmed acceptance of the\nshared care arrangement and the shared care protocol\ndocument has been sent.\nAt runtime, both inputs are derived from the\nReferral lifecycle state (referralAccepted) and\na document-sent event in the C",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 370
+    },
+    {
+      "kind": "constraint",
+      "name": "consentCheck",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 394,
+      "specialises": "ConsentRecordedConstraint"
+    },
+    {
+      "kind": "constraint",
+      "name": "informationCheck",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 395,
+      "specialises": "PatientInformationProvidedConstraint"
+    },
+    {
+      "kind": "constraint",
+      "name": "baselineBloodsCheck",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 396,
+      "specialises": "BaselineBloodsReviewedConstraint"
+    },
+    {
+      "kind": "constraint",
+      "name": "clinicalReviewCheck",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 397,
+      "specialises": "ClinicalReviewCompletedConstraint"
+    },
+    {
+      "kind": "constraint",
+      "name": "regimenProtocolCheck",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 398,
+      "specialises": "RegimenWithinProtocolConstraint"
+    },
+    {
+      "kind": "constraint",
+      "name": "bloodMonitoringCheck",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 399,
+      "specialises": "BloodMonitoringIntervalConstraint"
+    },
+    {
+      "kind": "constraint",
+      "name": "doseAdjustmentReviewCheck",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 400,
+      "specialises": "DoseAdjustmentReviewedConstraint"
+    },
+    {
+      "kind": "constraint",
+      "name": "sharedCareCheck",
+      "parentPackage": "ConstraintLibrary",
+      "doc": "",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 401,
+      "specialises": "SharedCareAcceptedConstraint"
     },
     {
       "kind": "part_def",
@@ -23327,6 +24457,96 @@
       ]
     },
     {
+      "kind": "requirement_def",
+      "name": "LoyaltyDiscountRequired",
+      "parentPackage": "BusinessRules",
+      "doc": "Members of the loyalty scheme must receive\na minimum 10% discount on every order.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "csw",
+      "metaModelLayer": "unknown",
+      "lineNumber": 9
+    },
+    {
+      "kind": "requirement_def",
+      "name": "MinimumOrderSize",
+      "parentPackage": "BusinessRules",
+      "doc": "Orders must contain at least one item.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "csw",
+      "metaModelLayer": "unknown",
+      "lineNumber": 16
+    },
+    {
+      "kind": "requirement_def",
+      "name": "MaximumOrderSize",
+      "parentPackage": "BusinessRules",
+      "doc": "Orders must contain no more than 10 items\nto avoid barista overload.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "csw",
+      "metaModelLayer": "unknown",
+      "lineNumber": 22
+    },
+    {
+      "kind": "requirement_def",
+      "name": "veganMilkDrinkRule",
+      "parentPackage": "BusinessRules",
+      "doc": "Any drink marked as vegan must not use\ndairy milk \u2014 only oat, soy, or almond.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "csw",
+      "metaModelLayer": "unknown",
+      "lineNumber": 29
+    },
+    {
+      "kind": "requirement_def",
+      "name": "BaristaMinimumHours",
+      "parentPackage": "BusinessRules",
+      "doc": "Staff members in the barista role must be\ncontracted for at least 12 hours per week.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "csw",
+      "metaModelLayer": "unknown",
+      "lineNumber": 36
+    },
+    {
+      "kind": "constraint_def",
+      "name": "LoyaltyDiscountConstraint",
+      "parentPackage": "BusinessRules",
+      "doc": "Formalises the loyalty discount rule:\nif the customer is a member, discount >= 10%.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "csw",
+      "metaModelLayer": "unknown",
+      "lineNumber": 45
+    },
+    {
+      "kind": "constraint_def",
+      "name": "OrderSizeConstraint",
+      "parentPackage": "BusinessRules",
+      "doc": "Formalises the order size rules:\nquantity of items must be between 1 and 10.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "csw",
+      "metaModelLayer": "unknown",
+      "lineNumber": 55
+    },
+    {
+      "kind": "constraint_def",
+      "name": "VeganMilkConstraint",
+      "parentPackage": "BusinessRules",
+      "doc": "Formalises the vegan milk rule:\nif the drink is vegan, milk choice must not be dairy.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "csw",
+      "metaModelLayer": "unknown",
+      "lineNumber": 64
+    },
+    {
+      "kind": "constraint_def",
+      "name": "BaristaHoursConstraint",
+      "parentPackage": "BusinessRules",
+      "doc": "Baristas must work at least 12 hours per week.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "csw",
+      "metaModelLayer": "unknown",
+      "lineNumber": 80
+    },
+    {
       "kind": "enum_def",
       "name": "DrinkSize",
       "parentPackage": "CoffeeShop",
@@ -23885,8 +25105,13 @@
           "isRedefinition": true
         },
         {
-          "name": "promiseStatement",
+          "name": "description",
           "value": "Drop off your laundry and collect it clean, pressed, and ready \u2014 same-day express or next-day standard",
+          "isRedefinition": true
+        },
+        {
+          "name": "evidenceBasis",
+          "value": "Customer satisfaction surveys, turnaround time tracking, repeat booking rates",
           "isRedefinition": true
         },
         {
@@ -23904,7 +25129,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 45,
+      "lineNumber": 46,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -23947,7 +25172,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 56,
+      "lineNumber": 57,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -23990,7 +25215,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 68,
+      "lineNumber": 69,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -24033,7 +25258,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 79,
+      "lineNumber": 80,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -24071,7 +25296,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 87,
+      "lineNumber": 88,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -24109,7 +25334,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 98,
+      "lineNumber": 99,
       "specialises": "Channel",
       "attributes": [
         {
@@ -24152,7 +25377,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 107,
+      "lineNumber": 108,
       "specialises": "Channel",
       "attributes": [
         {
@@ -24195,7 +25420,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 118,
+      "lineNumber": 119,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -24228,7 +25453,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 125,
+      "lineNumber": 126,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -24261,7 +25486,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 139,
+      "lineNumber": 140,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -24309,7 +25534,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 151,
+      "lineNumber": 152,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -24357,7 +25582,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 162,
+      "lineNumber": 163,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -24405,7 +25630,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 179,
+      "lineNumber": 180,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24443,7 +25668,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 190,
+      "lineNumber": 191,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24481,7 +25706,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 201,
+      "lineNumber": 202,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24519,7 +25744,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 213,
+      "lineNumber": 214,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24557,7 +25782,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 224,
+      "lineNumber": 225,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24595,7 +25820,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 234,
+      "lineNumber": 235,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24633,7 +25858,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 244,
+      "lineNumber": 245,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24671,7 +25896,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 254,
+      "lineNumber": 255,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24709,7 +25934,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 265,
+      "lineNumber": 266,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24747,7 +25972,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 273,
+      "lineNumber": 274,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24785,7 +26010,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 283,
+      "lineNumber": 284,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -24818,7 +26043,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 293,
+      "lineNumber": 294,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -24851,7 +26076,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 300,
+      "lineNumber": 301,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -24884,7 +26109,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 307,
+      "lineNumber": 308,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -24917,7 +26142,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 314,
+      "lineNumber": 315,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -24950,7 +26175,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 326,
+      "lineNumber": 327,
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
@@ -24983,7 +26208,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 336,
+      "lineNumber": 337,
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
@@ -25016,7 +26241,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 357,
+      "lineNumber": 358,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -25054,7 +26279,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 365,
+      "lineNumber": 366,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -25092,7 +26317,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 375,
+      "lineNumber": 376,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -25130,7 +26355,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 383,
+      "lineNumber": 384,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -25168,7 +26393,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 391,
+      "lineNumber": 392,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -25206,7 +26431,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 399,
+      "lineNumber": 400,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -25244,7 +26469,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 412,
+      "lineNumber": 413,
       "specialises": "Capability",
       "attributes": [
         {
@@ -25277,7 +26502,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 421,
+      "lineNumber": 422,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -25315,7 +26540,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 431,
+      "lineNumber": 432,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -25353,7 +26578,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 445,
+      "lineNumber": 446,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -25391,7 +26616,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 455,
+      "lineNumber": 456,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -25429,7 +26654,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 463,
+      "lineNumber": 464,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -25467,7 +26692,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 473,
+      "lineNumber": 474,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -25505,7 +26730,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 481,
+      "lineNumber": 482,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -25543,7 +26768,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 491,
+      "lineNumber": 492,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -25581,7 +26806,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 502,
+      "lineNumber": 503,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -25619,7 +26844,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 513,
+      "lineNumber": 514,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -25657,7 +26882,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 526,
+      "lineNumber": 527,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -25688,6 +26913,272 @@
       ]
     },
     {
+      "kind": "requirement",
+      "name": "coshhCompliance",
+      "parentPackage": "SudsGovernance",
+      "doc": "Control of Substances Hazardous to Health Regulations 2002.\nRequires employers to control substances that are hazardous\nto health. For a laundry service: cleaning chemicals,\ndetergents, stain removers, and specialist products.\nThis exercises the governance traceability architecture\n(A8) in a non-hea",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 583,
+      "specialises": "GovernanceRequirement",
+      "attributes": [
+        {
+          "name": "requirementId",
+          "value": "SUDS-GOV-001",
+          "isRedefinition": true
+        },
+        {
+          "name": "title",
+          "value": "COSHH compliance for cleaning chemicals",
+          "isRedefinition": true
+        },
+        {
+          "name": "regulatorySource",
+          "value": "Health and Safety Executive \u2014 COSHH Regulations 2002",
+          "isRedefinition": true
+        },
+        {
+          "name": "complianceDescription",
+          "value": "All cleaning chemicals used in the laundry service must be subject to COSHH risk assessment. Current safety data sheets must be maintained for all substances. Staff must receive COSHH awareness training before handling chemicals. Chemicals must be stored in a ventilated, locked area with appropriate PPE available.",
+          "isRedefinition": true
+        },
+        {
+          "name": "evidenceRequired",
+          "value": "COSHH risk assessment document, safety data sheet register, staff training records, storage inspection log",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "constraint_def",
+      "name": "CoshhStorageConstraint",
+      "parentPackage": "SudsGovernance",
+      "doc": "Testable condition: all cleaning chemicals are stored\nin compliance with COSHH requirements. Requires:\nall substances have current safety data sheets, and\nthe storage area meets ventilation and security\nstandards.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 607
+    },
+    {
+      "kind": "constraint_def",
+      "name": "CoshhTrainingConstraint",
+      "parentPackage": "SudsGovernance",
+      "doc": "Testable condition: all staff who handle chemicals\nhave completed COSHH awareness training within the\nrequired interval. Training must be refreshed\nannually.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 619
+    },
+    {
+      "kind": "constraint",
+      "name": "coshhStorageCheck",
+      "parentPackage": "SudsGovernance",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 632,
+      "specialises": "CoshhStorageConstraint"
+    },
+    {
+      "kind": "constraint",
+      "name": "coshhTrainingCheck",
+      "parentPackage": "SudsGovernance",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 633,
+      "specialises": "CoshhTrainingConstraint"
+    },
+    {
+      "kind": "satisfy",
+      "name": "coshhStorageSatisfied",
+      "parentPackage": "SudsGovernance",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 642,
+      "specialises": "GovernanceRequirement",
+      "attributes": [
+        {
+          "name": "byTarget",
+          "value": "coshhStorageCheck"
+        }
+      ]
+    },
+    {
+      "kind": "satisfy",
+      "name": "coshhTrainingSatisfied",
+      "parentPackage": "SudsGovernance",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 645,
+      "specialises": "GovernanceRequirement",
+      "attributes": [
+        {
+          "name": "byTarget",
+          "value": "coshhTrainingCheck"
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "coshhRiskAssessment",
+      "parentPackage": "SudsGovernance",
+      "doc": "Documented COSHH risk assessment for all chemicals\nused in the laundry service. Must be reviewed\nannually and whenever a new chemical is introduced.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 654,
+      "specialises": "AuditEvidenceRecord",
+      "attributes": [
+        {
+          "name": "evidenceType",
+          "value": "risk assessment",
+          "isRedefinition": true
+        },
+        {
+          "name": "evidenceDescription",
+          "value": "COSHH risk assessment covering all cleaning chemicals, detergents, and specialist products used in the laundry. Identifies hazards, exposure routes, control measures, and emergency procedures.",
+          "isRedefinition": true
+        },
+        {
+          "name": "retentionPeriod",
+          "value": "5 years from date of assessment",
+          "isRedefinition": true
+        },
+        {
+          "name": "responsibleRole",
+          "value": "Shop manager",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequency",
+          "value": "Annually and on introduction of new chemicals",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "sdsRegister",
+      "parentPackage": "SudsGovernance",
+      "doc": "Register of current Safety Data Sheets for every\nchemical substance used. COSHH requires SDS to be\navailable at the point of use and kept current.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 665,
+      "specialises": "AuditEvidenceRecord",
+      "attributes": [
+        {
+          "name": "evidenceType",
+          "value": "document register",
+          "isRedefinition": true
+        },
+        {
+          "name": "evidenceDescription",
+          "value": "Index of all Safety Data Sheets held, with product name, supplier, date of issue, and location of physical/digital copy. Cross-referenced to chemical inventory.",
+          "isRedefinition": true
+        },
+        {
+          "name": "retentionPeriod",
+          "value": "Duration of use plus 3 years",
+          "isRedefinition": true
+        },
+        {
+          "name": "responsibleRole",
+          "value": "Shop manager",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequency",
+          "value": "Updated on receipt of new SDS or change of supplier",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "staffTrainingRecord",
+      "parentPackage": "SudsGovernance",
+      "doc": "Individual training records for each staff member\nwho handles cleaning chemicals. COSHH requires\ndocumented evidence of training and competency.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 676,
+      "specialises": "AuditEvidenceRecord",
+      "attributes": [
+        {
+          "name": "evidenceType",
+          "value": "training record",
+          "isRedefinition": true
+        },
+        {
+          "name": "evidenceDescription",
+          "value": "Per-employee record of COSHH awareness training: date completed, trainer, topics covered, competency assessment outcome. Refresher training tracked separately.",
+          "isRedefinition": true
+        },
+        {
+          "name": "retentionPeriod",
+          "value": "Duration of employment plus 6 years",
+          "isRedefinition": true
+        },
+        {
+          "name": "responsibleRole",
+          "value": "Shop manager",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequency",
+          "value": "On induction and annually thereafter",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "storageInspectionLog",
+      "parentPackage": "SudsGovernance",
+      "doc": "Log of periodic inspections of the chemical storage\narea. Checks ventilation, locked access, labelling,\nPPE availability, and spill containment.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 687,
+      "specialises": "AuditEvidenceRecord",
+      "attributes": [
+        {
+          "name": "evidenceType",
+          "value": "inspection log",
+          "isRedefinition": true
+        },
+        {
+          "name": "evidenceDescription",
+          "value": "Dated record of chemical storage area inspection: ventilation status, lock integrity, labelling compliance, PPE stock check, spill kit presence, any corrective actions required.",
+          "isRedefinition": true
+        },
+        {
+          "name": "retentionPeriod",
+          "value": "5 years",
+          "isRedefinition": true
+        },
+        {
+          "name": "responsibleRole",
+          "value": "Shop manager or designated safety officer",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequency",
+          "value": "Monthly",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
       "kind": "part",
       "name": "coshhGuidance",
       "parentPackage": "SudsGovernance",
@@ -25695,7 +27186,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 574,
+      "lineNumber": 704,
       "specialises": "ExternalReference",
       "attributes": [
         {
@@ -25728,7 +27219,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 583,
+      "lineNumber": 713,
       "specialises": "ExternalReference",
       "attributes": [
         {
