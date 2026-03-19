@@ -442,6 +442,26 @@ satisfy requirement BloodMonitoringRequired
 | `satisfy requirement localName : reqUsage by target;` | `usage-feature-typing` — usages must be typed by classifiers, not other usages. Will become error in v0.9. |
 | `satisfy requirement localName : ReqDef by constraintUsage;` | ✅ Correct form — unique local name, typed by classifier (def), constraint target |
 
+**Cross-package satisfy (exercise → model):** Verified v3.14 (Session 42). `requirement def GovernanceRequirement` in `BusinessModel::GovernanceMapping` (main model), `satisfy requirement coshhStorageSatisfied : GovernanceRequirement by coshhStorageCheck;` in `SudsGovernance` (exercises directory). The cross-project import `private import BusinessModel::GovernanceMapping::*;` resolves the requirement def correctly for the satisfy relationship.
+
+**`constraint def` with Boolean operators:** Verified v3.14 (Session 42). Bare expression bodies with `and` and `<=` operators parse correctly:
+
+```sysml
+constraint def CoshhStorageConstraint {
+    in allSubstancesHaveSds : Boolean;
+    in storageAreaCompliant : Boolean;
+
+    allSubstancesHaveSds and storageAreaCompliant    // Boolean and ✅
+}
+
+constraint def CoshhTrainingConstraint {
+    in monthsSinceTraining : Integer;
+    in requiredMaxMonths : Integer;
+
+    monthsSinceTraining <= requiredMaxMonths          // Integer <= ✅
+}
+```
+
 **`verify` relationships:** Not supported in Syside 0.8.5 (`Unexpected 'verify'`).
 
 ---
@@ -483,7 +503,8 @@ action myStep {
 | `part def` body | ✅ Works (verified v3.4) |
 | `part def` body alongside `:>>` usages | ✅ Works (verified v3.7) |
 | `attribute` body | ✗ Fails — parser rejects `@` inside attribute bodies |
-| `state def`, `requirement def` | Not tested |
+| `requirement def` body | ✅ Works (v3.14, Session 42). `@CatalogueTag` and `@UserFacing` both parse on requirement defs. |
+| `state def` | Not tested |
 | Simple `action name;` (no braces) | ✗ Fails — needs body to hold annotation |
 | Enum-typed attribute on `metadata def` | ✅ Works (v3.12, Session 29). Enum and metadata def must be in same package. |
 
@@ -586,7 +607,8 @@ The following are reserved keywords from KerML 1.0 section 8.2.2.6 and SysML 2.0
 - [ ] Port definitions and connections
 - [x] `metadata def` with non-scalar attribute types (e.g. enum-valued metadata attributes) — **verified v3.12** (Session 29)
 - [ ] `metadata def` specialisation (one metadata def extending another)
-- [ ] `metadata def` applied to `state def` or `requirement def` elements
+- [x] `metadata def` applied to `requirement def` elements — **verified v3.14** (Session 42). `@CatalogueTag` and `@UserFacing` on `requirement def GovernanceRequirement`.
+- [ ] `metadata def` applied to `state def` elements
 - [ ] `use case def` with `include use case`, `extend use case`, `subject`, `actor`
 - [ ] SysML v2 `view` and `viewpoint` elements — Sensmetry forum (Jan 2026) confirms rendering from modelled views is "still a work in progress." Deferred.
 - [ ] Syside CLI `viz` command for headless diagram export
@@ -602,7 +624,7 @@ The following are reserved keywords from KerML 1.0 section 8.2.2.6 and SysML 2.0
 
 | Version | Date | Key additions |
 |---|---|---|
-| 3.14 | 19 Mar 2026 | Metadata annotation conventions: Position A (prefix, before element) adopted; one annotation per metaclass per element (stacking two `@Tag` fails); `concern` triggers parser error despite not being KerML reserved (use `bmmConcern`); metadata import required at consuming package level (`private import Foundation::MetadataLibrary::*`); `@CatalogueTag` and `@UserFacing` validated on `part def`s. |
+| 3.14 | 19 Mar 2026 | Metadata annotation conventions: Position A (prefix, before element) adopted; one annotation per metaclass per element (stacking two `@Tag` fails); `concern` triggers parser error despite not being KerML reserved (use `bmmConcern`); metadata import required at consuming package level (`private import Foundation::MetadataLibrary::*`); `@CatalogueTag` and `@UserFacing` validated on `part def`s. **Session 42 additions:** `@CatalogueTag` and `@UserFacing` on `requirement def` verified; cross-package satisfy (exercise → model) verified; `constraint def` with Boolean `and` and `<=` operators verified. |
 | 3.13 | 15 Mar 2026 | `ref :>>` tuple redefinition verified (single, multi-valued, circular, cross-type, forward reference). PatternCatalogue knowledge graph: 43 typed ref links across 20 patterns. |
 | 3.12 | 15 Mar 2026 | `ref x : MetadataDef` and `ref x : EnumDef` verified (singular + multi-valued), `system` reserved word (silent failure), enum-typed attribute on metadata def verified, cross-project specific named imports fail, **wildcard import name collision** (silent resolution, downstream type-errors), multi-valued enum attribute on part def verified |
 | 3.11 | 11 Mar 2026 | `ref x : Type[0..*]` across packages, `ref` in `requirement def`, `requirement def` with business attributes, **satisfy by part usage fails** (critical finding), satisfy naming traps (shadow, usage-feature-typing), `:>>` in requirement usages, part def / package name collision trap, 12 new safe attribute names |
@@ -624,4 +646,4 @@ Previous versions preserved in `documentation/reference/versions/`.
 
 ---
 
-*Restructured 8 March 2026 (Session 8). Updated 15 March 2026 (Sessions 29–31, CSW Phase 10 + Concept Graph + Knowledge Graph Enhancement). Updated 19 March 2026 (Session 38, Ontara Stage 2 Phase 1: metadata annotation conventions).*
+*Restructured 8 March 2026 (Session 8). Updated 15 March 2026 (Sessions 29–31, CSW Phase 10 + Concept Graph + Knowledge Graph Enhancement). Updated 19 March 2026 (Session 38, Ontara Stage 2 Phase 1: metadata annotation conventions). Updated 19 March 2026 (Session 42, Stage 2 Phase 6: governance traceability — metadata on requirement def, cross-package satisfy, constraint def Boolean operators).*
