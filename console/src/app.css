@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+/* Flowbite plugin and component scanning */
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite-svelte/dist";
+@source "../node_modules/flowbite-svelte-icons/dist";
+
+/* Dark mode variant for Flowbite compatibility */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Ontara Console theme — cool, professional tones */
+@theme {
+  /* Primary — slate blue */
+  --color-primary-50:  #f0f4f8;
+  --color-primary-100: #d9e2ec;
+  --color-primary-200: #bcccdc;
+  --color-primary-300: #9fb3c8;
+  --color-primary-400: #829ab1;
+  --color-primary-500: #627d98;
+  --color-primary-600: #486581;
+  --color-primary-700: #334e68;
+  --color-primary-800: #243b53;
+  --color-primary-900: #102a43;
+
+  /* Secondary — neutral slate */
+  --color-secondary-50:  #f5f7fa;
+  --color-secondary-100: #e4e7eb;
+  --color-secondary-200: #cbd2d9;
+  --color-secondary-300: #9aa5b4;
+  --color-secondary-400: #7b8794;
+  --color-secondary-500: #616e7c;
+  --color-secondary-600: #52606d;
+  --color-secondary-700: #3e4c59;
+  --color-secondary-800: #323f4b;
+  --color-secondary-900: #1f2933;
+}
+
+/* Dark mode body background */
+.dark body {
+  background-color: var(--color-secondary-800);
+}
+
+/* Flowbite Input/Select dark mode overrides */
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="number"],
+.dark input[type="search"],
+.dark select,
+.dark textarea {
+  background-color: var(--color-secondary-900) !important;
+  border-color: var(--color-secondary-600) !important;
+  color: var(--color-secondary-100) !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--color-secondary-400) !important;
+}
