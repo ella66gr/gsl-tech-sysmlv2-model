@@ -91,16 +91,14 @@
       </li>
       <li>
         <a href="/domains/suds" class="flex items-center rounded-lg p-2 {isActive('/domains/suds') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
-          <span class="ms-3 flex items-center gap-2">
-            <span class="text-lg">🧺</span> Suds (Laundry)
-          </span>
+          <span class="inline-flex h-5 w-5 items-center justify-center text-base">🧺</span>
+          <span class="ms-3">Suds (Laundry)</span>
         </a>
       </li>
       <li>
         <a href="/domains/paws" class="flex items-center rounded-lg p-2 {isActive('/domains/paws') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
-          <span class="ms-3 flex items-center gap-2">
-            <span class="text-lg">🐾</span> Paws (Dog Grooming)
-          </span>
+          <span class="inline-flex h-5 w-5 items-center justify-center text-base">🐾</span>
+          <span class="ms-3">Paws (Dog Grooming)</span>
         </a>
       </li>
 

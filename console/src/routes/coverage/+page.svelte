@@ -7,6 +7,7 @@
     ChevronRightOutline,
     SearchOutline,
   } from 'flowbite-svelte-icons';
+  import { page } from '$app/stores';
 
   let { data } = $props();
 
@@ -17,7 +18,9 @@
   // --- Filter state ---
   let layerFilter = $state('all');
   let coverageFilter = $state('all');
-  let searchText = $state('');
+  // Initialise search from URL query param (supports deep-linking from catalogue)
+  const initialSearch = $page.url.searchParams.get('search') || '';
+  let searchText = $state(initialSearch);
   let collapsedPackages = $state<Set<string>>(new Set());
 
   // --- Expanded cell state ---
