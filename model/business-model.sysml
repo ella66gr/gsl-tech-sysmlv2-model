@@ -5,6 +5,7 @@
 
 package BusinessModel {
     private import ScalarValues::*;
+    private import Foundation::MetadataLibrary::*;
 
     doc /* The business model package captures the strategic logic of the
          * enterprise: what value is offered, to whom, how revenue is
@@ -64,6 +65,11 @@ package BusinessModel {
 
         // -- Part definitions ----------------------------------
 
+        @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Customer Segment";
+            shortDescription = "A defined group of customers with shared needs and willingness to pay.";
+        }
         part def CustomerSegment {
             doc /* A defined group of customers with shared needs,
                  * behaviours, and willingness to pay. Each segment
@@ -76,6 +82,11 @@ package BusinessModel {
             attribute willingnessToPayIndicator : String; // qualitative: high / medium / low
         }
 
+        @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Value Proposition";
+            shortDescription = "A promise of value to a customer segment — what they get and why it matters.";
+        }
         part def ValueProposition {
             doc /* A specific promise of value to a specific customer
                  * segment. Defines what the customer gets, how it
@@ -87,6 +98,11 @@ package BusinessModel {
             attribute evidenceBasis : String;
         }
 
+        @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Service Offering";
+            shortDescription = "A packaged unit of service that can be priced, resourced, and delivered to customers.";
+        }
         part def ServiceOffering {
             doc /* A packaged, deliverable unit of service that realises
                  * one or more value propositions for one or more
@@ -104,6 +120,7 @@ package BusinessModel {
             attribute clinicalPathwayRef : String; // e.g. "ClinicalPathways::HormoneTherapy::HormoneTherapyInitiation"
         }
 
+        @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
         part def Channel {
             doc /* A means by which customers discover, access, and
                  * interact with the service. Channels have reach,
@@ -116,6 +133,7 @@ package BusinessModel {
             attribute conversionNotes : String;
         }
 
+        @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
         part def DifferentiationClaim {
             doc /* An explicit statement of how this service differs
                  * from available alternatives, from the customer's
@@ -138,6 +156,7 @@ package BusinessModel {
         // with ref item : MenuItem) are typed specialisations of
         // these generic shapes.
 
+        @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
         part def CatalogueEntry {
             doc /* The business decision to offer an item for sale or
                  * use within a service. References an item definition
@@ -163,6 +182,7 @@ package BusinessModel {
             attribute statusNotes : String;
         }
 
+        @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
         part def ExternalReference {
             doc /* A link to knowledge that lives outside the system.
                  * The system does not own this data; it points to it.
@@ -413,6 +433,11 @@ package BusinessModel {
 
         // -- Part definitions ----------------------------------
 
+        @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Activity Type";
+            shortDescription = "A defined kind of business activity, classified into one of five categories.";
+        }
         part def ActivityType {
             doc /* A defined type of activity within the business.
                  * Every activity has a type, and every type belongs
@@ -424,6 +449,7 @@ package BusinessModel {
             attribute frequencyNotes : String;
         }
 
+        @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
         part def ActivityRecord {
             doc /* A recorded instance of an activity. At the tracked
                  * level, the system produces these for every observable
@@ -436,6 +462,7 @@ package BusinessModel {
             attribute recordGranularity : GranularityLevel;
         }
 
+        @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
         part def ActivityBudget {
             doc /* A planned allocation of activity volume by type,
                  * period, and resource. The activity-level equivalent
@@ -447,6 +474,7 @@ package BusinessModel {
             attribute granularity : GranularityLevel;
         }
 
+        @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
         part def ActivityGranularity {
             doc /* Policy declaration: the granularity level at which
                  * activity is tracked for a given business area. */
@@ -456,6 +484,7 @@ package BusinessModel {
             attribute migrationNotes : String;
         }
 
+        @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
         part def ActivityCostAllocation {
             doc /* The mapping from an activity (or aggregate) to its
                  * financial cost. Makes resource consumption visible
@@ -490,6 +519,11 @@ package BusinessModel {
 
         // -- Part definitions ----------------------------------
 
+        @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Resource Type";
+            shortDescription = "A category of resource needed to run the service — people, equipment, premises, or external services.";
+        }
         part def ResourceType {
             doc /* A category of resource required to operate the
                  * service delivery system. Each type has acquisition
@@ -502,6 +536,7 @@ package BusinessModel {
             attribute capacityUnit : String;       // FTE, instances, seats, hours
         }
 
+        @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
         part def ResourceInstance {
             doc /* A specific resource available to the business at
                  * a defined capacity and cost. Represents planning-
@@ -515,6 +550,11 @@ package BusinessModel {
             attribute costBasis : String;          // per month, per hour, per use
         }
 
+        @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Capability";
+            shortDescription = "An organised combination of resources that produces a defined service function.";
+        }
         part def Capability {
             doc /* An organised combination of resources that produces
                  * a defined service function. Capabilities bridge the
@@ -534,6 +574,7 @@ package BusinessModel {
             attribute enabledOfferingsDescription : String;
         }
 
+        @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
         part def CapacityModel {
             doc /* The relationship between resource configuration and
                  * service throughput. A planning assertion, not a
@@ -551,6 +592,7 @@ package BusinessModel {
             attribute bottleneck : String;          // which resource constrains throughput
         }
 
+        @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
         part def ResourceConstraint {
             doc /* A constraint on resource availability or use that
                  * affects service delivery. May be regulatory,
@@ -575,6 +617,7 @@ package BusinessModel {
         // Added Session 29: CSW Extension Phase 10 (item 8.2).
         // Source: gsl-spec-catalogue-inventory-v2.1.md §8.2
 
+        @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
         part def InventoryRecord {
             doc /* A point-in-time record of stock level for an item
                  * in the catalogue. References a catalogue entry
@@ -831,6 +874,7 @@ package BusinessModel {
         // (preserving formal correctness for future satisfy
         // relationships to constraint usages if needed).
 
+        @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
         part def ObjectiveCapabilityMapping {
             doc /* Maps a StrategicObjective to the Capability
                  * usages that contribute to achieving it.
@@ -896,6 +940,11 @@ package BusinessModel {
             flatFee;
         }
 
+        @CatalogueTag { bmmConcern = "FinancialModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Revenue Stream";
+            shortDescription = "A mechanism by which the business generates income from its services.";
+        }
         part def RevenueStream {
             doc /* A mechanism by which income is generated. */
             attribute streamName : String;
@@ -905,6 +954,11 @@ package BusinessModel {
             attribute projectedVolume : String;
         }
 
+        @CatalogueTag { bmmConcern = "FinancialModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Cost Driver";
+            shortDescription = "A structural factor that generates cost in the business — linked to a resource or activity.";
+        }
         part def CostDriver {
             doc /* A structural factor that generates cost. */
             attribute driverName : String;
@@ -914,6 +968,11 @@ package BusinessModel {
             attribute scalingFactor : String;
         }
 
+        @CatalogueTag { bmmConcern = "FinancialModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Unit Economics";
+            shortDescription = "The revenue, cost, and margin for a single unit of service delivery.";
+        }
         part def UnitEconomics {
             doc /* The financial profile of a single unit of service delivery. */
             attribute offeringRef : String;
@@ -923,6 +982,11 @@ package BusinessModel {
             attribute breakdownNotes : String;
         }
 
+        @CatalogueTag { bmmConcern = "FinancialModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Pricing Model";
+            shortDescription = "How prices are set for services — per-episode, subscription, tiered, or other basis.";
+        }
         part def PricingModel {
             doc /* The logic that determines what a customer pays. */
             attribute pricingModelName : String;
@@ -932,6 +996,7 @@ package BusinessModel {
             attribute applicableOfferings : String;
         }
 
+        @CatalogueTag { bmmConcern = "FinancialModel"; classification = "General"; }
         part def FinancialProjection {
             doc /* A named financial projection linked to a scenario.
                  * Lightweight placeholder — full mechanics in
