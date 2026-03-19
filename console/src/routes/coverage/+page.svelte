@@ -213,6 +213,29 @@
         Showing {stats.filteredCount} of {stats.totalDefs}
       </div>
     </div>
+
+    <!-- Second row: expand/collapse + package count -->
+    <div class="mt-3 flex items-center justify-between border-t border-secondary-200 pt-3 dark:border-secondary-700">
+      <div class="flex items-center gap-1 text-xs text-secondary-500 dark:text-secondary-400">
+        <span class="mr-1 font-medium">Groups:</span>
+        <button
+          onclick={() => { collapsedPackages = new Set(); }}
+          class="rounded px-2 py-0.5 hover:bg-secondary-100 hover:text-secondary-700 dark:hover:bg-secondary-700 dark:hover:text-secondary-200"
+        >
+          Expand all
+        </button>
+        <span class="text-secondary-300 dark:text-secondary-600">·</span>
+        <button
+          onclick={() => { collapsedPackages = new Set(Object.keys(groupedDefs())); }}
+          class="rounded px-2 py-0.5 hover:bg-secondary-100 hover:text-secondary-700 dark:hover:bg-secondary-700 dark:hover:text-secondary-200"
+        >
+          Collapse all
+        </button>
+      </div>
+      <span class="text-xs text-secondary-400 dark:text-secondary-500">
+        {Object.keys(groupedDefs()).length} packages
+      </span>
+    </div>
   </div>
 
   <!-- Matrix table -->

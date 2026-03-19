@@ -74,7 +74,11 @@ DOMAIN_SOURCES = {
         "model_dirs": [EXERCISES_DIR / "suds-demonstrator" / "model"],
         "description": "Laundry service demonstrator \u2014 cross-domain validation",
     },
-    # Paws will be added here when created
+    "paws": {
+        "label": "Paws",
+        "model_dirs": [EXERCISES_DIR / "paws-demonstrator" / "model"],
+        "description": "Dog grooming demonstrator \u2014 appointment-based service validation",
+    },
 }
 
 # Meta model classification keywords found in doc blocks
@@ -115,6 +119,7 @@ DOMAIN_PACKAGES = {
     "CoffeeShopArchetypes", "CoffeeshopResourceFinancial",
     "CoffeeshopScenarios",
     "SudsBusinessModel", "SudsResourceFinancial", "SudsGovernance",
+    "PawsBusinessModel", "PawsResourceFinancial", "PawsGovernance",
 }
 
 

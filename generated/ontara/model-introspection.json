@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-19T20:26:49.826044",
+  "generatedAt": "2026-03-19T22:58:00.430847",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
@@ -16,16 +16,21 @@
       "label": "Suds",
       "description": "Laundry service demonstrator \u2014 cross-domain validation",
       "elementCount": 61
+    },
+    "paws": {
+      "label": "Paws",
+      "description": "Dog grooming demonstrator \u2014 appointment-based service validation",
+      "elementCount": 51
     }
   },
   "summary": {
-    "totalElements": 637,
+    "totalElements": 688,
     "byKind": {
       "part_def": 117,
-      "part": 410,
+      "part": 460,
       "enum_def": 51,
       "requirement_def": 15,
-      "requirement": 6,
+      "requirement": 7,
       "metadata_def": 12,
       "constraint_def": 14,
       "constraint": 10,
@@ -33,14 +38,15 @@
     },
     "byLayer": {
       "bmm": 188,
-      "domain": 202,
+      "domain": 253,
       "bsmm": 238,
       "unknown": 9
     },
     "byDomain": {
       "core": 457,
       "cafe": 119,
-      "suds": 61
+      "suds": 61,
+      "paws": 51
     }
   },
   "facets": {
@@ -663,6 +669,40 @@
             "isRedefinition": true
           }
         ]
+      },
+      {
+        "name": "animalWelfareDutyOfCare",
+        "typedBy": "GovernanceRequirement",
+        "sourceDomain": "paws",
+        "package": "PawsGovernance",
+        "doc": "Animal Welfare Act 2006 \u2014 duty of care to animals\nunder your control. Applies to any person responsible\nfor an animal, including during grooming. Five welfare\nneeds: suitable environment, suitable diet, ability to\nexhibit normal behaviour, housing with or apart from\nother animals, protection from pa",
+        "attributes": [
+          {
+            "name": "requirementId",
+            "value": "PAWS-GOV-001",
+            "isRedefinition": true
+          },
+          {
+            "name": "title",
+            "value": "Animal welfare duty of care during grooming",
+            "isRedefinition": true
+          },
+          {
+            "name": "regulatorySource",
+            "value": "Animal Welfare Act 2006 \u2014 Section 9 (duty of person responsible for animal to ensure welfare)",
+            "isRedefinition": true
+          },
+          {
+            "name": "complianceDescription",
+            "value": "All grooming must be performed with due regard for the animal's welfare. Dogs must not be caused unnecessary suffering. Signs of distress must be recognised and acted upon. Health concerns observed during grooming must be communicated to the owner. Equipment must be maintained in safe working order. The grooming environment must be suitable for dogs.",
+            "isRedefinition": true
+          },
+          {
+            "name": "evidenceRequired",
+            "value": "Public liability insurance, incident and observation log, first aid kit inspection records, groomer training and CPD records",
+            "isRedefinition": true
+          }
+        ]
       }
     ],
     "auditEvidenceInstances": [
@@ -801,6 +841,108 @@
             "isRedefinition": true
           }
         ]
+      },
+      {
+        "name": "publicLiabilityInsurance",
+        "typedBy": "AuditEvidenceRecord",
+        "sourceDomain": "paws",
+        "package": "PawsGovernance",
+        "doc": "Current public liability insurance certificate.\nRequired for any business handling animals on\npremises. Covers injury to animals and third parties.",
+        "attributes": [
+          {
+            "name": "evidenceType",
+            "value": "insurance certificate",
+            "isRedefinition": true
+          },
+          {
+            "name": "evidenceDescription",
+            "value": "Current public liability insurance policy covering dog grooming services. Must cover injury to animals in care and injury to third parties on premises.",
+            "isRedefinition": true
+          },
+          {
+            "name": "retentionPeriod",
+            "value": "Duration of policy plus 6 years",
+            "isRedefinition": true
+          },
+          {
+            "name": "responsibleRole",
+            "value": "Business owner",
+            "isRedefinition": true
+          },
+          {
+            "name": "frequency",
+            "value": "Annual renewal \u2014 certificate held on file",
+            "isRedefinition": true
+          }
+        ]
+      },
+      {
+        "name": "incidentAndObservationLog",
+        "typedBy": "AuditEvidenceRecord",
+        "sourceDomain": "paws",
+        "package": "PawsGovernance",
+        "doc": "Log of any incidents during grooming (nicks, stress\nreactions, health concerns observed) and actions\ntaken. Demonstrates duty of care through transparent\nrecording and appropriate response.",
+        "attributes": [
+          {
+            "name": "evidenceType",
+            "value": "incident log",
+            "isRedefinition": true
+          },
+          {
+            "name": "evidenceDescription",
+            "value": "Dated record of any grooming incidents (cuts, abrasions, stress responses), health observations (lumps, skin conditions, parasites), and actions taken (grooming paused, owner notified, vet referral suggested). Includes near-misses.",
+            "isRedefinition": true
+          },
+          {
+            "name": "retentionPeriod",
+            "value": "5 years",
+            "isRedefinition": true
+          },
+          {
+            "name": "responsibleRole",
+            "value": "Groomer on duty",
+            "isRedefinition": true
+          },
+          {
+            "name": "frequency",
+            "value": "Per incident \u2014 reviewed weekly by business owner",
+            "isRedefinition": true
+          }
+        ]
+      },
+      {
+        "name": "firstAidKitInspection",
+        "typedBy": "AuditEvidenceRecord",
+        "sourceDomain": "paws",
+        "package": "PawsGovernance",
+        "doc": "Periodic inspection of the animal first aid kit.\nStyptic powder, bandages, antiseptic, eye wash,\nemergency vet contact details.",
+        "attributes": [
+          {
+            "name": "evidenceType",
+            "value": "inspection record",
+            "isRedefinition": true
+          },
+          {
+            "name": "evidenceDescription",
+            "value": "Dated record of animal first aid kit inspection: styptic powder stock, bandage supply, antiseptic availability, eye wash expiry check, emergency vet contact details current.",
+            "isRedefinition": true
+          },
+          {
+            "name": "retentionPeriod",
+            "value": "3 years",
+            "isRedefinition": true
+          },
+          {
+            "name": "responsibleRole",
+            "value": "Business owner or senior groomer",
+            "isRedefinition": true
+          },
+          {
+            "name": "frequency",
+            "value": "Monthly",
+            "isRedefinition": true
+          }
+        ]
       }
     ]
   },
@@ -844,6 +986,16 @@
             "name": "subscriptionCustomer",
             "package": "SudsBusinessModel"
           }
+        ],
+        "paws": [
+          {
+            "name": "individualPetOwner",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "regularMultiPetOwner",
+            "package": "PawsBusinessModel"
+          }
         ]
       }
     },
@@ -883,6 +1035,12 @@
           {
             "name": "sudsValueProposition",
             "package": "SudsBusinessModel"
+          }
+        ],
+        "paws": [
+          {
+            "name": "pawsValueProposition",
+            "package": "PawsBusinessModel"
           }
         ]
       }
@@ -946,6 +1104,20 @@
             "name": "expressWash",
             "package": "SudsBusinessModel"
           }
+        ],
+        "paws": [
+          {
+            "name": "fullGroom",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "washAndTidy",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "nailTrimAddOn",
+            "package": "PawsBusinessModel"
+          }
         ]
       }
     },
@@ -985,6 +1157,16 @@
             "name": "onlineBooking",
             "package": "SudsBusinessModel"
           }
+        ],
+        "paws": [
+          {
+            "name": "shopWalkIn",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "onlineBookingChannel",
+            "package": "PawsBusinessModel"
+          }
         ]
       }
     },
@@ -1017,6 +1199,16 @@
           {
             "name": "transparentPricing",
             "package": "SudsBusinessModel"
+          }
+        ],
+        "paws": [
+          {
+            "name": "breedExpertise",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "lowStressEnvironment",
+            "package": "PawsBusinessModel"
           }
         ]
       }
@@ -1091,6 +1283,20 @@
             "name": "expressWashCatalogue",
             "package": "SudsBusinessModel"
           }
+        ],
+        "paws": [
+          {
+            "name": "fullGroomCatalogue",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "washAndTidyCatalogue",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "nailTrimCatalogue",
+            "package": "PawsBusinessModel"
+          }
         ]
       }
     },
@@ -1119,6 +1325,12 @@
           {
             "name": "detergentSafetyDataSheet",
             "package": "SudsGovernance"
+          }
+        ],
+        "paws": [
+          {
+            "name": "animalWelfareActReference",
+            "package": "PawsGovernance"
           }
         ]
       }
@@ -1204,6 +1416,40 @@
             "name": "tillAndOrderReconciliation",
             "package": "SudsBusinessModel"
           }
+        ],
+        "paws": [
+          {
+            "name": "checkInAndAssess",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "batheAndDry",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "clipAndStyle",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "nailTrimActivity",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "finishAndHandover",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "equipmentCleanAndMaintenance",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "welfareAndSafetyChecks",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "bookingAndAdministration",
+            "package": "PawsBusinessModel"
+          }
         ]
       }
     },
@@ -1285,6 +1531,28 @@
             "name": "overheadGranularity",
             "package": "SudsBusinessModel"
           }
+        ],
+        "paws": [
+          {
+            "name": "serviceDeliveryGranularity",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "enablingGranularity",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "governanceGranularity",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "developmentGranularity",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "overheadGranularity",
+            "package": "PawsBusinessModel"
+          }
         ]
       }
     },
@@ -1307,6 +1575,16 @@
           {
             "name": "receiveAndTagCostAllocation",
             "package": "SudsBusinessModel"
+          }
+        ],
+        "paws": [
+          {
+            "name": "groomingLabourCostAllocation",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "consumablesCostAllocation",
+            "package": "PawsBusinessModel"
           }
         ]
       }
@@ -1402,6 +1680,32 @@
             "name": "detergentsAndChemicals",
             "package": "SudsResourceFinancial"
           }
+        ],
+        "paws": [
+          {
+            "name": "dogGroomer",
+            "package": "PawsResourceFinancial"
+          },
+          {
+            "name": "groomingEquipment",
+            "package": "PawsResourceFinancial"
+          },
+          {
+            "name": "bathAndDryingEquipment",
+            "package": "PawsResourceFinancial"
+          },
+          {
+            "name": "salonPremises",
+            "package": "PawsResourceFinancial"
+          },
+          {
+            "name": "groomingConsumables",
+            "package": "PawsResourceFinancial"
+          },
+          {
+            "name": "bookingSystem",
+            "package": "PawsResourceFinancial"
+          }
         ]
       }
     },
@@ -1491,6 +1795,12 @@
             "name": "processLaundry",
             "package": "SudsResourceFinancial"
           }
+        ],
+        "paws": [
+          {
+            "name": "deliverGroomingAppointment",
+            "package": "PawsResourceFinancial"
+          }
         ]
       }
     },
@@ -1526,6 +1836,12 @@
             "name": "standardDayCapacity",
             "package": "SudsResourceFinancial"
           }
+        ],
+        "paws": [
+          {
+            "name": "standardDayCapacity",
+            "package": "PawsResourceFinancial"
+          }
         ]
       }
     },
@@ -1560,6 +1876,12 @@
           {
             "name": "coshhRegulations",
             "package": "SudsResourceFinancial"
+          }
+        ],
+        "paws": [
+          {
+            "name": "animalWelfareDuty",
+            "package": "PawsResourceFinancial"
           }
         ]
       }
@@ -1652,6 +1974,12 @@
             "name": "laundryRevenue",
             "package": "SudsResourceFinancial"
           }
+        ],
+        "paws": [
+          {
+            "name": "groomingRevenue",
+            "package": "PawsResourceFinancial"
+          }
         ]
       }
     },
@@ -1734,6 +2062,24 @@
             "name": "rentCosts",
             "package": "SudsResourceFinancial"
           }
+        ],
+        "paws": [
+          {
+            "name": "groomerLabourCosts",
+            "package": "PawsResourceFinancial"
+          },
+          {
+            "name": "consumableCosts",
+            "package": "PawsResourceFinancial"
+          },
+          {
+            "name": "salonRentCosts",
+            "package": "PawsResourceFinancial"
+          },
+          {
+            "name": "equipmentMaintenanceCosts",
+            "package": "PawsResourceFinancial"
+          }
         ]
       }
     },
@@ -1784,6 +2130,20 @@
             "name": "expressWashEconomics",
             "package": "SudsResourceFinancial"
           }
+        ],
+        "paws": [
+          {
+            "name": "fullGroomEconomics",
+            "package": "PawsResourceFinancial"
+          },
+          {
+            "name": "washAndTidyEconomics",
+            "package": "PawsResourceFinancial"
+          },
+          {
+            "name": "nailTrimEconomics",
+            "package": "PawsResourceFinancial"
+          }
         ]
       }
     },
@@ -1821,6 +2181,12 @@
           {
             "name": "perKgPricing",
             "package": "SudsResourceFinancial"
+          }
+        ],
+        "paws": [
+          {
+            "name": "perAppointmentPricing",
+            "package": "PawsResourceFinancial"
           }
         ]
       }
@@ -1878,6 +2244,20 @@
           {
             "name": "storageInspectionLog",
             "package": "SudsGovernance"
+          }
+        ],
+        "paws": [
+          {
+            "name": "publicLiabilityInsurance",
+            "package": "PawsGovernance"
+          },
+          {
+            "name": "incidentAndObservationLog",
+            "package": "PawsGovernance"
+          },
+          {
+            "name": "firstAidKitInspection",
+            "package": "PawsGovernance"
           }
         ]
       }
@@ -27240,6 +27620,1944 @@
         {
           "name": "referenceNotes",
           "value": "Mandatory under COSHH. Covers composition, hazards, first aid, handling, storage, exposure controls, disposal.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "pawsValueProposition",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 49,
+      "specialises": "ValueProposition",
+      "attributes": [
+        {
+          "name": "propositionName",
+          "value": "Expert, gentle pet grooming",
+          "isRedefinition": true
+        },
+        {
+          "name": "targetSegment",
+          "value": "Pet owners who value quality grooming and animal welfare",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Professional grooming tailored to your dog's breed, coat type, and temperament \u2014 in a calm, low-stress environment",
+          "isRedefinition": true
+        },
+        {
+          "name": "evidenceBasis",
+          "value": "Customer feedback, repeat booking rates, breed-specific training credentials",
+          "isRedefinition": true
+        },
+        {
+          "name": "differentiator",
+          "value": "Breed-specific expertise with a focus on animal comfort and welfare",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "fullGroom",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Full grooming session \u2014 the core offering. Includes\nbath, blow-dry, full coat trim/style, nail trim, ear\nclean, and finishing. Duration varies by breed and\ncoat condition: 60\u2013120 minutes.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 57,
+      "specialises": "ServiceOffering",
+      "attributes": [
+        {
+          "name": "offeringName",
+          "value": "Full groom",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Complete grooming: bath, dry, coat trim and style, nail trim, ear clean, finishing touches",
+          "isRedefinition": true
+        },
+        {
+          "name": "scope",
+          "value": "Check-in, assess coat condition, bathe, dry, clip/scissor to breed standard or owner preference, nail trim, ear clean, finishing spray, handover",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingBasis",
+          "value": "per-appointment with breed/size surcharge",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedDurationWeeks",
+          "value": "0",
+          "isRedefinition": true
+        },
+        {
+          "name": "clinicalPathwayRef",
+          "value": "full-groom-process",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "washAndTidy",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Wash and tidy \u2014 a lighter service for dogs that need\ncleaning but not a full restyle. Bath, blow-dry,\nlight trim around eyes/paws/sanitary areas.\n30\u201360 minutes depending on size.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 70,
+      "specialises": "ServiceOffering",
+      "attributes": [
+        {
+          "name": "offeringName",
+          "value": "Wash and tidy",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Bath, blow-dry, and light trim around eyes, paws, and sanitary areas",
+          "isRedefinition": true
+        },
+        {
+          "name": "scope",
+          "value": "Check-in, bathe, dry, tidy trim (face, feet, sanitary), finishing, handover",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingBasis",
+          "value": "per-appointment with size surcharge",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedDurationWeeks",
+          "value": "0",
+          "isRedefinition": true
+        },
+        {
+          "name": "clinicalPathwayRef",
+          "value": "wash-and-tidy-process",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "nailTrimAddOn",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Nail trim as a standalone service or add-on. Quick\nappointment \u2014 15 minutes. Available as walk-in or\nbooked alongside other services.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 83,
+      "specialises": "ServiceOffering",
+      "attributes": [
+        {
+          "name": "offeringName",
+          "value": "Nail trim",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Nail clipping and filing \u2014 standalone or add-on to any grooming service",
+          "isRedefinition": true
+        },
+        {
+          "name": "scope",
+          "value": "Assess nails, clip to safe length, file smooth, check dewclaws",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingBasis",
+          "value": "fixed price",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedDurationWeeks",
+          "value": "0",
+          "isRedefinition": true
+        },
+        {
+          "name": "clinicalPathwayRef",
+          "value": "nail-trim-process",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "individualPetOwner",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 95,
+      "specialises": "CustomerSegment",
+      "attributes": [
+        {
+          "name": "segmentName",
+          "value": "Individual pet owners",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Dog owners booking grooming appointments for one or two pets",
+          "isRedefinition": true
+        },
+        {
+          "name": "needs",
+          "value": "Reliable, gentle grooming at a fair price with convenient booking",
+          "isRedefinition": true
+        },
+        {
+          "name": "acquisitionChannel",
+          "value": "Walk-in, word of mouth, local social media, Google search",
+          "isRedefinition": true
+        },
+        {
+          "name": "willingnessToPayIndicator",
+          "value": "medium",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "regularMultiPetOwner",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Owners with multiple dogs or who book on a regular\nschedule (e.g. every 6\u20138 weeks). Higher lifetime\nvalue, predictable demand. May benefit from a\nloyalty or subscription discount.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 103,
+      "specialises": "CustomerSegment",
+      "attributes": [
+        {
+          "name": "segmentName",
+          "value": "Regular and multi-pet owners",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Owners who book regularly or have multiple dogs \u2014 loyal, repeat customers",
+          "isRedefinition": true
+        },
+        {
+          "name": "needs",
+          "value": "Consistency, familiarity with their dogs, flexible scheduling, multi-pet discounts",
+          "isRedefinition": true
+        },
+        {
+          "name": "acquisitionChannel",
+          "value": "Repeat booking, referral, loyalty programme",
+          "isRedefinition": true
+        },
+        {
+          "name": "willingnessToPayIndicator",
+          "value": "medium-high",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "shopWalkIn",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 115,
+      "specialises": "Channel",
+      "attributes": [
+        {
+          "name": "channelName",
+          "value": "Shop and walk-in",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "In-person booking and drop-off at the grooming salon",
+          "isRedefinition": true
+        },
+        {
+          "name": "channelType",
+          "value": "acquisition and delivery",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedReach",
+          "value": "local \u2014 walking distance or short drive",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedCostLevel",
+          "value": "low",
+          "isRedefinition": true
+        },
+        {
+          "name": "conversionNotes",
+          "value": "High \u2014 customer has brought their dog, strong intent",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "onlineBookingChannel",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 124,
+      "specialises": "Channel",
+      "attributes": [
+        {
+          "name": "channelName",
+          "value": "Online booking",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Website or app for appointment booking, service selection, and breed/size information",
+          "isRedefinition": true
+        },
+        {
+          "name": "channelType",
+          "value": "acquisition and service",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedReach",
+          "value": "local area \u2014 service radius",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedCostLevel",
+          "value": "medium",
+          "isRedefinition": true
+        },
+        {
+          "name": "conversionNotes",
+          "value": "Moderate \u2014 depends on reviews and visibility in local search",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "breedExpertise",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 135,
+      "specialises": "DifferentiationClaim",
+      "attributes": [
+        {
+          "name": "claimName",
+          "value": "Breed-specific grooming expertise",
+          "isRedefinition": true
+        },
+        {
+          "name": "statement",
+          "value": "Every groom is tailored to your dog's breed standard and coat type \u2014 not a one-size-fits-all clip",
+          "isRedefinition": true
+        },
+        {
+          "name": "basis",
+          "value": "Groomers trained in breed-specific techniques",
+          "isRedefinition": true
+        },
+        {
+          "name": "testability",
+          "value": "Customer satisfaction by breed type",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "lowStressEnvironment",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 142,
+      "specialises": "DifferentiationClaim",
+      "attributes": [
+        {
+          "name": "claimName",
+          "value": "Low-stress, gentle handling",
+          "isRedefinition": true
+        },
+        {
+          "name": "statement",
+          "value": "We prioritise your dog's comfort \u2014 calm environment, patient handling, breaks when needed",
+          "isRedefinition": true
+        },
+        {
+          "name": "basis",
+          "value": "Appointment spacing allows adequate time",
+          "isRedefinition": true
+        },
+        {
+          "name": "testability",
+          "value": "Customer feedback on dog's demeanour post-groom",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "fullGroomCatalogue",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Full groom offering as a catalogue entry.\nPer-appointment pricing with breed/size bands.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 155,
+      "specialises": "CatalogueEntry",
+      "attributes": [
+        {
+          "name": "entryName",
+          "value": "Full Groom",
+          "isRedefinition": true
+        },
+        {
+          "name": "itemReference",
+          "value": "fullGroom",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingDescription",
+          "value": "From \u00a335 (small breed) to \u00a365 (large/double-coated breed)",
+          "isRedefinition": true
+        },
+        {
+          "name": "availabilityStatus",
+          "value": "active",
+          "isRedefinition": true
+        },
+        {
+          "name": "provisionType",
+          "value": "service",
+          "isRedefinition": true
+        },
+        {
+          "name": "effectiveDate",
+          "value": "2026-03-19",
+          "isRedefinition": true
+        },
+        {
+          "name": "statusNotes",
+          "value": "Core offering \u2014 by appointment, typically 60-120 min",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "washAndTidyCatalogue",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Wash and tidy \u2014 lighter service, lower price point.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 167,
+      "specialises": "CatalogueEntry",
+      "attributes": [
+        {
+          "name": "entryName",
+          "value": "Wash and Tidy",
+          "isRedefinition": true
+        },
+        {
+          "name": "itemReference",
+          "value": "washAndTidy",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingDescription",
+          "value": "From \u00a320 (small breed) to \u00a340 (large breed)",
+          "isRedefinition": true
+        },
+        {
+          "name": "availabilityStatus",
+          "value": "active",
+          "isRedefinition": true
+        },
+        {
+          "name": "provisionType",
+          "value": "service",
+          "isRedefinition": true
+        },
+        {
+          "name": "effectiveDate",
+          "value": "2026-03-19",
+          "isRedefinition": true
+        },
+        {
+          "name": "statusNotes",
+          "value": "Lighter grooming option \u2014 30-60 min",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "nailTrimCatalogue",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Nail trim \u2014 standalone or add-on. Fixed price.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 178,
+      "specialises": "CatalogueEntry",
+      "attributes": [
+        {
+          "name": "entryName",
+          "value": "Nail Trim",
+          "isRedefinition": true
+        },
+        {
+          "name": "itemReference",
+          "value": "nailTrimAddOn",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingDescription",
+          "value": "\u00a310 standalone, \u00a35 as add-on",
+          "isRedefinition": true
+        },
+        {
+          "name": "availabilityStatus",
+          "value": "active",
+          "isRedefinition": true
+        },
+        {
+          "name": "provisionType",
+          "value": "service",
+          "isRedefinition": true
+        },
+        {
+          "name": "effectiveDate",
+          "value": "2026-03-19",
+          "isRedefinition": true
+        },
+        {
+          "name": "statusNotes",
+          "value": "Quick service \u2014 15 min. Walk-in or booked.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "checkInAndAssess",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Service delivery: intake. Owner drops off dog,\ngroomer assesses coat condition, skin issues,\nmatting, temperament. Confirms service and any\nspecial instructions.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 195,
+      "specialises": "ActivityType",
+      "attributes": [
+        {
+          "name": "activityTypeName",
+          "value": "Check-in and assess",
+          "isRedefinition": true
+        },
+        {
+          "name": "activityCategory",
+          "value": "ActivityCategory::serviceDelivery",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Greet owner and dog, confirm service booked, assess coat condition, note any skin issues or matting, record special instructions",
+          "isRedefinition": true
+        },
+        {
+          "name": "expectedDurationMinutes",
+          "value": "10",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequencyNotes",
+          "value": "Per appointment",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "batheAndDry",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Service delivery: washing. Shampoo appropriate to\ncoat type, rinse, conditioning if needed. Blow-dry\nor cage-dry depending on breed and temperament.\nSignificant duration variation by coat type.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 207,
+      "specialises": "ActivityType",
+      "attributes": [
+        {
+          "name": "activityTypeName",
+          "value": "Bathe and dry",
+          "isRedefinition": true
+        },
+        {
+          "name": "activityCategory",
+          "value": "ActivityCategory::serviceDelivery",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Bathe with breed-appropriate shampoo, rinse, condition if needed, blow-dry to appropriate finish",
+          "isRedefinition": true
+        },
+        {
+          "name": "expectedDurationMinutes",
+          "value": "30",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequencyNotes",
+          "value": "Per grooming appointment (full groom and wash-and-tidy)",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "clipAndStyle",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Service delivery: the main grooming work. Clipping,\nscissoring, hand-stripping (for wire-coated breeds)\nto breed standard or owner preference. Highly\nvariable duration: 20 min for a simple clip to\n60+ min for a show trim on a double-coated breed.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 219,
+      "specialises": "ActivityType",
+      "attributes": [
+        {
+          "name": "activityTypeName",
+          "value": "Clip and style",
+          "isRedefinition": true
+        },
+        {
+          "name": "activityCategory",
+          "value": "ActivityCategory::serviceDelivery",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Clip, scissor, or hand-strip coat to breed standard or owner preference. Includes face, feet, ears, and sanitary areas.",
+          "isRedefinition": true
+        },
+        {
+          "name": "expectedDurationMinutes",
+          "value": "45",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequencyNotes",
+          "value": "Per full groom appointment. Tidy trim only for wash-and-tidy.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "nailTrimActivity",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Service delivery: nail care. Clip to safe length,\nfile smooth, check dewclaws. Can be standalone\nor part of a full groom.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 232,
+      "specialises": "ActivityType",
+      "attributes": [
+        {
+          "name": "activityTypeName",
+          "value": "Nail trim",
+          "isRedefinition": true
+        },
+        {
+          "name": "activityCategory",
+          "value": "ActivityCategory::serviceDelivery",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Clip nails to safe length, file smooth, check and trim dewclaws if present",
+          "isRedefinition": true
+        },
+        {
+          "name": "expectedDurationMinutes",
+          "value": "10",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequencyNotes",
+          "value": "Per appointment \u2014 standalone or as part of full groom",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "finishAndHandover",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Service delivery: final step. Finishing spray,\nbandana or bow if requested. Final quality check.\nNotify owner, handover, discuss any observations\n(skin issues, matting, lumps noticed).",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 243,
+      "specialises": "ActivityType",
+      "attributes": [
+        {
+          "name": "activityTypeName",
+          "value": "Finish and handover",
+          "isRedefinition": true
+        },
+        {
+          "name": "activityCategory",
+          "value": "ActivityCategory::serviceDelivery",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Apply finishing spray, attach bandana/bow, final quality check, notify owner, handover dog, discuss any observations",
+          "isRedefinition": true
+        },
+        {
+          "name": "expectedDurationMinutes",
+          "value": "10",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequencyNotes",
+          "value": "Per appointment",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "equipmentCleanAndMaintenance",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Service enabling: keeping grooming equipment in good\norder. Clean and disinfect tables, baths, dryers.\nSharpen and oil clipper blades. Check dryer filters.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 255,
+      "specialises": "ActivityType",
+      "attributes": [
+        {
+          "name": "activityTypeName",
+          "value": "Equipment cleaning and maintenance",
+          "isRedefinition": true
+        },
+        {
+          "name": "activityCategory",
+          "value": "ActivityCategory::serviceEnabling",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Clean and disinfect grooming tables, baths, and tools. Sharpen clipper blades. Check dryer filters and hoses.",
+          "isRedefinition": true
+        },
+        {
+          "name": "expectedDurationMinutes",
+          "value": "20",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequencyNotes",
+          "value": "Between appointments (quick clean) and end of day (thorough)",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "welfareAndSafetyChecks",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Governance: periodic checks that animal welfare and\nworkplace safety standards are maintained. First aid\nkit, incident log review, premises hygiene, safe\nhandling practices.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 266,
+      "specialises": "ActivityType",
+      "attributes": [
+        {
+          "name": "activityTypeName",
+          "value": "Welfare and safety checks",
+          "isRedefinition": true
+        },
+        {
+          "name": "activityCategory",
+          "value": "ActivityCategory::governance",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Review incident log, check first aid kit stock, inspect premises hygiene, verify safe handling practices observed",
+          "isRedefinition": true
+        },
+        {
+          "name": "expectedDurationMinutes",
+          "value": "15",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequencyNotes",
+          "value": "Weekly",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "bookingAndAdministration",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Overhead: managing the appointment book, taking\npayments, responding to enquiries, managing the\nonline booking system.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 278,
+      "specialises": "ActivityType",
+      "attributes": [
+        {
+          "name": "activityTypeName",
+          "value": "Booking and administration",
+          "isRedefinition": true
+        },
+        {
+          "name": "activityCategory",
+          "value": "ActivityCategory::overhead",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Manage appointment diary, process payments, respond to enquiries, update online booking system, daily reconciliation",
+          "isRedefinition": true
+        },
+        {
+          "name": "expectedDurationMinutes",
+          "value": "30",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequencyNotes",
+          "value": "Daily \u2014 distributed throughout the day",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "serviceDeliveryGranularity",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Service delivery is tracked \u2014 each appointment's\njourney through check-in \u2192 groom \u2192 handover generates\nobservable events per step.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 291,
+      "specialises": "ActivityGranularity",
+      "attributes": [
+        {
+          "name": "businessArea",
+          "value": "Service delivery",
+          "isRedefinition": true
+        },
+        {
+          "name": "currentLevel",
+          "value": "GranularityLevel::tracked",
+          "isRedefinition": true
+        },
+        {
+          "name": "targetLevel",
+          "value": "GranularityLevel::tracked",
+          "isRedefinition": true
+        },
+        {
+          "name": "migrationNotes",
+          "value": "Tracked via appointment workflow events through all grooming stages",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "enablingGranularity",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 301,
+      "specialises": "ActivityGranularity",
+      "attributes": [
+        {
+          "name": "businessArea",
+          "value": "Service enabling",
+          "isRedefinition": true
+        },
+        {
+          "name": "currentLevel",
+          "value": "GranularityLevel::category",
+          "isRedefinition": true
+        },
+        {
+          "name": "targetLevel",
+          "value": "GranularityLevel::category",
+          "isRedefinition": true
+        },
+        {
+          "name": "migrationNotes",
+          "value": "Equipment maintenance logged as category-level events between appointments and at end of day",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "governanceGranularity",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 308,
+      "specialises": "ActivityGranularity",
+      "attributes": [
+        {
+          "name": "businessArea",
+          "value": "Governance",
+          "isRedefinition": true
+        },
+        {
+          "name": "currentLevel",
+          "value": "GranularityLevel::category",
+          "isRedefinition": true
+        },
+        {
+          "name": "targetLevel",
+          "value": "GranularityLevel::category",
+          "isRedefinition": true
+        },
+        {
+          "name": "migrationNotes",
+          "value": "Weekly welfare checks \u2014 category level adequate for general duty of care (no specific regulatory audit trail required unlike COSHH)",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "developmentGranularity",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 315,
+      "specialises": "ActivityGranularity",
+      "attributes": [
+        {
+          "name": "businessArea",
+          "value": "Development",
+          "isRedefinition": true
+        },
+        {
+          "name": "currentLevel",
+          "value": "GranularityLevel::envelope",
+          "isRedefinition": true
+        },
+        {
+          "name": "targetLevel",
+          "value": "GranularityLevel::envelope",
+          "isRedefinition": true
+        },
+        {
+          "name": "migrationNotes",
+          "value": "CPD and breed training \u2014 envelope adequate",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "overheadGranularity",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 322,
+      "specialises": "ActivityGranularity",
+      "attributes": [
+        {
+          "name": "businessArea",
+          "value": "Overhead",
+          "isRedefinition": true
+        },
+        {
+          "name": "currentLevel",
+          "value": "GranularityLevel::envelope",
+          "isRedefinition": true
+        },
+        {
+          "name": "targetLevel",
+          "value": "GranularityLevel::envelope",
+          "isRedefinition": true
+        },
+        {
+          "name": "migrationNotes",
+          "value": "Daily admin \u2014 envelope adequate",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "groomingLabourCostAllocation",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Cost allocation for grooming labour. The groomer's\ntime is the primary variable cost \u2014 allocated per\nappointment based on expected duration.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 331,
+      "specialises": "ActivityCostAllocation",
+      "attributes": [
+        {
+          "name": "activityType",
+          "value": "Clip and style",
+          "isRedefinition": true
+        },
+        {
+          "name": "allocationMethod",
+          "value": "labour time allocation",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedCostPerUnit",
+          "value": "12.50",
+          "isRedefinition": true
+        },
+        {
+          "name": "costNotes",
+          "value": "45 min average at \u00a316.50/hr = \u00a312.38, rounded to \u00a312.50. Varies significantly by breed/coat type.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "consumablesCostAllocation",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Cost allocation for grooming consumables: shampoo,\nconditioner, finishing spray, blade oil, ear cleaner.\nAllocated per appointment as an average.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 341,
+      "specialises": "ActivityCostAllocation",
+      "attributes": [
+        {
+          "name": "activityType",
+          "value": "Bathe and dry",
+          "isRedefinition": true
+        },
+        {
+          "name": "allocationMethod",
+          "value": "per-appointment average",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedCostPerUnit",
+          "value": "2.50",
+          "isRedefinition": true
+        },
+        {
+          "name": "costNotes",
+          "value": "Shampoo \u00a31.20, conditioner \u00a30.60, finishing spray \u00a30.40, sundries \u00a30.30. Average across sizes.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "dogGroomer",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "Qualified dog groomer \u2014 the primary resource.\nCity & Guilds Level 3 in Dog Grooming or\nequivalent. Breed-specific training preferred.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 363,
+      "specialises": "ResourceType",
+      "attributes": [
+        {
+          "name": "resourceTypeName",
+          "value": "Dog groomer",
+          "isRedefinition": true
+        },
+        {
+          "name": "category",
+          "value": "personnel",
+          "isRedefinition": true
+        },
+        {
+          "name": "acquisitionMethod",
+          "value": "employed",
+          "isRedefinition": true
+        },
+        {
+          "name": "costProfile",
+          "value": "\u00a316.50 per hour",
+          "isRedefinition": true
+        },
+        {
+          "name": "capacityUnit",
+          "value": "FTE",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "groomingEquipment",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "Grooming tables, professional clippers, scissor\nsets, blade sets, slicker brushes, combs. One\nstation per groomer.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 374,
+      "specialises": "ResourceType",
+      "attributes": [
+        {
+          "name": "resourceTypeName",
+          "value": "Grooming equipment",
+          "isRedefinition": true
+        },
+        {
+          "name": "category",
+          "value": "equipment",
+          "isRedefinition": true
+        },
+        {
+          "name": "acquisitionMethod",
+          "value": "purchased",
+          "isRedefinition": true
+        },
+        {
+          "name": "costProfile",
+          "value": "\u00a32,000 initial per station, \u00a350/month maintenance and replacement",
+          "isRedefinition": true
+        },
+        {
+          "name": "capacityUnit",
+          "value": "stations",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "bathAndDryingEquipment",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "Professional dog bath (height-adjustable), high-velocity\ndryer, stand dryer. Shared across groomers.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 385,
+      "specialises": "ResourceType",
+      "attributes": [
+        {
+          "name": "resourceTypeName",
+          "value": "Bath and drying equipment",
+          "isRedefinition": true
+        },
+        {
+          "name": "category",
+          "value": "equipment",
+          "isRedefinition": true
+        },
+        {
+          "name": "acquisitionMethod",
+          "value": "purchased",
+          "isRedefinition": true
+        },
+        {
+          "name": "costProfile",
+          "value": "\u00a31,500 initial, \u00a330/month maintenance",
+          "isRedefinition": true
+        },
+        {
+          "name": "capacityUnit",
+          "value": "stations",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "salonPremises",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 395,
+      "specialises": "ResourceType",
+      "attributes": [
+        {
+          "name": "resourceTypeName",
+          "value": "Salon premises",
+          "isRedefinition": true
+        },
+        {
+          "name": "category",
+          "value": "estate",
+          "isRedefinition": true
+        },
+        {
+          "name": "acquisitionMethod",
+          "value": "rented",
+          "isRedefinition": true
+        },
+        {
+          "name": "costProfile",
+          "value": "\u00a31,200 per month rent",
+          "isRedefinition": true
+        },
+        {
+          "name": "capacityUnit",
+          "value": "premises",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "groomingConsumables",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "Shampoo, conditioner, finishing sprays, ear cleaner,\nstyptic powder, blade oil, bandanas/bows. Ongoing\nvariable cost scaling with appointment volume.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 403,
+      "specialises": "ResourceType",
+      "attributes": [
+        {
+          "name": "resourceTypeName",
+          "value": "Grooming consumables",
+          "isRedefinition": true
+        },
+        {
+          "name": "category",
+          "value": "consumables",
+          "isRedefinition": true
+        },
+        {
+          "name": "acquisitionMethod",
+          "value": "purchased",
+          "isRedefinition": true
+        },
+        {
+          "name": "costProfile",
+          "value": "\u00a32.50 per appointment average",
+          "isRedefinition": true
+        },
+        {
+          "name": "capacityUnit",
+          "value": "units",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "bookingSystem",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "Online booking and appointment management software.\nHandles scheduling, reminders, customer records,\nand payment processing.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 414,
+      "specialises": "ResourceType",
+      "attributes": [
+        {
+          "name": "resourceTypeName",
+          "value": "Booking and management system",
+          "isRedefinition": true
+        },
+        {
+          "name": "category",
+          "value": "technology",
+          "isRedefinition": true
+        },
+        {
+          "name": "acquisitionMethod",
+          "value": "subscribed",
+          "isRedefinition": true
+        },
+        {
+          "name": "costProfile",
+          "value": "\u00a340 per month subscription",
+          "isRedefinition": true
+        },
+        {
+          "name": "capacityUnit",
+          "value": "instances",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "deliverGroomingAppointment",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 427,
+      "specialises": "Capability",
+      "attributes": [
+        {
+          "name": "capabilityName",
+          "value": "Deliver a grooming appointment",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Receive a dog, assess condition, perform grooming to breed standard or owner preference, and return the dog in good condition",
+          "isRedefinition": true
+        },
+        {
+          "name": "requiredResources",
+          "value": "1 groomer + grooming station + bath/dryer + consumables + premises + booking system",
+          "isRedefinition": true
+        },
+        {
+          "name": "enabledOfferingsDescription",
+          "value": "Full groom, Wash and tidy, Nail trim",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "standardDayCapacity",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "Capacity model for a single groomer working a\nstandard day. Appointment duration varies by\nservice type and breed, so capacity is expressed\nas a range.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 436,
+      "specialises": "CapacityModel",
+      "attributes": [
+        {
+          "name": "resourceConfiguration",
+          "value": "1 groomer + 1 grooming station + shared bath/dryer",
+          "isRedefinition": true
+        },
+        {
+          "name": "throughputPerPeriod",
+          "value": "5-7 appointments",
+          "isRedefinition": true
+        },
+        {
+          "name": "periodUnit",
+          "value": "per day",
+          "isRedefinition": true
+        },
+        {
+          "name": "assumptions",
+          "value": "8-hour working day, average 75 min per full groom including turnover, 45 min per wash-and-tidy, 15 min per nail trim. Mix of appointment types.",
+          "isRedefinition": true
+        },
+        {
+          "name": "bottleneck",
+          "value": "Groomer time \u2014 one dog per groomer at a time",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "animalWelfareDuty",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "General duty of care under the Animal Welfare Act\n2006. Not a specific regulatory framework like COSHH\n\u2014 rather a general professional obligation to ensure\nanimals are not caused unnecessary suffering.\nThis exercises ResourceConstraint with a general\nprofessional governance posture, distinct from Su",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 450,
+      "specialises": "ResourceConstraint",
+      "attributes": [
+        {
+          "name": "constraintName",
+          "value": "Animal welfare duty of care",
+          "isRedefinition": true
+        },
+        {
+          "name": "constraintType",
+          "value": "regulatory",
+          "isRedefinition": true
+        },
+        {
+          "name": "affectedResource",
+          "value": "Dog groomer",
+          "isRedefinition": true
+        },
+        {
+          "name": "limit",
+          "value": "All grooming must be performed with due regard for animal welfare. Dogs showing signs of distress, pain, or health issues must have grooming paused or adapted. Owner to be notified of any concerns.",
+          "isRedefinition": true
+        },
+        {
+          "name": "regulatorySourceDescription",
+          "value": "Animal Welfare Act 2006 \u2014 duty of care to animals under your control",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "groomingRevenue",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 468,
+      "specialises": "RevenueStream",
+      "attributes": [
+        {
+          "name": "streamName",
+          "value": "Grooming service revenue",
+          "isRedefinition": true
+        },
+        {
+          "name": "sourceSegment",
+          "value": "Individual pet owners and regular customers",
+          "isRedefinition": true
+        },
+        {
+          "name": "triggerEvent",
+          "value": "Grooming appointment completed",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingModelRef",
+          "value": "perAppointmentPricing",
+          "isRedefinition": true
+        },
+        {
+          "name": "projectedVolume",
+          "value": "6 appointments per day average (1 groomer)",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "groomerLabourCosts",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 478,
+      "specialises": "CostDriver",
+      "attributes": [
+        {
+          "name": "driverName",
+          "value": "Groomer labour",
+          "isRedefinition": true
+        },
+        {
+          "name": "linkedResource",
+          "value": "Dog groomer",
+          "isRedefinition": true
+        },
+        {
+          "name": "costBehaviour",
+          "value": "semi-variable \u2014 fixed shifts, overtime for busy periods",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedUnitCost",
+          "value": "16.50",
+          "isRedefinition": true
+        },
+        {
+          "name": "scalingFactor",
+          "value": "per hour",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "consumableCosts",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 486,
+      "specialises": "CostDriver",
+      "attributes": [
+        {
+          "name": "driverName",
+          "value": "Grooming consumables",
+          "isRedefinition": true
+        },
+        {
+          "name": "linkedResource",
+          "value": "Grooming consumables",
+          "isRedefinition": true
+        },
+        {
+          "name": "costBehaviour",
+          "value": "variable",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedUnitCost",
+          "value": "2.50",
+          "isRedefinition": true
+        },
+        {
+          "name": "scalingFactor",
+          "value": "per appointment",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "salonRentCosts",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 494,
+      "specialises": "CostDriver",
+      "attributes": [
+        {
+          "name": "driverName",
+          "value": "Salon rent",
+          "isRedefinition": true
+        },
+        {
+          "name": "linkedResource",
+          "value": "Salon premises",
+          "isRedefinition": true
+        },
+        {
+          "name": "costBehaviour",
+          "value": "fixed",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedUnitCost",
+          "value": "1200.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "scalingFactor",
+          "value": "per month",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "equipmentMaintenanceCosts",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 502,
+      "specialises": "CostDriver",
+      "attributes": [
+        {
+          "name": "driverName",
+          "value": "Equipment maintenance and replacement",
+          "isRedefinition": true
+        },
+        {
+          "name": "linkedResource",
+          "value": "Grooming equipment",
+          "isRedefinition": true
+        },
+        {
+          "name": "costBehaviour",
+          "value": "fixed",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedUnitCost",
+          "value": "80.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "scalingFactor",
+          "value": "per month",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "fullGroomEconomics",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "Per-appointment economics for a full groom.\nAverage across breed sizes. Revenue varies by\nsize band; costs are relatively stable.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 512,
+      "specialises": "UnitEconomics",
+      "attributes": [
+        {
+          "name": "offeringRef",
+          "value": "Full groom",
+          "isRedefinition": true
+        },
+        {
+          "name": "revenuePerUnit",
+          "value": "48.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "costPerUnit",
+          "value": "22.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "marginPerUnit",
+          "value": "26.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "breakdownNotes",
+          "value": "Labour \u00a316.50 (avg 60 min), consumables \u00a32.50, equipment wear \u00a31.50, booking system \u00a31.50. Rent excluded (fixed cost). Revenue is weighted average across size bands.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "washAndTidyEconomics",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "Per-appointment economics for wash and tidy.\nShorter appointment, lower price, but good margin\ndue to reduced labour time.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 523,
+      "specialises": "UnitEconomics",
+      "attributes": [
+        {
+          "name": "offeringRef",
+          "value": "Wash and tidy",
+          "isRedefinition": true
+        },
+        {
+          "name": "revenuePerUnit",
+          "value": "28.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "costPerUnit",
+          "value": "13.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "marginPerUnit",
+          "value": "15.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "breakdownNotes",
+          "value": "Labour \u00a38.25 (avg 30 min), consumables \u00a32.00, equipment wear \u00a31.25, booking system \u00a31.50. Rent excluded.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "nailTrimEconomics",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "Per-appointment economics for nail trim.\nQuick, low-cost service. Good margin as a\nstandalone; excellent as an add-on since the\ndog is already on the table.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 534,
+      "specialises": "UnitEconomics",
+      "attributes": [
+        {
+          "name": "offeringRef",
+          "value": "Nail trim",
+          "isRedefinition": true
+        },
+        {
+          "name": "revenuePerUnit",
+          "value": "10.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "costPerUnit",
+          "value": "3.50",
+          "isRedefinition": true
+        },
+        {
+          "name": "marginPerUnit",
+          "value": "6.50",
+          "isRedefinition": true
+        },
+        {
+          "name": "breakdownNotes",
+          "value": "Labour \u00a34.13 (15 min) as standalone. As add-on: marginal cost near zero (dog already present). Consumables negligible.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "perAppointmentPricing",
+      "parentPackage": "PawsResourceFinancial",
+      "doc": "Per-appointment pricing with breed/size bands.\nThree size categories: small (up to 10kg),\nmedium (10-25kg), large (25kg+). Double-coated\nbreeds attract a surcharge.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 548,
+      "specialises": "PricingModel",
+      "attributes": [
+        {
+          "name": "pricingModelName",
+          "value": "Per-appointment with breed/size bands",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingType",
+          "value": "PricingType::perEpisode",
+          "isRedefinition": true
+        },
+        {
+          "name": "basePrice",
+          "value": "35.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "adjustmentLogic",
+          "value": "Full groom: small \u00a335, medium \u00a348, large \u00a365. Wash and tidy: small \u00a320, medium \u00a328, large \u00a340. Nail trim: \u00a310 standalone, \u00a35 add-on. Double-coated breed surcharge +\u00a310.",
+          "isRedefinition": true
+        },
+        {
+          "name": "applicableOfferings",
+          "value": "Full groom, Wash and tidy, Nail trim",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "requirement",
+      "name": "animalWelfareDutyOfCare",
+      "parentPackage": "PawsGovernance",
+      "doc": "Animal Welfare Act 2006 \u2014 duty of care to animals\nunder your control. Applies to any person responsible\nfor an animal, including during grooming. Five welfare\nneeds: suitable environment, suitable diet, ability to\nexhibit normal behaviour, housing with or apart from\nother animals, protection from pa",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 601,
+      "specialises": "GovernanceRequirement",
+      "attributes": [
+        {
+          "name": "requirementId",
+          "value": "PAWS-GOV-001",
+          "isRedefinition": true
+        },
+        {
+          "name": "title",
+          "value": "Animal welfare duty of care during grooming",
+          "isRedefinition": true
+        },
+        {
+          "name": "regulatorySource",
+          "value": "Animal Welfare Act 2006 \u2014 Section 9 (duty of person responsible for animal to ensure welfare)",
+          "isRedefinition": true
+        },
+        {
+          "name": "complianceDescription",
+          "value": "All grooming must be performed with due regard for the animal's welfare. Dogs must not be caused unnecessary suffering. Signs of distress must be recognised and acted upon. Health concerns observed during grooming must be communicated to the owner. Equipment must be maintained in safe working order. The grooming environment must be suitable for dogs.",
+          "isRedefinition": true
+        },
+        {
+          "name": "evidenceRequired",
+          "value": "Public liability insurance, incident and observation log, first aid kit inspection records, groomer training and CPD records",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "publicLiabilityInsurance",
+      "parentPackage": "PawsGovernance",
+      "doc": "Current public liability insurance certificate.\nRequired for any business handling animals on\npremises. Covers injury to animals and third parties.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 625,
+      "specialises": "AuditEvidenceRecord",
+      "attributes": [
+        {
+          "name": "evidenceType",
+          "value": "insurance certificate",
+          "isRedefinition": true
+        },
+        {
+          "name": "evidenceDescription",
+          "value": "Current public liability insurance policy covering dog grooming services. Must cover injury to animals in care and injury to third parties on premises.",
+          "isRedefinition": true
+        },
+        {
+          "name": "retentionPeriod",
+          "value": "Duration of policy plus 6 years",
+          "isRedefinition": true
+        },
+        {
+          "name": "responsibleRole",
+          "value": "Business owner",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequency",
+          "value": "Annual renewal \u2014 certificate held on file",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "incidentAndObservationLog",
+      "parentPackage": "PawsGovernance",
+      "doc": "Log of any incidents during grooming (nicks, stress\nreactions, health concerns observed) and actions\ntaken. Demonstrates duty of care through transparent\nrecording and appropriate response.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 636,
+      "specialises": "AuditEvidenceRecord",
+      "attributes": [
+        {
+          "name": "evidenceType",
+          "value": "incident log",
+          "isRedefinition": true
+        },
+        {
+          "name": "evidenceDescription",
+          "value": "Dated record of any grooming incidents (cuts, abrasions, stress responses), health observations (lumps, skin conditions, parasites), and actions taken (grooming paused, owner notified, vet referral suggested). Includes near-misses.",
+          "isRedefinition": true
+        },
+        {
+          "name": "retentionPeriod",
+          "value": "5 years",
+          "isRedefinition": true
+        },
+        {
+          "name": "responsibleRole",
+          "value": "Groomer on duty",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequency",
+          "value": "Per incident \u2014 reviewed weekly by business owner",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "firstAidKitInspection",
+      "parentPackage": "PawsGovernance",
+      "doc": "Periodic inspection of the animal first aid kit.\nStyptic powder, bandages, antiseptic, eye wash,\nemergency vet contact details.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 648,
+      "specialises": "AuditEvidenceRecord",
+      "attributes": [
+        {
+          "name": "evidenceType",
+          "value": "inspection record",
+          "isRedefinition": true
+        },
+        {
+          "name": "evidenceDescription",
+          "value": "Dated record of animal first aid kit inspection: styptic powder stock, bandage supply, antiseptic availability, eye wash expiry check, emergency vet contact details current.",
+          "isRedefinition": true
+        },
+        {
+          "name": "retentionPeriod",
+          "value": "3 years",
+          "isRedefinition": true
+        },
+        {
+          "name": "responsibleRole",
+          "value": "Business owner or senior groomer",
+          "isRedefinition": true
+        },
+        {
+          "name": "frequency",
+          "value": "Monthly",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "animalWelfareActReference",
+      "parentPackage": "PawsGovernance",
+      "doc": "The Animal Welfare Act 2006 \u2014 the primary legislative\nreference for duty of care obligations.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 661,
+      "specialises": "ExternalReference",
+      "attributes": [
+        {
+          "name": "referenceType",
+          "value": "primary legislation",
+          "isRedefinition": true
+        },
+        {
+          "name": "referenceId",
+          "value": "AWA-2006",
+          "isRedefinition": true
+        },
+        {
+          "name": "referenceSource",
+          "value": "UK Parliament \u2014 Animal Welfare Act 2006, Section 9",
+          "isRedefinition": true
+        },
+        {
+          "name": "referenceNotes",
+          "value": "Duty of person responsible for animal to ensure welfare. Five welfare needs. Applies to any person responsible for an animal, including during commercial grooming services.",
           "isRedefinition": true
         }
       ]
