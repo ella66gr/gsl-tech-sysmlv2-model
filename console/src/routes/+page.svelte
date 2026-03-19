@@ -36,6 +36,14 @@
       <Badge color="indigo" class="mt-3">Stage 2</Badge>
     </a>
 
+    <a href="/glossary" class="rounded-lg border border-secondary-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-secondary-700 dark:bg-secondary-800">
+      <h2 class="text-lg font-semibold text-secondary-800 dark:text-white">Glossary</h2>
+      <p class="mt-1 text-sm text-secondary-500 dark:text-secondary-300">
+        Plain-language descriptions of meta model concepts. Look up what terms mean.
+      </p>
+      <Badge color="indigo" class="mt-3">Stage 3</Badge>
+    </a>
+
     <a href="/patterns" class="rounded-lg border border-secondary-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-secondary-700 dark:bg-secondary-800">
       <h2 class="text-lg font-semibold text-secondary-800 dark:text-white">Pattern Graph</h2>
       <p class="mt-1 text-sm text-secondary-500 dark:text-secondary-300">
