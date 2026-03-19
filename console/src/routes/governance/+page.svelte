@@ -86,7 +86,7 @@
   function domainColor(domainKey: string): string {
     const colors: Record<string, string> = {
       core: 'blue',
-      csw: 'yellow',
+      cafe: 'yellow',
       suds: 'green',
       paws: 'purple',
     };

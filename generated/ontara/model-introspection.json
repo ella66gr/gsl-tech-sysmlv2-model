@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-19T20:08:30.154234",
+  "generatedAt": "2026-03-19T20:26:49.826044",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
@@ -7,13 +7,13 @@
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
       "elementCount": 457
     },
-    "csw": {
-      "label": "Cafe (Coffee Shop)",
+    "cafe": {
+      "label": "Cafe",
       "description": "Cafe demonstrator \u2014 reference validation domain",
       "elementCount": 119
     },
     "suds": {
-      "label": "Suds (Laundry)",
+      "label": "Suds",
       "description": "Laundry service demonstrator \u2014 cross-domain validation",
       "elementCount": 61
     }
@@ -39,7 +39,7 @@
     },
     "byDomain": {
       "core": 457,
-      "csw": 119,
+      "cafe": 119,
       "suds": 61
     }
   },
@@ -401,28 +401,28 @@
       {
         "name": "LoyaltyDiscountConstraint",
         "package": "BusinessRules",
-        "sourceDomain": "csw",
+        "sourceDomain": "cafe",
         "doc": "Formalises the loyalty discount rule:\nif the customer is a member, discount >= 10%.",
         "attributes": []
       },
       {
         "name": "OrderSizeConstraint",
         "package": "BusinessRules",
-        "sourceDomain": "csw",
+        "sourceDomain": "cafe",
         "doc": "Formalises the order size rules:\nquantity of items must be between 1 and 10.",
         "attributes": []
       },
       {
         "name": "VeganMilkConstraint",
         "package": "BusinessRules",
-        "sourceDomain": "csw",
+        "sourceDomain": "cafe",
         "doc": "Formalises the vegan milk rule:\nif the drink is vegan, milk choice must not be dairy.",
         "attributes": []
       },
       {
         "name": "BaristaHoursConstraint",
         "package": "BusinessRules",
-        "sourceDomain": "csw",
+        "sourceDomain": "cafe",
         "doc": "Baristas must work at least 12 hours per week.",
         "attributes": []
       },
@@ -599,7 +599,7 @@
       {
         "name": "kioskProfitability",
         "typedBy": "StrategicObjective",
-        "sourceDomain": "csw",
+        "sourceDomain": "cafe",
         "package": "CoffeeshopScenarios",
         "doc": "Reach profitability within 6 months of opening.\nValidates that StrategicObjective (requirement def)\nworks for a non-clinical business objective.",
         "attributes": [
@@ -829,7 +829,7 @@
             "package": "ServiceConcept"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "walkInCustomers",
             "package": "CoffeeShopBusinessModel"
@@ -927,7 +927,7 @@
             "package": "ServiceConcept"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "drinkOrder",
             "package": "CoffeeShopBusinessModel"
@@ -970,7 +970,7 @@
             "package": "ServiceConcept"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "counterService",
             "package": "CoffeeShopBusinessModel"
@@ -1032,7 +1032,7 @@
       },
       "userFacing": {},
       "domains": {
-        "csw": [
+        "cafe": [
           {
             "name": "flatWhiteCatalogue",
             "package": "CoffeeShopBusinessModel"
@@ -1105,7 +1105,7 @@
       },
       "userFacing": {},
       "domains": {
-        "csw": [
+        "cafe": [
           {
             "name": "externalRefs",
             "package": "CoffeeShop"
@@ -1137,7 +1137,7 @@
         "shortDescription": "A defined kind of business activity, classified into one of five categories."
       },
       "domains": {
-        "csw": [
+        "cafe": [
           {
             "name": "makeDrink",
             "package": "CoffeeShopBusinessModel"
@@ -1242,7 +1242,7 @@
       },
       "userFacing": {},
       "domains": {
-        "csw": [
+        "cafe": [
           {
             "name": "serviceDeliveryGranularity",
             "package": "CoffeeShopBusinessModel"
@@ -1359,7 +1359,7 @@
             "package": "ResourcePlanning"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "barista",
             "package": "CoffeeshopResourceFinancial"
@@ -1480,7 +1480,7 @@
             "package": "ResourcePlanning"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "serveDrink",
             "package": "CoffeeshopResourceFinancial"
@@ -1515,7 +1515,7 @@
             "package": "ResourcePlanning"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "singleBaristaCapacity",
             "package": "CoffeeshopResourceFinancial"
@@ -1550,7 +1550,7 @@
             "package": "ResourcePlanning"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "foodHygiene",
             "package": "CoffeeshopResourceFinancial"
@@ -1605,7 +1605,7 @@
             "package": "ResourcePlanning"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "kioskProfitabilityMapping",
             "package": "CoffeeshopScenarios"
@@ -1641,7 +1641,7 @@
             "package": "FinancialPlanning"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "drinkSales",
             "package": "CoffeeshopResourceFinancial"
@@ -1703,7 +1703,7 @@
             "package": "FinancialPlanning"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "baristaCost",
             "package": "CoffeeshopResourceFinancial"
@@ -1765,7 +1765,7 @@
             "package": "FinancialPlanning"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "drinkUnitEconomics",
             "package": "CoffeeshopResourceFinancial"
@@ -1811,7 +1811,7 @@
             "package": "FinancialPlanning"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "perDrinkPricing",
             "package": "CoffeeshopResourceFinancial"
@@ -1900,7 +1900,7 @@
             "package": "BusinessScenarios"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "smallKioskScenario",
             "package": "CoffeeshopScenarios"
@@ -2042,7 +2042,7 @@
             "package": "BusinessScenarios"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "kioskDailyDrinks",
             "package": "CoffeeshopScenarios"
@@ -2128,7 +2128,7 @@
             "package": "BusinessScenarios"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "kioskGrowth",
             "package": "CoffeeshopScenarios"
@@ -2198,7 +2198,7 @@
             "package": "BusinessScenarios"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "formulaCafeSubscriptionRevenue",
             "package": "CoffeeshopScenarios"
@@ -2276,7 +2276,7 @@
             "package": "BusinessScenarios"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "kioskMonth6",
             "package": "CoffeeshopScenarios"
@@ -2352,7 +2352,7 @@
       "catalogueTag": {},
       "userFacing": {},
       "domains": {
-        "csw": [
+        "cafe": [
           {
             "name": "kioskWeek1Actuals",
             "package": "CoffeeshopScenarios"
@@ -2368,7 +2368,7 @@
       "catalogueTag": {},
       "userFacing": {},
       "domains": {
-        "csw": [
+        "cafe": [
           {
             "name": "kioskWeek1Variance",
             "package": "CoffeeshopScenarios"
@@ -2418,7 +2418,7 @@
             "package": "BusinessStrategy"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "variantKiosk",
             "package": "CoffeeshopScenarios"
@@ -2448,7 +2448,7 @@
             "package": "BusinessStrategy"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "pivotKioskToCafe",
             "package": "CoffeeshopScenarios"
@@ -2482,7 +2482,7 @@
       "catalogueTag": {},
       "userFacing": {},
       "domains": {
-        "csw": [
+        "cafe": [
           {
             "name": "catalogueEntryPolicy",
             "package": "CoffeeShopBusinessModel"
@@ -2668,7 +2668,7 @@
             "package": "LogicEngine"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "kioskDeficitWeek1Revenue",
             "package": "CoffeeshopScenarios"
@@ -2817,7 +2817,7 @@
             "package": "BusinessScenarios"
           }
         ],
-        "csw": [
+        "cafe": [
           {
             "name": "kioskGoalWeek1Revenue",
             "package": "CoffeeshopScenarios"
@@ -21091,7 +21091,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "Drink types \u2014 matches ORDER_RECORD at0010/at0011.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 49,
       "attributes": [
@@ -21109,7 +21109,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "Drink sizes \u2014 matches ORDER_RECORD at0007/at0008/at0009.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 55,
       "attributes": [
@@ -21130,7 +21130,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "Milk options \u2014 matches ORDER_RECORD at0013-at0017.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 62,
       "attributes": [
@@ -21157,7 +21157,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "Fixed price points \u2014 matches ORDER_RECORD at0020-at0023.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 71,
       "attributes": [
@@ -21181,7 +21181,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "Preparation methods \u2014 matches PREPARATION_EVENT at0003/at0004.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 79,
       "attributes": [
@@ -21199,7 +21199,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "Models the ORDER_RECORD archetype: what was ordered.\nopenEHR RM class: OBSERVATION\nData path: OBSERVATION > data (HISTORY) > events (POINT_EVENT)\n           > data (ITEM_TREE) > items (ELEMENT)\nValidated in CDR Exercise Phases A-B: archetype designed\nin Archetype Designer, OPT exported, compositions",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 89,
       "attributes": [
@@ -21236,7 +21236,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "Models the CUSTOMER_FEEDBACK archetype: customer satisfaction.\nopenEHR RM class: EVALUATION\nData path: EVALUATION > data (ITEM_TREE) > items (ELEMENT)\nValidated in CDR Exercise Phase C: archetype designed,\ncompositions committed via form-driven data entry (no\nworkflow), AQL queries working.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 112,
       "attributes": [
@@ -21263,7 +21263,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "Models the PREPARATION_EVENT archetype: what happened\nduring drink preparation.\nopenEHR RM class: ACTION\nData path: ACTION > description (ITEM_TREE) > items (ELEMENT)\nAlso requires: time (DV_DATE_TIME), ism_transition\nACTION uses 'description' not 'data' for its ITEM_TREE.\nISM transition codes: plan",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 132,
       "attributes": [
@@ -21300,7 +21300,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "Composition template for order recording.\nCommitted by the validateOrder Temporal activity.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 164
     },
@@ -21310,7 +21310,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 172,
       "specialises": "OrderRecord",
@@ -21329,7 +21329,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "Composition template for preparation events.\nCommitted by the seeding script (and in future by\nthe prepareDrink Temporal activity).",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 175
     },
@@ -21339,7 +21339,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 184,
       "specialises": "PreparationEvent",
@@ -21358,7 +21358,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "Composition template for customer feedback.\nCommitted via form-driven data entry (no workflow).",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 187
     },
@@ -21368,7 +21368,7 @@
       "parentPackage": "CoffeeShopArchetypes",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 195,
       "specialises": "CustomerFeedback",
@@ -21387,7 +21387,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 41,
       "specialises": "CustomerSegment",
@@ -21425,7 +21425,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "The core (and only) service offering for the coffee\nshop. Maps to the existing fulfil-drink pathway.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 49,
       "specialises": "ServiceOffering",
@@ -21468,7 +21468,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 60,
       "specialises": "Channel",
@@ -21511,7 +21511,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Service delivery: the core value-producing activity.\nAlready modelled as pathway steps in the fulfil-drink\naction flow.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 74,
       "specialises": "ActivityType",
@@ -21549,7 +21549,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Service enabling: necessary to support delivery but\nnot directly visible to the customer.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 85,
       "specialises": "ActivityType",
@@ -21587,7 +21587,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 95,
       "specialises": "ActivityType",
@@ -21625,7 +21625,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 103,
       "specialises": "ActivityType",
@@ -21663,7 +21663,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 111,
       "specialises": "ActivityType",
@@ -21701,7 +21701,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Administrative data management: maintaining the\nproduct catalogue, updating prices, managing\navailability status and inventory records.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 119,
       "specialises": "ActivityType",
@@ -21739,7 +21739,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Service delivery is at tracked level from day one \u2014\nthe pathway model already produces observable events\nfor every drink order.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 132,
       "specialises": "ActivityGranularity",
@@ -21772,7 +21772,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 142,
       "specialises": "ActivityGranularity",
@@ -21805,7 +21805,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 149,
       "specialises": "ActivityGranularity",
@@ -21838,7 +21838,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 156,
       "specialises": "ActivityGranularity",
@@ -21871,7 +21871,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 163,
       "specialises": "ActivityGranularity",
@@ -21904,7 +21904,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Flat White \u2014 flagship espresso drink.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 180,
       "specialises": "CoffeeShop::CatalogueEntry",
@@ -21947,7 +21947,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 190,
       "specialises": "CoffeeShop::CatalogueEntry",
@@ -21990,7 +21990,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 199,
       "specialises": "CoffeeShop::CatalogueEntry",
@@ -22033,7 +22033,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 208,
       "specialises": "CoffeeShop::CatalogueEntry",
@@ -22076,7 +22076,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 217,
       "specialises": "CoffeeShop::CatalogueEntry",
@@ -22119,7 +22119,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 228,
       "specialises": "CoffeeShop::CatalogueEntry",
@@ -22162,7 +22162,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 237,
       "specialises": "CoffeeShop::CatalogueEntry",
@@ -22205,7 +22205,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Mocha Latte \u2014 new addition, March 2026.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 248,
       "specialises": "CoffeeShop::CatalogueEntry",
@@ -22248,7 +22248,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Frappe \u2014 new addition, March 2026.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 258,
       "specialises": "CoffeeShop::CatalogueEntry",
@@ -22291,7 +22291,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Ginger Biscuit \u2014 new addition, March 2026.\nFirst bought-in item. Inventory tracking applies.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 270,
       "specialises": "CoffeeShop::CatalogueEntry",
@@ -22334,7 +22334,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Oat Bar \u2014 new addition, March 2026.\nBought-in, vegan, gluten-free.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 281,
       "specialises": "CoffeeShop::CatalogueEntry",
@@ -22377,7 +22377,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Business reference data. Simple CRUD, relational\njoins to menu items and inventory. No clinical\nsignificance.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 302,
       "specialises": "PersistencePolicy",
@@ -22405,7 +22405,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Operational state. Atomic decrement on sale. No\narchetype validation needed.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 311,
       "specialises": "PersistencePolicy",
@@ -22433,7 +22433,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Clinical analogue. Benefits from archetype validation,\nimmutable versioning, audit trail.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 319,
       "specialises": "PersistencePolicy",
@@ -22461,7 +22461,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Qualitative assessment. Archetype-validated, versioned,\nqueryable via AQL.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 327,
       "specialises": "PersistencePolicy",
@@ -22489,7 +22489,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Stateful process. Durable execution, signal handling,\nactivity orchestration.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 335,
       "specialises": "PersistencePolicy",
@@ -22517,7 +22517,7 @@
       "parentPackage": "CoffeeShopBusinessModel",
       "doc": "Knowledge the system links to but does not own.\nCoffee shop: supplier datasheets.\nGSL: SPCs, BNF entries, NICE guidance.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 343,
       "specialises": "PersistencePolicy",
@@ -22545,7 +22545,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 19,
       "specialises": "ResourceType",
@@ -22583,7 +22583,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 27,
       "specialises": "ResourceType",
@@ -22621,7 +22621,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 35,
       "specialises": "ResourceType",
@@ -22659,7 +22659,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 43,
       "specialises": "ResourceType",
@@ -22697,7 +22697,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 53,
       "specialises": "Capability",
@@ -22730,7 +22730,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 62,
       "specialises": "CapacityModel",
@@ -22768,7 +22768,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 72,
       "specialises": "ResourceConstraint",
@@ -22806,7 +22806,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 82,
       "specialises": "RevenueStream",
@@ -22844,7 +22844,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 92,
       "specialises": "CostDriver",
@@ -22882,7 +22882,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 100,
       "specialises": "CostDriver",
@@ -22920,7 +22920,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 108,
       "specialises": "CostDriver",
@@ -22958,7 +22958,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "Per-drink economics. Revenue \u00a33.50, cost \u00a31.90\n(ingredients \u00a30.80 + labour \u00a30.80 + overhead \u00a30.30),\nmargin \u00a31.60. Hand-verifiable.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 118,
       "specialises": "UnitEconomics",
@@ -22996,7 +22996,7 @@
       "parentPackage": "CoffeeshopResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 131,
       "specialises": "PricingModel",
@@ -23034,7 +23034,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "A small takeaway kiosk: 1 barista, limited menu,\nlow rent, targeting 50 drinks/day growing to 80.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 50,
       "specialises": "ScenarioDefinition",
@@ -23077,7 +23077,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "A full high-street caf\u00e9: 3 baristas, food menu,\nseating, higher rent, targeting 200 drinks/day.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 61,
       "specialises": "ScenarioDefinition",
@@ -23120,7 +23120,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 76,
       "specialises": "ProjectionParameter",
@@ -23163,7 +23163,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 85,
       "specialises": "ProjectionParameter",
@@ -23206,7 +23206,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 94,
       "specialises": "ProjectionParameter",
@@ -23249,7 +23249,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 103,
       "specialises": "ProjectionParameter",
@@ -23292,7 +23292,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 116,
       "specialises": "ProjectionParameter",
@@ -23335,7 +23335,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 125,
       "specialises": "ProjectionParameter",
@@ -23378,7 +23378,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 134,
       "specialises": "ProjectionParameter",
@@ -23421,7 +23421,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 143,
       "specialises": "ProjectionParameter",
@@ -23464,7 +23464,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 156,
       "specialises": "GrowthAssumption",
@@ -23517,7 +23517,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 167,
       "specialises": "GrowthAssumption",
@@ -23570,7 +23570,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 182,
       "specialises": "ProjectionOutput",
@@ -23623,7 +23623,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 193,
       "specialises": "ProjectionOutput",
@@ -23676,7 +23676,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 208,
       "specialises": "BusinessModelVariant",
@@ -23729,7 +23729,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 219,
       "specialises": "BusinessModelVariant",
@@ -23782,7 +23782,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 234,
       "specialises": "ScenarioDefinition",
@@ -23825,7 +23825,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 243,
       "specialises": "ProjectionParameter",
@@ -23868,7 +23868,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 252,
       "specialises": "ProjectionParameter",
@@ -23911,7 +23911,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 261,
       "specialises": "GrowthAssumption",
@@ -23964,7 +23964,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 272,
       "specialises": "ProjectionFormula",
@@ -24007,7 +24007,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 281,
       "specialises": "ProjectionFormula",
@@ -24050,7 +24050,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 290,
       "specialises": "ProjectionOutput",
@@ -24103,7 +24103,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 301,
       "specialises": "BusinessModelVariant",
@@ -24156,7 +24156,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 316,
       "specialises": "PivotScenario",
@@ -24204,7 +24204,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "Small Kiosk, week 1 actuals. 240 drinks sold against\na projected 250.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 330,
       "specialises": "PeriodActuals",
@@ -24252,7 +24252,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "Variance analysis for kiosk week 1. Primary cause\nis volume variance (fewer drinks sold).\nPhase 6B: varianceSource now typed as VarianceSource\nenum (was String in Phase 6A).",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 342,
       "specialises": "VarianceAnalysis",
@@ -24305,7 +24305,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "Financial goal: kiosk week 1 revenue should be \u00a3875\n(250 drinks \u00d7 \u00a33.50). GoalProjection from LogicEngine\nhandles this without modification \u2014 same structure\nas a clinical goal.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 365,
       "specialises": "GoalProjection",
@@ -24343,7 +24343,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "Illustrative financial deficit: week 1 revenue is\n\u00a3840 vs expected \u00a3875. Volume variance from weather.\nValidates that Deficit (from LogicEngine) handles\na coffee shop financial shortfall identically to a\nclinical governance gap. Same part def, different\ndomain.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 377,
       "specialises": "Deficit",
@@ -24406,7 +24406,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "Reach profitability within 6 months of opening.\nValidates that StrategicObjective (requirement def)\nworks for a non-clinical business objective.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 405,
       "specialises": "StrategicObjective",
@@ -24444,7 +24444,7 @@
       "parentPackage": "CoffeeshopScenarios",
       "doc": "The kiosk's profitability objective is achieved\nthrough the drink-serving capability operating\nat sufficient volume. Validates the\nObjectiveCapabilityMapping pattern for a\nnon-clinical domain.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 416,
       "specialises": "ObjectiveCapabilityMapping",
@@ -24462,7 +24462,7 @@
       "parentPackage": "BusinessRules",
       "doc": "Members of the loyalty scheme must receive\na minimum 10% discount on every order.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "unknown",
       "lineNumber": 9
     },
@@ -24472,7 +24472,7 @@
       "parentPackage": "BusinessRules",
       "doc": "Orders must contain at least one item.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "unknown",
       "lineNumber": 16
     },
@@ -24482,7 +24482,7 @@
       "parentPackage": "BusinessRules",
       "doc": "Orders must contain no more than 10 items\nto avoid barista overload.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "unknown",
       "lineNumber": 22
     },
@@ -24492,7 +24492,7 @@
       "parentPackage": "BusinessRules",
       "doc": "Any drink marked as vegan must not use\ndairy milk \u2014 only oat, soy, or almond.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "unknown",
       "lineNumber": 29
     },
@@ -24502,7 +24502,7 @@
       "parentPackage": "BusinessRules",
       "doc": "Staff members in the barista role must be\ncontracted for at least 12 hours per week.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "unknown",
       "lineNumber": 36
     },
@@ -24512,7 +24512,7 @@
       "parentPackage": "BusinessRules",
       "doc": "Formalises the loyalty discount rule:\nif the customer is a member, discount >= 10%.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "unknown",
       "lineNumber": 45
     },
@@ -24522,7 +24522,7 @@
       "parentPackage": "BusinessRules",
       "doc": "Formalises the order size rules:\nquantity of items must be between 1 and 10.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "unknown",
       "lineNumber": 55
     },
@@ -24532,7 +24532,7 @@
       "parentPackage": "BusinessRules",
       "doc": "Formalises the vegan milk rule:\nif the drink is vegan, milk choice must not be dairy.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "unknown",
       "lineNumber": 64
     },
@@ -24542,7 +24542,7 @@
       "parentPackage": "BusinessRules",
       "doc": "Baristas must work at least 12 hours per week.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "unknown",
       "lineNumber": 80
     },
@@ -24552,7 +24552,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 15,
       "attributes": [
@@ -24573,7 +24573,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 21,
       "attributes": [
@@ -24603,7 +24603,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 30,
       "attributes": [
@@ -24624,7 +24624,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "Whether a catalogue item is currently available for ordering.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 36,
       "attributes": [
@@ -24648,7 +24648,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "How the shop acquires or produces the item. Affects\ninventory semantics: prepared items track ingredients;\nbought-in items track finished products.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 44,
       "attributes": [
@@ -24669,7 +24669,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "Current stock level classification for a bought-in item.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 53,
       "attributes": [
@@ -24693,7 +24693,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "A link to knowledge that lives outside the system.\nThe system does not own this data; it points to it.\nExamples: SPC, BNF entry, NICE guidance, supplier\ndatasheet, origin certification.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 63,
       "attributes": [
@@ -24725,7 +24725,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "Something the shop sells. Describes intrinsic product\ncharacteristics only. Price and availability are\nbusiness decisions that live on CatalogueEntry.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 74,
       "attributes": [
@@ -24757,7 +24757,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 83,
       "specialises": "ExternalReference"
@@ -24768,7 +24768,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "A drink, extending MenuItem with drink-specific attributes",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 86,
       "specialises": "MenuItem",
@@ -24796,7 +24796,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "A food item, extending MenuItem",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 94,
       "specialises": "MenuItem",
@@ -24819,7 +24819,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "The business decision to offer an item for sale.\nReferences an item definition (MenuItem or specialisation)\nand adds business-context properties: price, availability,\nprovision type. A single item may appear in multiple\ncatalogues at different prices or terms.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 103,
       "attributes": [
@@ -24866,7 +24866,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "A point-in-time record of stock level for a catalogue\nitem. References a catalogue entry (not the item\ndefinition directly) because inventory is scoped to\nwhat the business currently offers.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 118,
       "attributes": [
@@ -24908,7 +24908,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 133,
       "attributes": [
@@ -24929,7 +24929,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "A person who interacts with the coffee shop",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 139,
       "attributes": [
@@ -24951,7 +24951,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "Someone who buys from the shop",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 146,
       "specialises": "Person",
@@ -24974,7 +24974,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "Someone who works in the shop",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 153,
       "specialises": "Person",
@@ -24997,7 +24997,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 162,
       "attributes": [
@@ -25024,7 +25024,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "A single line on an order - one item with its quantity",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 170,
       "attributes": [
@@ -25046,7 +25046,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "A customer order, containing one or more order lines",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 177,
       "attributes": [
@@ -25078,7 +25078,7 @@
       "parentPackage": "CoffeeShop",
       "doc": "",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "csw",
+      "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 185,
       "specialises": "OrderLine"

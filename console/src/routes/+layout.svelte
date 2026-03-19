@@ -91,21 +91,21 @@
       <!-- Domains -->
       <li class="mb-1 px-3 pt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-400">Domains</li>
       <li>
-        <a href="/domains/csw" class="flex items-center rounded-lg p-2 {isActive('/domains/csw') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
+        <a href="/domains/cafe" class="flex items-center rounded-lg p-2 {isActive('/domains/cafe') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <MugHotOutline class="h-5 w-5" />
-          <span class="ms-3">Cafe (Coffee Shop)</span>
+          <span class="ms-3">Cafe</span>
         </a>
       </li>
       <li>
         <a href="/domains/suds" class="flex items-center rounded-lg p-2 {isActive('/domains/suds') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <span class="inline-flex h-5 w-5 items-center justify-center text-base">🧺</span>
-          <span class="ms-3">Suds (Laundry)</span>
+          <span class="ms-3">Suds</span>
         </a>
       </li>
       <li>
         <a href="/domains/paws" class="flex items-center rounded-lg p-2 {isActive('/domains/paws') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <span class="inline-flex h-5 w-5 items-center justify-center text-base">🐾</span>
-          <span class="ms-3">Paws (Dog Grooming)</span>
+          <span class="ms-3">Paws</span>
         </a>
       </li>
 
