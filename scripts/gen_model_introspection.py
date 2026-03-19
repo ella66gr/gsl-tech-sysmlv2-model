@@ -14,6 +14,9 @@ Extracts:
   - Metadata defs
   - Requirement defs
   - Cross-domain coverage matrix (which domains instantiate which defs)
+  - @CatalogueTag and @UserFacing metadata annotations (Stage 2 Phase 2)
+  - Facet summaries for dynamic catalogue grouping
+  - Comprehension layer coverage tracking
 
 Usage:
     python scripts/gen_model_introspection.py                  # Print summary
@@ -24,7 +27,7 @@ Output: generated/ontara/model-introspection.json
 
 No external dependencies — pure Python standard library.
 
-Source: Ontara Console Phase 1 — model data foundation.
+Source: Ontara Console — Phase 1 model data foundation, Phase 2 catalogue metadata.
 """
 
 import argparse
@@ -130,6 +133,10 @@ class SysmlElement:
         self.source_domain = source_domain
         self.line_number = line_number
         self.meta_model_layer = ""    # "bmm", "bsmm", "domain", "unknown"
+        # Stage 2 Phase 2: metadata annotation data
+        self.catalogue_tag = {}       # {"bmmConcern": "...", "classification": "..."}
+        self.user_facing = {}         # {"friendlyName": "...", "shortDescription": "..."}
+        self.annotations = []         # all prefix annotations for future extensibility
 
     def to_dict(self):
         d = {
@@ -146,6 +153,13 @@ class SysmlElement:
             d["specialises"] = self.specialises
         if self.attributes:
             d["attributes"] = self.attributes
+        # Stage 2 Phase 2: include annotation data when present
+        if self.catalogue_tag:
+            d["catalogueTag"] = self.catalogue_tag
+        if self.user_facing:
+            d["userFacing"] = self.user_facing
+        if self.annotations:
+            d["annotations"] = self.annotations
         return d
 
 
@@ -293,15 +307,90 @@ def parse_sysml_file(filepath, domain_key):
         r'^(\s*)requirement\s+(\w+)\s*:\s*(\w+(?:::\w+)*)'
     )
     
+    # Stage 2 Phase 2: annotation patterns
+    # Single-line: @Name { key = "value"; key2 = "value2"; }
+    single_line_ann_pattern = re.compile(
+        r'^\s*@(\w+)\s*\{([^}]+)\}\s*$'
+    )
+    # Multi-line start: @Name {
+    multi_line_ann_start_pattern = re.compile(
+        r'^\s*@(\w+)\s*\{\s*$'
+    )
+    # Attribute inside annotation: key = "value";
+    ann_attr_pattern = re.compile(
+        r'(\w+)\s*=\s*"([^"]*)"\s*;'
+    )
+    
     rel_path = str(filepath.relative_to(REPO_ROOT))
+    
+    # Pending annotations buffer — accumulated until the next element
+    pending_annotations = []
+    in_annotation = False
+    ann_name = ""
+    ann_attrs = {}
+    
+    def attach_annotations(elem):
+        """Attach pending annotations to an element and clear the buffer."""
+        nonlocal pending_annotations
+        for a_name, a_attrs in pending_annotations:
+            if a_name == "CatalogueTag":
+                elem.catalogue_tag = dict(a_attrs)
+            elif a_name == "UserFacing":
+                elem.user_facing = dict(a_attrs)
+            elem.annotations.append({"name": a_name, "attrs": dict(a_attrs)})
+        pending_annotations = []
     
     i = 0
     while i < len(lines):
         line = lines[i]
         stripped = line.strip()
         
-        # Skip comments
+        # --- Inside a multi-line annotation block ---
+        if in_annotation:
+            if stripped == "}":
+                # End of multi-line annotation
+                pending_annotations.append((ann_name, ann_attrs))
+                in_annotation = False
+                ann_name = ""
+                ann_attrs = {}
+                i += 1
+                continue
+            else:
+                # Extract key = "value"; pairs
+                for m_attr in ann_attr_pattern.finditer(stripped):
+                    ann_attrs[m_attr.group(1)] = m_attr.group(2)
+                i += 1
+                continue
+        
+        # --- Check for annotation lines (before checking elements) ---
+        # Single-line annotation: @Name { key = "value"; ... }
+        m = single_line_ann_pattern.match(line)
+        if m:
+            a_name = m.group(1)
+            a_body = m.group(2)
+            a_attrs = {}
+            for m_attr in ann_attr_pattern.finditer(a_body):
+                a_attrs[m_attr.group(1)] = m_attr.group(2)
+            pending_annotations.append((a_name, a_attrs))
+            i += 1
+            continue
+        
+        # Multi-line annotation start: @Name {
+        m = multi_line_ann_start_pattern.match(line)
+        if m:
+            in_annotation = True
+            ann_name = m.group(1)
+            ann_attrs = {}
+            i += 1
+            continue
+        
+        # Skip comments (but don't clear pending annotations)
         if stripped.startswith("//"):
+            i += 1
+            continue
+        
+        # Skip blank lines (don't clear pending annotations)
+        if not stripped:
             i += 1
             continue
         
@@ -314,6 +403,8 @@ def parse_sysml_file(filepath, domain_key):
             while package_stack and package_stack[-1][1] >= indent:
                 package_stack.pop()
             package_stack.append((pkg_name, indent))
+            # Package declarations don't consume pending annotations;
+            # annotations are for the element that follows.
             i += 1
             continue
         
@@ -344,6 +435,7 @@ def parse_sysml_file(filepath, domain_key):
                 source_domain=domain_key,
                 line_number=i + 1,
             )
+            attach_annotations(elem)
             elements.append(elem)
             i += 1
             continue
@@ -372,6 +464,7 @@ def parse_sysml_file(filepath, domain_key):
                 source_domain=domain_key,
                 line_number=i + 1,
             )
+            attach_annotations(elem)
             elements.append(elem)
             i += 1
             continue
@@ -400,6 +493,7 @@ def parse_sysml_file(filepath, domain_key):
                 source_domain=domain_key,
                 line_number=i + 1,
             )
+            attach_annotations(elem)
             elements.append(elem)
             i += 1
             continue
@@ -425,6 +519,7 @@ def parse_sysml_file(filepath, domain_key):
                 source_domain=domain_key,
                 line_number=i + 1,
             )
+            attach_annotations(elem)
             elements.append(elem)
             i += 1
             continue
@@ -452,9 +547,15 @@ def parse_sysml_file(filepath, domain_key):
                 source_domain=domain_key,
                 line_number=i + 1,
             )
+            attach_annotations(elem)
             elements.append(elem)
             i += 1
             continue
+        
+        # Unrecognised line — clear pending annotations to avoid
+        # misattribution across unrelated content blocks
+        if stripped and not stripped.startswith("doc") and not stripped.startswith("*"):
+            pending_annotations = []
         
         i += 1
     
@@ -532,6 +633,9 @@ def build_coverage_matrix(all_elements):
                 "layer": elem.meta_model_layer,
                 "package": elem.parent_package,
                 "doc": elem.doc[:200] if elem.doc else "",
+                # Stage 2 Phase 2: include annotation data in coverage matrix
+                "catalogueTag": elem.catalogue_tag if elem.catalogue_tag else {},
+                "userFacing": elem.user_facing if elem.user_facing else {},
                 "domains": {},
             }
     
@@ -549,6 +653,59 @@ def build_coverage_matrix(all_elements):
                 })
     
     return meta_defs
+
+
+# ---------------------------------------------------------------
+# Stage 2 Phase 2: Facet and comprehension summaries
+# ---------------------------------------------------------------
+
+def build_facet_summary(all_elements):
+    """Build a summary of all CatalogueTag dimensions and their value distributions.
+    
+    Scans all elements with catalogue_tag data and produces a facet index
+    that the console can use to dynamically build 'group by' controls.
+    """
+    facets = {}
+    for elem in all_elements:
+        if not elem.catalogue_tag:
+            continue
+        for dimension, value in elem.catalogue_tag.items():
+            if dimension not in facets:
+                facets[dimension] = {"values": set(), "counts": defaultdict(int)}
+            facets[dimension]["values"].add(value)
+            facets[dimension]["counts"][value] += 1
+    
+    # Convert sets to sorted lists for JSON serialisation
+    return {
+        dim: {
+            "values": sorted(info["values"]),
+            "counts": dict(info["counts"]),
+            "total": sum(info["counts"].values()),
+        }
+        for dim, info in sorted(facets.items())
+    }
+
+
+def build_comprehension_summary(all_elements):
+    """Summarise @UserFacing metadata coverage across catalogue-tagged elements.
+    
+    Reports how many tagged elements have friendly names and descriptions,
+    and lists those that are missing — supporting incremental build-out
+    of the comprehension layer.
+    """
+    tagged_elements = [e for e in all_elements if e.catalogue_tag]
+    with_user_facing = [e for e in tagged_elements if e.user_facing]
+    return {
+        "catalogueTaggedCount": len(tagged_elements),
+        "userFacingCount": len(with_user_facing),
+        "coveragePercent": round(
+            len(with_user_facing) / len(tagged_elements) * 100, 1
+        ) if tagged_elements else 0,
+        "missingUserFacing": [
+            {"name": e.name, "package": e.parent_package}
+            for e in tagged_elements if not e.user_facing
+        ],
+    }
 
 
 # ---------------------------------------------------------------
@@ -588,6 +745,10 @@ def main():
     # Build coverage matrix
     coverage = build_coverage_matrix(all_elements)
     
+    # Stage 2 Phase 2: build facet and comprehension summaries
+    facets = build_facet_summary(all_elements)
+    comprehension = build_comprehension_summary(all_elements)
+    
     # Summary stats
     by_kind = defaultdict(int)
     by_layer = defaultdict(int)
@@ -603,6 +764,28 @@ def main():
     print(f"By layer: {dict(by_layer)}", file=sys.stderr)
     print(f"By domain: {dict(by_domain)}", file=sys.stderr)
     print(f"Meta model defs in coverage: {len(coverage)}", file=sys.stderr)
+    
+    # Stage 2 Phase 2: annotation diagnostics
+    print(f"\n--- Catalogue Metadata ---", file=sys.stderr)
+    print(f"Elements with @CatalogueTag: {comprehension['catalogueTaggedCount']}",
+          file=sys.stderr)
+    print(f"Elements with @UserFacing: {comprehension['userFacingCount']}",
+          file=sys.stderr)
+    print(f"Comprehension coverage: {comprehension['coveragePercent']}%",
+          file=sys.stderr)
+    if facets:
+        print(f"Facet dimensions:", file=sys.stderr)
+        for dim, info in sorted(facets.items()):
+            values_str = ", ".join(
+                f"{v}:{info['counts'][v]}" for v in info["values"]
+            )
+            print(f"  {dim}: {values_str} (total: {info['total']})",
+                  file=sys.stderr)
+    if comprehension["missingUserFacing"]:
+        print(f"Missing @UserFacing ({len(comprehension['missingUserFacing'])}):",
+              file=sys.stderr)
+        for item in comprehension["missingUserFacing"]:
+            print(f"  {item['package']}::{item['name']}", file=sys.stderr)
     
     # Coverage summary
     print(f"\n--- Coverage Matrix ---", file=sys.stderr)
@@ -630,6 +813,8 @@ def main():
             "byLayer": dict(by_layer),
             "byDomain": dict(by_domain),
         },
+        "facets": facets,
+        "comprehension": comprehension,
         "coverageMatrix": coverage,
         "elements": [e.to_dict() for e in all_elements],
     }

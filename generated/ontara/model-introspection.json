@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-03-18T23:41:12.910316",
+  "generatedAt": "2026-03-19T15:36:38.374183",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 428
+      "elementCount": 430
     },
     "csw": {
       "label": "Coffee Shop (CSW)",
@@ -19,24 +19,113 @@
     }
   },
   "summary": {
-    "totalElements": 577,
+    "totalElements": 579,
     "byKind": {
       "part_def": 116,
       "part": 395,
       "enum_def": 51,
       "requirement": 5,
-      "metadata_def": 10
+      "metadata_def": 12
     },
     "byLayer": {
       "bmm": 185,
       "domain": 172,
-      "bsmm": 220
+      "bsmm": 222
     },
     "byDomain": {
-      "core": 428,
+      "core": 430,
       "csw": 110,
       "suds": 39
     }
+  },
+  "facets": {
+    "bmmConcern": {
+      "values": [
+        "ActivityModel",
+        "FinancialModel",
+        "ResourceCapability",
+        "ServiceConcept"
+      ],
+      "counts": {
+        "ServiceConcept": 7,
+        "ActivityModel": 5,
+        "ResourceCapability": 7,
+        "FinancialModel": 5
+      },
+      "total": 24
+    },
+    "classification": {
+      "values": [
+        "General"
+      ],
+      "counts": {
+        "General": 24
+      },
+      "total": 24
+    }
+  },
+  "comprehension": {
+    "catalogueTaggedCount": 24,
+    "userFacingCount": 10,
+    "coveragePercent": 41.7,
+    "missingUserFacing": [
+      {
+        "name": "Channel",
+        "package": "ServiceConcept"
+      },
+      {
+        "name": "DifferentiationClaim",
+        "package": "ServiceConcept"
+      },
+      {
+        "name": "CatalogueEntry",
+        "package": "ServiceConcept"
+      },
+      {
+        "name": "ExternalReference",
+        "package": "ServiceConcept"
+      },
+      {
+        "name": "ActivityRecord",
+        "package": "ActivityModel"
+      },
+      {
+        "name": "ActivityBudget",
+        "package": "ActivityModel"
+      },
+      {
+        "name": "ActivityGranularity",
+        "package": "ActivityModel"
+      },
+      {
+        "name": "ActivityCostAllocation",
+        "package": "ActivityModel"
+      },
+      {
+        "name": "ResourceInstance",
+        "package": "ResourcePlanning"
+      },
+      {
+        "name": "CapacityModel",
+        "package": "ResourcePlanning"
+      },
+      {
+        "name": "ResourceConstraint",
+        "package": "ResourcePlanning"
+      },
+      {
+        "name": "InventoryRecord",
+        "package": "ResourcePlanning"
+      },
+      {
+        "name": "ObjectiveCapabilityMapping",
+        "package": "ResourcePlanning"
+      },
+      {
+        "name": "FinancialProjection",
+        "package": "FinancialPlanning"
+      }
+    ]
   },
   "coverageMatrix": {
     "CustomerSegment": {
@@ -44,6 +133,14 @@
       "layer": "bmm",
       "package": "ServiceConcept",
       "doc": "A defined group of customers with shared needs,\nbehaviours, and willingness to pay. Each segment\nhas distinct needs and may require distinct value\npropositions.",
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Customer Segment",
+        "shortDescription": "A defined group of customers with shared needs and willingness to pay."
+      },
       "domains": {
         "core": [
           {
@@ -78,6 +175,14 @@
       "layer": "bmm",
       "package": "ServiceConcept",
       "doc": "A specific promise of value to a specific customer\nsegment. Defines what the customer gets, how it\ndiffers from alternatives, and why it matters.",
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Value Proposition",
+        "shortDescription": "A promise of value to a customer segment \u2014 what they get and why it matters."
+      },
       "domains": {
         "core": [
           {
@@ -110,6 +215,14 @@
       "layer": "bmm",
       "package": "ServiceConcept",
       "doc": "A packaged, deliverable unit of service that realises\none or more value propositions for one or more\nsegments. This is the unit at which pricing, resource\nrequirements, and pathway mapping are defined",
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Service Offering",
+        "shortDescription": "A packaged unit of service that can be priced, resourced, and delivered to customers."
+      },
       "domains": {
         "core": [
           {
@@ -164,6 +277,11 @@
       "layer": "bmm",
       "package": "ServiceConcept",
       "doc": "A means by which customers discover, access, and\ninteract with the service. Channels have reach,\ncost, and conversion characteristics.",
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -198,6 +316,11 @@
       "layer": "bmm",
       "package": "ServiceConcept",
       "doc": "An explicit statement of how this service differs\nfrom available alternatives, from the customer's\nperspective. Each claim should be testable.",
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -216,6 +339,11 @@
       "layer": "bmm",
       "package": "ServiceConcept",
       "doc": "The business decision to offer an item for sale or\nuse within a service. References an item definition\nand adds business-context properties.\nThe four-layer model separates what something\nintrinsically",
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {
         "csw": [
           {
@@ -270,6 +398,11 @@
       "layer": "bmm",
       "package": "ServiceConcept",
       "doc": "A link to knowledge that lives outside the system.\nThe system does not own this data; it points to it.\nBusiness meta model concept. Domain-agnostic:\n  Coffee shop: supplier datasheet, origin cert\n  He",
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {
         "csw": [
           {
@@ -284,6 +417,14 @@
       "layer": "bmm",
       "package": "ActivityModel",
       "doc": "A defined type of activity within the business.\nEvery activity has a type, and every type belongs\nto one of the five taxonomy categories.",
+      "catalogueTag": {
+        "bmmConcern": "ActivityModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Activity Type",
+        "shortDescription": "A defined kind of business activity, classified into one of five categories."
+      },
       "domains": {
         "csw": [
           {
@@ -360,6 +501,11 @@
       "layer": "bmm",
       "package": "ActivityModel",
       "doc": "A recorded instance of an activity. At the tracked\nlevel, the system produces these for every observable\nactivity. At coarser levels, they are estimated\naggregates.",
+      "catalogueTag": {
+        "bmmConcern": "ActivityModel",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {}
     },
     "ActivityBudget": {
@@ -367,6 +513,11 @@
       "layer": "bmm",
       "package": "ActivityModel",
       "doc": "A planned allocation of activity volume by type,\nperiod, and resource. The activity-level equivalent\nof a financial budget.",
+      "catalogueTag": {
+        "bmmConcern": "ActivityModel",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {}
     },
     "ActivityGranularity": {
@@ -374,6 +525,11 @@
       "layer": "bmm",
       "package": "ActivityModel",
       "doc": "Policy declaration: the granularity level at which\nactivity is tracked for a given business area.",
+      "catalogueTag": {
+        "bmmConcern": "ActivityModel",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {
         "csw": [
           {
@@ -426,6 +582,11 @@
       "layer": "bmm",
       "package": "ActivityModel",
       "doc": "The mapping from an activity (or aggregate) to its\nfinancial cost. Makes resource consumption visible\nto the financial model.",
+      "catalogueTag": {
+        "bmmConcern": "ActivityModel",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {}
     },
     "ResourceType": {
@@ -433,6 +594,14 @@
       "layer": "bmm",
       "package": "ResourcePlanning",
       "doc": "A category of resource required to operate the\nservice delivery system. Each type has acquisition\ncharacteristics, capacity constraints, and cost\nprofiles.",
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Resource Type",
+        "shortDescription": "A category of resource needed to run the service \u2014 people, equipment, premises, or external services."
+      },
       "domains": {
         "core": [
           {
@@ -519,6 +688,11 @@
       "layer": "bmm",
       "package": "ResourcePlanning",
       "doc": "A specific resource available to the business at\na defined capacity and cost. Represents planning-\nlevel archetypes (\"a prescribing clinician at\n0.5 FTE\") rather than named individuals.",
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -553,6 +727,14 @@
       "layer": "bmm",
       "package": "ResourcePlanning",
       "doc": "An organised combination of resources that produces\na defined service function. Capabilities bridge the\ngap between raw resources and service delivery \u2014 you\ndon't deliver care with \"a doctor\" and \"a s",
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Capability",
+        "shortDescription": "An organised combination of resources that produces a defined service function."
+      },
       "domains": {
         "core": [
           {
@@ -595,6 +777,11 @@
       "layer": "bmm",
       "package": "ResourcePlanning",
       "doc": "The relationship between resource configuration and\nservice throughput. A planning assertion, not a\ncomputed formula \u2014 the formula representation lives\nin BusinessScenarios::ProjectionFormula.\nCapacit",
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -625,6 +812,11 @@
       "layer": "bmm",
       "package": "ResourcePlanning",
       "doc": "A constraint on resource availability or use that\naffects service delivery. May be regulatory,\nfinancial, temporal, or contractual.\nPhase 7: regulatorySourceDescription retains the\nhuman-readable refe",
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -655,6 +847,11 @@
       "layer": "bmm",
       "package": "ResourcePlanning",
       "doc": "A point-in-time record of stock level for an item\nin the catalogue. References a catalogue entry\nbecause inventory is scoped to what the business\ncurrently offers.\nDistinct from ResourceInstance (plan",
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {}
     },
     "ObjectiveCapabilityMapping": {
@@ -662,6 +859,11 @@
       "layer": "bmm",
       "package": "ResourcePlanning",
       "doc": "Maps a StrategicObjective to the Capability\nusages that contribute to achieving it.\nPhase 7 traceability pattern.",
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -694,6 +896,14 @@
       "layer": "bmm",
       "package": "FinancialPlanning",
       "doc": "A mechanism by which income is generated.",
+      "catalogueTag": {
+        "bmmConcern": "FinancialModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Revenue Stream",
+        "shortDescription": "A mechanism by which the business generates income from its services."
+      },
       "domains": {
         "core": [
           {
@@ -728,6 +938,14 @@
       "layer": "bmm",
       "package": "FinancialPlanning",
       "doc": "A structural factor that generates cost.",
+      "catalogueTag": {
+        "bmmConcern": "FinancialModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Cost Driver",
+        "shortDescription": "A structural factor that generates cost in the business \u2014 linked to a resource or activity."
+      },
       "domains": {
         "core": [
           {
@@ -802,6 +1020,14 @@
       "layer": "bmm",
       "package": "FinancialPlanning",
       "doc": "The financial profile of a single unit of service delivery.",
+      "catalogueTag": {
+        "bmmConcern": "FinancialModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Unit Economics",
+        "shortDescription": "The revenue, cost, and margin for a single unit of service delivery."
+      },
       "domains": {
         "core": [
           {
@@ -836,6 +1062,14 @@
       "layer": "bmm",
       "package": "FinancialPlanning",
       "doc": "The logic that determines what a customer pays.",
+      "catalogueTag": {
+        "bmmConcern": "FinancialModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Pricing Model",
+        "shortDescription": "How prices are set for services \u2014 per-episode, subscription, tiered, or other basis."
+      },
       "domains": {
         "core": [
           {
@@ -866,6 +1100,11 @@
       "layer": "bmm",
       "package": "FinancialPlanning",
       "doc": "A named financial projection linked to a scenario.\nLightweight placeholder \u2014 full mechanics in\nBusinessScenarios.",
+      "catalogueTag": {
+        "bmmConcern": "FinancialModel",
+        "classification": "General"
+      },
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -884,6 +1123,8 @@
       "layer": "bmm",
       "package": "BusinessScenarios",
       "doc": "A named, self-contained configuration of a business\nmodel variant. Selects which ServiceOfferings are\nactive, sets all parameters, specifies growth\nassumptions, and configures resource levels.\nPhase 7",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -916,6 +1157,8 @@
       "layer": "bmm",
       "package": "BusinessScenarios",
       "doc": "",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1084,6 +1327,8 @@
       "layer": "bmm",
       "package": "BusinessScenarios",
       "doc": "",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1140,6 +1385,8 @@
       "layer": "bmm",
       "package": "BusinessScenarios",
       "doc": "",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1204,6 +1451,8 @@
       "layer": "bmm",
       "package": "BusinessScenarios",
       "doc": "",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1218,6 +1467,8 @@
       "layer": "bmm",
       "package": "BusinessScenarios",
       "doc": "",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1282,6 +1533,8 @@
       "layer": "bmm",
       "package": "BusinessScenarios",
       "doc": "",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1316,6 +1569,8 @@
       "layer": "bmm",
       "package": "BusinessScenarios",
       "doc": "",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1330,6 +1585,8 @@
       "layer": "bmm",
       "package": "BusinessScenarios",
       "doc": "",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "csw": [
           {
@@ -1344,6 +1601,8 @@
       "layer": "bmm",
       "package": "BusinessScenarios",
       "doc": "Phase 6B: varianceSource typed as VarianceSource enum\n(was String). Resolves deferred item from Phase 3.",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "csw": [
           {
@@ -1358,6 +1617,8 @@
       "layer": "bmm",
       "package": "BusinessScenarios",
       "doc": "",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1376,6 +1637,8 @@
       "layer": "bmm",
       "package": "BusinessStrategy",
       "doc": "A named alternative business model configuration.\nLighter than a full ScenarioDefinition \u2014 captures\nthe strategic essence for comparison at the\nboardroom level. The detailed scenario lives in\nBusiness",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1412,6 +1675,8 @@
       "layer": "bmm",
       "package": "BusinessStrategy",
       "doc": "A structured what-if analysis for transitioning\nbetween business model variants. Captures the\ntrigger condition, transition plan, estimated\nduration, and risks.",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1432,6 +1697,8 @@
       "layer": "bsmm",
       "package": "CommonTypes",
       "doc": "A postal address.",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "ContactDetails": {
@@ -1439,6 +1706,8 @@
       "layer": "bsmm",
       "package": "CommonTypes",
       "doc": "Contact information for a person or organisation.",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "PersistencePolicy": {
@@ -1446,6 +1715,8 @@
       "layer": "bsmm",
       "package": "CommonTypes",
       "doc": "Maps a domain concept to its persistence layer,\nwith explicit rationale expressed as distinguishing\ncharacteristics. Makes architectural reasoning\nqueryable and auditable \u2014 the system can explain\nwhy ",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "csw": [
           {
@@ -1480,6 +1751,8 @@
       "layer": "bsmm",
       "package": "ClinicalDecisionSupport",
       "doc": "Defines how a single constraint input is derived\nfrom an authoritative data source. The pattern is\nsource-agnostic: the same structure describes AQL\nqueries against the CDR, Temporal workflow state\nqu",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1498,6 +1771,8 @@
       "layer": "bsmm",
       "package": "ClinicalDecisionSupport",
       "doc": "Binds a constraint definition to its input\nderivations, forming a complete evaluation\nspecification. This is the unit that the evaluation\nengine consumes: it knows which constraint to\nevaluate and how",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1540,6 +1815,8 @@
       "layer": "bsmm",
       "package": "ClinicalDecisionSupport",
       "doc": "Binds a decision table to its input derivations\nand evaluation metadata, parallel to\nConstraintEvaluationSpec for constraints.\nThe tableName matches the @DecisionTable metadata\nannotation on pathway s",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1558,6 +1835,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "A single input value used in a rule evaluation.\nRecords what data was used, where it came from,\nand how it was derived \u2014 supporting the\nself-explanation requirement for clinical governance\nand patient",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1572,6 +1851,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "A structured explanation of how a rule evaluation\nreached its conclusion. Supports three audiences:\n- Clinicians: why did this safety check pass/fail?\n- Patients: why am I eligible or not?\n- Auditors:",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1586,6 +1867,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "The atomic unit of knowledge evaluation. Every rule,\nat every point in the system, produces one of these.\nEvaluationResults are persisted (CDR or audit log),\nqueryable, and presentable to clinicians, ",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1608,6 +1891,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "A structured record of a gap between the system's\nactual operational state and its goal state.\nGeneralises the Phase D governance audit pattern\nfrom a single rule to any operational dimension.\nEach de",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1632,6 +1917,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "The composite output of the self-knowledge\ninfrastructure. Aggregates across all five layers\nto produce a whole-system picture: clinical\ngovernance, operational health, and business\nperformance in a s",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "InputResolver": {
@@ -1639,6 +1926,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "Resolves constraint inputs from authoritative data\nsources. For each InputDerivation in a\nConstraintEvaluationSpec, the resolver executes the\nspecified query against the appropriate source (CDR,\nTempo",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1653,6 +1942,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "Evaluates a constraint's boolean expression given\nresolved input values. For Tier 1, this is\nstraightforward boolean evaluation: the constraint\ndef's expression is evaluated with the derived\ninput val",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1667,6 +1958,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "Assembles ExplanationTrace records from the\nevaluation context: the resolved inputs\n(EvaluatedInput records), the constraint expression\nas evaluated, and a human-readable explanation of\nthe outcome.\nS",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1681,6 +1974,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "The Tier 1 deterministic constraint evaluation\ncomponent. Consumes ConstraintEvaluationSpecs from\nClinicalDecisionSupport, derives inputs from\nauthoritative sources (CDR via AQL, Temporal,\nplatform se",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "OperationalQuery": {
@@ -1688,6 +1983,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "A single operational state query against an\nauthoritative source. Structurally parallel to\nInputDerivation but scoped to operational rather\nthan clinical data.\nThe query returns a structured result (c",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1718,6 +2015,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "A point-in-time capture of the system's operational\nstate, produced by the OperationalStateAggregator.\nThis is the Layer 2 content that feeds into gap\nanalysis and the SystemStateAssessment.\nNot persi",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1732,6 +2031,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "Queries the system's operational state across all\nauthoritative data sources: Temporal (process\nstate), CDR (clinical data state), entity\nlifecycle state, platform services (infrastructure\nhealth), an",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "GoalProjection": {
@@ -1739,6 +2040,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "A single goal projected from the model into a\nshape comparable against operational state. The\nunit of comparison for gap analysis.\nEach projection names the goal source\n(requirement, constraint, outco",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1763,6 +2066,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "Projects goals from model sources (requirements,\nconstraints, outcome definitions, and projection\nformulas) into a comparable shape against\noperational state.\nEach goal is expressed as a GoalProjectio",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1777,6 +2082,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "Compares the system's operational state (Layer 2,\nOperationalSnapshot) against its goal state\n(Layer 3, projected from requirements,\nconstraints, outcome definitions, and projection\nformulas) and prod",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "InferenceEvaluator": {
@@ -1784,6 +2091,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "Tier 2 reasoning interface: inference chains,\ncontraindication cascades, compound deficit\nreasoning, and \"why\" queries.\nWhere Tier 1 (ConstraintEvaluator) evaluates\nsingle boolean constraints, Tier 2 ",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "AdvisoryInterface": {
@@ -1791,6 +2100,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "Tier 3 advisory interface: ML/LLM-augmented\nintelligence. Powerful but probabilistic, always\nadvisory rather than authoritative. Cannot\noverride Tier 1 or Tier 2 logic.\nCapabilities (interface boundar",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "SelfExplanationService": {
@@ -1798,6 +2109,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "The API surface through which consumers access the\nsystem's self-knowledge and evaluation\nexplanations.\nFive consumer categories, each with different\nneeds:\n- Clinician UI: point-of-care evaluation re",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "AssessmentOrchestrator": {
@@ -1805,6 +2118,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "Orchestrates the production of\nSystemStateAssessments by coordinating the other\nLogicEngine components.\nAssessment production sequence:\n1. Read System Model Manifest for Layer 1\n   (structural summary",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "EvaluationSpecRegistry": {
@@ -1812,6 +2127,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "A runtime registry of ConstraintEvaluationSpecs,\nloaded from the model (or generated as a\nTypeScript module) at system startup.\nThe registry resolves constraint names to their\nfull evaluation specific",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "EvaluationContext": {
@@ -1819,6 +2136,8 @@
       "layer": "bsmm",
       "package": "LogicEngine",
       "doc": "The runtime context for a single evaluation\ninvocation. Captures the scope (which patient,\nwhich pathway step), the trigger (point-of-care,\ngovernance audit, triggered assessment), and any\nambient dat",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "DecisionTableDef": {
@@ -1826,6 +2145,8 @@
       "layer": "bsmm",
       "package": "DecisionModels",
       "doc": "Abstract definition for a decision table. Concrete\ntables specialise this with their specific input\nand output attributes.\nEach table has a name (matching the @DecisionTable\nannotation in the pathway)",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "RegimenSelectionRow": {
@@ -1833,6 +2154,8 @@
       "layer": "bsmm",
       "package": "DecisionModels",
       "doc": "A single row in the regimen selection decision\ntable. Each row maps a combination of input\nconditions to a recommended regimen.\nConcrete rows redefine all attributes with\nspecific values using :>> red",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1879,6 +2202,8 @@
       "layer": "bsmm",
       "package": "DecisionModels",
       "doc": "Regimen selection decision table for hormone\ntherapy initiation.\nHit policy: Unique \u2014 exactly one row should match\nfor any valid combination of inputs. If no row\nmatches, the evaluation returns indete",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "StabilityAssessmentRow": {
@@ -1886,6 +2211,8 @@
       "layer": "bsmm",
       "package": "DecisionModels",
       "doc": "A single row in the stability assessment decision\ntable. Each row maps monitoring indicators to a\nstability classification and recommended action.",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1928,6 +2255,8 @@
       "layer": "bsmm",
       "package": "DecisionModels",
       "doc": "Stability assessment decision table for hormone\ntherapy monitoring.\nHit policy: Unique \u2014 exactly one classification\nshould result from any valid input combination.\nThe table is evaluated at each monit",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "OutcomeDefinition": {
@@ -1935,6 +2264,8 @@
       "layer": "bsmm",
       "package": "OutcomeFramework",
       "doc": "A defined clinical outcome with target criteria and\nmeasurement specification.\nEach outcome definition specifies:\n- What is being measured (name, description, category)\n- What the target is (value, ra",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -1985,6 +2316,8 @@
       "layer": "bsmm",
       "package": "OutcomeFramework",
       "doc": "A defined point in time at which outcome measurements\nare collected. Each measurement point specifies when\nit occurs (weeks from treatment initiation), what\noutcomes are assessed, and what the clinica",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -2019,6 +2352,8 @@
       "layer": "bsmm",
       "package": "OutcomeFramework",
       "doc": "A complete measurement schedule for a clinical\npathway. Defines the sequence of measurement points\nand associates each point with the outcomes to be\nmeasured.\nOne schedule per pathway. The schedule is",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -2033,6 +2368,8 @@
       "layer": "bsmm",
       "package": "OutcomeFramework",
       "doc": "",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "OutcomeFeedbackRecord": {
@@ -2040,6 +2377,8 @@
       "layer": "bsmm",
       "package": "OutcomeFramework",
       "doc": "A structured record linking aggregated outcome data\nto a pathway refinement proposal. This is the\ninterface between OutcomeFramework and LearningCycles.\nWhen outcome patterns are identified (e.g. a\nsi",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "DataContract": {
@@ -2047,6 +2386,8 @@
       "layer": "bsmm",
       "package": "Analytics",
       "doc": "Defines the schema and semantics of a data stream\nconsumed by analytics or ML pipelines.",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "ArchitecturalPrinciple": {
@@ -2054,6 +2395,8 @@
       "layer": "bsmm",
       "package": "PatternCatalogue",
       "doc": "A foundational architectural commitment that motivates\none or more patterns. Cross-cutting \u2014 principles span\nboth business and system meta models.\nBusiness system meta model concept \u2014 describes the\nre",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -2096,6 +2439,8 @@
       "layer": "bsmm",
       "package": "PatternCatalogue",
       "doc": "A reusable architectural or business model template.\nDomain-agnostic \u2014 describes a structural or behavioural\napproach that applies across domains.\nThe relatedElements attribute uses String references\n",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -2226,6 +2571,8 @@
       "layer": "bsmm",
       "package": "PatternCatalogue",
       "doc": "A specific implementation of a pattern in a domain.\nTracks where a pattern has been built and at what\nmaturity level. Each domain instantiation is separate\nso maturity can vary per domain.",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {
         "core": [
           {
@@ -2360,6 +2707,8 @@
       "layer": "bsmm",
       "package": "EHR",
       "doc": "Connection configuration for an openEHR CDR instance.\nValidated against EHRbase 2.11.0 (Docker).\nREST API base path: /ehrbase/rest/openehr/v1/\nAuth: basic auth for development; production TBD.\nThe nod",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "EhrRecord": {
@@ -2367,6 +2716,8 @@
       "layer": "bsmm",
       "package": "EHR",
       "doc": "An openEHR Electronic Health Record for one patient.\nOne EHR per patient, created at registration. The\nsubjectId + subjectNamespace pair enables idempotent\nlookup via GET /ehr?subject_id=X&subject_nam",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "RegisteredTemplate": {
@@ -2374,6 +2725,8 @@
       "layer": "bsmm",
       "package": "EHR",
       "doc": "An Operational Template (OPT) registered in the CDR.\nTemplates compose archetypes into use-case-specific\ndata sets. Each template defines one composition type.\nUploaded via the Definition API (POST /d",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "Composition": {
@@ -2381,6 +2734,8 @@
       "layer": "bsmm",
       "package": "EHR",
       "doc": "A composition committed to the CDR.\nCompositions are the unit of clinical data committed\nand retrieved. Each conforms to a registered template.\nCanonical JSON format maps directly to the openEHR\nRefer",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "AqlQuery": {
@@ -2388,6 +2743,8 @@
       "layer": "bsmm",
       "package": "EHR",
       "doc": "A named AQL (Archetype Query Language) query.\nAQL queries the CDR by archetype type, providing\nentity views independent of the process that produced\nthe data. Paths mirror the RM hierarchy using arche",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     },
     "UserAccount": {
@@ -2395,6 +2752,8 @@
       "layer": "bsmm",
       "package": "Identity",
       "doc": "A user account for authentication and authorisation.",
+      "catalogueTag": {},
+      "userFacing": {},
       "domains": {}
     }
   },
@@ -2407,7 +2766,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 67,
+      "lineNumber": 73,
       "attributes": [
         {
           "name": "segmentName",
@@ -2434,6 +2793,30 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Customer Segment",
+        "shortDescription": "A defined group of customers with shared needs and willingness to pay."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ServiceConcept",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Customer Segment",
+            "shortDescription": "A defined group of customers with shared needs and willingness to pay."
+          }
+        }
       ]
     },
     {
@@ -2444,7 +2827,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 79,
+      "lineNumber": 90,
       "attributes": [
         {
           "name": "propositionName",
@@ -2471,6 +2854,30 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Value Proposition",
+        "shortDescription": "A promise of value to a customer segment \u2014 what they get and why it matters."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ServiceConcept",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Value Proposition",
+            "shortDescription": "A promise of value to a customer segment \u2014 what they get and why it matters."
+          }
+        }
       ]
     },
     {
@@ -2481,7 +2888,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 90,
+      "lineNumber": 106,
       "attributes": [
         {
           "name": "offeringName",
@@ -2513,6 +2920,30 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Service Offering",
+        "shortDescription": "A packaged unit of service that can be priced, resourced, and delivered to customers."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ServiceConcept",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Service Offering",
+            "shortDescription": "A packaged unit of service that can be priced, resourced, and delivered to customers."
+          }
+        }
       ]
     },
     {
@@ -2523,7 +2954,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 107,
+      "lineNumber": 124,
       "attributes": [
         {
           "name": "channelName",
@@ -2555,6 +2986,19 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ServiceConcept",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -2565,7 +3009,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 119,
+      "lineNumber": 137,
       "attributes": [
         {
           "name": "claimName",
@@ -2587,6 +3031,19 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ServiceConcept",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -2597,7 +3054,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 141,
+      "lineNumber": 160,
       "attributes": [
         {
           "name": "entryName",
@@ -2634,6 +3091,19 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ServiceConcept",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -2644,7 +3114,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 166,
+      "lineNumber": 186,
       "attributes": [
         {
           "name": "referenceType",
@@ -2666,6 +3136,19 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ServiceConcept",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -2676,7 +3159,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 190,
+      "lineNumber": 210,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -2714,7 +3197,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 201,
+      "lineNumber": 221,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -2752,7 +3235,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 214,
+      "lineNumber": 234,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -2790,7 +3273,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 222,
+      "lineNumber": 242,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -2828,7 +3311,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 230,
+      "lineNumber": 250,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -2866,7 +3349,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 240,
+      "lineNumber": 260,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -2909,7 +3392,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 252,
+      "lineNumber": 272,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -2952,7 +3435,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 264,
+      "lineNumber": 284,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -2995,7 +3478,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 278,
+      "lineNumber": 298,
       "specialises": "Channel",
       "attributes": [
         {
@@ -3038,7 +3521,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 287,
+      "lineNumber": 307,
       "specialises": "Channel",
       "attributes": [
         {
@@ -3081,7 +3564,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 298,
+      "lineNumber": 318,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -3114,7 +3597,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 305,
+      "lineNumber": 325,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -3147,7 +3630,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 314,
+      "lineNumber": 334,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -3190,7 +3673,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 327,
+      "lineNumber": 347,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -3233,7 +3716,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 339,
+      "lineNumber": 359,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -3276,7 +3759,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 353,
+      "lineNumber": 373,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -3314,7 +3797,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 394,
+      "lineNumber": 414,
       "attributes": [
         {
           "name": "serviceDelivery;     // directly produces value for a customer"
@@ -3341,7 +3824,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 406,
+      "lineNumber": 426,
       "attributes": [
         {
           "name": "envelope;    // total hours per category as a lump estimate"
@@ -3362,7 +3845,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 416,
+      "lineNumber": 441,
       "attributes": [
         {
           "name": "activityTypeName",
@@ -3389,6 +3872,30 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ActivityModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Activity Type",
+        "shortDescription": "A defined kind of business activity, classified into one of five categories."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ActivityModel",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Activity Type",
+            "shortDescription": "A defined kind of business activity, classified into one of five categories."
+          }
+        }
       ]
     },
     {
@@ -3399,7 +3906,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 427,
+      "lineNumber": 453,
       "attributes": [
         {
           "name": "activityType",
@@ -3426,6 +3933,19 @@
           "type": "GranularityLevel",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ActivityModel",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ActivityModel",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -3436,7 +3956,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 439,
+      "lineNumber": 466,
       "attributes": [
         {
           "name": "budgetPeriod",
@@ -3463,6 +3983,19 @@
           "type": "GranularityLevel",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ActivityModel",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ActivityModel",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -3473,7 +4006,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 450,
+      "lineNumber": 478,
       "attributes": [
         {
           "name": "businessArea",
@@ -3495,6 +4028,19 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ActivityModel",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ActivityModel",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -3505,7 +4051,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 459,
+      "lineNumber": 488,
       "attributes": [
         {
           "name": "activityType",
@@ -3527,6 +4073,19 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ActivityModel",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ActivityModel",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -3537,7 +4096,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 493,
+      "lineNumber": 527,
       "attributes": [
         {
           "name": "resourceTypeName",
@@ -3564,6 +4123,30 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Resource Type",
+        "shortDescription": "A category of resource needed to run the service \u2014 people, equipment, premises, or external services."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ResourceCapability",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Resource Type",
+            "shortDescription": "A category of resource needed to run the service \u2014 people, equipment, premises, or external services."
+          }
+        }
       ]
     },
     {
@@ -3574,7 +4157,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 505,
+      "lineNumber": 540,
       "attributes": [
         {
           "name": "instanceName",
@@ -3606,6 +4189,19 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ResourceCapability",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -3616,7 +4212,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 518,
+      "lineNumber": 558,
       "attributes": [
         {
           "name": "capabilityName",
@@ -3643,6 +4239,30 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Capability",
+        "shortDescription": "An organised combination of resources that produces a defined service function."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ResourceCapability",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Capability",
+            "shortDescription": "An organised combination of resources that produces a defined service function."
+          }
+        }
       ]
     },
     {
@@ -3653,7 +4273,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 537,
+      "lineNumber": 578,
       "attributes": [
         {
           "name": "resourceConfiguration",
@@ -3680,6 +4300,19 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ResourceCapability",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -3690,7 +4323,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 554,
+      "lineNumber": 596,
       "attributes": [
         {
           "name": "constraintName",
@@ -3717,6 +4350,19 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ResourceCapability",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -3727,7 +4373,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 578,
+      "lineNumber": 621,
       "attributes": [
         {
           "name": "catalogueEntryReference",
@@ -3759,6 +4405,19 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ResourceCapability",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -3769,7 +4428,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 605,
+      "lineNumber": 648,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -3807,7 +4466,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 616,
+      "lineNumber": 659,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -3845,7 +4504,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 624,
+      "lineNumber": 667,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -3883,7 +4542,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 634,
+      "lineNumber": 677,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -3921,7 +4580,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 642,
+      "lineNumber": 685,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -3959,7 +4618,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 650,
+      "lineNumber": 693,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -3997,7 +4656,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 660,
+      "lineNumber": 703,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -4040,7 +4699,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 671,
+      "lineNumber": 714,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -4083,7 +4742,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 682,
+      "lineNumber": 725,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -4126,7 +4785,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 691,
+      "lineNumber": 734,
       "specialises": "Capability",
       "attributes": [
         {
@@ -4159,7 +4818,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 701,
+      "lineNumber": 744,
       "specialises": "Capability",
       "attributes": [
         {
@@ -4192,7 +4851,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 708,
+      "lineNumber": 751,
       "specialises": "Capability",
       "attributes": [
         {
@@ -4225,7 +4884,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 715,
+      "lineNumber": 758,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -4263,7 +4922,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 725,
+      "lineNumber": 768,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -4301,7 +4960,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 733,
+      "lineNumber": 776,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -4339,7 +4998,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 746,
+      "lineNumber": 789,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -4377,7 +5036,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 756,
+      "lineNumber": 799,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -4415,7 +5074,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 766,
+      "lineNumber": 809,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -4458,7 +5117,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 775,
+      "lineNumber": 818,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -4501,7 +5160,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 784,
+      "lineNumber": 827,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -4544,7 +5203,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 795,
+      "lineNumber": 838,
       "specialises": "Capability",
       "attributes": [
         {
@@ -4577,7 +5236,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 802,
+      "lineNumber": 845,
       "specialises": "Capability",
       "attributes": [
         {
@@ -4610,7 +5269,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 809,
+      "lineNumber": 852,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -4648,7 +5307,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 834,
+      "lineNumber": 878,
       "attributes": [
         {
           "name": "objectiveRef",
@@ -4660,6 +5319,19 @@
           "type": "Capability[1..*]",
           "isRef": true
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ResourceCapability",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ResourceCapability",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -4670,7 +5342,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 842,
+      "lineNumber": 886,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -4688,7 +5360,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 848,
+      "lineNumber": 892,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -4706,7 +5378,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 855,
+      "lineNumber": 899,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -4724,7 +5396,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 862,
+      "lineNumber": 906,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -4742,7 +5414,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 890,
+      "lineNumber": 934,
       "attributes": [
         {
           "name": "perEpisode"
@@ -4769,7 +5441,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 899,
+      "lineNumber": 948,
       "attributes": [
         {
           "name": "streamName",
@@ -4796,6 +5468,30 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "FinancialModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Revenue Stream",
+        "shortDescription": "A mechanism by which the business generates income from its services."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "FinancialModel",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Revenue Stream",
+            "shortDescription": "A mechanism by which the business generates income from its services."
+          }
+        }
       ]
     },
     {
@@ -4806,7 +5502,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 908,
+      "lineNumber": 962,
       "attributes": [
         {
           "name": "driverName",
@@ -4833,6 +5529,30 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "FinancialModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Cost Driver",
+        "shortDescription": "A structural factor that generates cost in the business \u2014 linked to a resource or activity."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "FinancialModel",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Cost Driver",
+            "shortDescription": "A structural factor that generates cost in the business \u2014 linked to a resource or activity."
+          }
+        }
       ]
     },
     {
@@ -4843,7 +5563,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 917,
+      "lineNumber": 976,
       "attributes": [
         {
           "name": "offeringRef",
@@ -4870,6 +5590,30 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "FinancialModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Unit Economics",
+        "shortDescription": "The revenue, cost, and margin for a single unit of service delivery."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "FinancialModel",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Unit Economics",
+            "shortDescription": "The revenue, cost, and margin for a single unit of service delivery."
+          }
+        }
       ]
     },
     {
@@ -4880,7 +5624,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 926,
+      "lineNumber": 990,
       "attributes": [
         {
           "name": "pricingModelName",
@@ -4907,6 +5651,30 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "FinancialModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Pricing Model",
+        "shortDescription": "How prices are set for services \u2014 per-episode, subscription, tiered, or other basis."
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "FinancialModel",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Pricing Model",
+            "shortDescription": "How prices are set for services \u2014 per-episode, subscription, tiered, or other basis."
+          }
+        }
       ]
     },
     {
@@ -4917,7 +5685,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 935,
+      "lineNumber": 1000,
       "attributes": [
         {
           "name": "projectionName",
@@ -4949,6 +5717,19 @@
           "type": "String",
           "isRedefinition": false
         }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "FinancialModel",
+        "classification": "General"
+      },
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "FinancialModel",
+            "classification": "General"
+          }
+        }
       ]
     },
     {
@@ -4959,7 +5740,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 949,
+      "lineNumber": 1014,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -4997,7 +5778,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 957,
+      "lineNumber": 1022,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -5035,7 +5816,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 965,
+      "lineNumber": 1030,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -5073,7 +5854,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 973,
+      "lineNumber": 1038,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -5111,7 +5892,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 981,
+      "lineNumber": 1046,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -5149,7 +5930,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 989,
+      "lineNumber": 1054,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -5187,7 +5968,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 997,
+      "lineNumber": 1062,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -5225,7 +6006,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1005,
+      "lineNumber": 1070,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -5263,7 +6044,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1013,
+      "lineNumber": 1078,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -5301,7 +6082,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1021,
+      "lineNumber": 1086,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -5339,7 +6120,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1029,
+      "lineNumber": 1094,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -5377,7 +6158,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1037,
+      "lineNumber": 1102,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -5420,7 +6201,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1048,
+      "lineNumber": 1113,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -5458,7 +6239,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1060,
+      "lineNumber": 1125,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -5496,7 +6277,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1068,
+      "lineNumber": 1133,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -5534,7 +6315,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1076,
+      "lineNumber": 1141,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -5572,7 +6353,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1087,
+      "lineNumber": 1152,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -5610,7 +6391,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1100,
+      "lineNumber": 1165,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -10239,6 +11020,50 @@
       ]
     },
     {
+      "kind": "metadata_def",
+      "name": "CatalogueTag",
+      "parentPackage": "MetadataLibrary",
+      "doc": "Catalogue classification metadata for dynamic\ngrouping and filtering. Applied to any element\nthat should appear in the Component Catalogue.\nEach attribute represents a classification\ndimension. New dimensions are added as new\nattributes when needed.\nbmmConcern: which BMM concern this element belongs",
+      "sourceFile": "model/foundation.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 158,
+      "attributes": [
+        {
+          "name": "bmmConcern",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "classification",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "metadata_def",
+      "name": "UserFacing",
+      "parentPackage": "MetadataLibrary",
+      "doc": "Human-readable metadata for the comprehension layer.\nApplied to any element that should be comprehensible\nto non-specialist users of the Ontara Console.\nfriendlyName: a short, lay-language name\n  (e.g. \"Pricing Model\" for PricingModel).\nshortDescription: a brief explanation (1-2 sentences)\n  in plai",
+      "sourceFile": "model/foundation.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 186,
+      "attributes": [
+        {
+          "name": "friendlyName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "shortDescription",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
       "kind": "enum_def",
       "name": "AgencyType",
       "parentPackage": "MetadataLibrary",
@@ -10246,7 +11071,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 161,
+      "lineNumber": 216,
       "attributes": [
         {
           "name": "patientAgent"
@@ -10270,7 +11095,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 184,
+      "lineNumber": 239,
       "attributes": [
         {
           "name": "agencyType",
@@ -10297,7 +11122,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 219,
+      "lineNumber": 274,
       "attributes": [
         {
           "name": "male"
@@ -10324,7 +11149,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 228,
+      "lineNumber": 283,
       "attributes": [
         {
           "name": "email"
@@ -10351,7 +11176,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 237,
+      "lineNumber": 292,
       "attributes": [
         {
           "name": "faceToFace"
@@ -10375,7 +11200,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 245,
+      "lineNumber": 300,
       "attributes": [
         {
           "name": "inbound"
@@ -10393,7 +11218,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 251,
+      "lineNumber": 306,
       "attributes": [
         {
           "name": "given"
@@ -10417,7 +11242,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 259,
+      "lineNumber": 314,
       "attributes": [
         {
           "name": "line1",
@@ -10454,7 +11279,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 268,
+      "lineNumber": 323,
       "attributes": [
         {
           "name": "email",
@@ -10481,7 +11306,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 278,
+      "lineNumber": 333,
       "attributes": [
         {
           "name": "pass"
@@ -10502,7 +11327,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 287,
+      "lineNumber": 342,
       "attributes": [
         {
           "name": "critical"
@@ -10523,7 +11348,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 295,
+      "lineNumber": 350,
       "attributes": [
         {
           "name": "patient"
@@ -10550,7 +11375,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 305,
+      "lineNumber": 360,
       "attributes": [
         {
           "name": "cdr;         // openEHR CDR via AQL"
@@ -10577,7 +11402,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 319,
+      "lineNumber": 374,
       "attributes": [
         {
           "name": "clinical"
@@ -10604,7 +11429,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 335,
+      "lineNumber": 390,
       "attributes": [
         {
           "name": "automatic"
@@ -10625,7 +11450,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 350,
+      "lineNumber": 405,
       "attributes": [
         {
           "name": "healthy"
@@ -10646,7 +11471,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 359,
+      "lineNumber": 414,
       "attributes": [
         {
           "name": "low"
@@ -10670,7 +11495,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 369,
+      "lineNumber": 424,
       "attributes": [
         {
           "name": "oestrogen"
@@ -10691,7 +11516,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 378,
+      "lineNumber": 433,
       "attributes": [
         {
           "name": "noContraindication"
@@ -10718,7 +11543,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 390,
+      "lineNumber": 445,
       "attributes": [
         {
           "name": "estradiolValerate"
@@ -10748,7 +11573,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 402,
+      "lineNumber": 457,
       "attributes": [
         {
           "name": "oral"
@@ -10772,7 +11597,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 410,
+      "lineNumber": 465,
       "attributes": [
         {
           "name": "low"
@@ -10796,7 +11621,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 421,
+      "lineNumber": 476,
       "attributes": [
         {
           "name": "satisfied"
@@ -10817,7 +11642,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 429,
+      "lineNumber": 484,
       "attributes": [
         {
           "name": "stable"
@@ -10841,7 +11666,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 438,
+      "lineNumber": 493,
       "attributes": [
         {
           "name": "continueCurrentRegimen"
@@ -10868,7 +11693,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 451,
+      "lineNumber": 506,
       "attributes": [
         {
           "name": "clinical"
@@ -10892,7 +11717,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 462,
+      "lineNumber": 517,
       "attributes": [
         {
           "name": "pending"
@@ -10919,7 +11744,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 477,
+      "lineNumber": 532,
       "attributes": [
         {
           "name": "baseline"
@@ -10946,7 +11771,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 487,
+      "lineNumber": 542,
       "attributes": [
         {
           "name": "within"
@@ -10970,7 +11795,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 510,
+      "lineNumber": 565,
       "attributes": [
         {
           "name": "clinicalDataRepository"
@@ -10994,7 +11819,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 530,
+      "lineNumber": 585,
       "attributes": [
         {
           "name": "clinicalSignificance"
@@ -11039,7 +11864,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 550,
+      "lineNumber": 605,
       "attributes": [
         {
           "name": "domainConcept",
@@ -19305,7 +20130,15 @@
       "sourceDomain": "csw",
       "metaModelLayer": "domain",
       "lineNumber": 172,
-      "specialises": "OrderRecord"
+      "specialises": "OrderRecord",
+      "annotations": [
+        {
+          "name": "OpenEhrTemplate",
+          "attrs": {
+            "templateId": "coffeeshop-order-composition.v1"
+          }
+        }
+      ]
     },
     {
       "kind": "part_def",
@@ -19326,7 +20159,15 @@
       "sourceDomain": "csw",
       "metaModelLayer": "domain",
       "lineNumber": 184,
-      "specialises": "PreparationEvent"
+      "specialises": "PreparationEvent",
+      "annotations": [
+        {
+          "name": "OpenEhrTemplate",
+          "attrs": {
+            "templateId": "coffeeshop-preparation-composition.v1"
+          }
+        }
+      ]
     },
     {
       "kind": "part_def",
@@ -19347,7 +20188,15 @@
       "sourceDomain": "csw",
       "metaModelLayer": "domain",
       "lineNumber": 195,
-      "specialises": "CustomerFeedback"
+      "specialises": "CustomerFeedback",
+      "annotations": [
+        {
+          "name": "OpenEhrTemplate",
+          "attrs": {
+            "templateId": "coffeeshop-feedback-composition.v1"
+          }
+        }
+      ]
     },
     {
       "kind": "part",
