@@ -3,7 +3,7 @@
 </script>
 
 <Placeholder
-  title="CSW — Coffee Shop Demonstrator"
+  title="Cafe Demonstrator"
   stage="Stage 2"
-  description="Overview of the Coffee Shop domain — reference validation domain with 22 validated patterns."
+  description="Overview of the Cafe domain — reference validation domain with 22 validated patterns."
 />

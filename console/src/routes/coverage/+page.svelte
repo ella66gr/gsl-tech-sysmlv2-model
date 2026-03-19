@@ -23,6 +23,25 @@
   let searchText = $state(initialSearch);
   let collapsedPackages = $state<Set<string>>(new Set());
 
+  // --- Domain visibility state ---
+  let hiddenDomains = $state<Set<string>>(new Set());
+  const visibleDomainKeys = $derived(domainKeys.filter((dk) => !hiddenDomains.has(dk)));
+
+  function toggleDomain(dk: string) {
+    const next = new Set(hiddenDomains);
+    // Prevent hiding all domains
+    if (next.has(dk)) {
+      next.delete(dk);
+    } else if (visibleDomainKeys.length > 1) {
+      next.add(dk);
+    }
+    hiddenDomains = next;
+  }
+
+  function showAllDomains() {
+    hiddenDomains = new Set();
+  }
+
   // --- Expanded cell state ---
   let expandedCell = $state<string | null>(null);
 
@@ -115,51 +134,84 @@
     </p>
   </div>
 
-  <!-- Filters -->
-  <div class="flex flex-wrap items-end gap-3">
-    <div class="w-48">
-      <label for="layer-filter" class="mb-1 block text-xs font-medium text-secondary-600 dark:text-secondary-400">Meta Model Layer</label>
-      <select
-        id="layer-filter"
-        bind:value={layerFilter}
-        class="block w-full rounded-lg border border-secondary-300 bg-white px-3 py-2 text-sm text-secondary-700 focus:border-primary-500 focus:ring-primary-500 dark:border-secondary-600 dark:bg-secondary-800 dark:text-secondary-200"
-      >
-        <option value="all">All layers</option>
-        <option value="bmm">Business Meta Model</option>
-        <option value="bsmm">System Meta Model</option>
-      </select>
-    </div>
-
-    <div class="w-48">
-      <label for="coverage-filter" class="mb-1 block text-xs font-medium text-secondary-600 dark:text-secondary-400">Coverage Status</label>
-      <select
-        id="coverage-filter"
-        bind:value={coverageFilter}
-        class="block w-full rounded-lg border border-secondary-300 bg-white px-3 py-2 text-sm text-secondary-700 focus:border-primary-500 focus:ring-primary-500 dark:border-secondary-600 dark:bg-secondary-800 dark:text-secondary-200"
-      >
-        <option value="all">All ({stats.totalDefs})</option>
-        <option value="instantiated">Instantiated ({stats.totalDefs - stats.uninstantiated})</option>
-        <option value="uninstantiated">Uninstantiated ({stats.uninstantiated})</option>
-        <option value="multi">Multi-domain (2+)</option>
-      </select>
-    </div>
-
-    <div class="w-64">
-      <label for="search" class="mb-1 block text-xs font-medium text-secondary-600 dark:text-secondary-400">Search</label>
-      <div class="relative">
-        <SearchOutline class="absolute left-3 top-2.5 h-4 w-4 text-secondary-400" />
-        <input
-          id="search"
-          type="text"
-          bind:value={searchText}
-          placeholder="Filter by name, package, or doc..."
-          class="block w-full rounded-lg border border-secondary-300 bg-white py-2 pl-9 pr-3 text-sm text-secondary-700 focus:border-primary-500 focus:ring-primary-500 dark:border-secondary-600 dark:bg-secondary-800 dark:text-secondary-200 dark:placeholder-secondary-400"
-        />
+  <!-- Control Panel -->
+  <div class="rounded-lg border border-secondary-200 bg-secondary-50/50 p-4 dark:border-secondary-700 dark:bg-secondary-800/50">
+    <div class="flex flex-wrap items-end gap-x-6 gap-y-3">
+      <!-- Domains -->
+      <div>
+        <label class="mb-1.5 block text-xs font-medium text-secondary-600 dark:text-secondary-400">Domains</label>
+        <div class="flex items-center gap-1.5">
+          {#each domainKeys as dk}
+            <button
+              onclick={() => toggleDomain(dk)}
+              class="rounded-full px-3 py-1 text-xs font-medium transition
+                {hiddenDomains.has(dk)
+                  ? 'border border-secondary-300 bg-white text-secondary-400 hover:border-secondary-400 hover:text-secondary-600 dark:border-secondary-600 dark:bg-secondary-800 dark:text-secondary-500 dark:hover:border-secondary-500 dark:hover:text-secondary-300'
+                  : 'border border-primary-200 bg-primary-50 text-primary-700 hover:bg-primary-100 dark:border-primary-700 dark:bg-primary-900/30 dark:text-primary-300 dark:hover:bg-primary-900/50'
+                }"
+            >
+              {domains[dk].label}
+            </button>
+          {/each}
+          {#if hiddenDomains.size > 0}
+            <button
+              onclick={showAllDomains}
+              class="ml-1 rounded-full px-2 py-1 text-xs text-secondary-500 hover:text-primary-600 dark:text-secondary-400 dark:hover:text-primary-400"
+            >
+              Show all
+            </button>
+          {/if}
+        </div>
       </div>
-    </div>
 
-    <div class="text-sm text-secondary-500 dark:text-secondary-400">
-      Showing {stats.filteredCount} of {stats.totalDefs}
+      <!-- Meta Model Layer -->
+      <div class="w-44">
+        <label for="layer-filter" class="mb-1.5 block text-xs font-medium text-secondary-600 dark:text-secondary-400">Meta Model Layer</label>
+        <select
+          id="layer-filter"
+          bind:value={layerFilter}
+          class="block w-full rounded-lg border border-secondary-300 bg-white px-3 py-1.5 text-sm text-secondary-700 focus:border-primary-500 focus:ring-primary-500 dark:border-secondary-600 dark:bg-secondary-800 dark:text-secondary-200"
+        >
+          <option value="all">All layers</option>
+          <option value="bmm">Business Meta Model</option>
+          <option value="bsmm">System Meta Model</option>
+        </select>
+      </div>
+
+      <!-- Coverage Status -->
+      <div class="w-44">
+        <label for="coverage-filter" class="mb-1.5 block text-xs font-medium text-secondary-600 dark:text-secondary-400">Coverage Status</label>
+        <select
+          id="coverage-filter"
+          bind:value={coverageFilter}
+          class="block w-full rounded-lg border border-secondary-300 bg-white px-3 py-1.5 text-sm text-secondary-700 focus:border-primary-500 focus:ring-primary-500 dark:border-secondary-600 dark:bg-secondary-800 dark:text-secondary-200"
+        >
+          <option value="all">All ({stats.totalDefs})</option>
+          <option value="instantiated">Instantiated ({stats.totalDefs - stats.uninstantiated})</option>
+          <option value="uninstantiated">Uninstantiated ({stats.uninstantiated})</option>
+          <option value="multi">Multi-domain (2+)</option>
+        </select>
+      </div>
+
+      <!-- Search -->
+      <div class="w-56">
+        <label for="search" class="mb-1.5 block text-xs font-medium text-secondary-600 dark:text-secondary-400">Search</label>
+        <div class="relative">
+          <SearchOutline class="absolute left-3 top-2 h-4 w-4 text-secondary-400" />
+          <input
+            id="search"
+            type="text"
+            bind:value={searchText}
+            placeholder="Name, package, or doc..."
+            class="block w-full rounded-lg border border-secondary-300 bg-white py-1.5 pl-9 pr-3 text-sm text-secondary-700 focus:border-primary-500 focus:ring-primary-500 dark:border-secondary-600 dark:bg-secondary-800 dark:text-secondary-200 dark:placeholder-secondary-400"
+          />
+        </div>
+      </div>
+
+      <!-- Count -->
+      <div class="self-end pb-1 text-sm text-secondary-500 dark:text-secondary-400">
+        Showing {stats.filteredCount} of {stats.totalDefs}
+      </div>
     </div>
   </div>
 
@@ -168,12 +220,14 @@
     <table class="w-full text-left text-sm">
       <thead>
         <tr class="border-b border-secondary-200 bg-secondary-50 dark:border-secondary-700 dark:bg-secondary-800">
-          <th class="px-4 py-3 font-semibold text-secondary-700 dark:text-secondary-300">Part Def</th>
-          <th class="px-3 py-3 text-center font-semibold text-secondary-700 dark:text-secondary-300">Layer</th>
+          <th class="px-4 py-3 align-bottom font-semibold text-secondary-700 dark:text-secondary-300">Part Def</th>
+          <th class="px-3 py-3 align-bottom text-center font-semibold text-secondary-700 dark:text-secondary-300">Layer</th>
           {#each domainKeys as dk}
-            <th class="px-3 py-3 text-center font-semibold text-secondary-700 dark:text-secondary-300">
-              {domains[dk].label}
-            </th>
+            {#if !hiddenDomains.has(dk)}
+              <th class="px-3 py-3 align-bottom text-center font-semibold text-secondary-700 dark:text-secondary-300">
+                {domains[dk].label}
+              </th>
+            {/if}
           {/each}
         </tr>
       </thead>
@@ -182,7 +236,7 @@
           <!-- Package group header -->
           <tr class="border-b border-secondary-100 bg-secondary-50/50 dark:border-secondary-700 dark:bg-secondary-800/50">
             <td
-              colspan={2 + domainKeys.length}
+              colspan={2 + visibleDomainKeys.length}
               class="px-4 py-2"
             >
               <button
@@ -222,6 +276,7 @@
                 {#each domainKeys as dk}
                   {@const count = instanceCount(def, dk)}
                   {@const cellKey = `${def.name}:${dk}`}
+                  {#if !hiddenDomains.has(dk)}
                   <td class="px-3 py-2 text-center">
                     {#if count > 0}
                       <button
@@ -246,6 +301,7 @@
                       <span class="text-secondary-300 dark:text-secondary-600">—</span>
                     {/if}
                   </td>
+                  {/if}
                 {/each}
               </tr>
             {/each}

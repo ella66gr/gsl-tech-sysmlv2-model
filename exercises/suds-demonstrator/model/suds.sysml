@@ -15,6 +15,10 @@
 // Governance: COSHH regulations for handling cleaning chemicals.
 //
 // Session 37 (18 March 2026): initial business model creation.
+// Session 41 (19 March 2026): Phase 3 — full BMM coverage expansion.
+//   Added: DifferentiationClaim (2), CatalogueEntry (3),
+//   ExternalReference (2), ActivityCostAllocation (2),
+//   UnitEconomics (2). Total: +11 part usages.
 // =========================================================================
 
 package SudsBusinessModel {
@@ -107,6 +111,63 @@ package SudsBusinessModel {
         attribute :>> estimatedReach = "local area — delivery radius";
         attribute :>> estimatedCostLevel = "medium";
         attribute :>> conversionNotes = "Moderate — subscription model needs trust-building";
+    }
+
+    // -- Differentiation Claims --------------------------------
+
+    part reliableTurnaround : DifferentiationClaim {
+        attribute :>> claimName = "Reliable turnaround times";
+        attribute :>> statement = "We guarantee same-day for express and next-day for standard — or the service is free";
+        attribute :>> basis = "Process design with batch scheduling and capacity management ensures predictable turnaround";
+        attribute :>> testability = "Track turnaround times per order; measure percentage meeting SLA; refund rate";
+    }
+
+    part transparentPricing : DifferentiationClaim {
+        attribute :>> claimName = "Transparent per-kg pricing";
+        attribute :>> statement = "Simple, clear pricing with no hidden charges — weighed in front of you at drop-off";
+        attribute :>> basis = "Per-kg model with published surcharge schedule; weight recorded at intake";
+        attribute :>> testability = "Customer pricing complaints; price clarity in customer feedback surveys";
+    }
+
+    // -- Catalogue Entries ------------------------------------
+    //
+    // Service offerings as catalogue items. Uses the generic
+    // BMM CatalogueEntry directly — no domain-typed specialisation.
+    // This tests whether CatalogueEntry generalises beyond
+    // product menus to service catalogues (design decision P3-D1).
+
+    part standardWashCatalogue : CatalogueEntry {
+        doc /* Standard wash offering as a catalogue entry.
+             * Per-kg pricing, no minimum for walk-in. */
+        attribute :>> entryName = "Standard Wash";
+        attribute :>> itemReference = "standardWash";
+        attribute :>> pricingDescription = "£2.50 per kg";
+        attribute :>> availabilityStatus = "active";
+        attribute :>> provisionType = "service";
+        attribute :>> effectiveDate = "2026-03-19";
+        attribute :>> statusNotes = "Core offering — available daily";
+    }
+
+    part delicatesWashCatalogue : CatalogueEntry {
+        doc /* Delicates wash — specialist handling, higher price. */
+        attribute :>> entryName = "Delicates Wash";
+        attribute :>> itemReference = "delicatesWash";
+        attribute :>> pricingDescription = "£3.75 per kg (+50% surcharge)";
+        attribute :>> availabilityStatus = "active";
+        attribute :>> provisionType = "service";
+        attribute :>> effectiveDate = "2026-03-19";
+        attribute :>> statusNotes = "Specialist handling — lower temperature, gentle cycle";
+    }
+
+    part expressWashCatalogue : CatalogueEntry {
+        doc /* Express wash — same-day premium service. */
+        attribute :>> entryName = "Express Wash";
+        attribute :>> itemReference = "expressWash";
+        attribute :>> pricingDescription = "£5.00 per kg (+100% surcharge)";
+        attribute :>> availabilityStatus = "active";
+        attribute :>> provisionType = "service";
+        attribute :>> effectiveDate = "2026-03-19";
+        attribute :>> statusNotes = "Same-day 4-hour turnaround guarantee";
     }
 
     // -- Activity Model ---------------------------------------
@@ -255,6 +316,30 @@ package SudsBusinessModel {
         attribute :>> currentLevel = GranularityLevel::envelope;
         attribute :>> targetLevel = GranularityLevel::envelope;
         attribute :>> migrationNotes = "Daily admin — envelope adequate";
+    }
+
+    // -- Activity cost allocations ----------------------------
+    //
+    // The bridge between ActivityModel and FinancialPlanning.
+    // Suds is the first domain to exercise ActivityCostAllocation.
+
+    part washCycleCostAllocation : ActivityCostAllocation {
+        doc /* Cost allocation for the wash cycle activity. Variable
+             * costs: utilities (water, electricity) and chemicals
+             * per kg of laundry processed. */
+        attribute :>> activityType = "Wash cycle";
+        attribute :>> allocationMethod = "per-kg variable cost";
+        attribute :>> estimatedCostPerUnit = 1.00;
+        attribute :>> costNotes = "Utilities £0.60/kg + chemicals £0.40/kg. Machine lease costs allocated separately as fixed overhead.";
+    }
+
+    part receiveAndTagCostAllocation : ActivityCostAllocation {
+        doc /* Cost allocation for receive-and-tag. Pure labour cost
+             * at operator hourly rate, prorated per order. */
+        attribute :>> activityType = "Receive and tag items";
+        attribute :>> allocationMethod = "labour time allocation";
+        attribute :>> estimatedCostPerUnit = 1.92;
+        attribute :>> costNotes = "10 min at £11.50/hr = £1.92 per order. Direct labour, no materials.";
     }
 }
 
@@ -414,6 +499,28 @@ package SudsResourceFinancial {
         attribute :>> breakdownNotes = "Labour £0.50/kg, utilities £0.60/kg, chemicals £0.40/kg. Rent and equipment lease excluded (fixed costs).";
     }
 
+    part delicatesWashEconomics : UnitEconomics {
+        doc /* Per-kg economics for delicates wash. Higher revenue
+             * (£3.75/kg) but also higher cost due to specialist
+             * handling and longer cycle times. */
+        attribute :>> offeringRef = "Delicates wash";
+        attribute :>> revenuePerUnit = 3.75;
+        attribute :>> costPerUnit = 2.20;
+        attribute :>> marginPerUnit = 1.55;
+        attribute :>> breakdownNotes = "Labour £0.80/kg (slower handling), utilities £0.60/kg, specialist chemicals £0.50/kg, pressing £0.30/kg. Rent and lease excluded.";
+    }
+
+    part expressWashEconomics : UnitEconomics {
+        doc /* Per-kg economics for express wash. Double the standard
+             * price, but same direct costs — the premium covers
+             * opportunity cost of priority scheduling. */
+        attribute :>> offeringRef = "Express wash";
+        attribute :>> revenuePerUnit = 5.00;
+        attribute :>> costPerUnit = 1.70;
+        attribute :>> marginPerUnit = 3.30;
+        attribute :>> breakdownNotes = "Same direct costs as standard (£1.50/kg) + priority scheduling overhead £0.20/kg. Premium pricing covers scheduling disruption.";
+    }
+
     // -- Pricing model ----------------------------------------
 
     part perKgPricing : PricingModel {
@@ -438,6 +545,7 @@ package SudsResourceFinancial {
 
 package SudsGovernance {
     private import ScalarValues::*;
+    private import BusinessModel::ServiceConcept::ExternalReference;
 
     requirement coshhCompliance {
         doc /* Control of Substances Hazardous to Health Regulations 2002.
@@ -455,5 +563,30 @@ package SudsGovernance {
         attribute source : String = "Health and Safety Executive — COSHH Regulations 2002";
         attribute description : String = "All cleaning chemicals used in the laundry service must be subject to COSHH risk assessment. Current safety data sheets must be maintained for all substances. Staff must receive COSHH awareness training before handling chemicals. Chemicals must be stored in a ventilated, locked area with appropriate PPE available.";
         attribute evidenceRequired : String = "COSHH risk assessment document, safety data sheet register, staff training records, storage inspection log";
+    }
+
+    // -- External References ----------------------------------
+    //
+    // Knowledge the system links to but does not own.
+    // COSHH governance requires reference to external regulatory
+    // and safety documentation.
+
+    part coshhGuidance : ExternalReference {
+        doc /* HSE COSHH guidance — the primary regulatory reference
+             * for handling cleaning chemicals in a workplace. */
+        attribute :>> referenceType = "regulatory guidance";
+        attribute :>> referenceId = "HSE-COSHH-2002";
+        attribute :>> referenceSource = "Health and Safety Executive — www.hse.gov.uk/coshh";
+        attribute :>> referenceNotes = "COSHH Regulations 2002. Employer duties for substances hazardous to health. Risk assessment, safe storage, training, PPE.";
+    }
+
+    part detergentSafetyDataSheet : ExternalReference {
+        doc /* Safety Data Sheet (SDS) for commercial laundry
+             * detergent — specific to supplier and product.
+             * COSHH requires current SDS for every chemical used. */
+        attribute :>> referenceType = "safety data sheet";
+        attribute :>> referenceId = "SDS-DETERGENT-001";
+        attribute :>> referenceSource = "Supplier-provided — updated annually";
+        attribute :>> referenceNotes = "Mandatory under COSHH. Covers composition, hazards, first aid, handling, storage, exposure controls, disposal.";
     }
 }

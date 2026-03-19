@@ -62,12 +62,12 @@ DOMAIN_SOURCES = {
         "description": "The main GenderSense SysML model — meta models and GSL domain",
     },
     "csw": {
-        "label": "Coffee Shop (CSW)",
+        "label": "Cafe (Coffee Shop)",
         "model_dirs": [EXERCISES_DIR / "coffeeshop-demonstrator" / "model"],
-        "description": "Coffee shop demonstrator — reference validation domain",
+        "description": "Cafe demonstrator — reference validation domain",
     },
     "suds": {
-        "label": "Laundry (Suds)",
+        "label": "Suds (Laundry)",
         "model_dirs": [EXERCISES_DIR / "suds-demonstrator" / "model"],
         "description": "Laundry service demonstrator \u2014 cross-domain validation",
     },
