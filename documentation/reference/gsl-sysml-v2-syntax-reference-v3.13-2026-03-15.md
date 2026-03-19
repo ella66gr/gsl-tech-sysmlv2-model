@@ -602,6 +602,7 @@ The following are reserved keywords from KerML 1.0 section 8.2.2.6 and SysML 2.0
 
 | Version | Date | Key additions |
 |---|---|---|
+| 3.14 | 19 Mar 2026 | Metadata annotation conventions: Position A (prefix, before element) adopted; one annotation per metaclass per element (stacking two `@Tag` fails); `concern` triggers parser error despite not being KerML reserved (use `bmmConcern`); metadata import required at consuming package level (`private import Foundation::MetadataLibrary::*`); `@CatalogueTag` and `@UserFacing` validated on `part def`s. |
 | 3.13 | 15 Mar 2026 | `ref :>>` tuple redefinition verified (single, multi-valued, circular, cross-type, forward reference). PatternCatalogue knowledge graph: 43 typed ref links across 20 patterns. |
 | 3.12 | 15 Mar 2026 | `ref x : MetadataDef` and `ref x : EnumDef` verified (singular + multi-valued), `system` reserved word (silent failure), enum-typed attribute on metadata def verified, cross-project specific named imports fail, **wildcard import name collision** (silent resolution, downstream type-errors), multi-valued enum attribute on part def verified |
 | 3.11 | 11 Mar 2026 | `ref x : Type[0..*]` across packages, `ref` in `requirement def`, `requirement def` with business attributes, **satisfy by part usage fails** (critical finding), satisfy naming traps (shadow, usage-feature-typing), `:>>` in requirement usages, part def / package name collision trap, 12 new safe attribute names |
@@ -623,4 +624,4 @@ Previous versions preserved in `documentation/reference/versions/`.
 
 ---
 
-*Restructured 8 March 2026 (Session 8). Updated 15 March 2026 (Sessions 29–31, CSW Phase 10 + Concept Graph + Knowledge Graph Enhancement).*
+*Restructured 8 March 2026 (Session 8). Updated 15 March 2026 (Sessions 29–31, CSW Phase 10 + Concept Graph + Knowledge Graph Enhancement). Updated 19 March 2026 (Session 38, Ontara Stage 2 Phase 1: metadata annotation conventions).*
