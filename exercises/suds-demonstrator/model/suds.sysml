@@ -38,7 +38,8 @@ package SudsBusinessModel {
     part sudsValueProposition : ValueProposition {
         attribute :>> propositionName = "Convenient, quality fabric care";
         attribute :>> targetSegment = "Time-poor professionals and families";
-        attribute :>> promiseStatement = "Drop off your laundry and collect it clean, pressed, and ready — same-day express or next-day standard";
+        attribute :>> description = "Drop off your laundry and collect it clean, pressed, and ready — same-day express or next-day standard";
+        attribute :>> evidenceBasis = "Customer satisfaction surveys, turnaround time tracking, repeat booking rates";
         attribute :>> differentiator = "Reliable turnaround times, careful handling of delicates, transparent per-kg pricing";
     }
 
@@ -536,18 +537,50 @@ package SudsResourceFinancial {
 }
 
 // =========================================================================
-// SUDS DEMONSTRATOR — Governance Requirement
+// SUDS DEMONSTRATOR — Governance: COSHH Traceability Chain
 // =========================================================================
 //
-// Exercises the governance architecture in a non-health context.
-// COSHH compliance as a structurally realistic requirement that
-// exercises the requirement def → satisfy traceability chain (J8).
+// Exercises the full governance traceability architecture (A8, J8)
+// in a non-health context. COSHH compliance for a laundry service.
+//
+// Traceability chain:
+//   GovernanceRequirement (coshhCompliance)
+//     → constraint def (CoshhStorageConstraint, CoshhTrainingConstraint)
+//       → satisfy (coshhStorageSatisfied, coshhTrainingSatisfied)
+//         → AuditEvidenceRecord (risk assessment, SDS register,
+//                                training record, inspection log)
+//
+// External references (regulatory source documents) are separate
+// from audit evidence records (proof of compliance).
+//
+// Session 37 (18 March 2026): initial governance requirement.
+// Session 41 (19 March 2026): ExternalReference instances added.
+// Session 42 (19 March 2026): Phase 6 — full satisfy chain,
+//   constraint defs, audit evidence records. Requirement refactored
+//   to use General GovernanceRequirement from BMM.
+// =========================================================================
 
 package SudsGovernance {
     private import ScalarValues::*;
     private import BusinessModel::ServiceConcept::ExternalReference;
+    private import BusinessModel::GovernanceMapping::*;
 
-    requirement coshhCompliance {
+    doc /* COSHH governance traceability for the Suds laundry service.
+         * Demonstrates the full satisfy chain in a non-health context:
+         * requirement → constraint → satisfy → audit evidence.
+         *
+         * The GovernanceRequirement and AuditEvidenceRecord part defs
+         * are General BMM vocabulary from BusinessModel::GovernanceMapping.
+         * The constraint defs are domain-specific — COSHH testable
+         * conditions that would not apply to a coffee shop or
+         * dog grooming service. */
+
+    // -- Governance Requirement --------------------------------
+    //
+    // Typed by the General GovernanceRequirement from the BMM.
+    // Attributes redefined with COSHH-specific values.
+
+    requirement coshhCompliance : GovernanceRequirement {
         doc /* Control of Substances Hazardous to Health Regulations 2002.
              * Requires employers to control substances that are hazardous
              * to health. For a laundry service: cleaning chemicals,
@@ -555,21 +588,118 @@ package SudsGovernance {
              *
              * This exercises the governance traceability architecture
              * (A8) in a non-health context. The satisfy chain:
-             * requirement → constraint → evaluation → audit evidence
+             * requirement → constraint → satisfy → audit evidence
              * should work identically to CQC requirements in GSL. */
 
-        attribute requirementId : String = "SUDS-GOV-001";
-        attribute title : String = "COSHH compliance for cleaning chemicals";
-        attribute source : String = "Health and Safety Executive — COSHH Regulations 2002";
-        attribute description : String = "All cleaning chemicals used in the laundry service must be subject to COSHH risk assessment. Current safety data sheets must be maintained for all substances. Staff must receive COSHH awareness training before handling chemicals. Chemicals must be stored in a ventilated, locked area with appropriate PPE available.";
-        attribute evidenceRequired : String = "COSHH risk assessment document, safety data sheet register, staff training records, storage inspection log";
+        attribute :>> requirementId = "SUDS-GOV-001";
+        attribute :>> title = "COSHH compliance for cleaning chemicals";
+        attribute :>> regulatorySource = "Health and Safety Executive — COSHH Regulations 2002";
+        attribute :>> complianceDescription = "All cleaning chemicals used in the laundry service must be subject to COSHH risk assessment. Current safety data sheets must be maintained for all substances. Staff must receive COSHH awareness training before handling chemicals. Chemicals must be stored in a ventilated, locked area with appropriate PPE available.";
+        attribute :>> evidenceRequired = "COSHH risk assessment document, safety data sheet register, staff training records, storage inspection log";
+    }
+
+    // -- Constraint Definitions --------------------------------
+    //
+    // Domain-specific testable conditions for COSHH compliance.
+    // These are Suds-specific — different regulations would have
+    // different constraints.
+
+    constraint def CoshhStorageConstraint {
+        doc /* Testable condition: all cleaning chemicals are stored
+             * in compliance with COSHH requirements. Requires:
+             * all substances have current safety data sheets, and
+             * the storage area meets ventilation and security
+             * standards. */
+        in allSubstancesHaveSds : Boolean;
+        in storageAreaCompliant : Boolean;
+
+        allSubstancesHaveSds and storageAreaCompliant
+    }
+
+    constraint def CoshhTrainingConstraint {
+        doc /* Testable condition: all staff who handle chemicals
+             * have completed COSHH awareness training within the
+             * required interval. Training must be refreshed
+             * annually. */
+        in monthsSinceTraining : Integer;
+        in requiredMaxMonths : Integer;
+
+        monthsSinceTraining <= requiredMaxMonths
+    }
+
+    // -- Constraint Usages ------------------------------------
+
+    constraint coshhStorageCheck : CoshhStorageConstraint;
+    constraint coshhTrainingCheck : CoshhTrainingConstraint;
+
+    // -- Satisfy Relationships --------------------------------
+    //
+    // Formal traceability: requirement → constraint.
+    // Named-and-typed form per syntax reference §7.
+    // GovernanceRequirement def is in BusinessModel::GovernanceMapping
+    // (different package from this satisfy — required by Syside).
+
+    satisfy requirement coshhStorageSatisfied : GovernanceRequirement
+        by coshhStorageCheck;
+
+    satisfy requirement coshhTrainingSatisfied : GovernanceRequirement
+        by coshhTrainingCheck;
+
+    // -- Audit Evidence Records -------------------------------
+    //
+    // Proof of compliance. Each record type demonstrates that
+    // a specific aspect of the COSHH requirement is being met.
+    // Typed by the General AuditEvidenceRecord from the BMM.
+
+    part coshhRiskAssessment : AuditEvidenceRecord {
+        doc /* Documented COSHH risk assessment for all chemicals
+             * used in the laundry service. Must be reviewed
+             * annually and whenever a new chemical is introduced. */
+        attribute :>> evidenceType = "risk assessment";
+        attribute :>> evidenceDescription = "COSHH risk assessment covering all cleaning chemicals, detergents, and specialist products used in the laundry. Identifies hazards, exposure routes, control measures, and emergency procedures.";
+        attribute :>> retentionPeriod = "5 years from date of assessment";
+        attribute :>> responsibleRole = "Shop manager";
+        attribute :>> frequency = "Annually and on introduction of new chemicals";
+    }
+
+    part sdsRegister : AuditEvidenceRecord {
+        doc /* Register of current Safety Data Sheets for every
+             * chemical substance used. COSHH requires SDS to be
+             * available at the point of use and kept current. */
+        attribute :>> evidenceType = "document register";
+        attribute :>> evidenceDescription = "Index of all Safety Data Sheets held, with product name, supplier, date of issue, and location of physical/digital copy. Cross-referenced to chemical inventory.";
+        attribute :>> retentionPeriod = "Duration of use plus 3 years";
+        attribute :>> responsibleRole = "Shop manager";
+        attribute :>> frequency = "Updated on receipt of new SDS or change of supplier";
+    }
+
+    part staffTrainingRecord : AuditEvidenceRecord {
+        doc /* Individual training records for each staff member
+             * who handles cleaning chemicals. COSHH requires
+             * documented evidence of training and competency. */
+        attribute :>> evidenceType = "training record";
+        attribute :>> evidenceDescription = "Per-employee record of COSHH awareness training: date completed, trainer, topics covered, competency assessment outcome. Refresher training tracked separately.";
+        attribute :>> retentionPeriod = "Duration of employment plus 6 years";
+        attribute :>> responsibleRole = "Shop manager";
+        attribute :>> frequency = "On induction and annually thereafter";
+    }
+
+    part storageInspectionLog : AuditEvidenceRecord {
+        doc /* Log of periodic inspections of the chemical storage
+             * area. Checks ventilation, locked access, labelling,
+             * PPE availability, and spill containment. */
+        attribute :>> evidenceType = "inspection log";
+        attribute :>> evidenceDescription = "Dated record of chemical storage area inspection: ventilation status, lock integrity, labelling compliance, PPE stock check, spill kit presence, any corrective actions required.";
+        attribute :>> retentionPeriod = "5 years";
+        attribute :>> responsibleRole = "Shop manager or designated safety officer";
+        attribute :>> frequency = "Monthly";
     }
 
     // -- External References ----------------------------------
     //
     // Knowledge the system links to but does not own.
-    // COSHH governance requires reference to external regulatory
-    // and safety documentation.
+    // Regulatory source documents — distinct from audit evidence
+    // (which is proof of compliance, not the rules themselves).
 
     part coshhGuidance : ExternalReference {
         doc /* HSE COSHH guidance — the primary regulatory reference

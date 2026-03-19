@@ -10,6 +10,7 @@
     CodeBranchOutline,
     LayersOutline,
     BarsOutline,
+    ShieldCheckOutline,
   } from 'flowbite-svelte-icons';
 
   let { children } = $props();
@@ -78,6 +79,12 @@
         <a href="/catalogue" class="flex items-center rounded-lg p-2 {isActive('/catalogue') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <ArchiveOutline class="h-5 w-5" />
           <span class="ms-3">Component Catalogue</span>
+        </a>
+      </li>
+      <li>
+        <a href="/governance" class="flex items-center rounded-lg p-2 {isActive('/governance') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
+          <ShieldCheckOutline class="h-5 w-5" />
+          <span class="ms-3">Governance</span>
         </a>
       </li>
 

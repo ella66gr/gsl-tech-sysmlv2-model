@@ -1171,4 +1171,87 @@ package BusinessModel {
             attribute :>> breakEvenIndicator = "placeholder — to be determined by projection engine";
         }
     }
+
+    // =================================================================
+    // GOVERNANCE MAPPING — How governance obligations are tracked
+    // =================================================================
+
+    package GovernanceMapping {
+        private import ScalarValues::*;
+
+        doc /* General vocabulary for governance traceability. Defines
+             * the structural concepts that any regulated service
+             * business needs to track compliance: what the obligations
+             * are (GovernanceRequirement) and what records demonstrate
+             * compliance (AuditEvidenceRecord).
+             *
+             * Domain-specific constraint defs and satisfy relationships
+             * live in the domain packages (e.g. SudsGovernance), not
+             * here — testable conditions are regulation-specific.
+             *
+             * The traceability chain:
+             *   GovernanceRequirement (what must be satisfied)
+             *     → constraint def (testable condition, domain-specific)
+             *       → satisfy (formal link)
+             *         → AuditEvidenceRecord (proof of compliance)
+             *
+             * Exercises A8 (governance as first-class concern),
+             * J8 (governance in toy domains), B2 (vertical mappings).
+             *
+             * Business meta model concept.
+             * Phase 6, Session 42 (19 March 2026). */
+
+        // -- Governance Requirement --------------------------------
+
+        @CatalogueTag { bmmConcern = "Governance"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Governance Requirement";
+            shortDescription = "A regulatory or standards obligation that the business must satisfy, with defined evidence.";
+        }
+        requirement def GovernanceRequirement {
+            doc /* A regulatory, legal, or standards obligation that
+                 * the business must satisfy. General vocabulary —
+                 * applicable to COSHH, CQC, GDPR, food hygiene,
+                 * professional standards, or any regulatory context.
+                 *
+                 * Domain-specific requirement usages redefine these
+                 * attributes with concrete values. The satisfy chain
+                 * connects each requirement to constraint usages
+                 * that formalise the testable conditions.
+                 *
+                 * Business meta model concept. */
+            attribute requirementId : String;
+            attribute title : String;
+            attribute regulatorySource : String;
+            attribute complianceDescription : String;
+            attribute evidenceRequired : String;
+        }
+
+        // -- Audit Evidence Record ---------------------------------
+
+        @CatalogueTag { bmmConcern = "Governance"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Audit Evidence Record";
+            shortDescription = "A record that demonstrates compliance with a governance requirement — the proof that obligations are met.";
+        }
+        part def AuditEvidenceRecord {
+            doc /* A record or document that provides evidence of
+                 * compliance with a governance requirement. The
+                 * audit trail: what was checked, when, by whom,
+                 * and how often.
+                 *
+                 * General vocabulary — applicable to any regulated
+                 * business. COSHH risk assessments, CQC inspection
+                 * records, GDPR processing logs, staff training
+                 * records, and food hygiene inspection logs are all
+                 * instances of this concept.
+                 *
+                 * Business meta model concept. */
+            attribute evidenceType : String;
+            attribute evidenceDescription : String;
+            attribute retentionPeriod : String;
+            attribute responsibleRole : String;
+            attribute frequency : String;
+        }
+    }
 }

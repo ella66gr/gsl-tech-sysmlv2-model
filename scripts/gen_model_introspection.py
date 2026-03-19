@@ -12,11 +12,14 @@ Extracts:
   - Part usages (instantiations of part defs, per domain)
   - Enum defs
   - Metadata defs
-  - Requirement defs
+  - Requirement defs and requirement usages
+  - Constraint defs and constraint usages (Phase 6)
+  - Satisfy relationships (Phase 6)
   - Cross-domain coverage matrix (which domains instantiate which defs)
   - @CatalogueTag and @UserFacing metadata annotations (Stage 2 Phase 2)
   - Facet summaries for dynamic catalogue grouping
   - Comprehension layer coverage tracking
+  - Governance traceability (requirement → constraint → satisfy → evidence) (Phase 6)
 
 Usage:
     python scripts/gen_model_introspection.py                  # Print summary
@@ -89,6 +92,7 @@ BMM_PACKAGES = {
     "BusinessModel", "ServiceConcept", "ActivityModel",
     "ResourcePlanning", "FinancialPlanning",
     "BusinessScenarios", "BusinessStrategy",
+    "GovernanceMapping",
 }
 
 # Packages known to belong to the system meta model
@@ -305,6 +309,22 @@ def parse_sysml_file(filepath, domain_key):
     )
     requirement_pattern = re.compile(
         r'^(\s*)requirement\s+(\w+)\s*:\s*(\w+(?:::\w+)*)'
+    )
+    # Phase 6: governance traceability patterns
+    requirement_def_pattern = re.compile(
+        r'^(\s*)requirement\s+def\s+(\w+)(?:\s*\{)?'
+    )
+    constraint_def_pattern = re.compile(
+        r'^(\s*)constraint\s+def\s+(\w+)(?:\s*\{)?'
+    )
+    constraint_usage_pattern = re.compile(
+        r'^(\s*)constraint\s+(\w+)\s*:\s*(\w+(?:::\w+)*)'
+    )
+    satisfy_pattern = re.compile(
+        r'^(\s*)satisfy\s+requirement\s+(\w+)\s*:\s*(\w+(?:::\w+)*)'
+    )
+    satisfy_by_pattern = re.compile(
+        r'^\s*by\s+(\w+)\s*;'
     )
     
     # Stage 2 Phase 2: annotation patterns
@@ -524,7 +544,110 @@ def parse_sysml_file(filepath, domain_key):
             i += 1
             continue
         
-        # Requirement
+        # Phase 6: Requirement def
+        m = requirement_def_pattern.match(line)
+        if m:
+            name = m.group(2)
+            doc = extract_doc_block(lines, i)
+            
+            block_end = i
+            if '{' in line:
+                block_end = find_block_end(lines, i)
+            attrs = parse_attributes(lines, i + 1, block_end)
+            
+            elem = SysmlElement(
+                kind="requirement_def",
+                name=name,
+                parent_package=current_package,
+                doc=doc,
+                attributes=attrs,
+                source_file=rel_path,
+                source_domain=domain_key,
+                line_number=i + 1,
+            )
+            attach_annotations(elem)
+            elements.append(elem)
+            i += 1
+            continue
+        
+        # Phase 6: Constraint def
+        m = constraint_def_pattern.match(line)
+        if m:
+            name = m.group(2)
+            doc = extract_doc_block(lines, i)
+            
+            block_end = i
+            if '{' in line:
+                block_end = find_block_end(lines, i)
+            attrs = parse_attributes(lines, i + 1, block_end)
+            
+            elem = SysmlElement(
+                kind="constraint_def",
+                name=name,
+                parent_package=current_package,
+                doc=doc,
+                attributes=attrs,
+                source_file=rel_path,
+                source_domain=domain_key,
+                line_number=i + 1,
+            )
+            attach_annotations(elem)
+            elements.append(elem)
+            i += 1
+            continue
+        
+        # Phase 6: Constraint usage
+        m = constraint_usage_pattern.match(line)
+        if m:
+            name = m.group(2)
+            type_ref = m.group(3)
+            
+            elem = SysmlElement(
+                kind="constraint",
+                name=name,
+                parent_package=current_package,
+                specialises=type_ref,
+                source_file=rel_path,
+                source_domain=domain_key,
+                line_number=i + 1,
+            )
+            elements.append(elem)
+            i += 1
+            continue
+        
+        # Phase 6: Satisfy relationship
+        m = satisfy_pattern.match(line)
+        if m:
+            satisfy_name = m.group(2)
+            req_def = m.group(3)
+            # Look ahead for "by constraintUsage;" on next non-blank line
+            by_target = ""
+            for j in range(i + 1, min(i + 5, len(lines))):
+                by_m = satisfy_by_pattern.match(lines[j])
+                if by_m:
+                    by_target = by_m.group(1)
+                    break
+                elif lines[j].strip() and not lines[j].strip().startswith("//"):
+                    break
+            
+            elem = SysmlElement(
+                kind="satisfy",
+                name=satisfy_name,
+                parent_package=current_package,
+                specialises=req_def,
+                source_file=rel_path,
+                source_domain=domain_key,
+                line_number=i + 1,
+            )
+            # Store the by-target in attributes for downstream use
+            if by_target:
+                elem.attributes = [{"name": "byTarget", "value": by_target}]
+            elements.append(elem)
+            pending_annotations = []  # satisfy doesn't take annotations
+            i += 1
+            continue
+        
+        # Requirement usage (typed)
         m = requirement_pattern.match(line)
         if m:
             name = m.group(2)
@@ -602,6 +725,7 @@ def classify_meta_model_layer(elem):
             "PeriodActuals", "VarianceAnalysis", "StrategicObjective",
             "ObjectiveCapabilityMapping", "ValueProposition",
             "DifferentiationClaim", "InventoryRecord", "ExternalReference",
+            "AuditEvidenceRecord", "ActivityCostAllocation",
         }
         # These are BSMM part defs
         bsmm_types = {
@@ -709,6 +833,99 @@ def build_comprehension_summary(all_elements):
 
 
 # ---------------------------------------------------------------
+# Stage 2 Phase 6: Governance traceability
+# ---------------------------------------------------------------
+
+def build_governance_traceability(all_elements):
+    """Build the governance traceability structure from extracted elements.
+    
+    Assembles requirement defs, constraint defs, satisfy chains,
+    requirement instances, and audit evidence instances into a
+    structure the console can use for the governance traceability view.
+    """
+    requirement_defs = []
+    constraint_defs = []
+    satisfy_chains = []
+    requirement_instances = []
+    audit_evidence_instances = []
+    
+    for elem in all_elements:
+        if elem.kind == "requirement_def":
+            requirement_defs.append({
+                "name": elem.name,
+                "package": elem.parent_package,
+                "layer": elem.meta_model_layer,
+                "doc": elem.doc[:300] if elem.doc else "",
+                "attributes": elem.attributes,
+                "catalogueTag": elem.catalogue_tag if elem.catalogue_tag else {},
+                "userFacing": elem.user_facing if elem.user_facing else {},
+            })
+        
+        elif elem.kind == "constraint_def":
+            constraint_defs.append({
+                "name": elem.name,
+                "package": elem.parent_package,
+                "sourceDomain": elem.source_domain,
+                "doc": elem.doc[:300] if elem.doc else "",
+                "attributes": elem.attributes,
+            })
+        
+        elif elem.kind == "satisfy":
+            by_target = ""
+            if elem.attributes:
+                for attr in elem.attributes:
+                    if attr.get("name") == "byTarget":
+                        by_target = attr.get("value", "")
+            
+            # Resolve the constraint def from the by-target
+            constraint_def_name = ""
+            for other in all_elements:
+                if other.kind == "constraint" and other.name == by_target:
+                    constraint_def_name = other.specialises.split("::")[-1] if other.specialises else ""
+                    break
+            
+            satisfy_chains.append({
+                "satisfyName": elem.name,
+                "requirementDef": elem.specialises.split("::")[-1] if elem.specialises else "",
+                "constraintUsage": by_target,
+                "constraintDef": constraint_def_name,
+                "sourceDomain": elem.source_domain,
+                "package": elem.parent_package,
+            })
+        
+        elif elem.kind == "requirement" and elem.specialises:
+            type_name = elem.specialises.split("::")[-1]
+            requirement_instances.append({
+                "name": elem.name,
+                "typedBy": type_name,
+                "sourceDomain": elem.source_domain,
+                "package": elem.parent_package,
+                "doc": elem.doc[:300] if elem.doc else "",
+                "attributes": elem.attributes,
+            })
+        
+        elif elem.kind == "part" and elem.specialises:
+            type_name = elem.specialises.split("::")[-1]
+            if type_name == "AuditEvidenceRecord":
+                audit_evidence_instances.append({
+                    "name": elem.name,
+                    "typedBy": type_name,
+                    "sourceDomain": elem.source_domain,
+                    "package": elem.parent_package,
+                    "doc": elem.doc[:300] if elem.doc else "",
+                    "attributes": elem.attributes,
+                })
+    
+    return {
+        "requirementDefs": requirement_defs,
+        "constraintDefs": constraint_defs,
+        "satisfyChains": satisfy_chains,
+        "requirementInstances": requirement_instances,
+        "auditEvidenceInstances": audit_evidence_instances,
+    }
+
+
+# ---------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------
 
@@ -749,6 +966,9 @@ def main():
     facets = build_facet_summary(all_elements)
     comprehension = build_comprehension_summary(all_elements)
     
+    # Stage 2 Phase 6: build governance traceability
+    governance = build_governance_traceability(all_elements)
+    
     # Summary stats
     by_kind = defaultdict(int)
     by_layer = defaultdict(int)
@@ -787,6 +1007,17 @@ def main():
         for item in comprehension["missingUserFacing"]:
             print(f"  {item['package']}::{item['name']}", file=sys.stderr)
     
+    # Phase 6: governance traceability diagnostics
+    print(f"\n--- Governance Traceability ---", file=sys.stderr)
+    print(f"Requirement defs: {len(governance['requirementDefs'])}", file=sys.stderr)
+    print(f"Constraint defs: {len(governance['constraintDefs'])}", file=sys.stderr)
+    print(f"Satisfy chains: {len(governance['satisfyChains'])}", file=sys.stderr)
+    print(f"Requirement instances: {len(governance['requirementInstances'])}", file=sys.stderr)
+    print(f"Audit evidence instances: {len(governance['auditEvidenceInstances'])}", file=sys.stderr)
+    for chain in governance['satisfyChains']:
+        print(f"  {chain['satisfyName']}: {chain['requirementDef']} -> {chain['constraintUsage']} ({chain['constraintDef']})",
+              file=sys.stderr)
+    
     # Coverage summary
     print(f"\n--- Coverage Matrix ---", file=sys.stderr)
     for def_name, info in sorted(coverage.items()):
@@ -815,6 +1046,7 @@ def main():
         },
         "facets": facets,
         "comprehension": comprehension,
+        "governanceTraceability": governance,
         "coverageMatrix": coverage,
         "elements": [e.to_dict() for e in all_elements],
     }
