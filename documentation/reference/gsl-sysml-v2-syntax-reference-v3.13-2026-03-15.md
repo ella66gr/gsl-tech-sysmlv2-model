@@ -1,7 +1,7 @@
 # SysML v2 Syntax Reference — Syside Modeler
 
-> **Version:** 3.13 — 15 March 2026
-> **Previous version:** v3.12 (15 March 2026). Full version history in `documentation/reference/versions/`
+> **Version:** 3.15 — 19 March 2026
+> **Previous version:** v3.14 (19 March 2026). Full version history in `documentation/reference/versions/`
 > **Purpose:** Concise reference for writing `.sysml` files against Syside Modeler.
 > Consult before writing new SysML code. Update as new patterns are verified.
 >
@@ -9,7 +9,7 @@
 > - `gsl-validated-architectural-patterns.md` — integration patterns, generation pipelines, design rationale
 > - `gsl-guide-repo-conventions.md` — file structure, generators, git practices, `gsl` toolkit
 >
-> **What's new in v3.13:** Session 31 Knowledge Graph Enhancement. `ref :>> fieldName = (targetA, targetB);` tuple redefinition between peer part usages verified — single target, multi-valued tuple, circular refs, cross-type refs, and forward references all work. This is the syntax used for the PatternCatalogue semantic relationship layer (~43 typed ref links).
+> **What's new in v3.15:** Session 43 Viewpoint/View Investigation (Stage 2 Phase 5). `viewpoint def`, `view def`, `view` usage, `expose` (wildcard, named, cross-package), and `filter` (trivial and metadata-based) all verified working. `rendering def` and `render` fail. `frame concern` and `stakeholder` in viewpoint defs trigger subject parameter constraint. See §12.
 
 ---
 
@@ -602,6 +602,124 @@ The following are reserved keywords from KerML 1.0 section 8.2.2.6 and SysML 2.0
 
 ---
 
+## 12. Views and Viewpoints (verified v3.15, Session 43)
+
+Investigated as Stage 2 Phase 5. Six test case files in `model/syntax-tests/`. Full findings in `ontara-investigation-sysml-viewpoints-2026-03-19.md`.
+
+**Visualizer support:** Syside 0.8.5 renders `viewpoint def` via "Visualize element (labs)" — displays `«viewpoint def» Name :> ViewpointCheck` with doc block. A dedicated "Visualize view (labs)" context menu option also exists for view elements.
+
+**Test file convention:** All test files retain `.sysml` extension (required for Syside language server). Verification status recorded as `VERIFIED` / `FAILED` / `MIXED` in the doc block. The `.sysml.verified` / `.sysml.failed` suffix convention was retired — it breaks syntax highlighting and parsing.
+
+### Viewpoint Definitions
+
+```sysml
+viewpoint def GovernanceViewpoint {
+    doc /* Viewpoint for stakeholders concerned with
+         * regulatory compliance and audit evidence. */
+}
+```
+
+**Bare `viewpoint def` with doc block:** ✅ Works (verified v3.15). Recognised as `ViewpointDefinition`. Viewpoints are structurally requirement defs (BNF Clause 8.2.2.26.3).
+
+**`viewpoint def` with `frame concern`:** ✗ Fails. Triggers `requirement-definition-subject-parameter-position` error: "Subject must be the first input parameter." The `frame concern` construct is parsed but violates a subject parameter ordering constraint.
+
+**`viewpoint def` with `stakeholder`:** ⚠️ Partial. Keyword recognised, element typed correctly, but subject parameter constraint cascades from sibling viewpoint defs. Needs isolation testing.
+
+### View Definitions and Usages
+
+```sysml
+view def GovernanceView {
+    doc /* A view definition for governance elements. */
+}
+
+view governanceOverview : GovernanceView {
+    doc /* Concrete governance overview. */
+}
+
+view simpleView {
+    doc /* Standalone untyped view. */
+}
+```
+
+**`view def`:** ✅ Works (verified v3.15).
+
+**`view` usage (typed by view def):** ✅ Works (verified v3.15).
+
+**`view` usage (untyped):** ✅ Works (verified v3.15).
+
+### Expose
+
+```sysml
+view allDomainView {
+    expose SampleDomain::*;                     // wildcard ✅
+}
+
+view widgetOnlyView {
+    expose SampleDomain::Widget;                // named ✅
+}
+
+view crossPackageView {
+    expose BusinessModel::GovernanceMapping::*;  // cross-package ✅
+    expose BusinessModel::FinancialPlanning::*;  // multiple exposes ✅
+}
+```
+
+**`expose` (wildcard):** ✅ Works (verified v3.15). Follows `NamespaceImport` syntax.
+
+**`expose` (named element):** ✅ Works (verified v3.15). Follows `MembershipImport` syntax.
+
+**`expose` (cross-package, against live model):** ✅ Works (verified v3.15). Resolves `BusinessModel::GovernanceMapping::*` and `BusinessModel::FinancialPlanning::*` correctly via cross-project import resolution.
+
+**Multiple `expose` in one view:** ✅ Works (verified v3.15).
+
+### Filter
+
+```sysml
+view trivialFilterView {
+    expose SampleElements::*;
+    filter true;                    // trivial expression ✅
+}
+
+view metadataFilterView {
+    expose SampleElements::*;
+    filter @SampleTag;              // metadata-based ✅
+}
+```
+
+**`filter true`:** ✅ Parses (verified v3.15). Trivial Boolean filter expression accepted.
+
+**`filter @MetadataType`:** ✅ Parses (verified v3.15). Metadata-based filter expression accepted. Note: filter *evaluation* (Tier 3) is not yet available in Syside — the expression parses but cannot be computed at model evaluation time.
+
+### Rendering
+
+```sysml
+rendering def SimpleTableRendering {
+    doc /* A simple table rendering. */
+}
+
+view renderedView {
+    expose SampleParts::*;
+    render SimpleTableRendering;    // ✗ fails
+}
+```
+
+**`rendering def`:** ✗ Fails (v3.15). `reference-error`: "Expected Feature element but found RenderingDefinition." The construct is parsed at the lexer level but produces a semantic error.
+
+**`render` in view body:** ✗ Fails (v3.15). Cannot resolve rendering reference. Cascading from `rendering def` failure.
+
+**Note:** The January 2026 Sensmetry forum confirmed rendering from modelled views is "still a work in progress." This finding is consistent. The Ontara Console provides its own rendering via SvelteKit, so this is not a blocking issue.
+
+### ⚠️ Traps
+
+| Trap | Error | Fix |
+|---|---|---|
+| `frame concern` inside `viewpoint def` | `requirement-definition-subject-parameter-position` | Use bare `viewpoint def` with doc block only |
+| `stakeholder` inside `viewpoint def` | Cascading subject parameter constraint | Use bare `viewpoint def` with doc block only |
+| `rendering def` | `reference-error`: "Expected Feature element" | Do not use `rendering def`. Console provides rendering. |
+| `render` inside `view` | Cannot resolve rendering | Do not use `render`. Console provides rendering. |
+
+---
+
 ## TODO: Patterns Not Yet Verified
 
 - [ ] Port definitions and connections
@@ -610,7 +728,7 @@ The following are reserved keywords from KerML 1.0 section 8.2.2.6 and SysML 2.0
 - [x] `metadata def` applied to `requirement def` elements — **verified v3.14** (Session 42). `@CatalogueTag` and `@UserFacing` on `requirement def GovernanceRequirement`.
 - [ ] `metadata def` applied to `state def` elements
 - [ ] `use case def` with `include use case`, `extend use case`, `subject`, `actor`
-- [ ] SysML v2 `view` and `viewpoint` elements — Sensmetry forum (Jan 2026) confirms rendering from modelled views is "still a work in progress." Deferred.
+- [x] SysML v2 `view` and `viewpoint` elements — **verified v3.15** (Session 43). `viewpoint def`, `view def`, `view`, `expose`, `filter` all work. `rendering def`/`render` fail. `frame concern`/`stakeholder` in viewpoints fail. See §12.
 - [ ] Syside CLI `viz` command for headless diagram export
 - [ ] Generator: `gen_temporal_workflow.py` emitting `tryTransition()` from `@StateTransitionTrigger`
 - [ ] Generator: `Promise.all()` from SysML `fork`/`join`
@@ -624,6 +742,7 @@ The following are reserved keywords from KerML 1.0 section 8.2.2.6 and SysML 2.0
 
 | Version | Date | Key additions |
 |---|---|---|
+| 3.15 | 19 Mar 2026 | **Session 43 Viewpoint/View Investigation (Stage 2 Phase 5).** New §12: `viewpoint def` (bare) verified; `view def` and `view` (typed + untyped) verified; `expose` (wildcard, named, cross-package against live model) verified; `filter` (trivial + metadata-based) verified; `rendering def` fails (reference-error); `render` in view fails; `frame concern` and `stakeholder` in viewpoint defs fail (subject parameter constraint). Six test case files in `model/syntax-tests/`. |
 | 3.14 | 19 Mar 2026 | Metadata annotation conventions: Position A (prefix, before element) adopted; one annotation per metaclass per element (stacking two `@Tag` fails); `concern` triggers parser error despite not being KerML reserved (use `bmmConcern`); metadata import required at consuming package level (`private import Foundation::MetadataLibrary::*`); `@CatalogueTag` and `@UserFacing` validated on `part def`s. **Session 42 additions:** `@CatalogueTag` and `@UserFacing` on `requirement def` verified; cross-package satisfy (exercise → model) verified; `constraint def` with Boolean `and` and `<=` operators verified. |
 | 3.13 | 15 Mar 2026 | `ref :>>` tuple redefinition verified (single, multi-valued, circular, cross-type, forward reference). PatternCatalogue knowledge graph: 43 typed ref links across 20 patterns. |
 | 3.12 | 15 Mar 2026 | `ref x : MetadataDef` and `ref x : EnumDef` verified (singular + multi-valued), `system` reserved word (silent failure), enum-typed attribute on metadata def verified, cross-project specific named imports fail, **wildcard import name collision** (silent resolution, downstream type-errors), multi-valued enum attribute on part def verified |
