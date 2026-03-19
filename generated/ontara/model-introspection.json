@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-19T15:36:38.374183",
+  "generatedAt": "2026-03-19T17:51:43.432542",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
@@ -8,34 +8,34 @@
       "elementCount": 430
     },
     "csw": {
-      "label": "Coffee Shop (CSW)",
-      "description": "Coffee shop demonstrator \u2014 reference validation domain",
+      "label": "Cafe (Coffee Shop)",
+      "description": "Cafe demonstrator \u2014 reference validation domain",
       "elementCount": 110
     },
     "suds": {
-      "label": "Laundry (Suds)",
+      "label": "Suds (Laundry)",
       "description": "Laundry service demonstrator \u2014 cross-domain validation",
-      "elementCount": 39
+      "elementCount": 50
     }
   },
   "summary": {
-    "totalElements": 579,
+    "totalElements": 590,
     "byKind": {
       "part_def": 116,
-      "part": 395,
+      "part": 406,
       "enum_def": 51,
       "requirement": 5,
       "metadata_def": 12
     },
     "byLayer": {
       "bmm": 185,
-      "domain": 172,
+      "domain": 183,
       "bsmm": 222
     },
     "byDomain": {
       "core": 430,
       "csw": 110,
-      "suds": 39
+      "suds": 50
     }
   },
   "facets": {
@@ -331,6 +331,16 @@
             "name": "patientPortalVisibility",
             "package": "ServiceConcept"
           }
+        ],
+        "suds": [
+          {
+            "name": "reliableTurnaround",
+            "package": "SudsBusinessModel"
+          },
+          {
+            "name": "transparentPricing",
+            "package": "SudsBusinessModel"
+          }
         ]
       }
     },
@@ -390,6 +400,20 @@
             "name": "oatBarCatalogue",
             "package": "CoffeeShopBusinessModel"
           }
+        ],
+        "suds": [
+          {
+            "name": "standardWashCatalogue",
+            "package": "SudsBusinessModel"
+          },
+          {
+            "name": "delicatesWashCatalogue",
+            "package": "SudsBusinessModel"
+          },
+          {
+            "name": "expressWashCatalogue",
+            "package": "SudsBusinessModel"
+          }
         ]
       }
     },
@@ -408,6 +432,16 @@
           {
             "name": "externalRefs",
             "package": "CoffeeShop"
+          }
+        ],
+        "suds": [
+          {
+            "name": "coshhGuidance",
+            "package": "SudsGovernance"
+          },
+          {
+            "name": "detergentSafetyDataSheet",
+            "package": "SudsGovernance"
           }
         ]
       }
@@ -587,7 +621,18 @@
         "classification": "General"
       },
       "userFacing": {},
-      "domains": {}
+      "domains": {
+        "suds": [
+          {
+            "name": "washCycleCostAllocation",
+            "package": "SudsBusinessModel"
+          },
+          {
+            "name": "receiveAndTagCostAllocation",
+            "package": "SudsBusinessModel"
+          }
+        ]
+      }
     },
     "ResourceType": {
       "name": "ResourceType",
@@ -1052,6 +1097,14 @@
         "suds": [
           {
             "name": "standardWashEconomics",
+            "package": "SudsResourceFinancial"
+          },
+          {
+            "name": "delicatesWashEconomics",
+            "package": "SudsResourceFinancial"
+          },
+          {
+            "name": "expressWashEconomics",
             "package": "SudsResourceFinancial"
           }
         ]
@@ -23818,7 +23871,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 34,
+      "lineNumber": 38,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -23851,7 +23904,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 41,
+      "lineNumber": 45,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -23894,7 +23947,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 52,
+      "lineNumber": 56,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -23937,7 +23990,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 64,
+      "lineNumber": 68,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -23980,7 +24033,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 75,
+      "lineNumber": 79,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -24018,7 +24071,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 83,
+      "lineNumber": 87,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -24056,7 +24109,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 94,
+      "lineNumber": 98,
       "specialises": "Channel",
       "attributes": [
         {
@@ -24099,7 +24152,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 103,
+      "lineNumber": 107,
       "specialises": "Channel",
       "attributes": [
         {
@@ -24136,13 +24189,223 @@
     },
     {
       "kind": "part",
+      "name": "reliableTurnaround",
+      "parentPackage": "SudsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 118,
+      "specialises": "DifferentiationClaim",
+      "attributes": [
+        {
+          "name": "claimName",
+          "value": "Reliable turnaround times",
+          "isRedefinition": true
+        },
+        {
+          "name": "statement",
+          "value": "We guarantee same-day for express and next-day for standard \u2014 or the service is free",
+          "isRedefinition": true
+        },
+        {
+          "name": "basis",
+          "value": "Process design with batch scheduling and capacity management ensures predictable turnaround",
+          "isRedefinition": true
+        },
+        {
+          "name": "testability",
+          "value": "Track turnaround times per order",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "transparentPricing",
+      "parentPackage": "SudsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 125,
+      "specialises": "DifferentiationClaim",
+      "attributes": [
+        {
+          "name": "claimName",
+          "value": "Transparent per-kg pricing",
+          "isRedefinition": true
+        },
+        {
+          "name": "statement",
+          "value": "Simple, clear pricing with no hidden charges \u2014 weighed in front of you at drop-off",
+          "isRedefinition": true
+        },
+        {
+          "name": "basis",
+          "value": "Per-kg model with published surcharge schedule",
+          "isRedefinition": true
+        },
+        {
+          "name": "testability",
+          "value": "Customer pricing complaints",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "standardWashCatalogue",
+      "parentPackage": "SudsBusinessModel",
+      "doc": "Standard wash offering as a catalogue entry.\nPer-kg pricing, no minimum for walk-in.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 139,
+      "specialises": "CatalogueEntry",
+      "attributes": [
+        {
+          "name": "entryName",
+          "value": "Standard Wash",
+          "isRedefinition": true
+        },
+        {
+          "name": "itemReference",
+          "value": "standardWash",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingDescription",
+          "value": "\u00a32.50 per kg",
+          "isRedefinition": true
+        },
+        {
+          "name": "availabilityStatus",
+          "value": "active",
+          "isRedefinition": true
+        },
+        {
+          "name": "provisionType",
+          "value": "service",
+          "isRedefinition": true
+        },
+        {
+          "name": "effectiveDate",
+          "value": "2026-03-19",
+          "isRedefinition": true
+        },
+        {
+          "name": "statusNotes",
+          "value": "Core offering \u2014 available daily",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "delicatesWashCatalogue",
+      "parentPackage": "SudsBusinessModel",
+      "doc": "Delicates wash \u2014 specialist handling, higher price.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 151,
+      "specialises": "CatalogueEntry",
+      "attributes": [
+        {
+          "name": "entryName",
+          "value": "Delicates Wash",
+          "isRedefinition": true
+        },
+        {
+          "name": "itemReference",
+          "value": "delicatesWash",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingDescription",
+          "value": "\u00a33.75 per kg (+50% surcharge)",
+          "isRedefinition": true
+        },
+        {
+          "name": "availabilityStatus",
+          "value": "active",
+          "isRedefinition": true
+        },
+        {
+          "name": "provisionType",
+          "value": "service",
+          "isRedefinition": true
+        },
+        {
+          "name": "effectiveDate",
+          "value": "2026-03-19",
+          "isRedefinition": true
+        },
+        {
+          "name": "statusNotes",
+          "value": "Specialist handling \u2014 lower temperature, gentle cycle",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "expressWashCatalogue",
+      "parentPackage": "SudsBusinessModel",
+      "doc": "Express wash \u2014 same-day premium service.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 162,
+      "specialises": "CatalogueEntry",
+      "attributes": [
+        {
+          "name": "entryName",
+          "value": "Express Wash",
+          "isRedefinition": true
+        },
+        {
+          "name": "itemReference",
+          "value": "expressWash",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingDescription",
+          "value": "\u00a35.00 per kg (+100% surcharge)",
+          "isRedefinition": true
+        },
+        {
+          "name": "availabilityStatus",
+          "value": "active",
+          "isRedefinition": true
+        },
+        {
+          "name": "provisionType",
+          "value": "service",
+          "isRedefinition": true
+        },
+        {
+          "name": "effectiveDate",
+          "value": "2026-03-19",
+          "isRedefinition": true
+        },
+        {
+          "name": "statusNotes",
+          "value": "Same-day 4-hour turnaround guarantee",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
       "name": "receiveAndTag",
       "parentPackage": "SudsBusinessModel",
       "doc": "Service delivery: intake. Customer drops off bag,\nitems are inspected, counted, weighed, and tagged.\nThis is the first customer touchpoint in the process.",
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 118,
+      "lineNumber": 179,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24180,7 +24443,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 129,
+      "lineNumber": 190,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24218,7 +24481,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 140,
+      "lineNumber": 201,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24256,7 +24519,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 152,
+      "lineNumber": 213,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24294,7 +24557,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 163,
+      "lineNumber": 224,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24332,7 +24595,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 173,
+      "lineNumber": 234,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24370,7 +24633,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 183,
+      "lineNumber": 244,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24408,7 +24671,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 193,
+      "lineNumber": 254,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24446,7 +24709,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 204,
+      "lineNumber": 265,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24484,7 +24747,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 212,
+      "lineNumber": 273,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24522,7 +24785,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 222,
+      "lineNumber": 283,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -24555,7 +24818,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 232,
+      "lineNumber": 293,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -24588,7 +24851,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 239,
+      "lineNumber": 300,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -24621,7 +24884,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 246,
+      "lineNumber": 307,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -24654,7 +24917,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 253,
+      "lineNumber": 314,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -24681,13 +24944,79 @@
     },
     {
       "kind": "part",
+      "name": "washCycleCostAllocation",
+      "parentPackage": "SudsBusinessModel",
+      "doc": "Cost allocation for the wash cycle activity. Variable\ncosts: utilities (water, electricity) and chemicals\nper kg of laundry processed.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 326,
+      "specialises": "ActivityCostAllocation",
+      "attributes": [
+        {
+          "name": "activityType",
+          "value": "Wash cycle",
+          "isRedefinition": true
+        },
+        {
+          "name": "allocationMethod",
+          "value": "per-kg variable cost",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedCostPerUnit",
+          "value": "1.00",
+          "isRedefinition": true
+        },
+        {
+          "name": "costNotes",
+          "value": "Utilities \u00a30.60/kg + chemicals \u00a30.40/kg. Machine lease costs allocated separately as fixed overhead.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "receiveAndTagCostAllocation",
+      "parentPackage": "SudsBusinessModel",
+      "doc": "Cost allocation for receive-and-tag. Pure labour cost\nat operator hourly rate, prorated per order.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 336,
+      "specialises": "ActivityCostAllocation",
+      "attributes": [
+        {
+          "name": "activityType",
+          "value": "Receive and tag items",
+          "isRedefinition": true
+        },
+        {
+          "name": "allocationMethod",
+          "value": "labour time allocation",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedCostPerUnit",
+          "value": "1.92",
+          "isRedefinition": true
+        },
+        {
+          "name": "costNotes",
+          "value": "10 min at \u00a311.50/hr = \u00a31.92 per order. Direct labour, no materials.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
       "name": "laundryOperator",
       "parentPackage": "SudsResourceFinancial",
       "doc": "",
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 272,
+      "lineNumber": 357,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -24725,7 +25054,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 280,
+      "lineNumber": 365,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -24763,7 +25092,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 290,
+      "lineNumber": 375,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -24801,7 +25130,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 298,
+      "lineNumber": 383,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -24839,7 +25168,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 306,
+      "lineNumber": 391,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -24877,7 +25206,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 314,
+      "lineNumber": 399,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -24915,7 +25244,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 327,
+      "lineNumber": 412,
       "specialises": "Capability",
       "attributes": [
         {
@@ -24948,7 +25277,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 336,
+      "lineNumber": 421,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -24986,7 +25315,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 346,
+      "lineNumber": 431,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -25024,7 +25353,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 360,
+      "lineNumber": 445,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -25062,7 +25391,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 370,
+      "lineNumber": 455,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -25100,7 +25429,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 378,
+      "lineNumber": 463,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -25138,7 +25467,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 388,
+      "lineNumber": 473,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -25176,7 +25505,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 396,
+      "lineNumber": 481,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -25214,7 +25543,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 406,
+      "lineNumber": 491,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -25246,13 +25575,89 @@
     },
     {
       "kind": "part",
+      "name": "delicatesWashEconomics",
+      "parentPackage": "SudsResourceFinancial",
+      "doc": "Per-kg economics for delicates wash. Higher revenue\n(\u00a33.75/kg) but also higher cost due to specialist\nhandling and longer cycle times.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 502,
+      "specialises": "UnitEconomics",
+      "attributes": [
+        {
+          "name": "offeringRef",
+          "value": "Delicates wash",
+          "isRedefinition": true
+        },
+        {
+          "name": "revenuePerUnit",
+          "value": "3.75",
+          "isRedefinition": true
+        },
+        {
+          "name": "costPerUnit",
+          "value": "2.20",
+          "isRedefinition": true
+        },
+        {
+          "name": "marginPerUnit",
+          "value": "1.55",
+          "isRedefinition": true
+        },
+        {
+          "name": "breakdownNotes",
+          "value": "Labour \u00a30.80/kg (slower handling), utilities \u00a30.60/kg, specialist chemicals \u00a30.50/kg, pressing \u00a30.30/kg. Rent and lease excluded.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "expressWashEconomics",
+      "parentPackage": "SudsResourceFinancial",
+      "doc": "Per-kg economics for express wash. Double the standard\nprice, but same direct costs \u2014 the premium covers\nopportunity cost of priority scheduling.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 513,
+      "specialises": "UnitEconomics",
+      "attributes": [
+        {
+          "name": "offeringRef",
+          "value": "Express wash",
+          "isRedefinition": true
+        },
+        {
+          "name": "revenuePerUnit",
+          "value": "5.00",
+          "isRedefinition": true
+        },
+        {
+          "name": "costPerUnit",
+          "value": "1.70",
+          "isRedefinition": true
+        },
+        {
+          "name": "marginPerUnit",
+          "value": "3.30",
+          "isRedefinition": true
+        },
+        {
+          "name": "breakdownNotes",
+          "value": "Same direct costs as standard (\u00a31.50/kg) + priority scheduling overhead \u00a30.20/kg. Premium pricing covers scheduling disruption.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
       "name": "perKgPricing",
       "parentPackage": "SudsResourceFinancial",
       "doc": "Per-kg pricing with surcharges. Standard wash \u00a32.50/kg.\nDelicates +50% surcharge. Express +100% surcharge.\nMinimum order 3 kg.",
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 419,
+      "lineNumber": 526,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -25278,6 +25683,72 @@
         {
           "name": "applicableOfferings",
           "value": "Standard wash, Delicates wash, Express wash",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "coshhGuidance",
+      "parentPackage": "SudsGovernance",
+      "doc": "HSE COSHH guidance \u2014 the primary regulatory reference\nfor handling cleaning chemicals in a workplace.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 574,
+      "specialises": "ExternalReference",
+      "attributes": [
+        {
+          "name": "referenceType",
+          "value": "regulatory guidance",
+          "isRedefinition": true
+        },
+        {
+          "name": "referenceId",
+          "value": "HSE-COSHH-2002",
+          "isRedefinition": true
+        },
+        {
+          "name": "referenceSource",
+          "value": "Health and Safety Executive \u2014 www.hse.gov.uk/coshh",
+          "isRedefinition": true
+        },
+        {
+          "name": "referenceNotes",
+          "value": "COSHH Regulations 2002. Employer duties for substances hazardous to health. Risk assessment, safe storage, training, PPE.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "detergentSafetyDataSheet",
+      "parentPackage": "SudsGovernance",
+      "doc": "Safety Data Sheet (SDS) for commercial laundry\ndetergent \u2014 specific to supplier and product.\nCOSHH requires current SDS for every chemical used.",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 583,
+      "specialises": "ExternalReference",
+      "attributes": [
+        {
+          "name": "referenceType",
+          "value": "safety data sheet",
+          "isRedefinition": true
+        },
+        {
+          "name": "referenceId",
+          "value": "SDS-DETERGENT-001",
+          "isRedefinition": true
+        },
+        {
+          "name": "referenceSource",
+          "value": "Supplier-provided \u2014 updated annually",
+          "isRedefinition": true
+        },
+        {
+          "name": "referenceNotes",
+          "value": "Mandatory under COSHH. Covers composition, hazards, first aid, handling, storage, exposure controls, disposal.",
           "isRedefinition": true
         }
       ]
