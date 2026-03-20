@@ -70,6 +70,9 @@ package BusinessModel {
             friendlyName = "Customer Segment";
             shortDescription = "A defined group of customers with shared needs and willingness to pay.";
         }
+        @PurposiveDescription {
+            description = "A group of people your service is designed for — people who share similar needs and reasons for choosing you. When you define your customer segments, the system uses them to connect your value propositions, pricing, and channels to the right audiences.";
+        }
         part def CustomerSegment {
             doc /* A defined group of customers with shared needs,
                  * behaviours, and willingness to pay. Each segment
@@ -87,6 +90,9 @@ package BusinessModel {
             friendlyName = "Value Proposition";
             shortDescription = "A promise of value to a customer segment — what they get and why it matters.";
         }
+        @PurposiveDescription {
+            description = "The core promise your service makes to a particular group of customers — what they get from you and why they'd choose you over the alternatives. When you define a value proposition, the system holds it as the anchor that your activities, resources, and pricing all exist to deliver.";
+        }
         part def ValueProposition {
             doc /* A specific promise of value to a specific customer
                  * segment. Defines what the customer gets, how it
@@ -102,6 +108,9 @@ package BusinessModel {
         @UserFacing {
             friendlyName = "Service Offering";
             shortDescription = "A packaged unit of service that can be priced, resourced, and delivered to customers.";
+        }
+        @PurposiveDescription {
+            description = "A distinct service that your business offers — something a customer can choose, pay for, and receive. When you define a service offering, the system connects it to the activities required to deliver it, the resources it consumes, and the price the customer pays.";
         }
         part def ServiceOffering {
             doc /* A packaged, deliverable unit of service that realises
@@ -121,6 +130,13 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Channel";
+            shortDescription = "A way that customers find, reach, or receive your service.";
+        }
+        @PurposiveDescription {
+            description = "A way that customers find you, reach you, or receive your service — your website, a referral network, a walk-in counter, an app. When you define your channels, the system tracks which customer segments each channel serves and how your service offerings are delivered through them.";
+        }
         part def Channel {
             doc /* A means by which customers discover, access, and
                  * interact with the service. Channels have reach,
@@ -134,6 +150,13 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Differentiation Claim";
+            shortDescription = "An explicit, testable statement of how your service differs from alternatives.";
+        }
+        @PurposiveDescription {
+            description = "An explicit statement of how your service differs from the alternatives, from the customer's perspective. Each claim should be testable — something you can back up with evidence. When you define differentiation claims, the system records them as commitments your service is designed to fulfil.";
+        }
         part def DifferentiationClaim {
             doc /* An explicit statement of how this service differs
                  * from available alternatives, from the customer's
@@ -157,6 +180,13 @@ package BusinessModel {
         // these generic shapes.
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Catalogue Entry";
+            shortDescription = "A record of something your business has decided to offer, with its price and status.";
+        }
+        @PurposiveDescription {
+            description = "A record of something your business has decided to offer — whether that's a menu item, a treatment, a course, or any other unit you sell or provide. The catalogue entry connects what the thing intrinsically is to how your business offers it: its price, availability, and status. When you add a catalogue entry, the system tracks it as part of your active offering.";
+        }
         part def CatalogueEntry {
             doc /* The business decision to offer an item for sale or
                  * use within a service. References an item definition
@@ -183,6 +213,13 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "External Reference";
+            shortDescription = "A link to authoritative knowledge that lives outside your system.";
+        }
+        @PurposiveDescription {
+            description = "A link to knowledge that lives outside your system — a supplier datasheet, a regulatory standard, a clinical guideline, an accreditation body. The system doesn't own this information; it points to it, so you always know where authoritative external knowledge sits in relation to your service.";
+        }
         part def ExternalReference {
             doc /* A link to knowledge that lives outside the system.
                  * The system does not own this data; it points to it.
@@ -438,6 +475,9 @@ package BusinessModel {
             friendlyName = "Activity Type";
             shortDescription = "A defined kind of business activity, classified into one of five categories.";
         }
+        @PurposiveDescription {
+            description = "Something your business does — an identifiable unit of work that the system holds, tracks, and uses. In this system, every activity is an activity of one of the following types: service delivery, enabling, governance, development, or overhead. When you assign one of these types to an activity, the system will use that information to plan resources, allocate costs, and verify that governance requirements are being met for each kind of work.";
+        }
         part def ActivityType {
             doc /* A defined type of activity within the business.
                  * Every activity has a type, and every type belongs
@@ -450,6 +490,13 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Activity Record";
+            shortDescription = "A recorded instance of an activity that actually happened.";
+        }
+        @PurposiveDescription {
+            description = "A recorded instance of an activity that actually happened — the system's record that a specific piece of work was done, by whom, for how long, and using what resources. At the most detailed tracking level, the system creates one of these for every observable activity. At coarser levels, they are estimated aggregates.";
+        }
         part def ActivityRecord {
             doc /* A recorded instance of an activity. At the tracked
                  * level, the system produces these for every observable
@@ -463,6 +510,13 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Activity Budget";
+            shortDescription = "A planned allocation of activity volume by type and period.";
+        }
+        @PurposiveDescription {
+            description = "A planned allocation of how much activity of each type your business expects in a given period — the activity-level equivalent of a financial budget. When you define an activity budget, the system can compare what actually happened against what was planned, and surface gaps.";
+        }
         part def ActivityBudget {
             doc /* A planned allocation of activity volume by type,
                  * period, and resource. The activity-level equivalent
@@ -475,6 +529,13 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Activity Granularity";
+            shortDescription = "A policy declaration of how precisely activity is tracked in a given area.";
+        }
+        @PurposiveDescription {
+            description = "A policy declaration: how precisely does your business track activity in a given area? The system supports three levels — envelope (a rough total), category (broken down by type), and tracked (every individual activity recorded). Different parts of your business can operate at different levels at the same time, and you can refine the level as your needs evolve.";
+        }
         part def ActivityGranularity {
             doc /* Policy declaration: the granularity level at which
                  * activity is tracked for a given business area. */
@@ -485,6 +546,13 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Activity Cost Allocation";
+            shortDescription = "The mapping from an activity type to its financial cost.";
+        }
+        @PurposiveDescription {
+            description = "The mapping from an activity to its financial cost — how much does it cost each time this kind of work is done? When you define cost allocations, the system can connect your activity model to your financial model, making resource consumption visible in financial terms.";
+        }
         part def ActivityCostAllocation {
             doc /* The mapping from an activity (or aggregate) to its
                  * financial cost. Makes resource consumption visible
@@ -524,6 +592,9 @@ package BusinessModel {
             friendlyName = "Resource Type";
             shortDescription = "A category of resource needed to run the service — people, equipment, premises, or external services.";
         }
+        @PurposiveDescription {
+            description = "A kind of thing your business needs in order to operate — staff, equipment, premises, technology, or external services such as a laboratory or a contractor. The system holds each resource type as a tracked concept. When you define your resource types, the system uses them to plan capacity, understand your cost base, and identify where you might be constrained.";
+        }
         part def ResourceType {
             doc /* A category of resource required to operate the
                  * service delivery system. Each type has acquisition
@@ -537,6 +608,13 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Resource Instance";
+            shortDescription = "A specific resource available at a defined capacity and cost.";
+        }
+        @PurposiveDescription {
+            description = "A specific resource available to your business at a defined capacity and cost — not a named individual, but a planning-level description like 'a prescribing clinician at 0.5 FTE' or 'one licensed copy of the booking system'. When you define resource instances, the system uses them to model your actual operating capacity.";
+        }
         part def ResourceInstance {
             doc /* A specific resource available to the business at
                  * a defined capacity and cost. Represents planning-
@@ -554,6 +632,9 @@ package BusinessModel {
         @UserFacing {
             friendlyName = "Capability";
             shortDescription = "An organised combination of resources that produces a defined service function.";
+        }
+        @PurposiveDescription {
+            description = "An organised combination of resources that together produce a defined service function — like 'the ability to conduct a monitoring review' (which requires a clinician, a lab interface, and a clinical record system). You don't deliver services with individual resources; you deliver them with capabilities. When you define capabilities, the system connects your resources to the service offerings they enable.";
         }
         part def Capability {
             doc /* An organised combination of resources that produces
@@ -575,6 +656,13 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Capacity Model";
+            shortDescription = "The relationship between your resource configuration and service throughput.";
+        }
+        @PurposiveDescription {
+            description = "The relationship between your resource configuration and how much service you can deliver — for example, 'with one clinician at 0.5 FTE, we can support 20 active patients.' This is a planning assertion that the system holds, not a computed formula. When you define a capacity model, the system knows your throughput limits and can surface when you're approaching them.";
+        }
         part def CapacityModel {
             doc /* The relationship between resource configuration and
                  * service throughput. A planning assertion, not a
@@ -593,6 +681,13 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Resource Constraint";
+            shortDescription = "A limit on resource availability that affects service delivery.";
+        }
+        @PurposiveDescription {
+            description = "A limit on the availability or use of a resource that affects your ability to deliver services — regulatory, financial, temporal, or contractual. When you define resource constraints, the system tracks them alongside your resources so that capacity planning reflects real-world limits, not just theoretical availability.";
+        }
         part def ResourceConstraint {
             doc /* A constraint on resource availability or use that
                  * affects service delivery. May be regulatory,
@@ -618,6 +713,13 @@ package BusinessModel {
         // Source: gsl-spec-catalogue-inventory-v2.1.md §8.2
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Inventory Record";
+            shortDescription = "A point-in-time record of stock level for a catalogue item.";
+        }
+        @PurposiveDescription {
+            description = "A point-in-time record of how much stock you have of something in your catalogue — how many tablets, how many bags of coffee beans, how many bottles of cleaning product. This is operational tracking: it tells the system what you have right now, so it can flag when you're running low. Distinct from resource planning, which is about strategic capacity.";
+        }
         part def InventoryRecord {
             doc /* A point-in-time record of stock level for an item
                  * in the catalogue. References a catalogue entry
@@ -875,6 +977,13 @@ package BusinessModel {
         // relationships to constraint usages if needed).
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Objective–Capability Mapping";
+            shortDescription = "A declared connection between a strategic objective and the capabilities that support it.";
+        }
+        @PurposiveDescription {
+            description = "A declared connection between a strategic objective and the capabilities that contribute to achieving it. When you map objectives to capabilities, the system can trace from 'what are we trying to achieve?' down to 'what resources and service functions make that possible?' — closing the loop between strategy and operations.";
+        }
         part def ObjectiveCapabilityMapping {
             doc /* Maps a StrategicObjective to the Capability
                  * usages that contribute to achieving it.
@@ -945,6 +1054,9 @@ package BusinessModel {
             friendlyName = "Revenue Stream";
             shortDescription = "A mechanism by which the business generates income from its services.";
         }
+        @PurposiveDescription {
+            description = "A way your business earns money — each revenue stream connects a customer segment, a triggering event (like completing an assessment or renewing a subscription), and a pricing model. When you define your revenue streams, the system can project income and connect it to the services that generate it.";
+        }
         part def RevenueStream {
             doc /* A mechanism by which income is generated. */
             attribute streamName : String;
@@ -958,6 +1070,9 @@ package BusinessModel {
         @UserFacing {
             friendlyName = "Cost Driver";
             shortDescription = "A structural factor that generates cost in the business — linked to a resource or activity.";
+        }
+        @PurposiveDescription {
+            description = "A structural factor that generates cost in your business — something that, as it scales or recurs, drives your expenditure. Each cost driver is linked to a resource or an activity. When you define your cost drivers, the system connects your cost structure to the resources and activities that produce it, so you can see where money goes and why.";
         }
         part def CostDriver {
             doc /* A structural factor that generates cost. */
@@ -973,6 +1088,9 @@ package BusinessModel {
             friendlyName = "Unit Economics";
             shortDescription = "The revenue, cost, and margin for a single unit of service delivery.";
         }
+        @PurposiveDescription {
+            description = "The financial profile of delivering one unit of a service — what you earn, what it costs, and the margin between them. When you define unit economics for each service offering, the system can assess whether individual services are financially viable and how changes to pricing or costs would affect the picture.";
+        }
         part def UnitEconomics {
             doc /* The financial profile of a single unit of service delivery. */
             attribute offeringRef : String;
@@ -987,6 +1105,9 @@ package BusinessModel {
             friendlyName = "Pricing Model";
             shortDescription = "How prices are set for services — per-episode, subscription, tiered, or other basis.";
         }
+        @PurposiveDescription {
+            description = "The logic that determines what a customer pays for a service — per-episode, subscription, tiered, sliding scale, or flat fee. When you define a pricing model, the system applies it to the relevant service offerings and uses it in revenue projections and unit economics calculations.";
+        }
         part def PricingModel {
             doc /* The logic that determines what a customer pays. */
             attribute pricingModelName : String;
@@ -997,6 +1118,13 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "FinancialModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Financial Projection";
+            shortDescription = "A forward-looking financial picture combining revenues, costs, and growth assumptions.";
+        }
+        @PurposiveDescription {
+            description = "A named projection of your business's financial future over a defined period — combining your revenue streams, cost drivers, and growth assumptions into a forward-looking picture. When you define a financial projection, the system links it to a scenario so you can compare different versions of the future side by side.";
+        }
         part def FinancialProjection {
             doc /* A named financial projection linked to a scenario.
                  * Lightweight placeholder — full mechanics in
@@ -1208,6 +1336,9 @@ package BusinessModel {
             friendlyName = "Governance Requirement";
             shortDescription = "A regulatory or standards obligation that the business must satisfy, with defined evidence.";
         }
+        @PurposiveDescription {
+            description = "A regulatory, legal, or standards obligation that your business must satisfy — and the system tracks it as a concrete, testable commitment, not just a policy statement. Each governance requirement is connected to the evidence that demonstrates compliance and, where formalised, to the constraint rules that the system can check. When you define governance requirements, the system builds a traceability chain from obligation through to proof.";
+        }
         requirement def GovernanceRequirement {
             doc /* A regulatory, legal, or standards obligation that
                  * the business must satisfy. General vocabulary —
@@ -1233,6 +1364,9 @@ package BusinessModel {
         @UserFacing {
             friendlyName = "Audit Evidence Record";
             shortDescription = "A record that demonstrates compliance with a governance requirement — the proof that obligations are met.";
+        }
+        @PurposiveDescription {
+            description = "A record that proves your business is meeting a governance requirement — what was checked, when, by whom, and how often. The system tracks these as concrete evidence items tied to specific obligations. When you define audit evidence records, the system knows what proof exists and can surface gaps where evidence is missing or overdue.";
         }
         part def AuditEvidenceRecord {
             doc /* A record or document that provides evidence of

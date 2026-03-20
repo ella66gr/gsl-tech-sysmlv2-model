@@ -145,6 +145,7 @@ class SysmlElement:
         # Stage 2 Phase 2: metadata annotation data
         self.catalogue_tag = {}       # {"bmmConcern": "...", "classification": "..."}
         self.user_facing = {}         # {"friendlyName": "...", "shortDescription": "..."}
+        self.purposive_description = {}  # {"description": "..."}
         self.annotations = []         # all prefix annotations for future extensibility
 
     def to_dict(self):
@@ -167,6 +168,8 @@ class SysmlElement:
             d["catalogueTag"] = self.catalogue_tag
         if self.user_facing:
             d["userFacing"] = self.user_facing
+        if self.purposive_description:
+            d["purposiveDescription"] = self.purposive_description
         if self.annotations:
             d["annotations"] = self.annotations
         return d
@@ -362,6 +365,8 @@ def parse_sysml_file(filepath, domain_key):
                 elem.catalogue_tag = dict(a_attrs)
             elif a_name == "UserFacing":
                 elem.user_facing = dict(a_attrs)
+            elif a_name == "PurposiveDescription":
+                elem.purposive_description = dict(a_attrs)
             elem.annotations.append({"name": a_name, "attrs": dict(a_attrs)})
         pending_annotations = []
     
@@ -753,10 +758,10 @@ def classify_meta_model_layer(elem):
 def build_coverage_matrix(all_elements):
     """Build a matrix of which meta model defs are instantiated per domain."""
     
-    # Find all part defs from BMM and BSMM
+    # Find all part defs and requirement defs from BMM and BSMM
     meta_defs = {}
     for elem in all_elements:
-        if elem.kind == "part_def" and elem.meta_model_layer in ("bmm", "bsmm"):
+        if elem.kind in ("part_def", "requirement_def") and elem.meta_model_layer in ("bmm", "bsmm"):
             meta_defs[elem.name] = {
                 "name": elem.name,
                 "layer": elem.meta_model_layer,
@@ -765,12 +770,13 @@ def build_coverage_matrix(all_elements):
                 # Stage 2 Phase 2: include annotation data in coverage matrix
                 "catalogueTag": elem.catalogue_tag if elem.catalogue_tag else {},
                 "userFacing": elem.user_facing if elem.user_facing else {},
+                "purposiveDescription": elem.purposive_description if elem.purposive_description else {},
                 "domains": {},
             }
     
-    # Find all part usages and map them to their type's meta def
+    # Find all part usages and requirement usages, map to their type's meta def
     for elem in all_elements:
-        if elem.kind == "part" and elem.specialises:
+        if elem.kind in ("part", "requirement") and elem.specialises:
             type_name = elem.specialises.split("::")[-1]
             if type_name in meta_defs:
                 domain = elem.source_domain
@@ -824,15 +830,24 @@ def build_comprehension_summary(all_elements):
     """
     tagged_elements = [e for e in all_elements if e.catalogue_tag]
     with_user_facing = [e for e in tagged_elements if e.user_facing]
+    with_purposive = [e for e in tagged_elements if e.purposive_description]
     return {
         "catalogueTaggedCount": len(tagged_elements),
         "userFacingCount": len(with_user_facing),
+        "purposiveDescriptionCount": len(with_purposive),
         "coveragePercent": round(
             len(with_user_facing) / len(tagged_elements) * 100, 1
+        ) if tagged_elements else 0,
+        "purposiveCoveragePercent": round(
+            len(with_purposive) / len(tagged_elements) * 100, 1
         ) if tagged_elements else 0,
         "missingUserFacing": [
             {"name": e.name, "package": e.parent_package}
             for e in tagged_elements if not e.user_facing
+        ],
+        "missingPurposiveDescription": [
+            {"name": e.name, "package": e.parent_package}
+            for e in tagged_elements if not e.purposive_description
         ],
     }
 
@@ -864,6 +879,7 @@ def build_governance_traceability(all_elements):
                 "attributes": elem.attributes,
                 "catalogueTag": elem.catalogue_tag if elem.catalogue_tag else {},
                 "userFacing": elem.user_facing if elem.user_facing else {},
+                "purposiveDescription": elem.purposive_description if elem.purposive_description else {},
             })
         
         elif elem.kind == "constraint_def":
@@ -996,7 +1012,11 @@ def main():
           file=sys.stderr)
     print(f"Elements with @UserFacing: {comprehension['userFacingCount']}",
           file=sys.stderr)
-    print(f"Comprehension coverage: {comprehension['coveragePercent']}%",
+    print(f"Elements with @PurposiveDescription: {comprehension['purposiveDescriptionCount']}",
+          file=sys.stderr)
+    print(f"@UserFacing coverage: {comprehension['coveragePercent']}%",
+          file=sys.stderr)
+    print(f"@PurposiveDescription coverage: {comprehension['purposiveCoveragePercent']}%",
           file=sys.stderr)
     if facets:
         print(f"Facet dimensions:", file=sys.stderr)

@@ -34,6 +34,7 @@ export const load: PageLoad = async ({ fetch }) => {
       doc: entry.doc || '',
       catalogueTag: entry.catalogueTag,
       userFacing: entry.userFacing,
+      purposiveDescription: entry.purposiveDescription || undefined,
       domains: entry.domains || {},
     }));
 
@@ -42,8 +43,11 @@ export const load: PageLoad = async ({ fetch }) => {
     comprehension: data.comprehension || {
       catalogueTaggedCount: 0,
       userFacingCount: 0,
+      purposiveDescriptionCount: 0,
       coveragePercent: 0,
+      purposiveCoveragePercent: 0,
       missingUserFacing: [],
+      missingPurposiveDescription: [],
     },
     facets: data.facets || {},
     domains: data.domains || {},

@@ -42,6 +42,7 @@
           entry.name,
           entry.userFacing?.friendlyName || '',
           entry.userFacing?.shortDescription || '',
+          entry.purposiveDescription?.description || '',
           entry.doc || '',
         ]
           .join(' ')
@@ -276,6 +277,18 @@
                 <p class="text-sm leading-relaxed text-secondary-700 dark:text-secondary-300">
                   {entry.userFacing.shortDescription}
                 </p>
+              {/if}
+
+              <!-- Purposive description -->
+              {#if entry.purposiveDescription?.description}
+                <div>
+                  <h4 class="mb-1 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500">
+                    What this means for your service
+                  </h4>
+                  <p class="text-sm leading-relaxed text-secondary-600 dark:text-secondary-400">
+                    {entry.purposiveDescription.description}
+                  </p>
+                </div>
               {/if}
 
               <!-- Doc block excerpt -->

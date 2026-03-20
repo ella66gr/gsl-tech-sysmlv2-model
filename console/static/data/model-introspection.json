@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-03-19T22:58:00.430847",
+  "generatedAt": "2026-03-20T22:02:39.253800",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 457
+      "elementCount": 458
     },
     "cafe": {
       "label": "Cafe",
@@ -24,14 +24,14 @@
     }
   },
   "summary": {
-    "totalElements": 688,
+    "totalElements": 689,
     "byKind": {
       "part_def": 117,
       "part": 460,
       "enum_def": 51,
       "requirement_def": 15,
       "requirement": 7,
-      "metadata_def": 12,
+      "metadata_def": 13,
       "constraint_def": 14,
       "constraint": 10,
       "satisfy": 2
@@ -39,11 +39,11 @@
     "byLayer": {
       "bmm": 188,
       "domain": 253,
-      "bsmm": 238,
+      "bsmm": 239,
       "unknown": 9
     },
     "byDomain": {
-      "core": 457,
+      "core": 458,
       "cafe": 119,
       "suds": 61,
       "paws": 51
@@ -79,66 +79,12 @@
   },
   "comprehension": {
     "catalogueTaggedCount": 26,
-    "userFacingCount": 12,
-    "coveragePercent": 46.2,
-    "missingUserFacing": [
-      {
-        "name": "Channel",
-        "package": "ServiceConcept"
-      },
-      {
-        "name": "DifferentiationClaim",
-        "package": "ServiceConcept"
-      },
-      {
-        "name": "CatalogueEntry",
-        "package": "ServiceConcept"
-      },
-      {
-        "name": "ExternalReference",
-        "package": "ServiceConcept"
-      },
-      {
-        "name": "ActivityRecord",
-        "package": "ActivityModel"
-      },
-      {
-        "name": "ActivityBudget",
-        "package": "ActivityModel"
-      },
-      {
-        "name": "ActivityGranularity",
-        "package": "ActivityModel"
-      },
-      {
-        "name": "ActivityCostAllocation",
-        "package": "ActivityModel"
-      },
-      {
-        "name": "ResourceInstance",
-        "package": "ResourcePlanning"
-      },
-      {
-        "name": "CapacityModel",
-        "package": "ResourcePlanning"
-      },
-      {
-        "name": "ResourceConstraint",
-        "package": "ResourcePlanning"
-      },
-      {
-        "name": "InventoryRecord",
-        "package": "ResourcePlanning"
-      },
-      {
-        "name": "ObjectiveCapabilityMapping",
-        "package": "ResourcePlanning"
-      },
-      {
-        "name": "FinancialProjection",
-        "package": "FinancialPlanning"
-      }
-    ]
+    "userFacingCount": 26,
+    "purposiveDescriptionCount": 26,
+    "coveragePercent": 100.0,
+    "purposiveCoveragePercent": 100.0,
+    "missingUserFacing": [],
+    "missingPurposiveDescription": []
   },
   "governanceTraceability": {
     "requirementDefs": [
@@ -181,6 +127,9 @@
         "userFacing": {
           "friendlyName": "Governance Requirement",
           "shortDescription": "A regulatory or standards obligation that the business must satisfy, with defined evidence."
+        },
+        "purposiveDescription": {
+          "description": "A regulatory, legal, or standards obligation that your business must satisfy \u2014 and the system tracks it as a concrete, testable commitment, not just a policy statement. Each governance requirement is connected to the evidence that demonstrates compliance and, where formalised, to the constraint rules that the system can check. When you define governance requirements, the system builds a traceability chain from obligation through to proof."
         }
       },
       {
@@ -221,7 +170,8 @@
           }
         ],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "ConsentBeforeTreatment",
@@ -230,7 +180,8 @@
         "doc": "Informed consent must be obtained and recorded\nbefore any treatment is initiated. Consent must\nbe specific to the proposed treatment, documented\nin the clinical record, and include evidence that\nthe patient had capacity at the time of consent.\nRegulatory basis: GMC Good Medical Practice,\nMontgomery ",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "InformedConsentRequiresInformation",
@@ -239,7 +190,8 @@
         "doc": "Before consent can be considered informed, the patient\nmust have received and had opportunity to consider\nrelevant information about the proposed treatment,\nincluding expected effects, potential risks, alternative\noptions, and the consequences of not proceeding.\nThis is a precondition of ConsentBefo",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "BaselineInvestigationsBeforePrescribing",
@@ -248,7 +200,8 @@
         "doc": "Baseline blood tests must be completed, resulted,\nand reviewed by a clinician before a hormone therapy\nprescription is authorised. The required baseline\npanel includes FBC, U&Es, LFTs, lipid profile,\nfasting glucose, prolactin, and baseline hormone\nlevels (testosterone, oestradiol).\n'Reviewed' means",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "ClinicalReviewBeforePrescribing",
@@ -257,7 +210,8 @@
         "doc": "A clinician with appropriate competence must conduct\na clinical review before authorising a hormone therapy\nprescription. The review must consider baseline\ninvestigations, patient history, contraindications,\nand the proposed regimen.\nThis applies to both initial prescribing and any\nsubsequent dose a",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "PrescribingProtocolAdherence",
@@ -266,7 +220,8 @@
         "doc": "Prescribing must follow an approved clinical protocol.\nThe protocol defines eligible medications, routes of\nadministration, starting doses, titration schedules,\nand therapeutic target ranges.\nDeviations from protocol must be clinically justified\nand documented in the clinical record.\nRegulatory basi",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "BloodMonitoringRequired",
@@ -281,7 +236,8 @@
           }
         ],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "ClinicalReviewBeforeDoseAdjustment",
@@ -290,7 +246,8 @@
         "doc": "Any change to hormone therapy dosage must be preceded\nby a clinical review that considers current blood\nresults, symptom assessment, side effect evaluation,\nand the patient's overall clinical picture.\nDose adjustments without clinical review are not\npermitted, even when blood results suggest a chang",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "SharedCareCommunication",
@@ -299,7 +256,8 @@
         "doc": "When hormone therapy monitoring is transitioned to\nshared care with the patient's GP, the GP must receive\na shared care protocol document that includes the\ncurrent regimen, monitoring schedule, therapeutic\ntarget ranges, action thresholds, and clear guidance\non when to refer back.\nShared care must n",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "LoyaltyDiscountRequired",
@@ -308,7 +266,8 @@
         "doc": "Members of the loyalty scheme must receive\na minimum 10% discount on every order.",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "MinimumOrderSize",
@@ -317,7 +276,8 @@
         "doc": "Orders must contain at least one item.",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "MaximumOrderSize",
@@ -326,7 +286,8 @@
         "doc": "Orders must contain no more than 10 items\nto avoid barista overload.",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "veganMilkDrinkRule",
@@ -335,7 +296,8 @@
         "doc": "Any drink marked as vegan must not use\ndairy milk \u2014 only oat, soy, or almond.",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       },
       {
         "name": "BaristaMinimumHours",
@@ -344,7 +306,8 @@
         "doc": "Staff members in the barista role must be\ncontracted for at least 12 hours per week.",
         "attributes": [],
         "catalogueTag": {},
-        "userFacing": {}
+        "userFacing": {},
+        "purposiveDescription": {}
       }
     ],
     "constraintDefs": [
@@ -960,6 +923,9 @@
         "friendlyName": "Customer Segment",
         "shortDescription": "A defined group of customers with shared needs and willingness to pay."
       },
+      "purposiveDescription": {
+        "description": "A group of people your service is designed for \u2014 people who share similar needs and reasons for choosing you. When you define your customer segments, the system uses them to connect your value propositions, pricing, and channels to the right audiences."
+      },
       "domains": {
         "core": [
           {
@@ -1012,6 +978,9 @@
         "friendlyName": "Value Proposition",
         "shortDescription": "A promise of value to a customer segment \u2014 what they get and why it matters."
       },
+      "purposiveDescription": {
+        "description": "The core promise your service makes to a particular group of customers \u2014 what they get from you and why they'd choose you over the alternatives. When you define a value proposition, the system holds it as the anchor that your activities, resources, and pricing all exist to deliver."
+      },
       "domains": {
         "core": [
           {
@@ -1057,6 +1026,9 @@
       "userFacing": {
         "friendlyName": "Service Offering",
         "shortDescription": "A packaged unit of service that can be priced, resourced, and delivered to customers."
+      },
+      "purposiveDescription": {
+        "description": "A distinct service that your business offers \u2014 something a customer can choose, pay for, and receive. When you define a service offering, the system connects it to the activities required to deliver it, the resources it consumes, and the price the customer pays."
       },
       "domains": {
         "core": [
@@ -1130,7 +1102,13 @@
         "bmmConcern": "ServiceConcept",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Channel",
+        "shortDescription": "A way that customers find, reach, or receive your service."
+      },
+      "purposiveDescription": {
+        "description": "A way that customers find you, reach you, or receive your service \u2014 your website, a referral network, a walk-in counter, an app. When you define your channels, the system tracks which customer segments each channel serves and how your service offerings are delivered through them."
+      },
       "domains": {
         "core": [
           {
@@ -1179,7 +1157,13 @@
         "bmmConcern": "ServiceConcept",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Differentiation Claim",
+        "shortDescription": "An explicit, testable statement of how your service differs from alternatives."
+      },
+      "purposiveDescription": {
+        "description": "An explicit statement of how your service differs from the alternatives, from the customer's perspective. Each claim should be testable \u2014 something you can back up with evidence. When you define differentiation claims, the system records them as commitments your service is designed to fulfil."
+      },
       "domains": {
         "core": [
           {
@@ -1222,7 +1206,13 @@
         "bmmConcern": "ServiceConcept",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Catalogue Entry",
+        "shortDescription": "A record of something your business has decided to offer, with its price and status."
+      },
+      "purposiveDescription": {
+        "description": "A record of something your business has decided to offer \u2014 whether that's a menu item, a treatment, a course, or any other unit you sell or provide. The catalogue entry connects what the thing intrinsically is to how your business offers it: its price, availability, and status. When you add a catalogue entry, the system tracks it as part of your active offering."
+      },
       "domains": {
         "cafe": [
           {
@@ -1309,7 +1299,13 @@
         "bmmConcern": "ServiceConcept",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "External Reference",
+        "shortDescription": "A link to authoritative knowledge that lives outside your system."
+      },
+      "purposiveDescription": {
+        "description": "A link to knowledge that lives outside your system \u2014 a supplier datasheet, a regulatory standard, a clinical guideline, an accreditation body. The system doesn't own this information; it points to it, so you always know where authoritative external knowledge sits in relation to your service."
+      },
       "domains": {
         "cafe": [
           {
@@ -1347,6 +1343,9 @@
       "userFacing": {
         "friendlyName": "Activity Type",
         "shortDescription": "A defined kind of business activity, classified into one of five categories."
+      },
+      "purposiveDescription": {
+        "description": "Something your business does \u2014 an identifiable unit of work that the system holds, tracks, and uses. In this system, every activity is an activity of one of the following types: service delivery, enabling, governance, development, or overhead. When you assign one of these types to an activity, the system will use that information to plan resources, allocate costs, and verify that governance requirements are being met for each kind of work."
       },
       "domains": {
         "cafe": [
@@ -1462,7 +1461,13 @@
         "bmmConcern": "ActivityModel",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Activity Record",
+        "shortDescription": "A recorded instance of an activity that actually happened."
+      },
+      "purposiveDescription": {
+        "description": "A recorded instance of an activity that actually happened \u2014 the system's record that a specific piece of work was done, by whom, for how long, and using what resources. At the most detailed tracking level, the system creates one of these for every observable activity. At coarser levels, they are estimated aggregates."
+      },
       "domains": {}
     },
     "ActivityBudget": {
@@ -1474,7 +1479,13 @@
         "bmmConcern": "ActivityModel",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Activity Budget",
+        "shortDescription": "A planned allocation of activity volume by type and period."
+      },
+      "purposiveDescription": {
+        "description": "A planned allocation of how much activity of each type your business expects in a given period \u2014 the activity-level equivalent of a financial budget. When you define an activity budget, the system can compare what actually happened against what was planned, and surface gaps."
+      },
       "domains": {}
     },
     "ActivityGranularity": {
@@ -1486,7 +1497,13 @@
         "bmmConcern": "ActivityModel",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Activity Granularity",
+        "shortDescription": "A policy declaration of how precisely activity is tracked in a given area."
+      },
+      "purposiveDescription": {
+        "description": "A policy declaration: how precisely does your business track activity in a given area? The system supports three levels \u2014 envelope (a rough total), category (broken down by type), and tracked (every individual activity recorded). Different parts of your business can operate at different levels at the same time, and you can refine the level as your needs evolve."
+      },
       "domains": {
         "cafe": [
           {
@@ -1565,7 +1582,13 @@
         "bmmConcern": "ActivityModel",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Activity Cost Allocation",
+        "shortDescription": "The mapping from an activity type to its financial cost."
+      },
+      "purposiveDescription": {
+        "description": "The mapping from an activity to its financial cost \u2014 how much does it cost each time this kind of work is done? When you define cost allocations, the system can connect your activity model to your financial model, making resource consumption visible in financial terms."
+      },
       "domains": {
         "suds": [
           {
@@ -1601,6 +1624,9 @@
       "userFacing": {
         "friendlyName": "Resource Type",
         "shortDescription": "A category of resource needed to run the service \u2014 people, equipment, premises, or external services."
+      },
+      "purposiveDescription": {
+        "description": "A kind of thing your business needs in order to operate \u2014 staff, equipment, premises, technology, or external services such as a laboratory or a contractor. The system holds each resource type as a tracked concept. When you define your resource types, the system uses them to plan capacity, understand your cost base, and identify where you might be constrained."
       },
       "domains": {
         "core": [
@@ -1718,7 +1744,13 @@
         "bmmConcern": "ResourceCapability",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Resource Instance",
+        "shortDescription": "A specific resource available at a defined capacity and cost."
+      },
+      "purposiveDescription": {
+        "description": "A specific resource available to your business at a defined capacity and cost \u2014 not a named individual, but a planning-level description like 'a prescribing clinician at 0.5 FTE' or 'one licensed copy of the booking system'. When you define resource instances, the system uses them to model your actual operating capacity."
+      },
       "domains": {
         "core": [
           {
@@ -1760,6 +1792,9 @@
       "userFacing": {
         "friendlyName": "Capability",
         "shortDescription": "An organised combination of resources that produces a defined service function."
+      },
+      "purposiveDescription": {
+        "description": "An organised combination of resources that together produce a defined service function \u2014 like 'the ability to conduct a monitoring review' (which requires a clinician, a lab interface, and a clinical record system). You don't deliver services with individual resources; you deliver them with capabilities. When you define capabilities, the system connects your resources to the service offerings they enable."
       },
       "domains": {
         "core": [
@@ -1813,7 +1848,13 @@
         "bmmConcern": "ResourceCapability",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Capacity Model",
+        "shortDescription": "The relationship between your resource configuration and service throughput."
+      },
+      "purposiveDescription": {
+        "description": "The relationship between your resource configuration and how much service you can deliver \u2014 for example, 'with one clinician at 0.5 FTE, we can support 20 active patients.' This is a planning assertion that the system holds, not a computed formula. When you define a capacity model, the system knows your throughput limits and can surface when you're approaching them."
+      },
       "domains": {
         "core": [
           {
@@ -1854,7 +1895,13 @@
         "bmmConcern": "ResourceCapability",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Resource Constraint",
+        "shortDescription": "A limit on resource availability that affects service delivery."
+      },
+      "purposiveDescription": {
+        "description": "A limit on the availability or use of a resource that affects your ability to deliver services \u2014 regulatory, financial, temporal, or contractual. When you define resource constraints, the system tracks them alongside your resources so that capacity planning reflects real-world limits, not just theoretical availability."
+      },
       "domains": {
         "core": [
           {
@@ -1895,7 +1942,13 @@
         "bmmConcern": "ResourceCapability",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Inventory Record",
+        "shortDescription": "A point-in-time record of stock level for a catalogue item."
+      },
+      "purposiveDescription": {
+        "description": "A point-in-time record of how much stock you have of something in your catalogue \u2014 how many tablets, how many bags of coffee beans, how many bottles of cleaning product. This is operational tracking: it tells the system what you have right now, so it can flag when you're running low. Distinct from resource planning, which is about strategic capacity."
+      },
       "domains": {}
     },
     "ObjectiveCapabilityMapping": {
@@ -1907,7 +1960,13 @@
         "bmmConcern": "ResourceCapability",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Objective\u2013Capability Mapping",
+        "shortDescription": "A declared connection between a strategic objective and the capabilities that support it."
+      },
+      "purposiveDescription": {
+        "description": "A declared connection between a strategic objective and the capabilities that contribute to achieving it. When you map objectives to capabilities, the system can trace from 'what are we trying to achieve?' down to 'what resources and service functions make that possible?' \u2014 closing the loop between strategy and operations."
+      },
       "domains": {
         "core": [
           {
@@ -1947,6 +2006,9 @@
       "userFacing": {
         "friendlyName": "Revenue Stream",
         "shortDescription": "A mechanism by which the business generates income from its services."
+      },
+      "purposiveDescription": {
+        "description": "A way your business earns money \u2014 each revenue stream connects a customer segment, a triggering event (like completing an assessment or renewing a subscription), and a pricing model. When you define your revenue streams, the system can project income and connect it to the services that generate it."
       },
       "domains": {
         "core": [
@@ -1995,6 +2057,9 @@
       "userFacing": {
         "friendlyName": "Cost Driver",
         "shortDescription": "A structural factor that generates cost in the business \u2014 linked to a resource or activity."
+      },
+      "purposiveDescription": {
+        "description": "A structural factor that generates cost in your business \u2014 something that, as it scales or recurs, drives your expenditure. Each cost driver is linked to a resource or an activity. When you define your cost drivers, the system connects your cost structure to the resources and activities that produce it, so you can see where money goes and why."
       },
       "domains": {
         "core": [
@@ -2096,6 +2161,9 @@
         "friendlyName": "Unit Economics",
         "shortDescription": "The revenue, cost, and margin for a single unit of service delivery."
       },
+      "purposiveDescription": {
+        "description": "The financial profile of delivering one unit of a service \u2014 what you earn, what it costs, and the margin between them. When you define unit economics for each service offering, the system can assess whether individual services are financially viable and how changes to pricing or costs would affect the picture."
+      },
       "domains": {
         "core": [
           {
@@ -2160,6 +2228,9 @@
         "friendlyName": "Pricing Model",
         "shortDescription": "How prices are set for services \u2014 per-episode, subscription, tiered, or other basis."
       },
+      "purposiveDescription": {
+        "description": "The logic that determines what a customer pays for a service \u2014 per-episode, subscription, tiered, sliding scale, or flat fee. When you define a pricing model, the system applies it to the relevant service offerings and uses it in revenue projections and unit economics calculations."
+      },
       "domains": {
         "core": [
           {
@@ -2200,7 +2271,13 @@
         "bmmConcern": "FinancialModel",
         "classification": "General"
       },
-      "userFacing": {},
+      "userFacing": {
+        "friendlyName": "Financial Projection",
+        "shortDescription": "A forward-looking financial picture combining revenues, costs, and growth assumptions."
+      },
+      "purposiveDescription": {
+        "description": "A named projection of your business's financial future over a defined period \u2014 combining your revenue streams, cost drivers, and growth assumptions into a forward-looking picture. When you define a financial projection, the system links it to a scenario so you can compare different versions of the future side by side."
+      },
       "domains": {
         "core": [
           {
@@ -2210,6 +2287,37 @@
           {
             "name": "fullPlatformProjection",
             "package": "FinancialPlanning"
+          }
+        ]
+      }
+    },
+    "GovernanceRequirement": {
+      "name": "GovernanceRequirement",
+      "layer": "bmm",
+      "package": "GovernanceMapping",
+      "doc": "A regulatory, legal, or standards obligation that\nthe business must satisfy. General vocabulary \u2014\napplicable to COSHH, CQC, GDPR, food hygiene,\nprofessional standards, or any regulatory context.\nDomai",
+      "catalogueTag": {
+        "bmmConcern": "Governance",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Governance Requirement",
+        "shortDescription": "A regulatory or standards obligation that the business must satisfy, with defined evidence."
+      },
+      "purposiveDescription": {
+        "description": "A regulatory, legal, or standards obligation that your business must satisfy \u2014 and the system tracks it as a concrete, testable commitment, not just a policy statement. Each governance requirement is connected to the evidence that demonstrates compliance and, where formalised, to the constraint rules that the system can check. When you define governance requirements, the system builds a traceability chain from obligation through to proof."
+      },
+      "domains": {
+        "suds": [
+          {
+            "name": "coshhCompliance",
+            "package": "SudsGovernance"
+          }
+        ],
+        "paws": [
+          {
+            "name": "animalWelfareDutyOfCare",
+            "package": "PawsGovernance"
           }
         ]
       }
@@ -2226,6 +2334,9 @@
       "userFacing": {
         "friendlyName": "Audit Evidence Record",
         "shortDescription": "A record that demonstrates compliance with a governance requirement \u2014 the proof that obligations are met."
+      },
+      "purposiveDescription": {
+        "description": "A record that proves your business is meeting a governance requirement \u2014 what was checked, when, by whom, and how often. The system tracks these as concrete evidence items tied to specific obligations. When you define audit evidence records, the system knows what proof exists and can surface gaps where evidence is missing or overdue."
       },
       "domains": {
         "suds": [
@@ -2269,6 +2380,7 @@
       "doc": "A named, self-contained configuration of a business\nmodel variant. Selects which ServiceOfferings are\nactive, sets all parameters, specifies growth\nassumptions, and configures resource levels.\nPhase 7",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2303,6 +2415,7 @@
       "doc": "",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2473,6 +2586,7 @@
       "doc": "",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2531,6 +2645,7 @@
       "doc": "",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2597,6 +2712,7 @@
       "doc": "",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2613,6 +2729,7 @@
       "doc": "",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2679,6 +2796,7 @@
       "doc": "",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2715,6 +2833,7 @@
       "doc": "",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2731,6 +2850,7 @@
       "doc": "",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "cafe": [
           {
@@ -2747,6 +2867,7 @@
       "doc": "Phase 6B: varianceSource typed as VarianceSource enum\n(was String). Resolves deferred item from Phase 3.",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "cafe": [
           {
@@ -2763,6 +2884,7 @@
       "doc": "",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2776,6 +2898,41 @@
         ]
       }
     },
+    "StrategicObjective": {
+      "name": "StrategicObjective",
+      "layer": "bmm",
+      "package": "BusinessStrategy",
+      "doc": "A defined business goal with a timeframe, success\ncriteria, and traceability to capabilities that\nsatisfy it and scenarios that parameterise it.\nModelled as requirement def (not part def) to enable\nfo",
+      "catalogueTag": {},
+      "userFacing": {},
+      "purposiveDescription": {},
+      "domains": {
+        "core": [
+          {
+            "name": "objectivePatientCohort",
+            "package": "BusinessStrategy"
+          },
+          {
+            "name": "objectiveSharedCare",
+            "package": "BusinessStrategy"
+          },
+          {
+            "name": "objectiveBreakEven",
+            "package": "BusinessStrategy"
+          },
+          {
+            "name": "objectivePlatformLaunch",
+            "package": "BusinessStrategy"
+          }
+        ],
+        "cafe": [
+          {
+            "name": "kioskProfitability",
+            "package": "CoffeeshopScenarios"
+          }
+        ]
+      }
+    },
     "BusinessModelVariant": {
       "name": "BusinessModelVariant",
       "layer": "bmm",
@@ -2783,6 +2940,7 @@
       "doc": "A named alternative business model configuration.\nLighter than a full ScenarioDefinition \u2014 captures\nthe strategic essence for comparison at the\nboardroom level. The detailed scenario lives in\nBusiness",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2821,6 +2979,7 @@
       "doc": "A structured what-if analysis for transitioning\nbetween business model variants. Captures the\ntrigger condition, transition plan, estimated\nduration, and risks.",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2843,6 +3002,7 @@
       "doc": "A postal address.",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "ContactDetails": {
@@ -2852,6 +3012,7 @@
       "doc": "Contact information for a person or organisation.",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "PersistencePolicy": {
@@ -2861,6 +3022,7 @@
       "doc": "Maps a domain concept to its persistence layer,\nwith explicit rationale expressed as distinguishing\ncharacteristics. Makes architectural reasoning\nqueryable and auditable \u2014 the system can explain\nwhy ",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "cafe": [
           {
@@ -2897,6 +3059,7 @@
       "doc": "Defines how a single constraint input is derived\nfrom an authoritative data source. The pattern is\nsource-agnostic: the same structure describes AQL\nqueries against the CDR, Temporal workflow state\nqu",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2917,6 +3080,7 @@
       "doc": "Binds a constraint definition to its input\nderivations, forming a complete evaluation\nspecification. This is the unit that the evaluation\nengine consumes: it knows which constraint to\nevaluate and how",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2961,6 +3125,7 @@
       "doc": "Binds a decision table to its input derivations\nand evaluation metadata, parallel to\nConstraintEvaluationSpec for constraints.\nThe tableName matches the @DecisionTable metadata\nannotation on pathway s",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2981,6 +3146,7 @@
       "doc": "A single input value used in a rule evaluation.\nRecords what data was used, where it came from,\nand how it was derived \u2014 supporting the\nself-explanation requirement for clinical governance\nand patient",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -2997,6 +3163,7 @@
       "doc": "A structured explanation of how a rule evaluation\nreached its conclusion. Supports three audiences:\n- Clinicians: why did this safety check pass/fail?\n- Patients: why am I eligible or not?\n- Auditors:",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3013,6 +3180,7 @@
       "doc": "The atomic unit of knowledge evaluation. Every rule,\nat every point in the system, produces one of these.\nEvaluationResults are persisted (CDR or audit log),\nqueryable, and presentable to clinicians, ",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3037,6 +3205,7 @@
       "doc": "A structured record of a gap between the system's\nactual operational state and its goal state.\nGeneralises the Phase D governance audit pattern\nfrom a single rule to any operational dimension.\nEach de",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3063,6 +3232,7 @@
       "doc": "The composite output of the self-knowledge\ninfrastructure. Aggregates across all five layers\nto produce a whole-system picture: clinical\ngovernance, operational health, and business\nperformance in a s",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "InputResolver": {
@@ -3072,6 +3242,7 @@
       "doc": "Resolves constraint inputs from authoritative data\nsources. For each InputDerivation in a\nConstraintEvaluationSpec, the resolver executes the\nspecified query against the appropriate source (CDR,\nTempo",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3088,6 +3259,7 @@
       "doc": "Evaluates a constraint's boolean expression given\nresolved input values. For Tier 1, this is\nstraightforward boolean evaluation: the constraint\ndef's expression is evaluated with the derived\ninput val",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3104,6 +3276,7 @@
       "doc": "Assembles ExplanationTrace records from the\nevaluation context: the resolved inputs\n(EvaluatedInput records), the constraint expression\nas evaluated, and a human-readable explanation of\nthe outcome.\nS",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3120,6 +3293,7 @@
       "doc": "The Tier 1 deterministic constraint evaluation\ncomponent. Consumes ConstraintEvaluationSpecs from\nClinicalDecisionSupport, derives inputs from\nauthoritative sources (CDR via AQL, Temporal,\nplatform se",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "OperationalQuery": {
@@ -3129,6 +3303,7 @@
       "doc": "A single operational state query against an\nauthoritative source. Structurally parallel to\nInputDerivation but scoped to operational rather\nthan clinical data.\nThe query returns a structured result (c",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3161,6 +3336,7 @@
       "doc": "A point-in-time capture of the system's operational\nstate, produced by the OperationalStateAggregator.\nThis is the Layer 2 content that feeds into gap\nanalysis and the SystemStateAssessment.\nNot persi",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3177,6 +3353,7 @@
       "doc": "Queries the system's operational state across all\nauthoritative data sources: Temporal (process\nstate), CDR (clinical data state), entity\nlifecycle state, platform services (infrastructure\nhealth), an",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "GoalProjection": {
@@ -3186,6 +3363,7 @@
       "doc": "A single goal projected from the model into a\nshape comparable against operational state. The\nunit of comparison for gap analysis.\nEach projection names the goal source\n(requirement, constraint, outco",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3212,6 +3390,7 @@
       "doc": "Projects goals from model sources (requirements,\nconstraints, outcome definitions, and projection\nformulas) into a comparable shape against\noperational state.\nEach goal is expressed as a GoalProjectio",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3228,6 +3407,7 @@
       "doc": "Compares the system's operational state (Layer 2,\nOperationalSnapshot) against its goal state\n(Layer 3, projected from requirements,\nconstraints, outcome definitions, and projection\nformulas) and prod",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "InferenceEvaluator": {
@@ -3237,6 +3417,7 @@
       "doc": "Tier 2 reasoning interface: inference chains,\ncontraindication cascades, compound deficit\nreasoning, and \"why\" queries.\nWhere Tier 1 (ConstraintEvaluator) evaluates\nsingle boolean constraints, Tier 2 ",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "AdvisoryInterface": {
@@ -3246,6 +3427,7 @@
       "doc": "Tier 3 advisory interface: ML/LLM-augmented\nintelligence. Powerful but probabilistic, always\nadvisory rather than authoritative. Cannot\noverride Tier 1 or Tier 2 logic.\nCapabilities (interface boundar",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "SelfExplanationService": {
@@ -3255,6 +3437,7 @@
       "doc": "The API surface through which consumers access the\nsystem's self-knowledge and evaluation\nexplanations.\nFive consumer categories, each with different\nneeds:\n- Clinician UI: point-of-care evaluation re",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "AssessmentOrchestrator": {
@@ -3264,6 +3447,7 @@
       "doc": "Orchestrates the production of\nSystemStateAssessments by coordinating the other\nLogicEngine components.\nAssessment production sequence:\n1. Read System Model Manifest for Layer 1\n   (structural summary",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "EvaluationSpecRegistry": {
@@ -3273,6 +3457,7 @@
       "doc": "A runtime registry of ConstraintEvaluationSpecs,\nloaded from the model (or generated as a\nTypeScript module) at system startup.\nThe registry resolves constraint names to their\nfull evaluation specific",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "EvaluationContext": {
@@ -3282,6 +3467,7 @@
       "doc": "The runtime context for a single evaluation\ninvocation. Captures the scope (which patient,\nwhich pathway step), the trigger (point-of-care,\ngovernance audit, triggered assessment), and any\nambient dat",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "DecisionTableDef": {
@@ -3291,6 +3477,7 @@
       "doc": "Abstract definition for a decision table. Concrete\ntables specialise this with their specific input\nand output attributes.\nEach table has a name (matching the @DecisionTable\nannotation in the pathway)",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "RegimenSelectionRow": {
@@ -3300,6 +3487,7 @@
       "doc": "A single row in the regimen selection decision\ntable. Each row maps a combination of input\nconditions to a recommended regimen.\nConcrete rows redefine all attributes with\nspecific values using :>> red",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3348,6 +3536,7 @@
       "doc": "Regimen selection decision table for hormone\ntherapy initiation.\nHit policy: Unique \u2014 exactly one row should match\nfor any valid combination of inputs. If no row\nmatches, the evaluation returns indete",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "StabilityAssessmentRow": {
@@ -3357,6 +3546,7 @@
       "doc": "A single row in the stability assessment decision\ntable. Each row maps monitoring indicators to a\nstability classification and recommended action.",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3401,6 +3591,7 @@
       "doc": "Stability assessment decision table for hormone\ntherapy monitoring.\nHit policy: Unique \u2014 exactly one classification\nshould result from any valid input combination.\nThe table is evaluated at each monit",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "OutcomeDefinition": {
@@ -3410,6 +3601,7 @@
       "doc": "A defined clinical outcome with target criteria and\nmeasurement specification.\nEach outcome definition specifies:\n- What is being measured (name, description, category)\n- What the target is (value, ra",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3462,6 +3654,7 @@
       "doc": "A defined point in time at which outcome measurements\nare collected. Each measurement point specifies when\nit occurs (weeks from treatment initiation), what\noutcomes are assessed, and what the clinica",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3498,6 +3691,7 @@
       "doc": "A complete measurement schedule for a clinical\npathway. Defines the sequence of measurement points\nand associates each point with the outcomes to be\nmeasured.\nOne schedule per pathway. The schedule is",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3514,6 +3708,7 @@
       "doc": "",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "OutcomeFeedbackRecord": {
@@ -3523,6 +3718,7 @@
       "doc": "A structured record linking aggregated outcome data\nto a pathway refinement proposal. This is the\ninterface between OutcomeFramework and LearningCycles.\nWhen outcome patterns are identified (e.g. a\nsi",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "DataContract": {
@@ -3532,6 +3728,7 @@
       "doc": "Defines the schema and semantics of a data stream\nconsumed by analytics or ML pipelines.",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "ArchitecturalPrinciple": {
@@ -3541,6 +3738,7 @@
       "doc": "A foundational architectural commitment that motivates\none or more patterns. Cross-cutting \u2014 principles span\nboth business and system meta models.\nBusiness system meta model concept \u2014 describes the\nre",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3585,6 +3783,7 @@
       "doc": "A reusable architectural or business model template.\nDomain-agnostic \u2014 describes a structural or behavioural\napproach that applies across domains.\nThe relatedElements attribute uses String references\n",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3717,6 +3916,7 @@
       "doc": "A specific implementation of a pattern in a domain.\nTracks where a pattern has been built and at what\nmaturity level. Each domain instantiation is separate\nso maturity can vary per domain.",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {
         "core": [
           {
@@ -3853,6 +4053,7 @@
       "doc": "Connection configuration for an openEHR CDR instance.\nValidated against EHRbase 2.11.0 (Docker).\nREST API base path: /ehrbase/rest/openehr/v1/\nAuth: basic auth for development; production TBD.\nThe nod",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "EhrRecord": {
@@ -3862,6 +4063,7 @@
       "doc": "An openEHR Electronic Health Record for one patient.\nOne EHR per patient, created at registration. The\nsubjectId + subjectNamespace pair enables idempotent\nlookup via GET /ehr?subject_id=X&subject_nam",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "RegisteredTemplate": {
@@ -3871,6 +4073,7 @@
       "doc": "An Operational Template (OPT) registered in the CDR.\nTemplates compose archetypes into use-case-specific\ndata sets. Each template defines one composition type.\nUploaded via the Definition API (POST /d",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "Composition": {
@@ -3880,6 +4083,7 @@
       "doc": "A composition committed to the CDR.\nCompositions are the unit of clinical data committed\nand retrieved. Each conforms to a registered template.\nCanonical JSON format maps directly to the openEHR\nRefer",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "AqlQuery": {
@@ -3889,6 +4093,7 @@
       "doc": "A named AQL (Archetype Query Language) query.\nAQL queries the CDR by archetype type, providing\nentity views independent of the process that produced\nthe data. Paths mirror the RM hierarchy using arche",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     },
     "UserAccount": {
@@ -3898,6 +4103,7 @@
       "doc": "A user account for authentication and authorisation.",
       "catalogueTag": {},
       "userFacing": {},
+      "purposiveDescription": {},
       "domains": {}
     }
   },
@@ -3910,7 +4116,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 73,
+      "lineNumber": 76,
       "attributes": [
         {
           "name": "segmentName",
@@ -3946,6 +4152,9 @@
         "friendlyName": "Customer Segment",
         "shortDescription": "A defined group of customers with shared needs and willingness to pay."
       },
+      "purposiveDescription": {
+        "description": "A group of people your service is designed for \u2014 people who share similar needs and reasons for choosing you. When you define your customer segments, the system uses them to connect your value propositions, pricing, and channels to the right audiences."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -3960,6 +4169,12 @@
             "friendlyName": "Customer Segment",
             "shortDescription": "A defined group of customers with shared needs and willingness to pay."
           }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A group of people your service is designed for \u2014 people who share similar needs and reasons for choosing you. When you define your customer segments, the system uses them to connect your value propositions, pricing, and channels to the right audiences."
+          }
         }
       ]
     },
@@ -3971,7 +4186,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 90,
+      "lineNumber": 96,
       "attributes": [
         {
           "name": "propositionName",
@@ -4007,6 +4222,9 @@
         "friendlyName": "Value Proposition",
         "shortDescription": "A promise of value to a customer segment \u2014 what they get and why it matters."
       },
+      "purposiveDescription": {
+        "description": "The core promise your service makes to a particular group of customers \u2014 what they get from you and why they'd choose you over the alternatives. When you define a value proposition, the system holds it as the anchor that your activities, resources, and pricing all exist to deliver."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -4021,6 +4239,12 @@
             "friendlyName": "Value Proposition",
             "shortDescription": "A promise of value to a customer segment \u2014 what they get and why it matters."
           }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The core promise your service makes to a particular group of customers \u2014 what they get from you and why they'd choose you over the alternatives. When you define a value proposition, the system holds it as the anchor that your activities, resources, and pricing all exist to deliver."
+          }
         }
       ]
     },
@@ -4032,7 +4256,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 106,
+      "lineNumber": 115,
       "attributes": [
         {
           "name": "offeringName",
@@ -4073,6 +4297,9 @@
         "friendlyName": "Service Offering",
         "shortDescription": "A packaged unit of service that can be priced, resourced, and delivered to customers."
       },
+      "purposiveDescription": {
+        "description": "A distinct service that your business offers \u2014 something a customer can choose, pay for, and receive. When you define a service offering, the system connects it to the activities required to deliver it, the resources it consumes, and the price the customer pays."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -4087,6 +4314,12 @@
             "friendlyName": "Service Offering",
             "shortDescription": "A packaged unit of service that can be priced, resourced, and delivered to customers."
           }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A distinct service that your business offers \u2014 something a customer can choose, pay for, and receive. When you define a service offering, the system connects it to the activities required to deliver it, the resources it consumes, and the price the customer pays."
+          }
         }
       ]
     },
@@ -4098,7 +4331,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 124,
+      "lineNumber": 140,
       "attributes": [
         {
           "name": "channelName",
@@ -4135,12 +4368,32 @@
         "bmmConcern": "ServiceConcept",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Channel",
+        "shortDescription": "A way that customers find, reach, or receive your service."
+      },
+      "purposiveDescription": {
+        "description": "A way that customers find you, reach you, or receive your service \u2014 your website, a referral network, a walk-in counter, an app. When you define your channels, the system tracks which customer segments each channel serves and how your service offerings are delivered through them."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ServiceConcept",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Channel",
+            "shortDescription": "A way that customers find, reach, or receive your service."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A way that customers find you, reach you, or receive your service \u2014 your website, a referral network, a walk-in counter, an app. When you define your channels, the system tracks which customer segments each channel serves and how your service offerings are delivered through them."
           }
         }
       ]
@@ -4153,7 +4406,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 137,
+      "lineNumber": 160,
       "attributes": [
         {
           "name": "claimName",
@@ -4180,12 +4433,32 @@
         "bmmConcern": "ServiceConcept",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Differentiation Claim",
+        "shortDescription": "An explicit, testable statement of how your service differs from alternatives."
+      },
+      "purposiveDescription": {
+        "description": "An explicit statement of how your service differs from the alternatives, from the customer's perspective. Each claim should be testable \u2014 something you can back up with evidence. When you define differentiation claims, the system records them as commitments your service is designed to fulfil."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ServiceConcept",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Differentiation Claim",
+            "shortDescription": "An explicit, testable statement of how your service differs from alternatives."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "An explicit statement of how your service differs from the alternatives, from the customer's perspective. Each claim should be testable \u2014 something you can back up with evidence. When you define differentiation claims, the system records them as commitments your service is designed to fulfil."
           }
         }
       ]
@@ -4198,7 +4471,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 160,
+      "lineNumber": 190,
       "attributes": [
         {
           "name": "entryName",
@@ -4240,12 +4513,32 @@
         "bmmConcern": "ServiceConcept",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Catalogue Entry",
+        "shortDescription": "A record of something your business has decided to offer, with its price and status."
+      },
+      "purposiveDescription": {
+        "description": "A record of something your business has decided to offer \u2014 whether that's a menu item, a treatment, a course, or any other unit you sell or provide. The catalogue entry connects what the thing intrinsically is to how your business offers it: its price, availability, and status. When you add a catalogue entry, the system tracks it as part of your active offering."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ServiceConcept",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Catalogue Entry",
+            "shortDescription": "A record of something your business has decided to offer, with its price and status."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A record of something your business has decided to offer \u2014 whether that's a menu item, a treatment, a course, or any other unit you sell or provide. The catalogue entry connects what the thing intrinsically is to how your business offers it: its price, availability, and status. When you add a catalogue entry, the system tracks it as part of your active offering."
           }
         }
       ]
@@ -4258,7 +4551,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 186,
+      "lineNumber": 223,
       "attributes": [
         {
           "name": "referenceType",
@@ -4285,12 +4578,32 @@
         "bmmConcern": "ServiceConcept",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "External Reference",
+        "shortDescription": "A link to authoritative knowledge that lives outside your system."
+      },
+      "purposiveDescription": {
+        "description": "A link to knowledge that lives outside your system \u2014 a supplier datasheet, a regulatory standard, a clinical guideline, an accreditation body. The system doesn't own this information; it points to it, so you always know where authoritative external knowledge sits in relation to your service."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ServiceConcept",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "External Reference",
+            "shortDescription": "A link to authoritative knowledge that lives outside your system."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A link to knowledge that lives outside your system \u2014 a supplier datasheet, a regulatory standard, a clinical guideline, an accreditation body. The system doesn't own this information; it points to it, so you always know where authoritative external knowledge sits in relation to your service."
           }
         }
       ]
@@ -4303,7 +4616,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 210,
+      "lineNumber": 247,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -4341,7 +4654,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 221,
+      "lineNumber": 258,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -4379,7 +4692,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 234,
+      "lineNumber": 271,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -4417,7 +4730,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 242,
+      "lineNumber": 279,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -4455,7 +4768,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 250,
+      "lineNumber": 287,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -4493,7 +4806,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 260,
+      "lineNumber": 297,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -4536,7 +4849,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 272,
+      "lineNumber": 309,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -4579,7 +4892,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 284,
+      "lineNumber": 321,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -4622,7 +4935,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 298,
+      "lineNumber": 335,
       "specialises": "Channel",
       "attributes": [
         {
@@ -4665,7 +4978,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 307,
+      "lineNumber": 344,
       "specialises": "Channel",
       "attributes": [
         {
@@ -4708,7 +5021,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 318,
+      "lineNumber": 355,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -4741,7 +5054,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 325,
+      "lineNumber": 362,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -4774,7 +5087,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 334,
+      "lineNumber": 371,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -4817,7 +5130,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 347,
+      "lineNumber": 384,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -4860,7 +5173,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 359,
+      "lineNumber": 396,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -4903,7 +5216,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 373,
+      "lineNumber": 410,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -4941,7 +5254,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 414,
+      "lineNumber": 451,
       "attributes": [
         {
           "name": "serviceDelivery;     // directly produces value for a customer"
@@ -4968,7 +5281,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 426,
+      "lineNumber": 463,
       "attributes": [
         {
           "name": "envelope;    // total hours per category as a lump estimate"
@@ -4989,7 +5302,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 441,
+      "lineNumber": 481,
       "attributes": [
         {
           "name": "activityTypeName",
@@ -5025,6 +5338,9 @@
         "friendlyName": "Activity Type",
         "shortDescription": "A defined kind of business activity, classified into one of five categories."
       },
+      "purposiveDescription": {
+        "description": "Something your business does \u2014 an identifiable unit of work that the system holds, tracks, and uses. In this system, every activity is an activity of one of the following types: service delivery, enabling, governance, development, or overhead. When you assign one of these types to an activity, the system will use that information to plan resources, allocate costs, and verify that governance requirements are being met for each kind of work."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -5039,6 +5355,12 @@
             "friendlyName": "Activity Type",
             "shortDescription": "A defined kind of business activity, classified into one of five categories."
           }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "Something your business does \u2014 an identifiable unit of work that the system holds, tracks, and uses. In this system, every activity is an activity of one of the following types: service delivery, enabling, governance, development, or overhead. When you assign one of these types to an activity, the system will use that information to plan resources, allocate costs, and verify that governance requirements are being met for each kind of work."
+          }
         }
       ]
     },
@@ -5050,7 +5372,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 453,
+      "lineNumber": 500,
       "attributes": [
         {
           "name": "activityType",
@@ -5082,12 +5404,32 @@
         "bmmConcern": "ActivityModel",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Activity Record",
+        "shortDescription": "A recorded instance of an activity that actually happened."
+      },
+      "purposiveDescription": {
+        "description": "A recorded instance of an activity that actually happened \u2014 the system's record that a specific piece of work was done, by whom, for how long, and using what resources. At the most detailed tracking level, the system creates one of these for every observable activity. At coarser levels, they are estimated aggregates."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ActivityModel",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Activity Record",
+            "shortDescription": "A recorded instance of an activity that actually happened."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A recorded instance of an activity that actually happened \u2014 the system's record that a specific piece of work was done, by whom, for how long, and using what resources. At the most detailed tracking level, the system creates one of these for every observable activity. At coarser levels, they are estimated aggregates."
           }
         }
       ]
@@ -5100,7 +5442,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 466,
+      "lineNumber": 520,
       "attributes": [
         {
           "name": "budgetPeriod",
@@ -5132,12 +5474,32 @@
         "bmmConcern": "ActivityModel",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Activity Budget",
+        "shortDescription": "A planned allocation of activity volume by type and period."
+      },
+      "purposiveDescription": {
+        "description": "A planned allocation of how much activity of each type your business expects in a given period \u2014 the activity-level equivalent of a financial budget. When you define an activity budget, the system can compare what actually happened against what was planned, and surface gaps."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ActivityModel",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Activity Budget",
+            "shortDescription": "A planned allocation of activity volume by type and period."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A planned allocation of how much activity of each type your business expects in a given period \u2014 the activity-level equivalent of a financial budget. When you define an activity budget, the system can compare what actually happened against what was planned, and surface gaps."
           }
         }
       ]
@@ -5150,7 +5512,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 478,
+      "lineNumber": 539,
       "attributes": [
         {
           "name": "businessArea",
@@ -5177,12 +5539,32 @@
         "bmmConcern": "ActivityModel",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Activity Granularity",
+        "shortDescription": "A policy declaration of how precisely activity is tracked in a given area."
+      },
+      "purposiveDescription": {
+        "description": "A policy declaration: how precisely does your business track activity in a given area? The system supports three levels \u2014 envelope (a rough total), category (broken down by type), and tracked (every individual activity recorded). Different parts of your business can operate at different levels at the same time, and you can refine the level as your needs evolve."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ActivityModel",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Activity Granularity",
+            "shortDescription": "A policy declaration of how precisely activity is tracked in a given area."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A policy declaration: how precisely does your business track activity in a given area? The system supports three levels \u2014 envelope (a rough total), category (broken down by type), and tracked (every individual activity recorded). Different parts of your business can operate at different levels at the same time, and you can refine the level as your needs evolve."
           }
         }
       ]
@@ -5195,7 +5577,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 488,
+      "lineNumber": 556,
       "attributes": [
         {
           "name": "activityType",
@@ -5222,12 +5604,32 @@
         "bmmConcern": "ActivityModel",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Activity Cost Allocation",
+        "shortDescription": "The mapping from an activity type to its financial cost."
+      },
+      "purposiveDescription": {
+        "description": "The mapping from an activity to its financial cost \u2014 how much does it cost each time this kind of work is done? When you define cost allocations, the system can connect your activity model to your financial model, making resource consumption visible in financial terms."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ActivityModel",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Activity Cost Allocation",
+            "shortDescription": "The mapping from an activity type to its financial cost."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The mapping from an activity to its financial cost \u2014 how much does it cost each time this kind of work is done? When you define cost allocations, the system can connect your activity model to your financial model, making resource consumption visible in financial terms."
           }
         }
       ]
@@ -5240,7 +5642,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 527,
+      "lineNumber": 598,
       "attributes": [
         {
           "name": "resourceTypeName",
@@ -5276,6 +5678,9 @@
         "friendlyName": "Resource Type",
         "shortDescription": "A category of resource needed to run the service \u2014 people, equipment, premises, or external services."
       },
+      "purposiveDescription": {
+        "description": "A kind of thing your business needs in order to operate \u2014 staff, equipment, premises, technology, or external services such as a laboratory or a contractor. The system holds each resource type as a tracked concept. When you define your resource types, the system uses them to plan capacity, understand your cost base, and identify where you might be constrained."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -5290,6 +5695,12 @@
             "friendlyName": "Resource Type",
             "shortDescription": "A category of resource needed to run the service \u2014 people, equipment, premises, or external services."
           }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A kind of thing your business needs in order to operate \u2014 staff, equipment, premises, technology, or external services such as a laboratory or a contractor. The system holds each resource type as a tracked concept. When you define your resource types, the system uses them to plan capacity, understand your cost base, and identify where you might be constrained."
+          }
         }
       ]
     },
@@ -5301,7 +5712,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 540,
+      "lineNumber": 618,
       "attributes": [
         {
           "name": "instanceName",
@@ -5338,12 +5749,32 @@
         "bmmConcern": "ResourceCapability",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Resource Instance",
+        "shortDescription": "A specific resource available at a defined capacity and cost."
+      },
+      "purposiveDescription": {
+        "description": "A specific resource available to your business at a defined capacity and cost \u2014 not a named individual, but a planning-level description like 'a prescribing clinician at 0.5 FTE' or 'one licensed copy of the booking system'. When you define resource instances, the system uses them to model your actual operating capacity."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ResourceCapability",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Resource Instance",
+            "shortDescription": "A specific resource available at a defined capacity and cost."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A specific resource available to your business at a defined capacity and cost \u2014 not a named individual, but a planning-level description like 'a prescribing clinician at 0.5 FTE' or 'one licensed copy of the booking system'. When you define resource instances, the system uses them to model your actual operating capacity."
           }
         }
       ]
@@ -5356,7 +5787,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 558,
+      "lineNumber": 639,
       "attributes": [
         {
           "name": "capabilityName",
@@ -5392,6 +5823,9 @@
         "friendlyName": "Capability",
         "shortDescription": "An organised combination of resources that produces a defined service function."
       },
+      "purposiveDescription": {
+        "description": "An organised combination of resources that together produce a defined service function \u2014 like 'the ability to conduct a monitoring review' (which requires a clinician, a lab interface, and a clinical record system). You don't deliver services with individual resources; you deliver them with capabilities. When you define capabilities, the system connects your resources to the service offerings they enable."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -5406,6 +5840,12 @@
             "friendlyName": "Capability",
             "shortDescription": "An organised combination of resources that produces a defined service function."
           }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "An organised combination of resources that together produce a defined service function \u2014 like 'the ability to conduct a monitoring review' (which requires a clinician, a lab interface, and a clinical record system). You don't deliver services with individual resources; you deliver them with capabilities. When you define capabilities, the system connects your resources to the service offerings they enable."
+          }
         }
       ]
     },
@@ -5417,7 +5857,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 578,
+      "lineNumber": 666,
       "attributes": [
         {
           "name": "resourceConfiguration",
@@ -5449,12 +5889,32 @@
         "bmmConcern": "ResourceCapability",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Capacity Model",
+        "shortDescription": "The relationship between your resource configuration and service throughput."
+      },
+      "purposiveDescription": {
+        "description": "The relationship between your resource configuration and how much service you can deliver \u2014 for example, 'with one clinician at 0.5 FTE, we can support 20 active patients.' This is a planning assertion that the system holds, not a computed formula. When you define a capacity model, the system knows your throughput limits and can surface when you're approaching them."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ResourceCapability",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Capacity Model",
+            "shortDescription": "The relationship between your resource configuration and service throughput."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The relationship between your resource configuration and how much service you can deliver \u2014 for example, 'with one clinician at 0.5 FTE, we can support 20 active patients.' This is a planning assertion that the system holds, not a computed formula. When you define a capacity model, the system knows your throughput limits and can surface when you're approaching them."
           }
         }
       ]
@@ -5467,7 +5927,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 596,
+      "lineNumber": 691,
       "attributes": [
         {
           "name": "constraintName",
@@ -5499,12 +5959,32 @@
         "bmmConcern": "ResourceCapability",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Resource Constraint",
+        "shortDescription": "A limit on resource availability that affects service delivery."
+      },
+      "purposiveDescription": {
+        "description": "A limit on the availability or use of a resource that affects your ability to deliver services \u2014 regulatory, financial, temporal, or contractual. When you define resource constraints, the system tracks them alongside your resources so that capacity planning reflects real-world limits, not just theoretical availability."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ResourceCapability",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Resource Constraint",
+            "shortDescription": "A limit on resource availability that affects service delivery."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A limit on the availability or use of a resource that affects your ability to deliver services \u2014 regulatory, financial, temporal, or contractual. When you define resource constraints, the system tracks them alongside your resources so that capacity planning reflects real-world limits, not just theoretical availability."
           }
         }
       ]
@@ -5517,7 +5997,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 621,
+      "lineNumber": 723,
       "attributes": [
         {
           "name": "catalogueEntryReference",
@@ -5554,12 +6034,32 @@
         "bmmConcern": "ResourceCapability",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Inventory Record",
+        "shortDescription": "A point-in-time record of stock level for a catalogue item."
+      },
+      "purposiveDescription": {
+        "description": "A point-in-time record of how much stock you have of something in your catalogue \u2014 how many tablets, how many bags of coffee beans, how many bottles of cleaning product. This is operational tracking: it tells the system what you have right now, so it can flag when you're running low. Distinct from resource planning, which is about strategic capacity."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ResourceCapability",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Inventory Record",
+            "shortDescription": "A point-in-time record of stock level for a catalogue item."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A point-in-time record of how much stock you have of something in your catalogue \u2014 how many tablets, how many bags of coffee beans, how many bottles of cleaning product. This is operational tracking: it tells the system what you have right now, so it can flag when you're running low. Distinct from resource planning, which is about strategic capacity."
           }
         }
       ]
@@ -5572,7 +6072,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 648,
+      "lineNumber": 750,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -5610,7 +6110,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 659,
+      "lineNumber": 761,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -5648,7 +6148,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 667,
+      "lineNumber": 769,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -5686,7 +6186,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 677,
+      "lineNumber": 779,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -5724,7 +6224,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 685,
+      "lineNumber": 787,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -5762,7 +6262,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 693,
+      "lineNumber": 795,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -5800,7 +6300,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 703,
+      "lineNumber": 805,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -5843,7 +6343,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 714,
+      "lineNumber": 816,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -5886,7 +6386,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 725,
+      "lineNumber": 827,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -5929,7 +6429,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 734,
+      "lineNumber": 836,
       "specialises": "Capability",
       "attributes": [
         {
@@ -5962,7 +6462,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 744,
+      "lineNumber": 846,
       "specialises": "Capability",
       "attributes": [
         {
@@ -5995,7 +6495,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 751,
+      "lineNumber": 853,
       "specialises": "Capability",
       "attributes": [
         {
@@ -6028,7 +6528,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 758,
+      "lineNumber": 860,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -6066,7 +6566,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 768,
+      "lineNumber": 870,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -6104,7 +6604,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 776,
+      "lineNumber": 878,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -6142,7 +6642,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 789,
+      "lineNumber": 891,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -6180,7 +6680,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 799,
+      "lineNumber": 901,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -6218,7 +6718,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 809,
+      "lineNumber": 911,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -6261,7 +6761,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 818,
+      "lineNumber": 920,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -6304,7 +6804,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 827,
+      "lineNumber": 929,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -6347,7 +6847,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 838,
+      "lineNumber": 940,
       "specialises": "Capability",
       "attributes": [
         {
@@ -6380,7 +6880,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 845,
+      "lineNumber": 947,
       "specialises": "Capability",
       "attributes": [
         {
@@ -6413,7 +6913,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 852,
+      "lineNumber": 954,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -6451,7 +6951,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 878,
+      "lineNumber": 987,
       "attributes": [
         {
           "name": "objectiveRef",
@@ -6468,12 +6968,32 @@
         "bmmConcern": "ResourceCapability",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Objective\u2013Capability Mapping",
+        "shortDescription": "A declared connection between a strategic objective and the capabilities that support it."
+      },
+      "purposiveDescription": {
+        "description": "A declared connection between a strategic objective and the capabilities that contribute to achieving it. When you map objectives to capabilities, the system can trace from 'what are we trying to achieve?' down to 'what resources and service functions make that possible?' \u2014 closing the loop between strategy and operations."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "ResourceCapability",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Objective\u2013Capability Mapping",
+            "shortDescription": "A declared connection between a strategic objective and the capabilities that support it."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A declared connection between a strategic objective and the capabilities that contribute to achieving it. When you map objectives to capabilities, the system can trace from 'what are we trying to achieve?' down to 'what resources and service functions make that possible?' \u2014 closing the loop between strategy and operations."
           }
         }
       ]
@@ -6486,7 +7006,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 886,
+      "lineNumber": 995,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -6504,7 +7024,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 892,
+      "lineNumber": 1001,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -6522,7 +7042,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 899,
+      "lineNumber": 1008,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -6540,7 +7060,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 906,
+      "lineNumber": 1015,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -6558,7 +7078,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 934,
+      "lineNumber": 1043,
       "attributes": [
         {
           "name": "perEpisode"
@@ -6585,7 +7105,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 948,
+      "lineNumber": 1060,
       "attributes": [
         {
           "name": "streamName",
@@ -6621,6 +7141,9 @@
         "friendlyName": "Revenue Stream",
         "shortDescription": "A mechanism by which the business generates income from its services."
       },
+      "purposiveDescription": {
+        "description": "A way your business earns money \u2014 each revenue stream connects a customer segment, a triggering event (like completing an assessment or renewing a subscription), and a pricing model. When you define your revenue streams, the system can project income and connect it to the services that generate it."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -6635,6 +7158,12 @@
             "friendlyName": "Revenue Stream",
             "shortDescription": "A mechanism by which the business generates income from its services."
           }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A way your business earns money \u2014 each revenue stream connects a customer segment, a triggering event (like completing an assessment or renewing a subscription), and a pricing model. When you define your revenue streams, the system can project income and connect it to the services that generate it."
+          }
         }
       ]
     },
@@ -6646,7 +7175,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 962,
+      "lineNumber": 1077,
       "attributes": [
         {
           "name": "driverName",
@@ -6682,6 +7211,9 @@
         "friendlyName": "Cost Driver",
         "shortDescription": "A structural factor that generates cost in the business \u2014 linked to a resource or activity."
       },
+      "purposiveDescription": {
+        "description": "A structural factor that generates cost in your business \u2014 something that, as it scales or recurs, drives your expenditure. Each cost driver is linked to a resource or an activity. When you define your cost drivers, the system connects your cost structure to the resources and activities that produce it, so you can see where money goes and why."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -6696,6 +7228,12 @@
             "friendlyName": "Cost Driver",
             "shortDescription": "A structural factor that generates cost in the business \u2014 linked to a resource or activity."
           }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A structural factor that generates cost in your business \u2014 something that, as it scales or recurs, drives your expenditure. Each cost driver is linked to a resource or an activity. When you define your cost drivers, the system connects your cost structure to the resources and activities that produce it, so you can see where money goes and why."
+          }
         }
       ]
     },
@@ -6707,7 +7245,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 976,
+      "lineNumber": 1094,
       "attributes": [
         {
           "name": "offeringRef",
@@ -6743,6 +7281,9 @@
         "friendlyName": "Unit Economics",
         "shortDescription": "The revenue, cost, and margin for a single unit of service delivery."
       },
+      "purposiveDescription": {
+        "description": "The financial profile of delivering one unit of a service \u2014 what you earn, what it costs, and the margin between them. When you define unit economics for each service offering, the system can assess whether individual services are financially viable and how changes to pricing or costs would affect the picture."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -6757,6 +7298,12 @@
             "friendlyName": "Unit Economics",
             "shortDescription": "The revenue, cost, and margin for a single unit of service delivery."
           }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The financial profile of delivering one unit of a service \u2014 what you earn, what it costs, and the margin between them. When you define unit economics for each service offering, the system can assess whether individual services are financially viable and how changes to pricing or costs would affect the picture."
+          }
         }
       ]
     },
@@ -6768,7 +7315,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 990,
+      "lineNumber": 1111,
       "attributes": [
         {
           "name": "pricingModelName",
@@ -6804,6 +7351,9 @@
         "friendlyName": "Pricing Model",
         "shortDescription": "How prices are set for services \u2014 per-episode, subscription, tiered, or other basis."
       },
+      "purposiveDescription": {
+        "description": "The logic that determines what a customer pays for a service \u2014 per-episode, subscription, tiered, sliding scale, or flat fee. When you define a pricing model, the system applies it to the relevant service offerings and uses it in revenue projections and unit economics calculations."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -6818,6 +7368,12 @@
             "friendlyName": "Pricing Model",
             "shortDescription": "How prices are set for services \u2014 per-episode, subscription, tiered, or other basis."
           }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The logic that determines what a customer pays for a service \u2014 per-episode, subscription, tiered, sliding scale, or flat fee. When you define a pricing model, the system applies it to the relevant service offerings and uses it in revenue projections and unit economics calculations."
+          }
         }
       ]
     },
@@ -6829,7 +7385,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1000,
+      "lineNumber": 1128,
       "attributes": [
         {
           "name": "projectionName",
@@ -6866,12 +7422,32 @@
         "bmmConcern": "FinancialModel",
         "classification": "General"
       },
+      "userFacing": {
+        "friendlyName": "Financial Projection",
+        "shortDescription": "A forward-looking financial picture combining revenues, costs, and growth assumptions."
+      },
+      "purposiveDescription": {
+        "description": "A named projection of your business's financial future over a defined period \u2014 combining your revenue streams, cost drivers, and growth assumptions into a forward-looking picture. When you define a financial projection, the system links it to a scenario so you can compare different versions of the future side by side."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
           "attrs": {
             "bmmConcern": "FinancialModel",
             "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Financial Projection",
+            "shortDescription": "A forward-looking financial picture combining revenues, costs, and growth assumptions."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A named projection of your business's financial future over a defined period \u2014 combining your revenue streams, cost drivers, and growth assumptions into a forward-looking picture. When you define a financial projection, the system links it to a scenario so you can compare different versions of the future side by side."
           }
         }
       ]
@@ -6884,7 +7460,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1014,
+      "lineNumber": 1142,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -6922,7 +7498,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1022,
+      "lineNumber": 1150,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -6960,7 +7536,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1030,
+      "lineNumber": 1158,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -6998,7 +7574,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1038,
+      "lineNumber": 1166,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7036,7 +7612,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1046,
+      "lineNumber": 1174,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7074,7 +7650,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1054,
+      "lineNumber": 1182,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7112,7 +7688,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1062,
+      "lineNumber": 1190,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7150,7 +7726,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1070,
+      "lineNumber": 1198,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7188,7 +7764,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1078,
+      "lineNumber": 1206,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -7226,7 +7802,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1086,
+      "lineNumber": 1214,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -7264,7 +7840,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1094,
+      "lineNumber": 1222,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -7302,7 +7878,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1102,
+      "lineNumber": 1230,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -7345,7 +7921,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1113,
+      "lineNumber": 1241,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -7383,7 +7959,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1125,
+      "lineNumber": 1253,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7421,7 +7997,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1133,
+      "lineNumber": 1261,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7459,7 +8035,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1141,
+      "lineNumber": 1269,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -7497,7 +8073,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1152,
+      "lineNumber": 1280,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -7535,7 +8111,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1165,
+      "lineNumber": 1293,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -7578,7 +8154,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1211,
+      "lineNumber": 1342,
       "attributes": [
         {
           "name": "requirementId",
@@ -7614,6 +8190,9 @@
         "friendlyName": "Governance Requirement",
         "shortDescription": "A regulatory or standards obligation that the business must satisfy, with defined evidence."
       },
+      "purposiveDescription": {
+        "description": "A regulatory, legal, or standards obligation that your business must satisfy \u2014 and the system tracks it as a concrete, testable commitment, not just a policy statement. Each governance requirement is connected to the evidence that demonstrates compliance and, where formalised, to the constraint rules that the system can check. When you define governance requirements, the system builds a traceability chain from obligation through to proof."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -7628,6 +8207,12 @@
             "friendlyName": "Governance Requirement",
             "shortDescription": "A regulatory or standards obligation that the business must satisfy, with defined evidence."
           }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A regulatory, legal, or standards obligation that your business must satisfy \u2014 and the system tracks it as a concrete, testable commitment, not just a policy statement. Each governance requirement is connected to the evidence that demonstrates compliance and, where formalised, to the constraint rules that the system can check. When you define governance requirements, the system builds a traceability chain from obligation through to proof."
+          }
         }
       ]
     },
@@ -7639,7 +8224,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1237,
+      "lineNumber": 1371,
       "attributes": [
         {
           "name": "evidenceType",
@@ -7675,6 +8260,9 @@
         "friendlyName": "Audit Evidence Record",
         "shortDescription": "A record that demonstrates compliance with a governance requirement \u2014 the proof that obligations are met."
       },
+      "purposiveDescription": {
+        "description": "A record that proves your business is meeting a governance requirement \u2014 what was checked, when, by whom, and how often. The system tracks these as concrete evidence items tied to specific obligations. When you define audit evidence records, the system knows what proof exists and can surface gaps where evidence is missing or overdue."
+      },
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -7688,6 +8276,12 @@
           "attrs": {
             "friendlyName": "Audit Evidence Record",
             "shortDescription": "A record that demonstrates compliance with a governance requirement \u2014 the proof that obligations are met."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A record that proves your business is meeting a governance requirement \u2014 what was checked, when, by whom, and how often. The system tracks these as concrete evidence items tied to specific obligations. When you define audit evidence records, the system knows what proof exists and can surface gaps where evidence is missing or overdue."
           }
         }
       ]
@@ -12459,6 +13053,23 @@
       ]
     },
     {
+      "kind": "metadata_def",
+      "name": "PurposiveDescription",
+      "parentPackage": "MetadataLibrary",
+      "doc": "Authored purposive description for the comprehension\nlayer. Explains what this element means for a service\nbusiness and what the system does with it \u2014 the\n\"why should I care?\" and \"what happens when I define\none of these?\" explanation.\nRegister 1 (authored comprehension content). Distinct\nfrom @User",
+      "sourceFile": "model/foundation.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 206,
+      "attributes": [
+        {
+          "name": "description",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
       "kind": "enum_def",
       "name": "AgencyType",
       "parentPackage": "MetadataLibrary",
@@ -12466,7 +13077,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 216,
+      "lineNumber": 238,
       "attributes": [
         {
           "name": "patientAgent"
@@ -12490,7 +13101,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 239,
+      "lineNumber": 261,
       "attributes": [
         {
           "name": "agencyType",
@@ -12517,7 +13128,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 274,
+      "lineNumber": 296,
       "attributes": [
         {
           "name": "male"
@@ -12544,7 +13155,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 283,
+      "lineNumber": 305,
       "attributes": [
         {
           "name": "email"
@@ -12571,7 +13182,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 292,
+      "lineNumber": 314,
       "attributes": [
         {
           "name": "faceToFace"
@@ -12595,7 +13206,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 300,
+      "lineNumber": 322,
       "attributes": [
         {
           "name": "inbound"
@@ -12613,7 +13224,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 306,
+      "lineNumber": 328,
       "attributes": [
         {
           "name": "given"
@@ -12637,7 +13248,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 314,
+      "lineNumber": 336,
       "attributes": [
         {
           "name": "line1",
@@ -12674,7 +13285,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 323,
+      "lineNumber": 345,
       "attributes": [
         {
           "name": "email",
@@ -12701,7 +13312,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 333,
+      "lineNumber": 355,
       "attributes": [
         {
           "name": "pass"
@@ -12722,7 +13333,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 342,
+      "lineNumber": 364,
       "attributes": [
         {
           "name": "critical"
@@ -12743,7 +13354,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 350,
+      "lineNumber": 372,
       "attributes": [
         {
           "name": "patient"
@@ -12770,7 +13381,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 360,
+      "lineNumber": 382,
       "attributes": [
         {
           "name": "cdr;         // openEHR CDR via AQL"
@@ -12797,7 +13408,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 374,
+      "lineNumber": 396,
       "attributes": [
         {
           "name": "clinical"
@@ -12824,7 +13435,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 390,
+      "lineNumber": 412,
       "attributes": [
         {
           "name": "automatic"
@@ -12845,7 +13456,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 405,
+      "lineNumber": 427,
       "attributes": [
         {
           "name": "healthy"
@@ -12866,7 +13477,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 414,
+      "lineNumber": 436,
       "attributes": [
         {
           "name": "low"
@@ -12890,7 +13501,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 424,
+      "lineNumber": 446,
       "attributes": [
         {
           "name": "oestrogen"
@@ -12911,7 +13522,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 433,
+      "lineNumber": 455,
       "attributes": [
         {
           "name": "noContraindication"
@@ -12938,7 +13549,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 445,
+      "lineNumber": 467,
       "attributes": [
         {
           "name": "estradiolValerate"
@@ -12968,7 +13579,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 457,
+      "lineNumber": 479,
       "attributes": [
         {
           "name": "oral"
@@ -12992,7 +13603,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 465,
+      "lineNumber": 487,
       "attributes": [
         {
           "name": "low"
@@ -13016,7 +13627,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 476,
+      "lineNumber": 498,
       "attributes": [
         {
           "name": "satisfied"
@@ -13037,7 +13648,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 484,
+      "lineNumber": 506,
       "attributes": [
         {
           "name": "stable"
@@ -13061,7 +13672,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 493,
+      "lineNumber": 515,
       "attributes": [
         {
           "name": "continueCurrentRegimen"
@@ -13088,7 +13699,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 506,
+      "lineNumber": 528,
       "attributes": [
         {
           "name": "clinical"
@@ -13112,7 +13723,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 517,
+      "lineNumber": 539,
       "attributes": [
         {
           "name": "pending"
@@ -13139,7 +13750,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 532,
+      "lineNumber": 554,
       "attributes": [
         {
           "name": "baseline"
@@ -13166,7 +13777,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 542,
+      "lineNumber": 564,
       "attributes": [
         {
           "name": "within"
@@ -13190,7 +13801,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 565,
+      "lineNumber": 587,
       "attributes": [
         {
           "name": "clinicalDataRepository"
@@ -13214,7 +13825,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 585,
+      "lineNumber": 607,
       "attributes": [
         {
           "name": "clinicalSignificance"
@@ -13259,7 +13870,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 605,
+      "lineNumber": 627,
       "attributes": [
         {
           "name": "domainConcept",

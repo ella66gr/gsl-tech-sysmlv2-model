@@ -203,6 +203,28 @@ package Foundation {
             attribute shortDescription : String;
         }
 
+        metadata def PurposiveDescription {
+            doc /* Authored purposive description for the comprehension
+                 * layer. Explains what this element means for a service
+                 * business and what the system does with it — the
+                 * "why should I care?" and "what happens when I define
+                 * one of these?" explanation.
+                 *
+                 * Register 1 (authored comprehension content). Distinct
+                 * from @UserFacing (labels and short tooltips) and
+                 * @Comprehension (traversal instructions for dynamically
+                 * assembled content).
+                 *
+                 * Style: purposive, systemic, second-person, contract
+                 * language. See phase-3-draft-descriptions for the
+                 * style guide.
+                 *
+                 * Business system meta model concept.
+                 * Intrinsic self-knowledge principle (A10).
+                 * Session 49 — Stage 3 Phase 3, Step 2. */
+            attribute description : String;
+        }
+
         // -- Agency classification metadata -----------------------
         // Business system meta model concepts: annotate pathway
         // action nodes with the agent who performs them.

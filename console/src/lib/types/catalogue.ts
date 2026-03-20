@@ -23,6 +23,10 @@ export interface UserFacing {
   shortDescription: string;
 }
 
+export interface PurposiveDescription {
+  description: string;
+}
+
 export interface CatalogueElement {
   name: string;
   layer: string;
@@ -30,6 +34,7 @@ export interface CatalogueElement {
   doc: string;
   catalogueTag: CatalogueTag;
   userFacing?: UserFacing;
+  purposiveDescription?: PurposiveDescription;
   /** Keyed by domain identifier (core, csw, suds). */
   domains: Record<string, DomainInstance[]>;
 }
@@ -49,8 +54,11 @@ export type FacetSummary = Record<string, FacetDimension>;
 export interface ComprehensionSummary {
   catalogueTaggedCount: number;
   userFacingCount: number;
+  purposiveDescriptionCount: number;
   coveragePercent: number;
+  purposiveCoveragePercent: number;
   missingUserFacing: Array<{ name: string; package: string }>;
+  missingPurposiveDescription: Array<{ name: string; package: string }>;
 }
 
 // --- Domain metadata ---

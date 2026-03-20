@@ -1,7 +1,7 @@
 # SysML v2 Syntax Reference — Syside Modeler
 
-> **Version:** 3.15 — 19 March 2026
-> **Previous version:** v3.14 (19 March 2026). Full version history in `documentation/reference/syntax-versions/`
+> **Version:** 3.16 — 20 March 2026
+> **Previous version:** v3.15 (19 March 2026). Full version history in `documentation/reference/syntax-versions/`
 > **Purpose:** Concise reference for writing `.sysml` files against Syside Modeler.
 > Consult before writing new SysML code. Update as new patterns are verified.
 >
@@ -12,7 +12,9 @@
 > - `gsl-validated-architectural-patterns.md` — integration patterns, generation pipelines, design rationale
 > - `gsl-guide-repo-conventions.md` — file structure, generators, git practices, `gsl` toolkit
 >
-> **What's new in v3.15:** Session 43 Viewpoint/View Investigation (Stage 2 Phase 5). `viewpoint def`, `view def`, `view` usage, `expose` (wildcard, named, cross-package), and `filter` (trivial and metadata-based) all verified working. `rendering def` and `render` fail. `frame concern` and `stakeholder` in viewpoint defs trigger subject parameter constraint. See §12.
+> **What's new in v3.16:** Session 49 — `ref` inside `metadata def` verified (Stage 3 Phase 3, Step 1 syntax spike). All six test patterns pass: singular ref, multi-valued ref, ref to part def / metadata def / enum def, mixed attributes + refs, and annotation application. See §8.
+>
+> **v3.15:** Session 43 Viewpoint/View Investigation (Stage 2 Phase 5). `viewpoint def`, `view def`, `view` usage, `expose` (wildcard, named, cross-package), and `filter` (trivial and metadata-based) all verified working. `rendering def` and `render` fail. `frame concern` and `stakeholder` in viewpoint defs trigger subject parameter constraint. See §12.
 
 ---
 
@@ -510,6 +512,7 @@ action myStep {
 | `state def` | Not tested |
 | Simple `action name;` (no braces) | ✗ Fails — needs body to hold annotation |
 | Enum-typed attribute on `metadata def` | ✅ Works (v3.12, Session 29). Enum and metadata def must be in same package. |
+| `ref` inside `metadata def` body | ✅ Works (v3.16, Session 49). Singular, multi-valued, targeting part def / metadata def / enum def. See §8 detail. |
 
 ### References to metadata def and enum def types (verified v3.12)
 
@@ -525,6 +528,33 @@ part def TestRefToMetadata {
 ```
 
 Verified Session 30 (Concept Graph workstream). All four patterns parse cleanly.
+
+### ref inside metadata def (verified v3.16, Session 49)
+
+`ref` fields work inside `metadata def` bodies — singular, multi-valued, and targeting `part def`, `metadata def`, and `enum def` types:
+
+```sysml
+metadata def ComprehensionSchema {
+    attribute label : String;
+    attribute surfaceEnumValues : Boolean;
+    ref traversalTarget : SomePartDef;                  // singular ref to part def ✅
+    ref traversalTargets : SomePartDef[0..*];            // multi-valued ref ✅
+    ref relatedAnnotation : SomeMetadataDef;             // ref to metadata def ✅
+    ref depthEnum : SomeEnumDef;                         // ref to enum def ✅
+}
+```
+
+Annotation application of metadata defs containing `ref` fields also works — the annotation parses and the `attribute` assignments are accepted. Hover shows the correct `MetadataDefinition` type with doc block.
+
+**Verified (Session 49, Stage 3 Phase 3 syntax spike):** Six test patterns in `model/syntax-tests/test-ref-inside-metadata-def.sysml`:
+- Test A: singular `ref target : PartDef` inside `metadata def` ✅
+- Test B: multi-valued `ref targets : PartDef[0..*]` inside `metadata def` ✅
+- Test C: `ref related : MetadataDef` inside `metadata def` ✅
+- Test D: `ref depthEnum : EnumDef` inside `metadata def` ✅
+- Test E: annotation application of metadata defs with ref fields ✅
+- Test F: mixed attributes + refs + enum attribute in one metadata def ✅
+
+**Not yet tested:** Assigning a ref value inside an annotation body (e.g. `@Schema { traversalTarget = somePartUsage; }`). The current use case (comprehension traversal) does not require ref assignment in annotation bodies — the generator reads the metadata def structure and model topology.
 
 ### Per-attribute documentation workaround
 
