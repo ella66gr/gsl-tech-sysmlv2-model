@@ -146,6 +146,7 @@ class SysmlElement:
         self.catalogue_tag = {}       # {"bmmConcern": "...", "classification": "..."}
         self.user_facing = {}         # {"friendlyName": "...", "shortDescription": "..."}
         self.purposive_description = {}  # {"description": "..."}
+        self.comprehension = {}       # {"surfaceEnumValues": True, ...}
         self.annotations = []         # all prefix annotations for future extensibility
 
     def to_dict(self):
@@ -170,6 +171,8 @@ class SysmlElement:
             d["userFacing"] = self.user_facing
         if self.purposive_description:
             d["purposiveDescription"] = self.purposive_description
+        if self.comprehension:
+            d["comprehension"] = self.comprehension
         if self.annotations:
             d["annotations"] = self.annotations
         return d
@@ -348,6 +351,10 @@ def parse_sysml_file(filepath, domain_key):
     ann_attr_pattern = re.compile(
         r'(\w+)\s*=\s*"([^"]*)"\s*;'
     )
+    # Boolean attribute inside annotation: key = true; or key = false;
+    ann_bool_pattern = re.compile(
+        r'(\w+)\s*=\s*(true|false)\s*;'
+    )
     
     rel_path = str(filepath.relative_to(REPO_ROOT))
     
@@ -367,6 +374,12 @@ def parse_sysml_file(filepath, domain_key):
                 elem.user_facing = dict(a_attrs)
             elif a_name == "PurposiveDescription":
                 elem.purposive_description = dict(a_attrs)
+            elif a_name == "Comprehension":
+                # Convert string "true"/"false" to Python booleans
+                elem.comprehension = {
+                    k: (v if isinstance(v, bool) else str(v).lower() == "true")
+                    for k, v in a_attrs.items()
+                }
             elem.annotations.append({"name": a_name, "attrs": dict(a_attrs)})
         pending_annotations = []
     
@@ -386,9 +399,13 @@ def parse_sysml_file(filepath, domain_key):
                 i += 1
                 continue
             else:
-                # Extract key = "value"; pairs
+                # Extract key = "value"; pairs (string attributes)
                 for m_attr in ann_attr_pattern.finditer(stripped):
                     ann_attrs[m_attr.group(1)] = m_attr.group(2)
+                # Extract key = true/false; pairs (boolean attributes)
+                for m_bool in ann_bool_pattern.finditer(stripped):
+                    if m_bool.group(1) not in ann_attrs:  # don't override string match
+                        ann_attrs[m_bool.group(1)] = m_bool.group(2) == "true"
                 i += 1
                 continue
         
@@ -401,6 +418,9 @@ def parse_sysml_file(filepath, domain_key):
             a_attrs = {}
             for m_attr in ann_attr_pattern.finditer(a_body):
                 a_attrs[m_attr.group(1)] = m_attr.group(2)
+            for m_bool in ann_bool_pattern.finditer(a_body):
+                if m_bool.group(1) not in a_attrs:
+                    a_attrs[m_bool.group(1)] = m_bool.group(2) == "true"
             pending_annotations.append((a_name, a_attrs))
             i += 1
             continue
@@ -510,6 +530,9 @@ def parse_sysml_file(filepath, domain_key):
             values = []
             for j in range(i + 1, block_end):
                 val_line = lines[j].strip().rstrip(";")
+                # Strip inline comments (e.g. "serviceDelivery     // description")
+                if "//" in val_line:
+                    val_line = val_line[:val_line.index("//")].strip()
                 if val_line and not val_line.startswith("//") and not val_line.startswith("doc") and not val_line.startswith("*") and val_line != "}":
                     values.append({"name": val_line})
             
@@ -771,6 +794,7 @@ def build_coverage_matrix(all_elements):
                 "catalogueTag": elem.catalogue_tag if elem.catalogue_tag else {},
                 "userFacing": elem.user_facing if elem.user_facing else {},
                 "purposiveDescription": elem.purposive_description if elem.purposive_description else {},
+                "comprehension": elem.comprehension if elem.comprehension else {},
                 "domains": {},
             }
     
@@ -831,10 +855,12 @@ def build_comprehension_summary(all_elements):
     tagged_elements = [e for e in all_elements if e.catalogue_tag]
     with_user_facing = [e for e in tagged_elements if e.user_facing]
     with_purposive = [e for e in tagged_elements if e.purposive_description]
+    with_comprehension = [e for e in tagged_elements if e.comprehension]
     return {
         "catalogueTaggedCount": len(tagged_elements),
         "userFacingCount": len(with_user_facing),
         "purposiveDescriptionCount": len(with_purposive),
+        "comprehensionAnnotationCount": len(with_comprehension),
         "coveragePercent": round(
             len(with_user_facing) / len(tagged_elements) * 100, 1
         ) if tagged_elements else 0,
@@ -850,6 +876,107 @@ def build_comprehension_summary(all_elements):
             for e in tagged_elements if not e.purposive_description
         ],
     }
+
+
+# ---------------------------------------------------------------
+# Stage 3 Phase 3: Comprehension traversal discovery
+# ---------------------------------------------------------------
+
+def build_comprehension_content(all_elements, coverage_matrix):
+    """Build dynamically assembled comprehension content for annotated elements.
+    
+    For each element with a @Comprehension annotation, executes the traversal
+    instructions declared by the boolean flags and produces structured content
+    from live model state.
+    
+    Stage 3 Phase 3 Step 3 — intrinsic self-knowledge (A10).
+    3b approach: declarative flags with smart generator (S49-D4).
+    """
+    # Build lookup indices
+    enum_index = {}     # enum_def name -> list of value names
+    package_index = defaultdict(list)  # package name -> list of (kind, name, user_facing)
+    
+    for elem in all_elements:
+        if elem.kind == "enum_def":
+            enum_index[elem.name] = [
+                v["name"] for v in elem.attributes
+                if isinstance(v, dict) and "name" in v
+            ]
+        if elem.kind in ("part_def", "requirement_def") and elem.catalogue_tag:
+            package_index[elem.parent_package].append({
+                "name": elem.name,
+                "kind": elem.kind,
+                "friendlyName": elem.user_facing.get("friendlyName", "") if elem.user_facing else "",
+                "layer": elem.meta_model_layer,
+            })
+    
+    content = {}
+    
+    for elem in all_elements:
+        if not elem.comprehension:
+            continue
+        
+        flags = elem.comprehension
+        entry = {"flags": flags}
+        
+        # --- surfaceEnumValues ---
+        if flags.get("surfaceEnumValues"):
+            enum_values = []
+            for attr in elem.attributes:
+                if not isinstance(attr, dict):
+                    continue
+                attr_type = attr.get("type", "")
+                if attr_type in enum_index:
+                    enum_values.append({
+                        "enumName": attr_type,
+                        "attributeName": attr.get("name", ""),
+                        "values": enum_index[attr_type],
+                    })
+            if enum_values:
+                entry["enumValues"] = enum_values
+        
+        # --- surfaceDomainInstantiations ---
+        if flags.get("surfaceDomainInstantiations"):
+            cov = coverage_matrix.get(elem.name, {})
+            domains_data = cov.get("domains", {})
+            domain_surface = {}
+            for dk, instances in domains_data.items():
+                domain_surface[dk] = {
+                    "count": len(instances),
+                    "instances": [inst["name"] for inst in instances],
+                }
+            if domain_surface:
+                entry["domainInstantiations"] = domain_surface
+        
+        # --- surfaceRelatedConcepts ---
+        if flags.get("surfaceRelatedConcepts"):
+            siblings = [
+                {
+                    "name": sib["name"],
+                    "friendlyName": sib["friendlyName"],
+                }
+                for sib in package_index.get(elem.parent_package, [])
+                if sib["name"] != elem.name and sib["layer"] == elem.meta_model_layer
+            ]
+            if siblings:
+                entry["relatedConcepts"] = siblings
+        
+        # --- surfaceAttributes ---
+        if flags.get("surfaceAttributes"):
+            attr_surface = [
+                {
+                    "name": attr.get("name", ""),
+                    "type": attr.get("type", "String"),
+                }
+                for attr in elem.attributes
+                if isinstance(attr, dict) and "type" in attr
+            ]
+            if attr_surface:
+                entry["attributes"] = attr_surface
+        
+        content[elem.name] = entry
+    
+    return content
 
 
 # ---------------------------------------------------------------
@@ -987,6 +1114,9 @@ def main():
     facets = build_facet_summary(all_elements)
     comprehension = build_comprehension_summary(all_elements)
     
+    # Stage 3 Phase 3: build comprehension content from traversal discovery
+    comprehension_content = build_comprehension_content(all_elements, coverage)
+    
     # Stage 2 Phase 6: build governance traceability
     governance = build_governance_traceability(all_elements)
     
@@ -1026,6 +1156,11 @@ def main():
             )
             print(f"  {dim}: {values_str} (total: {info['total']})",
                   file=sys.stderr)
+    print(f"Elements with @Comprehension: {comprehension['comprehensionAnnotationCount']}",
+          file=sys.stderr)
+    if comprehension_content:
+        print(f"Comprehension content generated for: {', '.join(sorted(comprehension_content.keys()))}",
+              file=sys.stderr)
     if comprehension["missingUserFacing"]:
         print(f"Missing @UserFacing ({len(comprehension['missingUserFacing'])}):",
               file=sys.stderr)
@@ -1073,6 +1208,7 @@ def main():
         "comprehension": comprehension,
         "governanceTraceability": governance,
         "coverageMatrix": coverage,
+        "comprehensionContent": comprehension_content,
         "elements": [e.to_dict() for e in all_elements],
     }
     

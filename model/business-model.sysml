@@ -478,6 +478,12 @@ package BusinessModel {
         @PurposiveDescription {
             description = "Something your business does — an identifiable unit of work that the system holds, tracks, and uses. In this system, every activity is an activity of one of the following types: service delivery, enabling, governance, development, or overhead. When you assign one of these types to an activity, the system will use that information to plan resources, allocate costs, and verify that governance requirements are being met for each kind of work.";
         }
+        @Comprehension {
+            surfaceEnumValues = true;
+            surfaceDomainInstantiations = true;
+            surfaceRelatedConcepts = true;
+            surfaceAttributes = true;
+        }
         part def ActivityType {
             doc /* A defined type of activity within the business.
                  * Every activity has a type, and every type belongs

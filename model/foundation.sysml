@@ -225,6 +225,42 @@ package Foundation {
             attribute description : String;
         }
 
+        metadata def Comprehension {
+            doc /* Comprehension traversal schema. Declares which
+                 * categories of dynamically assembled content the
+                 * comprehension engine should surface for this
+                 * element.
+                 *
+                 * The annotation is a recipe — it declares what to
+                 * show, not what to say. The generator reads these
+                 * flags and discovers structural facts from the live
+                 * model at generation time.
+                 *
+                 * 3b approach (Session 49, S49-D4): declarative
+                 * flags with smart generator. The annotation is
+                 * lightweight; the intelligence is in the
+                 * generator's traversal logic.
+                 *
+                 * surfaceEnumValues: show associated enum values
+                 *   discovered via attribute type matching.
+                 * surfaceDomainInstantiations: show cross-domain
+                 *   usage counts and instance names.
+                 * surfaceRelatedConcepts: show structurally related
+                 *   elements (same-package siblings for pilot;
+                 *   typed refs in future per O25).
+                 * surfaceAttributes: show the element's own
+                 *   attributes with their types.
+                 *
+                 * Business system meta model concept.
+                 * Intrinsic self-knowledge principle (A10).
+                 * Unity principle (A11).
+                 * Session 50 — Stage 3 Phase 3, Step 3. */
+            attribute surfaceEnumValues : Boolean;
+            attribute surfaceDomainInstantiations : Boolean;
+            attribute surfaceRelatedConcepts : Boolean;
+            attribute surfaceAttributes : Boolean;
+        }
+
         // -- Agency classification metadata -----------------------
         // Business system meta model concepts: annotate pathway
         // action nodes with the agent who performs them.

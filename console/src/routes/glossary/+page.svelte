@@ -6,13 +6,14 @@
     SearchOutline,
     ArrowRightOutline,
   } from 'flowbite-svelte-icons';
-  import type { CatalogueElement } from '$lib/types/catalogue';
+  import type { CatalogueElement, ComprehensionContent } from '$lib/types/catalogue';
 
   let { data } = $props();
 
   const glossary = data.glossary;
   const allEntries = glossary.entries;
   const comprehension = glossary.comprehension;
+  const comprehensionContent: Record<string, ComprehensionContent> = glossary.comprehensionContent || {};
   const facets = glossary.facets;
   const domainMeta = glossary.domains;
   const domainKeys = Object.keys(domainMeta);
@@ -128,6 +129,44 @@
     };
     return colors[concern] || 'dark';
   }
+
+  // --- Navigation stack for back/forward within glossary ---
+  interface NavState {
+    searchText: string;
+    concernFilter: string;
+    layerFilter: string;
+    expandedEntries: Set<string>;
+  }
+  let navStack = $state<NavState[]>([]);
+
+  const canGoBack = $derived(navStack.length > 0);
+
+  function navigateToEntry(name: string) {
+    // Push current state onto the stack before navigating
+    navStack = [...navStack, {
+      searchText,
+      concernFilter,
+      layerFilter,
+      expandedEntries: new Set(expandedEntries),
+    }];
+    // Navigate to the target entry
+    searchText = name;
+    concernFilter = 'all';
+    layerFilter = 'all';
+    setTimeout(() => {
+      expandedEntries = new Set([name]);
+    }, 50);
+  }
+
+  function navigateBack() {
+    if (navStack.length === 0) return;
+    const prev = navStack[navStack.length - 1];
+    navStack = navStack.slice(0, -1);
+    searchText = prev.searchText;
+    concernFilter = prev.concernFilter;
+    layerFilter = prev.layerFilter;
+    expandedEntries = new Set(prev.expandedEntries);
+  }
 </script>
 
 <div class="space-y-4">
@@ -192,8 +231,17 @@
     </div>
   </div>
 
-  <!-- Expand/collapse controls -->
+  <!-- Navigation and expand/collapse controls -->
   <div class="flex items-center gap-1">
+    {#if canGoBack}
+      <button
+        onclick={navigateBack}
+        class="rounded px-2 py-0.5 text-xs text-primary-600 hover:bg-primary-50 hover:text-primary-800 dark:text-primary-400 dark:hover:bg-primary-900/30 dark:hover:text-primary-300"
+      >
+        ← Back
+      </button>
+      <span class="text-secondary-200 dark:text-secondary-700">·</span>
+    {/if}
     <button
       onclick={expandAll}
       disabled={allExpanded}
@@ -288,6 +336,80 @@
                   <p class="text-sm leading-relaxed text-secondary-600 dark:text-secondary-400">
                     {entry.purposiveDescription.description}
                   </p>
+                </div>
+              {/if}
+
+              <!-- Comprehension: intrinsic content from model traversal -->
+              {#if comprehensionContent[entry.name]}
+                {@const cc = comprehensionContent[entry.name]}
+                <div class="rounded-md border border-primary-100 bg-primary-50/30 p-3 dark:border-primary-900/30 dark:bg-primary-900/10">
+                  <h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-400">
+                    How this element works in the model
+                  </h4>
+                  <div class="space-y-2">
+                    <!-- Enum values -->
+                    {#if cc.enumValues && cc.enumValues.length > 0}
+                      {#each cc.enumValues as ev}
+                        <div>
+                          <span class="text-xs font-medium text-secondary-500 dark:text-secondary-400">Categories</span>
+                          <p class="mt-0.5 text-sm text-secondary-700 dark:text-secondary-300">
+                            Every {entry.userFacing?.friendlyName?.toLowerCase() || entry.name} is classified as one of:
+                            <span class="font-medium">
+                              {ev.values.map(v => v.replace(/([A-Z])/g, ' $1').trim().toLowerCase()).join(' · ')}
+                            </span>
+                          </p>
+                        </div>
+                      {/each}
+                    {/if}
+
+                    <!-- Domain instantiations -->
+                    {#if cc.domainInstantiations}
+                      <div>
+                        <span class="text-xs font-medium text-secondary-500 dark:text-secondary-400">Used across domains</span>
+                        <p class="mt-0.5 text-sm text-secondary-700 dark:text-secondary-300">
+                          {#each Object.entries(cc.domainInstantiations) as [dk, di], idx}
+                            {#if di.count > 0}
+                              {#if idx > 0}<span class="text-secondary-300 dark:text-secondary-600">{' · '}</span>{/if}
+                              <span class="font-medium">{domainMeta[dk]?.label || dk}</span>
+                              <span class="text-secondary-400"> ({di.count})</span>
+                            {/if}
+                          {/each}
+                        </p>
+                      </div>
+                    {/if}
+
+                    <!-- Related concepts -->
+                    {#if cc.relatedConcepts && cc.relatedConcepts.length > 0}
+                      <div>
+                        <span class="text-xs font-medium text-secondary-500 dark:text-secondary-400">Related concepts</span>
+                        <p class="mt-0.5 text-sm">
+                          {#each cc.relatedConcepts as rc, idx}
+                            {#if idx > 0}<span class="text-secondary-300 dark:text-secondary-600">{' · '}</span>{/if}
+                            <button
+                              onclick={() => navigateToEntry(rc.name)}
+                              class="text-primary-600 hover:text-primary-800 hover:underline dark:text-primary-400 dark:hover:text-primary-300"
+                            >
+                              {rc.friendlyName || rc.name}
+                            </button>
+                          {/each}
+                        </p>
+                      </div>
+                    {/if}
+
+                    <!-- Attributes -->
+                    {#if cc.attributes && cc.attributes.length > 0}
+                      <div>
+                        <span class="text-xs font-medium text-secondary-500 dark:text-secondary-400">Attributes</span>
+                        <p class="mt-0.5 text-sm text-secondary-700 dark:text-secondary-300">
+                          {#each cc.attributes as attr, idx}
+                            {#if idx > 0}<span class="text-secondary-300 dark:text-secondary-600">{' · '}</span>{/if}
+                            <span class="font-mono text-xs">{attr.name}</span>
+                            <span class="text-secondary-400"> ({attr.type})</span>
+                          {/each}
+                        </p>
+                      </div>
+                    {/if}
+                  </div>
                 </div>
               {/if}
 

@@ -1,11 +1,13 @@
 import type { PageLoad } from './$types';
-import type { CatalogueElement, ComprehensionSummary, FacetSummary, DomainMeta } from '$lib/types/catalogue';
+import type { CatalogueElement, ComprehensionSummary, ComprehensionContent, FacetSummary, DomainMeta } from '$lib/types/catalogue';
 
 export interface GlossaryPageData {
   /** Elements that have @UserFacing metadata — the glossary entries. */
   entries: CatalogueElement[];
   /** Comprehension stats — how many elements have glossary entries vs total catalogue. */
   comprehension: ComprehensionSummary;
+  /** Dynamically assembled comprehension content keyed by element name. */
+  comprehensionContent: Record<string, ComprehensionContent>;
   /** Facet dimensions for filtering. */
   facets: FacetSummary;
   /** Domain metadata for labels and descriptions. */
@@ -35,6 +37,7 @@ export const load: PageLoad = async ({ fetch }) => {
       catalogueTag: entry.catalogueTag,
       userFacing: entry.userFacing,
       purposiveDescription: entry.purposiveDescription || undefined,
+      comprehension: entry.comprehension || undefined,
       domains: entry.domains || {},
     }));
 
@@ -44,11 +47,13 @@ export const load: PageLoad = async ({ fetch }) => {
       catalogueTaggedCount: 0,
       userFacingCount: 0,
       purposiveDescriptionCount: 0,
+      comprehensionAnnotationCount: 0,
       coveragePercent: 0,
       purposiveCoveragePercent: 0,
       missingUserFacing: [],
       missingPurposiveDescription: [],
     },
+    comprehensionContent: data.comprehensionContent || {},
     facets: data.facets || {},
     domains: data.domains || {},
     generatedAt: data.generatedAt,

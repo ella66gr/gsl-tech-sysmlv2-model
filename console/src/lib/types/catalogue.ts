@@ -27,6 +27,44 @@ export interface PurposiveDescription {
   description: string;
 }
 
+export interface ComprehensionFlags {
+  surfaceEnumValues?: boolean;
+  surfaceDomainInstantiations?: boolean;
+  surfaceRelatedConcepts?: boolean;
+  surfaceAttributes?: boolean;
+}
+
+export interface EnumValueSurface {
+  enumName: string;
+  attributeName: string;
+  values: string[];
+}
+
+export interface DomainInstantiationSurface {
+  [domain: string]: {
+    count: number;
+    instances: string[];
+  };
+}
+
+export interface RelatedConceptSurface {
+  name: string;
+  friendlyName?: string;
+}
+
+export interface AttributeSurface {
+  name: string;
+  type: string;
+}
+
+export interface ComprehensionContent {
+  flags: ComprehensionFlags;
+  enumValues?: EnumValueSurface[];
+  domainInstantiations?: DomainInstantiationSurface;
+  relatedConcepts?: RelatedConceptSurface[];
+  attributes?: AttributeSurface[];
+}
+
 export interface CatalogueElement {
   name: string;
   layer: string;
@@ -35,7 +73,8 @@ export interface CatalogueElement {
   catalogueTag: CatalogueTag;
   userFacing?: UserFacing;
   purposiveDescription?: PurposiveDescription;
-  /** Keyed by domain identifier (core, csw, suds). */
+  comprehension?: ComprehensionFlags;
+  /** Keyed by domain identifier (core, csw, suds, paws). */
   domains: Record<string, DomainInstance[]>;
 }
 
@@ -55,6 +94,7 @@ export interface ComprehensionSummary {
   catalogueTaggedCount: number;
   userFacingCount: number;
   purposiveDescriptionCount: number;
+  comprehensionAnnotationCount: number;
   coveragePercent: number;
   purposiveCoveragePercent: number;
   missingUserFacing: Array<{ name: string; package: string }>;
