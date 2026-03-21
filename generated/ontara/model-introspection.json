@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-21T01:23:41.647960",
+  "generatedAt": "2026-03-21T11:04:23.504875",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
@@ -933,7 +933,23 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
-      "weightedRelationships": [],
+      "weightedRelationships": [
+        {
+          "target": "ValueProposition",
+          "strength": "strong",
+          "rationale": "Each segment has one or more propositions designed for it. A change to the target segment requires reassessing the value promises made to it."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "strong",
+          "rationale": "Offerings are what the segment actually receives. A change to the target audience requires reassessing what is offered to them."
+        },
+        {
+          "target": "Channel",
+          "strength": "moderate",
+          "rationale": "Channels are how segments are reached. A change to the target segment may require reviewing acquisition and delivery channels, but the relationship is many-to-many."
+        }
+      ],
       "domains": {
         "core": [
           {
@@ -995,7 +1011,23 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
-      "weightedRelationships": [],
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "strong",
+          "rationale": "The offering is the concrete realisation of the proposition. A change to the value promise requires reassessing what is offered to deliver it."
+        },
+        {
+          "target": "CustomerSegment",
+          "strength": "strong",
+          "rationale": "Every value proposition is made to a specific segment. A change to the promise of value requires reassessing the audience it addresses."
+        },
+        {
+          "target": "DifferentiationClaim",
+          "strength": "moderate",
+          "rationale": "Claims articulate how the proposition differs from alternatives. A change to the proposition may require reviewing its supporting claims, but a proposition can exist before claims are formalised."
+        }
+      ],
       "domains": {
         "core": [
           {
@@ -1051,7 +1083,48 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
-      "weightedRelationships": [],
+      "weightedRelationships": [
+        {
+          "target": "ValueProposition",
+          "strength": "strong",
+          "rationale": "A service offering is the concrete realisation of a value proposition. A change to what is offered requires reassessing the promise of value it delivers."
+        },
+        {
+          "target": "CustomerSegment",
+          "strength": "strong",
+          "rationale": "Every service offering exists for defined customer segments. A change to what is offered requires reassessing who it is for."
+        },
+        {
+          "target": "PricingModel",
+          "strength": "strong",
+          "rationale": "Each offering has a pricing basis. A change to the offering directly affects how it is priced."
+        },
+        {
+          "target": "ActivityType",
+          "strength": "strong",
+          "rationale": "Every service offering requires activities to deliver it. A change to the offering requires reassessing the activity types involved."
+        },
+        {
+          "target": "Channel",
+          "strength": "moderate",
+          "rationale": "Channels deliver service offerings to customers. A change to the offering may require reviewing delivery channels, but the coupling is not definitional."
+        },
+        {
+          "target": "CatalogueEntry",
+          "strength": "moderate",
+          "rationale": "The catalogue records the business decision to offer something. A change to the offering may require updating catalogue entries, but the catalogue is operational, not definitional."
+        },
+        {
+          "target": "DifferentiationClaim",
+          "strength": "moderate",
+          "rationale": "Claims support the value proposition which the offering delivers. A change to the offering may require reviewing claims, but the link is mediated through the value proposition."
+        },
+        {
+          "target": "ResourceType",
+          "strength": "moderate",
+          "rationale": "Resources are consumed by activities which deliver offerings. A change to the offering may affect resource requirements, but the relationship is indirect \u2014 mediated through activity types and capabilities."
+        }
+      ],
       "domains": {
         "core": [
           {
@@ -1137,7 +1210,18 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
-      "weightedRelationships": [],
+      "weightedRelationships": [
+        {
+          "target": "CustomerSegment",
+          "strength": "moderate",
+          "rationale": "Channels serve customer segments. A change to a channel may require reviewing which segments it reaches, but the coupling is operational and many-to-many."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "Channels deliver service offerings. A change to a channel may require reviewing which offerings flow through it, but the coupling is loose."
+        }
+      ],
       "domains": {
         "core": [
           {
@@ -1199,7 +1283,18 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
-      "weightedRelationships": [],
+      "weightedRelationships": [
+        {
+          "target": "ValueProposition",
+          "strength": "strong",
+          "rationale": "Claims exist to substantiate a value proposition. A change to a claim requires reassessing the proposition it supports \u2014 a claim without a proposition is orphaned."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "weak",
+          "rationale": "Claims relate to offerings indirectly, via the value proposition. A change to a claim has a distant effect on offerings \u2014 mediated through the proposition."
+        }
+      ],
       "domains": {
         "core": [
           {
@@ -1255,7 +1350,23 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
-      "weightedRelationships": [],
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "The catalogue records what is offered. A change to a catalogue entry may require reviewing the offering it represents, but the catalogue is the operational wrapper, not the strategic definition."
+        },
+        {
+          "target": "ExternalReference",
+          "strength": "moderate",
+          "rationale": "Catalogue entries link to external knowledge sources. A change to a catalogue entry may require reviewing its external references \u2014 the four-layer item model connects them."
+        },
+        {
+          "target": "InventoryRecord",
+          "strength": "moderate",
+          "rationale": "Inventory tracks stock of catalogue items. A change to a catalogue entry may require updating its associated inventory records."
+        }
+      ],
       "domains": {
         "cafe": [
           {
@@ -1355,7 +1466,13 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
-      "weightedRelationships": [],
+      "weightedRelationships": [
+        {
+          "target": "CatalogueEntry",
+          "strength": "moderate",
+          "rationale": "External references attach to catalogue items. A change to an external reference may require reviewing the catalogue entries that depend on it."
+        }
+      ],
       "domains": {
         "cafe": [
           {
@@ -4483,15 +4600,21 @@
       "relatedConcepts": [
         {
           "name": "ValueProposition",
-          "friendlyName": "Value Proposition"
+          "friendlyName": "Value Proposition",
+          "strength": "strong",
+          "rationale": "Each segment has one or more propositions designed for it. A change to the target segment requires reassessing the value promises made to it."
         },
         {
           "name": "ServiceOffering",
-          "friendlyName": "Service Offering"
+          "friendlyName": "Service Offering",
+          "strength": "strong",
+          "rationale": "Offerings are what the segment actually receives. A change to the target audience requires reassessing what is offered to them."
         },
         {
           "name": "Channel",
-          "friendlyName": "Channel"
+          "friendlyName": "Channel",
+          "strength": "moderate",
+          "rationale": "Channels are how segments are reached. A change to the target segment may require reviewing acquisition and delivery channels, but the relationship is many-to-many."
         },
         {
           "name": "DifferentiationClaim",
@@ -4562,19 +4685,25 @@
       "relatedConcepts": [
         {
           "name": "CustomerSegment",
-          "friendlyName": "Customer Segment"
+          "friendlyName": "Customer Segment",
+          "strength": "strong",
+          "rationale": "Every value proposition is made to a specific segment. A change to the promise of value requires reassessing the audience it addresses."
         },
         {
           "name": "ServiceOffering",
-          "friendlyName": "Service Offering"
+          "friendlyName": "Service Offering",
+          "strength": "strong",
+          "rationale": "The offering is the concrete realisation of the proposition. A change to the value promise requires reassessing what is offered to deliver it."
+        },
+        {
+          "name": "DifferentiationClaim",
+          "friendlyName": "Differentiation Claim",
+          "strength": "moderate",
+          "rationale": "Claims articulate how the proposition differs from alternatives. A change to the proposition may require reviewing its supporting claims, but a proposition can exist before claims are formalised."
         },
         {
           "name": "Channel",
           "friendlyName": "Channel"
-        },
-        {
-          "name": "DifferentiationClaim",
-          "friendlyName": "Differentiation Claim"
         },
         {
           "name": "CatalogueEntry",
@@ -4653,23 +4782,33 @@
       "relatedConcepts": [
         {
           "name": "CustomerSegment",
-          "friendlyName": "Customer Segment"
+          "friendlyName": "Customer Segment",
+          "strength": "strong",
+          "rationale": "Every service offering exists for defined customer segments. A change to what is offered requires reassessing who it is for."
         },
         {
           "name": "ValueProposition",
-          "friendlyName": "Value Proposition"
+          "friendlyName": "Value Proposition",
+          "strength": "strong",
+          "rationale": "A service offering is the concrete realisation of a value proposition. A change to what is offered requires reassessing the promise of value it delivers."
         },
         {
           "name": "Channel",
-          "friendlyName": "Channel"
+          "friendlyName": "Channel",
+          "strength": "moderate",
+          "rationale": "Channels deliver service offerings to customers. A change to the offering may require reviewing delivery channels, but the coupling is not definitional."
         },
         {
           "name": "DifferentiationClaim",
-          "friendlyName": "Differentiation Claim"
+          "friendlyName": "Differentiation Claim",
+          "strength": "moderate",
+          "rationale": "Claims support the value proposition which the offering delivers. A change to the offering may require reviewing claims, but the link is mediated through the value proposition."
         },
         {
           "name": "CatalogueEntry",
-          "friendlyName": "Catalogue Entry"
+          "friendlyName": "Catalogue Entry",
+          "strength": "moderate",
+          "rationale": "The catalogue records the business decision to offer something. A change to the offering may require updating catalogue entries, but the catalogue is operational, not definitional."
         },
         {
           "name": "ExternalReference",
@@ -4742,15 +4881,19 @@
       "relatedConcepts": [
         {
           "name": "CustomerSegment",
-          "friendlyName": "Customer Segment"
+          "friendlyName": "Customer Segment",
+          "strength": "moderate",
+          "rationale": "Channels serve customer segments. A change to a channel may require reviewing which segments it reaches, but the coupling is operational and many-to-many."
+        },
+        {
+          "name": "ServiceOffering",
+          "friendlyName": "Service Offering",
+          "strength": "moderate",
+          "rationale": "Channels deliver service offerings. A change to a channel may require reviewing which offerings flow through it, but the coupling is loose."
         },
         {
           "name": "ValueProposition",
           "friendlyName": "Value Proposition"
-        },
-        {
-          "name": "ServiceOffering",
-          "friendlyName": "Service Offering"
         },
         {
           "name": "DifferentiationClaim",
@@ -4824,16 +4967,20 @@
       },
       "relatedConcepts": [
         {
-          "name": "CustomerSegment",
-          "friendlyName": "Customer Segment"
-        },
-        {
           "name": "ValueProposition",
-          "friendlyName": "Value Proposition"
+          "friendlyName": "Value Proposition",
+          "strength": "strong",
+          "rationale": "Claims exist to substantiate a value proposition. A change to a claim requires reassessing the proposition it supports \u2014 a claim without a proposition is orphaned."
         },
         {
           "name": "ServiceOffering",
-          "friendlyName": "Service Offering"
+          "friendlyName": "Service Offering",
+          "strength": "weak",
+          "rationale": "Claims relate to offerings indirectly, via the value proposition. A change to a claim has a distant effect on offerings \u2014 mediated through the proposition."
+        },
+        {
+          "name": "CustomerSegment",
+          "friendlyName": "Customer Segment"
         },
         {
           "name": "Channel",
@@ -4910,6 +5057,18 @@
       },
       "relatedConcepts": [
         {
+          "name": "ServiceOffering",
+          "friendlyName": "Service Offering",
+          "strength": "moderate",
+          "rationale": "The catalogue records what is offered. A change to a catalogue entry may require reviewing the offering it represents, but the catalogue is the operational wrapper, not the strategic definition."
+        },
+        {
+          "name": "ExternalReference",
+          "friendlyName": "External Reference",
+          "strength": "moderate",
+          "rationale": "Catalogue entries link to external knowledge sources. A change to a catalogue entry may require reviewing its external references \u2014 the four-layer item model connects them."
+        },
+        {
           "name": "CustomerSegment",
           "friendlyName": "Customer Segment"
         },
@@ -4918,20 +5077,12 @@
           "friendlyName": "Value Proposition"
         },
         {
-          "name": "ServiceOffering",
-          "friendlyName": "Service Offering"
-        },
-        {
           "name": "Channel",
           "friendlyName": "Channel"
         },
         {
           "name": "DifferentiationClaim",
           "friendlyName": "Differentiation Claim"
-        },
-        {
-          "name": "ExternalReference",
-          "friendlyName": "External Reference"
         }
       ],
       "attributes": [
@@ -4995,6 +5146,12 @@
       },
       "relatedConcepts": [
         {
+          "name": "CatalogueEntry",
+          "friendlyName": "Catalogue Entry",
+          "strength": "moderate",
+          "rationale": "External references attach to catalogue items. A change to an external reference may require reviewing the catalogue entries that depend on it."
+        },
+        {
           "name": "CustomerSegment",
           "friendlyName": "Customer Segment"
         },
@@ -5013,10 +5170,6 @@
         {
           "name": "DifferentiationClaim",
           "friendlyName": "Differentiation Claim"
-        },
-        {
-          "name": "CatalogueEntry",
-          "friendlyName": "Catalogue Entry"
         }
       ],
       "attributes": [
@@ -5277,15 +5430,6 @@
         {
           "enumName": "GranularityLevel",
           "attributeName": "currentLevel",
-          "values": [
-            "envelope;",
-            "category;",
-            "tracked;"
-          ]
-        },
-        {
-          "enumName": "GranularityLevel",
-          "attributeName": "targetLevel",
           "values": [
             "envelope;",
             "category;",
@@ -6479,7 +6623,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 82,
+      "lineNumber": 97,
       "attributes": [
         {
           "name": "segmentName",
@@ -6524,6 +6668,23 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
+      "weightedRelationships": [
+        {
+          "target": "ValueProposition",
+          "strength": "strong",
+          "rationale": "Each segment has one or more propositions designed for it. A change to the target segment requires reassessing the value promises made to it."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "strong",
+          "rationale": "Offerings are what the segment actually receives. A change to the target audience requires reassessing what is offered to them."
+        },
+        {
+          "target": "Channel",
+          "strength": "moderate",
+          "rationale": "Channels are how segments are reached. A change to the target segment may require reviewing acquisition and delivery channels, but the relationship is many-to-many."
+        }
+      ],
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -6553,6 +6714,30 @@
             "surfaceRelatedConcepts": true,
             "surfaceAttributes": true
           }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ValueProposition",
+            "strength": "strong",
+            "rationale": "Each segment has one or more propositions designed for it. A change to the target segment requires reassessing the value promises made to it."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "strong",
+            "rationale": "Offerings are what the segment actually receives. A change to the target audience requires reassessing what is offered to them."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "Channel",
+            "strength": "moderate",
+            "rationale": "Channels are how segments are reached. A change to the target segment may require reviewing acquisition and delivery channels, but the relationship is many-to-many."
+          }
         }
       ]
     },
@@ -6564,7 +6749,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 108,
+      "lineNumber": 138,
       "attributes": [
         {
           "name": "propositionName",
@@ -6609,6 +6794,23 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "strong",
+          "rationale": "The offering is the concrete realisation of the proposition. A change to the value promise requires reassessing what is offered to deliver it."
+        },
+        {
+          "target": "CustomerSegment",
+          "strength": "strong",
+          "rationale": "Every value proposition is made to a specific segment. A change to the promise of value requires reassessing the audience it addresses."
+        },
+        {
+          "target": "DifferentiationClaim",
+          "strength": "moderate",
+          "rationale": "Claims articulate how the proposition differs from alternatives. A change to the proposition may require reviewing its supporting claims, but a proposition can exist before claims are formalised."
+        }
+      ],
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -6638,6 +6840,30 @@
             "surfaceRelatedConcepts": true,
             "surfaceAttributes": true
           }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "strong",
+            "rationale": "The offering is the concrete realisation of the proposition. A change to the value promise requires reassessing what is offered to deliver it."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "CustomerSegment",
+            "strength": "strong",
+            "rationale": "Every value proposition is made to a specific segment. A change to the promise of value requires reassessing the audience it addresses."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "DifferentiationClaim",
+            "strength": "moderate",
+            "rationale": "Claims articulate how the proposition differs from alternatives. A change to the proposition may require reviewing its supporting claims, but a proposition can exist before claims are formalised."
+          }
         }
       ]
     },
@@ -6649,7 +6875,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 133,
+      "lineNumber": 203,
       "attributes": [
         {
           "name": "offeringName",
@@ -6699,6 +6925,48 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
+      "weightedRelationships": [
+        {
+          "target": "ValueProposition",
+          "strength": "strong",
+          "rationale": "A service offering is the concrete realisation of a value proposition. A change to what is offered requires reassessing the promise of value it delivers."
+        },
+        {
+          "target": "CustomerSegment",
+          "strength": "strong",
+          "rationale": "Every service offering exists for defined customer segments. A change to what is offered requires reassessing who it is for."
+        },
+        {
+          "target": "PricingModel",
+          "strength": "strong",
+          "rationale": "Each offering has a pricing basis. A change to the offering directly affects how it is priced."
+        },
+        {
+          "target": "ActivityType",
+          "strength": "strong",
+          "rationale": "Every service offering requires activities to deliver it. A change to the offering requires reassessing the activity types involved."
+        },
+        {
+          "target": "Channel",
+          "strength": "moderate",
+          "rationale": "Channels deliver service offerings to customers. A change to the offering may require reviewing delivery channels, but the coupling is not definitional."
+        },
+        {
+          "target": "CatalogueEntry",
+          "strength": "moderate",
+          "rationale": "The catalogue records the business decision to offer something. A change to the offering may require updating catalogue entries, but the catalogue is operational, not definitional."
+        },
+        {
+          "target": "DifferentiationClaim",
+          "strength": "moderate",
+          "rationale": "Claims support the value proposition which the offering delivers. A change to the offering may require reviewing claims, but the link is mediated through the value proposition."
+        },
+        {
+          "target": "ResourceType",
+          "strength": "moderate",
+          "rationale": "Resources are consumed by activities which deliver offerings. A change to the offering may affect resource requirements, but the relationship is indirect \u2014 mediated through activity types and capabilities."
+        }
+      ],
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -6728,6 +6996,70 @@
             "surfaceRelatedConcepts": true,
             "surfaceAttributes": true
           }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ValueProposition",
+            "strength": "strong",
+            "rationale": "A service offering is the concrete realisation of a value proposition. A change to what is offered requires reassessing the promise of value it delivers."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "CustomerSegment",
+            "strength": "strong",
+            "rationale": "Every service offering exists for defined customer segments. A change to what is offered requires reassessing who it is for."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "PricingModel",
+            "strength": "strong",
+            "rationale": "Each offering has a pricing basis. A change to the offering directly affects how it is priced."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ActivityType",
+            "strength": "strong",
+            "rationale": "Every service offering requires activities to deliver it. A change to the offering requires reassessing the activity types involved."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "Channel",
+            "strength": "moderate",
+            "rationale": "Channels deliver service offerings to customers. A change to the offering may require reviewing delivery channels, but the coupling is not definitional."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "CatalogueEntry",
+            "strength": "moderate",
+            "rationale": "The catalogue records the business decision to offer something. A change to the offering may require updating catalogue entries, but the catalogue is operational, not definitional."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "DifferentiationClaim",
+            "strength": "moderate",
+            "rationale": "Claims support the value proposition which the offering delivers. A change to the offering may require reviewing claims, but the link is mediated through the value proposition."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ResourceType",
+            "strength": "moderate",
+            "rationale": "Resources are consumed by activities which deliver offerings. A change to the offering may affect resource requirements, but the relationship is indirect \u2014 mediated through activity types and capabilities."
+          }
         }
       ]
     },
@@ -6739,7 +7071,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 164,
+      "lineNumber": 244,
       "attributes": [
         {
           "name": "channelName",
@@ -6789,6 +7121,18 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
+      "weightedRelationships": [
+        {
+          "target": "CustomerSegment",
+          "strength": "moderate",
+          "rationale": "Channels serve customer segments. A change to a channel may require reviewing which segments it reaches, but the coupling is operational and many-to-many."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "Channels deliver service offerings. A change to a channel may require reviewing which offerings flow through it, but the coupling is loose."
+        }
+      ],
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -6818,6 +7162,22 @@
             "surfaceRelatedConcepts": true,
             "surfaceAttributes": true
           }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "CustomerSegment",
+            "strength": "moderate",
+            "rationale": "Channels serve customer segments. A change to a channel may require reviewing which segments it reaches, but the coupling is operational and many-to-many."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "moderate",
+            "rationale": "Channels deliver service offerings. A change to a channel may require reviewing which offerings flow through it, but the coupling is loose."
+          }
         }
       ]
     },
@@ -6829,7 +7189,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 190,
+      "lineNumber": 280,
       "attributes": [
         {
           "name": "claimName",
@@ -6869,6 +7229,18 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
+      "weightedRelationships": [
+        {
+          "target": "ValueProposition",
+          "strength": "strong",
+          "rationale": "Claims exist to substantiate a value proposition. A change to a claim requires reassessing the proposition it supports \u2014 a claim without a proposition is orphaned."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "weak",
+          "rationale": "Claims relate to offerings indirectly, via the value proposition. A change to a claim has a distant effect on offerings \u2014 mediated through the proposition."
+        }
+      ],
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -6898,6 +7270,22 @@
             "surfaceRelatedConcepts": true,
             "surfaceAttributes": true
           }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ValueProposition",
+            "strength": "strong",
+            "rationale": "Claims exist to substantiate a value proposition. A change to a claim requires reassessing the proposition it supports \u2014 a claim without a proposition is orphaned."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "weak",
+            "rationale": "Claims relate to offerings indirectly, via the value proposition. A change to a claim has a distant effect on offerings \u2014 mediated through the proposition."
+          }
         }
       ]
     },
@@ -6909,7 +7297,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 226,
+      "lineNumber": 331,
       "attributes": [
         {
           "name": "entryName",
@@ -6964,6 +7352,23 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "The catalogue records what is offered. A change to a catalogue entry may require reviewing the offering it represents, but the catalogue is the operational wrapper, not the strategic definition."
+        },
+        {
+          "target": "ExternalReference",
+          "strength": "moderate",
+          "rationale": "Catalogue entries link to external knowledge sources. A change to a catalogue entry may require reviewing its external references \u2014 the four-layer item model connects them."
+        },
+        {
+          "target": "InventoryRecord",
+          "strength": "moderate",
+          "rationale": "Inventory tracks stock of catalogue items. A change to a catalogue entry may require updating its associated inventory records."
+        }
+      ],
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -6993,6 +7398,30 @@
             "surfaceRelatedConcepts": true,
             "surfaceAttributes": true
           }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "moderate",
+            "rationale": "The catalogue records what is offered. A change to a catalogue entry may require reviewing the offering it represents, but the catalogue is the operational wrapper, not the strategic definition."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ExternalReference",
+            "strength": "moderate",
+            "rationale": "Catalogue entries link to external knowledge sources. A change to a catalogue entry may require reviewing its external references \u2014 the four-layer item model connects them."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "InventoryRecord",
+            "strength": "moderate",
+            "rationale": "Inventory tracks stock of catalogue items. A change to a catalogue entry may require updating its associated inventory records."
+          }
         }
       ]
     },
@@ -7004,7 +7433,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 265,
+      "lineNumber": 375,
       "attributes": [
         {
           "name": "referenceType",
@@ -7044,6 +7473,13 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
+      "weightedRelationships": [
+        {
+          "target": "CatalogueEntry",
+          "strength": "moderate",
+          "rationale": "External references attach to catalogue items. A change to an external reference may require reviewing the catalogue entries that depend on it."
+        }
+      ],
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -7073,6 +7509,14 @@
             "surfaceRelatedConcepts": true,
             "surfaceAttributes": true
           }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "CatalogueEntry",
+            "strength": "moderate",
+            "rationale": "External references attach to catalogue items. A change to an external reference may require reviewing the catalogue entries that depend on it."
+          }
         }
       ]
     },
@@ -7084,7 +7528,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 289,
+      "lineNumber": 399,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -7122,7 +7566,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 300,
+      "lineNumber": 410,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -7160,7 +7604,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 313,
+      "lineNumber": 423,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -7198,7 +7642,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 321,
+      "lineNumber": 431,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -7236,7 +7680,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 329,
+      "lineNumber": 439,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -7274,7 +7718,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 339,
+      "lineNumber": 449,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -7317,7 +7761,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 351,
+      "lineNumber": 461,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -7360,7 +7804,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 363,
+      "lineNumber": 473,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -7403,7 +7847,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 377,
+      "lineNumber": 487,
       "specialises": "Channel",
       "attributes": [
         {
@@ -7446,7 +7890,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 386,
+      "lineNumber": 496,
       "specialises": "Channel",
       "attributes": [
         {
@@ -7489,7 +7933,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 397,
+      "lineNumber": 507,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -7522,7 +7966,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 404,
+      "lineNumber": 514,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -7555,7 +7999,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 413,
+      "lineNumber": 523,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -7598,7 +8042,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 426,
+      "lineNumber": 536,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -7641,7 +8085,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 438,
+      "lineNumber": 548,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -7684,7 +8128,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 452,
+      "lineNumber": 562,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -7722,7 +8166,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 493,
+      "lineNumber": 603,
       "attributes": [
         {
           "name": "serviceDelivery;"
@@ -7749,7 +8193,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 505,
+      "lineNumber": 615,
       "attributes": [
         {
           "name": "envelope;"
@@ -7770,7 +8214,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 559,
+      "lineNumber": 669,
       "attributes": [
         {
           "name": "activityTypeName",
@@ -7935,7 +8379,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 584,
+      "lineNumber": 694,
       "attributes": [
         {
           "name": "activityType",
@@ -8020,7 +8464,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 610,
+      "lineNumber": 720,
       "attributes": [
         {
           "name": "budgetPeriod",
@@ -8105,7 +8549,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 635,
+      "lineNumber": 745,
       "attributes": [
         {
           "name": "businessArea",
@@ -8185,7 +8629,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 658,
+      "lineNumber": 768,
       "attributes": [
         {
           "name": "activityType",
@@ -8265,7 +8709,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 706,
+      "lineNumber": 816,
       "attributes": [
         {
           "name": "resourceTypeName",
@@ -8350,7 +8794,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 732,
+      "lineNumber": 842,
       "attributes": [
         {
           "name": "instanceName",
@@ -8440,7 +8884,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 759,
+      "lineNumber": 869,
       "attributes": [
         {
           "name": "capabilityName",
@@ -8525,7 +8969,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 792,
+      "lineNumber": 902,
       "attributes": [
         {
           "name": "resourceConfiguration",
@@ -8610,7 +9054,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 823,
+      "lineNumber": 933,
       "attributes": [
         {
           "name": "constraintName",
@@ -8695,7 +9139,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 861,
+      "lineNumber": 971,
       "attributes": [
         {
           "name": "catalogueEntryReference",
@@ -8785,7 +9229,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 888,
+      "lineNumber": 998,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -8823,7 +9267,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 899,
+      "lineNumber": 1009,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -8861,7 +9305,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 907,
+      "lineNumber": 1017,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -8899,7 +9343,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 917,
+      "lineNumber": 1027,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -8937,7 +9381,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 925,
+      "lineNumber": 1035,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -8975,7 +9419,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 933,
+      "lineNumber": 1043,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -9013,7 +9457,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 943,
+      "lineNumber": 1053,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -9056,7 +9500,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 954,
+      "lineNumber": 1064,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -9099,7 +9543,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 965,
+      "lineNumber": 1075,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -9142,7 +9586,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 974,
+      "lineNumber": 1084,
       "specialises": "Capability",
       "attributes": [
         {
@@ -9175,7 +9619,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 984,
+      "lineNumber": 1094,
       "specialises": "Capability",
       "attributes": [
         {
@@ -9208,7 +9652,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 991,
+      "lineNumber": 1101,
       "specialises": "Capability",
       "attributes": [
         {
@@ -9241,7 +9685,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 998,
+      "lineNumber": 1108,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -9279,7 +9723,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1008,
+      "lineNumber": 1118,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -9317,7 +9761,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1016,
+      "lineNumber": 1126,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -9355,7 +9799,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1029,
+      "lineNumber": 1139,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -9393,7 +9837,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1039,
+      "lineNumber": 1149,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -9431,7 +9875,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1049,
+      "lineNumber": 1159,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -9474,7 +9918,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1058,
+      "lineNumber": 1168,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -9517,7 +9961,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1067,
+      "lineNumber": 1177,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -9560,7 +10004,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1078,
+      "lineNumber": 1188,
       "specialises": "Capability",
       "attributes": [
         {
@@ -9593,7 +10037,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1085,
+      "lineNumber": 1195,
       "specialises": "Capability",
       "attributes": [
         {
@@ -9626,7 +10070,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1092,
+      "lineNumber": 1202,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -9664,7 +10108,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1131,
+      "lineNumber": 1241,
       "attributes": [
         {
           "name": "objectiveRef",
@@ -9734,7 +10178,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1139,
+      "lineNumber": 1249,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -9752,7 +10196,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1145,
+      "lineNumber": 1255,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -9770,7 +10214,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1152,
+      "lineNumber": 1262,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -9788,7 +10232,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1159,
+      "lineNumber": 1269,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -9806,7 +10250,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1187,
+      "lineNumber": 1297,
       "attributes": [
         {
           "name": "perEpisode"
@@ -9833,7 +10277,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1210,
+      "lineNumber": 1320,
       "attributes": [
         {
           "name": "streamName",
@@ -9918,7 +10362,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1233,
+      "lineNumber": 1343,
       "attributes": [
         {
           "name": "driverName",
@@ -10003,7 +10447,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1256,
+      "lineNumber": 1366,
       "attributes": [
         {
           "name": "offeringRef",
@@ -10088,7 +10532,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1279,
+      "lineNumber": 1389,
       "attributes": [
         {
           "name": "pricingModelName",
@@ -10173,7 +10617,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1302,
+      "lineNumber": 1412,
       "attributes": [
         {
           "name": "projectionName",
@@ -10263,7 +10707,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1316,
+      "lineNumber": 1426,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -10301,7 +10745,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1324,
+      "lineNumber": 1434,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -10339,7 +10783,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1332,
+      "lineNumber": 1442,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -10377,7 +10821,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1340,
+      "lineNumber": 1450,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -10415,7 +10859,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1348,
+      "lineNumber": 1458,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -10453,7 +10897,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1356,
+      "lineNumber": 1466,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -10491,7 +10935,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1364,
+      "lineNumber": 1474,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -10529,7 +10973,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1372,
+      "lineNumber": 1482,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -10567,7 +11011,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1380,
+      "lineNumber": 1490,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -10605,7 +11049,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1388,
+      "lineNumber": 1498,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -10643,7 +11087,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1396,
+      "lineNumber": 1506,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -10681,7 +11125,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1404,
+      "lineNumber": 1514,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -10724,7 +11168,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1415,
+      "lineNumber": 1525,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -10762,7 +11206,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1427,
+      "lineNumber": 1537,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -10800,7 +11244,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1435,
+      "lineNumber": 1545,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -10838,7 +11282,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1443,
+      "lineNumber": 1553,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -10876,7 +11320,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1454,
+      "lineNumber": 1564,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -10914,7 +11358,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1467,
+      "lineNumber": 1577,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -10957,7 +11401,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1522,
+      "lineNumber": 1632,
       "attributes": [
         {
           "name": "requirementId",
@@ -11042,7 +11486,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1557,
+      "lineNumber": 1667,
       "attributes": [
         {
           "name": "evidenceType",

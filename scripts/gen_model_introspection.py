@@ -940,11 +940,13 @@ def build_comprehension_content(all_elements, coverage_matrix):
         # --- surfaceEnumValues ---
         if flags.get("surfaceEnumValues"):
             enum_values = []
+            seen_enums = set()  # Deduplicate by enum def name
             for attr in elem.attributes:
                 if not isinstance(attr, dict):
                     continue
                 attr_type = attr.get("type", "")
-                if attr_type in enum_index:
+                if attr_type in enum_index and attr_type not in seen_enums:
+                    seen_enums.add(attr_type)
                     enum_values.append({
                         "enumName": attr_type,
                         "attributeName": attr.get("name", ""),

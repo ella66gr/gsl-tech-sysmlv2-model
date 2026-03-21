@@ -79,6 +79,21 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "ValueProposition";
+            strength = RelationshipStrength::strong;
+            rationale = "Each segment has one or more propositions designed for it. A change to the target segment requires reassessing the value promises made to it.";
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::strong;
+            rationale = "Offerings are what the segment actually receives. A change to the target audience requires reassessing what is offered to them.";
+        }
+        @WeightedRelationship {
+            target = "Channel";
+            strength = RelationshipStrength::moderate;
+            rationale = "Channels are how segments are reached. A change to the target segment may require reviewing acquisition and delivery channels, but the relationship is many-to-many.";
+        }
         part def CustomerSegment {
             doc /* A defined group of customers with shared needs,
                  * behaviours, and willingness to pay. Each segment
@@ -105,6 +120,21 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::strong;
+            rationale = "The offering is the concrete realisation of the proposition. A change to the value promise requires reassessing what is offered to deliver it.";
+        }
+        @WeightedRelationship {
+            target = "CustomerSegment";
+            strength = RelationshipStrength::strong;
+            rationale = "Every value proposition is made to a specific segment. A change to the promise of value requires reassessing the audience it addresses.";
+        }
+        @WeightedRelationship {
+            target = "DifferentiationClaim";
+            strength = RelationshipStrength::moderate;
+            rationale = "Claims articulate how the proposition differs from alternatives. A change to the proposition may require reviewing its supporting claims, but a proposition can exist before claims are formalised.";
+        }
         part def ValueProposition {
             doc /* A specific promise of value to a specific customer
                  * segment. Defines what the customer gets, how it
@@ -129,6 +159,46 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ValueProposition";
+            strength = RelationshipStrength::strong;
+            rationale = "A service offering is the concrete realisation of a value proposition. A change to what is offered requires reassessing the promise of value it delivers.";
+        }
+        @WeightedRelationship {
+            target = "CustomerSegment";
+            strength = RelationshipStrength::strong;
+            rationale = "Every service offering exists for defined customer segments. A change to what is offered requires reassessing who it is for.";
+        }
+        @WeightedRelationship {
+            target = "PricingModel";
+            strength = RelationshipStrength::strong;
+            rationale = "Each offering has a pricing basis. A change to the offering directly affects how it is priced.";
+        }
+        @WeightedRelationship {
+            target = "ActivityType";
+            strength = RelationshipStrength::strong;
+            rationale = "Every service offering requires activities to deliver it. A change to the offering requires reassessing the activity types involved.";
+        }
+        @WeightedRelationship {
+            target = "Channel";
+            strength = RelationshipStrength::moderate;
+            rationale = "Channels deliver service offerings to customers. A change to the offering may require reviewing delivery channels, but the coupling is not definitional.";
+        }
+        @WeightedRelationship {
+            target = "CatalogueEntry";
+            strength = RelationshipStrength::moderate;
+            rationale = "The catalogue records the business decision to offer something. A change to the offering may require updating catalogue entries, but the catalogue is operational, not definitional.";
+        }
+        @WeightedRelationship {
+            target = "DifferentiationClaim";
+            strength = RelationshipStrength::moderate;
+            rationale = "Claims support the value proposition which the offering delivers. A change to the offering may require reviewing claims, but the link is mediated through the value proposition.";
+        }
+        @WeightedRelationship {
+            target = "ResourceType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Resources are consumed by activities which deliver offerings. A change to the offering may affect resource requirements, but the relationship is indirect — mediated through activity types and capabilities.";
         }
         part def ServiceOffering {
             doc /* A packaged, deliverable unit of service that realises
@@ -161,6 +231,16 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "CustomerSegment";
+            strength = RelationshipStrength::moderate;
+            rationale = "Channels serve customer segments. A change to a channel may require reviewing which segments it reaches, but the coupling is operational and many-to-many.";
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::moderate;
+            rationale = "Channels deliver service offerings. A change to a channel may require reviewing which offerings flow through it, but the coupling is loose.";
+        }
         part def Channel {
             doc /* A means by which customers discover, access, and
                  * interact with the service. Channels have reach,
@@ -186,6 +266,16 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ValueProposition";
+            strength = RelationshipStrength::strong;
+            rationale = "Claims exist to substantiate a value proposition. A change to a claim requires reassessing the proposition it supports — a claim without a proposition is orphaned.";
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::weak;
+            rationale = "Claims relate to offerings indirectly, via the value proposition. A change to a claim has a distant effect on offerings — mediated through the proposition.";
         }
         part def DifferentiationClaim {
             doc /* An explicit statement of how this service differs
@@ -222,6 +312,21 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::moderate;
+            rationale = "The catalogue records what is offered. A change to a catalogue entry may require reviewing the offering it represents, but the catalogue is the operational wrapper, not the strategic definition.";
+        }
+        @WeightedRelationship {
+            target = "ExternalReference";
+            strength = RelationshipStrength::moderate;
+            rationale = "Catalogue entries link to external knowledge sources. A change to a catalogue entry may require reviewing its external references — the four-layer item model connects them.";
+        }
+        @WeightedRelationship {
+            target = "InventoryRecord";
+            strength = RelationshipStrength::moderate;
+            rationale = "Inventory tracks stock of catalogue items. A change to a catalogue entry may require updating its associated inventory records.";
         }
         part def CatalogueEntry {
             doc /* The business decision to offer an item for sale or
@@ -261,6 +366,11 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "CatalogueEntry";
+            strength = RelationshipStrength::moderate;
+            rationale = "External references attach to catalogue items. A change to an external reference may require reviewing the catalogue entries that depend on it.";
         }
         part def ExternalReference {
             doc /* A link to knowledge that lives outside the system.
