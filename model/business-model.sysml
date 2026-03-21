@@ -691,6 +691,11 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "ActivityType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Every record is typed by an activity type. If the record format or granularity changes, the activity type may need reviewing — but an operational change to how records are produced does not redefine what the activity type is.";
+        }
         part def ActivityRecord {
             doc /* A recorded instance of an activity. At the tracked
                  * level, the system produces these for every observable
@@ -717,6 +722,16 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "ActivityType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Budgets are structured by activity type. If the budget changes (e.g. planned volumes revised), the activity type may need reviewing — but a quantitative change to volume does not redefine what the activity type is.";
+        }
+        @WeightedRelationship {
+            target = "FinancialProjection";
+            strength = RelationshipStrength::moderate;
+            rationale = "Activity budgets feed into financial projections as volume inputs. If the budget changes, the projection may need updating — but the projection aggregates many inputs beyond activity volumes.";
+        }
         part def ActivityBudget {
             doc /* A planned allocation of activity volume by type,
                  * period, and resource. The activity-level equivalent
@@ -742,6 +757,16 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "ActivityType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Granularity governs how activity types are tracked. If the granularity policy changes, the activity types in that area may need reviewing — but a policy change about tracking precision does not redefine what the activity type is.";
+        }
+        @WeightedRelationship {
+            target = "ActivityRecord";
+            strength = RelationshipStrength::moderate;
+            rationale = "Granularity determines the detail level of records. If the granularity changes, the record format may need adjustment — but records are produced by the tracking system, not directly defined by the policy declaration.";
+        }
         part def ActivityGranularity {
             doc /* Policy declaration: the granularity level at which
                  * activity is tracked for a given business area. */
@@ -764,6 +789,21 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ActivityType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Cost allocations are defined per activity type. If the allocation changes (method, estimated cost), the activity type may need reviewing — but a financial change to how the activity is costed does not redefine what the activity type is.";
+        }
+        @WeightedRelationship {
+            target = "CostDriver";
+            strength = RelationshipStrength::moderate;
+            rationale = "Cost allocations use cost driver rates to compute per-activity costs. If the allocation method changes, the cost driver may need reviewing — but the driver describes the resource's cost behaviour independently of how individual activities are costed against it.";
+        }
+        @WeightedRelationship {
+            target = "UnitEconomics";
+            strength = RelationshipStrength::moderate;
+            rationale = "Cost allocations ultimately feed unit economics through cost drivers. If an allocation changes, unit economics may need updating — but the relationship is mediated through cost drivers, not direct.";
         }
         part def ActivityCostAllocation {
             doc /* The mapping from an activity (or aggregate) to its
@@ -813,6 +853,36 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "ResourceInstance";
+            strength = RelationshipStrength::strong;
+            rationale = "Instances are typed by ResourceType. If the type definition changes (category, cost profile, capacity unit), every instance of that type needs reassessment.";
+        }
+        @WeightedRelationship {
+            target = "ResourceConstraint";
+            strength = RelationshipStrength::strong;
+            rationale = "Constraints are scoped to specific resource types. If the resource type changes, the constraints that limit its availability need reassessment — a constraint on a specific resource assumes specific properties of that type.";
+        }
+        @WeightedRelationship {
+            target = "Capability";
+            strength = RelationshipStrength::moderate;
+            rationale = "Capabilities combine resources into service functions. A change to a resource type may require reviewing the capabilities that use it, but capabilities are resilient to substitution within a resource category.";
+        }
+        @WeightedRelationship {
+            target = "CapacityModel";
+            strength = RelationshipStrength::moderate;
+            rationale = "Capacity models describe throughput given a resource configuration. A change to a resource type may affect throughput calculations, but the relationship is mediated through the specific configuration.";
+        }
+        @WeightedRelationship {
+            target = "CostDriver";
+            strength = RelationshipStrength::moderate;
+            rationale = "Cost drivers are linked to resources. A change to a resource type (especially its cost profile) may require reviewing the associated cost driver, but the link is structural rather than definitional.";
+        }
+        @WeightedRelationship {
+            target = "ActivityType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Activities consume resources. A change to a resource type may affect which activities can be performed, but the coupling is many-to-many and context-dependent.";
+        }
         part def ResourceType {
             doc /* A category of resource required to operate the
                  * service delivery system. Each type has acquisition
@@ -838,6 +908,16 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ResourceType";
+            strength = RelationshipStrength::moderate;
+            rationale = "An instance is a concrete realisation of its type. If the instance changes (capacity, cost, availability), the type may need reviewing — but an operational change to one instance does not redefine the resource type's category, acquisition method, or capacity unit.";
+        }
+        @WeightedRelationship {
+            target = "CapacityModel";
+            strength = RelationshipStrength::moderate;
+            rationale = "Capacity models are built from resource configurations. A change to an instance (e.g. clinician drops from 0.8 to 0.5 FTE) may require reviewing the throughput calculation, but the capacity model aggregates across instances.";
         }
         part def ResourceInstance {
             doc /* A specific resource available to the business at
@@ -865,6 +945,26 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::strong;
+            rationale = "Capabilities enable service offerings. If a capability changes, the offerings it enables need reassessment — you can't offer what you can't deliver.";
+        }
+        @WeightedRelationship {
+            target = "ResourceType";
+            strength = RelationshipStrength::strong;
+            rationale = "Capabilities are defined by the resources they combine. If a capability changes (e.g. a new resource requirement is added), the resource types involved need reassessment.";
+        }
+        @WeightedRelationship {
+            target = "ObjectiveCapabilityMapping";
+            strength = RelationshipStrength::moderate;
+            rationale = "Capabilities are the downstream end of strategy-to-operations traceability. If a capability changes, the mapping from strategic objectives to that capability may need reviewing, but the mapping is a declared connection, not a definitional dependency.";
+        }
+        @WeightedRelationship {
+            target = "CapacityModel";
+            strength = RelationshipStrength::moderate;
+            rationale = "Capacity models describe throughput for a resource configuration that delivers a capability. If the capability changes, the throughput model may need recalibrating, but the relationship is indirect.";
         }
         part def Capability {
             doc /* An organised combination of resources that produces
@@ -899,6 +999,16 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "ResourceType";
+            strength = RelationshipStrength::moderate;
+            rationale = "A capacity model makes claims about throughput given a resource configuration. If the capacity model changes, the resource types it references may need reassessment — but the resource type exists independently of any one capacity model.";
+        }
+        @WeightedRelationship {
+            target = "ResourceConstraint";
+            strength = RelationshipStrength::moderate;
+            rationale = "Capacity models and constraints are complementary planning concepts. If the capacity model changes (e.g. higher throughput targets), the constraints that limit resource availability may need reviewing.";
+        }
         part def CapacityModel {
             doc /* The relationship between resource configuration and
                  * service throughput. A planning assertion, not a
@@ -929,6 +1039,16 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ResourceType";
+            strength = RelationshipStrength::strong;
+            rationale = "Constraints are defined against specific resource types. If a constraint changes (e.g. a regulatory limit is tightened or lifted), the resource type it governs needs reassessment — the type's effective availability and cost profile may have changed.";
+        }
+        @WeightedRelationship {
+            target = "CapacityModel";
+            strength = RelationshipStrength::moderate;
+            rationale = "Constraints limit what a resource configuration can deliver. If a constraint changes, the throughput assumptions in the capacity model may need reviewing.";
         }
         part def ResourceConstraint {
             doc /* A constraint on resource availability or use that
@@ -967,6 +1087,11 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "CatalogueEntry";
+            strength = RelationshipStrength::strong;
+            rationale = "Inventory tracks stock of catalogue items. If the inventory record changes (e.g. stock level drops below threshold), the catalogue entry's availability status needs reassessment — the catalogue promises what inventory must deliver.";
         }
         part def InventoryRecord {
             doc /* A point-in-time record of stock level for an item
@@ -1238,6 +1363,11 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "Capability";
+            strength = RelationshipStrength::strong;
+            rationale = "The mapping declares which capabilities support a strategic objective. If the mapping changes, the capabilities involved need reassessment — they may gain or lose strategic justification.";
+        }
         part def ObjectiveCapabilityMapping {
             doc /* Maps a StrategicObjective to the Capability
                  * usages that contribute to achieving it.
@@ -1317,6 +1447,21 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "PricingModel";
+            strength = RelationshipStrength::strong;
+            rationale = "Each revenue stream references a pricing model. If the revenue stream changes (e.g. new trigger event, different source segment), the pricing model may need reassessment to match.";
+        }
+        @WeightedRelationship {
+            target = "FinancialProjection";
+            strength = RelationshipStrength::strong;
+            rationale = "Financial projections aggregate revenue streams. If a revenue stream changes, the projection that depends on it needs reassessment.";
+        }
+        @WeightedRelationship {
+            target = "UnitEconomics";
+            strength = RelationshipStrength::moderate;
+            rationale = "Revenue streams inform the revenue side of unit economics. If a stream changes, revenue-per-unit may need reviewing — but unit economics are per-offering, not per-stream.";
+        }
         part def RevenueStream {
             doc /* A mechanism by which income is generated. */
             attribute streamName : String;
@@ -1339,6 +1484,26 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ResourceType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Cost drivers characterise resources financially. If a cost driver changes (e.g. unit cost revised), the resource type's cost profile may need updating — but the resource type's category, acquisition method, and structural definition are independent of its cost behaviour.";
+        }
+        @WeightedRelationship {
+            target = "UnitEconomics";
+            strength = RelationshipStrength::strong;
+            rationale = "Unit economics aggregate costs per service unit. If a cost driver changes, the cost-per-unit calculation needs reassessment — cost drivers are the input to that calculation.";
+        }
+        @WeightedRelationship {
+            target = "ActivityCostAllocation";
+            strength = RelationshipStrength::moderate;
+            rationale = "Cost allocations map activities to costs. If a cost driver changes, the allocation method may need reviewing — but the allocation is a mapping mechanism, not directly defined by the cost driver.";
+        }
+        @WeightedRelationship {
+            target = "RevenueStream";
+            strength = RelationshipStrength::moderate;
+            rationale = "Revenue streams and cost drivers together determine profitability. If a cost driver changes significantly, revenue assumptions may need reviewing — but the relationship is indirect, mediated through unit economics and financial projections.";
         }
         part def CostDriver {
             doc /* A structural factor that generates cost. */
@@ -1363,6 +1528,16 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::moderate;
+            rationale = "Unit economics characterise an offering's financial viability. If the unit economics change (e.g. margin drops below zero), the offering itself needs reassessment — but the offering's definition doesn't depend on its economics.";
+        }
+        @WeightedRelationship {
+            target = "FinancialProjection";
+            strength = RelationshipStrength::moderate;
+            rationale = "Financial projections aggregate unit-level economics. If unit economics change, the projection may need updating — but the projection also depends on volume assumptions and other inputs.";
+        }
         part def UnitEconomics {
             doc /* The financial profile of a single unit of service delivery. */
             attribute offeringRef : String;
@@ -1386,6 +1561,21 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "RevenueStream";
+            strength = RelationshipStrength::strong;
+            rationale = "Revenue streams reference a pricing model as their revenue mechanism. If the pricing model changes, the revenue projections that depend on it need reassessment.";
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::moderate;
+            rationale = "Pricing models define how offerings are charged for. If the pricing logic changes, the offering's commercial packaging may need reviewing — but the offering itself (what is delivered, to whom, using what resources) is defined independently of how it is priced.";
+        }
+        @WeightedRelationship {
+            target = "UnitEconomics";
+            strength = RelationshipStrength::moderate;
+            rationale = "Unit economics calculate margin per unit of service. If the pricing model changes, the revenue-per-unit figure needs reviewing — but unit economics also depend on cost factors that are independent of pricing.";
+        }
         part def PricingModel {
             doc /* The logic that determines what a customer pays. */
             attribute pricingModelName : String;
@@ -1408,6 +1598,16 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "RevenueStream";
+            strength = RelationshipStrength::moderate;
+            rationale = "A projection aggregates revenue streams. If the projection changes (e.g. revised timeline, different scenario), the revenue streams feeding it may need reviewing — but revenue streams exist independently of any one projection.";
+        }
+        @WeightedRelationship {
+            target = "CostDriver";
+            strength = RelationshipStrength::moderate;
+            rationale = "A projection aggregates cost drivers. If the projection changes, the cost assumptions may need reviewing — but cost drivers exist independently of any one projection.";
         }
         part def FinancialProjection {
             doc /* A named financial projection linked to a scenario.
@@ -1628,6 +1828,16 @@ package BusinessModel {
             surfaceDomainInstantiations = true;
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "AuditEvidenceRecord";
+            strength = RelationshipStrength::strong;
+            rationale = "Each governance requirement defines what evidence must be produced. If the requirement changes, the evidence records need reassessment — you may need different proof, different frequency, or different responsible roles.";
+        }
+        @WeightedRelationship {
+            target = "ResourceConstraint";
+            strength = RelationshipStrength::moderate;
+            rationale = "Governance requirements often impose resource constraints (regulatory qualification requirements, capacity limits). If a requirement changes, associated resource constraints may need reviewing — but not all requirements produce resource constraints.";
         }
         requirement def GovernanceRequirement {
             doc /* A regulatory, legal, or standards obligation that
