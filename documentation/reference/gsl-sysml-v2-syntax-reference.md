@@ -1,7 +1,7 @@
 # SysML v2 Syntax Reference — Syside Modeler
 
-> **Version:** 3.16 — 20 March 2026
-> **Previous version:** v3.15 (19 March 2026). Full version history in `documentation/reference/syntax-versions/`
+> **Version:** 3.17 — 21 March 2026
+> **Previous version:** v3.16 (20 March 2026). Full version history in `documentation/reference/syntax-versions/`
 > **Purpose:** Concise reference for writing `.sysml` files against Syside Modeler.
 > Consult before writing new SysML code. Update as new patterns are verified.
 >
@@ -12,7 +12,9 @@
 > - `gsl-validated-architectural-patterns.md` — integration patterns, generation pipelines, design rationale
 > - `gsl-guide-repo-conventions.md` — file structure, generators, git practices, `gsl` toolkit
 >
-> **What's new in v3.16:** Session 49 — `ref` inside `metadata def` verified (Stage 3 Phase 3, Step 1 syntax spike). All six test patterns pass: singular ref, multi-valued ref, ref to part def / metadata def / enum def, mixed attributes + refs, and annotation application. See §8.
+> **What's new in v3.17:** Session 51 — Multiple annotations of the same metaclass on one element verified (Stage 3 Phase 3, Step 4 syntax test). Two, three, and six same-metaclass annotations all parse cleanly. Mixed same-metaclass + different-metaclass also works. Overturns v3.14 finding (which was specific to `@CatalogueTag`, not a general restriction). Enum-typed attribute (`RelationshipStrength`) on `metadata def` confirmed. See §8.
+>
+> **v3.16:** Session 49 — `ref` inside `metadata def` verified (Stage 3 Phase 3, Step 1 syntax spike). All six test patterns pass: singular ref, multi-valued ref, ref to part def / metadata def / enum def, mixed attributes + refs, and annotation application. See §8.
 >
 > **v3.15:** Session 43 Viewpoint/View Investigation (Stage 2 Phase 5). `viewpoint def`, `view def`, `view` usage, `expose` (wildcard, named, cross-package), and `filter` (trivial and metadata-based) all verified working. `rendering def` and `render` fail. `frame concern` and `stakeholder` in viewpoint defs trigger subject parameter constraint. See §12.
 
@@ -249,6 +251,8 @@ enum def EvaluationOutcome {
 **v3.7 (16 additional words, 78 total):** `pending`, `measured`, `targetMet`, `targetNotMet`, `baseline`, `threeMonthly`, `sixMonthly`, `annually`, `adHoc`, `patientReported`, `adherence`, `safety`, `within`, `greaterThan`, `lessThan`, `equalTo`
 
 **v3.9 (5 additional words, 83 total):** `perEpisode`, `subscription`, `tiered`, `slidingScale`, `flatFee`
+
+**v3.17 (4 additional words, 96 total):** `strong`, `moderate`, `weak`, `contextual`
 
 **v3.10 (9 additional words, 92 total):** `linear`, `stepped`, `sCurve`, `custom`, `volume`, `price`, `mix`, `timing`, `envelope`
 
@@ -513,6 +517,7 @@ action myStep {
 | Simple `action name;` (no braces) | ✗ Fails — needs body to hold annotation |
 | Enum-typed attribute on `metadata def` | ✅ Works (v3.12, Session 29). Enum and metadata def must be in same package. |
 | `ref` inside `metadata def` body | ✅ Works (v3.16, Session 49). Singular, multi-valued, targeting part def / metadata def / enum def. See §8 detail. |
+| Multiple same-metaclass annotations on one element | ✅ Works (v3.17, Session 51). Two, three, and six annotations of the same `metadata def` on one `part def` all parse. Mixed same + different metaclass also works. Overturns v3.14 `@CatalogueTag` finding — that was specific to `@CatalogueTag`, not a general restriction. |
 
 ### References to metadata def and enum def types (verified v3.12)
 
@@ -555,6 +560,37 @@ Annotation application of metadata defs containing `ref` fields also works — t
 - Test F: mixed attributes + refs + enum attribute in one metadata def ✅
 
 **Not yet tested:** Assigning a ref value inside an annotation body (e.g. `@Schema { traversalTarget = somePartUsage; }`). The current use case (comprehension traversal) does not require ref assignment in annotation bodies — the generator reads the metadata def structure and model topology.
+
+### Multiple same-metaclass annotations on one element (verified v3.17, Session 51)
+
+Multiple annotations of the same `metadata def` can be applied to a single element. This overturns the v3.14 finding that "one annotation per metaclass per element" fails — that was specific to `@CatalogueTag` (possibly due to attribute name collision), not a general restriction.
+
+```sysml
+@WeightedRelationship {
+    target = "Alpha";
+    strength = RelationshipStrength::strong;
+    rationale = "Strong interaction effect";
+}
+@WeightedRelationship {
+    target = "Beta";
+    strength = RelationshipStrength::moderate;
+    rationale = "Moderate interaction effect";
+}
+part def AnnotatedElement {
+    doc /* Two annotations of the same metaclass. */
+    attribute name : String;
+}
+```
+
+**Verified (Session 51, Stage 3 Phase 3 Step 4 syntax test):** Four test patterns in `model/syntax-tests/test-multiple-same-metaclass-annotations.sysml`:
+- Test A: Two `@WeightedRelationship` on one `part def` ✅
+- Test B: Three `@WeightedRelationship` on one `part def` ✅
+- Test C: Six `@WeightedRelationship` on one `part def` ✅ (the Activity Type use case)
+- Test D: Two same-metaclass + one different-metaclass (mixed) ✅
+
+Also confirmed: enum-typed attribute (`strength : RelationshipStrength`) on `metadata def` works. Enum literals (`RelationshipStrength::strong`, `::moderate`, `::weak`, `::contextual`) resolve correctly in annotation bodies.
+
+**New safe enum literal names (v3.17, 4 additional, 96 total):** `strong`, `moderate`, `weak`, `contextual`.
 
 ### Per-attribute documentation workaround
 
@@ -775,8 +811,10 @@ view renderedView {
 
 | Version | Date | Key additions |
 |---|---|---|
+| 3.17 | 21 Mar 2026 | **Session 51 — Multiple same-metaclass annotations verified (Stage 3 Phase 3, Step 4).** Two, three, and six annotations of the same `metadata def` on one `part def` all parse. Mixed same + different metaclass also works. Overturns v3.14 `@CatalogueTag`-specific finding. Enum-typed attribute (`RelationshipStrength`) on metadata def confirmed. Four new safe enum literals (96 total): `strong`, `moderate`, `weak`, `contextual`. |
+| 3.16 | 20 Mar 2026 | **Session 49 — `ref` inside `metadata def` verified (Stage 3 Phase 3, Step 1 syntax spike).** All six test patterns pass: singular ref, multi-valued ref, ref to part def / metadata def / enum def, mixed attributes + refs, and annotation application. See §8. |
 | 3.15 | 19 Mar 2026 | **Session 43 Viewpoint/View Investigation (Stage 2 Phase 5).** New §12: `viewpoint def` (bare) verified; `view def` and `view` (typed + untyped) verified; `expose` (wildcard, named, cross-package against live model) verified; `filter` (trivial + metadata-based) verified; `rendering def` fails (reference-error); `render` in view fails; `frame concern` and `stakeholder` in viewpoint defs fail (subject parameter constraint). Six test case files in `model/syntax-tests/`. |
-| 3.14 | 19 Mar 2026 | Metadata annotation conventions: Position A (prefix, before element) adopted; one annotation per metaclass per element (stacking two `@Tag` fails); `concern` triggers parser error despite not being KerML reserved (use `bmmConcern`); metadata import required at consuming package level (`private import Foundation::MetadataLibrary::*`); `@CatalogueTag` and `@UserFacing` validated on `part def`s. **Session 42 additions:** `@CatalogueTag` and `@UserFacing` on `requirement def` verified; cross-package satisfy (exercise → model) verified; `constraint def` with Boolean `and` and `<=` operators verified. |
+| 3.14 | 19 Mar 2026 | Metadata annotation conventions: Position A (prefix, before element) adopted; ~~one annotation per metaclass per element (stacking two `@Tag` fails)~~ **overturned v3.17 — multiple same-metaclass annotations work; the `@CatalogueTag` failure was specific, not general**; `concern` triggers parser error despite not being KerML reserved (use `bmmConcern`); metadata import required at consuming package level (`private import Foundation::MetadataLibrary::*`); `@CatalogueTag` and `@UserFacing` validated on `part def`s. **Session 42 additions:** `@CatalogueTag` and `@UserFacing` on `requirement def` verified; cross-package satisfy (exercise → model) verified; `constraint def` with Boolean `and` and `<=` operators verified. |
 | 3.13 | 15 Mar 2026 | `ref :>>` tuple redefinition verified (single, multi-valued, circular, cross-type, forward reference). PatternCatalogue knowledge graph: 43 typed ref links across 20 patterns. |
 | 3.12 | 15 Mar 2026 | `ref x : MetadataDef` and `ref x : EnumDef` verified (singular + multi-valued), `system` reserved word (silent failure), enum-typed attribute on metadata def verified, cross-project specific named imports fail, **wildcard import name collision** (silent resolution, downstream type-errors), multi-valued enum attribute on part def verified |
 | 3.11 | 11 Mar 2026 | `ref x : Type[0..*]` across packages, `ref` in `requirement def`, `requirement def` with business attributes, **satisfy by part usage fails** (critical finding), satisfy naming traps (shadow, usage-feature-typing), `:>>` in requirement usages, part def / package name collision trap, 12 new safe attribute names |

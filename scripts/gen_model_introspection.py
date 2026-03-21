@@ -147,6 +147,7 @@ class SysmlElement:
         self.user_facing = {}         # {"friendlyName": "...", "shortDescription": "..."}
         self.purposive_description = {}  # {"description": "..."}
         self.comprehension = {}       # {"surfaceEnumValues": True, ...}
+        self.weighted_relationships = []  # [{"target": "...", "strength": "...", "rationale": "..."}]
         self.annotations = []         # all prefix annotations for future extensibility
 
     def to_dict(self):
@@ -173,6 +174,8 @@ class SysmlElement:
             d["purposiveDescription"] = self.purposive_description
         if self.comprehension:
             d["comprehension"] = self.comprehension
+        if self.weighted_relationships:
+            d["weightedRelationships"] = self.weighted_relationships
         if self.annotations:
             d["annotations"] = self.annotations
         return d
@@ -355,6 +358,10 @@ def parse_sysml_file(filepath, domain_key):
     ann_bool_pattern = re.compile(
         r'(\w+)\s*=\s*(true|false)\s*;'
     )
+    # Enum literal attribute inside annotation: key = EnumDef::literal;
+    ann_enum_pattern = re.compile(
+        r'(\w+)\s*=\s*(\w+)::(\w+)\s*;'
+    )
     
     rel_path = str(filepath.relative_to(REPO_ROOT))
     
@@ -380,6 +387,9 @@ def parse_sysml_file(filepath, domain_key):
                     k: (v if isinstance(v, bool) else str(v).lower() == "true")
                     for k, v in a_attrs.items()
                 }
+            elif a_name == "WeightedRelationship":
+                # Accumulate — multiple annotations of this metaclass per element
+                elem.weighted_relationships.append(dict(a_attrs))
             elem.annotations.append({"name": a_name, "attrs": dict(a_attrs)})
         pending_annotations = []
     
@@ -406,6 +416,10 @@ def parse_sysml_file(filepath, domain_key):
                 for m_bool in ann_bool_pattern.finditer(stripped):
                     if m_bool.group(1) not in ann_attrs:  # don't override string match
                         ann_attrs[m_bool.group(1)] = m_bool.group(2) == "true"
+                # Extract key = EnumDef::literal; pairs (enum attributes)
+                for m_enum in ann_enum_pattern.finditer(stripped):
+                    if m_enum.group(1) not in ann_attrs:  # don't override string/bool match
+                        ann_attrs[m_enum.group(1)] = m_enum.group(3)  # store the literal value
                 i += 1
                 continue
         
@@ -421,6 +435,9 @@ def parse_sysml_file(filepath, domain_key):
             for m_bool in ann_bool_pattern.finditer(a_body):
                 if m_bool.group(1) not in a_attrs:
                     a_attrs[m_bool.group(1)] = m_bool.group(2) == "true"
+            for m_enum in ann_enum_pattern.finditer(a_body):
+                if m_enum.group(1) not in a_attrs:
+                    a_attrs[m_enum.group(1)] = m_enum.group(3)
             pending_annotations.append((a_name, a_attrs))
             i += 1
             continue
@@ -795,6 +812,7 @@ def build_coverage_matrix(all_elements):
                 "userFacing": elem.user_facing if elem.user_facing else {},
                 "purposiveDescription": elem.purposive_description if elem.purposive_description else {},
                 "comprehension": elem.comprehension if elem.comprehension else {},
+                "weightedRelationships": elem.weighted_relationships if elem.weighted_relationships else [],
                 "domains": {},
             }
     
@@ -950,14 +968,32 @@ def build_comprehension_content(all_elements, coverage_matrix):
         
         # --- surfaceRelatedConcepts ---
         if flags.get("surfaceRelatedConcepts"):
-            siblings = [
-                {
-                    "name": sib["name"],
-                    "friendlyName": sib["friendlyName"],
+            # Build weight lookup from @WeightedRelationship annotations
+            weight_lookup = {}
+            for wr in elem.weighted_relationships:
+                target_name = wr.get("target", "")
+                weight_lookup[target_name] = {
+                    "strength": wr.get("strength", ""),
+                    "rationale": wr.get("rationale", ""),
                 }
-                for sib in package_index.get(elem.parent_package, [])
-                if sib["name"] != elem.name and sib["layer"] == elem.meta_model_layer
-            ]
+            
+            siblings = []
+            for sib in package_index.get(elem.parent_package, []):
+                if sib["name"] != elem.name and sib["layer"] == elem.meta_model_layer:
+                    sib_entry = {
+                        "name": sib["name"],
+                        "friendlyName": sib["friendlyName"],
+                    }
+                    # Merge weight data if available
+                    if sib["name"] in weight_lookup:
+                        sib_entry["strength"] = weight_lookup[sib["name"]]["strength"]
+                        sib_entry["rationale"] = weight_lookup[sib["name"]]["rationale"]
+                    siblings.append(sib_entry)
+            
+            # Sort by weight: strong first, then moderate, then weak, then contextual, then unweighted
+            strength_order = {"strong": 0, "moderate": 1, "weak": 2, "contextual": 3}
+            siblings.sort(key=lambda s: strength_order.get(s.get("strength", ""), 99))
+            
             if siblings:
                 entry["relatedConcepts"] = siblings
         
@@ -1161,6 +1197,17 @@ def main():
     if comprehension_content:
         print(f"Comprehension content generated for: {', '.join(sorted(comprehension_content.keys()))}",
               file=sys.stderr)
+    
+    # Weight diagnostics
+    weighted_elements = [e for e in all_elements if e.weighted_relationships]
+    total_weights = sum(len(e.weighted_relationships) for e in weighted_elements)
+    if weighted_elements:
+        print(f"Elements with @WeightedRelationship: {len(weighted_elements)} ({total_weights} relationships)",
+              file=sys.stderr)
+        for elem in weighted_elements:
+            for wr in elem.weighted_relationships:
+                print(f"  {elem.name} -> {wr.get('target', '?')}: {wr.get('strength', '?')}",
+                      file=sys.stderr)
     if comprehension["missingUserFacing"]:
         print(f"Missing @UserFacing ({len(comprehension['missingUserFacing'])}):",
               file=sys.stderr)

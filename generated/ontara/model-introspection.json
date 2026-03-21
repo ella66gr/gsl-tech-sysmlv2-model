@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-03-20T23:23:54.499853",
+  "generatedAt": "2026-03-21T00:18:13.289052",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 459
+      "elementCount": 461
     },
     "cafe": {
       "label": "Cafe",
@@ -24,14 +24,14 @@
     }
   },
   "summary": {
-    "totalElements": 690,
+    "totalElements": 692,
     "byKind": {
       "part_def": 117,
       "part": 460,
-      "enum_def": 51,
+      "enum_def": 52,
       "requirement_def": 15,
       "requirement": 7,
-      "metadata_def": 14,
+      "metadata_def": 15,
       "constraint_def": 14,
       "constraint": 10,
       "satisfy": 2
@@ -39,11 +39,11 @@
     "byLayer": {
       "bmm": 188,
       "domain": 253,
-      "bsmm": 240,
+      "bsmm": 242,
       "unknown": 9
     },
     "byDomain": {
-      "core": 459,
+      "core": 461,
       "cafe": 119,
       "suds": 61,
       "paws": 51
@@ -928,6 +928,7 @@
         "description": "A group of people your service is designed for \u2014 people who share similar needs and reasons for choosing you. When you define your customer segments, the system uses them to connect your value propositions, pricing, and channels to the right audiences."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -984,6 +985,7 @@
         "description": "The core promise your service makes to a particular group of customers \u2014 what they get from you and why they'd choose you over the alternatives. When you define a value proposition, the system holds it as the anchor that your activities, resources, and pricing all exist to deliver."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -1034,6 +1036,7 @@
         "description": "A distinct service that your business offers \u2014 something a customer can choose, pay for, and receive. When you define a service offering, the system connects it to the activities required to deliver it, the resources it consumes, and the price the customer pays."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -1114,6 +1117,7 @@
         "description": "A way that customers find you, reach you, or receive your service \u2014 your website, a referral network, a walk-in counter, an app. When you define your channels, the system tracks which customer segments each channel serves and how your service offerings are delivered through them."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -1170,6 +1174,7 @@
         "description": "An explicit statement of how your service differs from the alternatives, from the customer's perspective. Each claim should be testable \u2014 something you can back up with evidence. When you define differentiation claims, the system records them as commitments your service is designed to fulfil."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -1220,6 +1225,7 @@
         "description": "A record of something your business has decided to offer \u2014 whether that's a menu item, a treatment, a course, or any other unit you sell or provide. The catalogue entry connects what the thing intrinsically is to how your business offers it: its price, availability, and status. When you add a catalogue entry, the system tracks it as part of your active offering."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "cafe": [
           {
@@ -1314,6 +1320,7 @@
         "description": "A link to knowledge that lives outside your system \u2014 a supplier datasheet, a regulatory standard, a clinical guideline, an accreditation body. The system doesn't own this information; it points to it, so you always know where authoritative external knowledge sits in relation to your service."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "cafe": [
           {
@@ -1361,6 +1368,38 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
+      "weightedRelationships": [
+        {
+          "target": "ActivityCostAllocation",
+          "strength": "strong",
+          "rationale": "Cost allocation is structurally determined by activity type \u2014 every cost line traces back to an activity category."
+        },
+        {
+          "target": "ActivityGranularity",
+          "strength": "strong",
+          "rationale": "Granularity level directly governs how an activity type is tracked and costed \u2014 envelope vs category vs tracked."
+        },
+        {
+          "target": "ActivityBudget",
+          "strength": "moderate",
+          "rationale": "Budgets aggregate by activity type but the relationship is indirect \u2014 mediated through cost allocation."
+        },
+        {
+          "target": "ActivityRecord",
+          "strength": "moderate",
+          "rationale": "Activity records are typed by activity type but the record is an operational artefact, not a structural dependency."
+        },
+        {
+          "target": "ResourceType",
+          "strength": "moderate",
+          "rationale": "Resources are consumed by activities but the mapping is many-to-many and context-dependent."
+        },
+        {
+          "target": "Channel",
+          "strength": "weak",
+          "rationale": "Channels deliver services which contain activities, but the relationship is distant \u2014 mediated through service offerings."
+        }
+      ],
       "domains": {
         "cafe": [
           {
@@ -1483,6 +1522,7 @@
         "description": "A recorded instance of an activity that actually happened \u2014 the system's record that a specific piece of work was done, by whom, for how long, and using what resources. At the most detailed tracking level, the system creates one of these for every observable activity. At coarser levels, they are estimated aggregates."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "ActivityBudget": {
@@ -1502,6 +1542,7 @@
         "description": "A planned allocation of how much activity of each type your business expects in a given period \u2014 the activity-level equivalent of a financial budget. When you define an activity budget, the system can compare what actually happened against what was planned, and surface gaps."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "ActivityGranularity": {
@@ -1521,6 +1562,7 @@
         "description": "A policy declaration: how precisely does your business track activity in a given area? The system supports three levels \u2014 envelope (a rough total), category (broken down by type), and tracked (every individual activity recorded). Different parts of your business can operate at different levels at the same time, and you can refine the level as your needs evolve."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "cafe": [
           {
@@ -1607,6 +1649,7 @@
         "description": "The mapping from an activity to its financial cost \u2014 how much does it cost each time this kind of work is done? When you define cost allocations, the system can connect your activity model to your financial model, making resource consumption visible in financial terms."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "suds": [
           {
@@ -1647,6 +1690,7 @@
         "description": "A kind of thing your business needs in order to operate \u2014 staff, equipment, premises, technology, or external services such as a laboratory or a contractor. The system holds each resource type as a tracked concept. When you define your resource types, the system uses them to plan capacity, understand your cost base, and identify where you might be constrained."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -1771,6 +1815,7 @@
         "description": "A specific resource available to your business at a defined capacity and cost \u2014 not a named individual, but a planning-level description like 'a prescribing clinician at 0.5 FTE' or 'one licensed copy of the booking system'. When you define resource instances, the system uses them to model your actual operating capacity."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -1817,6 +1862,7 @@
         "description": "An organised combination of resources that together produce a defined service function \u2014 like 'the ability to conduct a monitoring review' (which requires a clinician, a lab interface, and a clinical record system). You don't deliver services with individual resources; you deliver them with capabilities. When you define capabilities, the system connects your resources to the service offerings they enable."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -1877,6 +1923,7 @@
         "description": "The relationship between your resource configuration and how much service you can deliver \u2014 for example, 'with one clinician at 0.5 FTE, we can support 20 active patients.' This is a planning assertion that the system holds, not a computed formula. When you define a capacity model, the system knows your throughput limits and can surface when you're approaching them."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -1925,6 +1972,7 @@
         "description": "A limit on the availability or use of a resource that affects your ability to deliver services \u2014 regulatory, financial, temporal, or contractual. When you define resource constraints, the system tracks them alongside your resources so that capacity planning reflects real-world limits, not just theoretical availability."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -1973,6 +2021,7 @@
         "description": "A point-in-time record of how much stock you have of something in your catalogue \u2014 how many tablets, how many bags of coffee beans, how many bottles of cleaning product. This is operational tracking: it tells the system what you have right now, so it can flag when you're running low. Distinct from resource planning, which is about strategic capacity."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "ObjectiveCapabilityMapping": {
@@ -1992,6 +2041,7 @@
         "description": "A declared connection between a strategic objective and the capabilities that contribute to achieving it. When you map objectives to capabilities, the system can trace from 'what are we trying to achieve?' down to 'what resources and service functions make that possible?' \u2014 closing the loop between strategy and operations."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2036,6 +2086,7 @@
         "description": "A way your business earns money \u2014 each revenue stream connects a customer segment, a triggering event (like completing an assessment or renewing a subscription), and a pricing model. When you define your revenue streams, the system can project income and connect it to the services that generate it."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2088,6 +2139,7 @@
         "description": "A structural factor that generates cost in your business \u2014 something that, as it scales or recurs, drives your expenditure. Each cost driver is linked to a resource or an activity. When you define your cost drivers, the system connects your cost structure to the resources and activities that produce it, so you can see where money goes and why."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2192,6 +2244,7 @@
         "description": "The financial profile of delivering one unit of a service \u2014 what you earn, what it costs, and the margin between them. When you define unit economics for each service offering, the system can assess whether individual services are financially viable and how changes to pricing or costs would affect the picture."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2260,6 +2313,7 @@
         "description": "The logic that determines what a customer pays for a service \u2014 per-episode, subscription, tiered, sliding scale, or flat fee. When you define a pricing model, the system applies it to the relevant service offerings and uses it in revenue projections and unit economics calculations."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2308,6 +2362,7 @@
         "description": "A named projection of your business's financial future over a defined period \u2014 combining your revenue streams, cost drivers, and growth assumptions into a forward-looking picture. When you define a financial projection, the system links it to a scenario so you can compare different versions of the future side by side."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2338,6 +2393,7 @@
         "description": "A regulatory, legal, or standards obligation that your business must satisfy \u2014 and the system tracks it as a concrete, testable commitment, not just a policy statement. Each governance requirement is connected to the evidence that demonstrates compliance and, where formalised, to the constraint rules that the system can check. When you define governance requirements, the system builds a traceability chain from obligation through to proof."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "suds": [
           {
@@ -2370,6 +2426,7 @@
         "description": "A record that proves your business is meeting a governance requirement \u2014 what was checked, when, by whom, and how often. The system tracks these as concrete evidence items tied to specific obligations. When you define audit evidence records, the system knows what proof exists and can surface gaps where evidence is missing or overdue."
       },
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "suds": [
           {
@@ -2414,6 +2471,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2450,6 +2508,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2622,6 +2681,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2682,6 +2742,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2750,6 +2811,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2768,6 +2830,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2836,6 +2899,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2874,6 +2938,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2892,6 +2957,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "cafe": [
           {
@@ -2910,6 +2976,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "cafe": [
           {
@@ -2928,6 +2995,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2950,6 +3018,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -2986,6 +3055,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3026,6 +3096,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3050,6 +3121,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "ContactDetails": {
@@ -3061,6 +3133,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "PersistencePolicy": {
@@ -3072,6 +3145,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "cafe": [
           {
@@ -3110,6 +3184,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3132,6 +3207,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3178,6 +3254,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3200,6 +3277,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3218,6 +3296,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3236,6 +3315,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3262,6 +3342,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3290,6 +3371,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "InputResolver": {
@@ -3301,6 +3383,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3319,6 +3402,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3337,6 +3421,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3355,6 +3440,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "OperationalQuery": {
@@ -3366,6 +3452,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3400,6 +3487,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3418,6 +3506,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "GoalProjection": {
@@ -3429,6 +3518,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3457,6 +3547,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3475,6 +3566,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "InferenceEvaluator": {
@@ -3486,6 +3578,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "AdvisoryInterface": {
@@ -3497,6 +3590,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "SelfExplanationService": {
@@ -3508,6 +3602,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "AssessmentOrchestrator": {
@@ -3519,6 +3614,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "EvaluationSpecRegistry": {
@@ -3530,6 +3626,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "EvaluationContext": {
@@ -3541,6 +3638,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "DecisionTableDef": {
@@ -3552,6 +3650,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "RegimenSelectionRow": {
@@ -3563,6 +3662,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3613,6 +3713,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "StabilityAssessmentRow": {
@@ -3624,6 +3725,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3670,6 +3772,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "OutcomeDefinition": {
@@ -3681,6 +3784,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3735,6 +3839,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3773,6 +3878,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3791,6 +3897,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "OutcomeFeedbackRecord": {
@@ -3802,6 +3909,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "DataContract": {
@@ -3813,6 +3921,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "ArchitecturalPrinciple": {
@@ -3824,6 +3933,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -3870,6 +3980,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -4004,6 +4115,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {
         "core": [
           {
@@ -4142,6 +4254,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "EhrRecord": {
@@ -4153,6 +4266,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "RegisteredTemplate": {
@@ -4164,6 +4278,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "Composition": {
@@ -4175,6 +4290,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "AqlQuery": {
@@ -4186,6 +4302,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     },
     "UserAccount": {
@@ -4197,6 +4314,7 @@
       "userFacing": {},
       "purposiveDescription": {},
       "comprehension": {},
+      "weightedRelationships": [],
       "domains": {}
     }
   },
@@ -4264,20 +4382,28 @@
       },
       "relatedConcepts": [
         {
-          "name": "ActivityRecord",
-          "friendlyName": "Activity Record"
-        },
-        {
-          "name": "ActivityBudget",
-          "friendlyName": "Activity Budget"
-        },
-        {
           "name": "ActivityGranularity",
-          "friendlyName": "Activity Granularity"
+          "friendlyName": "Activity Granularity",
+          "strength": "strong",
+          "rationale": "Granularity level directly governs how an activity type is tracked and costed \u2014 envelope vs category vs tracked."
         },
         {
           "name": "ActivityCostAllocation",
-          "friendlyName": "Activity Cost Allocation"
+          "friendlyName": "Activity Cost Allocation",
+          "strength": "strong",
+          "rationale": "Cost allocation is structurally determined by activity type \u2014 every cost line traces back to an activity category."
+        },
+        {
+          "name": "ActivityRecord",
+          "friendlyName": "Activity Record",
+          "strength": "moderate",
+          "rationale": "Activity records are typed by activity type but the record is an operational artefact, not a structural dependency."
+        },
+        {
+          "name": "ActivityBudget",
+          "friendlyName": "Activity Budget",
+          "strength": "moderate",
+          "rationale": "Budgets aggregate by activity type but the relationship is indirect \u2014 mediated through cost allocation."
         }
       ],
       "attributes": [
@@ -5499,7 +5625,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 487,
+      "lineNumber": 517,
       "attributes": [
         {
           "name": "activityTypeName",
@@ -5544,6 +5670,38 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
+      "weightedRelationships": [
+        {
+          "target": "ActivityCostAllocation",
+          "strength": "strong",
+          "rationale": "Cost allocation is structurally determined by activity type \u2014 every cost line traces back to an activity category."
+        },
+        {
+          "target": "ActivityGranularity",
+          "strength": "strong",
+          "rationale": "Granularity level directly governs how an activity type is tracked and costed \u2014 envelope vs category vs tracked."
+        },
+        {
+          "target": "ActivityBudget",
+          "strength": "moderate",
+          "rationale": "Budgets aggregate by activity type but the relationship is indirect \u2014 mediated through cost allocation."
+        },
+        {
+          "target": "ActivityRecord",
+          "strength": "moderate",
+          "rationale": "Activity records are typed by activity type but the record is an operational artefact, not a structural dependency."
+        },
+        {
+          "target": "ResourceType",
+          "strength": "moderate",
+          "rationale": "Resources are consumed by activities but the mapping is many-to-many and context-dependent."
+        },
+        {
+          "target": "Channel",
+          "strength": "weak",
+          "rationale": "Channels deliver services which contain activities, but the relationship is distant \u2014 mediated through service offerings."
+        }
+      ],
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -5573,6 +5731,54 @@
             "surfaceRelatedConcepts": true,
             "surfaceAttributes": true
           }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ActivityCostAllocation",
+            "strength": "strong",
+            "rationale": "Cost allocation is structurally determined by activity type \u2014 every cost line traces back to an activity category."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ActivityGranularity",
+            "strength": "strong",
+            "rationale": "Granularity level directly governs how an activity type is tracked and costed \u2014 envelope vs category vs tracked."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ActivityBudget",
+            "strength": "moderate",
+            "rationale": "Budgets aggregate by activity type but the relationship is indirect \u2014 mediated through cost allocation."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ActivityRecord",
+            "strength": "moderate",
+            "rationale": "Activity records are typed by activity type but the record is an operational artefact, not a structural dependency."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ResourceType",
+            "strength": "moderate",
+            "rationale": "Resources are consumed by activities but the mapping is many-to-many and context-dependent."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "Channel",
+            "strength": "weak",
+            "rationale": "Channels deliver services which contain activities, but the relationship is distant \u2014 mediated through service offerings."
+          }
         }
       ]
     },
@@ -5584,7 +5790,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 506,
+      "lineNumber": 536,
       "attributes": [
         {
           "name": "activityType",
@@ -5654,7 +5860,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 526,
+      "lineNumber": 556,
       "attributes": [
         {
           "name": "budgetPeriod",
@@ -5724,7 +5930,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 545,
+      "lineNumber": 575,
       "attributes": [
         {
           "name": "businessArea",
@@ -5789,7 +5995,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 562,
+      "lineNumber": 592,
       "attributes": [
         {
           "name": "activityType",
@@ -5854,7 +6060,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 604,
+      "lineNumber": 634,
       "attributes": [
         {
           "name": "resourceTypeName",
@@ -5924,7 +6130,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 624,
+      "lineNumber": 654,
       "attributes": [
         {
           "name": "instanceName",
@@ -5999,7 +6205,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 645,
+      "lineNumber": 675,
       "attributes": [
         {
           "name": "capabilityName",
@@ -6069,7 +6275,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 672,
+      "lineNumber": 702,
       "attributes": [
         {
           "name": "resourceConfiguration",
@@ -6139,7 +6345,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 697,
+      "lineNumber": 727,
       "attributes": [
         {
           "name": "constraintName",
@@ -6209,7 +6415,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 729,
+      "lineNumber": 759,
       "attributes": [
         {
           "name": "catalogueEntryReference",
@@ -6284,7 +6490,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 756,
+      "lineNumber": 786,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -6322,7 +6528,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 767,
+      "lineNumber": 797,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -6360,7 +6566,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 775,
+      "lineNumber": 805,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -6398,7 +6604,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 785,
+      "lineNumber": 815,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -6436,7 +6642,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 793,
+      "lineNumber": 823,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -6474,7 +6680,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 801,
+      "lineNumber": 831,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -6512,7 +6718,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 811,
+      "lineNumber": 841,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -6555,7 +6761,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 822,
+      "lineNumber": 852,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -6598,7 +6804,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 833,
+      "lineNumber": 863,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -6641,7 +6847,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 842,
+      "lineNumber": 872,
       "specialises": "Capability",
       "attributes": [
         {
@@ -6674,7 +6880,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 852,
+      "lineNumber": 882,
       "specialises": "Capability",
       "attributes": [
         {
@@ -6707,7 +6913,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 859,
+      "lineNumber": 889,
       "specialises": "Capability",
       "attributes": [
         {
@@ -6740,7 +6946,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 866,
+      "lineNumber": 896,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -6778,7 +6984,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 876,
+      "lineNumber": 906,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -6816,7 +7022,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 884,
+      "lineNumber": 914,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -6854,7 +7060,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 897,
+      "lineNumber": 927,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -6892,7 +7098,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 907,
+      "lineNumber": 937,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -6930,7 +7136,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 917,
+      "lineNumber": 947,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -6973,7 +7179,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 926,
+      "lineNumber": 956,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -7016,7 +7222,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 935,
+      "lineNumber": 965,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -7059,7 +7265,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 946,
+      "lineNumber": 976,
       "specialises": "Capability",
       "attributes": [
         {
@@ -7092,7 +7298,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 953,
+      "lineNumber": 983,
       "specialises": "Capability",
       "attributes": [
         {
@@ -7125,7 +7331,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 960,
+      "lineNumber": 990,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -7163,7 +7369,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 993,
+      "lineNumber": 1023,
       "attributes": [
         {
           "name": "objectiveRef",
@@ -7218,7 +7424,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1001,
+      "lineNumber": 1031,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -7236,7 +7442,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1007,
+      "lineNumber": 1037,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -7254,7 +7460,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1014,
+      "lineNumber": 1044,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -7272,7 +7478,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1021,
+      "lineNumber": 1051,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -7290,7 +7496,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1049,
+      "lineNumber": 1079,
       "attributes": [
         {
           "name": "perEpisode"
@@ -7317,7 +7523,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1066,
+      "lineNumber": 1096,
       "attributes": [
         {
           "name": "streamName",
@@ -7387,7 +7593,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1083,
+      "lineNumber": 1113,
       "attributes": [
         {
           "name": "driverName",
@@ -7457,7 +7663,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1100,
+      "lineNumber": 1130,
       "attributes": [
         {
           "name": "offeringRef",
@@ -7527,7 +7733,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1117,
+      "lineNumber": 1147,
       "attributes": [
         {
           "name": "pricingModelName",
@@ -7597,7 +7803,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1134,
+      "lineNumber": 1164,
       "attributes": [
         {
           "name": "projectionName",
@@ -7672,7 +7878,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1148,
+      "lineNumber": 1178,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -7710,7 +7916,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1156,
+      "lineNumber": 1186,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -7748,7 +7954,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1164,
+      "lineNumber": 1194,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7786,7 +7992,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1172,
+      "lineNumber": 1202,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7824,7 +8030,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1180,
+      "lineNumber": 1210,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7862,7 +8068,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1188,
+      "lineNumber": 1218,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7900,7 +8106,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1196,
+      "lineNumber": 1226,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7938,7 +8144,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1204,
+      "lineNumber": 1234,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -7976,7 +8182,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1212,
+      "lineNumber": 1242,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -8014,7 +8220,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1220,
+      "lineNumber": 1250,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -8052,7 +8258,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1228,
+      "lineNumber": 1258,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -8090,7 +8296,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1236,
+      "lineNumber": 1266,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -8133,7 +8339,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1247,
+      "lineNumber": 1277,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -8171,7 +8377,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1259,
+      "lineNumber": 1289,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -8209,7 +8415,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1267,
+      "lineNumber": 1297,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -8247,7 +8453,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1275,
+      "lineNumber": 1305,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -8285,7 +8491,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1286,
+      "lineNumber": 1316,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -8323,7 +8529,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1299,
+      "lineNumber": 1329,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -8366,7 +8572,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1348,
+      "lineNumber": 1378,
       "attributes": [
         {
           "name": "requirementId",
@@ -8436,7 +8642,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1377,
+      "lineNumber": 1407,
       "attributes": [
         {
           "name": "evidenceType",
@@ -13315,13 +13521,64 @@
     },
     {
       "kind": "enum_def",
+      "name": "RelationshipStrength",
+      "parentPackage": "MetadataLibrary",
+      "doc": "Ordinal classification of interaction effect strength\nbetween related elements. Starting point for the\nweighted relationship model (B14).\nDesigned for hybrid evolution: ordinal now, numeric\nweights later, structural derivation baseline with\nhuman overrides (J12 \u2014 experimentation before\nconvention).\n",
+      "sourceFile": "model/foundation.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 272,
+      "attributes": [
+        {
+          "name": "strong"
+        },
+        {
+          "name": "moderate"
+        },
+        {
+          "name": "weak"
+        },
+        {
+          "name": "contextual"
+        }
+      ]
+    },
+    {
+      "kind": "metadata_def",
+      "name": "WeightedRelationship",
+      "parentPackage": "MetadataLibrary",
+      "doc": "Declares a weighted relationship from the annotated\nelement to a named target element. Each annotation\ndeclares one relationship. Multiple annotations of\nthis metaclass may be applied to a single element\n(verified v3.17, Session 51).\ntarget: name of the related element (String for now;\n  migration t",
+      "sourceFile": "model/foundation.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 291,
+      "attributes": [
+        {
+          "name": "target",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "strength",
+          "type": "RelationshipStrength",
+          "isRedefinition": false
+        },
+        {
+          "name": "rationale",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
       "name": "AgencyType",
       "parentPackage": "MetadataLibrary",
       "doc": "Who performs an action in a pathway. Applies to\nboth clinical and non-clinical contexts.\nCoffee shop: customer (self-service kiosk), staff\n(barista makes drink), automated (order routing),\ncollaborative (customer and barista discuss).\nClinical: patientAgent, clinicianAgent, automated,\ncollaborative ",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 274,
+      "lineNumber": 330,
       "attributes": [
         {
           "name": "patientAgent"
@@ -13345,7 +13602,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 297,
+      "lineNumber": 353,
       "attributes": [
         {
           "name": "agencyType",
@@ -13372,7 +13629,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 332,
+      "lineNumber": 388,
       "attributes": [
         {
           "name": "male"
@@ -13399,7 +13656,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 341,
+      "lineNumber": 397,
       "attributes": [
         {
           "name": "email"
@@ -13426,7 +13683,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 350,
+      "lineNumber": 406,
       "attributes": [
         {
           "name": "faceToFace"
@@ -13450,7 +13707,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 358,
+      "lineNumber": 414,
       "attributes": [
         {
           "name": "inbound"
@@ -13468,7 +13725,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 364,
+      "lineNumber": 420,
       "attributes": [
         {
           "name": "given"
@@ -13492,7 +13749,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 372,
+      "lineNumber": 428,
       "attributes": [
         {
           "name": "line1",
@@ -13529,7 +13786,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 381,
+      "lineNumber": 437,
       "attributes": [
         {
           "name": "email",
@@ -13556,7 +13813,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 391,
+      "lineNumber": 447,
       "attributes": [
         {
           "name": "pass"
@@ -13577,7 +13834,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 400,
+      "lineNumber": 456,
       "attributes": [
         {
           "name": "critical"
@@ -13598,7 +13855,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 408,
+      "lineNumber": 464,
       "attributes": [
         {
           "name": "patient"
@@ -13625,7 +13882,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 418,
+      "lineNumber": 474,
       "attributes": [
         {
           "name": "cdr;"
@@ -13652,7 +13909,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 432,
+      "lineNumber": 488,
       "attributes": [
         {
           "name": "clinical"
@@ -13679,7 +13936,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 448,
+      "lineNumber": 504,
       "attributes": [
         {
           "name": "automatic"
@@ -13700,7 +13957,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 463,
+      "lineNumber": 519,
       "attributes": [
         {
           "name": "healthy"
@@ -13721,7 +13978,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 472,
+      "lineNumber": 528,
       "attributes": [
         {
           "name": "low"
@@ -13745,7 +14002,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 482,
+      "lineNumber": 538,
       "attributes": [
         {
           "name": "oestrogen"
@@ -13766,7 +14023,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 491,
+      "lineNumber": 547,
       "attributes": [
         {
           "name": "noContraindication"
@@ -13793,7 +14050,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 503,
+      "lineNumber": 559,
       "attributes": [
         {
           "name": "estradiolValerate"
@@ -13823,7 +14080,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 515,
+      "lineNumber": 571,
       "attributes": [
         {
           "name": "oral"
@@ -13847,7 +14104,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 523,
+      "lineNumber": 579,
       "attributes": [
         {
           "name": "low"
@@ -13871,7 +14128,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 534,
+      "lineNumber": 590,
       "attributes": [
         {
           "name": "satisfied"
@@ -13892,7 +14149,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 542,
+      "lineNumber": 598,
       "attributes": [
         {
           "name": "stable"
@@ -13916,7 +14173,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 551,
+      "lineNumber": 607,
       "attributes": [
         {
           "name": "continueCurrentRegimen"
@@ -13943,7 +14200,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 564,
+      "lineNumber": 620,
       "attributes": [
         {
           "name": "clinical"
@@ -13967,7 +14224,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 575,
+      "lineNumber": 631,
       "attributes": [
         {
           "name": "pending"
@@ -13994,7 +14251,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 590,
+      "lineNumber": 646,
       "attributes": [
         {
           "name": "baseline"
@@ -14021,7 +14278,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 600,
+      "lineNumber": 656,
       "attributes": [
         {
           "name": "within"
@@ -14045,7 +14302,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 623,
+      "lineNumber": 679,
       "attributes": [
         {
           "name": "clinicalDataRepository"
@@ -14069,7 +14326,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 643,
+      "lineNumber": 699,
       "attributes": [
         {
           "name": "clinicalSignificance"
@@ -14114,7 +14371,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 663,
+      "lineNumber": 719,
       "attributes": [
         {
           "name": "domainConcept",

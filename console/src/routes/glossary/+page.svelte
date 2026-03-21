@@ -378,21 +378,36 @@
                       </div>
                     {/if}
 
-                    <!-- Related concepts -->
+                    <!-- Related concepts (weight-aware) -->
                     {#if cc.relatedConcepts && cc.relatedConcepts.length > 0}
                       <div>
                         <span class="text-xs font-medium text-secondary-500 dark:text-secondary-400">Related concepts</span>
-                        <p class="mt-0.5 text-sm">
+                        <div class="mt-1.5 space-y-1.5">
                           {#each cc.relatedConcepts as rc, idx}
-                            {#if idx > 0}<span class="text-secondary-300 dark:text-secondary-600">{' · '}</span>{/if}
-                            <button
-                              onclick={() => navigateToEntry(rc.name)}
-                              class="text-primary-600 hover:text-primary-800 hover:underline dark:text-primary-400 dark:hover:text-primary-300"
-                            >
-                              {rc.friendlyName || rc.name}
-                            </button>
+                            {@const filled = rc.strength === 'strong' ? 4 : rc.strength === 'moderate' ? 3 : rc.strength === 'weak' ? 2 : rc.strength === 'contextual' ? 1 : 0}
+                            {@const dotColor = rc.strength === 'strong' ? 'bg-red-500 dark:bg-red-400' : rc.strength === 'moderate' ? 'bg-amber-500 dark:bg-amber-400' : rc.strength === 'weak' ? 'bg-sky-400 dark:bg-sky-400' : rc.strength === 'contextual' ? 'bg-slate-400 dark:bg-slate-500' : ''}
+                            <div class="flex items-center gap-2.5">
+                              {#if rc.strength}
+                                <div class="flex items-center gap-0.5" title="{rc.strength}{rc.rationale ? ': ' + rc.rationale : ''}">
+                                  {#each [1, 2, 3, 4] as dot}
+                                    <span class="inline-block h-1.5 w-1.5 rounded-full {dot <= filled ? dotColor : 'bg-secondary-200 dark:bg-secondary-700'}"></span>
+                                  {/each}
+                                </div>
+                              {/if}
+                              <button
+                                onclick={() => navigateToEntry(rc.name)}
+                                class="text-sm hover:underline
+                                  {rc.strength === 'strong'
+                                    ? 'font-medium text-secondary-800 hover:text-primary-700 dark:text-secondary-200 dark:hover:text-primary-400'
+                                    : rc.strength === 'weak' || rc.strength === 'contextual'
+                                      ? 'text-secondary-500 hover:text-secondary-700 dark:text-secondary-400 dark:hover:text-secondary-300'
+                                      : 'text-secondary-700 hover:text-primary-700 dark:text-secondary-300 dark:hover:text-primary-400'}"
+                              >
+                                {rc.friendlyName || rc.name}
+                              </button>
+                            </div>
                           {/each}
-                        </p>
+                        </div>
                       </div>
                     {/if}
 

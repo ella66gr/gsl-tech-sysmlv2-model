@@ -261,6 +261,62 @@ package Foundation {
             attribute surfaceAttributes : Boolean;
         }
 
+        // -- Weighted relationship metadata -----------------------
+        // Added Session 51: Ontara Stage 3 Phase 3, Step 4.
+        // Source: ontara-stage-3-plan-phase-3-implementation-2026-03-20.md §4 (Step 4)
+        // Design: Option B — one annotation per relationship,
+        //   multiple same-metaclass annotations per element.
+        //   Verified v3.17: stacking up to 6 annotations works.
+        // Meta model: Business System (cross-cutting metadata).
+
+        enum def RelationshipStrength {
+            doc /* Ordinal classification of interaction effect strength
+                 * between related elements. Starting point for the
+                 * weighted relationship model (B14).
+                 *
+                 * Designed for hybrid evolution: ordinal now, numeric
+                 * weights later, structural derivation baseline with
+                 * human overrides (J12 — experimentation before
+                 * convention).
+                 *
+                 * Business system meta model concept. Unity principle
+                 * (A11): same weights inform comprehension, reasoning,
+                 * simulation, governance, and assembly guidance. */
+            strong;
+            moderate;
+            weak;
+            contextual;
+        }
+
+        metadata def WeightedRelationship {
+            doc /* Declares a weighted relationship from the annotated
+                 * element to a named target element. Each annotation
+                 * declares one relationship. Multiple annotations of
+                 * this metaclass may be applied to a single element
+                 * (verified v3.17, Session 51).
+                 *
+                 * target: name of the related element (String for now;
+                 *   migration to typed ref per O25 is the architectural
+                 *   direction).
+                 * strength: ordinal classification of the interaction
+                 *   effect. Typed as RelationshipStrength enum.
+                 * rationale: brief explanation of why this weight was
+                 *   assigned.
+                 *
+                 * Annotation ordering convention (Position A, prefix):
+                 *   @CatalogueTag → @UserFacing → @PurposiveDescription
+                 *   → @Comprehension → @WeightedRelationship (multiple)
+                 *
+                 * Business system meta model concept.
+                 * Unity principle (A11). Weighted relationships (B14).
+                 * Non-constraining (J3): ordinal weights designed for
+                 * hybrid evolution to numeric/structural derivation.
+                 * Session 51 — Stage 3 Phase 3, Step 4. */
+            attribute target : String;
+            attribute strength : RelationshipStrength;
+            attribute rationale : String;
+        }
+
         // -- Agency classification metadata -----------------------
         // Business system meta model concepts: annotate pathway
         // action nodes with the agent who performs them.

@@ -50,6 +50,8 @@ export interface DomainInstantiationSurface {
 export interface RelatedConceptSurface {
   name: string;
   friendlyName?: string;
+  strength?: 'strong' | 'moderate' | 'weak' | 'contextual';
+  rationale?: string;
 }
 
 export interface AttributeSurface {

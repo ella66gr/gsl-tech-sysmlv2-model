@@ -484,6 +484,36 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "ActivityCostAllocation";
+            strength = RelationshipStrength::strong;
+            rationale = "Cost allocation is structurally determined by activity type — every cost line traces back to an activity category.";
+        }
+        @WeightedRelationship {
+            target = "ActivityGranularity";
+            strength = RelationshipStrength::strong;
+            rationale = "Granularity level directly governs how an activity type is tracked and costed — envelope vs category vs tracked.";
+        }
+        @WeightedRelationship {
+            target = "ActivityBudget";
+            strength = RelationshipStrength::moderate;
+            rationale = "Budgets aggregate by activity type but the relationship is indirect — mediated through cost allocation.";
+        }
+        @WeightedRelationship {
+            target = "ActivityRecord";
+            strength = RelationshipStrength::moderate;
+            rationale = "Activity records are typed by activity type but the record is an operational artefact, not a structural dependency.";
+        }
+        @WeightedRelationship {
+            target = "ResourceType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Resources are consumed by activities but the mapping is many-to-many and context-dependent.";
+        }
+        @WeightedRelationship {
+            target = "Channel";
+            strength = RelationshipStrength::weak;
+            rationale = "Channels deliver services which contain activities, but the relationship is distant — mediated through service offerings.";
+        }
         part def ActivityType {
             doc /* A defined type of activity within the business.
                  * Every activity has a type, and every type belongs
