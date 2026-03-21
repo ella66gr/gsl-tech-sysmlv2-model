@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-03-21T14:37:44.920265",
+  "generatedAt": "2026-03-21T17:52:48.619573",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 461
+      "elementCount": 463
     },
     "cafe": {
       "label": "Cafe",
@@ -20,14 +20,14 @@
     "paws": {
       "label": "Paws",
       "description": "Dog grooming demonstrator \u2014 appointment-based service validation",
-      "elementCount": 51
+      "elementCount": 53
     }
   },
   "summary": {
-    "totalElements": 692,
+    "totalElements": 696,
     "byKind": {
-      "part_def": 117,
-      "part": 460,
+      "part_def": 119,
+      "part": 462,
       "enum_def": 52,
       "requirement_def": 15,
       "requirement": 7,
@@ -37,16 +37,16 @@
       "satisfy": 2
     },
     "byLayer": {
-      "bmm": 188,
-      "domain": 253,
+      "bmm": 190,
+      "domain": 255,
       "bsmm": 242,
       "unknown": 9
     },
     "byDomain": {
-      "core": 461,
+      "core": 463,
       "cafe": 119,
       "suds": 61,
-      "paws": 51
+      "paws": 53
     }
   },
   "facets": {
@@ -59,29 +59,29 @@
         "ServiceConcept"
       ],
       "counts": {
-        "ServiceConcept": 7,
+        "ServiceConcept": 9,
         "ActivityModel": 5,
         "ResourceCapability": 7,
         "FinancialModel": 5,
         "Governance": 2
       },
-      "total": 26
+      "total": 28
     },
     "classification": {
       "values": [
         "General"
       ],
       "counts": {
-        "General": 26
+        "General": 28
       },
-      "total": 26
+      "total": 28
     }
   },
   "comprehension": {
-    "catalogueTaggedCount": 26,
-    "userFacingCount": 26,
-    "purposiveDescriptionCount": 26,
-    "comprehensionAnnotationCount": 26,
+    "catalogueTaggedCount": 28,
+    "userFacingCount": 28,
+    "purposiveDescriptionCount": 28,
+    "comprehensionAnnotationCount": 28,
     "coveragePercent": 100.0,
     "purposiveCoveragePercent": 100.0,
     "missingUserFacing": [],
@@ -1323,6 +1323,117 @@
           },
           {
             "name": "lowStressEnvironment",
+            "package": "PawsBusinessModel"
+          }
+        ]
+      }
+    },
+    "ServiceSubject": {
+      "name": "ServiceSubject",
+      "layer": "bmm",
+      "package": "ServiceConcept",
+      "doc": "The entity upon which a service is performed. The dog\nbeing groomed, the patient receiving care, the garment\nbeing laundered, the item being repaired.\nA service subject is structurally distinct from a",
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Service Subject",
+        "shortDescription": "The entity upon which a service is performed \u2014 a person, animal, object, or organisation that receives the service."
+      },
+      "purposiveDescription": {
+        "description": "The thing your service acts on \u2014 the dog being groomed, the patient receiving care, the garment being cleaned, the item being repaired. A service subject may have needs independent of whoever commissioned the service, and governance obligations may attach to the subject directly. When you identify your service subjects, the system tracks what is being served, in what condition, and with what independent requirements \u2014 separately from who is paying or making decisions."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "strong",
+          "rationale": "What is offered depends directly on the nature of the subject. A different breed, clinical condition, or item type requires reassessing the offering."
+        },
+        {
+          "target": "GovernanceRequirement",
+          "strength": "strong",
+          "rationale": "Governance obligations attach to the subject independently of the customer. Duty of care is to the dog, the patient, the object in custody."
+        },
+        {
+          "target": "ActivityType",
+          "strength": "strong",
+          "rationale": "The subject's characteristics directly determine the activities required \u2014 breed-specific grooming, patient-specific procedures, item-specific repair."
+        },
+        {
+          "target": "ServiceParticipant",
+          "strength": "moderate",
+          "rationale": "Subject and participants are related \u2014 participants commission, fund, or authorise services on or for the subject \u2014 but they are independently defined."
+        },
+        {
+          "target": "CustomerSegment",
+          "strength": "moderate",
+          "rationale": "Different customer segments may involve different subject types, but the segment is defined by its needs and willingness to pay, not by the subject."
+        }
+      ],
+      "domains": {
+        "paws": [
+          {
+            "name": "dogSubject",
+            "package": "PawsBusinessModel"
+          }
+        ]
+      }
+    },
+    "ServiceParticipant": {
+      "name": "ServiceParticipant",
+      "layer": "bmm",
+      "package": "ServiceConcept",
+      "doc": "An entity involved in a service engagement in a\ndefined role. The person who pays, the organisation\nthat commissions, the carer who makes decisions,\nthe expert called in for assessment.\nA service part",
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Service Participant",
+        "shortDescription": "An entity involved in a service engagement in a defined role \u2014 customer, payer, commissioner, decision-maker, or any other role."
+      },
+      "purposiveDescription": {
+        "description": "Any person or organisation involved in a service engagement in a defined role. The person who pays, the organisation that commissions, the carer who makes decisions, the expert called in for assessment \u2014 any entity with influence on how the service proceeds. When you identify your service participants, the system tracks who is involved, in what capacity, and how their status affects the service workflow. The set of possible roles is open \u2014 the model does not constrain what kinds of participation your service may involve."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ServiceSubject",
+          "strength": "strong",
+          "rationale": "The participant's role is defined in relation to the subject \u2014 they commission, fund, authorise, or contribute to the service on or for the subject."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "The participant influences the offering \u2014 a commissioner may constrain scope, a payer may limit options \u2014 but the offering is primarily shaped by the subject's needs."
+        },
+        {
+          "target": "CustomerSegment",
+          "strength": "moderate",
+          "rationale": "Participants often belong to or represent a customer segment, but the mapping is characterising \u2014 a segment is not defined by its participants."
+        },
+        {
+          "target": "GovernanceRequirement",
+          "strength": "moderate",
+          "rationale": "Governance requirements may apply to participants (commissioner must approve, payer must authorise), but the primary governance binding is to the subject."
+        }
+      ],
+      "domains": {
+        "paws": [
+          {
+            "name": "petOwnerParticipant",
             "package": "PawsBusinessModel"
           }
         ]
@@ -4848,6 +4959,14 @@
           "friendlyName": "Differentiation Claim"
         },
         {
+          "name": "ServiceSubject",
+          "friendlyName": "Service Subject"
+        },
+        {
+          "name": "ServiceParticipant",
+          "friendlyName": "Service Participant"
+        },
+        {
           "name": "CatalogueEntry",
           "friendlyName": "Catalogue Entry"
         },
@@ -4931,6 +5050,14 @@
         {
           "name": "Channel",
           "friendlyName": "Channel"
+        },
+        {
+          "name": "ServiceSubject",
+          "friendlyName": "Service Subject"
+        },
+        {
+          "name": "ServiceParticipant",
+          "friendlyName": "Service Participant"
         },
         {
           "name": "CatalogueEntry",
@@ -5038,6 +5165,14 @@
           "rationale": "The catalogue records the business decision to offer something. A change to the offering may require updating catalogue entries, but the catalogue is operational, not definitional."
         },
         {
+          "name": "ServiceSubject",
+          "friendlyName": "Service Subject"
+        },
+        {
+          "name": "ServiceParticipant",
+          "friendlyName": "Service Participant"
+        },
+        {
           "name": "ExternalReference",
           "friendlyName": "External Reference"
         }
@@ -5127,6 +5262,14 @@
           "friendlyName": "Differentiation Claim"
         },
         {
+          "name": "ServiceSubject",
+          "friendlyName": "Service Subject"
+        },
+        {
+          "name": "ServiceParticipant",
+          "friendlyName": "Service Participant"
+        },
+        {
           "name": "CatalogueEntry",
           "friendlyName": "Catalogue Entry"
         },
@@ -5214,6 +5357,14 @@
           "friendlyName": "Channel"
         },
         {
+          "name": "ServiceSubject",
+          "friendlyName": "Service Subject"
+        },
+        {
+          "name": "ServiceParticipant",
+          "friendlyName": "Service Participant"
+        },
+        {
           "name": "CatalogueEntry",
           "friendlyName": "Catalogue Entry"
         },
@@ -5237,6 +5388,162 @@
         },
         {
           "name": "testability",
+          "type": "String"
+        }
+      ]
+    },
+    "ServiceSubject": {
+      "flags": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "domainInstantiations": {
+        "paws": {
+          "count": 1,
+          "instances": [
+            "dogSubject"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "ServiceOffering",
+          "friendlyName": "Service Offering",
+          "strength": "strong",
+          "rationale": "What is offered depends directly on the nature of the subject. A different breed, clinical condition, or item type requires reassessing the offering."
+        },
+        {
+          "name": "CustomerSegment",
+          "friendlyName": "Customer Segment",
+          "strength": "moderate",
+          "rationale": "Different customer segments may involve different subject types, but the segment is defined by its needs and willingness to pay, not by the subject."
+        },
+        {
+          "name": "ServiceParticipant",
+          "friendlyName": "Service Participant",
+          "strength": "moderate",
+          "rationale": "Subject and participants are related \u2014 participants commission, fund, or authorise services on or for the subject \u2014 but they are independently defined."
+        },
+        {
+          "name": "ValueProposition",
+          "friendlyName": "Value Proposition"
+        },
+        {
+          "name": "Channel",
+          "friendlyName": "Channel"
+        },
+        {
+          "name": "DifferentiationClaim",
+          "friendlyName": "Differentiation Claim"
+        },
+        {
+          "name": "CatalogueEntry",
+          "friendlyName": "Catalogue Entry"
+        },
+        {
+          "name": "ExternalReference",
+          "friendlyName": "External Reference"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "subjectName",
+          "type": "String"
+        },
+        {
+          "name": "entityDescription",
+          "type": "String"
+        },
+        {
+          "name": "independentNeeds",
+          "type": "String"
+        },
+        {
+          "name": "conditionNotes",
+          "type": "String"
+        },
+        {
+          "name": "statusNotes",
+          "type": "String"
+        }
+      ]
+    },
+    "ServiceParticipant": {
+      "flags": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "domainInstantiations": {
+        "paws": {
+          "count": 1,
+          "instances": [
+            "petOwnerParticipant"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "ServiceSubject",
+          "friendlyName": "Service Subject",
+          "strength": "strong",
+          "rationale": "The participant's role is defined in relation to the subject \u2014 they commission, fund, authorise, or contribute to the service on or for the subject."
+        },
+        {
+          "name": "CustomerSegment",
+          "friendlyName": "Customer Segment",
+          "strength": "moderate",
+          "rationale": "Participants often belong to or represent a customer segment, but the mapping is characterising \u2014 a segment is not defined by its participants."
+        },
+        {
+          "name": "ServiceOffering",
+          "friendlyName": "Service Offering",
+          "strength": "moderate",
+          "rationale": "The participant influences the offering \u2014 a commissioner may constrain scope, a payer may limit options \u2014 but the offering is primarily shaped by the subject's needs."
+        },
+        {
+          "name": "ValueProposition",
+          "friendlyName": "Value Proposition"
+        },
+        {
+          "name": "Channel",
+          "friendlyName": "Channel"
+        },
+        {
+          "name": "DifferentiationClaim",
+          "friendlyName": "Differentiation Claim"
+        },
+        {
+          "name": "CatalogueEntry",
+          "friendlyName": "Catalogue Entry"
+        },
+        {
+          "name": "ExternalReference",
+          "friendlyName": "External Reference"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "participantName",
+          "type": "String"
+        },
+        {
+          "name": "participantRole",
+          "type": "String"
+        },
+        {
+          "name": "entityDescription",
+          "type": "String"
+        },
+        {
+          "name": "relationshipToEngagement",
+          "type": "String"
+        },
+        {
+          "name": "statusNotes",
           "type": "String"
         }
       ]
@@ -5310,6 +5617,14 @@
         {
           "name": "DifferentiationClaim",
           "friendlyName": "Differentiation Claim"
+        },
+        {
+          "name": "ServiceSubject",
+          "friendlyName": "Service Subject"
+        },
+        {
+          "name": "ServiceParticipant",
+          "friendlyName": "Service Participant"
         }
       ],
       "attributes": [
@@ -5397,6 +5712,14 @@
         {
           "name": "DifferentiationClaim",
           "friendlyName": "Differentiation Claim"
+        },
+        {
+          "name": "ServiceSubject",
+          "friendlyName": "Service Subject"
+        },
+        {
+          "name": "ServiceParticipant",
+          "friendlyName": "Service Participant"
         }
       ],
       "attributes": [
@@ -7578,13 +7901,304 @@
     },
     {
       "kind": "part_def",
+      "name": "ServiceSubject",
+      "parentPackage": "ServiceConcept",
+      "doc": "The entity upon which a service is performed. The dog\nbeing groomed, the patient receiving care, the garment\nbeing laundered, the item being repaired.\nA service subject is structurally distinct from a\nservice participant: the service acts *on* the subject,\nwhile participants influence, commission, f",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 336,
+      "attributes": [
+        {
+          "name": "subjectName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "entityDescription",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "independentNeeds",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "conditionNotes",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "statusNotes",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Service Subject",
+        "shortDescription": "The entity upon which a service is performed \u2014 a person, animal, object, or organisation that receives the service."
+      },
+      "purposiveDescription": {
+        "description": "The thing your service acts on \u2014 the dog being groomed, the patient receiving care, the garment being cleaned, the item being repaired. A service subject may have needs independent of whoever commissioned the service, and governance obligations may attach to the subject directly. When you identify your service subjects, the system tracks what is being served, in what condition, and with what independent requirements \u2014 separately from who is paying or making decisions."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "strong",
+          "rationale": "What is offered depends directly on the nature of the subject. A different breed, clinical condition, or item type requires reassessing the offering."
+        },
+        {
+          "target": "GovernanceRequirement",
+          "strength": "strong",
+          "rationale": "Governance obligations attach to the subject independently of the customer. Duty of care is to the dog, the patient, the object in custody."
+        },
+        {
+          "target": "ActivityType",
+          "strength": "strong",
+          "rationale": "The subject's characteristics directly determine the activities required \u2014 breed-specific grooming, patient-specific procedures, item-specific repair."
+        },
+        {
+          "target": "ServiceParticipant",
+          "strength": "moderate",
+          "rationale": "Subject and participants are related \u2014 participants commission, fund, or authorise services on or for the subject \u2014 but they are independently defined."
+        },
+        {
+          "target": "CustomerSegment",
+          "strength": "moderate",
+          "rationale": "Different customer segments may involve different subject types, but the segment is defined by its needs and willingness to pay, not by the subject."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ServiceConcept",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Service Subject",
+            "shortDescription": "The entity upon which a service is performed \u2014 a person, animal, object, or organisation that receives the service."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The thing your service acts on \u2014 the dog being groomed, the patient receiving care, the garment being cleaned, the item being repaired. A service subject may have needs independent of whoever commissioned the service, and governance obligations may attach to the subject directly. When you identify your service subjects, the system tracks what is being served, in what condition, and with what independent requirements \u2014 separately from who is paying or making decisions."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": false,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "strong",
+            "rationale": "What is offered depends directly on the nature of the subject. A different breed, clinical condition, or item type requires reassessing the offering."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "GovernanceRequirement",
+            "strength": "strong",
+            "rationale": "Governance obligations attach to the subject independently of the customer. Duty of care is to the dog, the patient, the object in custody."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ActivityType",
+            "strength": "strong",
+            "rationale": "The subject's characteristics directly determine the activities required \u2014 breed-specific grooming, patient-specific procedures, item-specific repair."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceParticipant",
+            "strength": "moderate",
+            "rationale": "Subject and participants are related \u2014 participants commission, fund, or authorise services on or for the subject \u2014 but they are independently defined."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "CustomerSegment",
+            "strength": "moderate",
+            "rationale": "Different customer segments may involve different subject types, but the segment is defined by its needs and willingness to pay, not by the subject."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "ServiceParticipant",
+      "parentPackage": "ServiceConcept",
+      "doc": "An entity involved in a service engagement in a\ndefined role. The person who pays, the organisation\nthat commissions, the carer who makes decisions,\nthe expert called in for assessment.\nA service participant is structurally distinct from\na service subject: the service acts *on* the subject,\nwhile pa",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 405,
+      "attributes": [
+        {
+          "name": "participantName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "participantRole",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "entityDescription",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "relationshipToEngagement",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "statusNotes",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "ServiceConcept",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Service Participant",
+        "shortDescription": "An entity involved in a service engagement in a defined role \u2014 customer, payer, commissioner, decision-maker, or any other role."
+      },
+      "purposiveDescription": {
+        "description": "Any person or organisation involved in a service engagement in a defined role. The person who pays, the organisation that commissions, the carer who makes decisions, the expert called in for assessment \u2014 any entity with influence on how the service proceeds. When you identify your service participants, the system tracks who is involved, in what capacity, and how their status affects the service workflow. The set of possible roles is open \u2014 the model does not constrain what kinds of participation your service may involve."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ServiceSubject",
+          "strength": "strong",
+          "rationale": "The participant's role is defined in relation to the subject \u2014 they commission, fund, authorise, or contribute to the service on or for the subject."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "The participant influences the offering \u2014 a commissioner may constrain scope, a payer may limit options \u2014 but the offering is primarily shaped by the subject's needs."
+        },
+        {
+          "target": "CustomerSegment",
+          "strength": "moderate",
+          "rationale": "Participants often belong to or represent a customer segment, but the mapping is characterising \u2014 a segment is not defined by its participants."
+        },
+        {
+          "target": "GovernanceRequirement",
+          "strength": "moderate",
+          "rationale": "Governance requirements may apply to participants (commissioner must approve, payer must authorise), but the primary governance binding is to the subject."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "ServiceConcept",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Service Participant",
+            "shortDescription": "An entity involved in a service engagement in a defined role \u2014 customer, payer, commissioner, decision-maker, or any other role."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "Any person or organisation involved in a service engagement in a defined role. The person who pays, the organisation that commissions, the carer who makes decisions, the expert called in for assessment \u2014 any entity with influence on how the service proceeds. When you identify your service participants, the system tracks who is involved, in what capacity, and how their status affects the service workflow. The set of possible roles is open \u2014 the model does not constrain what kinds of participation your service may involve."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": false,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceSubject",
+            "strength": "strong",
+            "rationale": "The participant's role is defined in relation to the subject \u2014 they commission, fund, authorise, or contribute to the service on or for the subject."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "moderate",
+            "rationale": "The participant influences the offering \u2014 a commissioner may constrain scope, a payer may limit options \u2014 but the offering is primarily shaped by the subject's needs."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "CustomerSegment",
+            "strength": "moderate",
+            "rationale": "Participants often belong to or represent a customer segment, but the mapping is characterising \u2014 a segment is not defined by its participants."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "GovernanceRequirement",
+            "strength": "moderate",
+            "rationale": "Governance requirements may apply to participants (commissioner must approve, payer must authorise), but the primary governance binding is to the subject."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
       "name": "CatalogueEntry",
       "parentPackage": "ServiceConcept",
       "doc": "The business decision to offer an item for sale or\nuse within a service. References an item definition\nand adds business-context properties.\nThe four-layer model separates what something\nintrinsically is (item definition) from how the\nbusiness offers it (catalogue entry) from its\noperational stock s",
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 331,
+      "lineNumber": 480,
       "attributes": [
         {
           "name": "entryName",
@@ -7720,7 +8334,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 375,
+      "lineNumber": 524,
       "attributes": [
         {
           "name": "referenceType",
@@ -7815,7 +8429,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 399,
+      "lineNumber": 548,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -7853,7 +8467,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 410,
+      "lineNumber": 559,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -7891,7 +8505,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 423,
+      "lineNumber": 572,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -7929,7 +8543,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 431,
+      "lineNumber": 580,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -7967,7 +8581,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 439,
+      "lineNumber": 588,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -8005,7 +8619,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 449,
+      "lineNumber": 598,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -8048,7 +8662,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 461,
+      "lineNumber": 610,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -8091,7 +8705,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 473,
+      "lineNumber": 622,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -8134,7 +8748,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 487,
+      "lineNumber": 636,
       "specialises": "Channel",
       "attributes": [
         {
@@ -8177,7 +8791,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 496,
+      "lineNumber": 645,
       "specialises": "Channel",
       "attributes": [
         {
@@ -8220,7 +8834,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 507,
+      "lineNumber": 656,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -8253,7 +8867,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 514,
+      "lineNumber": 663,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -8286,7 +8900,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 523,
+      "lineNumber": 672,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -8329,7 +8943,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 536,
+      "lineNumber": 685,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -8372,7 +8986,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 548,
+      "lineNumber": 697,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -8415,7 +9029,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 562,
+      "lineNumber": 711,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -8453,7 +9067,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 603,
+      "lineNumber": 752,
       "attributes": [
         {
           "name": "serviceDelivery;"
@@ -8480,7 +9094,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 615,
+      "lineNumber": 764,
       "attributes": [
         {
           "name": "envelope;"
@@ -8501,7 +9115,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 669,
+      "lineNumber": 818,
       "attributes": [
         {
           "name": "activityTypeName",
@@ -8666,7 +9280,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 699,
+      "lineNumber": 848,
       "attributes": [
         {
           "name": "activityType",
@@ -8766,7 +9380,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 735,
+      "lineNumber": 884,
       "attributes": [
         {
           "name": "budgetPeriod",
@@ -8879,7 +9493,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 770,
+      "lineNumber": 919,
       "attributes": [
         {
           "name": "businessArea",
@@ -8987,7 +9601,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 808,
+      "lineNumber": 957,
       "attributes": [
         {
           "name": "activityType",
@@ -9108,7 +9722,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 886,
+      "lineNumber": 1035,
       "attributes": [
         {
           "name": "resourceTypeName",
@@ -9273,7 +9887,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 922,
+      "lineNumber": 1071,
       "attributes": [
         {
           "name": "instanceName",
@@ -9391,7 +10005,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 969,
+      "lineNumber": 1118,
       "attributes": [
         {
           "name": "capabilityName",
@@ -9530,7 +10144,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1012,
+      "lineNumber": 1161,
       "attributes": [
         {
           "name": "resourceConfiguration",
@@ -9643,7 +10257,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1053,
+      "lineNumber": 1202,
       "attributes": [
         {
           "name": "constraintName",
@@ -9756,7 +10370,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1096,
+      "lineNumber": 1245,
       "attributes": [
         {
           "name": "catalogueEntryReference",
@@ -9861,7 +10475,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1123,
+      "lineNumber": 1272,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -9899,7 +10513,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1134,
+      "lineNumber": 1283,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -9937,7 +10551,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1142,
+      "lineNumber": 1291,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -9975,7 +10589,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1152,
+      "lineNumber": 1301,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -10013,7 +10627,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1160,
+      "lineNumber": 1309,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -10051,7 +10665,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1168,
+      "lineNumber": 1317,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -10089,7 +10703,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1178,
+      "lineNumber": 1327,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -10132,7 +10746,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1189,
+      "lineNumber": 1338,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -10175,7 +10789,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1200,
+      "lineNumber": 1349,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -10218,7 +10832,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1209,
+      "lineNumber": 1358,
       "specialises": "Capability",
       "attributes": [
         {
@@ -10251,7 +10865,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1219,
+      "lineNumber": 1368,
       "specialises": "Capability",
       "attributes": [
         {
@@ -10284,7 +10898,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1226,
+      "lineNumber": 1375,
       "specialises": "Capability",
       "attributes": [
         {
@@ -10317,7 +10931,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1233,
+      "lineNumber": 1382,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -10355,7 +10969,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1243,
+      "lineNumber": 1392,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -10393,7 +11007,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1251,
+      "lineNumber": 1400,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -10431,7 +11045,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1264,
+      "lineNumber": 1413,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -10469,7 +11083,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1274,
+      "lineNumber": 1423,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -10507,7 +11121,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1284,
+      "lineNumber": 1433,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -10550,7 +11164,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1293,
+      "lineNumber": 1442,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -10593,7 +11207,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1302,
+      "lineNumber": 1451,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -10636,7 +11250,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1313,
+      "lineNumber": 1462,
       "specialises": "Capability",
       "attributes": [
         {
@@ -10669,7 +11283,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1320,
+      "lineNumber": 1469,
       "specialises": "Capability",
       "attributes": [
         {
@@ -10702,7 +11316,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1327,
+      "lineNumber": 1476,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -10740,7 +11354,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1371,
+      "lineNumber": 1520,
       "attributes": [
         {
           "name": "objectiveRef",
@@ -10825,7 +11439,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1379,
+      "lineNumber": 1528,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -10843,7 +11457,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1385,
+      "lineNumber": 1534,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -10861,7 +11475,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1392,
+      "lineNumber": 1541,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -10879,7 +11493,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1399,
+      "lineNumber": 1548,
       "specialises": "ObjectiveCapabilityMapping",
       "attributes": [
         {
@@ -10897,7 +11511,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1427,
+      "lineNumber": 1576,
       "attributes": [
         {
           "name": "perEpisode"
@@ -10924,7 +11538,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1465,
+      "lineNumber": 1614,
       "attributes": [
         {
           "name": "streamName",
@@ -11050,7 +11664,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1508,
+      "lineNumber": 1657,
       "attributes": [
         {
           "name": "driverName",
@@ -11189,7 +11803,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1541,
+      "lineNumber": 1690,
       "attributes": [
         {
           "name": "offeringRef",
@@ -11302,7 +11916,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1579,
+      "lineNumber": 1728,
       "attributes": [
         {
           "name": "pricingModelName",
@@ -11428,7 +12042,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1612,
+      "lineNumber": 1761,
       "attributes": [
         {
           "name": "projectionName",
@@ -11546,7 +12160,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1626,
+      "lineNumber": 1775,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -11584,7 +12198,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1634,
+      "lineNumber": 1783,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -11622,7 +12236,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1642,
+      "lineNumber": 1791,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -11660,7 +12274,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1650,
+      "lineNumber": 1799,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -11698,7 +12312,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1658,
+      "lineNumber": 1807,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -11736,7 +12350,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1666,
+      "lineNumber": 1815,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -11774,7 +12388,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1674,
+      "lineNumber": 1823,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -11812,7 +12426,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1682,
+      "lineNumber": 1831,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -11850,7 +12464,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1690,
+      "lineNumber": 1839,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -11888,7 +12502,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1698,
+      "lineNumber": 1847,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -11926,7 +12540,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1706,
+      "lineNumber": 1855,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -11964,7 +12578,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1714,
+      "lineNumber": 1863,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -12007,7 +12621,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1725,
+      "lineNumber": 1874,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -12045,7 +12659,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1737,
+      "lineNumber": 1886,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -12083,7 +12697,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1745,
+      "lineNumber": 1894,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -12121,7 +12735,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1753,
+      "lineNumber": 1902,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -12159,7 +12773,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1764,
+      "lineNumber": 1913,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -12197,7 +12811,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1777,
+      "lineNumber": 1926,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -12240,7 +12854,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1842,
+      "lineNumber": 1991,
       "attributes": [
         {
           "name": "requirementId",
@@ -12353,7 +12967,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1877,
+      "lineNumber": 2026,
       "attributes": [
         {
           "name": "evidenceType",
@@ -32470,7 +33084,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 49,
+      "lineNumber": 50,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -32508,7 +33122,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 57,
+      "lineNumber": 58,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -32551,7 +33165,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 70,
+      "lineNumber": 71,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -32594,7 +33208,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 83,
+      "lineNumber": 84,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -32637,7 +33251,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 95,
+      "lineNumber": 96,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -32675,7 +33289,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 103,
+      "lineNumber": 104,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -32713,7 +33327,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 115,
+      "lineNumber": 116,
       "specialises": "Channel",
       "attributes": [
         {
@@ -32756,7 +33370,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 124,
+      "lineNumber": 125,
       "specialises": "Channel",
       "attributes": [
         {
@@ -32799,7 +33413,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 135,
+      "lineNumber": 136,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -32832,7 +33446,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 142,
+      "lineNumber": 143,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -32859,13 +33473,89 @@
     },
     {
       "kind": "part",
+      "name": "dogSubject",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "The dog: service subject. Receives the grooming.\nHas independent welfare needs under the Animal\nWelfare Act 2006. The groomer's professional duty\nof care is to the dog \u2014 if the animal shows signs\nof distress, grooming must be paused or adapted\nregardless of the owner's preferences.\nThis is the parti",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 157,
+      "specialises": "ServiceSubject",
+      "attributes": [
+        {
+          "name": "subjectName",
+          "value": "Dog",
+          "isRedefinition": true
+        },
+        {
+          "name": "entityDescription",
+          "value": "Animal \u2014 the dog being groomed",
+          "isRedefinition": true
+        },
+        {
+          "name": "independentNeeds",
+          "value": "Animal welfare: calm environment, patient handling, breaks when needed, no unnecessary suffering. Breed-specific coat care requirements. Health issues (skin conditions, lumps, parasites) must be observed and reported to owner.",
+          "isRedefinition": true
+        },
+        {
+          "name": "conditionNotes",
+          "value": "Assessed at check-in: coat condition, matting, skin issues, temperament, any special instructions from owner",
+          "isRedefinition": true
+        },
+        {
+          "name": "statusNotes",
+          "value": "",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "petOwnerParticipant",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "The pet owner: customer, payer, and decision-maker.\nBooks the appointment, pays for the service, states\ngrooming preferences, and collects the dog afterward.\nThe owner's preferences may be overridden by the\ngroomer's duty of care to the animal.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 176,
+      "specialises": "ServiceParticipant",
+      "attributes": [
+        {
+          "name": "participantName",
+          "value": "Pet owner",
+          "isRedefinition": true
+        },
+        {
+          "name": "participantRole",
+          "value": "customer, payer, decision-maker",
+          "isRedefinition": true
+        },
+        {
+          "name": "entityDescription",
+          "value": "Person \u2014 the dog's owner or carer",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipToEngagement",
+          "value": "Commissions and pays for the grooming service. States preferences for grooming style. Collects the dog and receives any observations about health or condition.",
+          "isRedefinition": true
+        },
+        {
+          "name": "statusNotes",
+          "value": "",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
       "name": "fullGroomCatalogue",
       "parentPackage": "PawsBusinessModel",
       "doc": "Full groom offering as a catalogue entry.\nPer-appointment pricing with breed/size bands.",
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 155,
+      "lineNumber": 195,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -32913,7 +33603,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 167,
+      "lineNumber": 207,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -32961,7 +33651,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 178,
+      "lineNumber": 218,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -33009,7 +33699,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 195,
+      "lineNumber": 235,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -33047,7 +33737,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 207,
+      "lineNumber": 247,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -33085,7 +33775,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 219,
+      "lineNumber": 259,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -33123,7 +33813,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 232,
+      "lineNumber": 272,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -33161,7 +33851,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 243,
+      "lineNumber": 283,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -33199,7 +33889,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 255,
+      "lineNumber": 295,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -33237,7 +33927,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 266,
+      "lineNumber": 306,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -33275,7 +33965,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 278,
+      "lineNumber": 318,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -33313,7 +34003,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 291,
+      "lineNumber": 331,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -33346,7 +34036,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 301,
+      "lineNumber": 341,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -33379,7 +34069,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 308,
+      "lineNumber": 348,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -33412,7 +34102,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 315,
+      "lineNumber": 355,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -33445,7 +34135,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 322,
+      "lineNumber": 362,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -33478,7 +34168,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 331,
+      "lineNumber": 371,
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
@@ -33511,7 +34201,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 341,
+      "lineNumber": 381,
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
@@ -33544,7 +34234,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 363,
+      "lineNumber": 403,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33582,7 +34272,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 374,
+      "lineNumber": 414,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33620,7 +34310,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 385,
+      "lineNumber": 425,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33658,7 +34348,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 395,
+      "lineNumber": 435,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33696,7 +34386,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 403,
+      "lineNumber": 443,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33734,7 +34424,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 414,
+      "lineNumber": 454,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33772,7 +34462,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 427,
+      "lineNumber": 467,
       "specialises": "Capability",
       "attributes": [
         {
@@ -33805,7 +34495,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 436,
+      "lineNumber": 476,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -33843,7 +34533,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 450,
+      "lineNumber": 490,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -33881,7 +34571,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 468,
+      "lineNumber": 508,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -33919,7 +34609,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 478,
+      "lineNumber": 518,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -33957,7 +34647,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 486,
+      "lineNumber": 526,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -33995,7 +34685,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 494,
+      "lineNumber": 534,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -34033,7 +34723,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 502,
+      "lineNumber": 542,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -34071,7 +34761,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 512,
+      "lineNumber": 552,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -34109,7 +34799,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 523,
+      "lineNumber": 563,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -34147,7 +34837,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 534,
+      "lineNumber": 574,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -34185,7 +34875,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 548,
+      "lineNumber": 588,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -34223,7 +34913,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 601,
+      "lineNumber": 641,
       "specialises": "GovernanceRequirement",
       "attributes": [
         {
@@ -34261,7 +34951,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 625,
+      "lineNumber": 665,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -34299,7 +34989,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 636,
+      "lineNumber": 676,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -34337,7 +35027,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 648,
+      "lineNumber": 688,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -34375,7 +35065,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 661,
+      "lineNumber": 701,
       "specialises": "ExternalReference",
       "attributes": [
         {

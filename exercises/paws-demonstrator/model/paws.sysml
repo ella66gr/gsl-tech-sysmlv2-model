@@ -36,13 +36,14 @@ package PawsBusinessModel {
          * values — this is the test of whether the abstractions
          * generalise across three structurally different service types.
          *
-         * Notable modelling observation: the paying customer (pet owner)
-         * is not the service recipient (the animal). The BMM does not
-         * currently distinguish between customer and service subject.
-         * This parallels the GSL domain where the patient is the
-         * service subject but booking/payment may involve others.
-         * Captured here as a cross-domain observation for future
-         * meta model discussion. */
+         * Notable modelling observation (Session 44): the paying
+         * customer (pet owner) is not the service recipient (the
+         * animal). Resolved Session 55 with two sibling General BMM
+         * concepts: ServiceSubject (the dog) and ServiceParticipant
+         * (the pet owner). This parallels the GSL domain where the
+         * patient is the service subject but booking/payment may
+         * involve others. See: Service Participation Model discussion
+         * document (Session 55). */
 
     // -- Service Concept --------------------------------------
 
@@ -144,6 +145,45 @@ package PawsBusinessModel {
         attribute :>> statement = "We prioritise your dog's comfort — calm environment, patient handling, breaks when needed";
         attribute :>> basis = "Appointment spacing allows adequate time; no rush; one dog per groomer at a time; quiet salon design";
         attribute :>> testability = "Customer feedback on dog's demeanour post-groom; repeat booking rates; incident log frequency";
+    }
+
+    // -- Service Subject and Participants ---------------------
+    //
+    // The paying customer (pet owner) is not the service
+    // subject (the dog). These two concepts capture the
+    // structural distinction that the original Paws model
+    // observation identified (Session 44, resolved Session 55).
+
+    part dogSubject : ServiceSubject {
+        doc /* The dog: service subject. Receives the grooming.
+             * Has independent welfare needs under the Animal
+             * Welfare Act 2006. The groomer's professional duty
+             * of care is to the dog — if the animal shows signs
+             * of distress, grooming must be paused or adapted
+             * regardless of the owner's preferences.
+             *
+             * This is the participation that most directly maps
+             * to GSL's patient: an entity with independent needs,
+             * independent governance obligations, and a status
+             * that is tracked through the service workflow. */
+        attribute :>> subjectName = "Dog";
+        attribute :>> entityDescription = "Animal — the dog being groomed";
+        attribute :>> independentNeeds = "Animal welfare: calm environment, patient handling, breaks when needed, no unnecessary suffering. Breed-specific coat care requirements. Health issues (skin conditions, lumps, parasites) must be observed and reported to owner.";
+        attribute :>> conditionNotes = "Assessed at check-in: coat condition, matting, skin issues, temperament, any special instructions from owner";
+        attribute :>> statusNotes = "";
+    }
+
+    part petOwnerParticipant : ServiceParticipant {
+        doc /* The pet owner: customer, payer, and decision-maker.
+             * Books the appointment, pays for the service, states
+             * grooming preferences, and collects the dog afterward.
+             * The owner's preferences may be overridden by the
+             * groomer's duty of care to the animal. */
+        attribute :>> participantName = "Pet owner";
+        attribute :>> participantRole = "customer, payer, decision-maker";
+        attribute :>> entityDescription = "Person — the dog's owner or carer";
+        attribute :>> relationshipToEngagement = "Commissions and pays for the grooming service. States preferences for grooming style. Collects the dog and receives any observations about health or condition.";
+        attribute :>> statusNotes = "";
     }
 
     // -- Catalogue Entries ------------------------------------

@@ -287,6 +287,155 @@ package BusinessModel {
             attribute testability : String;
         }
 
+        // -- Service subject and participation ------------------
+        // Session 55: resolves the service-subject-≠-customer
+        // observation from Paws (Session 44). Two sibling concepts:
+        // ServiceSubject (what the service acts on) and
+        // ServiceParticipant (who else is involved, in what role).
+        // See: ontara-discussion-service-participation-model-2026-03-21.md
+
+        @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Service Subject";
+            shortDescription = "The entity upon which a service is performed — a person, animal, object, or organisation that receives the service.";
+        }
+        @PurposiveDescription {
+            description = "The thing your service acts on — the dog being groomed, the patient receiving care, the garment being cleaned, the item being repaired. A service subject may have needs independent of whoever commissioned the service, and governance obligations may attach to the subject directly. When you identify your service subjects, the system tracks what is being served, in what condition, and with what independent requirements — separately from who is paying or making decisions.";
+        }
+        @Comprehension {
+            surfaceEnumValues = false;
+            surfaceDomainInstantiations = true;
+            surfaceRelatedConcepts = true;
+            surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::strong;
+            rationale = "What is offered depends directly on the nature of the subject. A different breed, clinical condition, or item type requires reassessing the offering.";
+        }
+        @WeightedRelationship {
+            target = "GovernanceRequirement";
+            strength = RelationshipStrength::strong;
+            rationale = "Governance obligations attach to the subject independently of the customer. Duty of care is to the dog, the patient, the object in custody.";
+        }
+        @WeightedRelationship {
+            target = "ActivityType";
+            strength = RelationshipStrength::strong;
+            rationale = "The subject's characteristics directly determine the activities required — breed-specific grooming, patient-specific procedures, item-specific repair.";
+        }
+        @WeightedRelationship {
+            target = "ServiceParticipant";
+            strength = RelationshipStrength::moderate;
+            rationale = "Subject and participants are related — participants commission, fund, or authorise services on or for the subject — but they are independently defined.";
+        }
+        @WeightedRelationship {
+            target = "CustomerSegment";
+            strength = RelationshipStrength::moderate;
+            rationale = "Different customer segments may involve different subject types, but the segment is defined by its needs and willingness to pay, not by the subject.";
+        }
+        part def ServiceSubject {
+            doc /* The entity upon which a service is performed. The dog
+                 * being groomed, the patient receiving care, the garment
+                 * being laundered, the item being repaired.
+                 *
+                 * A service subject is structurally distinct from a
+                 * service participant: the service acts *on* the subject,
+                 * while participants influence, commission, fund, or
+                 * authorise the service. Either can independently trigger
+                 * workflow. They are sibling concepts, not a hierarchy.
+                 *
+                 * The subject may have independent needs (animal welfare,
+                 * clinical requirements, handling constraints) that
+                 * override the customer's stated preferences. Governance
+                 * obligations bind to the subject.
+                 *
+                 * Multiple subjects per engagement are expected: two
+                 * items for repair, a patient with concurrent clinical
+                 * problems. Each may trigger independent workflow
+                 * pathways with different timescales.
+                 *
+                 * Cross-domain validation: Paws (dog), GSL (patient),
+                 * Suds (garments), repair shop (items). Cafe: customer
+                 * is also the subject — a valid trivial case.
+                 *
+                 * See the Service Participation Model discussion
+                 * document (Session 55) for the full architectural
+                 * direction. */
+            attribute subjectName : String;
+            attribute entityDescription : String;
+            attribute independentNeeds : String;
+            attribute conditionNotes : String;
+            attribute statusNotes : String;
+        }
+
+        @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Service Participant";
+            shortDescription = "An entity involved in a service engagement in a defined role — customer, payer, commissioner, decision-maker, or any other role.";
+        }
+        @PurposiveDescription {
+            description = "Any person or organisation involved in a service engagement in a defined role. The person who pays, the organisation that commissions, the carer who makes decisions, the expert called in for assessment — any entity with influence on how the service proceeds. When you identify your service participants, the system tracks who is involved, in what capacity, and how their status affects the service workflow. The set of possible roles is open — the model does not constrain what kinds of participation your service may involve.";
+        }
+        @Comprehension {
+            surfaceEnumValues = false;
+            surfaceDomainInstantiations = true;
+            surfaceRelatedConcepts = true;
+            surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ServiceSubject";
+            strength = RelationshipStrength::strong;
+            rationale = "The participant's role is defined in relation to the subject — they commission, fund, authorise, or contribute to the service on or for the subject.";
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::moderate;
+            rationale = "The participant influences the offering — a commissioner may constrain scope, a payer may limit options — but the offering is primarily shaped by the subject's needs.";
+        }
+        @WeightedRelationship {
+            target = "CustomerSegment";
+            strength = RelationshipStrength::moderate;
+            rationale = "Participants often belong to or represent a customer segment, but the mapping is characterising — a segment is not defined by its participants.";
+        }
+        @WeightedRelationship {
+            target = "GovernanceRequirement";
+            strength = RelationshipStrength::moderate;
+            rationale = "Governance requirements may apply to participants (commissioner must approve, payer must authorise), but the primary governance binding is to the subject.";
+        }
+        part def ServiceParticipant {
+            doc /* An entity involved in a service engagement in a
+                 * defined role. The person who pays, the organisation
+                 * that commissions, the carer who makes decisions,
+                 * the expert called in for assessment.
+                 *
+                 * A service participant is structurally distinct from
+                 * a service subject: the service acts *on* the subject,
+                 * while participants influence, commission, fund, or
+                 * authorise the service. Either can independently
+                 * trigger workflow. They are sibling concepts, not a
+                 * hierarchy.
+                 *
+                 * The set of participation roles is open: customer,
+                 * payer, commissioner, decision-maker, referrer, and
+                 * others not yet identified. A single entity may hold
+                 * multiple roles simultaneously. Multiple entities may
+                 * share a role (e.g. joint and several liability).
+                 *
+                 * Cross-domain validation: Paws (pet owner as customer/
+                 * payer/decision-maker), GSL (NHS as commissioner,
+                 * carer as decision-maker, GP as referrer). Cafe:
+                 * customer is also the subject — trivial but valid.
+                 *
+                 * See the Service Participation Model discussion
+                 * document (Session 55) for the full architectural
+                 * direction. */
+            attribute participantName : String;
+            attribute participantRole : String;
+            attribute entityDescription : String;
+            attribute relationshipToEngagement : String;
+            attribute statusNotes : String;
+        }
+
         // -- Catalogue and external reference abstractions ------
         // Business meta model concepts: what any service business
         // offers and how it links to external knowledge.
