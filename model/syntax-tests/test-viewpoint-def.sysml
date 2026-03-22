@@ -28,26 +28,30 @@ package ViewpointTests {
     }
 
     // --- Test 1b: viewpoint def with frame concern ---
-    // (comment out if 1a fails — no point testing further)
-    viewpoint def ComprehensionViewpoint {
-        doc /* Viewpoint for non-specialist users who need
-             * to understand the system in lay terms. */
-
-        frame concern comprehensionConcern {
-            doc /* Can a non-specialist understand what each
-                 * component does and why it exists? */
-        }
-    }
+    // FAILED — frame concern triggers subject parameter error.
+    // Commented out to keep file parseable.
+    //
+    // viewpoint def ComprehensionViewpoint {
+    //     doc /* Viewpoint for non-specialist users who need
+    //          * to understand the system in lay terms. */
+    //
+    //     frame concern comprehensionConcern {
+    //         doc /* Can a non-specialist understand what each
+    //              * component does and why it exists? */
+    //     }
+    // }
 
     // --- Test 1c: viewpoint def with stakeholder ---
-    // (comment out if 1a or 1b fail)
-    viewpoint def ArchitectViewpoint {
-        doc /* Viewpoint for the system architect who needs
-             * to see structural relationships and coverage. */
-
-        stakeholder architectRole {
-            doc /* The system architect responsible for
-                 * meta model coherence and coverage. */
-        }
-    }
+    // FAILED — stakeholder cascades from 1b; needs isolation test.
+    // Commented out to keep file parseable.
+    //
+    // viewpoint def ArchitectViewpoint {
+    //     doc /* Viewpoint for the system architect who needs
+    //          * to see structural relationships and coverage. */
+    //
+    //     stakeholder architectRole {
+    //         doc /* The system architect responsible for
+    //              * meta model coherence and coverage. */
+    //     }
+    // }
 }
