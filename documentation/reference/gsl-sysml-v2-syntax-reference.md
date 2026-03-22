@@ -1,7 +1,7 @@
 # SysML v2 Syntax Reference — Syside Modeler
 
-> **Version:** 3.17 — 21 March 2026
-> **Previous version:** v3.16 (20 March 2026). Full version history in `documentation/reference/syntax-versions/`
+> **Version:** 3.18 — 22 March 2026
+> **Previous version:** v3.17 (21 March 2026). Full version history in `documentation/reference/syntax-versions/`
 > **Purpose:** Concise reference for writing `.sysml` files against Syside Modeler.
 > Consult before writing new SysML code. Update as new patterns are verified.
 >
@@ -12,7 +12,9 @@
 > - `gsl-validated-architectural-patterns.md` — integration patterns, generation pipelines, design rationale
 > - `gsl-guide-repo-conventions.md` — file structure, generators, git practices, `gsl` toolkit
 >
-> **What's new in v3.17:** Session 51 — Multiple annotations of the same metaclass on one element verified (Stage 3 Phase 3, Step 4 syntax test). Two, three, and six same-metaclass annotations all parse cleanly. Mixed same-metaclass + different-metaclass also works. Overturns v3.14 finding (which was specific to `@CatalogueTag`, not a general restriction). Enum-typed attribute (`RelationshipStrength`) on `metadata def` confirmed. See §8.
+> **What's new in v3.18:** Session 58 — (1) `@PurposiveDescription` on `package` declarations verified (E003 syntax spike). Both top-level and nested packages accept metadata annotations. See §8. (2) `objective` confirmed as a SysML v2 contextual keyword — cannot be used as a ref/attribute name (parsing error). Discovered during Phase 5 O25 typed-ref migration. See §2.
+>
+> **v3.17:** Session 51 — Multiple annotations of the same metaclass on one element verified (Stage 3 Phase 3, Step 4 syntax test). Two, three, and six same-metaclass annotations all parse cleanly. Mixed same-metaclass + different-metaclass also works. Overturns v3.14 finding (which was specific to `@CatalogueTag`, not a general restriction). Enum-typed attribute (`RelationshipStrength`) on `metadata def` confirmed. See §8.
 >
 > **v3.16:** Session 49 — `ref` inside `metadata def` verified (Stage 3 Phase 3, Step 1 syntax spike). All six test patterns pass: singular ref, multi-valued ref, ref to part def / metadata def / enum def, mixed attributes + refs, and annotation application. See §8.
 >
