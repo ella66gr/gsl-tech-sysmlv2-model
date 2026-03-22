@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-03-21T17:52:48.619573",
+  "generatedAt": "2026-03-22T00:44:09.499948",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 463
+      "elementCount": 464
     },
     "cafe": {
       "label": "Cafe",
@@ -24,10 +24,10 @@
     }
   },
   "summary": {
-    "totalElements": 696,
+    "totalElements": 697,
     "byKind": {
       "part_def": 119,
-      "part": 462,
+      "part": 463,
       "enum_def": 52,
       "requirement_def": 15,
       "requirement": 7,
@@ -37,13 +37,13 @@
       "satisfy": 2
     },
     "byLayer": {
-      "bmm": 190,
+      "bmm": 191,
       "domain": 255,
       "bsmm": 242,
       "unknown": 9
     },
     "byDomain": {
-      "core": 463,
+      "core": 464,
       "cafe": 119,
       "suds": 61,
       "paws": 53
@@ -1149,6 +1149,10 @@
           },
           {
             "name": "communityAccess",
+            "package": "ServiceConcept"
+          },
+          {
+            "name": "subscriptionBundle",
             "package": "ServiceConcept"
           }
         ],
@@ -5079,7 +5083,7 @@
         },
         {
           "name": "targetSegment",
-          "type": "String"
+          "type": "CustomerSegment"
         },
         {
           "name": "differentiator",
@@ -5100,14 +5104,15 @@
       },
       "domainInstantiations": {
         "core": {
-          "count": 6,
+          "count": 7,
           "instances": [
             "initialAssessment",
             "hormoneTherapyInitiation",
             "ongoingMonitoring",
             "coachingService",
             "educationService",
-            "communityAccess"
+            "communityAccess",
+            "subscriptionBundle"
           ]
         },
         "cafe": {
@@ -5892,7 +5897,7 @@
       "attributes": [
         {
           "name": "activityType",
-          "type": "String"
+          "type": "ActivityType"
         },
         {
           "name": "participants",
@@ -5957,7 +5962,7 @@
         },
         {
           "name": "activityType",
-          "type": "String"
+          "type": "ActivityType"
         },
         {
           "name": "plannedVolume",
@@ -6110,7 +6115,7 @@
       "attributes": [
         {
           "name": "activityType",
-          "type": "String"
+          "type": "ActivityType"
         },
         {
           "name": "allocationMethod",
@@ -6293,7 +6298,7 @@
         },
         {
           "name": "resourceType",
-          "type": "String"
+          "type": "ResourceType"
         },
         {
           "name": "capacity",
@@ -6567,7 +6572,7 @@
         },
         {
           "name": "affectedResource",
-          "type": "String"
+          "type": "ResourceType"
         },
         {
           "name": "limit",
@@ -6614,8 +6619,8 @@
       ],
       "attributes": [
         {
-          "name": "catalogueEntryReference",
-          "type": "String"
+          "name": "catalogueEntry",
+          "type": "CatalogueEntry"
         },
         {
           "name": "quantityOnHand",
@@ -6693,8 +6698,8 @@
       ],
       "attributes": [
         {
-          "name": "objectiveRef",
-          "type": "String"
+          "name": "strategicObjective",
+          "type": "StrategicObjective"
         },
         {
           "name": "supportingCapabilities",
@@ -6775,8 +6780,8 @@
           "type": "String"
         },
         {
-          "name": "pricingModelRef",
-          "type": "String"
+          "name": "pricingModel",
+          "type": "PricingModel"
         },
         {
           "name": "projectedVolume",
@@ -6861,7 +6866,7 @@
         },
         {
           "name": "linkedResource",
-          "type": "String"
+          "type": "ResourceType[0..1]"
         },
         {
           "name": "costBehaviour",
@@ -6938,8 +6943,8 @@
       ],
       "attributes": [
         {
-          "name": "offeringRef",
-          "type": "String"
+          "name": "offering",
+          "type": "ServiceOffering"
         },
         {
           "name": "revenuePerUnit",
@@ -7095,8 +7100,8 @@
           "type": "String"
         },
         {
-          "name": "scenarioRef",
-          "type": "String"
+          "name": "scenario",
+          "type": "ScenarioDefinition"
         },
         {
           "name": "timelineMonths",
@@ -7373,8 +7378,8 @@
         },
         {
           "name": "targetSegment",
-          "type": "String",
-          "isRedefinition": false
+          "type": "CustomerSegment",
+          "isRef": true
         },
         {
           "name": "differentiator",
@@ -8519,11 +8524,6 @@
           "isRedefinition": true
         },
         {
-          "name": "targetSegment",
-          "value": "Self-referring individuals",
-          "isRedefinition": true
-        },
-        {
           "name": "differentiator",
           "value": "NHS GIC median wait exceeds 4 years",
           "isRedefinition": true
@@ -8557,11 +8557,6 @@
           "isRedefinition": true
         },
         {
-          "name": "targetSegment",
-          "value": "Self-referring individuals",
-          "isRedefinition": true
-        },
-        {
           "name": "differentiator",
           "value": "Most private gender services offer clinical-only with no digital integration",
           "isRedefinition": true
@@ -8592,11 +8587,6 @@
         {
           "name": "description",
           "value": "Care delivered by clinicians with specific gender identity healthcare credentials",
-          "isRedefinition": true
-        },
-        {
-          "name": "targetSegment",
-          "value": "GP-referred patients",
           "isRedefinition": true
         },
         {
@@ -9023,13 +9013,56 @@
     },
     {
       "kind": "part",
+      "name": "subscriptionBundle",
+      "parentPackage": "ServiceConcept",
+      "doc": "Composite service offering representing the monthly\nsubscription package. Bundles Coaching, Education,\nand Community into a single offering for pricing\nand unit economics purposes. Clinical services\n(assessment, monitoring) are separate.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 709,
+      "specialises": "ServiceOffering",
+      "attributes": [
+        {
+          "name": "offeringName",
+          "value": "Subscription (monthly)",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Monthly subscription bundling coaching, education, and peer community access",
+          "isRedefinition": true
+        },
+        {
+          "name": "scope",
+          "value": "Coaching sessions, education modules, community platform access",
+          "isRedefinition": true
+        },
+        {
+          "name": "pricingBasis",
+          "value": "subscription",
+          "isRedefinition": true
+        },
+        {
+          "name": "estimatedDurationWeeks",
+          "value": "0",
+          "isRedefinition": true
+        },
+        {
+          "name": "clinicalPathwayRef",
+          "value": "",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
       "name": "holisticCareModel",
       "parentPackage": "ServiceConcept",
       "doc": "",
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 711,
+      "lineNumber": 725,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -9040,11 +9073,6 @@
         {
           "name": "description",
           "value": "Clinical care, coaching, education, and peer community as one integrated package",
-          "isRedefinition": true
-        },
-        {
-          "name": "targetSegment",
-          "value": "Self-referring individuals",
           "isRedefinition": true
         },
         {
@@ -9067,7 +9095,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 752,
+      "lineNumber": 766,
       "attributes": [
         {
           "name": "serviceDelivery;"
@@ -9094,7 +9122,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 764,
+      "lineNumber": 778,
       "attributes": [
         {
           "name": "envelope;"
@@ -9115,7 +9143,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 818,
+      "lineNumber": 832,
       "attributes": [
         {
           "name": "activityTypeName",
@@ -9280,12 +9308,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 848,
+      "lineNumber": 862,
       "attributes": [
         {
           "name": "activityType",
-          "type": "String",
-          "isRedefinition": false
+          "type": "ActivityType",
+          "isRef": true
         },
         {
           "name": "participants",
@@ -9380,7 +9408,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 884,
+      "lineNumber": 898,
       "attributes": [
         {
           "name": "budgetPeriod",
@@ -9389,8 +9417,8 @@
         },
         {
           "name": "activityType",
-          "type": "String",
-          "isRedefinition": false
+          "type": "ActivityType",
+          "isRef": true
         },
         {
           "name": "plannedVolume",
@@ -9493,7 +9521,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 919,
+      "lineNumber": 933,
       "attributes": [
         {
           "name": "businessArea",
@@ -9601,12 +9629,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 957,
+      "lineNumber": 971,
       "attributes": [
         {
           "name": "activityType",
-          "type": "String",
-          "isRedefinition": false
+          "type": "ActivityType",
+          "isRef": true
         },
         {
           "name": "allocationMethod",
@@ -9722,7 +9750,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1035,
+      "lineNumber": 1051,
       "attributes": [
         {
           "name": "resourceTypeName",
@@ -9887,7 +9915,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1071,
+      "lineNumber": 1087,
       "attributes": [
         {
           "name": "instanceName",
@@ -9896,8 +9924,8 @@
         },
         {
           "name": "resourceType",
-          "type": "String",
-          "isRedefinition": false
+          "type": "ResourceType",
+          "isRef": true
         },
         {
           "name": "capacity",
@@ -10005,7 +10033,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1118,
+      "lineNumber": 1134,
       "attributes": [
         {
           "name": "capabilityName",
@@ -10144,7 +10172,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1161,
+      "lineNumber": 1177,
       "attributes": [
         {
           "name": "resourceConfiguration",
@@ -10257,7 +10285,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1202,
+      "lineNumber": 1218,
       "attributes": [
         {
           "name": "constraintName",
@@ -10271,8 +10299,8 @@
         },
         {
           "name": "affectedResource",
-          "type": "String",
-          "isRedefinition": false
+          "type": "ResourceType",
+          "isRef": true
         },
         {
           "name": "limit",
@@ -10370,12 +10398,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1245,
+      "lineNumber": 1261,
       "attributes": [
         {
-          "name": "catalogueEntryReference",
-          "type": "String",
-          "isRedefinition": false
+          "name": "catalogueEntry",
+          "type": "CatalogueEntry",
+          "isRef": true
         },
         {
           "name": "quantityOnHand",
@@ -10475,7 +10503,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1272,
+      "lineNumber": 1288,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -10513,7 +10541,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1283,
+      "lineNumber": 1299,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -10551,7 +10579,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1291,
+      "lineNumber": 1307,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -10589,7 +10617,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1301,
+      "lineNumber": 1317,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -10627,7 +10655,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1309,
+      "lineNumber": 1325,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -10665,7 +10693,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1317,
+      "lineNumber": 1333,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -10703,17 +10731,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1327,
+      "lineNumber": 1343,
       "specialises": "ResourceInstance",
       "attributes": [
         {
           "name": "instanceName",
           "value": "Prescribing clinician (months 1-9)",
-          "isRedefinition": true
-        },
-        {
-          "name": "resourceType",
-          "value": "Prescribing clinician",
           "isRedefinition": true
         },
         {
@@ -10746,17 +10769,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1338,
+      "lineNumber": 1354,
       "specialises": "ResourceInstance",
       "attributes": [
         {
           "name": "instanceName",
           "value": "Prescribing clinician (months 10-24)",
-          "isRedefinition": true
-        },
-        {
-          "name": "resourceType",
-          "value": "Prescribing clinician",
           "isRedefinition": true
         },
         {
@@ -10789,16 +10807,11 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1349,
+      "lineNumber": 1365,
       "specialises": "ResourceInstance",
       "attributes": [
         {
           "name": "instanceName",
-          "value": "Administrative support",
-          "isRedefinition": true
-        },
-        {
-          "name": "resourceType",
           "value": "Administrative support",
           "isRedefinition": true
         },
@@ -10832,7 +10845,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1358,
+      "lineNumber": 1374,
       "specialises": "Capability",
       "attributes": [
         {
@@ -10865,7 +10878,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1368,
+      "lineNumber": 1384,
       "specialises": "Capability",
       "attributes": [
         {
@@ -10898,7 +10911,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1375,
+      "lineNumber": 1391,
       "specialises": "Capability",
       "attributes": [
         {
@@ -10931,7 +10944,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1382,
+      "lineNumber": 1398,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -10969,7 +10982,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1392,
+      "lineNumber": 1408,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -10980,11 +10993,6 @@
         {
           "name": "constraintType",
           "value": "practical",
-          "isRedefinition": true
-        },
-        {
-          "name": "affectedResource",
-          "value": "Prescribing clinician",
           "isRedefinition": true
         },
         {
@@ -11007,7 +11015,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1400,
+      "lineNumber": 1416,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -11018,11 +11026,6 @@
         {
           "name": "constraintType",
           "value": "regulatory",
-          "isRedefinition": true
-        },
-        {
-          "name": "affectedResource",
-          "value": "Prescribing clinician",
           "isRedefinition": true
         },
         {
@@ -11045,7 +11048,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1413,
+      "lineNumber": 1429,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -11083,7 +11086,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1423,
+      "lineNumber": 1439,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -11121,16 +11124,11 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1433,
+      "lineNumber": 1449,
       "specialises": "ResourceInstance",
       "attributes": [
         {
           "name": "instanceName",
-          "value": "Gender identity coach",
-          "isRedefinition": true
-        },
-        {
-          "name": "resourceType",
           "value": "Gender identity coach",
           "isRedefinition": true
         },
@@ -11164,16 +11162,11 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1442,
+      "lineNumber": 1458,
       "specialises": "ResourceInstance",
       "attributes": [
         {
           "name": "instanceName",
-          "value": "Community moderator",
-          "isRedefinition": true
-        },
-        {
-          "name": "resourceType",
           "value": "Community moderator",
           "isRedefinition": true
         },
@@ -11207,17 +11200,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1451,
+      "lineNumber": 1467,
       "specialises": "ResourceInstance",
       "attributes": [
         {
           "name": "instanceName",
           "value": "Second prescribing clinician (months 6-24)",
-          "isRedefinition": true
-        },
-        {
-          "name": "resourceType",
-          "value": "Prescribing clinician",
           "isRedefinition": true
         },
         {
@@ -11250,7 +11238,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1462,
+      "lineNumber": 1478,
       "specialises": "Capability",
       "attributes": [
         {
@@ -11283,7 +11271,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1469,
+      "lineNumber": 1485,
       "specialises": "Capability",
       "attributes": [
         {
@@ -11316,7 +11304,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1476,
+      "lineNumber": 1492,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -11354,12 +11342,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1520,
+      "lineNumber": 1536,
       "attributes": [
         {
-          "name": "objectiveRef",
-          "type": "String",
-          "isRedefinition": false
+          "name": "strategicObjective",
+          "type": "StrategicObjective",
+          "isRef": true
         },
         {
           "name": "supportingCapabilities",
@@ -11439,15 +11427,8 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1528,
-      "specialises": "ObjectiveCapabilityMapping",
-      "attributes": [
-        {
-          "name": "objectiveRef",
-          "value": "objectivePatientCohort",
-          "isRedefinition": true
-        }
-      ]
+      "lineNumber": 1544,
+      "specialises": "ObjectiveCapabilityMapping"
     },
     {
       "kind": "part",
@@ -11457,15 +11438,8 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1534,
-      "specialises": "ObjectiveCapabilityMapping",
-      "attributes": [
-        {
-          "name": "objectiveRef",
-          "value": "objectiveSharedCare",
-          "isRedefinition": true
-        }
-      ]
+      "lineNumber": 1550,
+      "specialises": "ObjectiveCapabilityMapping"
     },
     {
       "kind": "part",
@@ -11475,15 +11449,8 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1541,
-      "specialises": "ObjectiveCapabilityMapping",
-      "attributes": [
-        {
-          "name": "objectiveRef",
-          "value": "objectivePlatformLaunch",
-          "isRedefinition": true
-        }
-      ]
+      "lineNumber": 1557,
+      "specialises": "ObjectiveCapabilityMapping"
     },
     {
       "kind": "part",
@@ -11493,15 +11460,8 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1548,
-      "specialises": "ObjectiveCapabilityMapping",
-      "attributes": [
-        {
-          "name": "objectiveRef",
-          "value": "objectiveBreakEven",
-          "isRedefinition": true
-        }
-      ]
+      "lineNumber": 1564,
+      "specialises": "ObjectiveCapabilityMapping"
     },
     {
       "kind": "enum_def",
@@ -11511,7 +11471,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1576,
+      "lineNumber": 1595,
       "attributes": [
         {
           "name": "perEpisode"
@@ -11538,7 +11498,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1614,
+      "lineNumber": 1633,
       "attributes": [
         {
           "name": "streamName",
@@ -11556,9 +11516,9 @@
           "isRedefinition": false
         },
         {
-          "name": "pricingModelRef",
-          "type": "String",
-          "isRedefinition": false
+          "name": "pricingModel",
+          "type": "PricingModel",
+          "isRef": true
         },
         {
           "name": "projectedVolume",
@@ -11664,7 +11624,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1657,
+      "lineNumber": 1676,
       "attributes": [
         {
           "name": "driverName",
@@ -11673,8 +11633,8 @@
         },
         {
           "name": "linkedResource",
-          "type": "String",
-          "isRedefinition": false
+          "type": "ResourceType[0..1]",
+          "isRef": true
         },
         {
           "name": "costBehaviour",
@@ -11803,12 +11763,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1690,
+      "lineNumber": 1709,
       "attributes": [
         {
-          "name": "offeringRef",
-          "type": "String",
-          "isRedefinition": false
+          "name": "offering",
+          "type": "ServiceOffering",
+          "isRef": true
         },
         {
           "name": "revenuePerUnit",
@@ -11916,7 +11876,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1728,
+      "lineNumber": 1747,
       "attributes": [
         {
           "name": "pricingModelName",
@@ -12042,7 +12002,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1761,
+      "lineNumber": 1780,
       "attributes": [
         {
           "name": "projectionName",
@@ -12050,9 +12010,9 @@
           "isRedefinition": false
         },
         {
-          "name": "scenarioRef",
-          "type": "String",
-          "isRedefinition": false
+          "name": "scenario",
+          "type": "ScenarioDefinition",
+          "isRef": true
         },
         {
           "name": "timelineMonths",
@@ -12160,7 +12120,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1775,
+      "lineNumber": 1794,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -12179,11 +12139,6 @@
           "isRedefinition": true
         },
         {
-          "name": "pricingModelRef",
-          "value": "perEpisodePricing",
-          "isRedefinition": true
-        },
-        {
           "name": "projectedVolume",
           "value": "4 per month (year 1), 6 per month (year 2)",
           "isRedefinition": true
@@ -12198,7 +12153,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1783,
+      "lineNumber": 1802,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -12217,11 +12172,6 @@
           "isRedefinition": true
         },
         {
-          "name": "pricingModelRef",
-          "value": "perEpisodePricing",
-          "isRedefinition": true
-        },
-        {
           "name": "projectedVolume",
           "value": "grows with stable cohort \u2014 see projection",
           "isRedefinition": true
@@ -12236,17 +12186,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1791,
+      "lineNumber": 1810,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Clinician cost",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Prescribing clinician",
           "isRedefinition": true
         },
         {
@@ -12274,17 +12219,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1799,
+      "lineNumber": 1818,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Administrative support cost",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Administrative support",
           "isRedefinition": true
         },
         {
@@ -12312,17 +12252,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1807,
+      "lineNumber": 1826,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Platform hosting and infrastructure",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Technology platform",
           "isRedefinition": true
         },
         {
@@ -12350,16 +12285,11 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1815,
+      "lineNumber": 1834,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
-          "value": "Professional indemnity insurance",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
           "value": "Professional indemnity insurance",
           "isRedefinition": true
         },
@@ -12388,17 +12318,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1823,
+      "lineNumber": 1842,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Laboratory costs",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Laboratory services",
           "isRedefinition": true
         },
         {
@@ -12426,17 +12351,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1831,
+      "lineNumber": 1850,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Overhead allocation",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "",
           "isRedefinition": true
         },
         {
@@ -12464,14 +12384,9 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1839,
+      "lineNumber": 1857,
       "specialises": "UnitEconomics",
       "attributes": [
-        {
-          "name": "offeringRef",
-          "value": "Initial Assessment",
-          "isRedefinition": true
-        },
         {
           "name": "revenuePerUnit",
           "value": "600.0",
@@ -12502,14 +12417,9 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1847,
+      "lineNumber": 1865,
       "specialises": "UnitEconomics",
       "attributes": [
-        {
-          "name": "offeringRef",
-          "value": "Ongoing Monitoring (quarterly)",
-          "isRedefinition": true
-        },
         {
           "name": "revenuePerUnit",
           "value": "150.0",
@@ -12540,7 +12450,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1855,
+      "lineNumber": 1873,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -12578,17 +12488,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1863,
+      "lineNumber": 1881,
       "specialises": "FinancialProjection",
       "attributes": [
         {
           "name": "projectionName",
           "value": "Lean Clinical 24-month projection",
-          "isRedefinition": true
-        },
-        {
-          "name": "scenarioRef",
-          "value": "Lean Clinical (Variant A)",
           "isRedefinition": true
         },
         {
@@ -12621,7 +12526,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1874,
+      "lineNumber": 1892,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -12640,11 +12545,6 @@
           "isRedefinition": true
         },
         {
-          "name": "pricingModelRef",
-          "value": "subscriptionPricing",
-          "isRedefinition": true
-        },
-        {
           "name": "projectedVolume",
           "value": "grows with active patient cohort",
           "isRedefinition": true
@@ -12659,17 +12559,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1886,
+      "lineNumber": 1904,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Coach cost",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Gender identity coach",
           "isRedefinition": true
         },
         {
@@ -12697,17 +12592,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1894,
+      "lineNumber": 1912,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Community moderator cost",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Community moderator",
           "isRedefinition": true
         },
         {
@@ -12735,7 +12625,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1902,
+      "lineNumber": 1920,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -12773,14 +12663,9 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1913,
+      "lineNumber": 1931,
       "specialises": "UnitEconomics",
       "attributes": [
-        {
-          "name": "offeringRef",
-          "value": "Subscription (monthly)",
-          "isRedefinition": true
-        },
         {
           "name": "revenuePerUnit",
           "value": "99.0",
@@ -12811,17 +12696,12 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1926,
+      "lineNumber": 1944,
       "specialises": "FinancialProjection",
       "attributes": [
         {
           "name": "projectionName",
           "value": "Full Platform 24-month projection",
-          "isRedefinition": true
-        },
-        {
-          "name": "scenarioRef",
-          "value": "Full Platform (Variant B)",
           "isRedefinition": true
         },
         {
@@ -12854,7 +12734,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1991,
+      "lineNumber": 2009,
       "attributes": [
         {
           "name": "requirementId",
@@ -12967,7 +12847,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2026,
+      "lineNumber": 2044,
       "attributes": [
         {
           "name": "evidenceType",
@@ -28379,7 +28259,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 19,
+      "lineNumber": 20,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -28417,7 +28297,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 27,
+      "lineNumber": 28,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -28455,7 +28335,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 35,
+      "lineNumber": 36,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -28493,7 +28373,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 43,
+      "lineNumber": 44,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -28531,7 +28411,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 53,
+      "lineNumber": 54,
       "specialises": "Capability",
       "attributes": [
         {
@@ -28564,7 +28444,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 62,
+      "lineNumber": 63,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -28602,7 +28482,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 72,
+      "lineNumber": 73,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -28613,11 +28493,6 @@
         {
           "name": "constraintType",
           "value": "regulatory",
-          "isRedefinition": true
-        },
-        {
-          "name": "affectedResource",
-          "value": "Barista",
           "isRedefinition": true
         },
         {
@@ -28640,7 +28515,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 82,
+      "lineNumber": 83,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -28659,11 +28534,6 @@
           "isRedefinition": true
         },
         {
-          "name": "pricingModelRef",
-          "value": "perDrinkPricing",
-          "isRedefinition": true
-        },
-        {
           "name": "projectedVolume",
           "value": "150 drinks per day",
           "isRedefinition": true
@@ -28678,17 +28548,12 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 92,
+      "lineNumber": 93,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Barista labour",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Barista",
           "isRedefinition": true
         },
         {
@@ -28716,17 +28581,12 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 100,
+      "lineNumber": 101,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Ingredient cost per drink",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Ingredient stock",
           "isRedefinition": true
         },
         {
@@ -28754,17 +28614,12 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 108,
+      "lineNumber": 109,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Premises rent",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Counter service space",
           "isRedefinition": true
         },
         {
@@ -28792,14 +28647,9 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 118,
+      "lineNumber": 119,
       "specialises": "UnitEconomics",
       "attributes": [
-        {
-          "name": "offeringRef",
-          "value": "Drink order",
-          "isRedefinition": true
-        },
         {
           "name": "revenuePerUnit",
           "value": "3.50",
@@ -28830,7 +28680,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-resource-financial.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 131,
+      "lineNumber": 132,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -30279,14 +30129,7 @@
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
       "lineNumber": 416,
-      "specialises": "ObjectiveCapabilityMapping",
-      "attributes": [
-        {
-          "name": "objectiveRef",
-          "value": "kioskProfitability",
-          "isRedefinition": true
-        }
-      ]
+      "specialises": "ObjectiveCapabilityMapping"
     },
     {
       "kind": "requirement_def",
@@ -30929,11 +30772,6 @@
         {
           "name": "propositionName",
           "value": "Convenient, quality fabric care",
-          "isRedefinition": true
-        },
-        {
-          "name": "targetSegment",
-          "value": "Time-poor professionals and families",
           "isRedefinition": true
         },
         {
@@ -32011,11 +31849,6 @@
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
-          "name": "activityType",
-          "value": "Wash cycle",
-          "isRedefinition": true
-        },
-        {
           "name": "allocationMethod",
           "value": "per-kg variable cost",
           "isRedefinition": true
@@ -32044,11 +31877,6 @@
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
-          "name": "activityType",
-          "value": "Receive and tag items",
-          "isRedefinition": true
-        },
-        {
           "name": "allocationMethod",
           "value": "labour time allocation",
           "isRedefinition": true
@@ -32073,7 +31901,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 358,
+      "lineNumber": 359,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -32111,7 +31939,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 366,
+      "lineNumber": 367,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -32149,7 +31977,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 376,
+      "lineNumber": 377,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -32187,7 +32015,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 384,
+      "lineNumber": 385,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -32225,7 +32053,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 392,
+      "lineNumber": 393,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -32263,7 +32091,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 400,
+      "lineNumber": 401,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -32301,7 +32129,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 413,
+      "lineNumber": 414,
       "specialises": "Capability",
       "attributes": [
         {
@@ -32334,7 +32162,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 422,
+      "lineNumber": 423,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -32372,7 +32200,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 432,
+      "lineNumber": 433,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -32383,11 +32211,6 @@
         {
           "name": "constraintType",
           "value": "regulatory",
-          "isRedefinition": true
-        },
-        {
-          "name": "affectedResource",
-          "value": "Detergents and chemicals",
           "isRedefinition": true
         },
         {
@@ -32410,7 +32233,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 446,
+      "lineNumber": 447,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -32429,11 +32252,6 @@
           "isRedefinition": true
         },
         {
-          "name": "pricingModelRef",
-          "value": "perKgPricing",
-          "isRedefinition": true
-        },
-        {
           "name": "projectedVolume",
           "value": "100 kg per day average",
           "isRedefinition": true
@@ -32448,17 +32266,12 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 456,
+      "lineNumber": 457,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Operator labour",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Laundry operator",
           "isRedefinition": true
         },
         {
@@ -32486,17 +32299,12 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 464,
+      "lineNumber": 465,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Utility costs",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Washing machines and dryers",
           "isRedefinition": true
         },
         {
@@ -32524,17 +32332,12 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 474,
+      "lineNumber": 475,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Detergent and chemical costs",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Detergents and chemicals",
           "isRedefinition": true
         },
         {
@@ -32562,17 +32365,12 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 482,
+      "lineNumber": 483,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Premises rent",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Shop premises",
           "isRedefinition": true
         },
         {
@@ -32600,14 +32398,9 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 492,
+      "lineNumber": 493,
       "specialises": "UnitEconomics",
       "attributes": [
-        {
-          "name": "offeringRef",
-          "value": "Standard wash",
-          "isRedefinition": true
-        },
         {
           "name": "revenuePerUnit",
           "value": "2.50",
@@ -32638,14 +32431,9 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 503,
+      "lineNumber": 504,
       "specialises": "UnitEconomics",
       "attributes": [
-        {
-          "name": "offeringRef",
-          "value": "Delicates wash",
-          "isRedefinition": true
-        },
         {
           "name": "revenuePerUnit",
           "value": "3.75",
@@ -32676,14 +32464,9 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 514,
+      "lineNumber": 515,
       "specialises": "UnitEconomics",
       "attributes": [
-        {
-          "name": "offeringRef",
-          "value": "Express wash",
-          "isRedefinition": true
-        },
         {
           "name": "revenuePerUnit",
           "value": "5.00",
@@ -32714,7 +32497,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 527,
+      "lineNumber": 528,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -32752,7 +32535,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 583,
+      "lineNumber": 584,
       "specialises": "GovernanceRequirement",
       "attributes": [
         {
@@ -32790,7 +32573,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 607
+      "lineNumber": 608
     },
     {
       "kind": "constraint_def",
@@ -32800,7 +32583,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 619
+      "lineNumber": 620
     },
     {
       "kind": "constraint",
@@ -32810,7 +32593,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 632,
+      "lineNumber": 633,
       "specialises": "CoshhStorageConstraint"
     },
     {
@@ -32821,7 +32604,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 633,
+      "lineNumber": 634,
       "specialises": "CoshhTrainingConstraint"
     },
     {
@@ -32832,7 +32615,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 642,
+      "lineNumber": 643,
       "specialises": "GovernanceRequirement",
       "attributes": [
         {
@@ -32849,7 +32632,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 645,
+      "lineNumber": 646,
       "specialises": "GovernanceRequirement",
       "attributes": [
         {
@@ -32866,7 +32649,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 654,
+      "lineNumber": 655,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -32904,7 +32687,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 665,
+      "lineNumber": 666,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -32942,7 +32725,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 676,
+      "lineNumber": 677,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -32980,7 +32763,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 687,
+      "lineNumber": 688,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -33018,7 +32801,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 704,
+      "lineNumber": 705,
       "specialises": "ExternalReference",
       "attributes": [
         {
@@ -33051,7 +32834,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 713,
+      "lineNumber": 714,
       "specialises": "ExternalReference",
       "attributes": [
         {
@@ -33090,11 +32873,6 @@
         {
           "name": "propositionName",
           "value": "Expert, gentle pet grooming",
-          "isRedefinition": true
-        },
-        {
-          "name": "targetSegment",
-          "value": "Pet owners who value quality grooming and animal welfare",
           "isRedefinition": true
         },
         {
@@ -34172,11 +33950,6 @@
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
-          "name": "activityType",
-          "value": "Clip and style",
-          "isRedefinition": true
-        },
-        {
           "name": "allocationMethod",
           "value": "labour time allocation",
           "isRedefinition": true
@@ -34205,11 +33978,6 @@
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
-          "name": "activityType",
-          "value": "Bathe and dry",
-          "isRedefinition": true
-        },
-        {
           "name": "allocationMethod",
           "value": "per-appointment average",
           "isRedefinition": true
@@ -34234,7 +34002,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 403,
+      "lineNumber": 404,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34272,7 +34040,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 414,
+      "lineNumber": 415,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34310,7 +34078,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 425,
+      "lineNumber": 426,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34348,7 +34116,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 435,
+      "lineNumber": 436,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34386,7 +34154,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 443,
+      "lineNumber": 444,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34424,7 +34192,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 454,
+      "lineNumber": 455,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34462,7 +34230,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 467,
+      "lineNumber": 468,
       "specialises": "Capability",
       "attributes": [
         {
@@ -34495,7 +34263,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 476,
+      "lineNumber": 477,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -34533,7 +34301,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 490,
+      "lineNumber": 491,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -34544,11 +34312,6 @@
         {
           "name": "constraintType",
           "value": "regulatory",
-          "isRedefinition": true
-        },
-        {
-          "name": "affectedResource",
-          "value": "Dog groomer",
           "isRedefinition": true
         },
         {
@@ -34571,7 +34334,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 508,
+      "lineNumber": 509,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -34590,11 +34353,6 @@
           "isRedefinition": true
         },
         {
-          "name": "pricingModelRef",
-          "value": "perAppointmentPricing",
-          "isRedefinition": true
-        },
-        {
           "name": "projectedVolume",
           "value": "6 appointments per day average (1 groomer)",
           "isRedefinition": true
@@ -34609,17 +34367,12 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 518,
+      "lineNumber": 519,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Groomer labour",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Dog groomer",
           "isRedefinition": true
         },
         {
@@ -34647,16 +34400,11 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 526,
+      "lineNumber": 527,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
-          "value": "Grooming consumables",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
           "value": "Grooming consumables",
           "isRedefinition": true
         },
@@ -34685,17 +34433,12 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 534,
+      "lineNumber": 535,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Salon rent",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Salon premises",
           "isRedefinition": true
         },
         {
@@ -34723,17 +34466,12 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 542,
+      "lineNumber": 543,
       "specialises": "CostDriver",
       "attributes": [
         {
           "name": "driverName",
           "value": "Equipment maintenance and replacement",
-          "isRedefinition": true
-        },
-        {
-          "name": "linkedResource",
-          "value": "Grooming equipment",
           "isRedefinition": true
         },
         {
@@ -34761,14 +34499,9 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 552,
+      "lineNumber": 553,
       "specialises": "UnitEconomics",
       "attributes": [
-        {
-          "name": "offeringRef",
-          "value": "Full groom",
-          "isRedefinition": true
-        },
         {
           "name": "revenuePerUnit",
           "value": "48.0",
@@ -34799,14 +34532,9 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 563,
+      "lineNumber": 564,
       "specialises": "UnitEconomics",
       "attributes": [
-        {
-          "name": "offeringRef",
-          "value": "Wash and tidy",
-          "isRedefinition": true
-        },
         {
           "name": "revenuePerUnit",
           "value": "28.0",
@@ -34837,14 +34565,9 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 574,
+      "lineNumber": 575,
       "specialises": "UnitEconomics",
       "attributes": [
-        {
-          "name": "offeringRef",
-          "value": "Nail trim",
-          "isRedefinition": true
-        },
         {
           "name": "revenuePerUnit",
           "value": "10.0",
@@ -34875,7 +34598,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 588,
+      "lineNumber": 589,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -34913,7 +34636,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 641,
+      "lineNumber": 642,
       "specialises": "GovernanceRequirement",
       "attributes": [
         {
@@ -34951,7 +34674,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 665,
+      "lineNumber": 666,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -34989,7 +34712,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 676,
+      "lineNumber": 677,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -35027,7 +34750,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 688,
+      "lineNumber": 689,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -35065,7 +34788,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 701,
+      "lineNumber": 702,
       "specialises": "ExternalReference",
       "attributes": [
         {
