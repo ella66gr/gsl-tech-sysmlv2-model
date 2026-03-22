@@ -49,7 +49,7 @@ package PawsBusinessModel {
 
     part pawsValueProposition : ValueProposition {
         attribute :>> propositionName = "Expert, gentle pet grooming";
-        attribute :>> targetSegment = "Pet owners who value quality grooming and animal welfare";
+        ref :>> targetSegment = individualPetOwner;
         attribute :>> description = "Professional grooming tailored to your dog's breed, coat type, and temperament — in a calm, low-stress environment";
         attribute :>> evidenceBasis = "Customer feedback, repeat booking rates, breed-specific training credentials";
         attribute :>> differentiator = "Breed-specific expertise with a focus on animal comfort and welfare";
@@ -372,7 +372,7 @@ package PawsBusinessModel {
         doc /* Cost allocation for grooming labour. The groomer's
              * time is the primary variable cost — allocated per
              * appointment based on expected duration. */
-        attribute :>> activityType = "Clip and style";
+        ref :>> activityType = clipAndStyle;
         attribute :>> allocationMethod = "labour time allocation";
         attribute :>> estimatedCostPerUnit = 12.50;
         attribute :>> costNotes = "45 min average at £16.50/hr = £12.38, rounded to £12.50. Varies significantly by breed/coat type.";
@@ -382,7 +382,7 @@ package PawsBusinessModel {
         doc /* Cost allocation for grooming consumables: shampoo,
              * conditioner, finishing spray, blade oil, ear cleaner.
              * Allocated per appointment as an average. */
-        attribute :>> activityType = "Bathe and dry";
+        ref :>> activityType = batheAndDry;
         attribute :>> allocationMethod = "per-appointment average";
         attribute :>> estimatedCostPerUnit = 2.50;
         attribute :>> costNotes = "Shampoo £1.20, conditioner £0.60, finishing spray £0.40, sundries £0.30. Average across sizes.";
@@ -397,6 +397,7 @@ package PawsResourceFinancial {
     private import ScalarValues::*;
     private import BusinessModel::ResourcePlanning::*;
     private import BusinessModel::FinancialPlanning::*;
+    private import PawsBusinessModel::*;
 
     // -- Resource types ----------------------------------------
 
@@ -498,7 +499,7 @@ package PawsResourceFinancial {
              * specific regulatory constraint. */
         attribute :>> constraintName = "Animal welfare duty of care";
         attribute :>> constraintType = "regulatory";
-        attribute :>> affectedResource = "Dog groomer";
+        ref :>> affectedResource = dogGroomer;
         attribute :>> limit = "All grooming must be performed with due regard for animal welfare. Dogs showing signs of distress, pain, or health issues must have grooming paused or adapted. Owner to be notified of any concerns.";
         attribute :>> regulatorySourceDescription = "Animal Welfare Act 2006 — duty of care to animals under your control";
     }
@@ -509,7 +510,7 @@ package PawsResourceFinancial {
         attribute :>> streamName = "Grooming service revenue";
         attribute :>> sourceSegment = "Individual pet owners and regular customers";
         attribute :>> triggerEvent = "Grooming appointment completed";
-        attribute :>> pricingModelRef = "perAppointmentPricing";
+        ref :>> pricingModel = perAppointmentPricing;
         attribute :>> projectedVolume = "6 appointments per day average (1 groomer)";
     }
 
@@ -517,7 +518,7 @@ package PawsResourceFinancial {
 
     part groomerLabourCosts : CostDriver {
         attribute :>> driverName = "Groomer labour";
-        attribute :>> linkedResource = "Dog groomer";
+        ref :>> linkedResource = dogGroomer;
         attribute :>> costBehaviour = "semi-variable — fixed shifts, overtime for busy periods";
         attribute :>> estimatedUnitCost = 16.50;
         attribute :>> scalingFactor = "per hour";
@@ -525,7 +526,7 @@ package PawsResourceFinancial {
 
     part consumableCosts : CostDriver {
         attribute :>> driverName = "Grooming consumables";
-        attribute :>> linkedResource = "Grooming consumables";
+        ref :>> linkedResource = groomingConsumables;
         attribute :>> costBehaviour = "variable";
         attribute :>> estimatedUnitCost = 2.50;
         attribute :>> scalingFactor = "per appointment";
@@ -533,7 +534,7 @@ package PawsResourceFinancial {
 
     part salonRentCosts : CostDriver {
         attribute :>> driverName = "Salon rent";
-        attribute :>> linkedResource = "Salon premises";
+        ref :>> linkedResource = salonPremises;
         attribute :>> costBehaviour = "fixed";
         attribute :>> estimatedUnitCost = 1200.0;
         attribute :>> scalingFactor = "per month";
@@ -541,7 +542,7 @@ package PawsResourceFinancial {
 
     part equipmentMaintenanceCosts : CostDriver {
         attribute :>> driverName = "Equipment maintenance and replacement";
-        attribute :>> linkedResource = "Grooming equipment";
+        ref :>> linkedResource = groomingEquipment;
         attribute :>> costBehaviour = "fixed";
         attribute :>> estimatedUnitCost = 80.0;
         attribute :>> scalingFactor = "per month";
@@ -553,7 +554,7 @@ package PawsResourceFinancial {
         doc /* Per-appointment economics for a full groom.
              * Average across breed sizes. Revenue varies by
              * size band; costs are relatively stable. */
-        attribute :>> offeringRef = "Full groom";
+        ref :>> offering = fullGroom;
         attribute :>> revenuePerUnit = 48.0;
         attribute :>> costPerUnit = 22.0;
         attribute :>> marginPerUnit = 26.0;
@@ -564,7 +565,7 @@ package PawsResourceFinancial {
         doc /* Per-appointment economics for wash and tidy.
              * Shorter appointment, lower price, but good margin
              * due to reduced labour time. */
-        attribute :>> offeringRef = "Wash and tidy";
+        ref :>> offering = washAndTidy;
         attribute :>> revenuePerUnit = 28.0;
         attribute :>> costPerUnit = 13.0;
         attribute :>> marginPerUnit = 15.0;
@@ -576,7 +577,7 @@ package PawsResourceFinancial {
              * Quick, low-cost service. Good margin as a
              * standalone; excellent as an add-on since the
              * dog is already on the table. */
-        attribute :>> offeringRef = "Nail trim";
+        ref :>> offering = nailTrimAddOn;
         attribute :>> revenuePerUnit = 10.0;
         attribute :>> costPerUnit = 3.50;
         attribute :>> marginPerUnit = 6.50;

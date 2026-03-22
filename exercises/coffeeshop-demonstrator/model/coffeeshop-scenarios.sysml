@@ -419,6 +419,6 @@ package CoffeeshopScenarios {
              * at sufficient volume. Validates the
              * ObjectiveCapabilityMapping pattern for a
              * non-clinical domain. */
-        attribute :>> objectiveRef = "kioskProfitability";
+        ref :>> strategicObjective = kioskProfitability;
     }
 }

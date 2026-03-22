@@ -37,7 +37,7 @@ package SudsBusinessModel {
 
     part sudsValueProposition : ValueProposition {
         attribute :>> propositionName = "Convenient, quality fabric care";
-        attribute :>> targetSegment = "Time-poor professionals and families";
+        ref :>> targetSegment = walkInCustomer;
         attribute :>> description = "Drop off your laundry and collect it clean, pressed, and ready — same-day express or next-day standard";
         attribute :>> evidenceBasis = "Customer satisfaction surveys, turnaround time tracking, repeat booking rates";
         attribute :>> differentiator = "Reliable turnaround times, careful handling of delicates, transparent per-kg pricing";
@@ -328,7 +328,7 @@ package SudsBusinessModel {
         doc /* Cost allocation for the wash cycle activity. Variable
              * costs: utilities (water, electricity) and chemicals
              * per kg of laundry processed. */
-        attribute :>> activityType = "Wash cycle";
+        ref :>> activityType = washCycle;
         attribute :>> allocationMethod = "per-kg variable cost";
         attribute :>> estimatedCostPerUnit = 1.00;
         attribute :>> costNotes = "Utilities £0.60/kg + chemicals £0.40/kg. Machine lease costs allocated separately as fixed overhead.";
@@ -337,7 +337,7 @@ package SudsBusinessModel {
     part receiveAndTagCostAllocation : ActivityCostAllocation {
         doc /* Cost allocation for receive-and-tag. Pure labour cost
              * at operator hourly rate, prorated per order. */
-        attribute :>> activityType = "Receive and tag items";
+        ref :>> activityType = receiveAndTag;
         attribute :>> allocationMethod = "labour time allocation";
         attribute :>> estimatedCostPerUnit = 1.92;
         attribute :>> costNotes = "10 min at £11.50/hr = £1.92 per order. Direct labour, no materials.";
@@ -352,6 +352,7 @@ package SudsResourceFinancial {
     private import ScalarValues::*;
     private import BusinessModel::ResourcePlanning::*;
     private import BusinessModel::FinancialPlanning::*;
+    private import SudsBusinessModel::*;
 
     // -- Resource types ----------------------------------------
 
@@ -436,7 +437,7 @@ package SudsResourceFinancial {
              * sheets, staff training, and PPE provision. */
         attribute :>> constraintName = "COSHH compliance";
         attribute :>> constraintType = "regulatory";
-        attribute :>> affectedResource = "Detergents and chemicals";
+        ref :>> affectedResource = detergentsAndChemicals;
         attribute :>> limit = "All cleaning chemicals must have current COSHH data sheets. Staff must be trained in safe handling. Chemicals stored in ventilated, locked area.";
         attribute :>> regulatorySourceDescription = "Health and Safety Executive — Control of Substances Hazardous to Health Regulations 2002";
     }
@@ -447,7 +448,7 @@ package SudsResourceFinancial {
         attribute :>> streamName = "Laundry service revenue";
         attribute :>> sourceSegment = "Walk-in and subscription customers";
         attribute :>> triggerEvent = "Laundry processed and collected or delivered";
-        attribute :>> pricingModelRef = "perKgPricing";
+        ref :>> pricingModel = perKgPricing;
         attribute :>> projectedVolume = "100 kg per day average";
     }
 
@@ -455,7 +456,7 @@ package SudsResourceFinancial {
 
     part staffCosts : CostDriver {
         attribute :>> driverName = "Operator labour";
-        attribute :>> linkedResource = "Laundry operator";
+        ref :>> linkedResource = laundryOperator;
         attribute :>> costBehaviour = "semi-variable — shifts scheduled to demand";
         attribute :>> estimatedUnitCost = 11.50;
         attribute :>> scalingFactor = "per hour";
@@ -465,7 +466,7 @@ package SudsResourceFinancial {
         doc /* Water, electricity, and gas — significant for a
              * laundry service. Partially variable with volume. */
         attribute :>> driverName = "Utility costs";
-        attribute :>> linkedResource = "Washing machines and dryers";
+        ref :>> linkedResource = washingMachine;
         attribute :>> costBehaviour = "semi-variable";
         attribute :>> estimatedUnitCost = 0.60;
         attribute :>> scalingFactor = "per kg of laundry";
@@ -473,7 +474,7 @@ package SudsResourceFinancial {
 
     part chemicalCosts : CostDriver {
         attribute :>> driverName = "Detergent and chemical costs";
-        attribute :>> linkedResource = "Detergents and chemicals";
+        ref :>> linkedResource = detergentsAndChemicals;
         attribute :>> costBehaviour = "variable";
         attribute :>> estimatedUnitCost = 0.40;
         attribute :>> scalingFactor = "per kg of laundry";
@@ -481,7 +482,7 @@ package SudsResourceFinancial {
 
     part rentCosts : CostDriver {
         attribute :>> driverName = "Premises rent";
-        attribute :>> linkedResource = "Shop premises";
+        ref :>> linkedResource = shopPremises;
         attribute :>> costBehaviour = "fixed";
         attribute :>> estimatedUnitCost = 1800.0;
         attribute :>> scalingFactor = "per month";
@@ -493,7 +494,7 @@ package SudsResourceFinancial {
         doc /* Per-kg economics for standard wash. Revenue £2.50/kg,
              * cost £1.50/kg (labour £0.50, utilities £0.60,
              * chemicals £0.40), margin £1.00/kg. */
-        attribute :>> offeringRef = "Standard wash";
+        ref :>> offering = standardWash;
         attribute :>> revenuePerUnit = 2.50;
         attribute :>> costPerUnit = 1.50;
         attribute :>> marginPerUnit = 1.00;
@@ -504,7 +505,7 @@ package SudsResourceFinancial {
         doc /* Per-kg economics for delicates wash. Higher revenue
              * (£3.75/kg) but also higher cost due to specialist
              * handling and longer cycle times. */
-        attribute :>> offeringRef = "Delicates wash";
+        ref :>> offering = delicatesWash;
         attribute :>> revenuePerUnit = 3.75;
         attribute :>> costPerUnit = 2.20;
         attribute :>> marginPerUnit = 1.55;
@@ -515,7 +516,7 @@ package SudsResourceFinancial {
         doc /* Per-kg economics for express wash. Double the standard
              * price, but same direct costs — the premium covers
              * opportunity cost of priority scheduling. */
-        attribute :>> offeringRef = "Express wash";
+        ref :>> offering = expressWash;
         attribute :>> revenuePerUnit = 5.00;
         attribute :>> costPerUnit = 1.70;
         attribute :>> marginPerUnit = 3.30;

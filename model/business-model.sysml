@@ -141,7 +141,7 @@ package BusinessModel {
                  * differs from alternatives, and why it matters. */
             attribute propositionName : String;
             attribute description : String;
-            attribute targetSegment : String;     // references a CustomerSegment by name
+            ref targetSegment : CustomerSegment;
             attribute differentiator : String;
             attribute evidenceBasis : String;
         }
@@ -572,7 +572,7 @@ package BusinessModel {
         part fasterAccess : ValueProposition {
             attribute :>> propositionName = "Faster access than NHS";
             attribute :>> description = "Assessment within weeks, not years";
-            attribute :>> targetSegment = "Self-referring individuals";
+            ref :>> targetSegment = selfReferringIndividuals;
             attribute :>> differentiator = "NHS GIC median wait exceeds 4 years";
             attribute :>> evidenceBasis = "Published NHS waiting time data";
         }
@@ -580,7 +580,7 @@ package BusinessModel {
         part integratedDigitalClinical : ValueProposition {
             attribute :>> propositionName = "Integrated digital and clinical care";
             attribute :>> description = "Patient portal with real-time pathway visibility alongside clinical expertise";
-            attribute :>> targetSegment = "Self-referring individuals";
+            ref :>> targetSegment = selfReferringIndividuals;
             attribute :>> differentiator = "Most private gender services offer clinical-only with no digital integration";
             attribute :>> evidenceBasis = "Platform capability comparison";
         }
@@ -588,7 +588,7 @@ package BusinessModel {
         part specialistExpertise : ValueProposition {
             attribute :>> propositionName = "Specialist expertise";
             attribute :>> description = "Care delivered by clinicians with specific gender identity healthcare credentials";
-            attribute :>> targetSegment = "GP-referred patients";
+            ref :>> targetSegment = gpReferredPatients;
             attribute :>> differentiator = "RCP Certificate in Gender Identity Healthcare";
             attribute :>> evidenceBasis = "Professional qualification and clinical experience";
         }
@@ -706,12 +706,26 @@ package BusinessModel {
             attribute :>> clinicalPathwayRef = "";     // non-clinical offering
         }
 
+        part subscriptionBundle : ServiceOffering {
+            doc /* Composite service offering representing the monthly
+                 * subscription package. Bundles Coaching, Education,
+                 * and Community into a single offering for pricing
+                 * and unit economics purposes. Clinical services
+                 * (assessment, monitoring) are separate. */
+            attribute :>> offeringName = "Subscription (monthly)";
+            attribute :>> description = "Monthly subscription bundling coaching, education, and peer community access";
+            attribute :>> scope = "Coaching sessions, education modules, community platform access";
+            attribute :>> pricingBasis = "subscription";
+            attribute :>> estimatedDurationWeeks = 0;  // ongoing, no fixed duration
+            attribute :>> clinicalPathwayRef = "";     // non-clinical offering
+        }
+
         // -- Variant B value propositions ----------------------
 
         part holisticCareModel : ValueProposition {
             attribute :>> propositionName = "Holistic care model";
             attribute :>> description = "Clinical care, coaching, education, and peer community as one integrated package";
-            attribute :>> targetSegment = "Self-referring individuals";
+            ref :>> targetSegment = selfReferringIndividuals;
             attribute :>> differentiator = "No other UK gender service offers clinical + coaching + community as a single subscription";
             attribute :>> evidenceBasis = "Service offering comparison with existing providers";
         }
@@ -850,7 +864,7 @@ package BusinessModel {
                  * level, the system produces these for every observable
                  * activity. At coarser levels, they are estimated
                  * aggregates. */
-            attribute activityType : String;
+            ref activityType : ActivityType;
             attribute participants : String;
             attribute durationMinutes : Integer;
             attribute resourcesConsumed : String;
@@ -886,7 +900,7 @@ package BusinessModel {
                  * period, and resource. The activity-level equivalent
                  * of a financial budget. */
             attribute budgetPeriod : String;
-            attribute activityType : String;
+            ref activityType : ActivityType;
             attribute plannedVolume : Integer;
             attribute plannedTotalHours : Real;
             attribute granularity : GranularityLevel;
@@ -958,7 +972,7 @@ package BusinessModel {
             doc /* The mapping from an activity (or aggregate) to its
                  * financial cost. Makes resource consumption visible
                  * to the financial model. */
-            attribute activityType : String;
+            ref activityType : ActivityType;
             attribute allocationMethod : String;
             attribute estimatedCostPerUnit : Real;
             attribute costNotes : String;
@@ -971,6 +985,8 @@ package BusinessModel {
 
     package ResourcePlanning {
         private import ScalarValues::*;
+        private import BusinessModel::ServiceConcept::*;
+        private import BusinessStrategy::*;
 
         doc /* Defines the resources required to operate the service
              * delivery system: people, technology, estate, licences,
@@ -1074,7 +1090,7 @@ package BusinessModel {
                  * level archetypes ("a prescribing clinician at
                  * 0.5 FTE") rather than named individuals. */
             attribute instanceName : String;
-            attribute resourceType : String;       // references a ResourceType by name
+            ref resourceType : ResourceType;
             attribute capacity : String;           // e.g. "0.5 FTE", "1 instance"
             attribute availabilityNotes : String;
             attribute costPerUnit : Real;
@@ -1212,7 +1228,7 @@ package BusinessModel {
                  * syntax. */
             attribute constraintName : String;
             attribute constraintType : String;     // regulatory, financial, temporal, contractual, practical
-            attribute affectedResource : String;   // references a ResourceType by name
+            ref affectedResource : ResourceType;
             attribute limit : String;
             attribute regulatorySourceDescription : String;   // e.g. "Enterprise::Regulation" or empty
         }
@@ -1259,7 +1275,7 @@ package BusinessModel {
                  * Business meta model concept.
                  *
                  * Source: gsl-spec-catalogue-inventory-v2.1.md §8.2 */
-            attribute catalogueEntryReference : String;
+            ref catalogueEntry : CatalogueEntry;
             attribute quantityOnHand : Integer;
             attribute stockStatus : String;
             attribute lowStockThreshold : Integer;
@@ -1328,7 +1344,7 @@ package BusinessModel {
             doc /* Initial clinician capacity: 0.5 FTE for the first
                  * 9 months. Sufficient for up to ~20 active patients. */
             attribute :>> instanceName = "Prescribing clinician (months 1-9)";
-            attribute :>> resourceType = "Prescribing clinician";
+            ref :>> resourceType = prescribingClinician;
             attribute :>> capacity = "0.5 FTE";
             attribute :>> availabilityNotes = "3 clinical days per fortnight";
             attribute :>> costPerUnit = 2500.0;
@@ -1339,7 +1355,7 @@ package BusinessModel {
             doc /* Scaled clinician capacity: 0.8 FTE from month 10.
                  * Supports growth to ~40 active patients. */
             attribute :>> instanceName = "Prescribing clinician (months 10-24)";
-            attribute :>> resourceType = "Prescribing clinician";
+            ref :>> resourceType = prescribingClinician;
             attribute :>> capacity = "0.8 FTE";
             attribute :>> availabilityNotes = "4 clinical days per week";
             attribute :>> costPerUnit = 4000.0;
@@ -1348,7 +1364,7 @@ package BusinessModel {
 
         part adminInstance : ResourceInstance {
             attribute :>> instanceName = "Administrative support";
-            attribute :>> resourceType = "Administrative support";
+            ref :>> resourceType = administrativeSupport;
             attribute :>> capacity = "0.3 FTE";
             attribute :>> availabilityNotes = "1.5 days per week";
             attribute :>> costPerUnit = 540.0;
@@ -1392,7 +1408,7 @@ package BusinessModel {
         part maxPatientsPerClinician : ResourceConstraint {
             attribute :>> constraintName = "Maximum active patients per clinician";
             attribute :>> constraintType = "practical";
-            attribute :>> affectedResource = "Prescribing clinician";
+            ref :>> affectedResource = prescribingClinician;
             attribute :>> limit = "40 active patients per FTE clinician";
             attribute :>> regulatorySourceDescription = "";
         }
@@ -1403,7 +1419,7 @@ package BusinessModel {
                  * prescribing. Maps to Enterprise::Regulation. */
             attribute :>> constraintName = "Prescribing qualification";
             attribute :>> constraintType = "regulatory";
-            attribute :>> affectedResource = "Prescribing clinician";
+            ref :>> affectedResource = prescribingClinician;
             attribute :>> limit = "Must hold prescribing qualification and gender identity healthcare credential";
             attribute :>> regulatorySourceDescription = "Enterprise::Regulation";
         }
@@ -1432,7 +1448,7 @@ package BusinessModel {
 
         part coachInstance : ResourceInstance {
             attribute :>> instanceName = "Gender identity coach";
-            attribute :>> resourceType = "Gender identity coach";
+            ref :>> resourceType = genderCoach;
             attribute :>> capacity = "0.5 FTE";
             attribute :>> availabilityNotes = "2.5 days per week";
             attribute :>> costPerUnit = 1500.0;
@@ -1441,7 +1457,7 @@ package BusinessModel {
 
         part moderatorInstance : ResourceInstance {
             attribute :>> instanceName = "Community moderator";
-            attribute :>> resourceType = "Community moderator";
+            ref :>> resourceType = communityModerator;
             attribute :>> capacity = "0.2 FTE";
             attribute :>> availabilityNotes = "1 day per week";
             attribute :>> costPerUnit = 400.0;
@@ -1452,7 +1468,7 @@ package BusinessModel {
             doc /* Second clinician added at month 6 in Variant B.
                  * Steps from 0.5 to 1.0 FTE at month 12. */
             attribute :>> instanceName = "Second prescribing clinician (months 6-24)";
-            attribute :>> resourceType = "Prescribing clinician";
+            ref :>> resourceType = prescribingClinician;
             attribute :>> capacity = "0.5 FTE stepping to 1.0 FTE at month 12";
             attribute :>> availabilityNotes = "Variant B only — earlier scaling than Variant A";
             attribute :>> costPerUnit = 2500.0;
@@ -1521,28 +1537,28 @@ package BusinessModel {
             doc /* Maps a StrategicObjective to the Capability
                  * usages that contribute to achieving it.
                  * Phase 7 traceability pattern. */
-            attribute objectiveRef : String;
+            ref strategicObjective : StrategicObjective;
             ref supportingCapabilities : Capability[1..*];
         }
 
         part patientCohortMapping : ObjectiveCapabilityMapping {
             doc /* objectivePatientCohort is achieved through
                  * prescribing, assessment, and monitoring. */
-            attribute :>> objectiveRef = "objectivePatientCohort";
+            ref :>> strategicObjective = objectivePatientCohort;
         }
 
         part sharedCareMapping : ObjectiveCapabilityMapping {
             doc /* objectiveSharedCare is achieved through
                  * prescribing and monitoring capabilities
                  * extended with GP shared care protocols. */
-            attribute :>> objectiveRef = "objectiveSharedCare";
+            ref :>> strategicObjective = objectiveSharedCare;
         }
 
         part platformLaunchMapping : ObjectiveCapabilityMapping {
             doc /* objectivePlatformLaunch is achieved through
                  * assessment and prescribing capabilities
                  * exposed via the patient portal. */
-            attribute :>> objectiveRef = "objectivePlatformLaunch";
+            ref :>> strategicObjective = objectivePlatformLaunch;
         }
 
         part breakEvenMapping : ObjectiveCapabilityMapping {
@@ -1550,7 +1566,7 @@ package BusinessModel {
                  * achieved through the combined operation of
                  * all clinical capabilities at sufficient
                  * volume. No single capability satisfies it. */
-            attribute :>> objectiveRef = "objectiveBreakEven";
+            ref :>> strategicObjective = objectiveBreakEven;
         }
     }
 
@@ -1560,6 +1576,9 @@ package BusinessModel {
 
     package FinancialPlanning {
         private import ScalarValues::*;
+        private import BusinessModel::ResourcePlanning::*;
+        private import BusinessModel::ServiceConcept::*;
+        private import BusinessScenarios::*;
 
         doc /* Defines the financial structure of the business: how
              * revenue is generated, what drives cost, what the unit
@@ -1616,7 +1635,7 @@ package BusinessModel {
             attribute streamName : String;
             attribute sourceSegment : String;
             attribute triggerEvent : String;
-            attribute pricingModelRef : String;
+            ref pricingModel : PricingModel;
             attribute projectedVolume : String;
         }
 
@@ -1657,7 +1676,7 @@ package BusinessModel {
         part def CostDriver {
             doc /* A structural factor that generates cost. */
             attribute driverName : String;
-            attribute linkedResource : String;
+            ref linkedResource : ResourceType[0..1];
             attribute costBehaviour : String;
             attribute estimatedUnitCost : Real;
             attribute scalingFactor : String;
@@ -1689,7 +1708,7 @@ package BusinessModel {
         }
         part def UnitEconomics {
             doc /* The financial profile of a single unit of service delivery. */
-            attribute offeringRef : String;
+            ref offering : ServiceOffering;
             attribute revenuePerUnit : Real;
             attribute costPerUnit : Real;
             attribute marginPerUnit : Real;
@@ -1763,7 +1782,7 @@ package BusinessModel {
                  * Lightweight placeholder — full mechanics in
                  * BusinessScenarios. */
             attribute projectionName : String;
-            attribute scenarioRef : String;
+            ref scenario : ScenarioDefinition;
             attribute timelineMonths : Integer;
             attribute revenueFormula : String;
             attribute costFormula : String;
@@ -1776,7 +1795,7 @@ package BusinessModel {
             attribute :>> streamName = "Assessment fees";
             attribute :>> sourceSegment = "Self-referring individuals, GP-referred patients";
             attribute :>> triggerEvent = "Completion of initial assessment episode";
-            attribute :>> pricingModelRef = "perEpisodePricing";
+            ref :>> pricingModel = perEpisodePricing;
             attribute :>> projectedVolume = "4 per month (year 1), 6 per month (year 2)";
         }
 
@@ -1784,13 +1803,13 @@ package BusinessModel {
             attribute :>> streamName = "Monitoring fees";
             attribute :>> sourceSegment = "Patients in stable monitoring";
             attribute :>> triggerEvent = "Quarterly monitoring review";
-            attribute :>> pricingModelRef = "perEpisodePricing";
+            ref :>> pricingModel = perEpisodePricing;
             attribute :>> projectedVolume = "grows with stable cohort — see projection";
         }
 
         part clinicianCost : CostDriver {
             attribute :>> driverName = "Clinician cost";
-            attribute :>> linkedResource = "Prescribing clinician";
+            ref :>> linkedResource = prescribingClinician;
             attribute :>> costBehaviour = "semi-variable — fixed FTE cost, scaled in steps as caseload grows";
             attribute :>> estimatedUnitCost = 5000.0;
             attribute :>> scalingFactor = "per FTE per month";
@@ -1798,7 +1817,7 @@ package BusinessModel {
 
         part adminCost : CostDriver {
             attribute :>> driverName = "Administrative support cost";
-            attribute :>> linkedResource = "Administrative support";
+            ref :>> linkedResource = administrativeSupport;
             attribute :>> costBehaviour = "semi-variable";
             attribute :>> estimatedUnitCost = 1800.0;
             attribute :>> scalingFactor = "per FTE per month";
@@ -1806,7 +1825,7 @@ package BusinessModel {
 
         part platformCost : CostDriver {
             attribute :>> driverName = "Platform hosting and infrastructure";
-            attribute :>> linkedResource = "Technology platform";
+            ref :>> linkedResource = technologyPlatform;
             attribute :>> costBehaviour = "fixed";
             attribute :>> estimatedUnitCost = 200.0;
             attribute :>> scalingFactor = "per month";
@@ -1814,7 +1833,7 @@ package BusinessModel {
 
         part insuranceCost : CostDriver {
             attribute :>> driverName = "Professional indemnity insurance";
-            attribute :>> linkedResource = "Professional indemnity insurance";
+            ref :>> linkedResource = professionalIndemnity;
             attribute :>> costBehaviour = "fixed";
             attribute :>> estimatedUnitCost = 250.0;
             attribute :>> scalingFactor = "per month";
@@ -1822,7 +1841,7 @@ package BusinessModel {
 
         part labCost : CostDriver {
             attribute :>> driverName = "Laboratory costs";
-            attribute :>> linkedResource = "Laboratory services";
+            ref :>> linkedResource = laboratoryServices;
             attribute :>> costBehaviour = "variable";
             attribute :>> estimatedUnitCost = 45.0;
             attribute :>> scalingFactor = "per blood panel";
@@ -1830,14 +1849,13 @@ package BusinessModel {
 
         part overheadCost : CostDriver {
             attribute :>> driverName = "Overhead allocation";
-            attribute :>> linkedResource = "";
             attribute :>> costBehaviour = "percentage of direct cost";
             attribute :>> estimatedUnitCost = 25.0;
             attribute :>> scalingFactor = "percentage of direct cost";
         }
 
         part assessmentUnitEconomics : UnitEconomics {
-            attribute :>> offeringRef = "Initial Assessment";
+            ref :>> offering = initialAssessment;
             attribute :>> revenuePerUnit = 600.0;
             attribute :>> costPerUnit = 350.0;
             attribute :>> marginPerUnit = 250.0;
@@ -1845,7 +1863,7 @@ package BusinessModel {
         }
 
         part monitoringUnitEconomics : UnitEconomics {
-            attribute :>> offeringRef = "Ongoing Monitoring (quarterly)";
+            ref :>> offering = ongoingMonitoring;
             attribute :>> revenuePerUnit = 150.0;
             attribute :>> costPerUnit = 106.0;
             attribute :>> marginPerUnit = 44.0;
@@ -1862,7 +1880,7 @@ package BusinessModel {
 
         part leanClinicalProjection : FinancialProjection {
             attribute :>> projectionName = "Lean Clinical 24-month projection";
-            attribute :>> scenarioRef = "Lean Clinical (Variant A)";
+            ref :>> scenario = leanClinicalScenario;
             attribute :>> timelineMonths = 24;
             attribute :>> revenueFormula = "assessment fees (volume x price) + monitoring fees (stable cohort x quarterly fee)";
             attribute :>> costFormula = "clinician FTE + admin FTE + platform + insurance + lab panels + 25% overhead";
@@ -1879,13 +1897,13 @@ package BusinessModel {
             attribute :>> streamName = "Subscription fees";
             attribute :>> sourceSegment = "Active subscribers (Full Platform patients)";
             attribute :>> triggerEvent = "Monthly subscription renewal";
-            attribute :>> pricingModelRef = "subscriptionPricing";
+            ref :>> pricingModel = subscriptionPricing;
             attribute :>> projectedVolume = "grows with active patient cohort";
         }
 
         part coachCost : CostDriver {
             attribute :>> driverName = "Coach cost";
-            attribute :>> linkedResource = "Gender identity coach";
+            ref :>> linkedResource = genderCoach;
             attribute :>> costBehaviour = "semi-variable — fixed FTE cost, added when coaching offering launches";
             attribute :>> estimatedUnitCost = 3000.0;
             attribute :>> scalingFactor = "per FTE per month";
@@ -1893,7 +1911,7 @@ package BusinessModel {
 
         part moderatorCost : CostDriver {
             attribute :>> driverName = "Community moderator cost";
-            attribute :>> linkedResource = "Community moderator";
+            ref :>> linkedResource = communityModerator;
             attribute :>> costBehaviour = "semi-variable — fixed FTE cost, added when community launches";
             attribute :>> estimatedUnitCost = 2000.0;
             attribute :>> scalingFactor = "per FTE per month";
@@ -1916,7 +1934,7 @@ package BusinessModel {
                  * separate (assessmentUnitEconomics,
                  * monitoringUnitEconomics). All values are
                  * illustrative placeholders. */
-            attribute :>> offeringRef = "Subscription (monthly)";
+            ref :>> offering = subscriptionBundle;
             attribute :>> revenuePerUnit = 99.0;
             attribute :>> costPerUnit = 55.0;
             attribute :>> marginPerUnit = 44.0;
@@ -1925,7 +1943,7 @@ package BusinessModel {
 
         part fullPlatformProjection : FinancialProjection {
             attribute :>> projectionName = "Full Platform 24-month projection";
-            attribute :>> scenarioRef = "Full Platform (Variant B)";
+            ref :>> scenario = fullPlatformScenario;
             attribute :>> timelineMonths = 24;
             attribute :>> revenueFormula = "assessment fees + monitoring fees + subscription fees (active subscribers x monthly fee)";
             attribute :>> costFormula = "2 clinician FTE + admin FTE + coach FTE + moderator FTE + platform + insurance + lab panels + 25% overhead";

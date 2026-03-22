@@ -13,6 +13,7 @@ package CoffeeshopResourceFinancial {
     private import ScalarValues::*;
     private import BusinessModel::ResourcePlanning::*;
     private import BusinessModel::FinancialPlanning::*;
+    private import CoffeeShopBusinessModel::*;
 
     // -- Resource types ----------------------------------------
 
@@ -72,7 +73,7 @@ package CoffeeshopResourceFinancial {
     part foodHygiene : ResourceConstraint {
         attribute :>> constraintName = "Food hygiene certificate";
         attribute :>> constraintType = "regulatory";
-        attribute :>> affectedResource = "Barista";
+        ref :>> affectedResource = barista;
         attribute :>> limit = "All food handlers must hold Level 2 Food Hygiene certificate";
         attribute :>> regulatorySourceDescription = "Environmental Health / Food Standards Agency";
     }
@@ -83,7 +84,7 @@ package CoffeeshopResourceFinancial {
         attribute :>> streamName = "Drink sales";
         attribute :>> sourceSegment = "Walk-in customers";
         attribute :>> triggerEvent = "Drink served and paid for";
-        attribute :>> pricingModelRef = "perDrinkPricing";
+        ref :>> pricingModel = perDrinkPricing;
         attribute :>> projectedVolume = "150 drinks per day";
     }
 
@@ -91,7 +92,7 @@ package CoffeeshopResourceFinancial {
 
     part baristaCost : CostDriver {
         attribute :>> driverName = "Barista labour";
-        attribute :>> linkedResource = "Barista";
+        ref :>> linkedResource = barista;
         attribute :>> costBehaviour = "semi-variable — shifts scheduled to demand";
         attribute :>> estimatedUnitCost = 12.0;    // £ per hour
         attribute :>> scalingFactor = "per hour";
@@ -99,7 +100,7 @@ package CoffeeshopResourceFinancial {
 
     part ingredientCost : CostDriver {
         attribute :>> driverName = "Ingredient cost per drink";
-        attribute :>> linkedResource = "Ingredient stock";
+        ref :>> linkedResource = ingredientStock;
         attribute :>> costBehaviour = "variable";
         attribute :>> estimatedUnitCost = 0.80;
         attribute :>> scalingFactor = "per drink";
@@ -107,7 +108,7 @@ package CoffeeshopResourceFinancial {
 
     part rentCost : CostDriver {
         attribute :>> driverName = "Premises rent";
-        attribute :>> linkedResource = "Counter service space";
+        ref :>> linkedResource = counterSpace;
         attribute :>> costBehaviour = "fixed";
         attribute :>> estimatedUnitCost = 2000.0;
         attribute :>> scalingFactor = "per month";
@@ -119,7 +120,7 @@ package CoffeeshopResourceFinancial {
         doc /* Per-drink economics. Revenue £3.50, cost £1.90
              * (ingredients £0.80 + labour £0.80 + overhead £0.30),
              * margin £1.60. Hand-verifiable. */
-        attribute :>> offeringRef = "Drink order";
+        ref :>> offering = drinkOrder;
         attribute :>> revenuePerUnit = 3.50;
         attribute :>> costPerUnit = 1.90;
         attribute :>> marginPerUnit = 1.60;
