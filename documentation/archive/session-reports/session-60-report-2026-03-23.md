@@ -8,7 +8,7 @@
 
 ## Summary
 
-Session 60 executed the full housekeeping programme deferred from Session 59, refreshed the strategic snapshot (12 sessions overdue), conducted a comprehensive vault review, created six concept notes for Session 59 architectural concepts, and critically reviewed and improved the development workflow guide. The session also identified that the workflow guide itself needs a complete overhaul — scheduled as Priority 1 for Session 61.
+Session 60 executed the full housekeeping programme deferred from [[session-59-report-2026-03-22|Session 59]], refreshed the [[ontara-ref-strategic-snapshot-2026-03-23-s60|strategic snapshot]] (12 sessions overdue), conducted a comprehensive vault review, created six concept notes for Session 59 architectural concepts, and critically reviewed and improved the development workflow guide. The session also identified that the workflow guide itself needs a complete overhaul — scheduled as Priority 1 for Session 61.
 
 ---
 
@@ -76,7 +76,7 @@ Comprehensive review of the entire `02 ONTARA ARCHITECTURE & MODELLING` folder �
 - §3.3: Snapshot link updated to Session 60
 - Related Documents: Updated (snapshot link, added Architecture Papers Index, Concept Graph Index, Emergent Ideas Log; removed stale Work Analysis link)
 
-**Critical review identified further issues** requiring a complete workflow guide overhaul in Session 61: structural accretion, §8 redundancy, missing preparation note specification, missing session typology, missing emergency close procedure, missing Claude Code/Chat/Cowork decision criteria.
+**Critical review identified further issues** requiring a complete [[ontara-workflow-development-guide-2026-03-21|workflow guide]] overhaul in Session 61: structural accretion, §8 redundancy, missing preparation note specification, missing session typology, missing emergency close procedure, missing Claude Code/Chat/Cowork decision criteria.
 
 ---
 
