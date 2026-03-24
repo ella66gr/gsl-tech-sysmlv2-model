@@ -14,5 +14,11 @@ dist/
 # OS files
 .DS_Store
 
+# Claude Code
+# Skills and CLAUDE.md are committed (shared project knowledge)
+# Local settings and auto-memory are personal and machine-specific
+.claude/settings.local.json
+CLAUDE.local.md
+
 # pnpm
 pnpm-lock.yaml
