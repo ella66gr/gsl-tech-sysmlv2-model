@@ -114,16 +114,20 @@ Or use `cd console && pnpm run refresh-data`.
 ## Obsidian Vault (via CLI)
 
 The Obsidian CLI (v1.12.7) is available. Obsidian must be running. The vault parameter must come first.
+Full CLI reference: https://obsidian.md/help/cli
 
 ```bash
 # Read a vault document
 obsidian vault=GenderSense read file="path/from/vault/root.md"
 
 # Create a new document
-obsidian vault=GenderSense create name="path/to/new-file.md" content="..."
+obsidian vault=GenderSense create path="path/to/new-file.md" content="..."
 
 # Append to a document
 obsidian vault=GenderSense append file="path/to/file.md" content="..."
+
+# Delete a document (moves to trash by default)
+obsidian vault=GenderSense delete path="path/to/file.md"
 
 # Search by filename
 obsidian vault=GenderSense search query="search term"

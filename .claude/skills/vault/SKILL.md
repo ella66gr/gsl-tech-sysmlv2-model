@@ -1,6 +1,6 @@
 ---
 name: vault
-description: Interact with the Obsidian vault via the Obsidian CLI. Read, create, append, and search vault documents.
+description: Interact with the Obsidian vault via the Obsidian CLI. Read, create, append, delete, and search vault documents.
 allowed-tools: Bash
 ---
 
@@ -42,6 +42,14 @@ obsidian vault=GenderSense append file="02 ONTARA ARCHITECTURE & MODELLING/Ontar
 obsidian vault=GenderSense search query="ontara-ref-strategic"
 ```
 
+### Delete a vault document (moves to trash by default)
+
+```bash
+obsidian vault=GenderSense delete path="02 ONTARA ARCHITECTURE & MODELLING/Ontara Research & Background/ontara-test-document.md"
+```
+
+Use `permanent` flag to skip trash: `obsidian vault=GenderSense delete path="..." permanent`
+
 ### Search vault content
 
 ```bash
@@ -54,6 +62,7 @@ obsidian vault=GenderSense search:context query="weighted relationship"
 - `/vault append <relative-path> <content>` — Append content to a document
 - `/vault create <relative-path> <content>` — Create a new document
 - `/vault search <query>` — Search by filename
+- `/vault delete <relative-path>` — Delete a document (moves to trash)
 - `/vault search-content <query>` — Search by content
 
 ## Key vault locations
@@ -73,6 +82,10 @@ obsidian vault=GenderSense search:context query="weighted relationship"
 ## Wikilink convention
 
 All vault documents must use `[[filename|display text]]` wikilinks for internal references. When creating or appending content, always use wikilinks — never plain text vault references. This is a binding commitment (A9).
+
+## CLI Reference
+
+Full Obsidian CLI documentation: https://obsidian.md/help/cli
 
 ## Notes
 
