@@ -111,9 +111,34 @@ Or use `cd console && pnpm run refresh-data`.
 - Commit messages reference the session number: `Session NN: description of changes`
 - Repo archive paths: `documentation/archive/strategic/`, `documentation/archive/plans/`, `documentation/archive/session-reports/`, `documentation/archive/design/`
 
+## Obsidian Vault (via CLI)
+
+The Obsidian CLI (v1.12.7) is available. Obsidian must be running. The vault parameter must come first.
+
+```bash
+# Read a vault document
+obsidian vault=GenderSense read file="path/from/vault/root.md"
+
+# Create a new document
+obsidian vault=GenderSense create name="path/to/new-file.md" content="..."
+
+# Append to a document
+obsidian vault=GenderSense append file="path/to/file.md" content="..."
+
+# Search by filename
+obsidian vault=GenderSense search query="search term"
+```
+
+Vault root: `/Users/ellagreen/Obsidian/GenderSense`
+Ontara content lives under: `02 ONTARA ARCHITECTURE & MODELLING/`
+
+All vault documents must use `[[filename|display text]]` wikilinks — no plain text vault references.
+
+---
+
 ## Working With Ella
 
 - Ella leads all design and architectural decisions. Ask before making non-trivial changes.
-- The Obsidian vault at `/Users/ellagreen/Obsidian/GenderSense/` is the primary working environment for documents and planning. Claude Code does not have access to it — document operations happen via Claude Chat (MCP).
+- The Obsidian vault at `/Users/ellagreen/Obsidian/GenderSense/` is the primary working environment for documents and planning. Claude Code can access the vault via the Obsidian CLI (`/vault` skill). Claude Chat accesses it via MCP filesystem tools.
 - Do not overwrite files Ella may have edited without checking first.
 - "Shall I go ahead?" is a genuine question, not rhetorical.
