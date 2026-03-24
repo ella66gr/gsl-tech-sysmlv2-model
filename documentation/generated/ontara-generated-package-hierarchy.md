@@ -1,8 +1,8 @@
-# GenderSense Package Hierarchy (Generated)
+# Ontara Package Hierarchy (Generated)
 
-**Generated:** 2026-03-11 23:09  
+**Generated:** 2026-03-24 16:35  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
-**Total packages:** 72 (excluding root)  
+**Total packages:** 74 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
 
 This document is generated from the SysML model. Do not edit manually.
@@ -10,8 +10,8 @@ This document is generated from the SysML model. Do not edit manually.
 ---
 
 ```
-GenderSense Package Hierarchy
-Generated 2026-03-11 23:09 from model/*.sysml (72 packages)
+Ontara Package Hierarchy
+Generated 2026-03-24 16:35 from model/*.sysml (74 packages)
 
 GenderSense
 ├── Enterprise                    Defines the organisational, regulatory, strategic, and risk context.
@@ -21,8 +21,8 @@ GenderSense
 │   └── Risk                      Clinical risk management, business continuity, safeguarding — [3 use cases]
 │
 ├── Foundation                    Cross-cutting infrastructure that everything else imports.
-│   ├── MetadataLibrary           Metadata definitions for generator configuration and — [9 metadata]
-│   ├── CommonTypes               Shared data types, enumerations, units of measure, and — [2 parts, 25 enums]
+│   ├── MetadataLibrary           Metadata definitions for generator configuration and — [2 enums, 15 metadata]
+│   ├── CommonTypes               Shared data types, enumerations, units of measure, and — [3 parts, 27 enums]
 │   ├── StatePatterns             Reusable lifecycle state machine patterns. — [1 states]
 │   └── GenerationPipeline        Generator configurations, template definitions, generation
 │
@@ -85,14 +85,17 @@ GenderSense
 │   └── ClinicalEntities          Core domain entities: the nouns of the clinical domain. — [6 parts, 4 states]
 │
 ├── BusinessModel                 The business model package captures the strategic logic of the
-│   ├── ServiceConcept            Defines the value proposition, customer segments, service — [5 parts]
+│   ├── ServiceConcept            Defines the value proposition, customer segments, service — [9 parts]
 │   ├── ActivityModel             Cross-cutting activity taxonomy and costing foundation. — [5 parts, 2 enums]
-│   ├── ResourcePlanning          Defines the resources required to operate the service — [6 parts]
-│   └── FinancialPlanning         Defines the financial structure of the business: how — [5 parts, 1 enums]
+│   ├── ResourcePlanning          Defines the resources required to operate the service — [7 parts]
+│   ├── FinancialPlanning         Defines the financial structure of the business: how — [5 parts, 1 enums]
+│   └── GovernanceMapping         General vocabulary for governance traceability. — [1 parts, 1 requirements]
 │
 ├── BusinessScenarios             Provides the mechanics for driving the business model — [11 parts, 2 enums]
 │
-└── BusinessStrategy              Strategic direction, business model variants, and — [2 parts, 1 requirements]
+├── BusinessStrategy              Strategic direction, business model variants, and — [2 parts, 1 requirements]
+│
+└── PatternCatalogue              Cross-domain concept registry, architectural pattern catalogue, — [3 parts, 4 enums]
 
 Libraries (separate from main model):
   TemporalMetadata (libraries/temporal-metadata/temporal-metadata.sysml) — Metadata definitions for Temporal workflow generation. — [4 metadata]
@@ -100,4 +103,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-03-11 23:09 by `gen_package_hierarchy.py`.*
+*Generated 2026-03-24 16:35 by `gen_package_hierarchy.py`.*

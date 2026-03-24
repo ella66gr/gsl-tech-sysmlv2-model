@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <opml version="2.0">
   <head>
-    <title>GenderSense Package Hierarchy</title>
-    <dateCreated>2026-03-11 23:09</dateCreated>
+    <title>Ontara Package Hierarchy</title>
+    <dateCreated>2026-03-24 16:35</dateCreated>
   </head>
   <body>
-    <outline text="GenderSense — Model-driven clinical service management platform">
+    <outline text="Ontara — Model-driven service system development and delivery platform">
       <outline text="Enterprise  — Defines the organisational, regulatory, strategic, and risk context." _note="enterprise.sysml:5">
         <outline text="Organisation  — Roles, teams, governance structure, board, leadership,  [3 parts]" _note="enterprise.sysml:12"/>
         <outline text="Regulation  — CQC fundamental standards, ICO/GDPR obligations,  [4 use cases, 8 requirements]" _note="enterprise.sysml:38"/>
@@ -13,10 +13,10 @@
         <outline text="Risk  — Clinical risk management, business continuity, safeguarding  [3 use cases]" _note="enterprise.sysml:272"/>
       </outline>
       <outline text="Foundation  — Cross-cutting infrastructure that everything else imports." _note="foundation.sysml:5">
-        <outline text="MetadataLibrary  — Metadata definitions for generator configuration and  [9 metadata]" _note="foundation.sysml:11"/>
-        <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [2 parts, 25 enums]" _note="foundation.sysml:152"/>
-        <outline text="StatePatterns  — Reusable lifecycle state machine patterns.  [1 states]" _note="foundation.sysml:442"/>
-        <outline text="GenerationPipeline  — Generator configurations, template definitions, generation" _note="foundation.sysml:505"/>
+        <outline text="MetadataLibrary  — Metadata definitions for generator configuration and  [2 enums, 15 metadata]" _note="foundation.sysml:11"/>
+        <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [3 parts, 27 enums]" _note="foundation.sysml:382"/>
+        <outline text="StatePatterns  — Reusable lifecycle state machine patterns.  [1 states]" _note="foundation.sysml:742"/>
+        <outline text="GenerationPipeline  — Generator configurations, template definitions, generation" _note="foundation.sysml:805"/>
       </outline>
       <outline text="Knowledge  — Explicit treatment of knowledge, decision logic, and adaptive" _note="knowledge.sysml:5">
         <outline text="ClinicalDecisionSupport  — Decision rules, eligibility criteria, monitoring protocols,  [3 parts, 3 use cases]" _note="knowledge.sysml:18"/>
@@ -81,13 +81,15 @@
         <outline text="ClinicalEntities  — Core domain entities: the nouns of the clinical domain.  [6 parts, 4 states]" _note="service-delivery.sysml:848"/>
       </outline>
       <outline text="BusinessModel  — The business model package captures the strategic logic of the" _note="business-model.sysml:6">
-        <outline text="ServiceConcept  — Defines the value proposition, customer segments, service  [5 parts]" _note="business-model.sysml:44"/>
-        <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-model.sysml:307"/>
-        <outline text="ResourcePlanning  — Defines the resources required to operate the service  [6 parts]" _note="business-model.sysml:415"/>
-        <outline text="FinancialPlanning  — Defines the financial structure of the business: how  [5 parts, 1 enums]" _note="business-model.sysml:785"/>
+        <outline text="ServiceConcept  — Defines the value proposition, customer segments, service  [9 parts]" _note="business-model.sysml:51"/>
+        <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-model.sysml:738"/>
+        <outline text="ResourcePlanning  — Defines the resources required to operate the service  [7 parts]" _note="business-model.sysml:986"/>
+        <outline text="FinancialPlanning  — Defines the financial structure of the business: how  [5 parts, 1 enums]" _note="business-model.sysml:1577"/>
+        <outline text="GovernanceMapping  — General vocabulary for governance traceability.  [1 parts, 1 requirements]" _note="business-model.sysml:1958"/>
       </outline>
       <outline text="BusinessScenarios  — Provides the mechanics for driving the business model  [11 parts, 2 enums]" _note="business-scenarios.sysml:21"/>
       <outline text="BusinessStrategy  — Strategic direction, business model variants, and  [2 parts, 1 requirements]" _note="business-strategy.sysml:20"/>
+      <outline text="PatternCatalogue  — Cross-domain concept registry, architectural pattern catalogue,  [3 parts, 4 enums]" _note="pattern-catalogue.sysml:17"/>
     </outline>
     <outline text="Libraries (separate from main model)">
       <outline text="TemporalMetadata  — Metadata definitions for Temporal workflow generation.  [4 metadata]" _note="libraries/temporal-metadata/temporal-metadata.sysml:1"/>

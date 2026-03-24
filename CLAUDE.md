@@ -41,7 +41,7 @@ spikes/                    # Experimental code
 - **Other generators:** `scripts/gen_concept_graph.py`, `scripts/gen_package_hierarchy.py`, `scripts/gen_system_manifest.py`, `scripts/gen_constraint_evaluator.py`, `scripts/gen_decision_table_evaluator.py`, `scripts/projection_engine.py`
 - **SysML syntax reference:** `documentation/reference/gsl-sysml-v2-syntax-reference.md`
 - **KerML reserved words:** `documentation/reference/KerML-Reserved-Words.md`
-- **Existing CLI tool:** `scripts/gsl` (shell script for package hierarchy views)
+- **Existing CLI tool:** `scripts/ontara` (shell script for package hierarchy views — renamed from `gsl` Session 65)
 
 ## Tech Stack
 
@@ -110,6 +110,25 @@ Or use `cd console && pnpm run refresh-data`.
 
 - Commit messages reference the session number: `Session NN: description of changes`
 - Repo archive paths: `documentation/archive/strategic/`, `documentation/archive/plans/`, `documentation/archive/session-reports/`, `documentation/archive/design/`
+
+## Ontara Toolkit
+
+The `ontara` shell script (`scripts/ontara`) provides quick access to the package hierarchy:
+```bash
+ontara              # Terminal tree view (default)
+ontara save         # Export all formats (Markdown, OPML, HTML, OmniOutliner)
+ontara html         # Export and open interactive mindmap
+ontara oo           # Export and open in OmniOutliner
+ontara diff         # Compare model vs proposal
+ontara files        # List model and generated files
+ontara model        # Open repo in VS Code
+ontara help         # Show all commands
+```
+
+Set up alias in `~/.zshrc`:
+```bash
+alias ontara='~/Developer/gsl-tech/gsl-sysml-model/scripts/ontara'
+```
 
 ## Obsidian Vault (via CLI)
 

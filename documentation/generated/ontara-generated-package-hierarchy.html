@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GenderSense Package Hierarchy</title>
+    <title>Ontara Package Hierarchy</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -41,8 +41,8 @@
 </head>
 <body>
     <div id="banner">
-        <span class="title">GenderSense — Package Hierarchy</span>
-        <span class="meta">Generated 2026-03-11 23:09 &nbsp;|&nbsp;
+        <span class="title">Ontara — Package Hierarchy</span>
+        <span class="meta">Generated 2026-03-24 16:35 &nbsp;|&nbsp;
               Scroll to zoom &nbsp;|&nbsp; Drag to pan &nbsp;|&nbsp;
               Click nodes to collapse</span>
     </div>
@@ -52,15 +52,15 @@
     <script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
     <script>
-        const md = `# GenderSense
+        const md = `# Ontara
 ## Enterprise — Defines the organisational, regulatory, strategic, and risk context.
 ### Organisation — Roles, teams, governance structure, board, leadership, *[3 parts]*
 ### Regulation — CQC fundamental standards, ICO/GDPR obligations, *[4 use cases, 8 requirements]*
 ### Strategy — Partnerships, strategic context, ethos and values, *[2 parts]*
 ### Risk — Clinical risk management, business continuity, safeguarding *[3 use cases]*
 ## Foundation — Cross-cutting infrastructure that everything else imports.
-### MetadataLibrary — Metadata definitions for generator configuration and *[9 metadata]*
-### CommonTypes — Shared data types, enumerations, units of measure, and *[2 parts, 25 enums]*
+### MetadataLibrary — Metadata definitions for generator configuration and *[2 enums, 15 metadata]*
+### CommonTypes — Shared data types, enumerations, units of measure, and *[3 parts, 27 enums]*
 ### StatePatterns — Reusable lifecycle state machine patterns. *[1 states]*
 ### GenerationPipeline — Generator configurations, template definitions, generation
 ## Knowledge — Explicit treatment of knowledge, decision logic, and adaptive
@@ -118,12 +118,14 @@
 ### ClinicalGovernance — Policies, protocols, procedures, clinical audit, outcome *[3 use cases]*
 ### ClinicalEntities — Core domain entities: the nouns of the clinical domain. *[6 parts, 4 states]*
 ## BusinessModel — The business model package captures the strategic logic of the
-### ServiceConcept — Defines the value proposition, customer segments, service *[5 parts]*
+### ServiceConcept — Defines the value proposition, customer segments, service *[9 parts]*
 ### ActivityModel — Cross-cutting activity taxonomy and costing foundation. *[5 parts, 2 enums]*
-### ResourcePlanning — Defines the resources required to operate the service *[6 parts]*
+### ResourcePlanning — Defines the resources required to operate the service *[7 parts]*
 ### FinancialPlanning — Defines the financial structure of the business: how *[5 parts, 1 enums]*
+### GovernanceMapping — General vocabulary for governance traceability. *[1 parts, 1 requirements]*
 ## BusinessScenarios — Provides the mechanics for driving the business model *[11 parts, 2 enums]*
 ## BusinessStrategy — Strategic direction, business model variants, and *[2 parts, 1 requirements]*
+## PatternCatalogue — Cross-domain concept registry, architectural pattern catalogue, *[3 parts, 4 enums]*
 ## Libraries
 ### TemporalMetadata — Metadata definitions for Temporal workflow generation. *[4 metadata]*`;
         try {

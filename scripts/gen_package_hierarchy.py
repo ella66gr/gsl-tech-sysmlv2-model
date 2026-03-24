@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-GenderSense Package Hierarchy Generator
+Ontara Package Hierarchy Generator
 ========================================
 
 Reads the SysML v2 model files and generates package hierarchy views.
@@ -41,10 +41,10 @@ GENERATED_DIR = DOCS_DIR / "generated"
 PROPOSAL_PATH = DOCS_DIR / "architecture" / "gsl-platform-package-hierarchy-proposal.md"
 
 OUTPUT_PATHS = {
-    "markdown": GENERATED_DIR / "gsl-generated-package-hierarchy.md",
-    "opml":     GENERATED_DIR / "gsl-generated-package-hierarchy.opml",
-    "html":     GENERATED_DIR / "gsl-generated-package-hierarchy.html",
-    "oo":       GENERATED_DIR / "gsl-generated-package-hierarchy.txt",
+    "markdown": GENERATED_DIR / "ontara-generated-package-hierarchy.md",
+    "opml":     GENERATED_DIR / "ontara-generated-package-hierarchy.opml",
+    "html":     GENERATED_DIR / "ontara-generated-package-hierarchy.html",
+    "oo":       GENERATED_DIR / "ontara-generated-package-hierarchy.txt",
 }
 
 
@@ -316,7 +316,7 @@ def generate_terminal_view(packages):
     desc_col = max_name + 3  # 3 chars gap between longest name and description
 
     lines = [
-        f"GenderSense Package Hierarchy",
+        f"Ontara Package Hierarchy",
         f"Generated {now} from model/*.sysml ({total} packages)",
         "",
         "GenderSense",
@@ -350,7 +350,7 @@ def generate_markdown(packages):
     total = count_all_packages(all_pkgs) + len(libraries)
 
     lines = [
-        "# GenderSense Package Hierarchy (Generated)",
+        "# Ontara Package Hierarchy (Generated)",
         "",
         f"**Generated:** {now}  ",
         f"**Source:** `model/*.sysml`, `libraries/**/*.sysml`  ",
@@ -388,7 +388,7 @@ def generate_opml(packages):
 
     opml = ET.Element("opml", version="2.0")
     head = ET.SubElement(opml, "head")
-    ET.SubElement(head, "title").text = "GenderSense Package Hierarchy"
+    ET.SubElement(head, "title").text = "Ontara Package Hierarchy"
     ET.SubElement(head, "dateCreated").text = now
     body = ET.SubElement(opml, "body")
 
@@ -414,7 +414,7 @@ def generate_opml(packages):
         return outline
 
     root_outline = ET.SubElement(body, "outline",
-                                  text="GenderSense — Model-driven clinical service management platform")
+                                  text="Ontara — Model-driven service system development and delivery platform")
 
     if root_pkg:
         for child in root_pkg.children:
@@ -454,7 +454,7 @@ def generate_html(packages):
             result.extend(render_md(child, depth + 1))
         return result
 
-    md_lines = ["# GenderSense"]
+    md_lines = ["# Ontara"]
     if root_pkg:
         for child in root_pkg.children:
             md_lines.extend(render_md(child, depth=2))
@@ -471,7 +471,7 @@ def generate_html(packages):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GenderSense Package Hierarchy</title>
+    <title>Ontara Package Hierarchy</title>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{
@@ -509,7 +509,7 @@ def generate_html(packages):
 </head>
 <body>
     <div id="banner">
-        <span class="title">GenderSense — Package Hierarchy</span>
+        <span class="title">Ontara — Package Hierarchy</span>
         <span class="meta">Generated {now} &nbsp;|&nbsp;
               Scroll to zoom &nbsp;|&nbsp; Drag to pan &nbsp;|&nbsp;
               Click nodes to collapse</span>
@@ -576,7 +576,7 @@ def generate_omnioutliner(packages):
             add_rows(child, depth + 1)
 
     # Root
-    lines.append(f"GenderSense\tModel-driven clinical service management platform\t\t")
+    lines.append(f"Ontara\tModel-driven service system development and delivery platform\t\t")
     if root_pkg:
         for child in root_pkg.children:
             add_rows(child, depth=1)
