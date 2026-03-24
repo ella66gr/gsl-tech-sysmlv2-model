@@ -113,30 +113,82 @@ Or use `cd console && pnpm run refresh-data`.
 
 ## Obsidian Vault (via CLI)
 
-The Obsidian CLI (v1.12.7) is available. Obsidian must be running. The vault parameter must come first.
-Full CLI reference: https://obsidian.md/help/cli
+The Obsidian CLI (v1.12+, GA) provides terminal control of the running Obsidian Desktop app via IPC. All operations go through Obsidian's internal API — file moves auto-update wikilinks, property changes are immediately indexed.
+
+**Prerequisites:** Obsidian must be running. CLI enabled in Settings → General. The vault parameter must come first.
+
+**Full reference:** See the `/vault` skill (`.claude/skills/vault/SKILL.md`) for complete command reference with all syntax details, and the vault's CLI reference document (`ontara-ref-obsidian-cli-command-reference.md`) for the comprehensive 130+ command catalogue.
+
+### Core commands
 
 ```bash
-# Read a vault document
+# Read
 obsidian vault=GenderSense read file="path/from/vault/root.md"
 
-# Create a new document
-obsidian vault=GenderSense create path="path/to/new-file.md" content="..."
+# Create (silent = don't open in GUI)
+obsidian vault=GenderSense create name="path/to/new-file.md" content="..." silent
 
-# Append to a document
+# Append / Prepend
 obsidian vault=GenderSense append file="path/to/file.md" content="..."
+obsidian vault=GenderSense prepend file="path/to/file.md" content="..."
 
-# Delete a document (moves to trash by default)
-obsidian vault=GenderSense delete path="path/to/file.md"
+# Move a FILE (auto-updates wikilinks) — files only, not folders
+obsidian vault=GenderSense move file="old/path.md" to="new/folder/"
 
-# Search by filename
+# Delete (moves to trash by default)
+obsidian vault=GenderSense delete file="path/to/file.md"
+
+# Search (full-text, with context, or JSON output)
 obsidian vault=GenderSense search query="search term"
+obsidian vault=GenderSense search:context query="search term" limit=10
+obsidian vault=GenderSense search query="search term" format=json
+
+# Properties
+obsidian vault=GenderSense properties file="path/to/note"
+obsidian vault=GenderSense property:set path="path/to/note" name="status" value="active"
+
+# Listing and discovery
+obsidian vault=GenderSense files
+obsidian vault=GenderSense folders
+obsidian vault=GenderSense outline file="path/to/note"
+
+# Links and vault health
+obsidian vault=GenderSense backlinks file="note"
+obsidian vault=GenderSense unresolved    # Broken wikilinks
+obsidian vault=GenderSense orphans       # Notes with no incoming links
+
+# Tags
+obsidian vault=GenderSense tags counts sort=count
+obsidian vault=GenderSense tags:rename old=oldtag new=newtag
+
+# Help (always authoritative for installed version)
+obsidian help
+obsidian help <command>
 ```
 
-Vault root: `/Users/ellagreen/Obsidian/GenderSense`
-Ontara content lives under: `02 ONTARA ARCHITECTURE & MODELLING/`
+### Folder operations (eval workaround)
 
-All vault documents must use `[[filename|display text]]` wikilinks — no plain text vault references.
+The CLI has no native folder rename/move. Use `eval` with `app.fileManager.renameFile()`:
+
+```bash
+obsidian vault=GenderSense eval code="(async () => { const f = app.vault.getAbstractFileByPath('old/folder/path'); if (f) { await app.fileManager.renameFile(f, 'new/folder/path'); return 'done'; } return 'not found'; })()"
+```
+
+This goes through Obsidian's API so wikilinks are updated. Allow 1 second between sequential renames.
+
+### Behavioural guardrail
+
+**If a CLI command fails, STOP and report the error.** Do NOT attempt workarounds using eval, JavaScript API calls, or raw filesystem operations without explicit approval from Ella.
+
+### Key facts
+
+- Vault root: `/Users/ellagreen/Obsidian/GenderSense`
+- Ontara content root: `02 ONTARA ARCHITECTURE & MODELLING/`
+- File paths are relative to vault root; `.md` extension usually optional
+- Always use `obsidian move` instead of raw `mv` — the CLI preserves wikilinks
+- All vault documents must use `[[filename|display text]]` wikilinks — no plain text vault references
+
+
 
 ---
 
