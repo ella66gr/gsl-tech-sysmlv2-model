@@ -1018,6 +1018,98 @@ def build_comprehension_content(all_elements, coverage_matrix):
 
 
 # ---------------------------------------------------------------
+# Stage 4 Phase 1: Weighted relationship graph
+# ---------------------------------------------------------------
+
+def build_weighted_relationship_graph(all_elements, coverage_matrix):
+    """Build a dedicated graph data structure from all @WeightedRelationship annotations.
+
+    Produces a nodes/edges/stats structure suitable for D3.js force-directed
+    graph rendering in the console Relationships view.
+
+    Stage 4 Phase 1 — Session 72.
+    """
+    # Build a lookup of catalogue-tagged elements by name
+    catalogue_elements = {}
+    for elem in all_elements:
+        if elem.catalogue_tag and elem.kind in ("part_def", "requirement_def"):
+            catalogue_elements[elem.name] = elem
+
+    # Collect all edges from weighted_relationships
+    edges = []
+    target_names = set()
+    source_names = set()
+    for elem in all_elements:
+        if not elem.weighted_relationships:
+            continue
+        if not elem.catalogue_tag:
+            continue
+        source_names.add(elem.name)
+        for wr in elem.weighted_relationships:
+            target = wr.get("target", "")
+            if target:
+                edges.append({
+                    "source": elem.name,
+                    "target": target,
+                    "strength": wr.get("strength", ""),
+                    "rationale": wr.get("rationale", ""),
+                })
+                target_names.add(target)
+
+    # Nodes: all catalogue elements that are sources OR targets
+    node_names = source_names | (target_names & set(catalogue_elements.keys()))
+    nodes = []
+    for name in sorted(node_names):
+        elem = catalogue_elements.get(name)
+        if not elem:
+            continue
+        # Get short description from user_facing
+        short_desc = ""
+        if elem.user_facing:
+            short_desc = elem.user_facing.get("shortDescription", "")
+        nodes.append({
+            "id": elem.name,
+            "friendlyName": elem.user_facing.get("friendlyName", elem.name) if elem.user_facing else elem.name,
+            "bmmConcern": elem.catalogue_tag.get("bmmConcern", ""),
+            "classification": elem.catalogue_tag.get("classification", ""),
+            "package": elem.parent_package,
+            "shortDescription": short_desc,
+        })
+
+    # Compute stats
+    strength_counts = {"strong": 0, "moderate": 0, "weak": 0}
+    for edge in edges:
+        s = edge["strength"]
+        if s in strength_counts:
+            strength_counts[s] += 1
+
+    # Count bidirectional pairs
+    edge_set = set()
+    for edge in edges:
+        edge_set.add((edge["source"], edge["target"]))
+    bidirectional_count = 0
+    counted = set()
+    for (s, t) in edge_set:
+        pair = tuple(sorted([s, t]))
+        if pair not in counted and (t, s) in edge_set:
+            bidirectional_count += 1
+            counted.add(pair)
+
+    return {
+        "nodes": nodes,
+        "edges": edges,
+        "stats": {
+            "nodeCount": len(nodes),
+            "edgeCount": len(edges),
+            "strongCount": strength_counts["strong"],
+            "moderateCount": strength_counts["moderate"],
+            "weakCount": strength_counts["weak"],
+            "bidirectionalPairCount": bidirectional_count,
+        },
+    }
+
+
+# ---------------------------------------------------------------
 # Stage 2 Phase 6: Governance traceability
 # ---------------------------------------------------------------
 
@@ -1157,6 +1249,9 @@ def main():
     
     # Stage 2 Phase 6: build governance traceability
     governance = build_governance_traceability(all_elements)
+
+    # Stage 4 Phase 1: build weighted relationship graph
+    relationship_graph = build_weighted_relationship_graph(all_elements, coverage)
     
     # Summary stats
     by_kind = defaultdict(int)
@@ -1227,6 +1322,13 @@ def main():
         print(f"  {chain['satisfyName']}: {chain['requirementDef']} -> {chain['constraintUsage']} ({chain['constraintDef']})",
               file=sys.stderr)
     
+    # Stage 4 Phase 1: relationship graph diagnostics
+    rg_stats = relationship_graph["stats"]
+    print(f"\n--- Weighted Relationship Graph ---", file=sys.stderr)
+    print(f"Nodes: {rg_stats['nodeCount']}, Edges: {rg_stats['edgeCount']}", file=sys.stderr)
+    print(f"Strong: {rg_stats['strongCount']}, Moderate: {rg_stats['moderateCount']}, Weak: {rg_stats['weakCount']}", file=sys.stderr)
+    print(f"Bidirectional pairs: {rg_stats['bidirectionalPairCount']}", file=sys.stderr)
+
     # Coverage summary
     print(f"\n--- Coverage Matrix ---", file=sys.stderr)
     for def_name, info in sorted(coverage.items()):
@@ -1258,6 +1360,7 @@ def main():
         "governanceTraceability": governance,
         "coverageMatrix": coverage,
         "comprehensionContent": comprehension_content,
+        "weightedRelationshipGraph": relationship_graph,
         "elements": [e.to_dict() for e in all_elements],
     }
     

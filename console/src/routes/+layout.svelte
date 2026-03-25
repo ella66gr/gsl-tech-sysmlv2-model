@@ -12,6 +12,7 @@
     BarsOutline,
     ShieldCheckOutline,
     BookOutline,
+    ShareNodesOutline,
   } from 'flowbite-svelte-icons';
 
   let { children } = $props();
@@ -93,6 +94,12 @@
         <a href="/glossary" class="flex items-center rounded-lg p-2 {isActive('/glossary') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <BookOutline class="h-5 w-5" />
           <span class="ms-3">Glossary</span>
+        </a>
+      </li>
+      <li>
+        <a href="/relationships" class="flex items-center rounded-lg p-2 {isActive('/relationships') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
+          <ShareNodesOutline class="h-5 w-5" />
+          <span class="ms-3">Relationships</span>
         </a>
       </li>
 
