@@ -9,7 +9,8 @@ Ontara is a service system development and delivery platform built on SysML v2. 
 - **Two meta models:** Business Meta Model (BMM — what a service business *is*) and Business System Meta Model (BSMM — how a system *works*). They are distinct and connected by explicit mappings.
 - **Six layers:** L6 SysML v2 language → L5 BMM → L4 BSMM → L3 Business model instances → L2 System model instances → L1 Runtime
 - **Three demonstrator domains:** Cafe (coffee shop, full app), Suds (laundry, BMM only), Paws (dog grooming, BMM only) — used for cross-domain validation
-- **Comprehension architecture:** Every BMM element has @UserFacing, @PurposiveDescription, @Comprehension, and @WeightedRelationship annotations. 28/28 coverage, 79 weighted relationships.
+- **Six BMM concerns:** ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel (Session 81). 34 General elements.
+- **Comprehension architecture:** Every BMM element has @UserFacing, @PurposiveDescription, @Comprehension, and @WeightedRelationship annotations. 34/34 coverage, 96 weighted relationships.
 
 ## Repository Layout
 

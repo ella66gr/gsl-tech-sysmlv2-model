@@ -412,9 +412,43 @@ package Foundation {
         }
 
         enum def ReferralDirection {
-            doc /* Direction of a referral. */
+            doc /* Direction of a referral or referral pathway.
+                 * Extended Session 81: bidirectional added for
+                 * referral pathways where both directions operate
+                 * (e.g. GP refers to GSL, GSL refers back to GP). */
             inbound;
             outbound;
+            bidirectional;
+        }
+
+        // Added Session 81: StakeholderModel enums
+
+        enum def RelationshipNature {
+            doc /* Classification of the nature of a stakeholder
+                 * relationship. Closed enum — tailored extensions
+                 * can add domain-specific values via :>> redefinition
+                 * (e.g. clinicalNetwork for healthcare).
+                 *
+                 * Business meta model concept. StakeholderModel (C7).
+                 * Session 81. */
+            regulatory;
+            contractual;
+            professional;
+            advisory;
+            commissioning;
+            peer;
+        }
+
+        enum def DependencyCriticality {
+            doc /* Classification of how critical an external
+                 * dependency is to the business's operation.
+                 * Drives contingency planning priority.
+                 *
+                 * Business meta model concept. StakeholderModel (C7).
+                 * Session 81. */
+            essential;
+            important;
+            convenient;
         }
 
         enum def ConsentStatus {

@@ -6,6 +6,7 @@
 package BusinessModel {
     private import ScalarValues::*;
     private import Foundation::MetadataLibrary::*;
+    private import Foundation::CommonTypes::*;
 
     doc /* The business model package captures the strategic logic of the
          * enterprise: what value is offered, to whom, how revenue is
@@ -14,16 +15,17 @@ package BusinessModel {
          * model (the other six packages) which describes the operational
          * machinery that implements this logic.
          *
-         * The five concerns addressed across this package and the
+         * The six concerns addressed across this package and the
          * existing model:
          * - Service Concept (here: ServiceConcept)
+         * - Activity Model (here: ActivityModel)
          * - Financial Model (here: FinancialPlanning)
          * - Resource and Capability Model (here: ResourcePlanning)
-         * - Service Delivery System (ServiceDelivery package)
-         * - Governance and Adaptation (Enterprise + ServiceDelivery::ClinicalGovernance)
+         * - Governance Mapping (here: GovernanceMapping)
+         * - Stakeholder Model (here: StakeholderModel) — Session 81
          *
          * Cross-cutting: ActivityModel provides the activity taxonomy
-         * and costing foundation that connects all five concerns.
+         * and costing foundation that connects all six concerns.
          *
          * Source: gsl-service-business-meta-modelling.md
          *
@@ -2006,6 +2008,11 @@ package BusinessModel {
             strength = RelationshipStrength::moderate;
             rationale = "Governance requirements often impose resource constraints (regulatory qualification requirements, capacity limits). If a requirement changes, associated resource constraints may need reviewing — but not all requirements produce resource constraints.";
         }
+        @WeightedRelationship {
+            target = "StakeholderRelationship";
+            strength = RelationshipStrength::moderate;
+            rationale = "A change to a governance requirement may require reviewing the relationship through which it is enforced, but the relationship exists independently of any single requirement (H1, H5).";
+        }
         requirement def GovernanceRequirement {
             doc /* A regulatory, legal, or standards obligation that
                  * the business must satisfy. General vocabulary —
@@ -2059,6 +2066,460 @@ package BusinessModel {
             attribute retentionPeriod : String;
             attribute responsibleRole : String;
             attribute frequency : String;
+        }
+    }
+
+    // =================================================================
+    // STAKEHOLDER MODEL — Relationships, partnerships, and participation
+    // =================================================================
+
+    package StakeholderModel {
+        private import ScalarValues::*;
+        private import BusinessModel::ServiceConcept::*;
+        private import BusinessModel::GovernanceMapping::*;
+
+        doc /* The relational boundary of the business: how it
+             * interacts with entities beyond its operational
+             * boundary — regulators, partners, suppliers,
+             * communities, and the customers themselves as
+             * co-producers.
+             *
+             * Six General elements, each a distinct structural
+             * pattern. No specialisation hierarchy — all are
+             * independent sibling part defs. ParticipationModel
+             * looks inward (customer as co-producer); the other
+             * five look outward.
+             *
+             * Boundary with GovernanceMapping: rule content in
+             * GovernanceMapping, relationship structure here.
+             * StakeholderRelationship carries a typed ref to
+             * GovernanceRequirement for dual classification.
+             *
+             * Session 76: StakeholderModel identified and validated.
+             * Session 78: detailed design (open question resolution,
+             *   attribute design, weight design).
+             * Session 81: SysML implementation.
+             *
+             * Business meta model concept. BMM concern 6 of 6.
+             * Source: ontara-discussion-stakeholder-model-detailed-
+             *   design-2026-03-28.md */
+
+        // -- Part definitions ----------------------------------
+
+        @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Stakeholder Relationship";
+            shortDescription = "A typed, ongoing, structured relationship between the business and an external entity.";
+        }
+        @PurposiveDescription {
+            description = "A relationship your business has with an external entity — a regulator, a commissioning body, a professional organisation, a contractual partner, an advisory body, or a peer. Each relationship has a defined nature, mutual obligations, and a health profile. When you define stakeholder relationships, the system tracks who you interact with, what you owe each other, and whether the relationship is working well.";
+        }
+        @Comprehension {
+            surfaceEnumValues = true;
+            surfaceDomainInstantiations = true;
+            surfaceRelatedConcepts = true;
+            surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "GovernanceRequirement";
+            strength = RelationshipStrength::strong;
+            rationale = "A change to the regulatory relationship (e.g. new regulator, changed inspection regime) directly affects what governance requirements apply. Definitional for regulatory-natured relationships (H1).";
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::moderate;
+            rationale = "A change to a stakeholder relationship may affect what services can be offered (e.g. loss of a commissioning relationship), but the offering's identity is defined independently in ServiceConcept (H1, H4).";
+        }
+        @WeightedRelationship {
+            target = "ResourceType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Some stakeholder relationships involve resource implications (e.g. regulatory requirements for qualified staff), but the link is mediated through GovernanceRequirement and ResourceConstraint (H4).";
+        }
+        part def StakeholderRelationship {
+            doc /* A typed, ongoing, structured relationship between
+                 * the business and an external entity. The core
+                 * abstraction of the StakeholderModel concern.
+                 *
+                 * The relationshipNature enum classifies the
+                 * relationship. The ref to GovernanceRequirement
+                 * implements the GovernanceMapping boundary decision
+                 * (Session 78 Q2): rule content in GovernanceMapping,
+                 * relationship structure here.
+                 *
+                 * Business meta model concept. */
+            attribute stakeholderName : String;
+            attribute stakeholderDescription : String;
+            attribute relationshipNature : RelationshipNature;
+            attribute obligationsInward : String;
+            attribute obligationsOutward : String;
+            attribute informationExchanged : String;
+            attribute governanceArrangements : String;
+            attribute healthIndicators : String;
+            attribute reviewCadence : String;
+            ref relatedGovernanceRequirements : GovernanceRequirement[0..*];
+        }
+
+        @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Cooperative Arrangement";
+            shortDescription = "A formalised agreement to jointly deliver or manage something — neither party can deliver independently.";
+        }
+        @PurposiveDescription {
+            description = "A formalised arrangement where your business and another entity jointly deliver or manage something that neither could do alone — a shared care protocol, a delivery partnership, a joint training programme. When you define cooperative arrangements, the system tracks what is jointly produced, how responsibility is divided, and how the arrangement's effectiveness is assessed.";
+        }
+        @Comprehension {
+            surfaceEnumValues = false;
+            surfaceDomainInstantiations = true;
+            surfaceRelatedConcepts = true;
+            surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ActivityType";
+            strength = RelationshipStrength::strong;
+            rationale = "A cooperative arrangement defines shared activities. A change to the arrangement directly affects what activities are performed and by whom (H1).";
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::strong;
+            rationale = "Some cooperative arrangements define jointly-delivered services. A change to the arrangement may fundamentally alter what can be offered (H1).";
+        }
+        @WeightedRelationship {
+            target = "ResourceType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Cooperative arrangements may involve shared resources, but the resource types exist independently (H4).";
+        }
+        part def CooperativeArrangement {
+            doc /* A formalised agreement to jointly deliver or manage
+                 * something. Distinguished by shared responsibility
+                 * for an outcome — neither party can deliver
+                 * independently.
+                 *
+                 * Distinct from StakeholderRelationship: if neither
+                 * party can deliver the outcome independently, it's
+                 * a CooperativeArrangement. If the relationship is
+                 * important but each party could function without
+                 * the other, it's a StakeholderRelationship.
+                 *
+                 * Business meta model concept. */
+            attribute arrangementName : String;
+            attribute cooperatingEntity : String;
+            attribute sharedOutcome : String;
+            attribute responsibilitySplit : String;
+            attribute protocolReference : String;
+            attribute informationSharing : String;
+            attribute disputeResolution : String;
+            attribute performanceIndicators : String;
+        }
+
+        @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Referral Pathway";
+            shortDescription = "A structured route for directing or receiving work between organisations.";
+        }
+        @PurposiveDescription {
+            description = "A structured route for directing or receiving work between your business and another organisation — GP referrals coming in, specialist referrals going out, or bidirectional pathways where both directions operate. When you define referral pathways, the system tracks where work comes from and goes to, what criteria trigger referrals, and how volumes and outcomes are monitored.";
+        }
+        @Comprehension {
+            surfaceEnumValues = true;
+            surfaceDomainInstantiations = true;
+            surfaceRelatedConcepts = true;
+            surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::moderate;
+            rationale = "Referral pathways channel demand to specific offerings, but the offerings exist independently. A change to a referral pathway affects volume and flow, not the offering's identity (H1, H2).";
+        }
+        @WeightedRelationship {
+            target = "ActivityType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Referral pathways generate activities (intake, triage, acknowledgement), but these activities are typed independently (H4).";
+        }
+        part def ReferralPathway {
+            doc /* A structured route for directing or receiving work
+                 * between organisations. Characterised by direction
+                 * (inbound, outbound, bidirectional), criteria,
+                 * protocol, and outcome tracking.
+                 *
+                 * Business meta model concept. */
+            attribute pathwayName : String;
+            attribute direction : ReferralDirection;
+            attribute referringEntity : String;
+            attribute referralCriteria : String;
+            attribute referralProtocol : String;
+            attribute expectedResponseTime : String;
+            attribute feedbackMechanism : String;
+            attribute volumeTracking : String;
+        }
+
+        @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "External Dependency";
+            shortDescription = "Something the business depends on that it does not control — characterised by asymmetric reliance.";
+        }
+        @PurposiveDescription {
+            description = "Something your business depends on that you do not control — a pharmaceutical supplier, a laboratory service, an equipment provider, a software platform. When you define external dependencies, the system tracks what you depend on, how critical each dependency is, what contingency plans exist, and what risks threaten continuity of supply.";
+        }
+        @Comprehension {
+            surfaceEnumValues = true;
+            surfaceDomainInstantiations = true;
+            surfaceRelatedConcepts = true;
+            surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ResourceType";
+            strength = RelationshipStrength::strong;
+            rationale = "An external dependency is something the business depends on — often a resource it cannot provide itself. A change to the dependency (e.g. supplier withdrawal) directly affects resource availability (H1).";
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::moderate;
+            rationale = "Loss of a critical dependency may affect what can be offered, but the link is mediated through resources (H4).";
+        }
+        @WeightedRelationship {
+            target = "CostDriver";
+            strength = RelationshipStrength::moderate;
+            rationale = "Dependencies have cost implications (supplier pricing, contractual terms), but cost drivers are characterising, not definitional (H1, H2).";
+        }
+        part def ExternalDependency {
+            doc /* Something the business depends on that it does not
+                 * control. Characterised by asymmetric reliance — the
+                 * business depends on the provider, but the provider
+                 * does not depend on the business (or the dependence
+                 * is negligible).
+                 *
+                 * Distinguished from CooperativeArrangement by
+                 * asymmetric power. The criticality enum drives
+                 * contingency planning priority.
+                 *
+                 * NOTE: 'dependency' is a KerML reserved word.
+                 * The compound attribute name 'dependencyName' is
+                 * used here — verify in Syside that this parses.
+                 * Fallback: 'externalDependencyName'.
+                 *
+                 * Business meta model concept. */
+            attribute dependencyName : String;
+            attribute provider : String;
+            attribute dependencyDescription : String;
+            attribute criticality : DependencyCriticality;
+            attribute substitutability : String;
+            attribute contingencyPlan : String;
+            attribute contractualTerms : String;
+            attribute supplyRisk : String;
+        }
+
+        @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Community Relationship";
+            shortDescription = "The business's connection to its broader community of interest — constitutive, not transactional.";
+        }
+        @PurposiveDescription {
+            description = "Your business's connection to its broader community of interest — the people, organisations, and networks that share your purpose or are affected by your work. Community relationships are constitutive of your identity, not transactional. When you define community relationships, the system tracks how communities shape your service and how you engage with them.";
+        }
+        @Comprehension {
+            surfaceEnumValues = false;
+            surfaceDomainInstantiations = true;
+            surfaceRelatedConcepts = true;
+            surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::moderate;
+            rationale = "Community relationships shape what the business offers (community needs influence service design), but the link is characterising, not definitional (H1).";
+        }
+        @WeightedRelationship {
+            target = "CustomerSegment";
+            strength = RelationshipStrength::moderate;
+            rationale = "Communities overlap with customer segments, but they are not the same thing — a community relationship may serve non-customers (H4).";
+        }
+        part def CommunityRelationship {
+            doc /* The business's connection to its broader community
+                 * of interest. Constitutive, not transactional —
+                 * deliberately lighter on governance attributes than
+                 * the other StakeholderModel elements.
+                 *
+                 * Business meta model concept. */
+            attribute communityName : String;
+            attribute communityDescription : String;
+            attribute relationshipToService : String;
+            attribute engagementMode : String;
+            attribute mutualBenefit : String;
+            attribute communityVoice : String;
+        }
+
+        @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @UserFacing {
+            friendlyName = "Participation Model";
+            shortDescription = "How the customer or patient participates as co-producer, not merely recipient, of the service.";
+        }
+        @PurposiveDescription {
+            description = "How your customer or patient participates in the service as a co-producer, not merely a recipient — the spectrum from passive recipient to active self-manager. When you define participation models, the system tracks what role participants play, how they contribute information and decisions, what they can do independently, and what support they need.";
+        }
+        @Comprehension {
+            surfaceEnumValues = false;
+            surfaceDomainInstantiations = true;
+            surfaceRelatedConcepts = true;
+            surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "ServiceOffering";
+            strength = RelationshipStrength::strong;
+            rationale = "Participation patterns are defined for specific service offerings — the ref relationship is typed. A change to how customers participate directly affects the offering's delivery model (H1).";
+        }
+        @WeightedRelationship {
+            target = "ActivityType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Participation generates activities (self-service actions, shared decision-making), but the activity types exist independently (H4).";
+        }
+        @WeightedRelationship {
+            target = "Channel";
+            strength = RelationshipStrength::moderate;
+            rationale = "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4).";
+        }
+        part def ParticipationModel {
+            doc /* How the customer/patient participates as co-producer,
+                 * not merely recipient. Connected to A7 (patient
+                 * autonomy), H2 (agency classification), and the
+                 * service participation framework (O26).
+                 *
+                 * Structurally distinct from the five outward-looking
+                 * elements — ParticipationModel describes the boundary
+                 * looking inward at the customer's role within the
+                 * service.
+                 *
+                 * Business meta model concept. */
+            attribute participationName : String;
+            attribute participantRole : String;
+            attribute participationDescription : String;
+            attribute informationContribution : String;
+            attribute decisionInvolvement : String;
+            attribute selfServiceScope : String;
+            attribute supportRequired : String;
+            ref relatedServiceOffering : ServiceOffering[0..*];
+        }
+
+        // -- GSL StakeholderModel instantiation -----------------
+
+        part cqcRelationship : StakeholderRelationship {
+            doc /* Care Quality Commission — the primary regulatory
+                 * relationship for GSL as a registered healthcare
+                 * provider. */
+            attribute :>> stakeholderName = "Care Quality Commission (CQC)";
+            attribute :>> stakeholderDescription = "Independent regulator of health and social care in England. GSL is registered as a healthcare provider.";
+            attribute :>> relationshipNature = RelationshipNature::regulatory;
+            attribute :>> obligationsInward = "CQC sets and inspects against fundamental standards of care. Provides inspection reports, ratings, and enforcement actions.";
+            attribute :>> obligationsOutward = "GSL must maintain registration, comply with fundamental standards, notify CQC of significant events, and cooperate with inspections.";
+            attribute :>> informationExchanged = "Registration data, notification of incidents, inspection evidence (outward). Inspection reports, ratings, guidance (inward).";
+            attribute :>> governanceArrangements = "Formal registration and periodic inspection cycle. Conditions of registration. Duty of candour.";
+            attribute :>> healthIndicators = "Current CQC rating, time since last inspection, open enforcement actions, outstanding conditions.";
+            attribute :>> reviewCadence = "Continuous compliance. Formal inspection cycle determined by CQC (typically 1-2 years for new registrations).";
+        }
+
+        part icbRelationship : StakeholderRelationship {
+            doc /* NHS Integrated Care Board — commissioner relationship
+                 * for shared care funding. */
+            attribute :>> stakeholderName = "NHS Integrated Care Board (ICB)";
+            attribute :>> stakeholderDescription = "NHS body that commissions healthcare services. Relevant where shared care arrangements involve NHS funding.";
+            attribute :>> relationshipNature = RelationshipNature::commissioning;
+            attribute :>> obligationsInward = "ICB defines what services it will commission and fund. Provides commissioning specifications and payment.";
+            attribute :>> obligationsOutward = "GSL must meet commissioning specifications, report activity and outcomes, maintain clinical standards.";
+            attribute :>> informationExchanged = "Activity reports, outcome data, clinical governance reports (outward). Commissioning specifications, payment, policy updates (inward).";
+            attribute :>> governanceArrangements = "Service level agreement or commissioning contract. Regular contract review meetings.";
+            attribute :>> healthIndicators = "Contract compliance status, payment timeliness, relationship with commissioning lead.";
+            attribute :>> reviewCadence = "Quarterly contract review. Annual recommissioning cycle.";
+        }
+
+        part sharedCareProtocol : CooperativeArrangement {
+            doc /* NHS shared care protocol for hormone prescribing —
+                 * the defining cooperative arrangement for GSL. GP
+                 * monitors, GSL initiates and adjusts. */
+            attribute :>> arrangementName = "Shared care hormone prescribing protocol";
+            attribute :>> cooperatingEntity = "GP practices (via individual shared care agreements)";
+            attribute :>> sharedOutcome = "Safe, monitored hormone therapy with prescribing initiated by GSL and ongoing monitoring shared with the patient's GP";
+            attribute :>> responsibilitySplit = "GSL: specialist assessment, treatment initiation, dose adjustment, specialist review. GP: blood monitoring, repeat prescribing per protocol, flagging concerns.";
+            attribute :>> protocolReference = "GSL Shared Care Protocol for Gender-Affirming Hormone Therapy (internal document)";
+            attribute :>> informationSharing = "GSL sends treatment summaries and monitoring schedules. GP sends blood results and clinical observations. Via secure clinical correspondence.";
+            attribute :>> disputeResolution = "Clinical disagreements escalated to GSL clinical lead. Protocol review if pattern of disagreement emerges.";
+            attribute :>> performanceIndicators = "GP uptake rate, monitoring compliance rate, time to shared care agreement, adverse event rate under shared care.";
+        }
+
+        part gpReferralPathway : ReferralPathway {
+            doc /* GP referrals inbound — the primary referral pathway
+                 * for GSL. Bidirectional: GSL also refers back to GP
+                 * for shared care monitoring. */
+            attribute :>> pathwayName = "GP referral pathway";
+            attribute :>> direction = ReferralDirection::bidirectional;
+            attribute :>> referringEntity = "GP practices";
+            attribute :>> referralCriteria = "Inbound: patient presenting with gender dysphoria or requesting gender-affirming care. Outbound: patient ready for shared care monitoring.";
+            attribute :>> referralProtocol = "Inbound: referral letter with clinical history. Outbound: treatment summary with shared care protocol and monitoring schedule.";
+            attribute :>> expectedResponseTime = "Inbound: acknowledgement within 5 working days. Outbound: GP response to shared care request within 10 working days.";
+            attribute :>> feedbackMechanism = "Inbound: outcome letter to GP after assessment. Outbound: ongoing clinical correspondence per monitoring schedule.";
+            attribute :>> volumeTracking = "Referral volumes tracked monthly. Conversion rate (referral to assessment). Shared care uptake rate.";
+        }
+
+        part specialistReferralPathway : ReferralPathway {
+            doc /* Outbound specialist referrals — endocrinology,
+                 * surgery, mental health. */
+            attribute :>> pathwayName = "Specialist referral pathway";
+            attribute :>> direction = ReferralDirection::outbound;
+            attribute :>> referringEntity = "Specialist services (endocrinology, surgery, psychiatry/psychology)";
+            attribute :>> referralCriteria = "Clinical need for specialist input beyond GSL's scope — complex endocrine management, surgical referral, mental health support.";
+            attribute :>> referralProtocol = "Formal referral letter with clinical summary, investigation results, and specific clinical question.";
+            attribute :>> expectedResponseTime = "Varies by specialty and urgency. Routine: 2-4 weeks acknowledgement. Urgent: within 48 hours.";
+            attribute :>> feedbackMechanism = "Specialist outcome report back to GSL. Integrated into patient's clinical record.";
+            attribute :>> volumeTracking = "Referral volumes by specialty tracked quarterly. Waiting times and outcome rates monitored.";
+        }
+
+        part pharmaceuticalSupply : ExternalDependency {
+            doc /* Hormone medication supply — essential dependency.
+                 * GSL cannot deliver its core service without
+                 * reliable pharmaceutical supply. */
+            attribute :>> dependencyName = "Pharmaceutical supply (hormones)";
+            attribute :>> provider = "Licensed pharmaceutical wholesalers and manufacturers";
+            attribute :>> dependencyDescription = "Supply of gender-affirming hormone medications — oestradiol (oral, transdermal, injectable), testosterone (injectable, transdermal). Core to GSL's clinical service.";
+            attribute :>> criticality = DependencyCriticality::essential;
+            attribute :>> substitutability = "Multiple formulations and suppliers available for most medications. Some specialist preparations have limited suppliers. Brand switching requires clinical review.";
+            attribute :>> contingencyPlan = "Maintain relationships with multiple wholesalers. Monitor MHRA drug shortage alerts. Clinical protocol for safe brand switching when required.";
+            attribute :>> contractualTerms = "Standard pharmaceutical wholesale terms. No exclusive supply agreements.";
+            attribute :>> supplyRisk = "Periodic national shortages of specific formulations (testosterone undecanoate, oestradiol patches). MHRA supply disruption notifications.";
+        }
+
+        part laboratoryDependency : ExternalDependency {
+            doc /* External pathology laboratory — essential for blood
+                 * monitoring. */
+            attribute :>> dependencyName = "Laboratory services (blood monitoring)";
+            attribute :>> provider = "Contracted pathology laboratory";
+            attribute :>> dependencyDescription = "Blood test processing for hormone levels, liver function, lipids, haematology. Required for safe prescribing and monitoring.";
+            attribute :>> criticality = DependencyCriticality::essential;
+            attribute :>> substitutability = "Multiple pathology providers available. Switching requires new account setup and reference range familiarisation. Turnaround times may vary.";
+            attribute :>> contingencyPlan = "Secondary laboratory contract in place. Patient can use NHS GP blood monitoring as fallback (slower turnaround).";
+            attribute :>> contractualTerms = "Per-panel pricing. Results via electronic interface. Turnaround SLA: routine 48 hours, urgent 24 hours.";
+            attribute :>> supplyRisk = "Low — multiple providers. Risk of turnaround delays during high-demand periods. Electronic interface dependency.";
+        }
+
+        part transCommunityCommunity : CommunityRelationship {
+            doc /* Trans community and advocacy organisations —
+                 * constitutive relationship. GSL exists to serve
+                 * this community. */
+            attribute :>> communityName = "Trans and non-binary community";
+            attribute :>> communityDescription = "People who identify as trans, non-binary, or gender diverse, and the organisations that advocate for and support them.";
+            attribute :>> relationshipToService = "Constitutive — GSL exists to serve this community. Community needs define what services GSL offers and how they are delivered.";
+            attribute :>> engagementMode = "Community advisory input, patient feedback mechanisms, engagement with trans advocacy organisations, representation at community events.";
+            attribute :>> mutualBenefit = "Community gains access to specialist gender-affirming healthcare. GSL gains understanding of community needs, trust, and referral through community networks.";
+            attribute :>> communityVoice = "Patient experience feedback, community advisory group (planned), engagement with national advocacy organisations (e.g. Mermaids, Gendered Intelligence, GIRES), social media presence.";
+        }
+
+        part sharedDecisionParticipation : ParticipationModel {
+            doc /* Shared decision-making in hormone therapy — the
+                 * defining participation pattern for GSL. Patient
+                 * as informed co-producer of treatment decisions. */
+            attribute :>> participationName = "Shared decision-making in hormone therapy";
+            attribute :>> participantRole = "Informed co-producer — patient actively contributes to treatment decisions alongside the clinician";
+            attribute :>> participationDescription = "Patient participates in treatment decisions through informed consent, preference expression, self-monitoring, and shared goal setting. Clinician provides clinical expertise; patient provides lived experience and treatment preferences.";
+            attribute :>> informationContribution = "Medical history, treatment preferences, self-reported wellbeing, side effect reporting, lifestyle factors affecting treatment. Via consultation and patient portal.";
+            attribute :>> decisionInvolvement = "Shared — clinician and patient jointly decide treatment approach, medication choice, dose adjustments. Patient consent required for all treatment changes.";
+            attribute :>> selfServiceScope = "Appointment booking, viewing pathway progress, accessing education materials, submitting self-monitoring data, secure messaging with clinical team.";
+            attribute :>> supportRequired = "Health literacy support, education on hormone therapy effects and monitoring, digital literacy for portal use, accessibility accommodations as needed.";
         }
     }
 }

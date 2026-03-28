@@ -26,6 +26,7 @@ package PawsBusinessModel {
     private import ScalarValues::*;
     private import BusinessModel::ServiceConcept::*;
     private import BusinessModel::ActivityModel::*;
+    private import BusinessModel::StakeholderModel::*;
 
     doc /* Paws dog grooming service business model. Instantiates the
          * ServiceConcept and ActivityModel part defs from the main
@@ -386,6 +387,95 @@ package PawsBusinessModel {
         attribute :>> allocationMethod = "per-appointment average";
         attribute :>> estimatedCostPerUnit = 2.50;
         attribute :>> costNotes = "Shampoo £1.20, conditioner £0.60, finishing spray £0.40, sundries £0.30. Average across sizes.";
+    }
+
+    // -- Stakeholder Model ------------------------------------
+    //
+    // Cross-domain validation: StakeholderModel instantiations for
+    // an appointment-based personal service. Session 81.
+
+    part animalWelfareRegulator : StakeholderRelationship {
+        doc /* Local authority animal welfare — regulatory oversight
+             * for businesses handling animals. */
+        attribute :>> stakeholderName = "Local authority (animal welfare)";
+        attribute :>> stakeholderDescription = "Regulatory body responsible for animal welfare standards under the Animal Welfare Act 2006.";
+        attribute :>> relationshipNature = RelationshipNature::regulatory;
+        attribute :>> obligationsInward = "Sets animal welfare standards for businesses handling animals. Investigates complaints.";
+        attribute :>> obligationsOutward = "Comply with Animal Welfare Act 2006. Ensure grooming practices do not cause suffering or distress. Cooperate with any investigation.";
+        attribute :>> informationExchanged = "Business registration, incident reports if any (outward). Guidance, investigation outcomes (inward).";
+        attribute :>> governanceArrangements = "Business licence (if required by local authority). Complaint-driven investigation process.";
+        attribute :>> healthIndicators = "No complaints, no investigations, licence current (if applicable).";
+        attribute :>> reviewCadence = "As required — primarily complaint-driven. Voluntary annual self-assessment against industry standards.";
+    }
+
+    part groomingInsurance : StakeholderRelationship {
+        attribute :>> stakeholderName = "Insurance provider";
+        attribute :>> stakeholderDescription = "Professional liability and public liability insurance — contractual relationship.";
+        attribute :>> relationshipNature = RelationshipNature::contractual;
+        attribute :>> obligationsInward = "Provides insurance cover for professional liability, public liability, and damage to animals in care.";
+        attribute :>> obligationsOutward = "Pay premiums, maintain safe working practices, report incidents promptly, comply with policy conditions.";
+        attribute :>> informationExchanged = "Policy details, incident notifications, renewal documentation.";
+        attribute :>> governanceArrangements = "Annual insurance policy. Incident reporting protocol.";
+        attribute :>> healthIndicators = "Policy current, claims history, premium trajectory.";
+        attribute :>> reviewCadence = "Annual renewal. Immediate notification for incidents.";
+    }
+
+    part vetPartnership : CooperativeArrangement {
+        doc /* Local vet partnership for pre-grooming health checks
+             * — shared responsibility for animal welfare. */
+        attribute :>> arrangementName = "Local vet partnership";
+        attribute :>> cooperatingEntity = "Local veterinary practice";
+        attribute :>> sharedOutcome = "Grooming of dogs with health conditions is safe and informed by veterinary guidance — neither party can ensure this alone";
+        attribute :>> responsibilitySplit = "Vet: health assessment, grooming clearance, advice on handling. Paws: grooming delivery, observation during grooming, reporting concerns back to vet.";
+        attribute :>> protocolReference = "Informal professional agreement. Referral form for dogs with health conditions.";
+        attribute :>> informationSharing = "Paws sends grooming referral form for dogs with known conditions. Vet sends clearance notes and handling advice.";
+        attribute :>> disputeResolution = "Professional discussion between groomer and vet. Owner involved in decisions about their animal.";
+        attribute :>> performanceIndicators = "Referral turnaround time, incidents during grooming of referred dogs, vet satisfaction with communication.";
+    }
+
+    part vetReferralPathway : ReferralPathway {
+        doc /* Vet referrals for grooming of dogs with health
+             * conditions — inbound from vet to Paws. */
+        attribute :>> pathwayName = "Vet referral for grooming";
+        attribute :>> direction = ReferralDirection::inbound;
+        attribute :>> referringEntity = "Local veterinary practices";
+        attribute :>> referralCriteria = "Dog with health condition requiring specialist grooming awareness — skin conditions, post-surgical, mobility issues, anxiety.";
+        attribute :>> referralProtocol = "Vet referral note with condition details and handling advice. Phone call for complex cases.";
+        attribute :>> expectedResponseTime = "Acknowledgement within 2 working days. Appointment within 1 week.";
+        attribute :>> feedbackMechanism = "Post-grooming note sent to vet for dogs with health conditions.";
+        attribute :>> volumeTracking = "Referral volumes tracked monthly. Proportion of bookings from vet referrals.";
+    }
+
+    part groomingProductSupply : ExternalDependency {
+        attribute :>> dependencyName = "Grooming product supply";
+        attribute :>> provider = "Professional grooming product suppliers";
+        attribute :>> dependencyDescription = "Supply of shampoos, conditioners, coat treatments, ear cleaners, and grooming tools.";
+        attribute :>> criticality = DependencyCriticality::important;
+        attribute :>> substitutability = "Multiple suppliers available for most products. Some breed-specific or sensitive-skin products have fewer suppliers. Brand switching straightforward for most products.";
+        attribute :>> contingencyPlan = "Stock held for 4-6 weeks of standard products. Alternative supplier accounts maintained. Generic alternatives identified for specialist products.";
+        attribute :>> contractualTerms = "Standard trade account. Monthly ordering with volume discount.";
+        attribute :>> supplyRisk = "Low — diverse supplier market. Occasional discontinuation of specialist products.";
+    }
+
+    part localDogCommunity : CommunityRelationship {
+        attribute :>> communityName = "Local dog owner community";
+        attribute :>> communityDescription = "Dog owners in the local area — breed groups, social walking groups, social media communities.";
+        attribute :>> relationshipToService = "Constitutive — the local dog-owning community is the customer base. Breed-specific knowledge flows both ways.";
+        attribute :>> engagementMode = "Social media presence, breed group engagement, local dog events, grooming tips and advice sharing.";
+        attribute :>> mutualBenefit = "Community gains expert grooming and breed-specific care advice. Paws gains breed knowledge, trust, and word-of-mouth referrals.";
+        attribute :>> communityVoice = "Customer reviews, social media feedback, breed-specific grooming preference discussions, seasonal coat care advice requests.";
+    }
+
+    part pawsParticipation : ParticipationModel {
+        doc /* Pet owner as informed participant — communicates breed
+             * needs and health history, present during grooming. */
+        attribute :>> participationName = "Owner consultation and handover";
+        attribute :>> participantRole = "Informed participant — owner communicates needs and preferences, groomer delivers the service";
+        attribute :>> participationDescription = "Owner communicates breed needs, health history, behavioural notes, and grooming preferences at check-in. Owner may be present or nearby during grooming. Post-grooming handover includes condition notes.";
+        attribute :>> informationContribution = "Breed details, health conditions, behavioural notes (e.g. anxiety triggers), grooming style preferences, skin sensitivity, previous grooming history.";
+        attribute :>> decisionInvolvement = "Consulted — owner expresses preferences, groomer advises on breed-appropriate options and makes professional decisions about safe handling.";
+        attribute :>> selfServiceScope = "Online booking, viewing grooming notes, rebooking preferred services.";
+        attribute :>> supportRequired = "Clear communication about grooming options, breed-specific care advice, transparent pricing for add-on services.";
     }
 }
 

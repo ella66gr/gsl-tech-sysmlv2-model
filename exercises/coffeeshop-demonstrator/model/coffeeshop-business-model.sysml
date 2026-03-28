@@ -20,6 +20,7 @@ package CoffeeShopBusinessModel {
     private import BusinessModel::ActivityModel::*;
     private import Foundation::CommonTypes::*;
     private import CoffeeShop::*;
+    private import BusinessModel::StakeholderModel::*;
 
     // Import note: Both CoffeeShop and BusinessModel::ServiceConcept
     // export CatalogueEntry and ExternalReference (name collision
@@ -347,5 +348,83 @@ package CoffeeShopBusinessModel {
         attribute :>> domainConcept = "ExternalKnowledge";
         attribute :>> targetLayer = PersistenceLayer::externalReference;
         attribute :>> rationale = "Knowledge the system links to but does not own.";
+    }
+
+    // -- Stakeholder Model ------------------------------------
+    //
+    // Cross-domain validation: StakeholderModel instantiations for
+    // a simple retail service business. Session 81.
+
+    part localAuthorityRelationship : StakeholderRelationship {
+        doc /* Local authority food safety — the primary regulatory
+             * relationship for a coffee shop. */
+        attribute :>> stakeholderName = "Local authority (food safety)";
+        attribute :>> stakeholderDescription = "Environmental health department responsible for food safety inspections and ratings.";
+        attribute :>> relationshipNature = RelationshipNature::regulatory;
+        attribute :>> obligationsInward = "Sets food hygiene standards, conducts inspections, issues food hygiene ratings.";
+        attribute :>> obligationsOutward = "Comply with food hygiene regulations, maintain premises standards, cooperate with inspections.";
+        attribute :>> informationExchanged = "Registration details, inspection evidence (outward). Inspection reports, ratings, improvement notices (inward).";
+        attribute :>> governanceArrangements = "Food business registration. Periodic unannounced inspections under the Food Hygiene Rating Scheme.";
+        attribute :>> healthIndicators = "Current food hygiene rating (target: 5), time since last inspection, any outstanding improvement notices.";
+        attribute :>> reviewCadence = "Inspection cycle determined by local authority — typically 6-18 months depending on risk rating.";
+    }
+
+    part landlordRelationship : StakeholderRelationship {
+        attribute :>> stakeholderName = "Landlord";
+        attribute :>> stakeholderDescription = "Property owner — contractual relationship governing premises use.";
+        attribute :>> relationshipNature = RelationshipNature::contractual;
+        attribute :>> obligationsInward = "Provides and maintains premises. Structural repairs, insurance of building.";
+        attribute :>> obligationsOutward = "Pay rent, maintain interior, comply with lease terms, insure contents and liability.";
+        attribute :>> informationExchanged = "Maintenance requests (outward). Lease terms, planned works, rent reviews (inward).";
+        attribute :>> governanceArrangements = "Commercial lease agreement. Annual rent review.";
+        attribute :>> healthIndicators = "Rent payment status, maintenance response times, lease renewal status.";
+        attribute :>> reviewCadence = "Quarterly informal. Annual rent review. Lease renewal at term end.";
+    }
+
+    part deliveryPlatformPartnership : CooperativeArrangement {
+        doc /* Delivery platform partnership — shared order
+             * fulfilment. Neither party delivers the full
+             * experience independently. */
+        attribute :>> arrangementName = "Delivery platform partnership";
+        attribute :>> cooperatingEntity = "Delivery platform (e.g. Deliveroo, UberEats)";
+        attribute :>> sharedOutcome = "Delivery of coffee shop products to customers who order remotely — the shop prepares, the platform delivers";
+        attribute :>> responsibilitySplit = "Shop: order preparation, packaging, quality control. Platform: customer interface, delivery logistics, payment processing.";
+        attribute :>> protocolReference = "Platform partner agreement and order integration specification";
+        attribute :>> informationSharing = "Order details and preparation status (via platform API). Delivery status and customer feedback (from platform).";
+        attribute :>> disputeResolution = "Platform dispute resolution process for order issues. Escalation to account manager for systemic problems.";
+        attribute :>> performanceIndicators = "Order accuracy rate, preparation time, delivery rating, customer complaints via platform.";
+    }
+
+    part coffeeBeanSupply : ExternalDependency {
+        attribute :>> dependencyName = "Coffee bean supply";
+        attribute :>> provider = "Specialty coffee roaster/wholesaler";
+        attribute :>> dependencyDescription = "Supply of roasted coffee beans — the core input for the business's primary product.";
+        attribute :>> criticality = DependencyCriticality::essential;
+        attribute :>> substitutability = "Multiple specialty roasters available. Switching may change flavour profile and affect customer expectations. Blend matching possible.";
+        attribute :>> contingencyPlan = "Secondary supplier relationship maintained. Emergency stock of standard blend (2 weeks). Customer communication plan for blend changes.";
+        attribute :>> contractualTerms = "Monthly order with volume discount. 30-day payment terms.";
+        attribute :>> supplyRisk = "Supply chain disruption (shipping, harvest failure), price volatility due to commodity market, quality inconsistency.";
+    }
+
+    part localNeighbourhood : CommunityRelationship {
+        attribute :>> communityName = "Local neighbourhood";
+        attribute :>> communityDescription = "Residents, workers, and visitors in the immediate area around the shop.";
+        attribute :>> relationshipToService = "Constitutive — the neighbourhood provides the customer base and the shop contributes to local character and social life.";
+        attribute :>> engagementMode = "Community noticeboard, local events participation, loyalty programme, regular customer relationships.";
+        attribute :>> mutualBenefit = "Community gains a social gathering place and quality coffee. Shop gains loyal customer base and word-of-mouth referrals.";
+        attribute :>> communityVoice = "Customer feedback, informal conversations, social media engagement, local business network meetings.";
+    }
+
+    part cafeParticipation : ParticipationModel {
+        doc /* Minimal participation — customer as recipient. The
+             * coffee shop has the lightest participation model of
+             * all demonstrator domains. */
+        attribute :>> participationName = "Counter ordering";
+        attribute :>> participantRole = "Recipient — customer orders and receives, minimal co-production";
+        attribute :>> participationDescription = "Customer selects from menu, places order, pays, and receives prepared drink. Participation is limited to preference expression at point of order.";
+        attribute :>> informationContribution = "Order preferences (drink type, milk choice, extras). No ongoing information contribution.";
+        attribute :>> decisionInvolvement = "Informed — customer chooses from available options. No shared decision-making.";
+        attribute :>> selfServiceScope = "Menu browsing, order placement (counter or app). No self-service preparation.";
+        attribute :>> supportRequired = "Clear menu display, allergen information, queue management.";
     }
 }

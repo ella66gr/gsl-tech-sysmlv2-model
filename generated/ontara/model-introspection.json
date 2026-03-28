@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-03-25T00:32:52.525532",
+  "generatedAt": "2026-03-28T13:07:48.478805",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 464
+      "elementCount": 481
     },
     "cafe": {
       "label": "Cafe",
       "description": "Cafe demonstrator \u2014 reference validation domain",
-      "elementCount": 119
+      "elementCount": 125
     },
     "suds": {
       "label": "Suds",
@@ -20,15 +20,15 @@
     "paws": {
       "label": "Paws",
       "description": "Dog grooming demonstrator \u2014 appointment-based service validation",
-      "elementCount": 53
+      "elementCount": 60
     }
   },
   "summary": {
-    "totalElements": 697,
+    "totalElements": 727,
     "byKind": {
-      "part_def": 119,
-      "part": 463,
-      "enum_def": 52,
+      "part_def": 125,
+      "part": 485,
+      "enum_def": 54,
       "requirement_def": 15,
       "requirement": 7,
       "metadata_def": 15,
@@ -37,16 +37,16 @@
       "satisfy": 2
     },
     "byLayer": {
-      "bmm": 191,
-      "domain": 255,
-      "bsmm": 242,
-      "unknown": 9
+      "bmm": 199,
+      "unknown": 18,
+      "domain": 268,
+      "bsmm": 242
     },
     "byDomain": {
-      "core": 464,
-      "cafe": 119,
+      "core": 481,
+      "cafe": 125,
       "suds": 61,
-      "paws": 53
+      "paws": 60
     }
   },
   "facets": {
@@ -56,32 +56,34 @@
         "FinancialModel",
         "Governance",
         "ResourceCapability",
-        "ServiceConcept"
+        "ServiceConcept",
+        "StakeholderModel"
       ],
       "counts": {
         "ServiceConcept": 9,
         "ActivityModel": 5,
         "ResourceCapability": 7,
         "FinancialModel": 5,
-        "Governance": 2
+        "Governance": 2,
+        "StakeholderModel": 6
       },
-      "total": 28
+      "total": 34
     },
     "classification": {
       "values": [
         "General"
       ],
       "counts": {
-        "General": 28
+        "General": 34
       },
-      "total": 28
+      "total": 34
     }
   },
   "comprehension": {
-    "catalogueTaggedCount": 28,
-    "userFacingCount": 28,
-    "purposiveDescriptionCount": 28,
-    "comprehensionAnnotationCount": 28,
+    "catalogueTaggedCount": 34,
+    "userFacingCount": 34,
+    "purposiveDescriptionCount": 34,
+    "comprehensionAnnotationCount": 34,
     "coveragePercent": 100.0,
     "purposiveCoveragePercent": 100.0,
     "missingUserFacing": [],
@@ -2971,6 +2973,11 @@
           "target": "ResourceConstraint",
           "strength": "moderate",
           "rationale": "Governance requirements often impose resource constraints (regulatory qualification requirements, capacity limits). If a requirement changes, associated resource constraints may need reviewing \u2014 but not all requirements produce resource constraints."
+        },
+        {
+          "target": "StakeholderRelationship",
+          "strength": "moderate",
+          "rationale": "A change to a governance requirement may require reviewing the relationship through which it is enforced, but the relationship exists independently of any single requirement (H1, H5)."
         }
       ],
       "domains": {
@@ -3042,6 +3049,370 @@
           {
             "name": "firstAidKitInspection",
             "package": "PawsGovernance"
+          }
+        ]
+      }
+    },
+    "StakeholderRelationship": {
+      "name": "StakeholderRelationship",
+      "layer": "bmm",
+      "package": "StakeholderModel",
+      "doc": "A typed, ongoing, structured relationship between\nthe business and an external entity. The core\nabstraction of the StakeholderModel concern.\nThe relationshipNature enum classifies the\nrelationship. Th",
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Stakeholder Relationship",
+        "shortDescription": "A typed, ongoing, structured relationship between the business and an external entity."
+      },
+      "purposiveDescription": {
+        "description": "A relationship your business has with an external entity \u2014 a regulator, a commissioning body, a professional organisation, a contractual partner, an advisory body, or a peer. Each relationship has a defined nature, mutual obligations, and a health profile. When you define stakeholder relationships, the system tracks who you interact with, what you owe each other, and whether the relationship is working well."
+      },
+      "comprehension": {
+        "surfaceEnumValues": true,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "GovernanceRequirement",
+          "strength": "strong",
+          "rationale": "A change to the regulatory relationship (e.g. new regulator, changed inspection regime) directly affects what governance requirements apply. Definitional for regulatory-natured relationships (H1)."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "A change to a stakeholder relationship may affect what services can be offered (e.g. loss of a commissioning relationship), but the offering's identity is defined independently in ServiceConcept (H1, H4)."
+        },
+        {
+          "target": "ResourceType",
+          "strength": "moderate",
+          "rationale": "Some stakeholder relationships involve resource implications (e.g. regulatory requirements for qualified staff), but the link is mediated through GovernanceRequirement and ResourceConstraint (H4)."
+        }
+      ],
+      "domains": {
+        "core": [
+          {
+            "name": "cqcRelationship",
+            "package": "StakeholderModel"
+          },
+          {
+            "name": "icbRelationship",
+            "package": "StakeholderModel"
+          }
+        ],
+        "cafe": [
+          {
+            "name": "localAuthorityRelationship",
+            "package": "CoffeeShopBusinessModel"
+          },
+          {
+            "name": "landlordRelationship",
+            "package": "CoffeeShopBusinessModel"
+          }
+        ],
+        "paws": [
+          {
+            "name": "animalWelfareRegulator",
+            "package": "PawsBusinessModel"
+          },
+          {
+            "name": "groomingInsurance",
+            "package": "PawsBusinessModel"
+          }
+        ]
+      }
+    },
+    "CooperativeArrangement": {
+      "name": "CooperativeArrangement",
+      "layer": "bmm",
+      "package": "StakeholderModel",
+      "doc": "A formalised agreement to jointly deliver or manage\nsomething. Distinguished by shared responsibility\nfor an outcome \u2014 neither party can deliver\nindependently.\nDistinct from StakeholderRelationship: i",
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Cooperative Arrangement",
+        "shortDescription": "A formalised agreement to jointly deliver or manage something \u2014 neither party can deliver independently."
+      },
+      "purposiveDescription": {
+        "description": "A formalised arrangement where your business and another entity jointly deliver or manage something that neither could do alone \u2014 a shared care protocol, a delivery partnership, a joint training programme. When you define cooperative arrangements, the system tracks what is jointly produced, how responsibility is divided, and how the arrangement's effectiveness is assessed."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ActivityType",
+          "strength": "strong",
+          "rationale": "A cooperative arrangement defines shared activities. A change to the arrangement directly affects what activities are performed and by whom (H1)."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "strong",
+          "rationale": "Some cooperative arrangements define jointly-delivered services. A change to the arrangement may fundamentally alter what can be offered (H1)."
+        },
+        {
+          "target": "ResourceType",
+          "strength": "moderate",
+          "rationale": "Cooperative arrangements may involve shared resources, but the resource types exist independently (H4)."
+        }
+      ],
+      "domains": {
+        "core": [
+          {
+            "name": "sharedCareProtocol",
+            "package": "StakeholderModel"
+          }
+        ],
+        "cafe": [
+          {
+            "name": "deliveryPlatformPartnership",
+            "package": "CoffeeShopBusinessModel"
+          }
+        ],
+        "paws": [
+          {
+            "name": "vetPartnership",
+            "package": "PawsBusinessModel"
+          }
+        ]
+      }
+    },
+    "ReferralPathway": {
+      "name": "ReferralPathway",
+      "layer": "bmm",
+      "package": "StakeholderModel",
+      "doc": "A structured route for directing or receiving work\nbetween organisations. Characterised by direction\n(inbound, outbound, bidirectional), criteria,\nprotocol, and outcome tracking.\nBusiness meta model c",
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Referral Pathway",
+        "shortDescription": "A structured route for directing or receiving work between organisations."
+      },
+      "purposiveDescription": {
+        "description": "A structured route for directing or receiving work between your business and another organisation \u2014 GP referrals coming in, specialist referrals going out, or bidirectional pathways where both directions operate. When you define referral pathways, the system tracks where work comes from and goes to, what criteria trigger referrals, and how volumes and outcomes are monitored."
+      },
+      "comprehension": {
+        "surfaceEnumValues": true,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "Referral pathways channel demand to specific offerings, but the offerings exist independently. A change to a referral pathway affects volume and flow, not the offering's identity (H1, H2)."
+        },
+        {
+          "target": "ActivityType",
+          "strength": "moderate",
+          "rationale": "Referral pathways generate activities (intake, triage, acknowledgement), but these activities are typed independently (H4)."
+        }
+      ],
+      "domains": {
+        "core": [
+          {
+            "name": "gpReferralPathway",
+            "package": "StakeholderModel"
+          },
+          {
+            "name": "specialistReferralPathway",
+            "package": "StakeholderModel"
+          }
+        ],
+        "paws": [
+          {
+            "name": "vetReferralPathway",
+            "package": "PawsBusinessModel"
+          }
+        ]
+      }
+    },
+    "ExternalDependency": {
+      "name": "ExternalDependency",
+      "layer": "bmm",
+      "package": "StakeholderModel",
+      "doc": "Something the business depends on that it does not\ncontrol. Characterised by asymmetric reliance \u2014 the\nbusiness depends on the provider, but the provider\ndoes not depend on the business (or the depend",
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "External Dependency",
+        "shortDescription": "Something the business depends on that it does not control \u2014 characterised by asymmetric reliance."
+      },
+      "purposiveDescription": {
+        "description": "Something your business depends on that you do not control \u2014 a pharmaceutical supplier, a laboratory service, an equipment provider, a software platform. When you define external dependencies, the system tracks what you depend on, how critical each dependency is, what contingency plans exist, and what risks threaten continuity of supply."
+      },
+      "comprehension": {
+        "surfaceEnumValues": true,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ResourceType",
+          "strength": "strong",
+          "rationale": "An external dependency is something the business depends on \u2014 often a resource it cannot provide itself. A change to the dependency (e.g. supplier withdrawal) directly affects resource availability (H1)."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "Loss of a critical dependency may affect what can be offered, but the link is mediated through resources (H4)."
+        },
+        {
+          "target": "CostDriver",
+          "strength": "moderate",
+          "rationale": "Dependencies have cost implications (supplier pricing, contractual terms), but cost drivers are characterising, not definitional (H1, H2)."
+        }
+      ],
+      "domains": {
+        "core": [
+          {
+            "name": "pharmaceuticalSupply",
+            "package": "StakeholderModel"
+          },
+          {
+            "name": "laboratoryDependency",
+            "package": "StakeholderModel"
+          }
+        ],
+        "cafe": [
+          {
+            "name": "coffeeBeanSupply",
+            "package": "CoffeeShopBusinessModel"
+          }
+        ],
+        "paws": [
+          {
+            "name": "groomingProductSupply",
+            "package": "PawsBusinessModel"
+          }
+        ]
+      }
+    },
+    "CommunityRelationship": {
+      "name": "CommunityRelationship",
+      "layer": "bmm",
+      "package": "StakeholderModel",
+      "doc": "The business's connection to its broader community\nof interest. Constitutive, not transactional \u2014\ndeliberately lighter on governance attributes than\nthe other StakeholderModel elements.\nBusiness meta ",
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Community Relationship",
+        "shortDescription": "The business's connection to its broader community of interest \u2014 constitutive, not transactional."
+      },
+      "purposiveDescription": {
+        "description": "Your business's connection to its broader community of interest \u2014 the people, organisations, and networks that share your purpose or are affected by your work. Community relationships are constitutive of your identity, not transactional. When you define community relationships, the system tracks how communities shape your service and how you engage with them."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "Community relationships shape what the business offers (community needs influence service design), but the link is characterising, not definitional (H1)."
+        },
+        {
+          "target": "CustomerSegment",
+          "strength": "moderate",
+          "rationale": "Communities overlap with customer segments, but they are not the same thing \u2014 a community relationship may serve non-customers (H4)."
+        }
+      ],
+      "domains": {
+        "core": [
+          {
+            "name": "transCommunityCommunity",
+            "package": "StakeholderModel"
+          }
+        ],
+        "cafe": [
+          {
+            "name": "localNeighbourhood",
+            "package": "CoffeeShopBusinessModel"
+          }
+        ],
+        "paws": [
+          {
+            "name": "localDogCommunity",
+            "package": "PawsBusinessModel"
+          }
+        ]
+      }
+    },
+    "ParticipationModel": {
+      "name": "ParticipationModel",
+      "layer": "bmm",
+      "package": "StakeholderModel",
+      "doc": "How the customer/patient participates as co-producer,\nnot merely recipient. Connected to A7 (patient\nautonomy), H2 (agency classification), and the\nservice participation framework (O26).\nStructurally ",
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Participation Model",
+        "shortDescription": "How the customer or patient participates as co-producer, not merely recipient, of the service."
+      },
+      "purposiveDescription": {
+        "description": "How your customer or patient participates in the service as a co-producer, not merely a recipient \u2014 the spectrum from passive recipient to active self-manager. When you define participation models, the system tracks what role participants play, how they contribute information and decisions, what they can do independently, and what support they need."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "strong",
+          "rationale": "Participation patterns are defined for specific service offerings \u2014 the ref relationship is typed. A change to how customers participate directly affects the offering's delivery model (H1)."
+        },
+        {
+          "target": "ActivityType",
+          "strength": "moderate",
+          "rationale": "Participation generates activities (self-service actions, shared decision-making), but the activity types exist independently (H4)."
+        },
+        {
+          "target": "Channel",
+          "strength": "moderate",
+          "rationale": "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4)."
+        }
+      ],
+      "domains": {
+        "core": [
+          {
+            "name": "sharedDecisionParticipation",
+            "package": "StakeholderModel"
+          }
+        ],
+        "cafe": [
+          {
+            "name": "cafeParticipation",
+            "package": "CoffeeShopBusinessModel"
+          }
+        ],
+        "paws": [
+          {
+            "name": "pawsParticipation",
+            "package": "PawsBusinessModel"
           }
         ]
       }
@@ -7227,6 +7598,545 @@
           "type": "String"
         }
       ]
+    },
+    "StakeholderRelationship": {
+      "flags": {
+        "surfaceEnumValues": true,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "enumValues": [
+        {
+          "enumName": "RelationshipNature",
+          "attributeName": "relationshipNature",
+          "values": [
+            "regulatory",
+            "contractual",
+            "professional",
+            "advisory",
+            "commissioning",
+            "peer"
+          ]
+        }
+      ],
+      "domainInstantiations": {
+        "core": {
+          "count": 2,
+          "instances": [
+            "cqcRelationship",
+            "icbRelationship"
+          ]
+        },
+        "cafe": {
+          "count": 2,
+          "instances": [
+            "localAuthorityRelationship",
+            "landlordRelationship"
+          ]
+        },
+        "paws": {
+          "count": 2,
+          "instances": [
+            "animalWelfareRegulator",
+            "groomingInsurance"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "CooperativeArrangement",
+          "friendlyName": "Cooperative Arrangement"
+        },
+        {
+          "name": "ReferralPathway",
+          "friendlyName": "Referral Pathway"
+        },
+        {
+          "name": "ExternalDependency",
+          "friendlyName": "External Dependency"
+        },
+        {
+          "name": "CommunityRelationship",
+          "friendlyName": "Community Relationship"
+        },
+        {
+          "name": "ParticipationModel",
+          "friendlyName": "Participation Model"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "stakeholderName",
+          "type": "String"
+        },
+        {
+          "name": "stakeholderDescription",
+          "type": "String"
+        },
+        {
+          "name": "relationshipNature",
+          "type": "RelationshipNature"
+        },
+        {
+          "name": "obligationsInward",
+          "type": "String"
+        },
+        {
+          "name": "obligationsOutward",
+          "type": "String"
+        },
+        {
+          "name": "informationExchanged",
+          "type": "String"
+        },
+        {
+          "name": "governanceArrangements",
+          "type": "String"
+        },
+        {
+          "name": "healthIndicators",
+          "type": "String"
+        },
+        {
+          "name": "reviewCadence",
+          "type": "String"
+        },
+        {
+          "name": "relatedGovernanceRequirements",
+          "type": "GovernanceRequirement[0..*]"
+        }
+      ]
+    },
+    "CooperativeArrangement": {
+      "flags": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "domainInstantiations": {
+        "core": {
+          "count": 1,
+          "instances": [
+            "sharedCareProtocol"
+          ]
+        },
+        "cafe": {
+          "count": 1,
+          "instances": [
+            "deliveryPlatformPartnership"
+          ]
+        },
+        "paws": {
+          "count": 1,
+          "instances": [
+            "vetPartnership"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "StakeholderRelationship",
+          "friendlyName": "Stakeholder Relationship"
+        },
+        {
+          "name": "ReferralPathway",
+          "friendlyName": "Referral Pathway"
+        },
+        {
+          "name": "ExternalDependency",
+          "friendlyName": "External Dependency"
+        },
+        {
+          "name": "CommunityRelationship",
+          "friendlyName": "Community Relationship"
+        },
+        {
+          "name": "ParticipationModel",
+          "friendlyName": "Participation Model"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "arrangementName",
+          "type": "String"
+        },
+        {
+          "name": "cooperatingEntity",
+          "type": "String"
+        },
+        {
+          "name": "sharedOutcome",
+          "type": "String"
+        },
+        {
+          "name": "responsibilitySplit",
+          "type": "String"
+        },
+        {
+          "name": "protocolReference",
+          "type": "String"
+        },
+        {
+          "name": "informationSharing",
+          "type": "String"
+        },
+        {
+          "name": "disputeResolution",
+          "type": "String"
+        },
+        {
+          "name": "performanceIndicators",
+          "type": "String"
+        }
+      ]
+    },
+    "ReferralPathway": {
+      "flags": {
+        "surfaceEnumValues": true,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "enumValues": [
+        {
+          "enumName": "ReferralDirection",
+          "attributeName": "direction",
+          "values": [
+            "inbound",
+            "outbound",
+            "bidirectional"
+          ]
+        }
+      ],
+      "domainInstantiations": {
+        "core": {
+          "count": 2,
+          "instances": [
+            "gpReferralPathway",
+            "specialistReferralPathway"
+          ]
+        },
+        "paws": {
+          "count": 1,
+          "instances": [
+            "vetReferralPathway"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "StakeholderRelationship",
+          "friendlyName": "Stakeholder Relationship"
+        },
+        {
+          "name": "CooperativeArrangement",
+          "friendlyName": "Cooperative Arrangement"
+        },
+        {
+          "name": "ExternalDependency",
+          "friendlyName": "External Dependency"
+        },
+        {
+          "name": "CommunityRelationship",
+          "friendlyName": "Community Relationship"
+        },
+        {
+          "name": "ParticipationModel",
+          "friendlyName": "Participation Model"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "pathwayName",
+          "type": "String"
+        },
+        {
+          "name": "direction",
+          "type": "ReferralDirection"
+        },
+        {
+          "name": "referringEntity",
+          "type": "String"
+        },
+        {
+          "name": "referralCriteria",
+          "type": "String"
+        },
+        {
+          "name": "referralProtocol",
+          "type": "String"
+        },
+        {
+          "name": "expectedResponseTime",
+          "type": "String"
+        },
+        {
+          "name": "feedbackMechanism",
+          "type": "String"
+        },
+        {
+          "name": "volumeTracking",
+          "type": "String"
+        }
+      ]
+    },
+    "ExternalDependency": {
+      "flags": {
+        "surfaceEnumValues": true,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "enumValues": [
+        {
+          "enumName": "DependencyCriticality",
+          "attributeName": "criticality",
+          "values": [
+            "essential",
+            "important",
+            "convenient"
+          ]
+        }
+      ],
+      "domainInstantiations": {
+        "core": {
+          "count": 2,
+          "instances": [
+            "pharmaceuticalSupply",
+            "laboratoryDependency"
+          ]
+        },
+        "cafe": {
+          "count": 1,
+          "instances": [
+            "coffeeBeanSupply"
+          ]
+        },
+        "paws": {
+          "count": 1,
+          "instances": [
+            "groomingProductSupply"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "StakeholderRelationship",
+          "friendlyName": "Stakeholder Relationship"
+        },
+        {
+          "name": "CooperativeArrangement",
+          "friendlyName": "Cooperative Arrangement"
+        },
+        {
+          "name": "ReferralPathway",
+          "friendlyName": "Referral Pathway"
+        },
+        {
+          "name": "CommunityRelationship",
+          "friendlyName": "Community Relationship"
+        },
+        {
+          "name": "ParticipationModel",
+          "friendlyName": "Participation Model"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "dependencyName",
+          "type": "String"
+        },
+        {
+          "name": "provider",
+          "type": "String"
+        },
+        {
+          "name": "dependencyDescription",
+          "type": "String"
+        },
+        {
+          "name": "criticality",
+          "type": "DependencyCriticality"
+        },
+        {
+          "name": "substitutability",
+          "type": "String"
+        },
+        {
+          "name": "contingencyPlan",
+          "type": "String"
+        },
+        {
+          "name": "contractualTerms",
+          "type": "String"
+        },
+        {
+          "name": "supplyRisk",
+          "type": "String"
+        }
+      ]
+    },
+    "CommunityRelationship": {
+      "flags": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "domainInstantiations": {
+        "core": {
+          "count": 1,
+          "instances": [
+            "transCommunityCommunity"
+          ]
+        },
+        "cafe": {
+          "count": 1,
+          "instances": [
+            "localNeighbourhood"
+          ]
+        },
+        "paws": {
+          "count": 1,
+          "instances": [
+            "localDogCommunity"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "StakeholderRelationship",
+          "friendlyName": "Stakeholder Relationship"
+        },
+        {
+          "name": "CooperativeArrangement",
+          "friendlyName": "Cooperative Arrangement"
+        },
+        {
+          "name": "ReferralPathway",
+          "friendlyName": "Referral Pathway"
+        },
+        {
+          "name": "ExternalDependency",
+          "friendlyName": "External Dependency"
+        },
+        {
+          "name": "ParticipationModel",
+          "friendlyName": "Participation Model"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "communityName",
+          "type": "String"
+        },
+        {
+          "name": "communityDescription",
+          "type": "String"
+        },
+        {
+          "name": "relationshipToService",
+          "type": "String"
+        },
+        {
+          "name": "engagementMode",
+          "type": "String"
+        },
+        {
+          "name": "mutualBenefit",
+          "type": "String"
+        },
+        {
+          "name": "communityVoice",
+          "type": "String"
+        }
+      ]
+    },
+    "ParticipationModel": {
+      "flags": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "domainInstantiations": {
+        "core": {
+          "count": 1,
+          "instances": [
+            "sharedDecisionParticipation"
+          ]
+        },
+        "cafe": {
+          "count": 1,
+          "instances": [
+            "cafeParticipation"
+          ]
+        },
+        "paws": {
+          "count": 1,
+          "instances": [
+            "pawsParticipation"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "StakeholderRelationship",
+          "friendlyName": "Stakeholder Relationship"
+        },
+        {
+          "name": "CooperativeArrangement",
+          "friendlyName": "Cooperative Arrangement"
+        },
+        {
+          "name": "ReferralPathway",
+          "friendlyName": "Referral Pathway"
+        },
+        {
+          "name": "ExternalDependency",
+          "friendlyName": "External Dependency"
+        },
+        {
+          "name": "CommunityRelationship",
+          "friendlyName": "Community Relationship"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "participationName",
+          "type": "String"
+        },
+        {
+          "name": "participantRole",
+          "type": "String"
+        },
+        {
+          "name": "participationDescription",
+          "type": "String"
+        },
+        {
+          "name": "informationContribution",
+          "type": "String"
+        },
+        {
+          "name": "decisionInvolvement",
+          "type": "String"
+        },
+        {
+          "name": "selfServiceScope",
+          "type": "String"
+        },
+        {
+          "name": "supportRequired",
+          "type": "String"
+        },
+        {
+          "name": "relatedServiceOffering",
+          "type": "ServiceOffering[0..*]"
+        }
+      ]
     }
   },
   "weightedRelationshipGraph": {
@@ -7312,6 +8222,22 @@
         "shortDescription": "A way that customers find, reach, or receive your service."
       },
       {
+        "id": "CommunityRelationship",
+        "friendlyName": "Community Relationship",
+        "bmmConcern": "StakeholderModel",
+        "classification": "General",
+        "package": "StakeholderModel",
+        "shortDescription": "The business's connection to its broader community of interest \u2014 constitutive, not transactional."
+      },
+      {
+        "id": "CooperativeArrangement",
+        "friendlyName": "Cooperative Arrangement",
+        "bmmConcern": "StakeholderModel",
+        "classification": "General",
+        "package": "StakeholderModel",
+        "shortDescription": "A formalised agreement to jointly deliver or manage something \u2014 neither party can deliver independently."
+      },
+      {
         "id": "CostDriver",
         "friendlyName": "Cost Driver",
         "bmmConcern": "FinancialModel",
@@ -7334,6 +8260,14 @@
         "classification": "General",
         "package": "ServiceConcept",
         "shortDescription": "An explicit, testable statement of how your service differs from alternatives."
+      },
+      {
+        "id": "ExternalDependency",
+        "friendlyName": "External Dependency",
+        "bmmConcern": "StakeholderModel",
+        "classification": "General",
+        "package": "StakeholderModel",
+        "shortDescription": "Something the business depends on that it does not control \u2014 characterised by asymmetric reliance."
       },
       {
         "id": "ExternalReference",
@@ -7376,12 +8310,28 @@
         "shortDescription": "A declared connection between a strategic objective and the capabilities that support it."
       },
       {
+        "id": "ParticipationModel",
+        "friendlyName": "Participation Model",
+        "bmmConcern": "StakeholderModel",
+        "classification": "General",
+        "package": "StakeholderModel",
+        "shortDescription": "How the customer or patient participates as co-producer, not merely recipient, of the service."
+      },
+      {
         "id": "PricingModel",
         "friendlyName": "Pricing Model",
         "bmmConcern": "FinancialModel",
         "classification": "General",
         "package": "FinancialPlanning",
         "shortDescription": "How prices are set for services \u2014 per-episode, subscription, tiered, or other basis."
+      },
+      {
+        "id": "ReferralPathway",
+        "friendlyName": "Referral Pathway",
+        "bmmConcern": "StakeholderModel",
+        "classification": "General",
+        "package": "StakeholderModel",
+        "shortDescription": "A structured route for directing or receiving work between organisations."
       },
       {
         "id": "ResourceConstraint",
@@ -7438,6 +8388,14 @@
         "classification": "General",
         "package": "ServiceConcept",
         "shortDescription": "The entity upon which a service is performed \u2014 a person, animal, object, or organisation that receives the service."
+      },
+      {
+        "id": "StakeholderRelationship",
+        "friendlyName": "Stakeholder Relationship",
+        "bmmConcern": "StakeholderModel",
+        "classification": "General",
+        "package": "StakeholderModel",
+        "shortDescription": "A typed, ongoing, structured relationship between the business and an external entity."
       },
       {
         "id": "UnitEconomics",
@@ -7930,15 +8888,117 @@
         "target": "ResourceConstraint",
         "strength": "moderate",
         "rationale": "Governance requirements often impose resource constraints (regulatory qualification requirements, capacity limits). If a requirement changes, associated resource constraints may need reviewing \u2014 but not all requirements produce resource constraints."
+      },
+      {
+        "source": "GovernanceRequirement",
+        "target": "StakeholderRelationship",
+        "strength": "moderate",
+        "rationale": "A change to a governance requirement may require reviewing the relationship through which it is enforced, but the relationship exists independently of any single requirement (H1, H5)."
+      },
+      {
+        "source": "StakeholderRelationship",
+        "target": "GovernanceRequirement",
+        "strength": "strong",
+        "rationale": "A change to the regulatory relationship (e.g. new regulator, changed inspection regime) directly affects what governance requirements apply. Definitional for regulatory-natured relationships (H1)."
+      },
+      {
+        "source": "StakeholderRelationship",
+        "target": "ServiceOffering",
+        "strength": "moderate",
+        "rationale": "A change to a stakeholder relationship may affect what services can be offered (e.g. loss of a commissioning relationship), but the offering's identity is defined independently in ServiceConcept (H1, H4)."
+      },
+      {
+        "source": "StakeholderRelationship",
+        "target": "ResourceType",
+        "strength": "moderate",
+        "rationale": "Some stakeholder relationships involve resource implications (e.g. regulatory requirements for qualified staff), but the link is mediated through GovernanceRequirement and ResourceConstraint (H4)."
+      },
+      {
+        "source": "CooperativeArrangement",
+        "target": "ActivityType",
+        "strength": "strong",
+        "rationale": "A cooperative arrangement defines shared activities. A change to the arrangement directly affects what activities are performed and by whom (H1)."
+      },
+      {
+        "source": "CooperativeArrangement",
+        "target": "ServiceOffering",
+        "strength": "strong",
+        "rationale": "Some cooperative arrangements define jointly-delivered services. A change to the arrangement may fundamentally alter what can be offered (H1)."
+      },
+      {
+        "source": "CooperativeArrangement",
+        "target": "ResourceType",
+        "strength": "moderate",
+        "rationale": "Cooperative arrangements may involve shared resources, but the resource types exist independently (H4)."
+      },
+      {
+        "source": "ReferralPathway",
+        "target": "ServiceOffering",
+        "strength": "moderate",
+        "rationale": "Referral pathways channel demand to specific offerings, but the offerings exist independently. A change to a referral pathway affects volume and flow, not the offering's identity (H1, H2)."
+      },
+      {
+        "source": "ReferralPathway",
+        "target": "ActivityType",
+        "strength": "moderate",
+        "rationale": "Referral pathways generate activities (intake, triage, acknowledgement), but these activities are typed independently (H4)."
+      },
+      {
+        "source": "ExternalDependency",
+        "target": "ResourceType",
+        "strength": "strong",
+        "rationale": "An external dependency is something the business depends on \u2014 often a resource it cannot provide itself. A change to the dependency (e.g. supplier withdrawal) directly affects resource availability (H1)."
+      },
+      {
+        "source": "ExternalDependency",
+        "target": "ServiceOffering",
+        "strength": "moderate",
+        "rationale": "Loss of a critical dependency may affect what can be offered, but the link is mediated through resources (H4)."
+      },
+      {
+        "source": "ExternalDependency",
+        "target": "CostDriver",
+        "strength": "moderate",
+        "rationale": "Dependencies have cost implications (supplier pricing, contractual terms), but cost drivers are characterising, not definitional (H1, H2)."
+      },
+      {
+        "source": "CommunityRelationship",
+        "target": "ServiceOffering",
+        "strength": "moderate",
+        "rationale": "Community relationships shape what the business offers (community needs influence service design), but the link is characterising, not definitional (H1)."
+      },
+      {
+        "source": "CommunityRelationship",
+        "target": "CustomerSegment",
+        "strength": "moderate",
+        "rationale": "Communities overlap with customer segments, but they are not the same thing \u2014 a community relationship may serve non-customers (H4)."
+      },
+      {
+        "source": "ParticipationModel",
+        "target": "ServiceOffering",
+        "strength": "strong",
+        "rationale": "Participation patterns are defined for specific service offerings \u2014 the ref relationship is typed. A change to how customers participate directly affects the offering's delivery model (H1)."
+      },
+      {
+        "source": "ParticipationModel",
+        "target": "ActivityType",
+        "strength": "moderate",
+        "rationale": "Participation generates activities (self-service actions, shared decision-making), but the activity types exist independently (H4)."
+      },
+      {
+        "source": "ParticipationModel",
+        "target": "Channel",
+        "strength": "moderate",
+        "rationale": "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4)."
       }
     ],
     "stats": {
-      "nodeCount": 28,
-      "edgeCount": 79,
-      "strongCount": 27,
-      "moderateCount": 50,
+      "nodeCount": 34,
+      "edgeCount": 96,
+      "strongCount": 32,
+      "moderateCount": 62,
       "weakCount": 2,
-      "bidirectionalPairCount": 27
+      "bidirectionalPairCount": 28
     }
   },
   "elements": [
@@ -7950,7 +9010,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 97,
+      "lineNumber": 99,
       "attributes": [
         {
           "name": "segmentName",
@@ -8076,7 +9136,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 138,
+      "lineNumber": 140,
       "attributes": [
         {
           "name": "propositionName",
@@ -8202,7 +9262,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 203,
+      "lineNumber": 205,
       "attributes": [
         {
           "name": "offeringName",
@@ -8398,7 +9458,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 244,
+      "lineNumber": 246,
       "attributes": [
         {
           "name": "channelName",
@@ -8516,7 +9576,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 280,
+      "lineNumber": 282,
       "attributes": [
         {
           "name": "claimName",
@@ -8624,7 +9684,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 336,
+      "lineNumber": 338,
       "attributes": [
         {
           "name": "subjectName",
@@ -8776,7 +9836,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 405,
+      "lineNumber": 407,
       "attributes": [
         {
           "name": "participantName",
@@ -8915,7 +9975,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 480,
+      "lineNumber": 482,
       "attributes": [
         {
           "name": "entryName",
@@ -9051,7 +10111,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 524,
+      "lineNumber": 526,
       "attributes": [
         {
           "name": "referenceType",
@@ -9146,7 +10206,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 548,
+      "lineNumber": 550,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -9184,7 +10244,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 559,
+      "lineNumber": 561,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -9222,7 +10282,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 572,
+      "lineNumber": 574,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -9255,7 +10315,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 580,
+      "lineNumber": 582,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -9288,7 +10348,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 588,
+      "lineNumber": 590,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -9321,7 +10381,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 598,
+      "lineNumber": 600,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -9364,7 +10424,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 610,
+      "lineNumber": 612,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -9407,7 +10467,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 622,
+      "lineNumber": 624,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -9450,7 +10510,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 636,
+      "lineNumber": 638,
       "specialises": "Channel",
       "attributes": [
         {
@@ -9493,7 +10553,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 645,
+      "lineNumber": 647,
       "specialises": "Channel",
       "attributes": [
         {
@@ -9536,7 +10596,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 656,
+      "lineNumber": 658,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -9569,7 +10629,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 663,
+      "lineNumber": 665,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -9602,7 +10662,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 672,
+      "lineNumber": 674,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -9645,7 +10705,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 685,
+      "lineNumber": 687,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -9688,7 +10748,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 697,
+      "lineNumber": 699,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -9731,7 +10791,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 709,
+      "lineNumber": 711,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -9774,7 +10834,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 725,
+      "lineNumber": 727,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -9807,7 +10867,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 766,
+      "lineNumber": 768,
       "attributes": [
         {
           "name": "serviceDelivery;"
@@ -9834,7 +10894,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 778,
+      "lineNumber": 780,
       "attributes": [
         {
           "name": "envelope;"
@@ -9855,7 +10915,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 832,
+      "lineNumber": 834,
       "attributes": [
         {
           "name": "activityTypeName",
@@ -10020,7 +11080,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 862,
+      "lineNumber": 864,
       "attributes": [
         {
           "name": "activityType",
@@ -10120,7 +11180,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 898,
+      "lineNumber": 900,
       "attributes": [
         {
           "name": "budgetPeriod",
@@ -10233,7 +11293,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 933,
+      "lineNumber": 935,
       "attributes": [
         {
           "name": "businessArea",
@@ -10341,7 +11401,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 971,
+      "lineNumber": 973,
       "attributes": [
         {
           "name": "activityType",
@@ -10462,7 +11522,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1051,
+      "lineNumber": 1053,
       "attributes": [
         {
           "name": "resourceTypeName",
@@ -10627,7 +11687,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1087,
+      "lineNumber": 1089,
       "attributes": [
         {
           "name": "instanceName",
@@ -10745,7 +11805,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1134,
+      "lineNumber": 1136,
       "attributes": [
         {
           "name": "capabilityName",
@@ -10884,7 +11944,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1177,
+      "lineNumber": 1179,
       "attributes": [
         {
           "name": "resourceConfiguration",
@@ -10997,7 +12057,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1218,
+      "lineNumber": 1220,
       "attributes": [
         {
           "name": "constraintName",
@@ -11110,7 +12170,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1261,
+      "lineNumber": 1263,
       "attributes": [
         {
           "name": "catalogueEntry",
@@ -11215,7 +12275,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1288,
+      "lineNumber": 1290,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -11253,7 +12313,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1299,
+      "lineNumber": 1301,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -11291,7 +12351,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1307,
+      "lineNumber": 1309,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -11329,7 +12389,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1317,
+      "lineNumber": 1319,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -11367,7 +12427,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1325,
+      "lineNumber": 1327,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -11405,7 +12465,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1333,
+      "lineNumber": 1335,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -11443,7 +12503,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1343,
+      "lineNumber": 1345,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -11481,7 +12541,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1354,
+      "lineNumber": 1356,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -11519,7 +12579,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1365,
+      "lineNumber": 1367,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -11557,7 +12617,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1374,
+      "lineNumber": 1376,
       "specialises": "Capability",
       "attributes": [
         {
@@ -11590,7 +12650,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1384,
+      "lineNumber": 1386,
       "specialises": "Capability",
       "attributes": [
         {
@@ -11623,7 +12683,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1391,
+      "lineNumber": 1393,
       "specialises": "Capability",
       "attributes": [
         {
@@ -11656,7 +12716,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1398,
+      "lineNumber": 1400,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -11694,7 +12754,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1408,
+      "lineNumber": 1410,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -11727,7 +12787,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1416,
+      "lineNumber": 1418,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -11760,7 +12820,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1429,
+      "lineNumber": 1431,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -11798,7 +12858,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1439,
+      "lineNumber": 1441,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -11836,7 +12896,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1449,
+      "lineNumber": 1451,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -11874,7 +12934,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1458,
+      "lineNumber": 1460,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -11912,7 +12972,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1467,
+      "lineNumber": 1469,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -11950,7 +13010,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1478,
+      "lineNumber": 1480,
       "specialises": "Capability",
       "attributes": [
         {
@@ -11983,7 +13043,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1485,
+      "lineNumber": 1487,
       "specialises": "Capability",
       "attributes": [
         {
@@ -12016,7 +13076,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1492,
+      "lineNumber": 1494,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -12054,7 +13114,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1536,
+      "lineNumber": 1538,
       "attributes": [
         {
           "name": "strategicObjective",
@@ -12139,7 +13199,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1544,
+      "lineNumber": 1546,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -12150,7 +13210,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1550,
+      "lineNumber": 1552,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -12161,7 +13221,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1557,
+      "lineNumber": 1559,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -12172,7 +13232,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1564,
+      "lineNumber": 1566,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -12183,7 +13243,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1595,
+      "lineNumber": 1597,
       "attributes": [
         {
           "name": "perEpisode"
@@ -12210,7 +13270,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1633,
+      "lineNumber": 1635,
       "attributes": [
         {
           "name": "streamName",
@@ -12336,7 +13396,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1676,
+      "lineNumber": 1678,
       "attributes": [
         {
           "name": "driverName",
@@ -12475,7 +13535,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1709,
+      "lineNumber": 1711,
       "attributes": [
         {
           "name": "offering",
@@ -12588,7 +13648,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1747,
+      "lineNumber": 1749,
       "attributes": [
         {
           "name": "pricingModelName",
@@ -12714,7 +13774,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1780,
+      "lineNumber": 1782,
       "attributes": [
         {
           "name": "projectionName",
@@ -12832,7 +13892,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1794,
+      "lineNumber": 1796,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -12865,7 +13925,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1802,
+      "lineNumber": 1804,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -12898,7 +13958,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1810,
+      "lineNumber": 1812,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -12931,7 +13991,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1818,
+      "lineNumber": 1820,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -12964,7 +14024,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1826,
+      "lineNumber": 1828,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -12997,7 +14057,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1834,
+      "lineNumber": 1836,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -13030,7 +14090,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1842,
+      "lineNumber": 1844,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -13063,7 +14123,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1850,
+      "lineNumber": 1852,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -13096,7 +14156,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1857,
+      "lineNumber": 1859,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -13129,7 +14189,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1865,
+      "lineNumber": 1867,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -13162,7 +14222,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1873,
+      "lineNumber": 1875,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -13200,7 +14260,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1881,
+      "lineNumber": 1883,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -13238,7 +14298,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1892,
+      "lineNumber": 1894,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -13271,7 +14331,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1904,
+      "lineNumber": 1906,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -13304,7 +14364,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1912,
+      "lineNumber": 1914,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -13337,7 +14397,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1920,
+      "lineNumber": 1922,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -13375,7 +14435,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1931,
+      "lineNumber": 1933,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -13408,7 +14468,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1944,
+      "lineNumber": 1946,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -13446,7 +14506,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2009,
+      "lineNumber": 2016,
       "attributes": [
         {
           "name": "requirementId",
@@ -13501,6 +14561,11 @@
           "target": "ResourceConstraint",
           "strength": "moderate",
           "rationale": "Governance requirements often impose resource constraints (regulatory qualification requirements, capacity limits). If a requirement changes, associated resource constraints may need reviewing \u2014 but not all requirements produce resource constraints."
+        },
+        {
+          "target": "StakeholderRelationship",
+          "strength": "moderate",
+          "rationale": "A change to a governance requirement may require reviewing the relationship through which it is enforced, but the relationship exists independently of any single requirement (H1, H5)."
         }
       ],
       "annotations": [
@@ -13548,6 +14613,14 @@
             "strength": "moderate",
             "rationale": "Governance requirements often impose resource constraints (regulatory qualification requirements, capacity limits). If a requirement changes, associated resource constraints may need reviewing \u2014 but not all requirements produce resource constraints."
           }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "StakeholderRelationship",
+            "strength": "moderate",
+            "rationale": "A change to a governance requirement may require reviewing the relationship through which it is enforced, but the relationship exists independently of any single requirement (H1, H5)."
+          }
         }
       ]
     },
@@ -13559,7 +14632,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2044,
+      "lineNumber": 2051,
       "attributes": [
         {
           "name": "evidenceType",
@@ -13633,6 +14706,1298 @@
             "surfaceRelatedConcepts": true,
             "surfaceAttributes": true
           }
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "StakeholderRelationship",
+      "parentPackage": "StakeholderModel",
+      "doc": "A typed, ongoing, structured relationship between\nthe business and an external entity. The core\nabstraction of the StakeholderModel concern.\nThe relationshipNature enum classifies the\nrelationship. The ref to GovernanceRequirement\nimplements the GovernanceMapping boundary decision\n(Session 78 Q2): r",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2138,
+      "attributes": [
+        {
+          "name": "stakeholderName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "stakeholderDescription",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "relationshipNature",
+          "type": "RelationshipNature",
+          "isRedefinition": false
+        },
+        {
+          "name": "obligationsInward",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "obligationsOutward",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "informationExchanged",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "governanceArrangements",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "healthIndicators",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "reviewCadence",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "relatedGovernanceRequirements",
+          "type": "GovernanceRequirement[0..*]",
+          "isRef": true
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Stakeholder Relationship",
+        "shortDescription": "A typed, ongoing, structured relationship between the business and an external entity."
+      },
+      "purposiveDescription": {
+        "description": "A relationship your business has with an external entity \u2014 a regulator, a commissioning body, a professional organisation, a contractual partner, an advisory body, or a peer. Each relationship has a defined nature, mutual obligations, and a health profile. When you define stakeholder relationships, the system tracks who you interact with, what you owe each other, and whether the relationship is working well."
+      },
+      "comprehension": {
+        "surfaceEnumValues": true,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "GovernanceRequirement",
+          "strength": "strong",
+          "rationale": "A change to the regulatory relationship (e.g. new regulator, changed inspection regime) directly affects what governance requirements apply. Definitional for regulatory-natured relationships (H1)."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "A change to a stakeholder relationship may affect what services can be offered (e.g. loss of a commissioning relationship), but the offering's identity is defined independently in ServiceConcept (H1, H4)."
+        },
+        {
+          "target": "ResourceType",
+          "strength": "moderate",
+          "rationale": "Some stakeholder relationships involve resource implications (e.g. regulatory requirements for qualified staff), but the link is mediated through GovernanceRequirement and ResourceConstraint (H4)."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "StakeholderModel",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Stakeholder Relationship",
+            "shortDescription": "A typed, ongoing, structured relationship between the business and an external entity."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A relationship your business has with an external entity \u2014 a regulator, a commissioning body, a professional organisation, a contractual partner, an advisory body, or a peer. Each relationship has a defined nature, mutual obligations, and a health profile. When you define stakeholder relationships, the system tracks who you interact with, what you owe each other, and whether the relationship is working well."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": true,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "GovernanceRequirement",
+            "strength": "strong",
+            "rationale": "A change to the regulatory relationship (e.g. new regulator, changed inspection regime) directly affects what governance requirements apply. Definitional for regulatory-natured relationships (H1)."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "moderate",
+            "rationale": "A change to a stakeholder relationship may affect what services can be offered (e.g. loss of a commissioning relationship), but the offering's identity is defined independently in ServiceConcept (H1, H4)."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ResourceType",
+            "strength": "moderate",
+            "rationale": "Some stakeholder relationships involve resource implications (e.g. regulatory requirements for qualified staff), but the link is mediated through GovernanceRequirement and ResourceConstraint (H4)."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "CooperativeArrangement",
+      "parentPackage": "StakeholderModel",
+      "doc": "A formalised agreement to jointly deliver or manage\nsomething. Distinguished by shared responsibility\nfor an outcome \u2014 neither party can deliver\nindependently.\nDistinct from StakeholderRelationship: if neither\nparty can deliver the outcome independently, it's\na CooperativeArrangement. If the relatio",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2191,
+      "attributes": [
+        {
+          "name": "arrangementName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "cooperatingEntity",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "sharedOutcome",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "responsibilitySplit",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "protocolReference",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "informationSharing",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "disputeResolution",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "performanceIndicators",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Cooperative Arrangement",
+        "shortDescription": "A formalised agreement to jointly deliver or manage something \u2014 neither party can deliver independently."
+      },
+      "purposiveDescription": {
+        "description": "A formalised arrangement where your business and another entity jointly deliver or manage something that neither could do alone \u2014 a shared care protocol, a delivery partnership, a joint training programme. When you define cooperative arrangements, the system tracks what is jointly produced, how responsibility is divided, and how the arrangement's effectiveness is assessed."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ActivityType",
+          "strength": "strong",
+          "rationale": "A cooperative arrangement defines shared activities. A change to the arrangement directly affects what activities are performed and by whom (H1)."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "strong",
+          "rationale": "Some cooperative arrangements define jointly-delivered services. A change to the arrangement may fundamentally alter what can be offered (H1)."
+        },
+        {
+          "target": "ResourceType",
+          "strength": "moderate",
+          "rationale": "Cooperative arrangements may involve shared resources, but the resource types exist independently (H4)."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "StakeholderModel",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Cooperative Arrangement",
+            "shortDescription": "A formalised agreement to jointly deliver or manage something \u2014 neither party can deliver independently."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A formalised arrangement where your business and another entity jointly deliver or manage something that neither could do alone \u2014 a shared care protocol, a delivery partnership, a joint training programme. When you define cooperative arrangements, the system tracks what is jointly produced, how responsibility is divided, and how the arrangement's effectiveness is assessed."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": false,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ActivityType",
+            "strength": "strong",
+            "rationale": "A cooperative arrangement defines shared activities. A change to the arrangement directly affects what activities are performed and by whom (H1)."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "strong",
+            "rationale": "Some cooperative arrangements define jointly-delivered services. A change to the arrangement may fundamentally alter what can be offered (H1)."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ResourceType",
+            "strength": "moderate",
+            "rationale": "Cooperative arrangements may involve shared resources, but the resource types exist independently (H4)."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "ReferralPathway",
+      "parentPackage": "StakeholderModel",
+      "doc": "A structured route for directing or receiving work\nbetween organisations. Characterised by direction\n(inbound, outbound, bidirectional), criteria,\nprotocol, and outcome tracking.\nBusiness meta model concept.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2238,
+      "attributes": [
+        {
+          "name": "pathwayName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "direction",
+          "type": "ReferralDirection",
+          "isRedefinition": false
+        },
+        {
+          "name": "referringEntity",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "referralCriteria",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "referralProtocol",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "expectedResponseTime",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "feedbackMechanism",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "volumeTracking",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Referral Pathway",
+        "shortDescription": "A structured route for directing or receiving work between organisations."
+      },
+      "purposiveDescription": {
+        "description": "A structured route for directing or receiving work between your business and another organisation \u2014 GP referrals coming in, specialist referrals going out, or bidirectional pathways where both directions operate. When you define referral pathways, the system tracks where work comes from and goes to, what criteria trigger referrals, and how volumes and outcomes are monitored."
+      },
+      "comprehension": {
+        "surfaceEnumValues": true,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "Referral pathways channel demand to specific offerings, but the offerings exist independently. A change to a referral pathway affects volume and flow, not the offering's identity (H1, H2)."
+        },
+        {
+          "target": "ActivityType",
+          "strength": "moderate",
+          "rationale": "Referral pathways generate activities (intake, triage, acknowledgement), but these activities are typed independently (H4)."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "StakeholderModel",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Referral Pathway",
+            "shortDescription": "A structured route for directing or receiving work between organisations."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A structured route for directing or receiving work between your business and another organisation \u2014 GP referrals coming in, specialist referrals going out, or bidirectional pathways where both directions operate. When you define referral pathways, the system tracks where work comes from and goes to, what criteria trigger referrals, and how volumes and outcomes are monitored."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": true,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "moderate",
+            "rationale": "Referral pathways channel demand to specific offerings, but the offerings exist independently. A change to a referral pathway affects volume and flow, not the offering's identity (H1, H2)."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ActivityType",
+            "strength": "moderate",
+            "rationale": "Referral pathways generate activities (intake, triage, acknowledgement), but these activities are typed independently (H4)."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "ExternalDependency",
+      "parentPackage": "StakeholderModel",
+      "doc": "Something the business depends on that it does not\ncontrol. Characterised by asymmetric reliance \u2014 the\nbusiness depends on the provider, but the provider\ndoes not depend on the business (or the dependence\nis negligible).\nDistinguished from CooperativeArrangement by\nasymmetric power. The criticality ",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2284,
+      "attributes": [
+        {
+          "name": "dependencyName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "provider",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "dependencyDescription",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "criticality",
+          "type": "DependencyCriticality",
+          "isRedefinition": false
+        },
+        {
+          "name": "substitutability",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "contingencyPlan",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "contractualTerms",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "supplyRisk",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "External Dependency",
+        "shortDescription": "Something the business depends on that it does not control \u2014 characterised by asymmetric reliance."
+      },
+      "purposiveDescription": {
+        "description": "Something your business depends on that you do not control \u2014 a pharmaceutical supplier, a laboratory service, an equipment provider, a software platform. When you define external dependencies, the system tracks what you depend on, how critical each dependency is, what contingency plans exist, and what risks threaten continuity of supply."
+      },
+      "comprehension": {
+        "surfaceEnumValues": true,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ResourceType",
+          "strength": "strong",
+          "rationale": "An external dependency is something the business depends on \u2014 often a resource it cannot provide itself. A change to the dependency (e.g. supplier withdrawal) directly affects resource availability (H1)."
+        },
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "Loss of a critical dependency may affect what can be offered, but the link is mediated through resources (H4)."
+        },
+        {
+          "target": "CostDriver",
+          "strength": "moderate",
+          "rationale": "Dependencies have cost implications (supplier pricing, contractual terms), but cost drivers are characterising, not definitional (H1, H2)."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "StakeholderModel",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "External Dependency",
+            "shortDescription": "Something the business depends on that it does not control \u2014 characterised by asymmetric reliance."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "Something your business depends on that you do not control \u2014 a pharmaceutical supplier, a laboratory service, an equipment provider, a software platform. When you define external dependencies, the system tracks what you depend on, how critical each dependency is, what contingency plans exist, and what risks threaten continuity of supply."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": true,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ResourceType",
+            "strength": "strong",
+            "rationale": "An external dependency is something the business depends on \u2014 often a resource it cannot provide itself. A change to the dependency (e.g. supplier withdrawal) directly affects resource availability (H1)."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "moderate",
+            "rationale": "Loss of a critical dependency may affect what can be offered, but the link is mediated through resources (H4)."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "CostDriver",
+            "strength": "moderate",
+            "rationale": "Dependencies have cost implications (supplier pricing, contractual terms), but cost drivers are characterising, not definitional (H1, H2)."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "CommunityRelationship",
+      "parentPackage": "StakeholderModel",
+      "doc": "The business's connection to its broader community\nof interest. Constitutive, not transactional \u2014\ndeliberately lighter on governance attributes than\nthe other StakeholderModel elements.\nBusiness meta model concept.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2335,
+      "attributes": [
+        {
+          "name": "communityName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "communityDescription",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "relationshipToService",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "engagementMode",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "mutualBenefit",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "communityVoice",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Community Relationship",
+        "shortDescription": "The business's connection to its broader community of interest \u2014 constitutive, not transactional."
+      },
+      "purposiveDescription": {
+        "description": "Your business's connection to its broader community of interest \u2014 the people, organisations, and networks that share your purpose or are affected by your work. Community relationships are constitutive of your identity, not transactional. When you define community relationships, the system tracks how communities shape your service and how you engage with them."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "moderate",
+          "rationale": "Community relationships shape what the business offers (community needs influence service design), but the link is characterising, not definitional (H1)."
+        },
+        {
+          "target": "CustomerSegment",
+          "strength": "moderate",
+          "rationale": "Communities overlap with customer segments, but they are not the same thing \u2014 a community relationship may serve non-customers (H4)."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "StakeholderModel",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Community Relationship",
+            "shortDescription": "The business's connection to its broader community of interest \u2014 constitutive, not transactional."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "Your business's connection to its broader community of interest \u2014 the people, organisations, and networks that share your purpose or are affected by your work. Community relationships are constitutive of your identity, not transactional. When you define community relationships, the system tracks how communities shape your service and how you engage with them."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": false,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "moderate",
+            "rationale": "Community relationships shape what the business offers (community needs influence service design), but the link is characterising, not definitional (H1)."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "CustomerSegment",
+            "strength": "moderate",
+            "rationale": "Communities overlap with customer segments, but they are not the same thing \u2014 a community relationship may serve non-customers (H4)."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "ParticipationModel",
+      "parentPackage": "StakeholderModel",
+      "doc": "How the customer/patient participates as co-producer,\nnot merely recipient. Connected to A7 (patient\nautonomy), H2 (agency classification), and the\nservice participation framework (O26).\nStructurally distinct from the five outward-looking\nelements \u2014 ParticipationModel describes the boundary\nlooking ",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2379,
+      "attributes": [
+        {
+          "name": "participationName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "participantRole",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "participationDescription",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "informationContribution",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "decisionInvolvement",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "selfServiceScope",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "supportRequired",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "relatedServiceOffering",
+          "type": "ServiceOffering[0..*]",
+          "isRef": true
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "StakeholderModel",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Participation Model",
+        "shortDescription": "How the customer or patient participates as co-producer, not merely recipient, of the service."
+      },
+      "purposiveDescription": {
+        "description": "How your customer or patient participates in the service as a co-producer, not merely a recipient \u2014 the spectrum from passive recipient to active self-manager. When you define participation models, the system tracks what role participants play, how they contribute information and decisions, what they can do independently, and what support they need."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "ServiceOffering",
+          "strength": "strong",
+          "rationale": "Participation patterns are defined for specific service offerings \u2014 the ref relationship is typed. A change to how customers participate directly affects the offering's delivery model (H1)."
+        },
+        {
+          "target": "ActivityType",
+          "strength": "moderate",
+          "rationale": "Participation generates activities (self-service actions, shared decision-making), but the activity types exist independently (H4)."
+        },
+        {
+          "target": "Channel",
+          "strength": "moderate",
+          "rationale": "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4)."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "StakeholderModel",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Participation Model",
+            "shortDescription": "How the customer or patient participates as co-producer, not merely recipient, of the service."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "How your customer or patient participates in the service as a co-producer, not merely a recipient \u2014 the spectrum from passive recipient to active self-manager. When you define participation models, the system tracks what role participants play, how they contribute information and decisions, what they can do independently, and what support they need."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": false,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ServiceOffering",
+            "strength": "strong",
+            "rationale": "Participation patterns are defined for specific service offerings \u2014 the ref relationship is typed. A change to how customers participate directly affects the offering's delivery model (H1)."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ActivityType",
+            "strength": "moderate",
+            "rationale": "Participation generates activities (self-service actions, shared decision-making), but the activity types exist independently (H4)."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "Channel",
+            "strength": "moderate",
+            "rationale": "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4)."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "cqcRelationship",
+      "parentPackage": "StakeholderModel",
+      "doc": "Care Quality Commission \u2014 the primary regulatory\nrelationship for GSL as a registered healthcare\nprovider.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 2403,
+      "specialises": "StakeholderRelationship",
+      "attributes": [
+        {
+          "name": "stakeholderName",
+          "value": "Care Quality Commission (CQC)",
+          "isRedefinition": true
+        },
+        {
+          "name": "stakeholderDescription",
+          "value": "Independent regulator of health and social care in England. GSL is registered as a healthcare provider.",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipNature",
+          "value": "RelationshipNature::regulatory",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsInward",
+          "value": "CQC sets and inspects against fundamental standards of care. Provides inspection reports, ratings, and enforcement actions.",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsOutward",
+          "value": "GSL must maintain registration, comply with fundamental standards, notify CQC of significant events, and cooperate with inspections.",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationExchanged",
+          "value": "Registration data, notification of incidents, inspection evidence (outward). Inspection reports, ratings, guidance (inward).",
+          "isRedefinition": true
+        },
+        {
+          "name": "governanceArrangements",
+          "value": "Formal registration and periodic inspection cycle. Conditions of registration. Duty of candour.",
+          "isRedefinition": true
+        },
+        {
+          "name": "healthIndicators",
+          "value": "Current CQC rating, time since last inspection, open enforcement actions, outstanding conditions.",
+          "isRedefinition": true
+        },
+        {
+          "name": "reviewCadence",
+          "value": "Continuous compliance. Formal inspection cycle determined by CQC (typically 1-2 years for new registrations).",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "icbRelationship",
+      "parentPackage": "StakeholderModel",
+      "doc": "NHS Integrated Care Board \u2014 commissioner relationship\nfor shared care funding.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 2418,
+      "specialises": "StakeholderRelationship",
+      "attributes": [
+        {
+          "name": "stakeholderName",
+          "value": "NHS Integrated Care Board (ICB)",
+          "isRedefinition": true
+        },
+        {
+          "name": "stakeholderDescription",
+          "value": "NHS body that commissions healthcare services. Relevant where shared care arrangements involve NHS funding.",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipNature",
+          "value": "RelationshipNature::commissioning",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsInward",
+          "value": "ICB defines what services it will commission and fund. Provides commissioning specifications and payment.",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsOutward",
+          "value": "GSL must meet commissioning specifications, report activity and outcomes, maintain clinical standards.",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationExchanged",
+          "value": "Activity reports, outcome data, clinical governance reports (outward). Commissioning specifications, payment, policy updates (inward).",
+          "isRedefinition": true
+        },
+        {
+          "name": "governanceArrangements",
+          "value": "Service level agreement or commissioning contract. Regular contract review meetings.",
+          "isRedefinition": true
+        },
+        {
+          "name": "healthIndicators",
+          "value": "Contract compliance status, payment timeliness, relationship with commissioning lead.",
+          "isRedefinition": true
+        },
+        {
+          "name": "reviewCadence",
+          "value": "Quarterly contract review. Annual recommissioning cycle.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "sharedCareProtocol",
+      "parentPackage": "StakeholderModel",
+      "doc": "NHS shared care protocol for hormone prescribing \u2014\nthe defining cooperative arrangement for GSL. GP\nmonitors, GSL initiates and adjusts.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 2432,
+      "specialises": "CooperativeArrangement",
+      "attributes": [
+        {
+          "name": "arrangementName",
+          "value": "Shared care hormone prescribing protocol",
+          "isRedefinition": true
+        },
+        {
+          "name": "cooperatingEntity",
+          "value": "GP practices (via individual shared care agreements)",
+          "isRedefinition": true
+        },
+        {
+          "name": "sharedOutcome",
+          "value": "Safe, monitored hormone therapy with prescribing initiated by GSL and ongoing monitoring shared with the patient's GP",
+          "isRedefinition": true
+        },
+        {
+          "name": "responsibilitySplit",
+          "value": "GSL: specialist assessment, treatment initiation, dose adjustment, specialist review. GP: blood monitoring, repeat prescribing per protocol, flagging concerns.",
+          "isRedefinition": true
+        },
+        {
+          "name": "protocolReference",
+          "value": "GSL Shared Care Protocol for Gender-Affirming Hormone Therapy (internal document)",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationSharing",
+          "value": "GSL sends treatment summaries and monitoring schedules. GP sends blood results and clinical observations. Via secure clinical correspondence.",
+          "isRedefinition": true
+        },
+        {
+          "name": "disputeResolution",
+          "value": "Clinical disagreements escalated to GSL clinical lead. Protocol review if pattern of disagreement emerges.",
+          "isRedefinition": true
+        },
+        {
+          "name": "performanceIndicators",
+          "value": "GP uptake rate, monitoring compliance rate, time to shared care agreement, adverse event rate under shared care.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "gpReferralPathway",
+      "parentPackage": "StakeholderModel",
+      "doc": "GP referrals inbound \u2014 the primary referral pathway\nfor GSL. Bidirectional: GSL also refers back to GP\nfor shared care monitoring.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 2446,
+      "specialises": "ReferralPathway",
+      "attributes": [
+        {
+          "name": "pathwayName",
+          "value": "GP referral pathway",
+          "isRedefinition": true
+        },
+        {
+          "name": "direction",
+          "value": "ReferralDirection::bidirectional",
+          "isRedefinition": true
+        },
+        {
+          "name": "referringEntity",
+          "value": "GP practices",
+          "isRedefinition": true
+        },
+        {
+          "name": "referralCriteria",
+          "value": "Inbound: patient presenting with gender dysphoria or requesting gender-affirming care. Outbound: patient ready for shared care monitoring.",
+          "isRedefinition": true
+        },
+        {
+          "name": "referralProtocol",
+          "value": "Inbound: referral letter with clinical history. Outbound: treatment summary with shared care protocol and monitoring schedule.",
+          "isRedefinition": true
+        },
+        {
+          "name": "expectedResponseTime",
+          "value": "Inbound: acknowledgement within 5 working days. Outbound: GP response to shared care request within 10 working days.",
+          "isRedefinition": true
+        },
+        {
+          "name": "feedbackMechanism",
+          "value": "Inbound: outcome letter to GP after assessment. Outbound: ongoing clinical correspondence per monitoring schedule.",
+          "isRedefinition": true
+        },
+        {
+          "name": "volumeTracking",
+          "value": "Referral volumes tracked monthly. Conversion rate (referral to assessment). Shared care uptake rate.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "specialistReferralPathway",
+      "parentPackage": "StakeholderModel",
+      "doc": "Outbound specialist referrals \u2014 endocrinology,\nsurgery, mental health.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 2460,
+      "specialises": "ReferralPathway",
+      "attributes": [
+        {
+          "name": "pathwayName",
+          "value": "Specialist referral pathway",
+          "isRedefinition": true
+        },
+        {
+          "name": "direction",
+          "value": "ReferralDirection::outbound",
+          "isRedefinition": true
+        },
+        {
+          "name": "referringEntity",
+          "value": "Specialist services (endocrinology, surgery, psychiatry/psychology)",
+          "isRedefinition": true
+        },
+        {
+          "name": "referralCriteria",
+          "value": "Clinical need for specialist input beyond GSL's scope \u2014 complex endocrine management, surgical referral, mental health support.",
+          "isRedefinition": true
+        },
+        {
+          "name": "referralProtocol",
+          "value": "Formal referral letter with clinical summary, investigation results, and specific clinical question.",
+          "isRedefinition": true
+        },
+        {
+          "name": "expectedResponseTime",
+          "value": "Varies by specialty and urgency. Routine: 2-4 weeks acknowledgement. Urgent: within 48 hours.",
+          "isRedefinition": true
+        },
+        {
+          "name": "feedbackMechanism",
+          "value": "Specialist outcome report back to GSL. Integrated into patient's clinical record.",
+          "isRedefinition": true
+        },
+        {
+          "name": "volumeTracking",
+          "value": "Referral volumes by specialty tracked quarterly. Waiting times and outcome rates monitored.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "pharmaceuticalSupply",
+      "parentPackage": "StakeholderModel",
+      "doc": "Hormone medication supply \u2014 essential dependency.\nGSL cannot deliver its core service without\nreliable pharmaceutical supply.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 2473,
+      "specialises": "ExternalDependency",
+      "attributes": [
+        {
+          "name": "dependencyName",
+          "value": "Pharmaceutical supply (hormones)",
+          "isRedefinition": true
+        },
+        {
+          "name": "provider",
+          "value": "Licensed pharmaceutical wholesalers and manufacturers",
+          "isRedefinition": true
+        },
+        {
+          "name": "dependencyDescription",
+          "value": "Supply of gender-affirming hormone medications \u2014 oestradiol (oral, transdermal, injectable), testosterone (injectable, transdermal). Core to GSL's clinical service.",
+          "isRedefinition": true
+        },
+        {
+          "name": "criticality",
+          "value": "DependencyCriticality::essential",
+          "isRedefinition": true
+        },
+        {
+          "name": "substitutability",
+          "value": "Multiple formulations and suppliers available for most medications. Some specialist preparations have limited suppliers. Brand switching requires clinical review.",
+          "isRedefinition": true
+        },
+        {
+          "name": "contingencyPlan",
+          "value": "Maintain relationships with multiple wholesalers. Monitor MHRA drug shortage alerts. Clinical protocol for safe brand switching when required.",
+          "isRedefinition": true
+        },
+        {
+          "name": "contractualTerms",
+          "value": "Standard pharmaceutical wholesale terms. No exclusive supply agreements.",
+          "isRedefinition": true
+        },
+        {
+          "name": "supplyRisk",
+          "value": "Periodic national shortages of specific formulations (testosterone undecanoate, oestradiol patches). MHRA supply disruption notifications.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "laboratoryDependency",
+      "parentPackage": "StakeholderModel",
+      "doc": "External pathology laboratory \u2014 essential for blood\nmonitoring.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 2487,
+      "specialises": "ExternalDependency",
+      "attributes": [
+        {
+          "name": "dependencyName",
+          "value": "Laboratory services (blood monitoring)",
+          "isRedefinition": true
+        },
+        {
+          "name": "provider",
+          "value": "Contracted pathology laboratory",
+          "isRedefinition": true
+        },
+        {
+          "name": "dependencyDescription",
+          "value": "Blood test processing for hormone levels, liver function, lipids, haematology. Required for safe prescribing and monitoring.",
+          "isRedefinition": true
+        },
+        {
+          "name": "criticality",
+          "value": "DependencyCriticality::essential",
+          "isRedefinition": true
+        },
+        {
+          "name": "substitutability",
+          "value": "Multiple pathology providers available. Switching requires new account setup and reference range familiarisation. Turnaround times may vary.",
+          "isRedefinition": true
+        },
+        {
+          "name": "contingencyPlan",
+          "value": "Secondary laboratory contract in place. Patient can use NHS GP blood monitoring as fallback (slower turnaround).",
+          "isRedefinition": true
+        },
+        {
+          "name": "contractualTerms",
+          "value": "Per-panel pricing. Results via electronic interface. Turnaround SLA: routine 48 hours, urgent 24 hours.",
+          "isRedefinition": true
+        },
+        {
+          "name": "supplyRisk",
+          "value": "Low \u2014 multiple providers. Risk of turnaround delays during high-demand periods. Electronic interface dependency.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "transCommunityCommunity",
+      "parentPackage": "StakeholderModel",
+      "doc": "Trans community and advocacy organisations \u2014\nconstitutive relationship. GSL exists to serve\nthis community.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 2500,
+      "specialises": "CommunityRelationship",
+      "attributes": [
+        {
+          "name": "communityName",
+          "value": "Trans and non-binary community",
+          "isRedefinition": true
+        },
+        {
+          "name": "communityDescription",
+          "value": "People who identify as trans, non-binary, or gender diverse, and the organisations that advocate for and support them.",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipToService",
+          "value": "Constitutive \u2014 GSL exists to serve this community. Community needs define what services GSL offers and how they are delivered.",
+          "isRedefinition": true
+        },
+        {
+          "name": "engagementMode",
+          "value": "Community advisory input, patient feedback mechanisms, engagement with trans advocacy organisations, representation at community events.",
+          "isRedefinition": true
+        },
+        {
+          "name": "mutualBenefit",
+          "value": "Community gains access to specialist gender-affirming healthcare. GSL gains understanding of community needs, trust, and referral through community networks.",
+          "isRedefinition": true
+        },
+        {
+          "name": "communityVoice",
+          "value": "Patient experience feedback, community advisory group (planned), engagement with national advocacy organisations (e.g. Mermaids, Gendered Intelligence, GIRES), social media presence.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "sharedDecisionParticipation",
+      "parentPackage": "StakeholderModel",
+      "doc": "Shared decision-making in hormone therapy \u2014 the\ndefining participation pattern for GSL. Patient\nas informed co-producer of treatment decisions.",
+      "sourceFile": "model/business-model.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 2512,
+      "specialises": "ParticipationModel",
+      "attributes": [
+        {
+          "name": "participationName",
+          "value": "Shared decision-making in hormone therapy",
+          "isRedefinition": true
+        },
+        {
+          "name": "participantRole",
+          "value": "Informed co-producer \u2014 patient actively contributes to treatment decisions alongside the clinician",
+          "isRedefinition": true
+        },
+        {
+          "name": "participationDescription",
+          "value": "Patient participates in treatment decisions through informed consent, preference expression, self-monitoring, and shared goal setting. Clinician provides clinical expertise",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationContribution",
+          "value": "Medical history, treatment preferences, self-reported wellbeing, side effect reporting, lifestyle factors affecting treatment. Via consultation and patient portal.",
+          "isRedefinition": true
+        },
+        {
+          "name": "decisionInvolvement",
+          "value": "Shared \u2014 clinician and patient jointly decide treatment approach, medication choice, dose adjustments. Patient consent required for all treatment changes.",
+          "isRedefinition": true
+        },
+        {
+          "name": "selfServiceScope",
+          "value": "Appointment booking, viewing pathway progress, accessing education materials, submitting self-monitoring data, secure messaging with clinical team.",
+          "isRedefinition": true
+        },
+        {
+          "name": "supportRequired",
+          "value": "Health literacy support, education on hormone therapy effects and monitoring, digital literacy for portal use, accessibility accommodations as needed.",
+          "isRedefinition": true
         }
       ]
     },
@@ -18635,7 +21000,7 @@
       "kind": "enum_def",
       "name": "ReferralDirection",
       "parentPackage": "CommonTypes",
-      "doc": "Direction of a referral.",
+      "doc": "Direction of a referral or referral pathway.\nExtended Session 81: bidirectional added for\nreferral pathways where both directions operate\n(e.g. GP refers to GSL, GSL refers back to GP).",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
@@ -18646,6 +21011,60 @@
         },
         {
           "name": "outbound"
+        },
+        {
+          "name": "bidirectional"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "RelationshipNature",
+      "parentPackage": "CommonTypes",
+      "doc": "Classification of the nature of a stakeholder\nrelationship. Closed enum \u2014 tailored extensions\ncan add domain-specific values via :>> redefinition\n(e.g. clinicalNetwork for healthcare).\nBusiness meta model concept. StakeholderModel (C7).\nSession 81.",
+      "sourceFile": "model/foundation.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 426,
+      "attributes": [
+        {
+          "name": "regulatory"
+        },
+        {
+          "name": "contractual"
+        },
+        {
+          "name": "professional"
+        },
+        {
+          "name": "advisory"
+        },
+        {
+          "name": "commissioning"
+        },
+        {
+          "name": "peer"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "DependencyCriticality",
+      "parentPackage": "CommonTypes",
+      "doc": "Classification of how critical an external\ndependency is to the business's operation.\nDrives contingency planning priority.\nBusiness meta model concept. StakeholderModel (C7).\nSession 81.",
+      "sourceFile": "model/foundation.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 442,
+      "attributes": [
+        {
+          "name": "essential"
+        },
+        {
+          "name": "important"
+        },
+        {
+          "name": "convenient"
         }
       ]
     },
@@ -18657,7 +21076,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 420,
+      "lineNumber": 454,
       "attributes": [
         {
           "name": "given"
@@ -18681,7 +21100,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 428,
+      "lineNumber": 462,
       "attributes": [
         {
           "name": "line1",
@@ -18718,7 +21137,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 437,
+      "lineNumber": 471,
       "attributes": [
         {
           "name": "email",
@@ -18745,7 +21164,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 447,
+      "lineNumber": 481,
       "attributes": [
         {
           "name": "pass"
@@ -18766,7 +21185,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 456,
+      "lineNumber": 490,
       "attributes": [
         {
           "name": "critical"
@@ -18787,7 +21206,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 464,
+      "lineNumber": 498,
       "attributes": [
         {
           "name": "patient"
@@ -18814,7 +21233,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 474,
+      "lineNumber": 508,
       "attributes": [
         {
           "name": "cdr;"
@@ -18841,7 +21260,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 488,
+      "lineNumber": 522,
       "attributes": [
         {
           "name": "clinical"
@@ -18868,7 +21287,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 504,
+      "lineNumber": 538,
       "attributes": [
         {
           "name": "automatic"
@@ -18889,7 +21308,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 519,
+      "lineNumber": 553,
       "attributes": [
         {
           "name": "healthy"
@@ -18910,7 +21329,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 528,
+      "lineNumber": 562,
       "attributes": [
         {
           "name": "low"
@@ -18934,7 +21353,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 538,
+      "lineNumber": 572,
       "attributes": [
         {
           "name": "oestrogen"
@@ -18955,7 +21374,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 547,
+      "lineNumber": 581,
       "attributes": [
         {
           "name": "noContraindication"
@@ -18982,7 +21401,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 559,
+      "lineNumber": 593,
       "attributes": [
         {
           "name": "estradiolValerate"
@@ -19012,7 +21431,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 571,
+      "lineNumber": 605,
       "attributes": [
         {
           "name": "oral"
@@ -19036,7 +21455,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 579,
+      "lineNumber": 613,
       "attributes": [
         {
           "name": "low"
@@ -19060,7 +21479,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 590,
+      "lineNumber": 624,
       "attributes": [
         {
           "name": "satisfied"
@@ -19081,7 +21500,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 598,
+      "lineNumber": 632,
       "attributes": [
         {
           "name": "stable"
@@ -19105,7 +21524,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 607,
+      "lineNumber": 641,
       "attributes": [
         {
           "name": "continueCurrentRegimen"
@@ -19132,7 +21551,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 620,
+      "lineNumber": 654,
       "attributes": [
         {
           "name": "clinical"
@@ -19156,7 +21575,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 631,
+      "lineNumber": 665,
       "attributes": [
         {
           "name": "pending"
@@ -19183,7 +21602,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 646,
+      "lineNumber": 680,
       "attributes": [
         {
           "name": "baseline"
@@ -19210,7 +21629,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 656,
+      "lineNumber": 690,
       "attributes": [
         {
           "name": "within"
@@ -19234,7 +21653,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 679,
+      "lineNumber": 713,
       "attributes": [
         {
           "name": "clinicalDataRepository"
@@ -19258,7 +21677,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 699,
+      "lineNumber": 733,
       "attributes": [
         {
           "name": "clinicalSignificance"
@@ -19303,7 +21722,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bsmm",
-      "lineNumber": 719,
+      "lineNumber": 753,
       "attributes": [
         {
           "name": "domainConcept",
@@ -27813,7 +30232,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 41,
+      "lineNumber": 42,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -27851,7 +30270,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 49,
+      "lineNumber": 50,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -27894,7 +30313,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 60,
+      "lineNumber": 61,
       "specialises": "Channel",
       "attributes": [
         {
@@ -27937,7 +30356,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 74,
+      "lineNumber": 75,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -27975,7 +30394,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 85,
+      "lineNumber": 86,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -28013,7 +30432,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 95,
+      "lineNumber": 96,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -28051,7 +30470,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 103,
+      "lineNumber": 104,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -28089,7 +30508,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 111,
+      "lineNumber": 112,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -28127,7 +30546,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 119,
+      "lineNumber": 120,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -28165,7 +30584,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 132,
+      "lineNumber": 133,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -28198,7 +30617,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 142,
+      "lineNumber": 143,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -28231,7 +30650,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 149,
+      "lineNumber": 150,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -28264,7 +30683,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 156,
+      "lineNumber": 157,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -28297,7 +30716,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 163,
+      "lineNumber": 164,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -28330,7 +30749,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 180,
+      "lineNumber": 181,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -28373,7 +30792,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 190,
+      "lineNumber": 191,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -28416,7 +30835,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 199,
+      "lineNumber": 200,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -28459,7 +30878,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 208,
+      "lineNumber": 209,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -28502,7 +30921,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 217,
+      "lineNumber": 218,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -28545,7 +30964,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 228,
+      "lineNumber": 229,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -28588,7 +31007,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 237,
+      "lineNumber": 238,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -28631,7 +31050,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 248,
+      "lineNumber": 249,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -28674,7 +31093,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 258,
+      "lineNumber": 259,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -28717,7 +31136,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 270,
+      "lineNumber": 271,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -28760,7 +31179,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 281,
+      "lineNumber": 282,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -28803,7 +31222,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 302,
+      "lineNumber": 303,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -28831,7 +31250,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 311,
+      "lineNumber": 312,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -28859,7 +31278,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 319,
+      "lineNumber": 320,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -28887,7 +31306,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 327,
+      "lineNumber": 328,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -28915,7 +31334,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 335,
+      "lineNumber": 336,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -28943,7 +31362,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 343,
+      "lineNumber": 344,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -28959,6 +31378,319 @@
         {
           "name": "rationale",
           "value": "Knowledge the system links to but does not own.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "localAuthorityRelationship",
+      "parentPackage": "CoffeeShopBusinessModel",
+      "doc": "Local authority food safety \u2014 the primary regulatory\nrelationship for a coffee shop.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 358,
+      "specialises": "StakeholderRelationship",
+      "attributes": [
+        {
+          "name": "stakeholderName",
+          "value": "Local authority (food safety)",
+          "isRedefinition": true
+        },
+        {
+          "name": "stakeholderDescription",
+          "value": "Environmental health department responsible for food safety inspections and ratings.",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipNature",
+          "value": "RelationshipNature::regulatory",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsInward",
+          "value": "Sets food hygiene standards, conducts inspections, issues food hygiene ratings.",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsOutward",
+          "value": "Comply with food hygiene regulations, maintain premises standards, cooperate with inspections.",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationExchanged",
+          "value": "Registration details, inspection evidence (outward). Inspection reports, ratings, improvement notices (inward).",
+          "isRedefinition": true
+        },
+        {
+          "name": "governanceArrangements",
+          "value": "Food business registration. Periodic unannounced inspections under the Food Hygiene Rating Scheme.",
+          "isRedefinition": true
+        },
+        {
+          "name": "healthIndicators",
+          "value": "Current food hygiene rating (target: 5), time since last inspection, any outstanding improvement notices.",
+          "isRedefinition": true
+        },
+        {
+          "name": "reviewCadence",
+          "value": "Inspection cycle determined by local authority \u2014 typically 6-18 months depending on risk rating.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "landlordRelationship",
+      "parentPackage": "CoffeeShopBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 372,
+      "specialises": "StakeholderRelationship",
+      "attributes": [
+        {
+          "name": "stakeholderName",
+          "value": "Landlord",
+          "isRedefinition": true
+        },
+        {
+          "name": "stakeholderDescription",
+          "value": "Property owner \u2014 contractual relationship governing premises use.",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipNature",
+          "value": "RelationshipNature::contractual",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsInward",
+          "value": "Provides and maintains premises. Structural repairs, insurance of building.",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsOutward",
+          "value": "Pay rent, maintain interior, comply with lease terms, insure contents and liability.",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationExchanged",
+          "value": "Maintenance requests (outward). Lease terms, planned works, rent reviews (inward).",
+          "isRedefinition": true
+        },
+        {
+          "name": "governanceArrangements",
+          "value": "Commercial lease agreement. Annual rent review.",
+          "isRedefinition": true
+        },
+        {
+          "name": "healthIndicators",
+          "value": "Rent payment status, maintenance response times, lease renewal status.",
+          "isRedefinition": true
+        },
+        {
+          "name": "reviewCadence",
+          "value": "Quarterly informal. Annual rent review. Lease renewal at term end.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "deliveryPlatformPartnership",
+      "parentPackage": "CoffeeShopBusinessModel",
+      "doc": "Delivery platform partnership \u2014 shared order\nfulfilment. Neither party delivers the full\nexperience independently.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 384,
+      "specialises": "CooperativeArrangement",
+      "attributes": [
+        {
+          "name": "arrangementName",
+          "value": "Delivery platform partnership",
+          "isRedefinition": true
+        },
+        {
+          "name": "cooperatingEntity",
+          "value": "Delivery platform (e.g. Deliveroo, UberEats)",
+          "isRedefinition": true
+        },
+        {
+          "name": "sharedOutcome",
+          "value": "Delivery of coffee shop products to customers who order remotely \u2014 the shop prepares, the platform delivers",
+          "isRedefinition": true
+        },
+        {
+          "name": "responsibilitySplit",
+          "value": "Shop: order preparation, packaging, quality control. Platform: customer interface, delivery logistics, payment processing.",
+          "isRedefinition": true
+        },
+        {
+          "name": "protocolReference",
+          "value": "Platform partner agreement and order integration specification",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationSharing",
+          "value": "Order details and preparation status (via platform API). Delivery status and customer feedback (from platform).",
+          "isRedefinition": true
+        },
+        {
+          "name": "disputeResolution",
+          "value": "Platform dispute resolution process for order issues. Escalation to account manager for systemic problems.",
+          "isRedefinition": true
+        },
+        {
+          "name": "performanceIndicators",
+          "value": "Order accuracy rate, preparation time, delivery rating, customer complaints via platform.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "coffeeBeanSupply",
+      "parentPackage": "CoffeeShopBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 398,
+      "specialises": "ExternalDependency",
+      "attributes": [
+        {
+          "name": "dependencyName",
+          "value": "Coffee bean supply",
+          "isRedefinition": true
+        },
+        {
+          "name": "provider",
+          "value": "Specialty coffee roaster/wholesaler",
+          "isRedefinition": true
+        },
+        {
+          "name": "dependencyDescription",
+          "value": "Supply of roasted coffee beans \u2014 the core input for the business's primary product.",
+          "isRedefinition": true
+        },
+        {
+          "name": "criticality",
+          "value": "DependencyCriticality::essential",
+          "isRedefinition": true
+        },
+        {
+          "name": "substitutability",
+          "value": "Multiple specialty roasters available. Switching may change flavour profile and affect customer expectations. Blend matching possible.",
+          "isRedefinition": true
+        },
+        {
+          "name": "contingencyPlan",
+          "value": "Secondary supplier relationship maintained. Emergency stock of standard blend (2 weeks). Customer communication plan for blend changes.",
+          "isRedefinition": true
+        },
+        {
+          "name": "contractualTerms",
+          "value": "Monthly order with volume discount. 30-day payment terms.",
+          "isRedefinition": true
+        },
+        {
+          "name": "supplyRisk",
+          "value": "Supply chain disruption (shipping, harvest failure), price volatility due to commodity market, quality inconsistency.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "localNeighbourhood",
+      "parentPackage": "CoffeeShopBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 409,
+      "specialises": "CommunityRelationship",
+      "attributes": [
+        {
+          "name": "communityName",
+          "value": "Local neighbourhood",
+          "isRedefinition": true
+        },
+        {
+          "name": "communityDescription",
+          "value": "Residents, workers, and visitors in the immediate area around the shop.",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipToService",
+          "value": "Constitutive \u2014 the neighbourhood provides the customer base and the shop contributes to local character and social life.",
+          "isRedefinition": true
+        },
+        {
+          "name": "engagementMode",
+          "value": "Community noticeboard, local events participation, loyalty programme, regular customer relationships.",
+          "isRedefinition": true
+        },
+        {
+          "name": "mutualBenefit",
+          "value": "Community gains a social gathering place and quality coffee. Shop gains loyal customer base and word-of-mouth referrals.",
+          "isRedefinition": true
+        },
+        {
+          "name": "communityVoice",
+          "value": "Customer feedback, informal conversations, social media engagement, local business network meetings.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "cafeParticipation",
+      "parentPackage": "CoffeeShopBusinessModel",
+      "doc": "Minimal participation \u2014 customer as recipient. The\ncoffee shop has the lightest participation model of\nall demonstrator domains.",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 418,
+      "specialises": "ParticipationModel",
+      "attributes": [
+        {
+          "name": "participationName",
+          "value": "Counter ordering",
+          "isRedefinition": true
+        },
+        {
+          "name": "participantRole",
+          "value": "Recipient \u2014 customer orders and receives, minimal co-production",
+          "isRedefinition": true
+        },
+        {
+          "name": "participationDescription",
+          "value": "Customer selects from menu, places order, pays, and receives prepared drink. Participation is limited to preference expression at point of order.",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationContribution",
+          "value": "Order preferences (drink type, milk choice, extras). No ongoing information contribution.",
+          "isRedefinition": true
+        },
+        {
+          "name": "decisionInvolvement",
+          "value": "Informed \u2014 customer chooses from available options. No shared decision-making.",
+          "isRedefinition": true
+        },
+        {
+          "name": "selfServiceScope",
+          "value": "Menu browsing, order placement (counter or app). No self-service preparation.",
+          "isRedefinition": true
+        },
+        {
+          "name": "supportRequired",
+          "value": "Clear menu display, allergen information, queue management.",
           "isRedefinition": true
         }
       ]
@@ -33579,7 +36311,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 50,
+      "lineNumber": 51,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -33612,7 +36344,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 58,
+      "lineNumber": 59,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -33655,7 +36387,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 71,
+      "lineNumber": 72,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -33698,7 +36430,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 84,
+      "lineNumber": 85,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -33741,7 +36473,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 96,
+      "lineNumber": 97,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -33779,7 +36511,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 104,
+      "lineNumber": 105,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -33817,7 +36549,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 116,
+      "lineNumber": 117,
       "specialises": "Channel",
       "attributes": [
         {
@@ -33860,7 +36592,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 125,
+      "lineNumber": 126,
       "specialises": "Channel",
       "attributes": [
         {
@@ -33903,7 +36635,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 136,
+      "lineNumber": 137,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -33936,7 +36668,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 143,
+      "lineNumber": 144,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -33969,7 +36701,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 157,
+      "lineNumber": 158,
       "specialises": "ServiceSubject",
       "attributes": [
         {
@@ -34007,7 +36739,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 176,
+      "lineNumber": 177,
       "specialises": "ServiceParticipant",
       "attributes": [
         {
@@ -34045,7 +36777,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 195,
+      "lineNumber": 196,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -34093,7 +36825,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 207,
+      "lineNumber": 208,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -34141,7 +36873,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 218,
+      "lineNumber": 219,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -34189,7 +36921,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 235,
+      "lineNumber": 236,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -34227,7 +36959,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 247,
+      "lineNumber": 248,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -34265,7 +36997,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 259,
+      "lineNumber": 260,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -34303,7 +37035,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 272,
+      "lineNumber": 273,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -34341,7 +37073,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 283,
+      "lineNumber": 284,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -34379,7 +37111,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 295,
+      "lineNumber": 296,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -34417,7 +37149,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 306,
+      "lineNumber": 307,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -34455,7 +37187,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 318,
+      "lineNumber": 319,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -34493,7 +37225,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 331,
+      "lineNumber": 332,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -34526,7 +37258,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 341,
+      "lineNumber": 342,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -34559,7 +37291,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 348,
+      "lineNumber": 349,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -34592,7 +37324,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 355,
+      "lineNumber": 356,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -34625,7 +37357,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 362,
+      "lineNumber": 363,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -34658,7 +37390,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 371,
+      "lineNumber": 372,
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
@@ -34686,7 +37418,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 381,
+      "lineNumber": 382,
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
@@ -34708,13 +37440,379 @@
     },
     {
       "kind": "part",
+      "name": "animalWelfareRegulator",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Local authority animal welfare \u2014 regulatory oversight\nfor businesses handling animals.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 397,
+      "specialises": "StakeholderRelationship",
+      "attributes": [
+        {
+          "name": "stakeholderName",
+          "value": "Local authority (animal welfare)",
+          "isRedefinition": true
+        },
+        {
+          "name": "stakeholderDescription",
+          "value": "Regulatory body responsible for animal welfare standards under the Animal Welfare Act 2006.",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipNature",
+          "value": "RelationshipNature::regulatory",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsInward",
+          "value": "Sets animal welfare standards for businesses handling animals. Investigates complaints.",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsOutward",
+          "value": "Comply with Animal Welfare Act 2006. Ensure grooming practices do not cause suffering or distress. Cooperate with any investigation.",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationExchanged",
+          "value": "Business registration, incident reports if any (outward). Guidance, investigation outcomes (inward).",
+          "isRedefinition": true
+        },
+        {
+          "name": "governanceArrangements",
+          "value": "Business licence (if required by local authority). Complaint-driven investigation process.",
+          "isRedefinition": true
+        },
+        {
+          "name": "healthIndicators",
+          "value": "No complaints, no investigations, licence current (if applicable).",
+          "isRedefinition": true
+        },
+        {
+          "name": "reviewCadence",
+          "value": "As required \u2014 primarily complaint-driven. Voluntary annual self-assessment against industry standards.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "groomingInsurance",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 411,
+      "specialises": "StakeholderRelationship",
+      "attributes": [
+        {
+          "name": "stakeholderName",
+          "value": "Insurance provider",
+          "isRedefinition": true
+        },
+        {
+          "name": "stakeholderDescription",
+          "value": "Professional liability and public liability insurance \u2014 contractual relationship.",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipNature",
+          "value": "RelationshipNature::contractual",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsInward",
+          "value": "Provides insurance cover for professional liability, public liability, and damage to animals in care.",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsOutward",
+          "value": "Pay premiums, maintain safe working practices, report incidents promptly, comply with policy conditions.",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationExchanged",
+          "value": "Policy details, incident notifications, renewal documentation.",
+          "isRedefinition": true
+        },
+        {
+          "name": "governanceArrangements",
+          "value": "Annual insurance policy. Incident reporting protocol.",
+          "isRedefinition": true
+        },
+        {
+          "name": "healthIndicators",
+          "value": "Policy current, claims history, premium trajectory.",
+          "isRedefinition": true
+        },
+        {
+          "name": "reviewCadence",
+          "value": "Annual renewal. Immediate notification for incidents.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "vetPartnership",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Local vet partnership for pre-grooming health checks\n\u2014 shared responsibility for animal welfare.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 423,
+      "specialises": "CooperativeArrangement",
+      "attributes": [
+        {
+          "name": "arrangementName",
+          "value": "Local vet partnership",
+          "isRedefinition": true
+        },
+        {
+          "name": "cooperatingEntity",
+          "value": "Local veterinary practice",
+          "isRedefinition": true
+        },
+        {
+          "name": "sharedOutcome",
+          "value": "Grooming of dogs with health conditions is safe and informed by veterinary guidance \u2014 neither party can ensure this alone",
+          "isRedefinition": true
+        },
+        {
+          "name": "responsibilitySplit",
+          "value": "Vet: health assessment, grooming clearance, advice on handling. Paws: grooming delivery, observation during grooming, reporting concerns back to vet.",
+          "isRedefinition": true
+        },
+        {
+          "name": "protocolReference",
+          "value": "Informal professional agreement. Referral form for dogs with health conditions.",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationSharing",
+          "value": "Paws sends grooming referral form for dogs with known conditions. Vet sends clearance notes and handling advice.",
+          "isRedefinition": true
+        },
+        {
+          "name": "disputeResolution",
+          "value": "Professional discussion between groomer and vet. Owner involved in decisions about their animal.",
+          "isRedefinition": true
+        },
+        {
+          "name": "performanceIndicators",
+          "value": "Referral turnaround time, incidents during grooming of referred dogs, vet satisfaction with communication.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "vetReferralPathway",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Vet referrals for grooming of dogs with health\nconditions \u2014 inbound from vet to Paws.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 436,
+      "specialises": "ReferralPathway",
+      "attributes": [
+        {
+          "name": "pathwayName",
+          "value": "Vet referral for grooming",
+          "isRedefinition": true
+        },
+        {
+          "name": "direction",
+          "value": "ReferralDirection::inbound",
+          "isRedefinition": true
+        },
+        {
+          "name": "referringEntity",
+          "value": "Local veterinary practices",
+          "isRedefinition": true
+        },
+        {
+          "name": "referralCriteria",
+          "value": "Dog with health condition requiring specialist grooming awareness \u2014 skin conditions, post-surgical, mobility issues, anxiety.",
+          "isRedefinition": true
+        },
+        {
+          "name": "referralProtocol",
+          "value": "Vet referral note with condition details and handling advice. Phone call for complex cases.",
+          "isRedefinition": true
+        },
+        {
+          "name": "expectedResponseTime",
+          "value": "Acknowledgement within 2 working days. Appointment within 1 week.",
+          "isRedefinition": true
+        },
+        {
+          "name": "feedbackMechanism",
+          "value": "Post-grooming note sent to vet for dogs with health conditions.",
+          "isRedefinition": true
+        },
+        {
+          "name": "volumeTracking",
+          "value": "Referral volumes tracked monthly. Proportion of bookings from vet referrals.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "groomingProductSupply",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 449,
+      "specialises": "ExternalDependency",
+      "attributes": [
+        {
+          "name": "dependencyName",
+          "value": "Grooming product supply",
+          "isRedefinition": true
+        },
+        {
+          "name": "provider",
+          "value": "Professional grooming product suppliers",
+          "isRedefinition": true
+        },
+        {
+          "name": "dependencyDescription",
+          "value": "Supply of shampoos, conditioners, coat treatments, ear cleaners, and grooming tools.",
+          "isRedefinition": true
+        },
+        {
+          "name": "criticality",
+          "value": "DependencyCriticality::important",
+          "isRedefinition": true
+        },
+        {
+          "name": "substitutability",
+          "value": "Multiple suppliers available for most products. Some breed-specific or sensitive-skin products have fewer suppliers. Brand switching straightforward for most products.",
+          "isRedefinition": true
+        },
+        {
+          "name": "contingencyPlan",
+          "value": "Stock held for 4-6 weeks of standard products. Alternative supplier accounts maintained. Generic alternatives identified for specialist products.",
+          "isRedefinition": true
+        },
+        {
+          "name": "contractualTerms",
+          "value": "Standard trade account. Monthly ordering with volume discount.",
+          "isRedefinition": true
+        },
+        {
+          "name": "supplyRisk",
+          "value": "Low \u2014 diverse supplier market. Occasional discontinuation of specialist products.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "localDogCommunity",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 460,
+      "specialises": "CommunityRelationship",
+      "attributes": [
+        {
+          "name": "communityName",
+          "value": "Local dog owner community",
+          "isRedefinition": true
+        },
+        {
+          "name": "communityDescription",
+          "value": "Dog owners in the local area \u2014 breed groups, social walking groups, social media communities.",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipToService",
+          "value": "Constitutive \u2014 the local dog-owning community is the customer base. Breed-specific knowledge flows both ways.",
+          "isRedefinition": true
+        },
+        {
+          "name": "engagementMode",
+          "value": "Social media presence, breed group engagement, local dog events, grooming tips and advice sharing.",
+          "isRedefinition": true
+        },
+        {
+          "name": "mutualBenefit",
+          "value": "Community gains expert grooming and breed-specific care advice. Paws gains breed knowledge, trust, and word-of-mouth referrals.",
+          "isRedefinition": true
+        },
+        {
+          "name": "communityVoice",
+          "value": "Customer reviews, social media feedback, breed-specific grooming preference discussions, seasonal coat care advice requests.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "pawsParticipation",
+      "parentPackage": "PawsBusinessModel",
+      "doc": "Pet owner as informed participant \u2014 communicates breed\nneeds and health history, present during grooming.",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 469,
+      "specialises": "ParticipationModel",
+      "attributes": [
+        {
+          "name": "participationName",
+          "value": "Owner consultation and handover",
+          "isRedefinition": true
+        },
+        {
+          "name": "participantRole",
+          "value": "Informed participant \u2014 owner communicates needs and preferences, groomer delivers the service",
+          "isRedefinition": true
+        },
+        {
+          "name": "participationDescription",
+          "value": "Owner communicates breed needs, health history, behavioural notes, and grooming preferences at check-in. Owner may be present or nearby during grooming. Post-grooming handover includes condition notes.",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationContribution",
+          "value": "Breed details, health conditions, behavioural notes (e.g. anxiety triggers), grooming style preferences, skin sensitivity, previous grooming history.",
+          "isRedefinition": true
+        },
+        {
+          "name": "decisionInvolvement",
+          "value": "Consulted \u2014 owner expresses preferences, groomer advises on breed-appropriate options and makes professional decisions about safe handling.",
+          "isRedefinition": true
+        },
+        {
+          "name": "selfServiceScope",
+          "value": "Online booking, viewing grooming notes, rebooking preferred services.",
+          "isRedefinition": true
+        },
+        {
+          "name": "supportRequired",
+          "value": "Clear communication about grooming options, breed-specific care advice, transparent pricing for add-on services.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
       "name": "dogGroomer",
       "parentPackage": "PawsResourceFinancial",
       "doc": "Qualified dog groomer \u2014 the primary resource.\nCity & Guilds Level 3 in Dog Grooming or\nequivalent. Breed-specific training preferred.",
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 404,
+      "lineNumber": 494,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34752,7 +37850,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 415,
+      "lineNumber": 505,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34790,7 +37888,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 426,
+      "lineNumber": 516,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34828,7 +37926,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 436,
+      "lineNumber": 526,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34866,7 +37964,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 444,
+      "lineNumber": 534,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34904,7 +38002,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 455,
+      "lineNumber": 545,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34942,7 +38040,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 468,
+      "lineNumber": 558,
       "specialises": "Capability",
       "attributes": [
         {
@@ -34975,7 +38073,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 477,
+      "lineNumber": 567,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -35013,7 +38111,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 491,
+      "lineNumber": 581,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -35046,7 +38144,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 509,
+      "lineNumber": 599,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -35079,7 +38177,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 519,
+      "lineNumber": 609,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -35112,7 +38210,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 527,
+      "lineNumber": 617,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -35145,7 +38243,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 535,
+      "lineNumber": 625,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -35178,7 +38276,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 543,
+      "lineNumber": 633,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -35211,7 +38309,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 553,
+      "lineNumber": 643,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -35244,7 +38342,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 564,
+      "lineNumber": 654,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -35277,7 +38375,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 575,
+      "lineNumber": 665,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -35310,7 +38408,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 589,
+      "lineNumber": 679,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -35348,7 +38446,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 642,
+      "lineNumber": 732,
       "specialises": "GovernanceRequirement",
       "attributes": [
         {
@@ -35386,7 +38484,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 666,
+      "lineNumber": 756,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -35424,7 +38522,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 677,
+      "lineNumber": 767,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -35462,7 +38560,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 689,
+      "lineNumber": 779,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -35500,7 +38598,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 702,
+      "lineNumber": 792,
       "specialises": "ExternalReference",
       "attributes": [
         {
