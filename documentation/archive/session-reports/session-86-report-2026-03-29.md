@@ -84,21 +84,33 @@ A new dedicated "Architecture" view in the Ontara Console. The existing views se
 
 ## Tier 1 Principles Honoured
 
-- **A1 (separation of representation and execution):** Not directly exercised — no runtime work this session.
-- **A2 (self-describing system):** Central to the session — the architecture is being made self-describing through first-class model content.
-- **A3 (model generates everything):** The design ensures section descriptions are extractable by the generation pipeline.
-- **A4 (two meta model distinction):** Architectural sections are explicitly placed on the BSMM side. Provisional package placement preserves design freedom.
-- **A9 (discipline):** Five questions addressed systematically with documented rationale. Research incorporated before committing.
-- **A10 (intrinsic self-knowledge):** The architecture describes its own structural regions. The prose trade-off is acknowledged and proportionate.
-- **A11 (unity principle):** The same comprehension metadata patterns serve architectural sections and BMM elements.
-- **J2 (co-evolution):** Model structure and console view designed together.
-- **J3 (non-constraining):** Name-based identity preserves ordering flexibility. Provisional package placement preserves BSMM design freedom.
+- **[[principle-separation-representation-execution\|A1]] (separation of representation and execution):** Not directly exercised — no runtime work this session.
+- **[[principle-self-describing-system\|A2]] (self-describing system):** Central to the session — the architecture is being made self-describing through first-class model content.
+- **[[principle-model-generates-everything\|A3]] (model generates everything):** The design ensures section descriptions are extractable by the generation pipeline.
+- **[[principle-two-meta-model-distinction\|A4]] (two meta model distinction):** Architectural sections are explicitly placed on the BSMM side. Provisional package placement preserves design freedom.
+- **[[principle-discipline-as-load-bearing-structure\|A9]] (discipline):** Five questions addressed systematically with documented rationale. Research incorporated before committing.
+- **[[principle-intrinsic-self-knowledge\|A10]] (intrinsic self-knowledge):** The architecture describes its own structural regions. The prose trade-off is acknowledged and proportionate.
+- **[[principle-unity-principle\|A11]] (unity principle):** The same comprehension metadata patterns serve architectural sections and BMM elements.
+- **[[concept-co-evolution\|J2]] (co-evolution):** Model structure and console view designed together.
+- **[[concept-non-constraining\|J3]] (non-constraining):** Name-based identity preserves ordering flexibility. Provisional package placement preserves BSMM design freedom.
 
 ---
 
 ## Open Questions
 
 The five design questions from the campus walk §12 are resolved. Five remaining questions (BSMM vocabulary content, system ontological categories completeness, operational domain representation, reflective simulation processing formalism, tenant activation model) remain open as separate workstreams — they are not prerequisites for implementing the decisions in this session.
+
+---
+
+---
+
+## Related Documents
+
+- [[ontara-discussion-architectural-section-implementation-design-2026-03-29\|Architectural Section Implementation Design paper]]
+- [[ontara-discussion-architectural-campus-walk-2026-03-28\|The Ontara Campus discussion paper]]
+- [[ontara-workflow-emergent-ideas-log\|Emergent Ideas Log]] — E016, E017
+- [[ontara-ref-master-register\|Master Concept Register]]
+- [[session-87-preparation-note\|Session 87 Preparation Note]]
 
 ---
 

@@ -69,7 +69,7 @@ The decisions in this paper are governed by:
 
 The 20 sections are semantically distinct, not positionally defined. "BFO" is BFO regardless of whether it is Section 1 or Section 0. "Operational Simulation" does not change meaning if a new section is inserted before it.
 
-Precedent within Ontara supports this. The BMM concerns are named (ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, [[ontara-ref-master-register|GovernanceMapping]], [[concept-stakeholder-model|StakeholderModel]]), not numbered. When StakeholderModel was added as the sixth concern, nothing broke — no renumbering, no identity confusion.
+Precedent within Ontara supports this. The BMM concerns are named (ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, [[ontara-ref-master-register|GovernanceMapping]], [[concept-stakeholder-model|StakeholderModel]]), not numbered. When [[concept-stakeholder-model|StakeholderModel]] was added as the sixth concern, nothing broke — no renumbering, no identity confusion.
 
 Making order a presentation property, not an identity property, preserves flexibility ([[concept-non-constraining|J3]]). A console view might order sections by group, by formalism, by persistence mechanism, by implementation status, or by tenant density. Different orderings serve different audiences.
 
@@ -318,7 +318,7 @@ A list view grouped by architectural group, each section expandable to show its 
 - Filterable by: group, formalism, implementation status
 - Same SvelteKit + Flowbite component patterns as the existing Glossary view
 
-This is straightforward `[Code]` work using established console patterns.
+This is straightforward `[Code]` work using established console patterns. The [[ontara-guide-claude-tooling|Claude Tooling Guide]] governs the Chat/Code allocation.
 
 ### 6.3 Documented stretch goal — spatial layout
 
@@ -344,7 +344,7 @@ The resolution of the long-prose question (§5) surfaced a pattern that is poten
 
 ### 8.1 Syside validation step
 
-Before populating all 20 section instances, implement two sections fully (e.g. `bfo` and `operational-simulation` — one simple, one complex) and verify in [[ontara-ref-master-register|Syside Modeler]] that:
+Before populating all 20 section instances, implement two sections fully (e.g. `bfo` and `operational-simulation` — one simple, one complex) and verify in Syside Modeler that:
 
 - The metadata annotation blocks parse cleanly
 - The short summary strings display acceptably in hover tooltips and editor panels
@@ -450,6 +450,8 @@ The following questions from the campus walk paper's §12 remain open. They are 
 - [[ontara-ref-strategic-snapshot|Strategic Reference (Session 82)]] — current project orientation
 - [[ontara-discussion-stakeholder-model-and-bsmm-vocabulary-2026-03-27|StakeholderModel and BSMM Vocabulary paper (Session 76)]] — BSMM capability groups context
 - External research: Perplexity investigation into MBSE best practice for long prose in model metadata (Session 86)
+- [[ontara-workflow-development-guide|Development Workflow Guide]] — governing operating agreement
+- [[session-86-report-2026-03-29|Session 86 Report]]
 
 ---
 
