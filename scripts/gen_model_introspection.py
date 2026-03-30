@@ -1110,6 +1110,84 @@ def build_weighted_relationship_graph(all_elements, coverage_matrix):
 
 
 # ---------------------------------------------------------------
+# Session 88: Architectural sections
+# ---------------------------------------------------------------
+
+def build_architectural_sections(all_elements):
+    """Build the architecturalSections array from ArchitecturalSection part usages.
+
+    Extracts structural attributes and metadata annotations from the 20
+    architectural section instances, producing the JSON structure for the
+    console's Architecture view.
+
+    Session 88 — B27 (architectural section), J2 (co-evolution).
+    """
+    sections = []
+
+    for elem in all_elements:
+        if elem.kind != "part":
+            continue
+        # Match ArchitecturalSection type (with or without package prefix)
+        type_name = elem.specialises.split("::")[-1] if elem.specialises else ""
+        if type_name != "ArchitecturalSection":
+            continue
+
+        # Extract redefined attribute values
+        attr_values = {}
+        for attr in elem.attributes:
+            if isinstance(attr, dict) and attr.get("isRedefinition"):
+                attr_values[attr["name"]] = attr["value"]
+
+        # Extract @PurposiveDescription
+        purposive_desc = ""
+        if elem.purposive_description:
+            purposive_desc = elem.purposive_description.get("description", "")
+
+        # Extract @ArchitecturalLocation from annotations list
+        arch_location = {}
+        for ann in elem.annotations:
+            if ann.get("name") == "ArchitecturalLocation":
+                arch_location = ann.get("attrs", {})
+                break
+
+        # Extract @UserFacing
+        friendly_name = ""
+        short_desc = ""
+        if elem.user_facing:
+            friendly_name = elem.user_facing.get("friendlyName", "")
+            short_desc = elem.user_facing.get("shortDescription", "")
+
+        # Parse presentationOrder as integer
+        try:
+            order = int(attr_values.get("presentationOrder", "0"))
+        except (ValueError, TypeError):
+            order = 0
+
+        section = {
+            "name": attr_values.get("name", elem.name),
+            "displayName": attr_values.get("displayName", friendly_name or elem.name),
+            "group": attr_values.get("group", ""),
+            "presentationOrder": order,
+            "primaryFormalism": attr_values.get("primaryFormalism", ""),
+            "persistenceMechanism": attr_values.get("persistenceMechanism", ""),
+            "implementationStatus": attr_values.get("implementationStatus", ""),
+            "purposiveDescription": purposive_desc,
+            "friendlyName": friendly_name,
+            "shortDescription": short_desc,
+            "representationalModalitySummary": arch_location.get("representationalModalitySummary", ""),
+            "persistenceSummary": arch_location.get("persistenceSummary", ""),
+            "interfacesSummary": arch_location.get("interfacesSummary", ""),
+            "domainIllustrationSummary": arch_location.get("domainIllustrationSummary", ""),
+            "docKey": attr_values.get("docKey", ""),
+        }
+        sections.append(section)
+
+    # Sort by presentationOrder
+    sections.sort(key=lambda s: s["presentationOrder"])
+    return sections
+
+
+# ---------------------------------------------------------------
 # Stage 2 Phase 6: Governance traceability
 # ---------------------------------------------------------------
 
@@ -1252,7 +1330,10 @@ def main():
 
     # Stage 4 Phase 1: build weighted relationship graph
     relationship_graph = build_weighted_relationship_graph(all_elements, coverage)
-    
+
+    # Session 88: build architectural sections
+    architectural_sections = build_architectural_sections(all_elements)
+
     # Summary stats
     by_kind = defaultdict(int)
     by_layer = defaultdict(int)
@@ -1329,6 +1410,13 @@ def main():
     print(f"Strong: {rg_stats['strongCount']}, Moderate: {rg_stats['moderateCount']}, Weak: {rg_stats['weakCount']}", file=sys.stderr)
     print(f"Bidirectional pairs: {rg_stats['bidirectionalPairCount']}", file=sys.stderr)
 
+    # Session 88: architectural sections diagnostics
+    print(f"\n--- Architectural Sections ---", file=sys.stderr)
+    print(f"Sections found: {len(architectural_sections)}", file=sys.stderr)
+    for section in architectural_sections:
+        print(f"  {section['presentationOrder']:2d}. {section['displayName']} [{section['group']}] ({section['implementationStatus']})",
+              file=sys.stderr)
+
     # Coverage summary
     print(f"\n--- Coverage Matrix ---", file=sys.stderr)
     for def_name, info in sorted(coverage.items()):
@@ -1361,6 +1449,7 @@ def main():
         "coverageMatrix": coverage,
         "comprehensionContent": comprehension_content,
         "weightedRelationshipGraph": relationship_graph,
+        "architecturalSections": architectural_sections,  # NEW — Session 88
         "elements": [e.to_dict() for e in all_elements],
     }
     

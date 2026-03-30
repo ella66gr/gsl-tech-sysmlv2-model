@@ -13,6 +13,7 @@
     ShieldCheckOutline,
     BookOutline,
     ShareNodesOutline,
+    BuildingOutline,
   } from 'flowbite-svelte-icons';
 
   let { children } = $props();
@@ -126,6 +127,12 @@
 
       <!-- Architecture -->
       <li class="mb-1 px-3 pt-4 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-400">Architecture</li>
+      <li>
+        <a href="/architecture" class="flex items-center rounded-lg p-2 {isActive('/architecture') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
+          <BuildingOutline class="h-5 w-5" />
+          <span class="ms-3">Architecture</span>
+        </a>
+      </li>
       <li>
         <a href="/patterns" class="flex items-center rounded-lg p-2 {isActive('/patterns') ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' : 'text-secondary-600 hover:bg-secondary-100 dark:text-secondary-300 dark:hover:bg-secondary-700'}">
           <CodeBranchOutline class="h-5 w-5" />
