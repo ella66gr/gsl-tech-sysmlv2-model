@@ -9,11 +9,12 @@
 
 /** Known concern colours — dark-mode-friendly palette. */
 const CONCERN_COLOURS: Record<string, string> = {
-  ServiceConcept: '#3b82f6',    // blue-500
-  ActivityModel: '#10b981',     // emerald-500
+  ServiceConcept: '#3b82f6',     // blue-500
+  ActivityModel: '#10b981',      // emerald-500
   ResourceCapability: '#f59e0b', // amber-500
-  FinancialModel: '#a855f7',    // purple-500
-  Governance: '#f43f5e',        // rose-500
+  FinancialModel: '#a855f7',     // purple-500
+  Governance: '#f43f5e',         // rose-500
+  StakeholderModel: '#06b6d4',   // cyan-500
 };
 
 /** Reserve palette for concerns not in the known set. */
@@ -72,6 +73,7 @@ export function getConcernBadgeColour(concern: string): string {
     ResourceCapability: 'yellow',
     FinancialModel: 'purple',
     Governance: 'red',
+    StakeholderModel: 'indigo',
   };
   return map[concern] || 'dark';
 }

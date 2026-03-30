@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext } from 'svelte';
-  import RelationshipGraph from '$lib/components/RelationshipGraph.svelte';
+  import RelationshipGraph3D from '$lib/components/RelationshipGraph3D.svelte';
   import type { WeightedRelationshipGraph } from '$lib/types/relationships';
   import type { ComprehensionContent, CatalogueElement } from '$lib/types/catalogue';
   import { getConcernColour } from '$lib/utils/colours';
@@ -40,7 +40,7 @@
 <div class="relative flex gap-4">
   <!-- Graph area -->
   <div class="min-h-[600px] flex-1">
-    <RelationshipGraph
+    <RelationshipGraph3D
       {graph}
       concernFilter={filters.concernFilter}
       strengthFilter={filters.strengthFilter}

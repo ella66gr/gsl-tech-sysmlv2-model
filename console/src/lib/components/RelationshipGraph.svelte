@@ -32,6 +32,8 @@
   let hoveredNodeId = $state<string | null>(null);
   let hoveredEdgeIdx = $state<number | null>(null);
   let simulation: d3.Simulation<SimNode, SimEdge> | null = null;
+  let zoomBehaviour: d3.ZoomBehavior<SVGSVGElement, unknown> | null = null;
+  let fitTransform: d3.ZoomTransform | null = null;
   let viewBox = $state('0 0 800 600');
 
   // Taper half-widths by strength (at the source/base end)
@@ -92,19 +94,21 @@
     return Math.max(9, Math.min(13, 8 + degree * 0.4));
   }
 
-  // Compute viewBox from node positions with generous padding
+  // Compute bounds of graph content with width-aware label estimation.
+  // Returns a viewBox string — used only to derive the initial fit transform.
   function computeViewBox(nodes: SimNode[]): string {
     if (nodes.length === 0) return '0 0 800 600';
     const padding = 100;
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     for (const n of nodes) {
       const r = radiusScale(n.degree);
-      const labelExtra = 20;
+      const labelW = n.friendlyName.length * fontSize(n.degree) * 0.55;
+      const labelH = fontSize(n.degree) + 6;
       if (n.x !== undefined && n.y !== undefined) {
-        minX = Math.min(minX, n.x - r);
+        minX = Math.min(minX, n.x - r, n.x - labelW / 2);
         minY = Math.min(minY, n.y - r);
-        maxX = Math.max(maxX, n.x + r);
-        maxY = Math.max(maxY, n.y + r + labelExtra);
+        maxX = Math.max(maxX, n.x + r, n.x + labelW / 2);
+        maxY = Math.max(maxY, n.y + r + labelH);
       }
     }
     return `${minX - padding} ${minY - padding} ${maxX - minX + padding * 2} ${maxY - minY + padding * 2}`;
@@ -198,8 +202,10 @@
     const px = -uy;
     const py = ux;
 
-    // Curve offset — enough to separate bidirectional pairs
-    const curveOffset = Math.max(20, dist * 0.18) * dir;
+    // Curve offset — increased base + width boost to separate bidirectional pairs
+    const baseOffset = Math.max(30, dist * 0.22);
+    const widthBoost = halfW > 4 ? 1.3 : 1.0;
+    const curveOffset = baseOffset * widthBoost * dir;
 
     // Control point: midpoint offset perpendicular
     const cpx = (src.x + tgt.x) / 2 + px * curveOffset;
@@ -244,6 +250,10 @@
       leftPoints.push(`${bx + npx * w},${by + npy * w}`);
       rightPoints.push(`${bx - npx * w},${by - npy * w}`);
     }
+
+    // Suppress unused variable warnings — startX/startY/endX/endY are computed
+    // as reference values but the polygon is built from sampled points
+    void startX; void startY; void endX; void endY;
 
     // Build polygon: left side forward, right side backward
     rightPoints.reverse();
@@ -348,6 +358,14 @@
     return style.opacity;
   }
 
+  // Reset zoom and pan to the initial fitted view
+  function resetView() {
+    if (fitTransform && svgEl && zoomBehaviour) {
+      d3.select(svgEl).transition().duration(500).call(zoomBehaviour.transform, fitTransform);
+      transform = { x: fitTransform.x, y: fitTransform.y, k: fitTransform.k };
+    }
+  }
+
   onMount(() => {
     // Build sim nodes and edges
     const nodes: SimNode[] = graph.nodes.map((n) => ({
@@ -369,10 +387,13 @@
     computeDegrees(nodes, edges);
     markBidirectional(edges);
 
-    // Measure container for initial center
+    // Measure container
     const rect = containerEl.getBoundingClientRect();
-    const w = rect.width || 800;
-    const h = Math.max(600, rect.height);
+    const cw = rect.width || 800;
+    const ch = Math.max(600, rect.height);
+
+    // Set fixed viewBox matching container — zoom transform handles all positioning
+    viewBox = `0 0 ${cw} ${ch}`;
 
     // Create simulation
     simulation = d3.forceSimulation<SimNode>(nodes)
@@ -380,7 +401,7 @@
         .id((d) => d.id)
         .distance(120))
       .force('charge', d3.forceManyBody().strength(-400))
-      .force('center', d3.forceCenter(w / 2, h / 2))
+      .force('center', d3.forceCenter(cw / 2, ch / 2))
       .force('collide', d3.forceCollide<SimNode>().radius((d) => radiusScale(d.degree) + 10))
       .stop();
 
@@ -392,24 +413,42 @@
     simNodes = nodes;
     simEdges = edges;
 
-    // Compute viewBox to fit all nodes after settling
-    viewBox = computeViewBox(nodes);
+    // Compute graph content bounds using improved label estimation
+    const boundsStr = computeViewBox(nodes);
+    const vbParts = boundsStr.split(' ').map(Number);
+    const [vbX, vbY, vbW, vbH] = vbParts;
 
-    // Restart with low alpha for drag interactions
+    // Compute scale to fit with 5% padding, capped at 1.5x
+    const pad = 0.05;
+    const scaleX = cw * (1 - 2 * pad) / vbW;
+    const scaleY = ch * (1 - 2 * pad) / vbH;
+    const fitScale = Math.min(scaleX, scaleY, 1.5);
+
+    // Compute translation to centre the graph in the container
+    const fitX = (cw - vbW * fitScale) / 2 - vbX * fitScale;
+    const fitY = (ch - vbH * fitScale) / 2 - vbY * fitScale;
+
+    const initialTransform = d3.zoomIdentity.translate(fitX, fitY).scale(fitScale);
+    fitTransform = initialTransform;
+
+    // Restart with low alpha for drag interactions (tick handler no longer updates viewBox)
     simulation.alpha(0).restart().on('tick', () => {
       simNodes = [...simNodes];
       simEdges = [...simEdges];
-      viewBox = computeViewBox(simNodes);
     });
 
     // Setup zoom
-    const zoomBehaviour = d3.zoom<SVGSVGElement, unknown>()
+    zoomBehaviour = d3.zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.2, 4])
       .on('zoom', (event) => {
         transform = { x: event.transform.x, y: event.transform.y, k: event.transform.k };
       });
 
     d3.select(svgEl).call(zoomBehaviour);
+
+    // Apply initial fit transform
+    d3.select(svgEl).call(zoomBehaviour.transform, initialTransform);
+    transform = { x: fitX, y: fitY, k: fitScale };
 
     // Setup drag
     const dragBehaviour = d3.drag<SVGGElement, SimNode>()
@@ -470,7 +509,6 @@
     bind:this={svgEl}
     class="h-full w-full"
     viewBox={viewBox}
-    preserveAspectRatio="xMidYMid meet"
   >
     <g transform="translate({transform.x},{transform.y}) scale({transform.k})">
       <!-- Tapered edges -->
@@ -521,6 +559,15 @@
       {/each}
     </g>
   </svg>
+
+  <!-- Reset view button -->
+  <button
+    onclick={resetView}
+    class="absolute right-3 top-3 z-10 rounded-md bg-white/80 px-2.5 py-1.5 text-xs font-medium text-secondary-600 shadow-sm ring-1 ring-secondary-200 backdrop-blur-sm transition hover:bg-white hover:text-secondary-800 dark:bg-secondary-800/80 dark:text-secondary-300 dark:ring-secondary-700 dark:hover:bg-secondary-800 dark:hover:text-white"
+    title="Reset zoom and position"
+  >
+    Reset View
+  </button>
 
   <!-- Node tooltip -->
   {#if hoveredNodeId && hoveredNodeId !== selectedNodeId}
