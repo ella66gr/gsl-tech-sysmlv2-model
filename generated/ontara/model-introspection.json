@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-03-28T13:07:48.478805",
+  "generatedAt": "2026-03-30T08:10:41.352045",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 481
+      "elementCount": 506
     },
     "cafe": {
       "label": "Cafe",
@@ -24,26 +24,26 @@
     }
   },
   "summary": {
-    "totalElements": 727,
+    "totalElements": 752,
     "byKind": {
-      "part_def": 125,
-      "part": 485,
-      "enum_def": 54,
+      "enum_def": 57,
+      "metadata_def": 16,
+      "part_def": 126,
+      "part": 505,
       "requirement_def": 15,
       "requirement": 7,
-      "metadata_def": 15,
       "constraint_def": 14,
       "constraint": 10,
       "satisfy": 2
     },
     "byLayer": {
+      "bsmm": 247,
+      "unknown": 38,
       "bmm": 199,
-      "unknown": 18,
-      "domain": 268,
-      "bsmm": 242
+      "domain": 268
     },
     "byDomain": {
-      "core": 481,
+      "core": 506,
       "cafe": 125,
       "suds": 61,
       "paws": 60
@@ -913,6 +913,101 @@
     ]
   },
   "coverageMatrix": {
+    "ArchitecturalSection": {
+      "name": "ArchitecturalSection",
+      "layer": "bsmm",
+      "package": "ArchitecturalStructure",
+      "doc": "A bounded region of the dual-stack architecture with\na characteristic purpose, representational formalism,\npersistence mechanism, and set of interfaces to\nneighbouring sections.\n20 sections identified",
+      "catalogueTag": {},
+      "userFacing": {},
+      "purposiveDescription": {},
+      "comprehension": {},
+      "weightedRelationships": [],
+      "domains": {
+        "core": [
+          {
+            "name": "bfo",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "domainOntologies",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "bmmGeneralVocabulary",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "businessInstance",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "operationalDomains",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "businessProcessPatterns",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "systemOntologicalCategories",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "bsmmGeneralVocabulary",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "systemInstance",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "systemDomains",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "operationalSimulation",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "reflectiveSimulation",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "rulesAndConstraints",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "terminologyAndInformationCarriers",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "mappingOntology",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "knowledgeGraph",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "sysmlV2Section",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "openehrSection",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "temporalSection",
+            "package": "ArchitecturalStructure"
+          },
+          {
+            "name": "operatorSection",
+            "package": "ArchitecturalStructure"
+          }
+        ]
+      }
+    },
     "CustomerSegment": {
       "name": "CustomerSegment",
       "layer": "bmm",
@@ -9001,7 +9096,2191 @@
       "bidirectionalPairCount": 28
     }
   },
+  "architecturalSections": [
+    {
+      "name": "bfo",
+      "displayName": "BFO (Basic Formal Ontology)",
+      "group": "ArchitecturalGroup::sharedFoundation",
+      "presentationOrder": 1,
+      "primaryFormalism": "Formalism::owl2dl",
+      "persistenceMechanism": "triple-store",
+      "implementationStatus": "ImplementationStatus::referenced",
+      "purposiveDescription": "The shared foundation spanning both stacks. BFO is an ISO standard upper ontology providing the categorical framework \u2014 Continuant, Occurrent, Role, Disposition, Quality, Function \u2014 that classifies everything in the architecture. Every entity in every layer traces upward to a BFO category. BFO determines valid reasoning patterns: what can bear a Role, what can participate in a Process, what is a Quality of what.",
+      "friendlyName": "BFO (Basic Formal Ontology)",
+      "shortDescription": "The shared upper ontology spanning both stacks, providing the categorical framework for everything in the architecture.",
+      "representationalModalitySummary": "OWL 2 DL. Imported directly from the OBO Foundry as a maintained external ontology.",
+      "persistenceSummary": "Target: triple store (knowledge graph). Currently: referenced in discussion papers and architecture diagram; not yet implemented.",
+      "interfacesSummary": "Vertical downward to both domain ontologies (left stack) and system ontological categories (right stack). Spans both stacks as a shared foundation; does not connect horizontally.",
+      "domainIllustrationSummary": "For Paws: Sam is a BFO Continuant bearing a Role; a ServiceOffering is an Occurrent; a Room is an Independent Continuant; a PricingRule is a Generically Dependent Continuant.",
+      "docKey": "bfo"
+    },
+    {
+      "name": "domain-ontologies",
+      "displayName": "Domain Ontologies",
+      "group": "ArchitecturalGroup::leftStack",
+      "presentationOrder": 2,
+      "primaryFormalism": "Formalism::owl2dl",
+      "persistenceMechanism": "triple-store",
+      "implementationStatus": "ImplementationStatus::referenced",
+      "purposiveDescription": "Mid-level BFO-aligned ontologies providing domain-specific semantic grounding between BFO's abstract categories and the BMM's structural vocabulary. The selection of domain ontologies during tenant onboarding gives each tenant its semantic character \u2014 healthcare tenants use OGMS and GSSO; commercial tenants use OCE. All use IAO for information entities.",
+      "friendlyName": "Domain Ontologies",
+      "shortDescription": "Mid-level BFO-aligned ontologies providing tenant-specific semantic grounding between BFO and the BMM vocabulary.",
+      "representationalModalitySummary": "OWL 2 DL. Existing OBO Foundry ontologies, imported directly.",
+      "persistenceSummary": "Target: triple store (knowledge graph), alongside BFO. Currently: referenced only.",
+      "interfacesSummary": "Vertical downward to BMM General vocabulary. Vertical upward to BFO. Horizontal rightward to system ontological categories \u2014 the topmost horizontal mapping.",
+      "domainIllustrationSummary": "For Paws: OCE (Ontology of Commercial Enterprises) as primary domain ontology. For GSL: OGMS+GSSO+IAO \u2014 same BMM structure, fundamentally different semantic grounding.",
+      "docKey": "domain-ontologies"
+    },
+    {
+      "name": "bmm-general-vocabulary",
+      "displayName": "BMM General Vocabulary",
+      "group": "ArchitecturalGroup::leftStack",
+      "presentationOrder": 3,
+      "primaryFormalism": "Formalism::sysmlV2",
+      "persistenceMechanism": "sysml-files",
+      "implementationStatus": "ImplementationStatus::implemented",
+      "purposiveDescription": "The classification engine for the business side. 34 part defs across six concerns defining the structural templates for what a service business is. Raw business information is mapped to these templates. The BMM General vocabulary is domain-neutral \u2014 the same part defs apply to a dog grooming salon, a coffee shop, and a gender identity clinic. This is the level at which cross-domain validation operates.",
+      "friendlyName": "BMM General Vocabulary",
+      "shortDescription": "The 34 domain-neutral structural templates defining what a service business is, across six concerns.",
+      "representationalModalitySummary": "SysML v2 part defs. The most mature section \u2014 34 part defs with full comprehension metadata (34/34 UserFacing, PurposiveDescription, Comprehension; 96 WeightedRelationship).",
+      "persistenceSummary": "Currently: .sysml files in the git repository. Target: knowledge graph (canonical) with SysML v2 files as projection.",
+      "interfacesSummary": "Vertical downward: instantiated by the business instance layer. Vertical upward: traces through domain ontologies to BFO. Horizontal rightward: many-to-many mapping to BSMM General vocabulary.",
+      "domainIllustrationSummary": "For Paws: exclusively General vocabulary \u2014 34 part defs provide the structural skeleton for all service offerings, staff, facilities, pricing, and stakeholder relationships.",
+      "docKey": "bmm-general-vocabulary"
+    },
+    {
+      "name": "business-instance",
+      "displayName": "Business Instance",
+      "group": "ArchitecturalGroup::leftStack",
+      "presentationOrder": 4,
+      "primaryFormalism": "Formalism::sysmlV2",
+      "persistenceMechanism": "sysml-files",
+      "implementationStatus": "ImplementationStatus::implemented",
+      "purposiveDescription": "The concrete populated data for a specific tenant. Where the BMM General vocabulary provides structural templates (part defs), the business instance provides the actual content (part usages). Relation binding happens here: entities are stitched together by confirming typed relations. The user has the most agency at this layer \u2014 convention-over-configuration narrows the space of valid connections.",
+      "friendlyName": "Business Instance",
+      "shortDescription": "The concrete populated data for a specific tenant \u2014 part usages instantiating BMM part defs.",
+      "representationalModalitySummary": "SysML v2 part usages instantiating BMM part defs. Per-domain .sysml files in the exercises directory.",
+      "persistenceSummary": "Currently: .sysml files. Target: knowledge graph (canonical) \u2014 business instance data as OWL individuals.",
+      "interfacesSummary": "Vertical downward to operational domains. Vertical upward: every instance is an instantiation of a BMM General concept. Horizontal rightward to system instance \u2014 the realised-by relationship.",
+      "domainIllustrationSummary": "For Paws: 5 ServiceOfferings, 3 StaffMembers, 6 Rooms, PricingRule matrix, 10 CostCategories, 7 StakeholderModel instantiations, and all typed relations binding them together.",
+      "docKey": "business-instance"
+    },
+    {
+      "name": "operational-domains",
+      "displayName": "Operational Domains",
+      "group": "ArchitecturalGroup::leftStack",
+      "presentationOrder": 5,
+      "primaryFormalism": "Formalism::sysmlV2",
+      "persistenceMechanism": "implicit",
+      "implementationStatus": "ImplementationStatus::designed",
+      "purposiveDescription": "How the business actually operates \u2014 in business language, not system language. The Session 73 correction: these are business model content, not system descriptions. They describe how the business operates and inform what systems are needed, but they remain squarely on the business model side. Currently partially implicit \u2014 they emerge from walking the relation graph in the instance layer.",
+      "friendlyName": "Operational Domains",
+      "shortDescription": "How the business actually operates, in business language \u2014 the operational areas that emerge from the business instance.",
+      "representationalModalitySummary": "SysML v2. Currently partially implicit \u2014 operational domains emerge from the instance layer but are not explicitly modelled as distinct packages.",
+      "persistenceSummary": "Currently: implicit in the instance layer structure. Target: explicit in the knowledge graph and/or SysML model.",
+      "interfacesSummary": "Vertical downward to business process patterns. Vertical upward: emerges from the business instance. Horizontal rightward to system domains. Inside the green container: operates under rules and constraints.",
+      "domainIllustrationSummary": "For Paws: nine operational domains \u2014 Booking, Scheduling, Finance, Customer Management, Inventory, Compliance, Reporting, Marketing, and Document Management \u2014 each in Sam's language.",
+      "docKey": "operational-domains"
+    },
+    {
+      "name": "business-process-patterns",
+      "displayName": "Business Process Patterns",
+      "group": "ArchitecturalGroup::leftStack",
+      "presentationOrder": 6,
+      "primaryFormalism": "Formalism::sysmlV2",
+      "persistenceMechanism": "discussion-papers",
+      "implementationStatus": "ImplementationStatus::designed",
+      "purposiveDescription": "The most dynamic layer of the left stack. Process patterns operate at three abstraction levels: universal archetypes (Resource Allocation, Scheduling, Fulfilment, etc.), BMM-parameterised patterns, and domain-specific instances. This is the crossing point \u2014 business process patterns compile to executable artefacts on the right stack through the process specification layer pipeline.",
+      "friendlyName": "Business Process Patterns",
+      "shortDescription": "Dynamic behaviour and flows at three abstraction levels \u2014 archetypes, BMM-parameterised patterns, and domain-specific instances.",
+      "representationalModalitySummary": "SysML v2 for archetype and pattern definitions. Process sketch DSL (proposed) for human-readable instances. Currently: described in discussion papers; not yet formally modelled.",
+      "persistenceSummary": "Currently: discussion papers only. Target: knowledge graph (canonical) with SysML v2 as projection.",
+      "interfacesSummary": "Vertical upward: parameterised by BMM vocabulary. Horizontal rightward: the pipeline crossing \u2014 executed as operational simulation workflows. Inside the green container: operates under rules and constraints.",
+      "domainIllustrationSummary": "For Paws: Resource Allocation (room to groom), Scheduling (appointment booking), Transaction (payment), Fulfilment (deliver groom), Replenishment (reorder shampoo) \u2014 each determined by typed relations in the instance.",
+      "docKey": "business-process-patterns"
+    },
+    {
+      "name": "system-ontological-categories",
+      "displayName": "System Ontological Categories",
+      "group": "ArchitecturalGroup::rightStack",
+      "presentationOrder": 7,
+      "primaryFormalism": "Formalism::owl2dl",
+      "persistenceMechanism": "triple-store",
+      "implementationStatus": "ImplementationStatus::referenced",
+      "purposiveDescription": "The right-stack counterpart of the domain ontologies. Classifies system entities using BFO: a workflow is a Process (Occurrent), a data record is an Information Content Entity (Continuant via IAO), an event is an Occurrent with instantaneous temporal extent, a system state is a Quality. These are not arbitrary labels \u2014 they are BFO-typed, enabling ontological consistency checking between system and business entities.",
+      "friendlyName": "System Ontological Categories",
+      "shortDescription": "BFO-typed categories classifying what kinds of things can exist in a business system \u2014 the right-stack counterpart of domain ontologies.",
+      "representationalModalitySummary": "OWL 2 DL \u2014 ontological categories above the formalism boundary. Not yet implemented.",
+      "persistenceSummary": "Target: triple store (knowledge graph) as named classes and axioms. Currently: exists only in discussion papers.",
+      "interfacesSummary": "Vertical downward: classifies everything in the BSMM General vocabulary. Vertical upward to BFO. Horizontal leftward: mapping to domain ontologies \u2014 the topmost horizontal mapping constraining what system entities can realise which business entities.",
+      "domainIllustrationSummary": "For Paws: a BookingWorkflow is a Process; a GroomingRecord is an Information Content Entity; a PaymentReceivedEvent is a Process Boundary; a RoomAvailabilityState is a Quality.",
+      "docKey": "system-ontological-categories"
+    },
+    {
+      "name": "bsmm-general-vocabulary",
+      "displayName": "BSMM General Vocabulary",
+      "group": "ArchitecturalGroup::rightStack",
+      "presentationOrder": 8,
+      "primaryFormalism": "Formalism::sysmlV2",
+      "persistenceMechanism": "sysml-files-scattered",
+      "implementationStatus": "ImplementationStatus::designed",
+      "purposiveDescription": "The right-stack counterpart of the BMM General vocabulary. Defines what a business system is \u2014 the domain-neutral system concepts any Ontara tenant would need. Organised into six capability groups (B25): Persistence and Data Management, Process Orchestration, Evaluation and Reasoning, Observation and Self-Knowledge, Integration and Communication, Identity and Access. Horizontal mappings to the BMM are many-to-many.",
+      "friendlyName": "BSMM General Vocabulary",
+      "shortDescription": "Domain-neutral system concepts organised into six capability groups \u2014 the right-stack counterpart of the BMM vocabulary.",
+      "representationalModalitySummary": "SysML v2 part defs. Designed (Session 76 discussion paper) but not yet implemented. Individual concepts exist scattered across Foundation, Knowledge, ServiceDelivery, Platform, and Operations.",
+      "persistenceSummary": "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: distributed across existing SysML packages without explicit BSMM organisation.",
+      "interfacesSummary": "Vertical downward: instantiated by the system instance. Vertical upward: traces to system ontological categories. Horizontal leftward: explicit many-to-many mappings to BMM General vocabulary.",
+      "domainIllustrationSummary": "For Paws: PersistencePolicy for data storage, ProcessSpecification for workflow shapes, ConstraintEvaluationSpec for scheduling rules, ExternalServiceBinding for payment integration, CommunicationChannel for notifications.",
+      "docKey": "bsmm-general-vocabulary"
+    },
+    {
+      "name": "system-instance",
+      "displayName": "System Instance",
+      "group": "ArchitecturalGroup::rightStack",
+      "presentationOrder": 9,
+      "primaryFormalism": "Formalism::sysmlV2",
+      "persistenceMechanism": "application-config",
+      "implementationStatus": "ImplementationStatus::designed",
+      "purposiveDescription": "The right-stack counterpart of the business instance. Where the business instance holds the concrete populated data for a specific tenant, the system instance holds the concrete system configuration: which database, which workflow engine configuration, which integration endpoints, which access control policies. The system instance makes the generic BSMM vocabulary into this tenant's system.",
+      "friendlyName": "System Instance",
+      "shortDescription": "The concrete system configuration for a specific tenant \u2014 which database, workflow engine, integration endpoints, and access control policies.",
+      "representationalModalitySummary": "SysML v2 part usages instantiating BSMM part defs. Currently partially implicit in the coffee shop demonstrator \u2014 the running application embodies choices not explicitly modelled.",
+      "persistenceSummary": "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: embodied in application code and configuration.",
+      "interfacesSummary": "Vertical downward to system domains. Vertical upward: every element instantiates a BSMM General concept. Horizontal leftward to business instance \u2014 the realised-by relationship.",
+      "domainIllustrationSummary": "For Paws: PostgreSQL for transactional data, Temporal for workflows, appointment-based scheduling config, base-price-plus-surcharge pricing engine, payment processor integration, notification templates, role-based access control.",
+      "docKey": "system-instance"
+    },
+    {
+      "name": "system-domains",
+      "displayName": "System Domains",
+      "group": "ArchitecturalGroup::rightStack",
+      "presentationOrder": 10,
+      "primaryFormalism": "Formalism::sysmlV2",
+      "persistenceMechanism": "sysml-files-and-operational-stores",
+      "implementationStatus": "ImplementationStatus::designed",
+      "purposiveDescription": "The right-stack counterpart of operational domains. Where the left stack's operational domains describe how the business operates in business language, system domains describe the same reality in system language \u2014 the running software modules. The model remains connected at runtime: the system does not generate and step aside. The coffee shop demonstrator has system domains as implemented modules.",
+      "friendlyName": "System Domains",
+      "shortDescription": "The running software modules that realise business operations \u2014 the right-stack counterpart of operational domains.",
+      "representationalModalitySummary": "SysML v2 for model descriptions; the system domains also have an execution dimension as running code. Dual nature: model content and operational modules.",
+      "persistenceSummary": "Dual: model descriptions in SysML v2 / knowledge graph; running instances in their own operational stores (PostgreSQL, workflow state, CDR).",
+      "interfacesSummary": "Vertical downward to operational simulation. Vertical upward: instantiates system instance configurations. Horizontal leftward to operational domains \u2014 realised-by. Inside the green container: operates under rules and constraints.",
+      "domainIllustrationSummary": "For Paws: Booking Service, Grooming Workflow Manager, Financial Module, Customer Management, Inventory Tracker, Compliance Module \u2014 each mapping horizontally to a business operational domain.",
+      "docKey": "system-domains"
+    },
+    {
+      "name": "operational-simulation",
+      "displayName": "Operational Simulation",
+      "group": "ArchitecturalGroup::rightStack",
+      "presentationOrder": 11,
+      "primaryFormalism": "Formalism::runtime",
+      "persistenceMechanism": "temporal-workflow-state",
+      "implementationStatus": "ImplementationStatus::designed",
+      "purposiveDescription": "The BSMM made operational: Temporal workflows coordinating business execution per tenant, with human actors and connected applications as participants. This is where business operations happen in system terms. The groomer, the receptionist, the payment processor are all participants inside the simulation. Every workflow, activity, and state transition traces through BSMM to BMM to ontology to BFO, preserving semantic lineage end-to-end.",
+      "friendlyName": "Operational Simulation",
+      "shortDescription": "The bottom of the right stack \u2014 where the business system is live, with Temporal workflows coordinating execution per tenant.",
+      "representationalModalitySummary": "Temporal workflows, event streams, and durable state management \u2014 execution formalisms generated from the SysML model (A3). The coffee shop FulfilDrink workflow is a working example.",
+      "persistenceSummary": "Temporal workflow state (durable, resumable), event logs, and operational databases. The simulation state is the business's current operational state \u2014 the most ephemeral section, changing continuously.",
+      "interfacesSummary": "Upward from system domains. Cross-cutting: the reflective simulation reads continuously. Inside the green container: rules and constraints govern permissible behaviour. Horizontal leftward to business process patterns \u2014 the pipeline crossing.",
+      "domainIllustrationSummary": "For Paws: the living business \u2014 a StandardGroom workflow assigns groomer Pol to a Medium Labrador, moves through bath/dry/style stages, calculates price with surcharges, and processes payment, all with full semantic lineage.",
+      "docKey": "operational-simulation"
+    },
+    {
+      "name": "reflective-simulation",
+      "displayName": "Reflective Simulation",
+      "group": "ArchitecturalGroup::crossCutting",
+      "presentationOrder": 12,
+      "primaryFormalism": "Formalism::mixed",
+      "persistenceMechanism": "knowledge-graph-snapshots",
+      "implementationStatus": "ImplementationStatus::designed",
+      "purposiveDescription": "A cross-cutting vertical capability on the right side, reading from every layer and writing in two directions: to the operator (guidance, insight, projections) and to the knowledge graph (derived knowledge as persistent self-knowledge). Maintains trajectories, projections, anomaly detection, option analysis, what-if scenarios, and evaluative assessment imbued with valence. Does not exercise directive control \u2014 it offers guidance; the operator decides.",
+      "friendlyName": "Reflective Simulation",
+      "shortDescription": "A cross-cutting meta-knowledge capability reading from all architectural layers, producing guidance and insight for the operator.",
+      "representationalModalitySummary": "Mixed \u2014 consumes OWL 2 DL, SysML v2, runtime state, and clinical terminologies. Produces natural-language explanations and OWL 2 DL assertions. Internal processing formalism is an open design question.",
+      "persistenceSummary": "Derived knowledge persists in the knowledge graph as coordinate space snapshots \u2014 named graphs tagged with epistemic status (current, historical, goal, hypothetical, projected). Transient working state does not persist.",
+      "interfacesSummary": "Reads from: knowledge graph, instance layers, operational simulation, rules and constraints, terminology. Writes to: operator (guidance) and knowledge graph (derived knowledge). Cross-cutting \u2014 not positioned in either stack.",
+      "domainIllustrationSummary": "For Paws: answers questions like groomer utilisation trends, what-if for adding Teeth Cleaning, revenue vs goal gap analysis with valence, shampoo consumption anomaly detection, and April revenue projection.",
+      "docKey": "reflective-simulation"
+    },
+    {
+      "name": "rules-and-constraints",
+      "displayName": "Rules and Constraints",
+      "group": "ArchitecturalGroup::greenContainer",
+      "presentationOrder": 13,
+      "primaryFormalism": "Formalism::mixed",
+      "persistenceMechanism": "model-and-evidence",
+      "implementationStatus": "ImplementationStatus::designed",
+      "purposiveDescription": "Rules and constraints govern what is permissible in dynamic behaviour \u2014 not what structures can exist (that is the ontological layers' job). The green container wraps the bottom two pairs on both stacks. Critical distinction: constraint definitions live in the instance layers above (structural); constraint enforcement happens inside the container at runtime (dynamic). This parallels the governance traceability chain (A8).",
+      "friendlyName": "Rules and Constraints",
+      "shortDescription": "The green container governing what is permissible in dynamic behaviour, wrapping the bottom two pairs on both stacks.",
+      "representationalModalitySummary": "Mixed. Definitions: SysML v2 (requirement defs, constraint defs, decision tables). Enforcement: CLP(FD), Temporal guards, XState validation, business rule evaluation. Spans eligibility, scheduling, safety, governance, and probabilistic rule types.",
+      "persistenceSummary": "Constraint definitions persist in the model (SysML v2 / knowledge graph). Enforcement results persist as evidence (audit trail, evaluation records).",
+      "interfacesSummary": "Inward: governs both business process patterns and operational simulation. Upward: definitions trace to instance layers and regulatory requirements. The reflective simulation reads from this layer to know acceptable operation boundaries.",
+      "domainIllustrationSummary": "For Paws: one room per groom at a time (scheduling), groomer must be qualified (capability), correct surcharge order (business rule), second handler for aggressive dogs (safety), current insurance required (compliance).",
+      "docKey": "rules-and-constraints"
+    },
+    {
+      "name": "terminology-and-information-carriers",
+      "displayName": "Terminology and Information Carriers",
+      "group": "ArchitecturalGroup::infrastructure",
+      "presentationOrder": 14,
+      "primaryFormalism": "Formalism::mixed",
+      "persistenceMechanism": "external-servers",
+      "implementationStatus": "ImplementationStatus::designed",
+      "purposiveDescription": "Semantic grounding for domain-specific terminology and structured information exchange. For clinical tenants: SNOMED CT, openEHR, ICD, FHIR, AQL. For non-clinical tenants: industry-standard codes, service taxonomies, regulatory classification schemes. Distinct from ontological categories (what kinds of things exist) and meta model vocabularies (structural patterns) \u2014 this section provides the vocabulary for domain-specific content.",
+      "friendlyName": "Terminology and Information Carriers",
+      "shortDescription": "Semantic grounding for domain-specific terminology and structured information exchange standards.",
+      "representationalModalitySummary": "Native formalisms of the standards: SNOMED CT concept hierarchy, openEHR archetypes (ADL), FHIR resource profiles, ICD classification. Imported, not invented.",
+      "persistenceSummary": "Terminology servers, CDR instances, FHIR servers \u2014 external infrastructure Ontara connects to. Mappings to Ontara's ontological categories persist in the knowledge graph.",
+      "interfacesSummary": "The reflective simulation reads terminology for precise explanations. The operational simulation uses it for coded data capture. The mapping ontology bridges internal vocabulary and external standards.",
+      "domainIllustrationSummary": "For Paws: thin \u2014 possibly breed classification standards. For GSL: dense \u2014 SNOMED CT, openEHR archetypes, ICD-11 gender incongruence codes, FHIR for GP communication. Density varies by regulatory tier.",
+      "docKey": "terminology-and-information-carriers"
+    },
+    {
+      "name": "mapping-ontology",
+      "displayName": "Mapping Ontology",
+      "group": "ArchitecturalGroup::infrastructure",
+      "presentationOrder": 15,
+      "primaryFormalism": "Formalism::owl2dl",
+      "persistenceMechanism": "triple-store",
+      "implementationStatus": "ImplementationStatus::referenced",
+      "purposiveDescription": "The bridge between the two formalisms. Everything above the formalism boundary is OWL 2 DL; everything below is SysML v2. The mapping ontology (B24), itself expressed in OWL, formally declares correspondences: SysML blocks/parts to OWL classes, SysML relationships to OWL object properties, SysML value types to OWL datatype properties. Its existence is committed; its design is deferred.",
+      "friendlyName": "Mapping Ontology",
+      "shortDescription": "The OWL bridge between the two formalisms \u2014 formally declaring how SysML v2 elements correspond to ontological classes.",
+      "representationalModalitySummary": "OWL 2 DL \u2014 the mapping ontology is itself an ontology, living on the OWL side but describing the SysML side. openCAESAR may provide bridge infrastructure.",
+      "persistenceSummary": "Triple store (knowledge graph), alongside the domain ontologies and system ontological categories.",
+      "interfacesSummary": "Interfaces with everything: connects ontological layers on both stacks, enables SysML content to be represented in and retrieved from the knowledge graph. Makes the knowledge-graph-as-canonical commitment (B22) technically feasible.",
+      "domainIllustrationSummary": "For Paws: SysML part def ServiceOffering maps to OWL class ontara:ServiceOffering classified under BFO via OCE. Part usage standardGroom maps to OWL individual paws:StandardGroom. Attribute basePrice maps to datatype property ontara:hasBasePrice.",
+      "docKey": "mapping-ontology"
+    },
+    {
+      "name": "knowledge-graph",
+      "displayName": "Knowledge Graph",
+      "group": "ArchitecturalGroup::infrastructure",
+      "presentationOrder": 16,
+      "primaryFormalism": "Formalism::owl2dl",
+      "persistenceMechanism": "triple-store",
+      "implementationStatus": "ImplementationStatus::referenced",
+      "purposiveDescription": "The eventual canonical store for the entire Ontara model (B22). Provides capabilities SysML alone cannot: open-world reasoning, automatic classification, consistency checking against BFO axioms, SPARQL semantic querying, formal TBox/ABox separation mapping to the meta model/instance distinction, and named-graph infrastructure for coordinate space snapshots. Adding a new axis to the coordinate space is adding triples with a new predicate \u2014 no schema migration required.",
+      "friendlyName": "Knowledge Graph",
+      "shortDescription": "The OWL 2 DL triple store as the eventual canonical store for the entire Ontara model.",
+      "representationalModalitySummary": "OWL 2 DL \u2014 the native formalism. Target home for everything above the formalism boundary and, via the mapping ontology, a canonical representation of everything below it.",
+      "persistenceSummary": "Triple store / graph database \u2014 this is a persistence section. Persists: ontological axioms, meta model vocabulary, instance data, weighted relationships, comprehension metadata, coordinate space snapshots, reflective simulation derived knowledge, mapping ontology.",
+      "interfacesSummary": "Everything feeds into or reads from the knowledge graph. SPARQL is the query interface. The SysML v2 model is a projection maintained in bidirectional sync.",
+      "domainIllustrationSummary": "For Paws: BFO axioms, OCE ontology, BMM vocabulary as OWL classes, all Paws entities as OWL individuals, weighted relationships, coordinate space snapshots for current state, goals, and what-if scenarios.",
+      "docKey": "knowledge-graph"
+    },
+    {
+      "name": "sysml-v2",
+      "displayName": "SysML v2",
+      "group": "ArchitecturalGroup::infrastructure",
+      "presentationOrder": 17,
+      "primaryFormalism": "Formalism::sysmlV2",
+      "persistenceMechanism": "sysml-files",
+      "implementationStatus": "ImplementationStatus::implemented",
+      "purposiveDescription": "The engineering projection \u2014 the view of the canonical model that the architect and developer work with directly. Currently the primary representation; will remain the primary working representation even when the knowledge graph becomes canonical. Holds meta model vocabularies, instances, comprehension metadata, constraint definitions, PatternCatalogue entries, and structural relationships. The entire generation pipeline reads from SysML v2.",
+      "friendlyName": "SysML v2",
+      "shortDescription": "The engineering projection \u2014 the view of the canonical model that the architect works with directly in Syside Modeler.",
+      "representationalModalitySummary": "SysML v2 \u2014 the native formalism. 11 core .sysml files, approximately 73 packages. Target: engineering projection from the knowledge graph, maintained in bidirectional sync via the mapping ontology.",
+      "persistenceSummary": ".sysml files in the git repository (model/ and exercises/ directories). Git provides version control.",
+      "interfacesSummary": "The generation pipeline reads from SysML v2 and produces JSON, Mermaid, TypeScript, constraint evaluators. The knowledge graph will maintain bidirectional sync. Syside Modeler is the authoring environment.",
+      "domainIllustrationSummary": "For Paws: one .sysml file (PawsGroomingDomain.sysml) with part usages instantiating BMM part defs plus 7 StakeholderModel instantiations. Source for gen_model_introspection.py.",
+      "docKey": "sysml-v2"
+    },
+    {
+      "name": "openehr",
+      "displayName": "openEHR",
+      "group": "ArchitecturalGroup::infrastructure",
+      "presentationOrder": 18,
+      "primaryFormalism": "Formalism::mixed",
+      "persistenceMechanism": "clinical-data-repository",
+      "implementationStatus": "ImplementationStatus::implemented",
+      "purposiveDescription": "The clinical data architecture for healthcare tenants. openEHR provides archetypes (reusable clinical data building blocks), templates, and a CDR storing archetype-structured clinical data with AQL semantic querying. For clinical tenants like GSL, openEHR is the persistence and data architecture for clinical content. Non-clinical tenants do not use this section \u2014 tenant variation made architectural.",
+      "friendlyName": "openEHR",
+      "shortDescription": "The clinical data architecture for healthcare tenants \u2014 archetypes, templates, and a Clinical Data Repository.",
+      "representationalModalitySummary": "ADL for archetype definitions, openEHR reference model for data structures, AQL for queries. The coffee shop demonstrator has a working EHRbase integration with three archetypes.",
+      "persistenceSummary": "EHRbase CDR \u2014 a dedicated clinical data repository, separate from the operational database and knowledge graph. Clinical data has specific regulatory requirements best served by a purpose-built CDR.",
+      "interfacesSummary": "The operational simulation interacts with the CDR for clinical data. Terminology layer provides SNOMED CT coding. The reflective simulation reads clinical data within access control bounds. The mapping ontology bridges archetypes and Ontara's ontological model.",
+      "domainIllustrationSummary": "For Paws: empty \u2014 non-clinical tenant. For GSL: central \u2014 archetypes for hormone monitoring, referral compositions, mental health assessments, and the CDR as authoritative clinical record.",
+      "docKey": "openehr"
+    },
+    {
+      "name": "temporal",
+      "displayName": "Temporal",
+      "group": "ArchitecturalGroup::infrastructure",
+      "presentationOrder": 19,
+      "primaryFormalism": "Formalism::runtime",
+      "persistenceMechanism": "temporal-persistence",
+      "implementationStatus": "ImplementationStatus::implemented",
+      "purposiveDescription": "The execution infrastructure for the operational simulation (L5). Temporal provides durable workflow orchestration: sequences of work that survive process restarts, handle retries and timeouts, manage compensation, and maintain explicit state. Temporal is the infrastructure the simulation runs on \u2014 not the simulation itself \u2014 just as the triple store is the infrastructure the knowledge graph runs on.",
+      "friendlyName": "Temporal",
+      "shortDescription": "The execution infrastructure for the operational simulation \u2014 durable workflow orchestration surviving process restarts.",
+      "representationalModalitySummary": "Temporal workflow definitions, activity definitions, state management \u2014 execution-level primitives, the most concrete content in the architecture. Generated from the model via the compilation pipeline.",
+      "persistenceSummary": "Temporal's own persistence layer (typically PostgreSQL-backed) stores workflow state, execution history, and task queues \u2014 operational persistence, durable relative to individual requests.",
+      "interfacesSummary": "The operational simulation runs on Temporal. The generation pipeline produces Temporal workflow code. Human actors and connected applications participate as activity executors. System domains are implemented as workers, activities, and child workflows.",
+      "domainIllustrationSummary": "For Paws: orchestrates the end-to-end grooming workflow (book through pay and record), scheduling engine, inventory monitoring, and financial processing \u2014 each generated from business process patterns with semantic identity preserved.",
+      "docKey": "temporal"
+    },
+    {
+      "name": "operator",
+      "displayName": "Operator",
+      "group": "ArchitecturalGroup::infrastructure",
+      "presentationOrder": 20,
+      "primaryFormalism": "Formalism::mixed",
+      "persistenceMechanism": "model-preferences",
+      "implementationStatus": "ImplementationStatus::designed",
+      "purposiveDescription": "The human business operator \u2014 the guidance target for the entire architecture. Every other section exists to serve the operator's understanding and agency. The reflective simulation produces guidance for the operator. The console presents the model to the operator. Valence (L7) is the operator's declared conception of good performance. Goal states in the coordinate space are the operator's aspirations made formal. The architecture is invisible to the operator; what they see is a system that understands the business.",
+      "friendlyName": "Operator",
+      "shortDescription": "The human business operator \u2014 the guidance target for the entire architecture; every other section exists to serve their understanding and agency.",
+      "representationalModalitySummary": "Not a representational section in the usual sense. The operator's inputs (valence declarations, goals, configuration, instance content) are model content. The system's outputs (explanations, guidance, projections) are the reflective simulation's products rendered for human consumption.",
+      "persistenceSummary": "Operator preferences, goal state declarations, and valence definitions persist in the model (knowledge graph / SysML v2). Interaction history may persist for trajectory analysis.",
+      "interfacesSummary": "Interacts with the console (navigation, comprehension, relationship graph). The reflective simulation writes guidance. The operator writes business instance content, valence declarations, and goal states. The ultimate audience for A2 (self-describing system).",
+      "domainIllustrationSummary": "For Paws: Sam uses the console to understand business structure, see performance against goals, explore what-if scenarios, and receive guidance \u2014 without needing to understand SysML, OWL, BFO, or Temporal.",
+      "docKey": "operator"
+    }
+  ],
   "elements": [
+    {
+      "kind": "enum_def",
+      "name": "ArchitecturalGroup",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "Position of a section within the dual-stack architecture.\nSix groups reflecting structural role.\nBusiness system meta model concept.\nArchitectural section (B27). Session 87.",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 48,
+      "attributes": [
+        {
+          "name": "sharedFoundation"
+        },
+        {
+          "name": "leftStack"
+        },
+        {
+          "name": "rightStack"
+        },
+        {
+          "name": "crossCutting"
+        },
+        {
+          "name": "greenContainer"
+        },
+        {
+          "name": "infrastructure"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "Formalism",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "Primary representational formalism used in a section.\nBusiness system meta model concept.\nArchitectural section (B27). Session 87.",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 62,
+      "attributes": [
+        {
+          "name": "owl2dl"
+        },
+        {
+          "name": "sysmlV2"
+        },
+        {
+          "name": "runtime"
+        },
+        {
+          "name": "mixed"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "ImplementationStatus",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "Current implementation status of a section.\nimplemented: built and operational.\ndesigned: architecturally specified, not yet built.\nreferenced: acknowledged in the architecture, no\n  detailed design yet.\nnotStarted: identified but no work done.\nBusiness system meta model concept.\nArchitectural secti",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 73,
+      "attributes": [
+        {
+          "name": "implemented"
+        },
+        {
+          "name": "designed"
+        },
+        {
+          "name": "referenced"
+        },
+        {
+          "name": "notStarted"
+        }
+      ]
+    },
+    {
+      "kind": "metadata_def",
+      "name": "ArchitecturalLocation",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "Architectural characterisation metadata for sections\nof the dual-stack architecture. Carries the four\nadditional facets beyond purpose (which is carried\nby @PurposiveDescription).\nEach attribute is a short summary (one to two\nsentences). Full prose lives in the Obsidian vault,\nlinked via the docKey ",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 93,
+      "attributes": [
+        {
+          "name": "representationalModalitySummary",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "persistenceSummary",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "interfacesSummary",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "domainIllustrationSummary",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "ArchitecturalSection",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "A bounded region of the dual-stack architecture with\na characteristic purpose, representational formalism,\npersistence mechanism, and set of interfaces to\nneighbouring sections.\n20 sections identified across the architecture.\nName-based identity (kebab-case identifiers stored\nin the name attribute);",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bsmm",
+      "lineNumber": 122,
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "displayName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "group",
+          "type": "ArchitecturalGroup",
+          "isRedefinition": false
+        },
+        {
+          "name": "presentationOrder",
+          "type": "Integer",
+          "isRedefinition": false
+        },
+        {
+          "name": "primaryFormalism",
+          "type": "Formalism",
+          "isRedefinition": false
+        },
+        {
+          "name": "persistenceMechanism",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "implementationStatus",
+          "type": "ImplementationStatus",
+          "isRedefinition": false
+        },
+        {
+          "name": "docKey",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "bfo",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 174,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "bfo",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "BFO (Basic Formal Ontology)",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::sharedFoundation",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "1",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::owl2dl",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "triple-store",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::referenced",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "bfo",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "BFO (Basic Formal Ontology)",
+        "shortDescription": "The shared upper ontology spanning both stacks, providing the categorical framework for everything in the architecture."
+      },
+      "purposiveDescription": {
+        "description": "The shared foundation spanning both stacks. BFO is an ISO standard upper ontology providing the categorical framework \u2014 Continuant, Occurrent, Role, Disposition, Quality, Function \u2014 that classifies everything in the architecture. Every entity in every layer traces upward to a BFO category. BFO determines valid reasoning patterns: what can bear a Role, what can participate in a Process, what is a Quality of what."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "BFO (Basic Formal Ontology)",
+            "shortDescription": "The shared upper ontology spanning both stacks, providing the categorical framework for everything in the architecture."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The shared foundation spanning both stacks. BFO is an ISO standard upper ontology providing the categorical framework \u2014 Continuant, Occurrent, Role, Disposition, Quality, Function \u2014 that classifies everything in the architecture. Every entity in every layer traces upward to a BFO category. BFO determines valid reasoning patterns: what can bear a Role, what can participate in a Process, what is a Quality of what."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "OWL 2 DL. Imported directly from the OBO Foundry as a maintained external ontology.",
+            "persistenceSummary": "Target: triple store (knowledge graph). Currently: referenced in discussion papers and architecture diagram; not yet implemented.",
+            "interfacesSummary": "Vertical downward to both domain ontologies (left stack) and system ontological categories (right stack). Spans both stacks as a shared foundation; does not connect horizontally.",
+            "domainIllustrationSummary": "For Paws: Sam is a BFO Continuant bearing a Role; a ServiceOffering is an Occurrent; a Room is an Independent Continuant; a PricingRule is a Generically Dependent Continuant."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "domainOntologies",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 204,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "domain-ontologies",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Domain Ontologies",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::leftStack",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "2",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::owl2dl",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "triple-store",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::referenced",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "domain-ontologies",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Domain Ontologies",
+        "shortDescription": "Mid-level BFO-aligned ontologies providing tenant-specific semantic grounding between BFO and the BMM vocabulary."
+      },
+      "purposiveDescription": {
+        "description": "Mid-level BFO-aligned ontologies providing domain-specific semantic grounding between BFO's abstract categories and the BMM's structural vocabulary. The selection of domain ontologies during tenant onboarding gives each tenant its semantic character \u2014 healthcare tenants use OGMS and GSSO; commercial tenants use OCE. All use IAO for information entities."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Domain Ontologies",
+            "shortDescription": "Mid-level BFO-aligned ontologies providing tenant-specific semantic grounding between BFO and the BMM vocabulary."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "Mid-level BFO-aligned ontologies providing domain-specific semantic grounding between BFO's abstract categories and the BMM's structural vocabulary. The selection of domain ontologies during tenant onboarding gives each tenant its semantic character \u2014 healthcare tenants use OGMS and GSSO; commercial tenants use OCE. All use IAO for information entities."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "OWL 2 DL. Existing OBO Foundry ontologies, imported directly.",
+            "persistenceSummary": "Target: triple store (knowledge graph), alongside BFO. Currently: referenced only.",
+            "interfacesSummary": "Vertical downward to BMM General vocabulary. Vertical upward to BFO. Horizontal rightward to system ontological categories \u2014 the topmost horizontal mapping.",
+            "domainIllustrationSummary": "For Paws: OCE (Ontology of Commercial Enterprises) as primary domain ontology. For GSL: OGMS+GSSO+IAO \u2014 same BMM structure, fundamentally different semantic grounding."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "bmmGeneralVocabulary",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 230,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "bmm-general-vocabulary",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "BMM General Vocabulary",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::leftStack",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "3",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::sysmlV2",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "sysml-files",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::implemented",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "bmm-general-vocabulary",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "BMM General Vocabulary",
+        "shortDescription": "The 34 domain-neutral structural templates defining what a service business is, across six concerns."
+      },
+      "purposiveDescription": {
+        "description": "The classification engine for the business side. 34 part defs across six concerns defining the structural templates for what a service business is. Raw business information is mapped to these templates. The BMM General vocabulary is domain-neutral \u2014 the same part defs apply to a dog grooming salon, a coffee shop, and a gender identity clinic. This is the level at which cross-domain validation operates."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "BMM General Vocabulary",
+            "shortDescription": "The 34 domain-neutral structural templates defining what a service business is, across six concerns."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The classification engine for the business side. 34 part defs across six concerns defining the structural templates for what a service business is. Raw business information is mapped to these templates. The BMM General vocabulary is domain-neutral \u2014 the same part defs apply to a dog grooming salon, a coffee shop, and a gender identity clinic. This is the level at which cross-domain validation operates."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "SysML v2 part defs. The most mature section \u2014 34 part defs with full comprehension metadata (34/34 UserFacing, PurposiveDescription, Comprehension; 96 WeightedRelationship).",
+            "persistenceSummary": "Currently: .sysml files in the git repository. Target: knowledge graph (canonical) with SysML v2 files as projection.",
+            "interfacesSummary": "Vertical downward: instantiated by the business instance layer. Vertical upward: traces through domain ontologies to BFO. Horizontal rightward: many-to-many mapping to BSMM General vocabulary.",
+            "domainIllustrationSummary": "For Paws: exclusively General vocabulary \u2014 34 part defs provide the structural skeleton for all service offerings, staff, facilities, pricing, and stakeholder relationships."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "businessInstance",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 256,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "business-instance",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Business Instance",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::leftStack",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "4",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::sysmlV2",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "sysml-files",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::implemented",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "business-instance",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Business Instance",
+        "shortDescription": "The concrete populated data for a specific tenant \u2014 part usages instantiating BMM part defs."
+      },
+      "purposiveDescription": {
+        "description": "The concrete populated data for a specific tenant. Where the BMM General vocabulary provides structural templates (part defs), the business instance provides the actual content (part usages). Relation binding happens here: entities are stitched together by confirming typed relations. The user has the most agency at this layer \u2014 convention-over-configuration narrows the space of valid connections."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Business Instance",
+            "shortDescription": "The concrete populated data for a specific tenant \u2014 part usages instantiating BMM part defs."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The concrete populated data for a specific tenant. Where the BMM General vocabulary provides structural templates (part defs), the business instance provides the actual content (part usages). Relation binding happens here: entities are stitched together by confirming typed relations. The user has the most agency at this layer \u2014 convention-over-configuration narrows the space of valid connections."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "SysML v2 part usages instantiating BMM part defs. Per-domain .sysml files in the exercises directory.",
+            "persistenceSummary": "Currently: .sysml files. Target: knowledge graph (canonical) \u2014 business instance data as OWL individuals.",
+            "interfacesSummary": "Vertical downward to operational domains. Vertical upward: every instance is an instantiation of a BMM General concept. Horizontal rightward to system instance \u2014 the realised-by relationship.",
+            "domainIllustrationSummary": "For Paws: 5 ServiceOfferings, 3 StaffMembers, 6 Rooms, PricingRule matrix, 10 CostCategories, 7 StakeholderModel instantiations, and all typed relations binding them together."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "operationalDomains",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 282,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "operational-domains",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Operational Domains",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::leftStack",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "5",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::sysmlV2",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "implicit",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::designed",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "operational-domains",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Operational Domains",
+        "shortDescription": "How the business actually operates, in business language \u2014 the operational areas that emerge from the business instance."
+      },
+      "purposiveDescription": {
+        "description": "How the business actually operates \u2014 in business language, not system language. The Session 73 correction: these are business model content, not system descriptions. They describe how the business operates and inform what systems are needed, but they remain squarely on the business model side. Currently partially implicit \u2014 they emerge from walking the relation graph in the instance layer."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Operational Domains",
+            "shortDescription": "How the business actually operates, in business language \u2014 the operational areas that emerge from the business instance."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "How the business actually operates \u2014 in business language, not system language. The Session 73 correction: these are business model content, not system descriptions. They describe how the business operates and inform what systems are needed, but they remain squarely on the business model side. Currently partially implicit \u2014 they emerge from walking the relation graph in the instance layer."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "SysML v2. Currently partially implicit \u2014 operational domains emerge from the instance layer but are not explicitly modelled as distinct packages.",
+            "persistenceSummary": "Currently: implicit in the instance layer structure. Target: explicit in the knowledge graph and/or SysML model.",
+            "interfacesSummary": "Vertical downward to business process patterns. Vertical upward: emerges from the business instance. Horizontal rightward to system domains. Inside the green container: operates under rules and constraints.",
+            "domainIllustrationSummary": "For Paws: nine operational domains \u2014 Booking, Scheduling, Finance, Customer Management, Inventory, Compliance, Reporting, Marketing, and Document Management \u2014 each in Sam's language."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "businessProcessPatterns",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 308,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "business-process-patterns",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Business Process Patterns",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::leftStack",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "6",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::sysmlV2",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "discussion-papers",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::designed",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "business-process-patterns",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Business Process Patterns",
+        "shortDescription": "Dynamic behaviour and flows at three abstraction levels \u2014 archetypes, BMM-parameterised patterns, and domain-specific instances."
+      },
+      "purposiveDescription": {
+        "description": "The most dynamic layer of the left stack. Process patterns operate at three abstraction levels: universal archetypes (Resource Allocation, Scheduling, Fulfilment, etc.), BMM-parameterised patterns, and domain-specific instances. This is the crossing point \u2014 business process patterns compile to executable artefacts on the right stack through the process specification layer pipeline."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Business Process Patterns",
+            "shortDescription": "Dynamic behaviour and flows at three abstraction levels \u2014 archetypes, BMM-parameterised patterns, and domain-specific instances."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The most dynamic layer of the left stack. Process patterns operate at three abstraction levels: universal archetypes (Resource Allocation, Scheduling, Fulfilment, etc.), BMM-parameterised patterns, and domain-specific instances. This is the crossing point \u2014 business process patterns compile to executable artefacts on the right stack through the process specification layer pipeline."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "SysML v2 for archetype and pattern definitions. Process sketch DSL (proposed) for human-readable instances. Currently: described in discussion papers; not yet formally modelled.",
+            "persistenceSummary": "Currently: discussion papers only. Target: knowledge graph (canonical) with SysML v2 as projection.",
+            "interfacesSummary": "Vertical upward: parameterised by BMM vocabulary. Horizontal rightward: the pipeline crossing \u2014 executed as operational simulation workflows. Inside the green container: operates under rules and constraints.",
+            "domainIllustrationSummary": "For Paws: Resource Allocation (room to groom), Scheduling (appointment booking), Transaction (payment), Fulfilment (deliver groom), Replenishment (reorder shampoo) \u2014 each determined by typed relations in the instance."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "systemOntologicalCategories",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 338,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "system-ontological-categories",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "System Ontological Categories",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::rightStack",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "7",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::owl2dl",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "triple-store",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::referenced",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "system-ontological-categories",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "System Ontological Categories",
+        "shortDescription": "BFO-typed categories classifying what kinds of things can exist in a business system \u2014 the right-stack counterpart of domain ontologies."
+      },
+      "purposiveDescription": {
+        "description": "The right-stack counterpart of the domain ontologies. Classifies system entities using BFO: a workflow is a Process (Occurrent), a data record is an Information Content Entity (Continuant via IAO), an event is an Occurrent with instantaneous temporal extent, a system state is a Quality. These are not arbitrary labels \u2014 they are BFO-typed, enabling ontological consistency checking between system and business entities."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "System Ontological Categories",
+            "shortDescription": "BFO-typed categories classifying what kinds of things can exist in a business system \u2014 the right-stack counterpart of domain ontologies."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The right-stack counterpart of the domain ontologies. Classifies system entities using BFO: a workflow is a Process (Occurrent), a data record is an Information Content Entity (Continuant via IAO), an event is an Occurrent with instantaneous temporal extent, a system state is a Quality. These are not arbitrary labels \u2014 they are BFO-typed, enabling ontological consistency checking between system and business entities."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "OWL 2 DL \u2014 ontological categories above the formalism boundary. Not yet implemented.",
+            "persistenceSummary": "Target: triple store (knowledge graph) as named classes and axioms. Currently: exists only in discussion papers.",
+            "interfacesSummary": "Vertical downward: classifies everything in the BSMM General vocabulary. Vertical upward to BFO. Horizontal leftward: mapping to domain ontologies \u2014 the topmost horizontal mapping constraining what system entities can realise which business entities.",
+            "domainIllustrationSummary": "For Paws: a BookingWorkflow is a Process; a GroomingRecord is an Information Content Entity; a PaymentReceivedEvent is a Process Boundary; a RoomAvailabilityState is a Quality."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "bsmmGeneralVocabulary",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 364,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "bsmm-general-vocabulary",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "BSMM General Vocabulary",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::rightStack",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "8",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::sysmlV2",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "sysml-files-scattered",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::designed",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "bsmm-general-vocabulary",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "BSMM General Vocabulary",
+        "shortDescription": "Domain-neutral system concepts organised into six capability groups \u2014 the right-stack counterpart of the BMM vocabulary."
+      },
+      "purposiveDescription": {
+        "description": "The right-stack counterpart of the BMM General vocabulary. Defines what a business system is \u2014 the domain-neutral system concepts any Ontara tenant would need. Organised into six capability groups (B25): Persistence and Data Management, Process Orchestration, Evaluation and Reasoning, Observation and Self-Knowledge, Integration and Communication, Identity and Access. Horizontal mappings to the BMM are many-to-many."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "BSMM General Vocabulary",
+            "shortDescription": "Domain-neutral system concepts organised into six capability groups \u2014 the right-stack counterpart of the BMM vocabulary."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The right-stack counterpart of the BMM General vocabulary. Defines what a business system is \u2014 the domain-neutral system concepts any Ontara tenant would need. Organised into six capability groups (B25): Persistence and Data Management, Process Orchestration, Evaluation and Reasoning, Observation and Self-Knowledge, Integration and Communication, Identity and Access. Horizontal mappings to the BMM are many-to-many."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "SysML v2 part defs. Designed (Session 76 discussion paper) but not yet implemented. Individual concepts exist scattered across Foundation, Knowledge, ServiceDelivery, Platform, and Operations.",
+            "persistenceSummary": "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: distributed across existing SysML packages without explicit BSMM organisation.",
+            "interfacesSummary": "Vertical downward: instantiated by the system instance. Vertical upward: traces to system ontological categories. Horizontal leftward: explicit many-to-many mappings to BMM General vocabulary.",
+            "domainIllustrationSummary": "For Paws: PersistencePolicy for data storage, ProcessSpecification for workflow shapes, ConstraintEvaluationSpec for scheduling rules, ExternalServiceBinding for payment integration, CommunicationChannel for notifications."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "systemInstance",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 390,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "system-instance",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "System Instance",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::rightStack",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "9",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::sysmlV2",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "application-config",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::designed",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "system-instance",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "System Instance",
+        "shortDescription": "The concrete system configuration for a specific tenant \u2014 which database, workflow engine, integration endpoints, and access control policies."
+      },
+      "purposiveDescription": {
+        "description": "The right-stack counterpart of the business instance. Where the business instance holds the concrete populated data for a specific tenant, the system instance holds the concrete system configuration: which database, which workflow engine configuration, which integration endpoints, which access control policies. The system instance makes the generic BSMM vocabulary into this tenant's system."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "System Instance",
+            "shortDescription": "The concrete system configuration for a specific tenant \u2014 which database, workflow engine, integration endpoints, and access control policies."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The right-stack counterpart of the business instance. Where the business instance holds the concrete populated data for a specific tenant, the system instance holds the concrete system configuration: which database, which workflow engine configuration, which integration endpoints, which access control policies. The system instance makes the generic BSMM vocabulary into this tenant's system."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "SysML v2 part usages instantiating BSMM part defs. Currently partially implicit in the coffee shop demonstrator \u2014 the running application embodies choices not explicitly modelled.",
+            "persistenceSummary": "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: embodied in application code and configuration.",
+            "interfacesSummary": "Vertical downward to system domains. Vertical upward: every element instantiates a BSMM General concept. Horizontal leftward to business instance \u2014 the realised-by relationship.",
+            "domainIllustrationSummary": "For Paws: PostgreSQL for transactional data, Temporal for workflows, appointment-based scheduling config, base-price-plus-surcharge pricing engine, payment processor integration, notification templates, role-based access control."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "systemDomains",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 416,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "system-domains",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "System Domains",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::rightStack",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "10",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::sysmlV2",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "sysml-files-and-operational-stores",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::designed",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "system-domains",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "System Domains",
+        "shortDescription": "The running software modules that realise business operations \u2014 the right-stack counterpart of operational domains."
+      },
+      "purposiveDescription": {
+        "description": "The right-stack counterpart of operational domains. Where the left stack's operational domains describe how the business operates in business language, system domains describe the same reality in system language \u2014 the running software modules. The model remains connected at runtime: the system does not generate and step aside. The coffee shop demonstrator has system domains as implemented modules."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "System Domains",
+            "shortDescription": "The running software modules that realise business operations \u2014 the right-stack counterpart of operational domains."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The right-stack counterpart of operational domains. Where the left stack's operational domains describe how the business operates in business language, system domains describe the same reality in system language \u2014 the running software modules. The model remains connected at runtime: the system does not generate and step aside. The coffee shop demonstrator has system domains as implemented modules."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "SysML v2 for model descriptions; the system domains also have an execution dimension as running code. Dual nature: model content and operational modules.",
+            "persistenceSummary": "Dual: model descriptions in SysML v2 / knowledge graph; running instances in their own operational stores (PostgreSQL, workflow state, CDR).",
+            "interfacesSummary": "Vertical downward to operational simulation. Vertical upward: instantiates system instance configurations. Horizontal leftward to operational domains \u2014 realised-by. Inside the green container: operates under rules and constraints.",
+            "domainIllustrationSummary": "For Paws: Booking Service, Grooming Workflow Manager, Financial Module, Customer Management, Inventory Tracker, Compliance Module \u2014 each mapping horizontally to a business operational domain."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "operationalSimulation",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 442,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "operational-simulation",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Operational Simulation",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::rightStack",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "11",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::runtime",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "temporal-workflow-state",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::designed",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "operational-simulation",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Operational Simulation",
+        "shortDescription": "The bottom of the right stack \u2014 where the business system is live, with Temporal workflows coordinating execution per tenant."
+      },
+      "purposiveDescription": {
+        "description": "The BSMM made operational: Temporal workflows coordinating business execution per tenant, with human actors and connected applications as participants. This is where business operations happen in system terms. The groomer, the receptionist, the payment processor are all participants inside the simulation. Every workflow, activity, and state transition traces through BSMM to BMM to ontology to BFO, preserving semantic lineage end-to-end."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Operational Simulation",
+            "shortDescription": "The bottom of the right stack \u2014 where the business system is live, with Temporal workflows coordinating execution per tenant."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The BSMM made operational: Temporal workflows coordinating business execution per tenant, with human actors and connected applications as participants. This is where business operations happen in system terms. The groomer, the receptionist, the payment processor are all participants inside the simulation. Every workflow, activity, and state transition traces through BSMM to BMM to ontology to BFO, preserving semantic lineage end-to-end."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "Temporal workflows, event streams, and durable state management \u2014 execution formalisms generated from the SysML model (A3). The coffee shop FulfilDrink workflow is a working example.",
+            "persistenceSummary": "Temporal workflow state (durable, resumable), event logs, and operational databases. The simulation state is the business's current operational state \u2014 the most ephemeral section, changing continuously.",
+            "interfacesSummary": "Upward from system domains. Cross-cutting: the reflective simulation reads continuously. Inside the green container: rules and constraints govern permissible behaviour. Horizontal leftward to business process patterns \u2014 the pipeline crossing.",
+            "domainIllustrationSummary": "For Paws: the living business \u2014 a StandardGroom workflow assigns groomer Pol to a Medium Labrador, moves through bath/dry/style stages, calculates price with surcharges, and processes payment, all with full semantic lineage."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "reflectiveSimulation",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 472,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "reflective-simulation",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Reflective Simulation",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::crossCutting",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "12",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::mixed",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "knowledge-graph-snapshots",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::designed",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "reflective-simulation",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Reflective Simulation",
+        "shortDescription": "A cross-cutting meta-knowledge capability reading from all architectural layers, producing guidance and insight for the operator."
+      },
+      "purposiveDescription": {
+        "description": "A cross-cutting vertical capability on the right side, reading from every layer and writing in two directions: to the operator (guidance, insight, projections) and to the knowledge graph (derived knowledge as persistent self-knowledge). Maintains trajectories, projections, anomaly detection, option analysis, what-if scenarios, and evaluative assessment imbued with valence. Does not exercise directive control \u2014 it offers guidance; the operator decides."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Reflective Simulation",
+            "shortDescription": "A cross-cutting meta-knowledge capability reading from all architectural layers, producing guidance and insight for the operator."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A cross-cutting vertical capability on the right side, reading from every layer and writing in two directions: to the operator (guidance, insight, projections) and to the knowledge graph (derived knowledge as persistent self-knowledge). Maintains trajectories, projections, anomaly detection, option analysis, what-if scenarios, and evaluative assessment imbued with valence. Does not exercise directive control \u2014 it offers guidance; the operator decides."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "Mixed \u2014 consumes OWL 2 DL, SysML v2, runtime state, and clinical terminologies. Produces natural-language explanations and OWL 2 DL assertions. Internal processing formalism is an open design question.",
+            "persistenceSummary": "Derived knowledge persists in the knowledge graph as coordinate space snapshots \u2014 named graphs tagged with epistemic status (current, historical, goal, hypothetical, projected). Transient working state does not persist.",
+            "interfacesSummary": "Reads from: knowledge graph, instance layers, operational simulation, rules and constraints, terminology. Writes to: operator (guidance) and knowledge graph (derived knowledge). Cross-cutting \u2014 not positioned in either stack.",
+            "domainIllustrationSummary": "For Paws: answers questions like groomer utilisation trends, what-if for adding Teeth Cleaning, revenue vs goal gap analysis with valence, shampoo consumption anomaly detection, and April revenue projection."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "rulesAndConstraints",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 502,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "rules-and-constraints",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Rules and Constraints",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::greenContainer",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "13",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::mixed",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "model-and-evidence",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::designed",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "rules-and-constraints",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Rules and Constraints",
+        "shortDescription": "The green container governing what is permissible in dynamic behaviour, wrapping the bottom two pairs on both stacks."
+      },
+      "purposiveDescription": {
+        "description": "Rules and constraints govern what is permissible in dynamic behaviour \u2014 not what structures can exist (that is the ontological layers' job). The green container wraps the bottom two pairs on both stacks. Critical distinction: constraint definitions live in the instance layers above (structural); constraint enforcement happens inside the container at runtime (dynamic). This parallels the governance traceability chain (A8)."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Rules and Constraints",
+            "shortDescription": "The green container governing what is permissible in dynamic behaviour, wrapping the bottom two pairs on both stacks."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "Rules and constraints govern what is permissible in dynamic behaviour \u2014 not what structures can exist (that is the ontological layers' job). The green container wraps the bottom two pairs on both stacks. Critical distinction: constraint definitions live in the instance layers above (structural); constraint enforcement happens inside the container at runtime (dynamic). This parallels the governance traceability chain (A8)."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "Mixed. Definitions: SysML v2 (requirement defs, constraint defs, decision tables). Enforcement: CLP(FD), Temporal guards, XState validation, business rule evaluation. Spans eligibility, scheduling, safety, governance, and probabilistic rule types.",
+            "persistenceSummary": "Constraint definitions persist in the model (SysML v2 / knowledge graph). Enforcement results persist as evidence (audit trail, evaluation records).",
+            "interfacesSummary": "Inward: governs both business process patterns and operational simulation. Upward: definitions trace to instance layers and regulatory requirements. The reflective simulation reads from this layer to know acceptable operation boundaries.",
+            "domainIllustrationSummary": "For Paws: one room per groom at a time (scheduling), groomer must be qualified (capability), correct surcharge order (business rule), second handler for aggressive dogs (safety), current insurance required (compliance)."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "terminologyAndInformationCarriers",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 532,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "terminology-and-information-carriers",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Terminology and Information Carriers",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::infrastructure",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "14",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::mixed",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "external-servers",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::designed",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "terminology-and-information-carriers",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Terminology and Information Carriers",
+        "shortDescription": "Semantic grounding for domain-specific terminology and structured information exchange standards."
+      },
+      "purposiveDescription": {
+        "description": "Semantic grounding for domain-specific terminology and structured information exchange. For clinical tenants: SNOMED CT, openEHR, ICD, FHIR, AQL. For non-clinical tenants: industry-standard codes, service taxonomies, regulatory classification schemes. Distinct from ontological categories (what kinds of things exist) and meta model vocabularies (structural patterns) \u2014 this section provides the vocabulary for domain-specific content."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Terminology and Information Carriers",
+            "shortDescription": "Semantic grounding for domain-specific terminology and structured information exchange standards."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "Semantic grounding for domain-specific terminology and structured information exchange. For clinical tenants: SNOMED CT, openEHR, ICD, FHIR, AQL. For non-clinical tenants: industry-standard codes, service taxonomies, regulatory classification schemes. Distinct from ontological categories (what kinds of things exist) and meta model vocabularies (structural patterns) \u2014 this section provides the vocabulary for domain-specific content."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "Native formalisms of the standards: SNOMED CT concept hierarchy, openEHR archetypes (ADL), FHIR resource profiles, ICD classification. Imported, not invented.",
+            "persistenceSummary": "Terminology servers, CDR instances, FHIR servers \u2014 external infrastructure Ontara connects to. Mappings to Ontara's ontological categories persist in the knowledge graph.",
+            "interfacesSummary": "The reflective simulation reads terminology for precise explanations. The operational simulation uses it for coded data capture. The mapping ontology bridges internal vocabulary and external standards.",
+            "domainIllustrationSummary": "For Paws: thin \u2014 possibly breed classification standards. For GSL: dense \u2014 SNOMED CT, openEHR archetypes, ICD-11 gender incongruence codes, FHIR for GP communication. Density varies by regulatory tier."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "mappingOntology",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 558,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "mapping-ontology",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Mapping Ontology",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::infrastructure",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "15",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::owl2dl",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "triple-store",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::referenced",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "mapping-ontology",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Mapping Ontology",
+        "shortDescription": "The OWL bridge between the two formalisms \u2014 formally declaring how SysML v2 elements correspond to ontological classes."
+      },
+      "purposiveDescription": {
+        "description": "The bridge between the two formalisms. Everything above the formalism boundary is OWL 2 DL; everything below is SysML v2. The mapping ontology (B24), itself expressed in OWL, formally declares correspondences: SysML blocks/parts to OWL classes, SysML relationships to OWL object properties, SysML value types to OWL datatype properties. Its existence is committed; its design is deferred."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Mapping Ontology",
+            "shortDescription": "The OWL bridge between the two formalisms \u2014 formally declaring how SysML v2 elements correspond to ontological classes."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The bridge between the two formalisms. Everything above the formalism boundary is OWL 2 DL; everything below is SysML v2. The mapping ontology (B24), itself expressed in OWL, formally declares correspondences: SysML blocks/parts to OWL classes, SysML relationships to OWL object properties, SysML value types to OWL datatype properties. Its existence is committed; its design is deferred."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "OWL 2 DL \u2014 the mapping ontology is itself an ontology, living on the OWL side but describing the SysML side. openCAESAR may provide bridge infrastructure.",
+            "persistenceSummary": "Triple store (knowledge graph), alongside the domain ontologies and system ontological categories.",
+            "interfacesSummary": "Interfaces with everything: connects ontological layers on both stacks, enables SysML content to be represented in and retrieved from the knowledge graph. Makes the knowledge-graph-as-canonical commitment (B22) technically feasible.",
+            "domainIllustrationSummary": "For Paws: SysML part def ServiceOffering maps to OWL class ontara:ServiceOffering classified under BFO via OCE. Part usage standardGroom maps to OWL individual paws:StandardGroom. Attribute basePrice maps to datatype property ontara:hasBasePrice."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "knowledgeGraph",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 584,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "knowledge-graph",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Knowledge Graph",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::infrastructure",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "16",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::owl2dl",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "triple-store",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::referenced",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "knowledge-graph",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Knowledge Graph",
+        "shortDescription": "The OWL 2 DL triple store as the eventual canonical store for the entire Ontara model."
+      },
+      "purposiveDescription": {
+        "description": "The eventual canonical store for the entire Ontara model (B22). Provides capabilities SysML alone cannot: open-world reasoning, automatic classification, consistency checking against BFO axioms, SPARQL semantic querying, formal TBox/ABox separation mapping to the meta model/instance distinction, and named-graph infrastructure for coordinate space snapshots. Adding a new axis to the coordinate space is adding triples with a new predicate \u2014 no schema migration required."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Knowledge Graph",
+            "shortDescription": "The OWL 2 DL triple store as the eventual canonical store for the entire Ontara model."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The eventual canonical store for the entire Ontara model (B22). Provides capabilities SysML alone cannot: open-world reasoning, automatic classification, consistency checking against BFO axioms, SPARQL semantic querying, formal TBox/ABox separation mapping to the meta model/instance distinction, and named-graph infrastructure for coordinate space snapshots. Adding a new axis to the coordinate space is adding triples with a new predicate \u2014 no schema migration required."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "OWL 2 DL \u2014 the native formalism. Target home for everything above the formalism boundary and, via the mapping ontology, a canonical representation of everything below it.",
+            "persistenceSummary": "Triple store / graph database \u2014 this is a persistence section. Persists: ontological axioms, meta model vocabulary, instance data, weighted relationships, comprehension metadata, coordinate space snapshots, reflective simulation derived knowledge, mapping ontology.",
+            "interfacesSummary": "Everything feeds into or reads from the knowledge graph. SPARQL is the query interface. The SysML v2 model is a projection maintained in bidirectional sync.",
+            "domainIllustrationSummary": "For Paws: BFO axioms, OCE ontology, BMM vocabulary as OWL classes, all Paws entities as OWL individuals, weighted relationships, coordinate space snapshots for current state, goals, and what-if scenarios."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "sysmlV2Section",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 610,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "sysml-v2",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "SysML v2",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::infrastructure",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "17",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::sysmlV2",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "sysml-files",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::implemented",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "sysml-v2",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "SysML v2",
+        "shortDescription": "The engineering projection \u2014 the view of the canonical model that the architect works with directly in Syside Modeler."
+      },
+      "purposiveDescription": {
+        "description": "The engineering projection \u2014 the view of the canonical model that the architect and developer work with directly. Currently the primary representation; will remain the primary working representation even when the knowledge graph becomes canonical. Holds meta model vocabularies, instances, comprehension metadata, constraint definitions, PatternCatalogue entries, and structural relationships. The entire generation pipeline reads from SysML v2."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "SysML v2",
+            "shortDescription": "The engineering projection \u2014 the view of the canonical model that the architect works with directly in Syside Modeler."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The engineering projection \u2014 the view of the canonical model that the architect and developer work with directly. Currently the primary representation; will remain the primary working representation even when the knowledge graph becomes canonical. Holds meta model vocabularies, instances, comprehension metadata, constraint definitions, PatternCatalogue entries, and structural relationships. The entire generation pipeline reads from SysML v2."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "SysML v2 \u2014 the native formalism. 11 core .sysml files, approximately 73 packages. Target: engineering projection from the knowledge graph, maintained in bidirectional sync via the mapping ontology.",
+            "persistenceSummary": ".sysml files in the git repository (model/ and exercises/ directories). Git provides version control.",
+            "interfacesSummary": "The generation pipeline reads from SysML v2 and produces JSON, Mermaid, TypeScript, constraint evaluators. The knowledge graph will maintain bidirectional sync. Syside Modeler is the authoring environment.",
+            "domainIllustrationSummary": "For Paws: one .sysml file (PawsGroomingDomain.sysml) with part usages instantiating BMM part defs plus 7 StakeholderModel instantiations. Source for gen_model_introspection.py."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "openehrSection",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 636,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "openehr",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "openEHR",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::infrastructure",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "18",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::mixed",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "clinical-data-repository",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::implemented",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "openehr",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "openEHR",
+        "shortDescription": "The clinical data architecture for healthcare tenants \u2014 archetypes, templates, and a Clinical Data Repository."
+      },
+      "purposiveDescription": {
+        "description": "The clinical data architecture for healthcare tenants. openEHR provides archetypes (reusable clinical data building blocks), templates, and a CDR storing archetype-structured clinical data with AQL semantic querying. For clinical tenants like GSL, openEHR is the persistence and data architecture for clinical content. Non-clinical tenants do not use this section \u2014 tenant variation made architectural."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "openEHR",
+            "shortDescription": "The clinical data architecture for healthcare tenants \u2014 archetypes, templates, and a Clinical Data Repository."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The clinical data architecture for healthcare tenants. openEHR provides archetypes (reusable clinical data building blocks), templates, and a CDR storing archetype-structured clinical data with AQL semantic querying. For clinical tenants like GSL, openEHR is the persistence and data architecture for clinical content. Non-clinical tenants do not use this section \u2014 tenant variation made architectural."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "ADL for archetype definitions, openEHR reference model for data structures, AQL for queries. The coffee shop demonstrator has a working EHRbase integration with three archetypes.",
+            "persistenceSummary": "EHRbase CDR \u2014 a dedicated clinical data repository, separate from the operational database and knowledge graph. Clinical data has specific regulatory requirements best served by a purpose-built CDR.",
+            "interfacesSummary": "The operational simulation interacts with the CDR for clinical data. Terminology layer provides SNOMED CT coding. The reflective simulation reads clinical data within access control bounds. The mapping ontology bridges archetypes and Ontara's ontological model.",
+            "domainIllustrationSummary": "For Paws: empty \u2014 non-clinical tenant. For GSL: central \u2014 archetypes for hormone monitoring, referral compositions, mental health assessments, and the CDR as authoritative clinical record."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "temporalSection",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 662,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "temporal",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Temporal",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::infrastructure",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "19",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::runtime",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "temporal-persistence",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::implemented",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "temporal",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Temporal",
+        "shortDescription": "The execution infrastructure for the operational simulation \u2014 durable workflow orchestration surviving process restarts."
+      },
+      "purposiveDescription": {
+        "description": "The execution infrastructure for the operational simulation (L5). Temporal provides durable workflow orchestration: sequences of work that survive process restarts, handle retries and timeouts, manage compensation, and maintain explicit state. Temporal is the infrastructure the simulation runs on \u2014 not the simulation itself \u2014 just as the triple store is the infrastructure the knowledge graph runs on."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Temporal",
+            "shortDescription": "The execution infrastructure for the operational simulation \u2014 durable workflow orchestration surviving process restarts."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The execution infrastructure for the operational simulation (L5). Temporal provides durable workflow orchestration: sequences of work that survive process restarts, handle retries and timeouts, manage compensation, and maintain explicit state. Temporal is the infrastructure the simulation runs on \u2014 not the simulation itself \u2014 just as the triple store is the infrastructure the knowledge graph runs on."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "Temporal workflow definitions, activity definitions, state management \u2014 execution-level primitives, the most concrete content in the architecture. Generated from the model via the compilation pipeline.",
+            "persistenceSummary": "Temporal's own persistence layer (typically PostgreSQL-backed) stores workflow state, execution history, and task queues \u2014 operational persistence, durable relative to individual requests.",
+            "interfacesSummary": "The operational simulation runs on Temporal. The generation pipeline produces Temporal workflow code. Human actors and connected applications participate as activity executors. System domains are implemented as workers, activities, and child workflows.",
+            "domainIllustrationSummary": "For Paws: orchestrates the end-to-end grooming workflow (book through pay and record), scheduling engine, inventory monitoring, and financial processing \u2014 each generated from business process patterns with semantic identity preserved."
+          }
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "operatorSection",
+      "parentPackage": "ArchitecturalStructure",
+      "doc": "",
+      "sourceFile": "model/architectural-structure.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 688,
+      "specialises": "ArchitecturalSection",
+      "attributes": [
+        {
+          "name": "name",
+          "value": "operator",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayName",
+          "value": "Operator",
+          "isRedefinition": true
+        },
+        {
+          "name": "group",
+          "value": "ArchitecturalGroup::infrastructure",
+          "isRedefinition": true
+        },
+        {
+          "name": "presentationOrder",
+          "value": "20",
+          "isRedefinition": true
+        },
+        {
+          "name": "primaryFormalism",
+          "value": "Formalism::mixed",
+          "isRedefinition": true
+        },
+        {
+          "name": "persistenceMechanism",
+          "value": "model-preferences",
+          "isRedefinition": true
+        },
+        {
+          "name": "implementationStatus",
+          "value": "ImplementationStatus::designed",
+          "isRedefinition": true
+        },
+        {
+          "name": "docKey",
+          "value": "operator",
+          "isRedefinition": true
+        }
+      ],
+      "userFacing": {
+        "friendlyName": "Operator",
+        "shortDescription": "The human business operator \u2014 the guidance target for the entire architecture; every other section exists to serve their understanding and agency."
+      },
+      "purposiveDescription": {
+        "description": "The human business operator \u2014 the guidance target for the entire architecture. Every other section exists to serve the operator's understanding and agency. The reflective simulation produces guidance for the operator. The console presents the model to the operator. Valence (L7) is the operator's declared conception of good performance. Goal states in the coordinate space are the operator's aspirations made formal. The architecture is invisible to the operator; what they see is a system that understands the business."
+      },
+      "annotations": [
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Operator",
+            "shortDescription": "The human business operator \u2014 the guidance target for the entire architecture; every other section exists to serve their understanding and agency."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The human business operator \u2014 the guidance target for the entire architecture. Every other section exists to serve the operator's understanding and agency. The reflective simulation produces guidance for the operator. The console presents the model to the operator. Valence (L7) is the operator's declared conception of good performance. Goal states in the coordinate space are the operator's aspirations made formal. The architecture is invisible to the operator; what they see is a system that understands the business."
+          }
+        },
+        {
+          "name": "ArchitecturalLocation",
+          "attrs": {
+            "representationalModalitySummary": "Not a representational section in the usual sense. The operator's inputs (valence declarations, goals, configuration, instance content) are model content. The system's outputs (explanations, guidance, projections) are the reflective simulation's products rendered for human consumption.",
+            "persistenceSummary": "Operator preferences, goal state declarations, and valence definitions persist in the model (knowledge graph / SysML v2). Interaction history may persist for trajectory analysis.",
+            "interfacesSummary": "Interacts with the console (navigation, comprehension, relationship graph). The reflective simulation writes guidance. The operator writes business instance content, valence declarations, and goal states. The ultimate audience for A2 (self-describing system).",
+            "domainIllustrationSummary": "For Paws: Sam uses the console to understand business structure, see performance against goals, explore what-if scenarios, and receive guidance \u2014 without needing to understand SysML, OWL, BFO, or Temporal."
+          }
+        }
+      ]
+    },
     {
       "kind": "part_def",
       "name": "CustomerSegment",
