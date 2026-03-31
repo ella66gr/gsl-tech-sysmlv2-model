@@ -122,7 +122,7 @@
 
   function layerBadgeColor(layer: string): string {
     if (layer === 'bmm') return 'blue';
-    if (layer === 'bsmm') return 'purple';
+    if (layer === 'smm') return 'purple';
     if (layer === 'domain') return 'green';
     if (layer.includes('instance')) return 'yellow';
     return 'dark';
@@ -130,9 +130,9 @@
 
   function layerLabel(layer: string): string {
     if (layer === 'bmm') return 'BMM';
-    if (layer === 'bsmm') return 'BSMM';
+    if (layer === 'smm') return 'SMM';
     if (layer === 'bmm_instance') return 'BMM inst';
-    if (layer === 'bsmm_instance') return 'BSMM inst';
+    if (layer === 'smm_instance') return 'SMM inst';
     if (layer === 'domain') return 'Domain';
     return layer;
   }

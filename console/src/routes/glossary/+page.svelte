@@ -238,7 +238,7 @@
       >
         <option value="all">All layers</option>
         <option value="bmm">Business Meta Model</option>
-        <option value="bsmm">System Meta Model</option>
+        <option value="smm">System Meta Model</option>
       </select>
     </div>
 
@@ -317,7 +317,7 @@
               {entry.catalogueTag.bmmConcern || ''}
             </Badge>
             <Badge color={entry.layer === 'bmm' ? 'blue' : 'purple'} class="text-xs">
-              {entry.layer === 'bmm' ? 'BMM' : 'BSMM'}
+              {entry.layer === 'bmm' ? 'BMM' : 'SMM'}
             </Badge>
             <!-- Domain dots -->
             <div class="flex gap-0.5">

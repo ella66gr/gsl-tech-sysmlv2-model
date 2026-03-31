@@ -24,7 +24,7 @@ package ViewpointTests {
         doc /* Viewpoint for stakeholders concerned with
              * regulatory compliance and audit evidence.
              *
-             * Business system meta model concept. */
+             * System meta model concept. */
     }
 
     // --- Test 1b: viewpoint def with frame concern ---

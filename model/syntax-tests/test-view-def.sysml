@@ -18,7 +18,7 @@ package ViewDefTests {
         doc /* A view definition for presenting governance-related
              * model elements to compliance stakeholders.
              *
-             * Business system meta model concept. */
+             * System meta model concept. */
     }
 
     // --- Test 2b: view usage typed by view def ---

@@ -86,9 +86,9 @@ BMM_MARKERS = [
     "business meta model",
     "business model concept",
 ]
-BSMM_MARKERS = [
-    "business system meta model",
+SMM_MARKERS = [
     "system meta model",
+    "business system meta model",  # retained for backward compatibility during rename transition
 ]
 
 # Packages known to belong to the business meta model
@@ -100,7 +100,7 @@ BMM_PACKAGES = {
 }
 
 # Packages known to belong to the system meta model
-BSMM_PACKAGES = {
+SMM_PACKAGES = {
     "Foundation", "MetadataLibrary", "CommonTypes", "StatePatterns",
     "GenerationPipeline", "Knowledge", "ClinicalDecisionSupport",
     "ConstraintLibrary", "LogicEngine", "DecisionModels",
@@ -141,7 +141,7 @@ class SysmlElement:
         self.source_file = source_file
         self.source_domain = source_domain
         self.line_number = line_number
-        self.meta_model_layer = ""    # "bmm", "bsmm", "domain", "unknown"
+        self.meta_model_layer = ""    # "bmm", "smm", "domain", "unknown"
         # Stage 2 Phase 2: metadata annotation data
         self.catalogue_tag = {}       # {"bmmConcern": "...", "classification": "..."}
         self.user_facing = {}         # {"friendlyName": "...", "shortDescription": "..."}
@@ -740,7 +740,7 @@ def parse_sysml_file(filepath, domain_key):
 # ---------------------------------------------------------------
 
 def classify_meta_model_layer(elem):
-    """Determine whether an element belongs to BMM, BSMM, domain, or unknown."""
+    """Determine whether an element belongs to BMM, SMM, domain, or unknown."""
     doc_lower = elem.doc.lower() if elem.doc else ""
     pkg = elem.parent_package
     
@@ -748,15 +748,15 @@ def classify_meta_model_layer(elem):
     for marker in BMM_MARKERS:
         if marker in doc_lower:
             return "bmm"
-    for marker in BSMM_MARKERS:
+    for marker in SMM_MARKERS:
         if marker in doc_lower:
-            return "bsmm"
-    
+            return "smm"
+
     # Check package membership
     if pkg in BMM_PACKAGES:
         return "bmm"
-    if pkg in BSMM_PACKAGES:
-        return "bsmm"
+    if pkg in SMM_PACKAGES:
+        return "smm"
     if pkg in DOMAIN_PACKAGES:
         return "domain"
     
@@ -777,16 +777,16 @@ def classify_meta_model_layer(elem):
             "DifferentiationClaim", "InventoryRecord", "ExternalReference",
             "AuditEvidenceRecord", "ActivityCostAllocation",
         }
-        # These are BSMM part defs
-        bsmm_types = {
+        # These are SMM part defs
+        smm_types = {
             "PersistencePolicy", "AgencyClassification",
             "GoalProjection", "Deficit",
             "Pattern", "ArchitecturalPrinciple", "DomainInstantiation",
         }
         if type_name in bmm_types:
             return "bmm_instance"
-        if type_name in bsmm_types:
-            return "bsmm_instance"
+        if type_name in smm_types:
+            return "smm_instance"
     
     return "unknown"
 
@@ -798,10 +798,10 @@ def classify_meta_model_layer(elem):
 def build_coverage_matrix(all_elements):
     """Build a matrix of which meta model defs are instantiated per domain."""
     
-    # Find all part defs and requirement defs from BMM and BSMM
+    # Find all part defs and requirement defs from BMM and SMM
     meta_defs = {}
     for elem in all_elements:
-        if elem.kind in ("part_def", "requirement_def") and elem.meta_model_layer in ("bmm", "bsmm"):
+        if elem.kind in ("part_def", "requirement_def") and elem.meta_model_layer in ("bmm", "smm"):
             meta_defs[elem.name] = {
                 "name": elem.name,
                 "layer": elem.meta_model_layer,

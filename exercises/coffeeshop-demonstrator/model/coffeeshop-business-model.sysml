@@ -292,7 +292,7 @@ package CoffeeShopBusinessModel {
 
     // -- Persistence Policies ---------------------------------
     //
-    // Business system meta model instantiation: explicit
+    // System meta model instantiation: explicit
     // architectural reasoning for where each CSW domain concept
     // is persisted and why. Makes the three-persistence-layer
     // architecture queryable and auditable.

@@ -4,7 +4,7 @@
 // The model describes its own architectural patterns and the semantic
 // relationships between them.
 //
-// Business system meta model concept — this package describes how the
+// System meta model concept — this package describes how the
 // system is structured, not what the business offers. Placed as a
 // top-level package (Syside does not merge same-named packages across
 // files, so nesting inside Foundation is not possible). Conceptually
@@ -20,7 +20,7 @@ package PatternCatalogue {
     doc /* Cross-domain concept registry, architectural pattern catalogue,
          * and knowledge graph of semantic relationships.
          *
-         * Business system meta model concept — this package is
+         * System meta model concept — this package is
          * itself part of the system meta model (it describes how
          * the system is structured, not what the business offers).
          * Placed as a top-level sibling to Foundation because Syside
@@ -90,7 +90,7 @@ package PatternCatalogue {
              * one or more patterns. Cross-cutting — principles span
              * both business and system meta models.
              *
-             * Business system meta model concept — describes the
+             * System meta model concept — describes the
              * reasoning behind how the system is structured.
              *
              * Source: Session 31, Knowledge Graph Enhancement. */
@@ -181,7 +181,7 @@ package PatternCatalogue {
 
     part twoMetaModelDistinction : ArchitecturalPrinciple {
         doc /* Business meta model (what the business is) and
-             * business system meta model (how the system works)
+             * system meta model (how the system works)
              * are distinct and independently iterable. */
         attribute :>> principleName = "Two meta model distinction";
         attribute :>> description = "Business meta model (what the business is and offers) and business system meta model (how the system is structured and operates) are distinct. Each can iterate independently. Per gsl-architecture-clarification-two-meta-models.";

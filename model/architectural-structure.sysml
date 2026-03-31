@@ -3,11 +3,11 @@
 // =========================================================================
 //
 // PROVISIONAL PACKAGE PLACEMENT. This package describes the structural
-// regions of the Ontara dual-stack architecture. It is BSMM content
+// regions of the Ontara dual-stack architecture. It is SMM content
 // (A4 — two meta model distinction: architectural sections describe
 // the system architecture, not the business). Placed as a top-level
-// package provisionally, pending BSMM vocabulary elaboration (B8).
-// When the BSMM package structure is designed, this content moves
+// package provisionally, pending SMM vocabulary elaboration (B8).
+// When the SMM package structure is designed, this content moves
 // to its proper home.
 //
 // Source: ontara-discussion-architectural-section-implementation-
@@ -37,8 +37,8 @@ package ArchitecturalStructure {
          * same structural shape (I9: part def / part distinction).
          * Name-based identity; ordering is a presentation concern.
          *
-         * Business system meta model concept.
-         * Provisional package placement pending BSMM elaboration (B8).
+         * System meta model concept.
+         * Provisional package placement pending SMM elaboration (B8).
          * Session 87. */
 
     // -----------------------------------------------------------------
@@ -49,7 +49,7 @@ package ArchitecturalStructure {
         doc /* Position of a section within the dual-stack architecture.
              * Six groups reflecting structural role.
              *
-             * Business system meta model concept.
+             * System meta model concept.
              * Architectural section (B27). Session 87. */
         sharedFoundation;
         leftStack;
@@ -62,7 +62,7 @@ package ArchitecturalStructure {
     enum def Formalism {
         doc /* Primary representational formalism used in a section.
              *
-             * Business system meta model concept.
+             * System meta model concept.
              * Architectural section (B27). Session 87. */
         owl2dl;
         sysmlV2;
@@ -78,7 +78,7 @@ package ArchitecturalStructure {
              *   detailed design yet.
              * notStarted: identified but no work done.
              *
-             * Business system meta model concept.
+             * System meta model concept.
              * Architectural section (B27). Session 87. */
         implemented;
         designed;
@@ -105,7 +105,7 @@ package ArchitecturalStructure {
              * @UserFacing (friendly name and tooltip), and
              * @Comprehension (traversal instructions).
              *
-             * Business system meta model concept.
+             * System meta model concept.
              * Intrinsic self-knowledge (A10). Unity principle (A11).
              * Architectural section (B27). E016.
              * Session 87. */
@@ -135,7 +135,7 @@ package ArchitecturalStructure {
              * additional facets). Full prose in the vault linked
              * via docKey (model-as-index pattern, E017).
              *
-             * Business system meta model concept.
+             * System meta model concept.
              * Register: B27 (architectural section).
              * Design: ontara-discussion-architectural-section-
              *   implementation-design-2026-03-29.md
@@ -346,7 +346,7 @@ package ArchitecturalStructure {
         attribute :>> docKey = "system-ontological-categories";
     }
 
-    // Section 8: BSMM General Vocabulary
+    // Section 8: SMM General Vocabulary
 
     @UserFacing {
         friendlyName = "BSMM General Vocabulary";

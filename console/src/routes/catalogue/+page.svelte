@@ -220,7 +220,7 @@
       >
         <option value="all">All layers</option>
         <option value="bmm">Business Meta Model</option>
-        <option value="bsmm">System Meta Model</option>
+        <option value="smm">System Meta Model</option>
       </select>
     </div>
 
@@ -390,7 +390,7 @@
               <div class="flex items-center gap-1">
                 <span class="text-xs text-secondary-400 dark:text-secondary-500">Layer:</span>
                 <Badge color={elem.layer === 'bmm' ? 'blue' : 'purple'} class="text-xs">
-                  {elem.layer === 'bmm' ? 'BMM' : 'BSMM'}
+                  {elem.layer === 'bmm' ? 'BMM' : 'SMM'}
                 </Badge>
               </div>
             </div>

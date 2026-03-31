@@ -96,7 +96,7 @@
   const stats = $derived({
     totalDefs: allDefs.length,
     bmmDefs: allDefs.filter((d) => d.layer === 'bmm').length,
-    bsmmDefs: allDefs.filter((d) => d.layer === 'bsmm').length,
+    smmDefs: allDefs.filter((d) => d.layer === 'smm').length,
     uninstantiated: allDefs.filter((d) => Object.keys(d.domains).length === 0).length,
     filteredCount: filteredDefs.length,
   });
@@ -130,7 +130,7 @@
   <div>
     <h1 class="text-2xl font-bold text-secondary-800 dark:text-white">Coverage Matrix</h1>
     <p class="mt-1 text-secondary-500 dark:text-secondary-300">
-      Meta model concept coverage across domains — {stats.totalDefs} defs ({stats.bmmDefs} BMM, {stats.bsmmDefs} BSMM), {stats.uninstantiated} uninstantiated
+      Meta model concept coverage across domains — {stats.totalDefs} defs ({stats.bmmDefs} BMM, {stats.smmDefs} SMM), {stats.uninstantiated} uninstantiated
     </p>
   </div>
 
@@ -174,7 +174,7 @@
         >
           <option value="all">All layers</option>
           <option value="bmm">Business Meta Model</option>
-          <option value="bsmm">System Meta Model</option>
+          <option value="smm">System Meta Model</option>
         </select>
       </div>
 
@@ -291,7 +291,7 @@
                 <!-- Layer badge -->
                 <td class="px-3 py-2 text-center">
                   <Badge color={layerColor(def.layer)} class="text-xs">
-                    {def.layer === 'bmm' ? 'BMM' : 'BSMM'}
+                    {def.layer === 'bmm' ? 'BMM' : 'SMM'}
                   </Badge>
                 </td>
 

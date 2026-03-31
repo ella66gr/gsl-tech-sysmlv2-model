@@ -178,7 +178,7 @@ package Foundation {
                  * reads all attributes and produces a faceted
                  * structure in JSON.
                  *
-                 * Business system meta model concept. */
+                 * System meta model concept. */
             attribute bmmConcern : String;
             attribute classification : String;
         }
@@ -198,7 +198,7 @@ package Foundation {
                  * I14 (comprehension layer) and A3 (model generates
                  * everything).
                  *
-                 * Business system meta model concept. */
+                 * System meta model concept. */
             attribute friendlyName : String;
             attribute shortDescription : String;
         }
@@ -219,7 +219,7 @@ package Foundation {
                  * language. See phase-3-draft-descriptions for the
                  * style guide.
                  *
-                 * Business system meta model concept.
+                 * System meta model concept.
                  * Intrinsic self-knowledge principle (A10).
                  * Session 49 — Stage 3 Phase 3, Step 2. */
             attribute description : String;
@@ -251,7 +251,7 @@ package Foundation {
                  * surfaceAttributes: show the element's own
                  *   attributes with their types.
                  *
-                 * Business system meta model concept.
+                 * System meta model concept.
                  * Intrinsic self-knowledge principle (A10).
                  * Unity principle (A11).
                  * Session 50 — Stage 3 Phase 3, Step 3. */
@@ -279,7 +279,7 @@ package Foundation {
                  * human overrides (J12 — experimentation before
                  * convention).
                  *
-                 * Business system meta model concept. Unity principle
+                 * System meta model concept. Unity principle
                  * (A11): same weights inform comprehension, reasoning,
                  * simulation, governance, and assembly guidance. */
             strong;
@@ -307,7 +307,7 @@ package Foundation {
                  *   @CatalogueTag → @UserFacing → @PurposiveDescription
                  *   → @Comprehension → @WeightedRelationship (multiple)
                  *
-                 * Business system meta model concept.
+                 * System meta model concept.
                  * Unity principle (A11). Weighted relationships (B14).
                  * Non-constraining (J3): ordinal weights designed for
                  * hybrid evolution to numeric/structural derivation.
@@ -318,7 +318,7 @@ package Foundation {
         }
 
         // -- Agency classification metadata -----------------------
-        // Business system meta model concepts: annotate pathway
+        // System meta model concepts: annotate pathway
         // action nodes with the agent who performs them.
         // Prerequisite for all four generations of self-service.
         // Added Session 29: CSW Extension Phase 10 (items 9.1, 9.2).
@@ -338,7 +338,7 @@ package Foundation {
                  * Clinical: patientAgent, clinicianAgent, automated,
                  * collaborative (e.g. ICE-supported shared decision).
                  *
-                 * Business system meta model concept.
+                 * System meta model concept.
                  *
                  * NOTE: 'system' is a KerML reserved word and cannot
                  * be used as an enum literal. 'automated' is used
@@ -365,7 +365,7 @@ package Foundation {
                  * clinical decisions made by clinician, patient role
                  * is to provide information and give consent.
                  *
-                 * Business system meta model concept.
+                 * System meta model concept.
                  *
                  * Source: gsl-discussion-model-self-service-enabling-
                  *   architecture-2026-03-14.md §7
@@ -702,7 +702,7 @@ package Foundation {
             equalTo;
         }
         // -- Persistence architecture types -------------------------
-        // Business system meta model concepts: describe where domain
+        // System meta model concepts: describe where domain
         // data lives and why. Cross-cutting — importable by any package.
         // Added Session 29: CSW Extension Phase 10.
         // Source: gsl-spec-catalogue-inventory-v2.1.md §8.3
@@ -723,7 +723,7 @@ package Foundation {
                  * - externalReference: knowledge the system links to
                  *   but does not own
                  *
-                 * Business system meta model concept. */
+                 * System meta model concept. */
             clinicalDataRepository;
             businessDatabase;
             processEngine;
@@ -736,7 +736,7 @@ package Foundation {
                  * A concept's characteristic profile maps to a
                  * persistence layer.
                  *
-                 * Business system meta model concept. */
+                 * System meta model concept. */
             clinicalSignificance;
             terminologyBound;
             requiresVersioning;
@@ -757,7 +757,7 @@ package Foundation {
                  * queryable and auditable — the system can explain
                  * why each concept lives where it does.
                  *
-                 * Business system meta model concept: describes how
+                 * System meta model concept: describes how
                  * the system is architected, not what the business
                  * offers. Any service business system that uses
                  * multiple persistence technologies needs this.

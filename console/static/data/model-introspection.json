@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-30T08:10:41.352045",
+  "generatedAt": "2026-03-31T22:59:18.181989",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
@@ -37,7 +37,7 @@
       "satisfy": 2
     },
     "byLayer": {
-      "bsmm": 247,
+      "smm": 247,
       "unknown": 38,
       "bmm": 199,
       "domain": 268
@@ -915,7 +915,7 @@
   "coverageMatrix": {
     "ArchitecturalSection": {
       "name": "ArchitecturalSection",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "ArchitecturalStructure",
       "doc": "A bounded region of the dual-stack architecture with\na characteristic purpose, representational formalism,\npersistence mechanism, and set of interfaces to\nneighbouring sections.\n20 sections identified",
       "catalogueTag": {},
@@ -4164,7 +4164,7 @@
     },
     "Address": {
       "name": "Address",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "CommonTypes",
       "doc": "A postal address.",
       "catalogueTag": {},
@@ -4176,7 +4176,7 @@
     },
     "ContactDetails": {
       "name": "ContactDetails",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "CommonTypes",
       "doc": "Contact information for a person or organisation.",
       "catalogueTag": {},
@@ -4188,7 +4188,7 @@
     },
     "PersistencePolicy": {
       "name": "PersistencePolicy",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "CommonTypes",
       "doc": "Maps a domain concept to its persistence layer,\nwith explicit rationale expressed as distinguishing\ncharacteristics. Makes architectural reasoning\nqueryable and auditable \u2014 the system can explain\nwhy ",
       "catalogueTag": {},
@@ -4227,7 +4227,7 @@
     },
     "InputDerivation": {
       "name": "InputDerivation",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "ClinicalDecisionSupport",
       "doc": "Defines how a single constraint input is derived\nfrom an authoritative data source. The pattern is\nsource-agnostic: the same structure describes AQL\nqueries against the CDR, Temporal workflow state\nqu",
       "catalogueTag": {},
@@ -4250,7 +4250,7 @@
     },
     "ConstraintEvaluationSpec": {
       "name": "ConstraintEvaluationSpec",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "ClinicalDecisionSupport",
       "doc": "Binds a constraint definition to its input\nderivations, forming a complete evaluation\nspecification. This is the unit that the evaluation\nengine consumes: it knows which constraint to\nevaluate and how",
       "catalogueTag": {},
@@ -4297,7 +4297,7 @@
     },
     "DecisionTableEvaluationSpec": {
       "name": "DecisionTableEvaluationSpec",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "ClinicalDecisionSupport",
       "doc": "Binds a decision table to its input derivations\nand evaluation metadata, parallel to\nConstraintEvaluationSpec for constraints.\nThe tableName matches the @DecisionTable metadata\nannotation on pathway s",
       "catalogueTag": {},
@@ -4320,7 +4320,7 @@
     },
     "EvaluatedInput": {
       "name": "EvaluatedInput",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "A single input value used in a rule evaluation.\nRecords what data was used, where it came from,\nand how it was derived \u2014 supporting the\nself-explanation requirement for clinical governance\nand patient",
       "catalogueTag": {},
@@ -4339,7 +4339,7 @@
     },
     "ExplanationTrace": {
       "name": "ExplanationTrace",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "A structured explanation of how a rule evaluation\nreached its conclusion. Supports three audiences:\n- Clinicians: why did this safety check pass/fail?\n- Patients: why am I eligible or not?\n- Auditors:",
       "catalogueTag": {},
@@ -4358,7 +4358,7 @@
     },
     "EvaluationResult": {
       "name": "EvaluationResult",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "The atomic unit of knowledge evaluation. Every rule,\nat every point in the system, produces one of these.\nEvaluationResults are persisted (CDR or audit log),\nqueryable, and presentable to clinicians, ",
       "catalogueTag": {},
@@ -4385,7 +4385,7 @@
     },
     "Deficit": {
       "name": "Deficit",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "A structured record of a gap between the system's\nactual operational state and its goal state.\nGeneralises the Phase D governance audit pattern\nfrom a single rule to any operational dimension.\nEach de",
       "catalogueTag": {},
@@ -4414,7 +4414,7 @@
     },
     "SystemStateAssessment": {
       "name": "SystemStateAssessment",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "The composite output of the self-knowledge\ninfrastructure. Aggregates across all five layers\nto produce a whole-system picture: clinical\ngovernance, operational health, and business\nperformance in a s",
       "catalogueTag": {},
@@ -4426,7 +4426,7 @@
     },
     "InputResolver": {
       "name": "InputResolver",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "Resolves constraint inputs from authoritative data\nsources. For each InputDerivation in a\nConstraintEvaluationSpec, the resolver executes the\nspecified query against the appropriate source (CDR,\nTempo",
       "catalogueTag": {},
@@ -4445,7 +4445,7 @@
     },
     "ExpressionEvaluator": {
       "name": "ExpressionEvaluator",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "Evaluates a constraint's boolean expression given\nresolved input values. For Tier 1, this is\nstraightforward boolean evaluation: the constraint\ndef's expression is evaluated with the derived\ninput val",
       "catalogueTag": {},
@@ -4464,7 +4464,7 @@
     },
     "ExplanationBuilder": {
       "name": "ExplanationBuilder",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "Assembles ExplanationTrace records from the\nevaluation context: the resolved inputs\n(EvaluatedInput records), the constraint expression\nas evaluated, and a human-readable explanation of\nthe outcome.\nS",
       "catalogueTag": {},
@@ -4483,7 +4483,7 @@
     },
     "ConstraintEvaluator": {
       "name": "ConstraintEvaluator",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "The Tier 1 deterministic constraint evaluation\ncomponent. Consumes ConstraintEvaluationSpecs from\nClinicalDecisionSupport, derives inputs from\nauthoritative sources (CDR via AQL, Temporal,\nplatform se",
       "catalogueTag": {},
@@ -4495,7 +4495,7 @@
     },
     "OperationalQuery": {
       "name": "OperationalQuery",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "A single operational state query against an\nauthoritative source. Structurally parallel to\nInputDerivation but scoped to operational rather\nthan clinical data.\nThe query returns a structured result (c",
       "catalogueTag": {},
@@ -4530,7 +4530,7 @@
     },
     "OperationalSnapshot": {
       "name": "OperationalSnapshot",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "A point-in-time capture of the system's operational\nstate, produced by the OperationalStateAggregator.\nThis is the Layer 2 content that feeds into gap\nanalysis and the SystemStateAssessment.\nNot persi",
       "catalogueTag": {},
@@ -4549,7 +4549,7 @@
     },
     "OperationalStateAggregator": {
       "name": "OperationalStateAggregator",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "Queries the system's operational state across all\nauthoritative data sources: Temporal (process\nstate), CDR (clinical data state), entity\nlifecycle state, platform services (infrastructure\nhealth), an",
       "catalogueTag": {},
@@ -4561,7 +4561,7 @@
     },
     "GoalProjection": {
       "name": "GoalProjection",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "A single goal projected from the model into a\nshape comparable against operational state. The\nunit of comparison for gap analysis.\nEach projection names the goal source\n(requirement, constraint, outco",
       "catalogueTag": {},
@@ -4590,7 +4590,7 @@
     },
     "GoalProjector": {
       "name": "GoalProjector",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "Projects goals from model sources (requirements,\nconstraints, outcome definitions, and projection\nformulas) into a comparable shape against\noperational state.\nEach goal is expressed as a GoalProjectio",
       "catalogueTag": {},
@@ -4609,7 +4609,7 @@
     },
     "GapAnalyser": {
       "name": "GapAnalyser",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "Compares the system's operational state (Layer 2,\nOperationalSnapshot) against its goal state\n(Layer 3, projected from requirements,\nconstraints, outcome definitions, and projection\nformulas) and prod",
       "catalogueTag": {},
@@ -4621,7 +4621,7 @@
     },
     "InferenceEvaluator": {
       "name": "InferenceEvaluator",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "Tier 2 reasoning interface: inference chains,\ncontraindication cascades, compound deficit\nreasoning, and \"why\" queries.\nWhere Tier 1 (ConstraintEvaluator) evaluates\nsingle boolean constraints, Tier 2 ",
       "catalogueTag": {},
@@ -4633,7 +4633,7 @@
     },
     "AdvisoryInterface": {
       "name": "AdvisoryInterface",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "Tier 3 advisory interface: ML/LLM-augmented\nintelligence. Powerful but probabilistic, always\nadvisory rather than authoritative. Cannot\noverride Tier 1 or Tier 2 logic.\nCapabilities (interface boundar",
       "catalogueTag": {},
@@ -4645,7 +4645,7 @@
     },
     "SelfExplanationService": {
       "name": "SelfExplanationService",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "The API surface through which consumers access the\nsystem's self-knowledge and evaluation\nexplanations.\nFive consumer categories, each with different\nneeds:\n- Clinician UI: point-of-care evaluation re",
       "catalogueTag": {},
@@ -4657,7 +4657,7 @@
     },
     "AssessmentOrchestrator": {
       "name": "AssessmentOrchestrator",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "Orchestrates the production of\nSystemStateAssessments by coordinating the other\nLogicEngine components.\nAssessment production sequence:\n1. Read System Model Manifest for Layer 1\n   (structural summary",
       "catalogueTag": {},
@@ -4669,7 +4669,7 @@
     },
     "EvaluationSpecRegistry": {
       "name": "EvaluationSpecRegistry",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "A runtime registry of ConstraintEvaluationSpecs,\nloaded from the model (or generated as a\nTypeScript module) at system startup.\nThe registry resolves constraint names to their\nfull evaluation specific",
       "catalogueTag": {},
@@ -4681,7 +4681,7 @@
     },
     "EvaluationContext": {
       "name": "EvaluationContext",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "LogicEngine",
       "doc": "The runtime context for a single evaluation\ninvocation. Captures the scope (which patient,\nwhich pathway step), the trigger (point-of-care,\ngovernance audit, triggered assessment), and any\nambient dat",
       "catalogueTag": {},
@@ -4693,7 +4693,7 @@
     },
     "DecisionTableDef": {
       "name": "DecisionTableDef",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "DecisionModels",
       "doc": "Abstract definition for a decision table. Concrete\ntables specialise this with their specific input\nand output attributes.\nEach table has a name (matching the @DecisionTable\nannotation in the pathway)",
       "catalogueTag": {},
@@ -4705,7 +4705,7 @@
     },
     "RegimenSelectionRow": {
       "name": "RegimenSelectionRow",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "DecisionModels",
       "doc": "A single row in the regimen selection decision\ntable. Each row maps a combination of input\nconditions to a recommended regimen.\nConcrete rows redefine all attributes with\nspecific values using :>> red",
       "catalogueTag": {},
@@ -4756,7 +4756,7 @@
     },
     "RegimenSelectionTable": {
       "name": "RegimenSelectionTable",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "DecisionModels",
       "doc": "Regimen selection decision table for hormone\ntherapy initiation.\nHit policy: Unique \u2014 exactly one row should match\nfor any valid combination of inputs. If no row\nmatches, the evaluation returns indete",
       "catalogueTag": {},
@@ -4768,7 +4768,7 @@
     },
     "StabilityAssessmentRow": {
       "name": "StabilityAssessmentRow",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "DecisionModels",
       "doc": "A single row in the stability assessment decision\ntable. Each row maps monitoring indicators to a\nstability classification and recommended action.",
       "catalogueTag": {},
@@ -4815,7 +4815,7 @@
     },
     "StabilityAssessmentTable": {
       "name": "StabilityAssessmentTable",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "DecisionModels",
       "doc": "Stability assessment decision table for hormone\ntherapy monitoring.\nHit policy: Unique \u2014 exactly one classification\nshould result from any valid input combination.\nThe table is evaluated at each monit",
       "catalogueTag": {},
@@ -4827,7 +4827,7 @@
     },
     "OutcomeDefinition": {
       "name": "OutcomeDefinition",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "OutcomeFramework",
       "doc": "A defined clinical outcome with target criteria and\nmeasurement specification.\nEach outcome definition specifies:\n- What is being measured (name, description, category)\n- What the target is (value, ra",
       "catalogueTag": {},
@@ -4882,7 +4882,7 @@
     },
     "MeasurementPoint": {
       "name": "MeasurementPoint",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "OutcomeFramework",
       "doc": "A defined point in time at which outcome measurements\nare collected. Each measurement point specifies when\nit occurs (weeks from treatment initiation), what\noutcomes are assessed, and what the clinica",
       "catalogueTag": {},
@@ -4921,7 +4921,7 @@
     },
     "MeasurementSchedule": {
       "name": "MeasurementSchedule",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "OutcomeFramework",
       "doc": "A complete measurement schedule for a clinical\npathway. Defines the sequence of measurement points\nand associates each point with the outcomes to be\nmeasured.\nOne schedule per pathway. The schedule is",
       "catalogueTag": {},
@@ -4940,7 +4940,7 @@
     },
     "OutcomeEvaluationResult": {
       "name": "OutcomeEvaluationResult",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "OutcomeFramework",
       "doc": "",
       "catalogueTag": {},
@@ -4952,7 +4952,7 @@
     },
     "OutcomeFeedbackRecord": {
       "name": "OutcomeFeedbackRecord",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "OutcomeFramework",
       "doc": "A structured record linking aggregated outcome data\nto a pathway refinement proposal. This is the\ninterface between OutcomeFramework and LearningCycles.\nWhen outcome patterns are identified (e.g. a\nsi",
       "catalogueTag": {},
@@ -4964,7 +4964,7 @@
     },
     "DataContract": {
       "name": "DataContract",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "Analytics",
       "doc": "Defines the schema and semantics of a data stream\nconsumed by analytics or ML pipelines.",
       "catalogueTag": {},
@@ -4976,9 +4976,9 @@
     },
     "ArchitecturalPrinciple": {
       "name": "ArchitecturalPrinciple",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "PatternCatalogue",
-      "doc": "A foundational architectural commitment that motivates\none or more patterns. Cross-cutting \u2014 principles span\nboth business and system meta models.\nBusiness system meta model concept \u2014 describes the\nre",
+      "doc": "A foundational architectural commitment that motivates\none or more patterns. Cross-cutting \u2014 principles span\nboth business and system meta models.\nSystem meta model concept \u2014 describes the\nreasoning b",
       "catalogueTag": {},
       "userFacing": {},
       "purposiveDescription": {},
@@ -5023,7 +5023,7 @@
     },
     "Pattern": {
       "name": "Pattern",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "PatternCatalogue",
       "doc": "A reusable architectural or business model template.\nDomain-agnostic \u2014 describes a structural or behavioural\napproach that applies across domains.\nThe relatedElements attribute uses String references\n",
       "catalogueTag": {},
@@ -5158,7 +5158,7 @@
     },
     "DomainInstantiation": {
       "name": "DomainInstantiation",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "PatternCatalogue",
       "doc": "A specific implementation of a pattern in a domain.\nTracks where a pattern has been built and at what\nmaturity level. Each domain instantiation is separate\nso maturity can vary per domain.",
       "catalogueTag": {},
@@ -5297,7 +5297,7 @@
     },
     "CdrConnection": {
       "name": "CdrConnection",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "EHR",
       "doc": "Connection configuration for an openEHR CDR instance.\nValidated against EHRbase 2.11.0 (Docker).\nREST API base path: /ehrbase/rest/openehr/v1/\nAuth: basic auth for development; production TBD.\nThe nod",
       "catalogueTag": {},
@@ -5309,7 +5309,7 @@
     },
     "EhrRecord": {
       "name": "EhrRecord",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "EHR",
       "doc": "An openEHR Electronic Health Record for one patient.\nOne EHR per patient, created at registration. The\nsubjectId + subjectNamespace pair enables idempotent\nlookup via GET /ehr?subject_id=X&subject_nam",
       "catalogueTag": {},
@@ -5321,7 +5321,7 @@
     },
     "RegisteredTemplate": {
       "name": "RegisteredTemplate",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "EHR",
       "doc": "An Operational Template (OPT) registered in the CDR.\nTemplates compose archetypes into use-case-specific\ndata sets. Each template defines one composition type.\nUploaded via the Definition API (POST /d",
       "catalogueTag": {},
@@ -5333,7 +5333,7 @@
     },
     "Composition": {
       "name": "Composition",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "EHR",
       "doc": "A composition committed to the CDR.\nCompositions are the unit of clinical data committed\nand retrieved. Each conforms to a registered template.\nCanonical JSON format maps directly to the openEHR\nRefer",
       "catalogueTag": {},
@@ -5345,7 +5345,7 @@
     },
     "AqlQuery": {
       "name": "AqlQuery",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "EHR",
       "doc": "A named AQL (Archetype Query Language) query.\nAQL queries the CDR by archetype type, providing\nentity views independent of the process that produced\nthe data. Paths mirror the RM hierarchy using arche",
       "catalogueTag": {},
@@ -5357,7 +5357,7 @@
     },
     "UserAccount": {
       "name": "UserAccount",
-      "layer": "bsmm",
+      "layer": "smm",
       "package": "Identity",
       "doc": "A user account for authentication and authorisation.",
       "catalogueTag": {},
@@ -9443,10 +9443,10 @@
       "kind": "enum_def",
       "name": "ArchitecturalGroup",
       "parentPackage": "ArchitecturalStructure",
-      "doc": "Position of a section within the dual-stack architecture.\nSix groups reflecting structural role.\nBusiness system meta model concept.\nArchitectural section (B27). Session 87.",
+      "doc": "Position of a section within the dual-stack architecture.\nSix groups reflecting structural role.\nSystem meta model concept.\nArchitectural section (B27). Session 87.",
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 48,
       "attributes": [
         {
@@ -9473,10 +9473,10 @@
       "kind": "enum_def",
       "name": "Formalism",
       "parentPackage": "ArchitecturalStructure",
-      "doc": "Primary representational formalism used in a section.\nBusiness system meta model concept.\nArchitectural section (B27). Session 87.",
+      "doc": "Primary representational formalism used in a section.\nSystem meta model concept.\nArchitectural section (B27). Session 87.",
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 62,
       "attributes": [
         {
@@ -9497,10 +9497,10 @@
       "kind": "enum_def",
       "name": "ImplementationStatus",
       "parentPackage": "ArchitecturalStructure",
-      "doc": "Current implementation status of a section.\nimplemented: built and operational.\ndesigned: architecturally specified, not yet built.\nreferenced: acknowledged in the architecture, no\n  detailed design yet.\nnotStarted: identified but no work done.\nBusiness system meta model concept.\nArchitectural secti",
+      "doc": "Current implementation status of a section.\nimplemented: built and operational.\ndesigned: architecturally specified, not yet built.\nreferenced: acknowledged in the architecture, no\n  detailed design yet.\nnotStarted: identified but no work done.\nSystem meta model concept.\nArchitectural section (B27).",
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 73,
       "attributes": [
         {
@@ -9524,7 +9524,7 @@
       "doc": "Architectural characterisation metadata for sections\nof the dual-stack architecture. Carries the four\nadditional facets beyond purpose (which is carried\nby @PurposiveDescription).\nEach attribute is a short summary (one to two\nsentences). Full prose lives in the Obsidian vault,\nlinked via the docKey ",
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 93,
       "attributes": [
         {
@@ -9556,7 +9556,7 @@
       "doc": "A bounded region of the dual-stack architecture with\na characteristic purpose, representational formalism,\npersistence mechanism, and set of interfaces to\nneighbouring sections.\n20 sections identified across the architecture.\nName-based identity (kebab-case identifiers stored\nin the name attribute);",
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 122,
       "attributes": [
         {
@@ -22836,7 +22836,7 @@
       "doc": "Marks a pathway step as requiring clinical review\nbefore proceeding. Generates a human-task wait point\nin the orchestration layer.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 48,
       "attributes": [
         {
@@ -22858,7 +22858,7 @@
       "doc": "Marks a pathway step as requiring patient consent\nbefore proceeding.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 56,
       "attributes": [
         {
@@ -22875,7 +22875,7 @@
       "doc": "Marks a step that must produce a governance audit\nrecord.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 62,
       "attributes": [
         {
@@ -22892,7 +22892,7 @@
       "doc": "Marks an element as containing or referencing a\ndeterministic logic rule for Tier 1 evaluation.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 68,
       "attributes": [
         {
@@ -22909,7 +22909,7 @@
       "doc": "Marks an element as containing or referencing a\nDMN-style decision table for Tier 2 evaluation.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 74,
       "attributes": [
         {
@@ -22926,7 +22926,7 @@
       "doc": "Marks a constraint as safety-critical: must be\nevaluated and must not be overridden.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 80,
       "attributes": [
         {
@@ -22948,7 +22948,7 @@
       "doc": "Maps a SysML part def to an openEHR archetype.\nProvides traceability between the structural model\nand the CDR archetype layer. The archetypeId is the\nfull openEHR archetype identifier (e.g.\n\"openEHR-EHR-OBSERVATION.order_record.v0\").\nThe rmClass identifies the Reference Model entry\nclass (OBSERVATIO",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 89,
       "attributes": [
         {
@@ -22970,7 +22970,7 @@
       "doc": "Maps a SysML element to an openEHR archetype data\nelement (at-code).\nThe nodeId is the at-code within the archetype\n(e.g. \"at0005\"). The rmType is the openEHR data\ntype (e.g. \"DV_CODED_TEXT\", \"DV_TEXT\",\n\"DV_DATE_TIME\", \"DV_QUANTITY\").\nLIMITATION (verified 8 March 2026): Syside does NOT\naccept @ anno",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 112,
       "attributes": [
         {
@@ -22992,7 +22992,7 @@
       "doc": "Maps a SysML part def to an openEHR template\n(OPT / operational template).\nTemplates compose archetypes into use-case-specific\ndata sets. Each template corresponds to a composition\ntype committed to the CDR. The templateId matches\nthe template_id used in EHRbase API calls.\nApplied to part defs that ",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 136,
       "attributes": [
         {
@@ -23009,7 +23009,7 @@
       "doc": "Catalogue classification metadata for dynamic\ngrouping and filtering. Applied to any element\nthat should appear in the Component Catalogue.\nEach attribute represents a classification\ndimension. New dimensions are added as new\nattributes when needed.\nbmmConcern: which BMM concern this element belongs",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 158,
       "attributes": [
         {
@@ -23031,7 +23031,7 @@
       "doc": "Human-readable metadata for the comprehension layer.\nApplied to any element that should be comprehensible\nto non-specialist users of the Ontara Console.\nfriendlyName: a short, lay-language name\n  (e.g. \"Pricing Model\" for PricingModel).\nshortDescription: a brief explanation (1-2 sentences)\n  in plai",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 186,
       "attributes": [
         {
@@ -23053,7 +23053,7 @@
       "doc": "Authored purposive description for the comprehension\nlayer. Explains what this element means for a service\nbusiness and what the system does with it \u2014 the\n\"why should I care?\" and \"what happens when I define\none of these?\" explanation.\nRegister 1 (authored comprehension content). Distinct\nfrom @User",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 206,
       "attributes": [
         {
@@ -23070,7 +23070,7 @@
       "doc": "Comprehension traversal schema. Declares which\ncategories of dynamically assembled content the\ncomprehension engine should surface for this\nelement.\nThe annotation is a recipe \u2014 it declares what to\nshow, not what to say. The generator reads these\nflags and discovers structural facts from the live\nmo",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 228,
       "attributes": [
         {
@@ -23102,7 +23102,7 @@
       "doc": "Ordinal classification of interaction effect strength\nbetween related elements. Starting point for the\nweighted relationship model (B14).\nDesigned for hybrid evolution: ordinal now, numeric\nweights later, structural derivation baseline with\nhuman overrides (J12 \u2014 experimentation before\nconvention).\n",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 272,
       "attributes": [
         {
@@ -23126,7 +23126,7 @@
       "doc": "Declares a weighted relationship from the annotated\nelement to a named target element. Each annotation\ndeclares one relationship. Multiple annotations of\nthis metaclass may be applied to a single element\n(verified v3.17, Session 51).\ntarget: name of the related element (String for now;\n  migration t",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 291,
       "attributes": [
         {
@@ -23153,7 +23153,7 @@
       "doc": "Who performs an action in a pathway. Applies to\nboth clinical and non-clinical contexts.\nCoffee shop: customer (self-service kiosk), staff\n(barista makes drink), automated (order routing),\ncollaborative (customer and barista discuss).\nClinical: patientAgent, clinicianAgent, automated,\ncollaborative ",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 330,
       "attributes": [
         {
@@ -23177,7 +23177,7 @@
       "doc": "Annotates a pathway action node with the agent who\nperforms it. Applied via @AgencyClassification on\naction usages within action defs.\nThe authorityModelVersion attribute records which\ngeneration's authority rules were in effect when\nthis classification was assigned. Supports\ngovernance traceability",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 353,
       "attributes": [
         {
@@ -23204,7 +23204,7 @@
       "doc": "Gender identity as recorded for clinical purposes.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 388,
       "attributes": [
         {
@@ -23231,7 +23231,7 @@
       "doc": "Preferred method of contact.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 397,
       "attributes": [
         {
@@ -23258,7 +23258,7 @@
       "doc": "Type of clinical appointment.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 406,
       "attributes": [
         {
@@ -23282,7 +23282,7 @@
       "doc": "Direction of a referral or referral pathway.\nExtended Session 81: bidirectional added for\nreferral pathways where both directions operate\n(e.g. GP refers to GSL, GSL refers back to GP).",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 414,
       "attributes": [
         {
@@ -23354,7 +23354,7 @@
       "doc": "Status of a consent record.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 454,
       "attributes": [
         {
@@ -23378,7 +23378,7 @@
       "doc": "A postal address.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 462,
       "attributes": [
         {
@@ -23415,7 +23415,7 @@
       "doc": "Contact information for a person or organisation.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 471,
       "attributes": [
         {
@@ -23442,7 +23442,7 @@
       "doc": "Result of evaluating a constraint, rule, or goal.\nThree-valued: pass (condition met), fail (condition\nnot met), indeterminate (insufficient data).",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 481,
       "attributes": [
         {
@@ -23463,7 +23463,7 @@
       "doc": "Severity classification for deficits, constraints,\nand audit findings.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 490,
       "attributes": [
         {
@@ -23484,7 +23484,7 @@
       "doc": "Scope at which an evaluation or assessment is\nperformed.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 498,
       "attributes": [
         {
@@ -23511,7 +23511,7 @@
       "doc": "Authoritative data source for input derivation.\nSource-agnostic: same InputDerivation structure\nworks regardless of where data comes from.\nPhase 6B: added accounting for financial actuals\nfrom Xero via Operations::Finance.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 508,
       "attributes": [
         {
@@ -23538,7 +23538,7 @@
       "doc": "Domain classification for a deficit.\nPhase 6B: added financial for deficits arising\nfrom financial variance (revenue shortfall, cost\noverrun, margin below forecast). Distinct from\noperational (process state) because financial\ndeficits are about the money flowing through\nprocesses, not the processes ",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 522,
       "attributes": [
         {
@@ -23565,7 +23565,7 @@
       "doc": "How a deficit can be addressed. Defines the boundary\nbetween deterministic system action and advisory\noutput.\nautomatic: pathway model defines next step, system\n  can trigger it.\nrecommended: specific action identified but requires\n  human decision.\nadvisory: deficit is systemic or compound, system\n",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 538,
       "attributes": [
         {
@@ -23586,7 +23586,7 @@
       "doc": "Health status of an infrastructure service.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 553,
       "attributes": [
         {
@@ -23607,7 +23607,7 @@
       "doc": "Categorised hormone level from blood test results.\nUsed in decision tables for regimen selection and\nstability assessment.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 562,
       "attributes": [
         {
@@ -23631,7 +23631,7 @@
       "doc": "Patient's preference for hormone therapy type.\nCaptures the direction of therapy as expressed\nby the patient during assessment.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 572,
       "attributes": [
         {
@@ -23652,7 +23652,7 @@
       "doc": "Categorised contraindication status for prescribing\ndecisions. Simplification of the full clinical\nassessment into categories that drive protocol\nselection.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 581,
       "attributes": [
         {
@@ -23679,7 +23679,7 @@
       "doc": "Hormone therapy medications in the prescribing\nprotocol. Each entry represents a specific\npharmaceutical product.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 593,
       "attributes": [
         {
@@ -23709,7 +23709,7 @@
       "doc": "Route of medication administration.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 605,
       "attributes": [
         {
@@ -23733,7 +23733,7 @@
       "doc": "Categorised starting dose level. Maps to specific\ndose values per medication in the prescribing\nprotocol. The dose category determines the actual\ndose based on medication-specific tables.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 613,
       "attributes": [
         {
@@ -23757,7 +23757,7 @@
       "doc": "Patient-reported satisfaction with treatment\nprogress. Captured during monitoring consultations.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 624,
       "attributes": [
         {
@@ -23778,7 +23778,7 @@
       "doc": "Clinical classification of regimen stability.\nOutput of the stabilityAssessment decision table.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 632,
       "attributes": [
         {
@@ -23802,7 +23802,7 @@
       "doc": "Recommended monitoring action based on stability\nassessment. Output of the stabilityAssessment\ndecision table.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 641,
       "attributes": [
         {
@@ -23829,7 +23829,7 @@
       "doc": "Category of a clinical outcome measure.\nDetermines which outcomes are collected at\neach measurement point and how they are\nreported.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 654,
       "attributes": [
         {
@@ -23853,7 +23853,7 @@
       "doc": "Status of an individual outcome measurement\nagainst its defined target.\npending: measurement due but not yet taken\nmeasured: data collected, not yet evaluated\ntargetMet: evaluated and within target\ntargetNotMet: evaluated and outside target\nindeterminate: data insufficient for evaluation",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 665,
       "attributes": [
         {
@@ -23880,7 +23880,7 @@
       "doc": "How often an outcome is measured. Determines\nwhich measurement points include this outcome.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 680,
       "attributes": [
         {
@@ -23907,7 +23907,7 @@
       "doc": "How a target value is compared against an actual\nmeasurement. Used in OutcomeDefinition to specify\nthe target condition.\nwithin: actual falls within a range (uses\n  targetValue and targetUpperBound)\ngreaterThan: actual exceeds a threshold\nlessThan: actual is below a threshold\nequalTo: actual matches",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 690,
       "attributes": [
         {
@@ -23931,7 +23931,7 @@
       "doc": "The persistence technology layer where a domain\nconcept is stored. Each layer has distinct\ncharacteristics:\n- clinicalDataRepository: archetype-validated,\n  terminology-bound, versioned (openEHR)\n- businessDatabase: relational CRUD, transactional\n  integrity (PostgreSQL)\n- processEngine: durable exe",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 713,
       "attributes": [
         {
@@ -23952,10 +23952,10 @@
       "kind": "enum_def",
       "name": "DataCharacteristic",
       "parentPackage": "CommonTypes",
-      "doc": "Distinguishing characteristics that determine the\nnatural persistence home for a domain concept.\nA concept's characteristic profile maps to a\npersistence layer.\nBusiness system meta model concept.",
+      "doc": "Distinguishing characteristics that determine the\nnatural persistence home for a domain concept.\nA concept's characteristic profile maps to a\npersistence layer.\nSystem meta model concept.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 733,
       "attributes": [
         {
@@ -23997,10 +23997,10 @@
       "kind": "part_def",
       "name": "PersistencePolicy",
       "parentPackage": "CommonTypes",
-      "doc": "Maps a domain concept to its persistence layer,\nwith explicit rationale expressed as distinguishing\ncharacteristics. Makes architectural reasoning\nqueryable and auditable \u2014 the system can explain\nwhy each concept lives where it does.\nBusiness system meta model concept: describes how\nthe system is ar",
+      "doc": "Maps a domain concept to its persistence layer,\nwith explicit rationale expressed as distinguishing\ncharacteristics. Makes architectural reasoning\nqueryable and auditable \u2014 the system can explain\nwhy each concept lives where it does.\nSystem meta model concept: describes how\nthe system is architected",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 753,
       "attributes": [
         {
@@ -24032,7 +24032,7 @@
       "doc": "Defines how a single constraint input is derived\nfrom an authoritative data source. The pattern is\nsource-agnostic: the same structure describes AQL\nqueries against the CDR, Temporal workflow state\nqueries, and platform service API calls.\nEach input in a constraint def has a corresponding\nInputDeriv",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 53,
       "attributes": [
         {
@@ -24074,7 +24074,7 @@
       "doc": "Binds a constraint definition to its input\nderivations, forming a complete evaluation\nspecification. This is the unit that the evaluation\nengine consumes: it knows which constraint to\nevaluate and how to get every input.\nSeparates \"what the rule is\" (ConstraintLibrary)\nfrom \"how to get the data\" (he",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 73,
       "attributes": [
         {
@@ -24101,7 +24101,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 85,
       "specialises": "InputDerivation"
     },
@@ -24112,7 +24112,7 @@
       "doc": "Evaluation spec for ConsentRecordedConstraint.\nSingle CDR input: consent composition exists.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 98,
       "specialises": "ConstraintEvaluationSpec",
       "attributes": [
@@ -24140,7 +24140,7 @@
       "doc": "Evaluation spec for PatientInformationProvidedConstraint.\nSingle CDR input: information-provision event.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 106,
       "specialises": "ConstraintEvaluationSpec",
       "attributes": [
@@ -24168,7 +24168,7 @@
       "doc": "Evaluation spec for BaselineBloodsReviewedConstraint.\nTwo inputs from CDR/entity: all tests resulted,\nall results reviewed.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 116,
       "specialises": "ConstraintEvaluationSpec",
       "attributes": [
@@ -24196,7 +24196,7 @@
       "doc": "Evaluation spec for ClinicalReviewCompletedConstraint.\nSingle CDR input: consultation composition with\nreview outcome.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 127,
       "specialises": "ConstraintEvaluationSpec",
       "attributes": [
@@ -24224,7 +24224,7 @@
       "doc": "Evaluation spec for RegimenWithinProtocolConstraint.\nThree inputs: medication, route, dose checked against\nthe prescribing protocol decision table.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 136,
       "specialises": "ConstraintEvaluationSpec",
       "attributes": [
@@ -24252,7 +24252,7 @@
       "doc": "Evaluation spec for BloodMonitoringIntervalConstraint.\nTwo inputs: weeksSinceLastTest from CDR (most recent\nLabResult), requiredIntervalWeeks from entity\n(active prescription monitoring interval).",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 147,
       "specialises": "ConstraintEvaluationSpec",
       "attributes": [
@@ -24280,7 +24280,7 @@
       "doc": "Evaluation spec for DoseAdjustmentReviewedConstraint.\nTwo CDR inputs: clinical review completed,\ncurrent results reviewed.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 157,
       "specialises": "ConstraintEvaluationSpec",
       "attributes": [
@@ -24308,7 +24308,7 @@
       "doc": "Evaluation spec for SharedCareAcceptedConstraint.\nTwo inputs: shared care protocol sent (CDR),\nGP practice accepted (entity lifecycle state).",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 168,
       "specialises": "ConstraintEvaluationSpec",
       "attributes": [
@@ -24336,7 +24336,7 @@
       "doc": "Binds a decision table to its input derivations\nand evaluation metadata, parallel to\nConstraintEvaluationSpec for constraints.\nThe tableName matches the @DecisionTable metadata\nannotation on pathway steps. The evaluation\ninfrastructure resolves the name to this spec,\nderives inputs, evaluates the ta",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 186,
       "attributes": [
         {
@@ -24358,7 +24358,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 198,
       "specialises": "InputDerivation"
     },
@@ -24369,7 +24369,7 @@
       "doc": "Evaluation spec for the regimenSelection decision\ntable. Derives four inputs from CDR and clinical\nassessment data: baseline testosterone, baseline\noestradiol, patient therapy preference, and\ncontraindication category.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 201,
       "specialises": "DecisionTableEvaluationSpec",
       "attributes": [
@@ -24392,7 +24392,7 @@
       "doc": "Evaluation spec for the stabilityAssessment\ndecision table. Derives inputs from monitoring\nbloods, treatment history, and consultation\ndata: hormone level, weeks on treatment, side\neffect severity, and patient satisfaction.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 211,
       "specialises": "DecisionTableEvaluationSpec",
       "attributes": [
@@ -24415,7 +24415,7 @@
       "doc": "Evaluable rule: a valid consent record must exist\nfor the specified treatment before it can proceed.\nAt runtime, consentRecorded is derived from the\nCDR: a consent composition exists for this patient\nand treatment type with status 'given'.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 260
     },
     {
@@ -24425,7 +24425,7 @@
       "doc": "Evaluable rule: the patient must have been provided\nwith treatment information before consent is obtained.\nAt runtime, informationProvided is derived from the\nCDR: an information-provision event is recorded for\nthis patient and treatment type, with a timestamp\nbefore the consent timestamp.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 272
     },
     {
@@ -24435,7 +24435,7 @@
       "doc": "Evaluable rule: all required baseline blood tests\nmust have reached the 'reviewed' state before a\nhormone therapy prescription can be authorised.\nThis checks two conditions:\n1. All required tests have been performed (no\n   outstanding orders)\n2. All results have been clinically reviewed (not\n   just",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 287
     },
     {
@@ -24445,7 +24445,7 @@
       "doc": "Evaluable rule: a clinical review must have been\ncompleted and documented before a prescribing\ndecision can proceed.\nAt runtime, reviewCompleted is derived from the\nCDR: a consultation composition exists for this\nepisode with a review outcome recorded.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 308
     },
     {
@@ -24455,7 +24455,7 @@
       "doc": "Evaluable rule: the proposed medication, route, and\ndose must fall within the bounds of an approved\nprescribing protocol.\nAt runtime, this evaluates the proposed regimen\nagainst the protocol decision table in\nKnowledge::DecisionModels. A regimen is within\nprotocol if all three components match an ap",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 321
     },
     {
@@ -24465,7 +24465,7 @@
       "doc": "Evaluable rule: the number of weeks since the last\nblood test must not exceed the required monitoring\ninterval.\nAt runtime, weeksSinceLastTest is derived from the\nCDR: the most recent LabResult for this patient\nwith the relevant test name. requiredIntervalWeeks\ncomes from the prescribing protocol.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 340
     },
     {
@@ -24475,7 +24475,7 @@
       "doc": "Evaluable rule: a clinical review must have been\ncompleted, with current blood results reviewed,\nbefore a dose adjustment can be authorised.\nThis is a compound check: both the clinical review\nand the blood result review must be complete.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 355
     },
     {
@@ -24485,7 +24485,7 @@
       "doc": "Evaluable rule: shared care must not commence until\nthe GP practice has confirmed acceptance of the\nshared care arrangement and the shared care protocol\ndocument has been sent.\nAt runtime, both inputs are derived from the\nReferral lifecycle state (referralAccepted) and\na document-sent event in the C",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 370
     },
     {
@@ -24495,7 +24495,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 394,
       "specialises": "ConsentRecordedConstraint"
     },
@@ -24506,7 +24506,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 395,
       "specialises": "PatientInformationProvidedConstraint"
     },
@@ -24517,7 +24517,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 396,
       "specialises": "BaselineBloodsReviewedConstraint"
     },
@@ -24528,7 +24528,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 397,
       "specialises": "ClinicalReviewCompletedConstraint"
     },
@@ -24539,7 +24539,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 398,
       "specialises": "RegimenWithinProtocolConstraint"
     },
@@ -24550,7 +24550,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 399,
       "specialises": "BloodMonitoringIntervalConstraint"
     },
@@ -24561,7 +24561,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 400,
       "specialises": "DoseAdjustmentReviewedConstraint"
     },
@@ -24572,7 +24572,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 401,
       "specialises": "SharedCareAcceptedConstraint"
     },
@@ -24583,7 +24583,7 @@
       "doc": "A single input value used in a rule evaluation.\nRecords what data was used, where it came from,\nand how it was derived \u2014 supporting the\nself-explanation requirement for clinical governance\nand patient safety.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 490,
       "attributes": [
         {
@@ -24620,7 +24620,7 @@
       "doc": "A structured explanation of how a rule evaluation\nreached its conclusion. Supports three audiences:\n- Clinicians: why did this safety check pass/fail?\n- Patients: why am I eligible or not?\n- Auditors: trace from outcome through every decision.\nThe trace is the clinical governance artefact that\nmakes",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 503,
       "attributes": [
         {
@@ -24642,7 +24642,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 514,
       "specialises": "EvaluatedInput"
     },
@@ -24653,7 +24653,7 @@
       "doc": "The atomic unit of knowledge evaluation. Every rule,\nat every point in the system, produces one of these.\nEvaluationResults are persisted (CDR or audit log),\nqueryable, and presentable to clinicians, patients,\nand auditors. They are the structured output of\nTier 1 deterministic evaluation.\nThe same ",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 517,
       "attributes": [
         {
@@ -24690,7 +24690,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 535,
       "specialises": "ExplanationTrace"
     },
@@ -24701,7 +24701,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 536,
       "specialises": "EvaluationResult"
     },
@@ -24712,7 +24712,7 @@
       "doc": "A structured record of a gap between the system's\nactual operational state and its goal state.\nGeneralises the Phase D governance audit pattern\nfrom a single rule to any operational dimension.\nEach deficit references the goal it falls short of\n(requirement, constraint, outcome definition, or\nproject",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 543,
       "attributes": [
         {
@@ -24774,7 +24774,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 577,
       "specialises": "EvaluationResult"
     },
@@ -24785,7 +24785,7 @@
       "doc": "The composite output of the self-knowledge\ninfrastructure. Aggregates across all five layers\nto produce a whole-system picture: clinical\ngovernance, operational health, and business\nperformance in a single assessment.\nNot a new data store \u2014 computed on demand by\nquerying existing authoritative sourc",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 580,
       "attributes": [
         {
@@ -24887,7 +24887,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 626,
       "specialises": "OperationalSnapshot"
     },
@@ -24898,7 +24898,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 635,
       "specialises": "Deficit"
     },
@@ -24909,7 +24909,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 638,
       "specialises": "EvaluationResult"
     },
@@ -24920,7 +24920,7 @@
       "doc": "Resolves constraint inputs from authoritative data\nsources. For each InputDerivation in a\nConstraintEvaluationSpec, the resolver executes the\nspecified query against the appropriate source (CDR,\nTemporal, platform service), applies the computation\nto derive a typed value, and handles fallback if the",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 645,
       "attributes": [
         {
@@ -24937,7 +24937,7 @@
       "doc": "Evaluates a constraint's boolean expression given\nresolved input values. For Tier 1, this is\nstraightforward boolean evaluation: the constraint\ndef's expression is evaluated with the derived\ninput values substituted.\nReturns an EvaluationOutcome (pass, fail,\nindeterminate). Indeterminate arises when",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 668,
       "attributes": [
         {
@@ -24954,7 +24954,7 @@
       "doc": "Assembles ExplanationTrace records from the\nevaluation context: the resolved inputs\n(EvaluatedInput records), the constraint expression\nas evaluated, and a human-readable explanation of\nthe outcome.\nSupports multiple audiences:\n- Clinicians: technical but accessible explanation\n  of why a safety che",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 689,
       "attributes": [
         {
@@ -24971,7 +24971,7 @@
       "doc": "The Tier 1 deterministic constraint evaluation\ncomponent. Consumes ConstraintEvaluationSpecs from\nClinicalDecisionSupport, derives inputs from\nauthoritative sources (CDR via AQL, Temporal,\nplatform services), evaluates constraint boolean\nexpressions, and produces structured\nEvaluationResults with fu",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 714,
       "attributes": [
         {
@@ -24988,7 +24988,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 743,
       "specialises": "InputResolver"
     },
@@ -24999,7 +24999,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 744,
       "specialises": "ExpressionEvaluator"
     },
@@ -25010,7 +25010,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 745,
       "specialises": "ExplanationBuilder"
     },
@@ -25021,7 +25021,7 @@
       "doc": "A single operational state query against an\nauthoritative source. Structurally parallel to\nInputDerivation but scoped to operational rather\nthan clinical data.\nThe query returns a structured result (count,\nlist, or status) rather than a single typed value.\nThis is a wider interface than InputDerivat",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 752,
       "attributes": [
         {
@@ -25053,7 +25053,7 @@
       "doc": "A point-in-time capture of the system's operational\nstate, produced by the OperationalStateAggregator.\nThis is the Layer 2 content that feeds into gap\nanalysis and the SystemStateAssessment.\nNot persisted as a separate data store \u2014 computed\non demand. The snapshot captures the query results\nat a spe",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 773,
       "attributes": [
         {
@@ -25165,7 +25165,7 @@
       "doc": "Queries the system's operational state across all\nauthoritative data sources: Temporal (process\nstate), CDR (clinical data state), entity\nlifecycle state, platform services (infrastructure\nhealth), and accounting system (financial actuals).\nUses the same source-agnostic InputDerivation\npattern as th",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 822,
       "attributes": [
         {
@@ -25182,7 +25182,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 861,
       "specialises": "OperationalQuery"
     },
@@ -25193,7 +25193,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 862,
       "specialises": "OperationalQuery"
     },
@@ -25204,7 +25204,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 863,
       "specialises": "OperationalQuery"
     },
@@ -25215,7 +25215,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 864,
       "specialises": "OperationalQuery"
     },
@@ -25226,7 +25226,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 865,
       "specialises": "OperationalQuery"
     },
@@ -25237,7 +25237,7 @@
       "doc": "A single goal projected from the model into a\nshape comparable against operational state. The\nunit of comparison for gap analysis.\nEach projection names the goal source\n(requirement, constraint, outcome definition, or\nprojection formula), the expected condition, and\nthe query needed to check actual ",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 872,
       "attributes": [
         {
@@ -25274,7 +25274,7 @@
       "doc": "Projects goals from model sources (requirements,\nconstraints, outcome definitions, and projection\nformulas) into a comparable shape against\noperational state.\nEach goal is expressed as a GoalProjection: an\nexpected condition that can be evaluated against\nactual data. The projection mechanism varies ",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 901,
       "attributes": [
         {
@@ -25291,7 +25291,7 @@
       "doc": "Compares the system's operational state (Layer 2,\nOperationalSnapshot) against its goal state\n(Layer 3, projected from requirements,\nconstraints, outcome definitions, and projection\nformulas) and produces Deficit records for every\nunmet goal.\nThis is the direct generalisation of the Phase D\ngovernan",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 936,
       "attributes": [
         {
@@ -25308,7 +25308,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 975,
       "specialises": "GoalProjector"
     },
@@ -25319,7 +25319,7 @@
       "doc": "Tier 2 reasoning interface: inference chains,\ncontraindication cascades, compound deficit\nreasoning, and \"why\" queries.\nWhere Tier 1 (ConstraintEvaluator) evaluates\nsingle boolean constraints, Tier 2 reasons about\nrelationships between multiple constraints,\ndeficits, and available actions. This is t",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 982,
       "attributes": [
         {
@@ -25341,7 +25341,7 @@
       "doc": "Tier 3 advisory interface: ML/LLM-augmented\nintelligence. Powerful but probabilistic, always\nadvisory rather than authoritative. Cannot\noverride Tier 1 or Tier 2 logic.\nCapabilities (interface boundary only):\n- Pattern recognition across patient cohorts\n- Natural language processing of unstructured\n",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1033,
       "attributes": [
         {
@@ -25368,7 +25368,7 @@
       "doc": "The API surface through which consumers access the\nsystem's self-knowledge and evaluation\nexplanations.\nFive consumer categories, each with different\nneeds:\n- Clinician UI: point-of-care evaluation results\n  with clinical context. \"Why did this safety\n  check fail?\" with data values and rule\n  refer",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1075,
       "attributes": [
         {
@@ -25385,7 +25385,7 @@
       "doc": "Orchestrates the production of\nSystemStateAssessments by coordinating the other\nLogicEngine components.\nAssessment production sequence:\n1. Read System Model Manifest for Layer 1\n   (structural summary \u2014 packages, pathways,\n   constraints, service offerings, revenue\n   streams, scenario definitions)\n",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1116,
       "attributes": [
         {
@@ -25422,7 +25422,7 @@
       "doc": "A runtime registry of ConstraintEvaluationSpecs,\nloaded from the model (or generated as a\nTypeScript module) at system startup.\nThe registry resolves constraint names to their\nfull evaluation specifications: which inputs to\nderive, from which sources, with what\ncomputations, and what fallback behavi",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1177,
       "attributes": [
         {
@@ -25449,7 +25449,7 @@
       "doc": "The runtime context for a single evaluation\ninvocation. Captures the scope (which patient,\nwhich pathway step), the trigger (point-of-care,\ngovernance audit, triggered assessment), and any\nambient data already available (to avoid\nredundant queries).\nPassed to the ConstraintEvaluator alongside the\nCo",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1207,
       "attributes": [
         {
@@ -25486,7 +25486,7 @@
       "doc": "How a decision table resolves when evaluating.\nBased on DMN hit policy semantics.\nunique: exactly one row must match (error otherwise)\nfirstMatch: rows are ordered, first match wins\ncollect: all matching rows contribute to output",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1387,
       "attributes": [
         {
@@ -25507,7 +25507,7 @@
       "doc": "Abstract definition for a decision table. Concrete\ntables specialise this with their specific input\nand output attributes.\nEach table has a name (matching the @DecisionTable\nannotation in the pathway), a hit policy, and a\ndescription of its clinical purpose.\nThis part def provides common metadata; i",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1398,
       "attributes": [
         {
@@ -25534,7 +25534,7 @@
       "doc": "A single row in the regimen selection decision\ntable. Each row maps a combination of input\nconditions to a recommended regimen.\nConcrete rows redefine all attributes with\nspecific values using :>> redefinition.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1418,
       "attributes": [
         {
@@ -25581,7 +25581,7 @@
       "doc": "Regimen selection decision table for hormone\ntherapy initiation.\nHit policy: Unique \u2014 exactly one row should match\nfor any valid combination of inputs. If no row\nmatches, the evaluation returns indeterminate\nwith a recommendation for clinician judgement.\nClinical source: GenderSense Prescribing Prot",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1438,
       "specialises": "DecisionTableDef",
       "attributes": [
@@ -25924,7 +25924,7 @@
       "doc": "Oestrogen preference, no contraindications,\nlow baseline \u2014 standard transdermal patch.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1463,
       "specialises": "RegimenSelectionRow",
       "attributes": [
@@ -25972,7 +25972,7 @@
       "doc": "Oestrogen preference, VTE risk \u2014\ntransdermal preferred over oral to avoid\nfirst-pass hepatic effects. Reduced dose.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1475,
       "specialises": "RegimenSelectionRow",
       "attributes": [
@@ -26020,7 +26020,7 @@
       "doc": "Oestrogen preference, liver disease \u2014\ntransdermal to bypass hepatic metabolism.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1488,
       "specialises": "RegimenSelectionRow",
       "attributes": [
@@ -26068,7 +26068,7 @@
       "doc": "Oestrogen preference, cardiac risk \u2014\ntransdermal, low starting dose with close\nmonitoring.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1500,
       "specialises": "RegimenSelectionRow",
       "attributes": [
@@ -26116,7 +26116,7 @@
       "doc": "Oestrogen preference, multiple contraindications \u2014\nrequires specialist review. Lowest-risk option\nas starting point for discussion.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1513,
       "specialises": "RegimenSelectionRow",
       "attributes": [
@@ -26164,7 +26164,7 @@
       "doc": "Testosterone preference, no contraindications \u2014\nstandard IM injection.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1528,
       "specialises": "RegimenSelectionRow",
       "attributes": [
@@ -26212,7 +26212,7 @@
       "doc": "Testosterone preference, needle aversion or\npatient preference for self-administration \u2014\ntransdermal gel.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1540,
       "specialises": "RegimenSelectionRow",
       "attributes": [
@@ -26260,7 +26260,7 @@
       "doc": "Testosterone preference, cardiac risk \u2014\ngel preferred over injection for more stable\nserum levels. Reduced starting dose.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1553,
       "specialises": "RegimenSelectionRow",
       "attributes": [
@@ -26308,7 +26308,7 @@
       "doc": "Testosterone preference, liver disease \u2014\ntransdermal to avoid hepatic first-pass.\nStandard dose (testosterone is not primarily\nhepatically metabolised at standard doses).",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1566,
       "specialises": "RegimenSelectionRow",
       "attributes": [
@@ -26356,7 +26356,7 @@
       "doc": "A single row in the stability assessment decision\ntable. Each row maps monitoring indicators to a\nstability classification and recommended action.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1585,
       "attributes": [
         {
@@ -26398,7 +26398,7 @@
       "doc": "Stability assessment decision table for hormone\ntherapy monitoring.\nHit policy: Unique \u2014 exactly one classification\nshould result from any valid input combination.\nThe table is evaluated at each monitoring review\npoint (typically every 3 months during titration,\nevery 6-12 months once stable).\nNote:",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1601,
       "specialises": "DecisionTableDef",
       "attributes": [
@@ -26666,7 +26666,7 @@
       "doc": "Normal hormones, 12+ weeks, no significant\nside effects, patient satisfied \u2014 stable.\nContinue current regimen, standard monitoring.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1625,
       "specialises": "StabilityAssessmentRow",
       "attributes": [
@@ -26709,7 +26709,7 @@
       "doc": "Normal hormones, 12+ weeks, no significant\nside effects, patient neutral \u2014 stable but\nexplore satisfaction concerns. Continue\nregimen with reduced monitoring interval.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1637,
       "specialises": "StabilityAssessmentRow",
       "attributes": [
@@ -26752,7 +26752,7 @@
       "doc": "Normal hormones but less than 12 weeks on\ntreatment \u2014 too early to declare stable.\nContinue and recheck.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1652,
       "specialises": "StabilityAssessmentRow",
       "attributes": [
@@ -26795,7 +26795,7 @@
       "doc": "Low hormone levels \u2014 dose likely insufficient.\nAdjust dose upward.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1666,
       "specialises": "StabilityAssessmentRow",
       "attributes": [
@@ -26838,7 +26838,7 @@
       "doc": "High hormone levels \u2014 dose may need reducing.\nAdjust dose downward.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1677,
       "specialises": "StabilityAssessmentRow",
       "attributes": [
@@ -26881,7 +26881,7 @@
       "doc": "Normal hormones but warning-level side effects \u2014\nmay need route or formulation change.\nIncrease monitoring, clinical review.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1688,
       "specialises": "StabilityAssessmentRow",
       "attributes": [
@@ -26924,7 +26924,7 @@
       "doc": "Critical side effects regardless of hormone\nlevels \u2014 urgent clinical review.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1702,
       "specialises": "StabilityAssessmentRow",
       "attributes": [
@@ -26967,7 +26967,7 @@
       "doc": "Suppressed hormone levels \u2014 possible over-\nsuppression. Urgent review to assess dose\nand clinical status.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1713,
       "specialises": "StabilityAssessmentRow",
       "attributes": [
@@ -27010,7 +27010,7 @@
       "doc": "A defined clinical outcome with target criteria and\nmeasurement specification.\nEach outcome definition specifies:\n- What is being measured (name, description, category)\n- What the target is (value, range, comparison operator)\n- How often it is measured (frequency)\n- How to query the CDR for actual d",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1816,
       "attributes": [
         {
@@ -27072,7 +27072,7 @@
       "doc": "A defined point in time at which outcome measurements\nare collected. Each measurement point specifies when\nit occurs (weeks from treatment initiation), what\noutcomes are assessed, and what the clinical focus is.\nMeasurement points are contained within a\nMeasurementSchedule. At runtime, the evaluatio",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1847,
       "attributes": [
         {
@@ -27109,7 +27109,7 @@
       "doc": "A complete measurement schedule for a clinical\npathway. Defines the sequence of measurement points\nand associates each point with the outcomes to be\nmeasured.\nOne schedule per pathway. The schedule is the bridge\nbetween the pathway's temporal structure (when things\nhappen) and the outcome framework'",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1865,
       "attributes": [
         {
@@ -27136,7 +27136,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1878,
       "specialises": "MeasurementPoint"
     },
@@ -27147,7 +27147,7 @@
       "doc": "",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1881,
       "attributes": [
         {
@@ -27199,7 +27199,7 @@
       "doc": "A structured record linking aggregated outcome data\nto a pathway refinement proposal. This is the\ninterface between OutcomeFramework and LearningCycles.\nWhen outcome patterns are identified (e.g. a\nsignificant proportion of patients not reaching\ntarget at 6 months on a particular regimen), the\npatte",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1916,
       "attributes": [
         {
@@ -27256,7 +27256,7 @@
       "doc": "Target oestradiol level for feminising hormone\ntherapy. Measured at each monitoring blood test.\nTarget range is trough level (measured immediately\nbefore next dose or at a standardised time point).\nRepresentative target: 400\u2013600 pmol/L.\nSource: Endocrine Society guidelines / local protocol.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1950,
       "specialises": "OutcomeDefinition",
       "attributes": [
@@ -27319,7 +27319,7 @@
       "doc": "Target testosterone level for masculinising\nhormone therapy. Measured at each monitoring\nblood test.\nRepresentative target: 10\u201330 nmol/L.\nSource: Endocrine Society guidelines / local protocol.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1970,
       "specialises": "OutcomeDefinition",
       "attributes": [
@@ -27382,7 +27382,7 @@
       "doc": "Target testosterone suppression for feminising\nhormone therapy. Testosterone should be suppressed\nbelow the threshold once oestradiol is at target.\nRepresentative target: < 2 nmol/L.\nSource: Endocrine Society guidelines / local protocol.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 1989,
       "specialises": "OutcomeDefinition",
       "attributes": [
@@ -27445,7 +27445,7 @@
       "doc": "Haematological safety monitoring. For masculinising\ntherapy: haemoglobin and haematocrit must remain\nwithin safe limits (polycythaemia risk). For\nfeminising therapy: VTE risk markers monitored.\nRepresentative target: haematocrit < 0.54.\nSource: Local protocol / Endocrine Society.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2008,
       "specialises": "OutcomeDefinition",
       "attributes": [
@@ -27508,7 +27508,7 @@
       "doc": "Metabolic safety monitoring: liver function tests\nand lipid profile within acceptable limits.\nRepresentative: LFTs within 3x upper limit of normal.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2028,
       "specialises": "OutcomeDefinition",
       "attributes": [
@@ -27571,7 +27571,7 @@
       "doc": "Whether monitoring bloods are completed within\nthe defined schedule. Target: 100% of scheduled\nmonitoring bloods completed within the allowed\nwindow.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2047,
       "specialises": "OutcomeDefinition",
       "attributes": [
@@ -27634,7 +27634,7 @@
       "doc": "Whether scheduled clinical appointments are\nattended. Missed appointments may indicate\ndisengagement, access barriers, or dissatisfaction.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2064,
       "specialises": "OutcomeDefinition",
       "attributes": [
@@ -27697,7 +27697,7 @@
       "doc": "Tracking of adverse events during treatment.\nTarget: no critical adverse events. Warning-level\nevents are expected to be managed.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2082,
       "specialises": "OutcomeDefinition",
       "attributes": [
@@ -27760,7 +27760,7 @@
       "doc": "Patient-reported treatment satisfaction, captured\nduring monitoring consultations. Also an input to\nthe stabilityAssessment decision table.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2100,
       "specialises": "OutcomeDefinition",
       "attributes": [
@@ -27823,7 +27823,7 @@
       "doc": "Patient-reported goal attainment \u2014 whether the\npatient feels their personal treatment goals are\nbeing met. Captured via structured self-assessment\nat 6-month and 12-month points.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2116,
       "specialises": "OutcomeDefinition",
       "attributes": [
@@ -27886,7 +27886,7 @@
       "doc": "Baseline measurements before treatment initiation.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2137,
       "specialises": "MeasurementPoint",
       "attributes": [
@@ -27924,7 +27924,7 @@
       "doc": "First monitoring assessment at approximately\n12 weeks post-initiation.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2146,
       "specialises": "MeasurementPoint",
       "attributes": [
@@ -27962,7 +27962,7 @@
       "doc": "Mid-term assessment at approximately 26 weeks.\nFirst point at which the stabilityAssessment\ndecision table may declare a patient stable.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2156,
       "specialises": "MeasurementPoint",
       "attributes": [
@@ -28000,7 +28000,7 @@
       "doc": "Long-term assessment at approximately 52 weeks.\nTransition readiness.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2167,
       "specialises": "MeasurementPoint",
       "attributes": [
@@ -28038,7 +28038,7 @@
       "doc": "Annual ongoing monitoring after stabilisation.\nRepeats every 52 weeks from the 12-month point.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2177,
       "specialises": "MeasurementPoint",
       "attributes": [
@@ -28076,7 +28076,7 @@
       "doc": "Measurement schedule for the hormone therapy\ninitiation pathway.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2187,
       "specialises": "MeasurementSchedule",
       "attributes": [
@@ -28104,7 +28104,7 @@
       "doc": "Defines the schema and semantics of a data stream\nconsumed by analytics or ML pipelines.",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 2275,
       "attributes": [
         {
@@ -28585,7 +28585,7 @@
       "doc": "Lifecycle stage of a pattern or instantiation.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 47,
       "attributes": [
         {
@@ -28609,7 +28609,7 @@
       "doc": "Which meta model a pattern primarily belongs to.\nPer gsl-architecture-clarification-two-meta-models.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 55,
       "attributes": [
         {
@@ -28630,7 +28630,7 @@
       "doc": "Whether a pattern has been formalised into a meta\nmodel element or exists as architectural guidance.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 63,
       "attributes": [
         {
@@ -28648,7 +28648,7 @@
       "doc": "Semantic relationship types between patterns.\nEach predicate has an inverse (see discussion paper \u00a74).\nUsed for future structured relationship parts if needed.\nCurrently, each predicate is a typed ref field on Pattern.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 70,
       "attributes": [
         {
@@ -28684,10 +28684,10 @@
       "kind": "part_def",
       "name": "ArchitecturalPrinciple",
       "parentPackage": "PatternCatalogue",
-      "doc": "A foundational architectural commitment that motivates\none or more patterns. Cross-cutting \u2014 principles span\nboth business and system meta models.\nBusiness system meta model concept \u2014 describes the\nreasoning behind how the system is structured.\nSource: Session 31, Knowledge Graph Enhancement.",
+      "doc": "A foundational architectural commitment that motivates\none or more patterns. Cross-cutting \u2014 principles span\nboth business and system meta models.\nSystem meta model concept \u2014 describes the\nreasoning behind how the system is structured.\nSource: Session 31, Knowledge Graph Enhancement.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 88,
       "attributes": [
         {
@@ -28714,7 +28714,7 @@
       "doc": "A reusable architectural or business model template.\nDomain-agnostic \u2014 describes a structural or behavioural\napproach that applies across domains.\nThe relatedElements attribute uses String references\nto meta model elements (package paths). Typed cross-element\nrefs verified (Session 30) but retained ",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 102,
       "attributes": [
         {
@@ -28806,7 +28806,7 @@
       "doc": "A specific implementation of a pattern in a domain.\nTracks where a pattern has been built and at what\nmaturity level. Each domain instantiation is separate\nso maturity can vary per domain.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 139,
       "attributes": [
         {
@@ -28843,7 +28843,7 @@
       "doc": "The foundational architectural commitment: knowledge\nlives in the representation layer (SysML model),\nexecution is derived from it.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 155,
       "specialises": "ArchitecturalPrinciple",
       "attributes": [
@@ -28871,7 +28871,7 @@
       "doc": "The system knows what it is, what it should be,\nand what the gap is. Self-knowledge is structural,\nnot bolt-on.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 164,
       "specialises": "ArchitecturalPrinciple",
       "attributes": [
@@ -28899,7 +28899,7 @@
       "doc": "Corollary of separation: SysML as single source\nof truth. Generators emit TypeScript, XState,\nTemporal, Mermaid, and more.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 173,
       "specialises": "ArchitecturalPrinciple",
       "attributes": [
@@ -28924,7 +28924,7 @@
       "kind": "part",
       "name": "twoMetaModelDistinction",
       "parentPackage": "PatternCatalogue",
-      "doc": "Business meta model (what the business is) and\nbusiness system meta model (how the system works)\nare distinct and independently iterable.",
+      "doc": "Business meta model (what the business is) and\nsystem meta model (how the system works)\nare distinct and independently iterable.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
@@ -28955,7 +28955,7 @@
       "doc": "Validate in coffee shop before clinical. Every new\narchitectural capability gets a CSW equivalent first.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 191,
       "specialises": "ArchitecturalPrinciple",
       "attributes": [
@@ -28983,7 +28983,7 @@
       "doc": "Clinical decisions use deterministic, inspectable,\nauditable logic \u2014 not probabilistic LLM inference.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 199,
       "specialises": "ArchitecturalPrinciple",
       "attributes": [
@@ -29011,7 +29011,7 @@
       "doc": "The generational self-service roadmap supports\nincreasing patient autonomy and informed choice.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 207,
       "specialises": "ArchitecturalPrinciple",
       "attributes": [
@@ -29039,7 +29039,7 @@
       "doc": "Auditability is structural, not bolted on. Clinical\ngovernance is a first-class system concern.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 215,
       "specialises": "ArchitecturalPrinciple",
       "attributes": [
@@ -29067,7 +29067,7 @@
       "doc": "Item definition, catalogue entry, inventory record,\nexternal references. Separates intrinsic properties\nfrom business decisions from operational state from\nexternal knowledge.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 227,
       "specialises": "Pattern",
       "attributes": [
@@ -29120,7 +29120,7 @@
       "doc": "Five activity categories as a generic classification\nfor any service business.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 244,
       "specialises": "Pattern",
       "attributes": [
@@ -29173,7 +29173,7 @@
       "doc": "Two-variant scenario modelling with projection engine\nand sensitivity analysis.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 257,
       "specialises": "Pattern",
       "attributes": [
@@ -29226,7 +29226,7 @@
       "doc": "System carries explicit, auditable rationale for where\neach domain concept is persisted and why.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 270,
       "specialises": "Pattern",
       "attributes": [
@@ -29279,7 +29279,7 @@
       "doc": "Model generates execution layer. Knowledge lives in\nthe representation layer.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 290,
       "specialises": "Pattern",
       "attributes": [
@@ -29332,7 +29332,7 @@
       "doc": "Domain-level process description separated from\norchestration-level execution detail.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 307,
       "specialises": "Pattern",
       "attributes": [
@@ -29385,7 +29385,7 @@
       "doc": "ConstraintEvaluator, OperationalStateAggregator,\nGoalProjector, GapAnalyser, RemediationPlanner.\nDomain-agnostic self-assessment architecture.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 323,
       "specialises": "Pattern",
       "attributes": [
@@ -29438,7 +29438,7 @@
       "doc": "Every new architectural capability gets a coffee shop\nequivalent before clinical implementation.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 340,
       "specialises": "Pattern",
       "attributes": [
@@ -29491,7 +29491,7 @@
       "doc": "CDR for clinical data, PostgreSQL for business data,\nTemporal for process state.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 357,
       "specialises": "Pattern",
       "attributes": [
@@ -29544,7 +29544,7 @@
       "doc": "Metadata annotations on model elements drive code\ngeneration. The model is the source; generators\nread metadata.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 372,
       "specialises": "Pattern",
       "attributes": [
@@ -29597,7 +29597,7 @@
       "doc": "Pure state machine enforcement inside durable\nworkflow execution.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 388,
       "specialises": "Pattern",
       "attributes": [
@@ -29650,7 +29650,7 @@
       "doc": "Domain model attributes drive UI structure directly.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 401,
       "specialises": "Pattern",
       "attributes": [
@@ -29703,7 +29703,7 @@
       "doc": "XState lifecycle states map to kanban columns.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 415,
       "specialises": "Pattern",
       "attributes": [
@@ -29756,7 +29756,7 @@
       "doc": "Main panel plus side panel for operational and\nmanagement pages.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 429,
       "specialises": "Pattern",
       "attributes": [
@@ -29809,7 +29809,7 @@
       "doc": "SysML domain model hierarchy drives form structure.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 444,
       "specialises": "Pattern",
       "attributes": [
@@ -29862,7 +29862,7 @@
       "doc": "Single-source-of-truth via shared API layer.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 458,
       "specialises": "Pattern",
       "attributes": [
@@ -29915,7 +29915,7 @@
       "doc": "Audit endpoint provides step-by-step timing for\nevent timeline visualisation.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 472,
       "specialises": "Pattern",
       "attributes": [
@@ -29968,7 +29968,7 @@
       "doc": "Temporal, XState, and SysML annotations in one page.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 488,
       "specialises": "Pattern",
       "attributes": [
@@ -30021,7 +30021,7 @@
       "doc": "Visual badges distinguish CDR entity-view pages\nfrom operational pages.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 502,
       "specialises": "Pattern",
       "attributes": [
@@ -30074,7 +30074,7 @@
       "doc": "CDR data loads on page mount, shifting from query\ntool to operational view.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 517,
       "specialises": "Pattern",
       "attributes": [
@@ -30127,7 +30127,7 @@
       "doc": "System monitors its own persistence layers via a\ndedicated health endpoint.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 532,
       "specialises": "Pattern",
       "attributes": [
@@ -30180,7 +30180,7 @@
       "doc": "Aggregation from multiple data sources across\npersistence layers with graceful degradation.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 545,
       "specialises": "Pattern",
       "attributes": [
@@ -30233,7 +30233,7 @@
       "doc": "UI makes domain/orchestration distinction visible\nand interactive.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 560,
       "specialises": "Pattern",
       "attributes": [
@@ -30286,7 +30286,7 @@
       "doc": "When the pathway is stable, a hand-crafted SVG gives\nbetter results than generated Mermaid output.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 575,
       "specialises": "Pattern",
       "attributes": [
@@ -30339,7 +30339,7 @@
       "doc": "Single decision triggers concurrent workflows.\nDeferred in CSW (Session 22). Relates to clinical\nplan multi-pathway and addictions concurrent referrals.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 594,
       "specialises": "Pattern",
       "attributes": [
@@ -30392,7 +30392,7 @@
       "doc": "Annotating pathway action nodes with who performs\nthem and at what authority model version.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 610,
       "specialises": "Pattern",
       "attributes": [
@@ -30445,7 +30445,7 @@
       "doc": "Five-layer self-knowledge pattern applied to a\nsystem status dashboard. Landing zone built.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 627,
       "specialises": "Pattern",
       "attributes": [
@@ -30498,7 +30498,7 @@
       "doc": "Informed Choice Engine \u2014 OptionEvaluator presenting\npersonalised recommendations with reasoning.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 642,
       "specialises": "Pattern",
       "attributes": [
@@ -30551,7 +30551,7 @@
       "doc": "Patient-facing data release model for CoPHR and\nself-service access. Discussion stage.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 658,
       "specialises": "Pattern",
       "attributes": [
@@ -30604,7 +30604,7 @@
       "doc": "State transitions fire notification events.\nDiscussion stage.",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 674,
       "specialises": "Pattern",
       "attributes": [
@@ -30657,7 +30657,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 695,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -30695,7 +30695,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 703,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -30733,7 +30733,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 713,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -30771,7 +30771,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 721,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -30809,7 +30809,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 731,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -30847,7 +30847,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 739,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -30885,7 +30885,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 749,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -30923,7 +30923,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 757,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -30961,7 +30961,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 767,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -30999,7 +30999,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 775,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31037,7 +31037,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 785,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31075,7 +31075,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 795,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31113,7 +31113,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 803,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31151,7 +31151,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 813,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31189,7 +31189,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 823,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31227,7 +31227,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 833,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31265,7 +31265,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 843,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31303,7 +31303,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 853,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31341,7 +31341,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 863,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31379,7 +31379,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 873,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31417,7 +31417,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 883,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31455,7 +31455,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 893,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31493,7 +31493,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 903,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31531,7 +31531,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 913,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31569,7 +31569,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 923,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31607,7 +31607,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 933,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31645,7 +31645,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 943,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31683,7 +31683,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 951,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31721,7 +31721,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 961,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31759,7 +31759,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 969,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31797,7 +31797,7 @@
       "doc": "",
       "sourceFile": "model/pattern-catalogue.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 979,
       "specialises": "DomainInstantiation",
       "attributes": [
@@ -31835,7 +31835,7 @@
       "doc": "Connection configuration for an openEHR CDR instance.\nValidated against EHRbase 2.11.0 (Docker).\nREST API base path: /ehrbase/rest/openehr/v1/\nAuth: basic auth for development; production TBD.\nThe nodeName appears in composition UIDs as the\nsecond segment: {uuid}::{nodeName}::{version}.\nMust match S",
       "sourceFile": "model/platform.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 460,
       "attributes": [
         {
@@ -31862,7 +31862,7 @@
       "doc": "An openEHR Electronic Health Record for one patient.\nOne EHR per patient, created at registration. The\nsubjectId + subjectNamespace pair enables idempotent\nlookup via GET /ehr?subject_id=X&subject_namespace=Y.\nThe getOrCreateEhr pattern (validated Phase B) makes\nEHR resolution safe to call from any ",
       "sourceFile": "model/platform.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 475,
       "attributes": [
         {
@@ -31894,7 +31894,7 @@
       "doc": "An Operational Template (OPT) registered in the CDR.\nTemplates compose archetypes into use-case-specific\ndata sets. Each template defines one composition type.\nUploaded via the Definition API (POST /definition/template/adl1.4).\nEHRbase rejects duplicate template_id uploads (HTTP 409).\nFor developmen",
       "sourceFile": "model/platform.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 493,
       "attributes": [
         {
@@ -31916,7 +31916,7 @@
       "doc": "A composition committed to the CDR.\nCompositions are the unit of clinical data committed\nand retrieved. Each conforms to a registered template.\nCanonical JSON format maps directly to the openEHR\nReference Model hierarchy:\n  COMPOSITION > content > ENTRY > data/description > items\nCommit returns 204 ",
       "sourceFile": "model/platform.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 510,
       "attributes": [
         {
@@ -31948,7 +31948,7 @@
       "doc": "A named AQL (Archetype Query Language) query.\nAQL queries the CDR by archetype type, providing\nentity views independent of the process that produced\nthe data. Paths mirror the RM hierarchy using archetype\nnode IDs (at-codes).\nEHRbase 2.11.0 limitations:\n  - COUNT / GROUP BY not supported (use applic",
       "sourceFile": "model/platform.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 538,
       "attributes": [
         {
@@ -31970,7 +31970,7 @@
       "doc": "A user account for authentication and authorisation.",
       "sourceFile": "model/platform.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "bsmm",
+      "metaModelLayer": "smm",
       "lineNumber": 747,
       "attributes": [
         {
