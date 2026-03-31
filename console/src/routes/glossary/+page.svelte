@@ -24,6 +24,23 @@
   let layerFilter = $state('all');
   let expandedEntries = $state<Set<string>>(new Set());
 
+  // Deep link: if ?entry= param is present, focus on that entry
+  if (typeof window !== 'undefined') {
+    const entryParam = new URLSearchParams(window.location.search).get('entry');
+    if (entryParam) {
+      const decodedEntry = decodeURIComponent(entryParam);
+      const matchingEntry = allEntries.find(
+        (e) => e.name === decodedEntry || e.userFacing?.friendlyName === decodedEntry
+      );
+      if (matchingEntry) {
+        searchText = matchingEntry.name;
+        concernFilter = 'all';
+        layerFilter = 'all';
+        expandedEntries = new Set([matchingEntry.name]);
+      }
+    }
+  }
+
   // --- Concern values from facets ---
   const concernValues = $derived(facets.bmmConcern?.values || []);
 

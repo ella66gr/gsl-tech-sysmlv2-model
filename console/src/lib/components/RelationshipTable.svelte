@@ -6,12 +6,12 @@
 
   interface Props {
     graph: WeightedRelationshipGraph;
-    concernFilter: string;
-    strengthFilter: string;
+    selectedConcerns: Set<string>;
+    selectedStrengths: Set<string>;
     searchText: string;
   }
 
-  let { graph, concernFilter, strengthFilter, searchText }: Props = $props();
+  let { graph, selectedConcerns, selectedStrengths, searchText }: Props = $props();
 
   // Build a node lookup for friendly names and concerns
   const nodeMap = $derived(new Map(graph.nodes.map((n) => [n.id, n])));
@@ -64,14 +64,14 @@
   const filteredRows = $derived.by(() => {
     let rows = allRows;
 
-    // Concern filter
-    if (concernFilter !== 'all') {
-      rows = rows.filter((r) => r.sourceConcern === concernFilter);
+    // Concern filter — empty set means show all
+    if (selectedConcerns.size > 0) {
+      rows = rows.filter((r) => selectedConcerns.has(r.sourceConcern));
     }
 
-    // Strength filter
-    if (strengthFilter !== 'all') {
-      rows = rows.filter((r) => r.strength === strengthFilter);
+    // Strength filter — empty set means show all
+    if (selectedStrengths.size > 0) {
+      rows = rows.filter((r) => selectedStrengths.has(r.strength));
     }
 
     // Text search

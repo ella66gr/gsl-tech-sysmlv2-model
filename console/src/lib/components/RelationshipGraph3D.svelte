@@ -5,21 +5,31 @@
 
   interface Props {
     graph: WeightedRelationshipGraph;
-    concernFilter: string;
-    strengthFilter: string;
+    selectedConcerns: Set<string>;
+    selectedStrengths: Set<string>;
     searchText: string;
     selectedNodeId: string | null;
     onNodeSelect: (nodeId: string) => void;
+    panelOpacity?: number;
   }
 
   let {
     graph,
-    concernFilter,
-    strengthFilter,
+    selectedConcerns,
+    selectedStrengths,
     searchText,
     selectedNodeId,
     onNodeSelect,
+    panelOpacity = 85,
   }: Props = $props();
+
+  // Derived overlay background — respects dark mode and slider opacity
+  const isDarkMode = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+  const overlayBg = $derived(
+    isDarkMode
+      ? `background-color: rgba(15, 23, 42, ${panelOpacity / 100})`
+      : `background-color: rgba(255, 255, 255, ${panelOpacity / 100})`
+  );
 
   let containerEl: HTMLDivElement;
 
@@ -44,16 +54,125 @@
   let lastClickTime = 0;
   let lastClickNodeId: string | null = null;
 
+  // Ad-hoc node selection (⌘+click to build, Enter to commit, Escape to clear)
+  let adHocSelection = $state<Set<string>>(new Set());
+  let selectionCommitted = $state(false);
+
+  // Ring meshes for selected nodes (Three.js objects, keyed by node ID)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let selectionRings: Map<string, any> = new Map();
+
+  // THREE module reference — set in onMount, used by the ring $effect
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let THREE_REF: any = null;
+
+  // Keyboard listener reference — hoisted so onDestroy can remove it
+  let handleKeydownFn: ((e: KeyboardEvent) => void) | null = null;
+  let handleKeyupFn: ((e: KeyboardEvent) => void) | null = null;
+
+  // Keyboard state: is the F key currently held down?
+  let fKeyHeld = $state(false);
+
+  // Focus-node exploration mode (Ctrl+click to enter, Escape to exit)
+  let focusNodeId = $state<string | null>(null);
+  let focusDirection = $state<'in' | 'out' | 'both'>('both');
+  let focusBreadcrumb = $state<string[]>([]);
+
+  // Focus ring mesh (distinct amber ring — not part of the selectionRings map)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let focusRing: any = null;
+
   function resetView() {
     if (fg && initialCameraPosition) {
       fg.cameraPosition(initialCameraPosition, { x: 0, y: 0, z: 0 }, 1000);
     }
   }
 
+  function toggleAdHocNode(nodeId: string) {
+    const next = new Set(adHocSelection);
+    if (next.has(nodeId)) {
+      next.delete(nodeId);
+    } else {
+      next.add(nodeId);
+    }
+    adHocSelection = next;
+    // Uncommit if the user is changing the selection after committing
+    if (selectionCommitted) selectionCommitted = false;
+  }
+
+  function commitSelection() {
+    if (adHocSelection.size > 0) {
+      selectionCommitted = true;
+    }
+  }
+
+  function clearSelection() {
+    adHocSelection = new Set();
+    selectionCommitted = false;
+  }
+
+  /**
+   * Compute the visible neighbourhood of a focus node.
+   * Returns the set of node IDs that should be visible (focus + neighbours).
+   * Respects direction filter and the pill/search hidden set.
+   */
+  function computeFocusNeighbours(
+    focusId: string,
+    direction: 'in' | 'out' | 'both',
+    pillHidden: Set<string>,
+    strengthSet: Set<string>,
+  ): Set<string> {
+    const neighbours = new Set<string>();
+    neighbours.add(focusId);
+
+    for (const link of graphData.links) {
+      const srcId = typeof link.source === 'object' && link.source !== null
+        ? (link.source as { id: string }).id : link.source as string;
+      const tgtId = typeof link.target === 'object' && link.target !== null
+        ? (link.target as { id: string }).id : link.target as string;
+
+      // Skip edges where either endpoint is hidden by pill/search filters
+      if (pillHidden.has(srcId) || pillHidden.has(tgtId)) continue;
+
+      // Skip edges that don't pass the strength filter
+      if (strengthSet.size > 0 && !strengthSet.has(link.strength)) continue;
+
+      // Direction logic: edge goes source → target
+      if (direction === 'out' || direction === 'both') {
+        if (srcId === focusId) neighbours.add(tgtId);
+      }
+      if (direction === 'in' || direction === 'both') {
+        if (tgtId === focusId) neighbours.add(srcId);
+      }
+    }
+
+    return neighbours;
+  }
+
+  function setFocusNode(nodeId: string) {
+    if (focusNodeId && focusNodeId !== nodeId) {
+      focusBreadcrumb = [...focusBreadcrumb, focusNodeId];
+    }
+    focusNodeId = nodeId;
+  }
+
+  function jumpToBreadcrumb(index: number) {
+    const targetId = focusBreadcrumb[index];
+    focusBreadcrumb = focusBreadcrumb.slice(0, index);
+    focusNodeId = targetId;
+  }
+
+  function exitFocusMode() {
+    focusNodeId = null;
+    focusDirection = 'both';
+    focusBreadcrumb = [];
+  }
+
   onMount(async () => {
     // Dynamic imports — avoids SSR errors (3d-force-graph requires window/document)
     const { default: ForceGraph3D } = await import('3d-force-graph');
     const THREE = await import('three');
+    THREE_REF = THREE;
 
     // Build graph data
     graphData = {
@@ -129,38 +248,153 @@
         </div>`
       )
 
-      // === LINK RENDERING ===
-      // linkWidth 0 required for linkCurvature to work (cylinder renderer ignores curvature)
+      // === CUSTOM LINK RENDERING ===
+      // Each link is a Three.js Group: curved TubeGeometry + ConeGeometry arrowhead.
+      // Strength → tube radius + material opacity.
+      // Direction → cone arrowhead at target end, oriented along curve tangent.
+      // Bidirectional separation → QuadraticBezierCurve3 with perpendicular control point offset.
+      .linkThreeObject((link: { source: unknown; target: unknown; strength: string; curvature: number; rotation: number }) => {
+        const srcId = typeof link.source === 'object' && link.source !== null
+          ? (link.source as { id: string }).id : link.source as string;
+        const srcNode = graphData.nodes.find((n) => n.id === srcId);
+        const colour = srcNode ? getConcernColour(srcNode.bmmConcern) : '#6b7280';
+
+        // Strength → visual properties
+        const radiusMap: Record<string, number> = { strong: 0.8, moderate: 0.45, weak: 0.2, contextual: 0.12 };
+        const opacityMap: Record<string, number> = { strong: 0.85, moderate: 0.55, weak: 0.28, contextual: 0.15 };
+        const tubeRadius = radiusMap[link.strength] ?? 0.3;
+        const tubeOpacity = opacityMap[link.strength] ?? 0.4;
+
+        const material = new THREE.MeshPhongMaterial({
+          color: colour,
+          transparent: true,
+          opacity: tubeOpacity,
+          shininess: 30,
+        });
+
+        // Arrow properties scaled to tube size
+        const arrowRadius = Math.max(2.0, tubeRadius * 4);
+        const arrowHeight = arrowRadius * 2;
+
+        // Arrowhead cone
+        const arrowGeom = new THREE.ConeGeometry(arrowRadius, arrowHeight, 8);
+        const arrowMat = new THREE.MeshPhongMaterial({
+          color: colour,
+          transparent: true,
+          opacity: Math.min(1, tubeOpacity + 0.2),
+          shininess: 30,
+        });
+        const arrow = new THREE.Mesh(arrowGeom, arrowMat);
+
+        // Placeholder tube — will be replaced in linkPositionUpdate with correct geometry
+        const placeholderGeom = new THREE.BufferGeometry();
+        const tube = new THREE.Mesh(placeholderGeom, material);
+
+        const group = new THREE.Group();
+        group.add(tube);
+        group.add(arrow);
+        group.userData = {
+          tube,
+          arrow,
+          material,
+          arrowMat,
+          arrowHeight,
+          tubeRadius,
+          curvature: link.curvature,
+          rotation: link.rotation,
+          colour,
+        };
+
+        return group;
+      })
+      .linkPositionUpdate((group: any, { start, end }: { start: { x: number; y: number; z: number }; end: { x: number; y: number; z: number } }, link: any) => {
+        if (!group?.userData) return false;
+        const { tube, arrow, material, arrowHeight, tubeRadius, curvature, rotation } = group.userData;
+
+        const startV = new THREE.Vector3(start.x, start.y, start.z);
+        const endV = new THREE.Vector3(end.x, end.y, end.z);
+        const dist = startV.distanceTo(endV);
+        if (dist < 0.1) return false;
+
+        // Direction vector and midpoint
+        const dir = new THREE.Vector3().subVectors(endV, startV).normalize();
+        const mid = new THREE.Vector3().addVectors(startV, endV).multiplyScalar(0.5);
+
+        // Compute control point for quadratic Bézier curve
+        // For bidirectional edges, curvature > 0 and rotation offsets the control point
+        // into a perpendicular plane so the two edges arc in different directions.
+        let controlPoint = mid.clone();
+        if (curvature > 0) {
+          // Find a perpendicular vector to the link direction
+          const up = new THREE.Vector3(0, 1, 0);
+          let perp = new THREE.Vector3().crossVectors(dir, up);
+          if (perp.lengthSq() < 0.001) {
+            // dir is nearly parallel to up — use a different reference
+            perp.crossVectors(dir, new THREE.Vector3(1, 0, 0));
+          }
+          perp.normalize();
+
+          // Rotate the perpendicular vector around the link axis by the rotation angle
+          // This separates bidirectional pairs into different planes
+          if (rotation > 0) {
+            const rotQuat = new THREE.Quaternion().setFromAxisAngle(dir, rotation);
+            perp.applyQuaternion(rotQuat);
+          }
+
+          // Offset the control point perpendicular to the link
+          const offsetDist = dist * curvature;
+          controlPoint.add(perp.multiplyScalar(offsetDist));
+        }
+
+        // Build the Bézier curve
+        const curve = new THREE.QuadraticBezierCurve3(startV, controlPoint, endV);
+
+        // Compute actual node radii from degree (matches nodeVal and nodeThreeObject sizing)
+        const srcDegree = typeof link.source === 'object' ? (link.source as any).degree || 0 : 0;
+        const tgtDegree = typeof link.target === 'object' ? (link.target as any).degree || 0 : 0;
+        const srcRadius = Math.cbrt(Math.max(2, srcDegree * 1.5)) * 4 + 2; // +2 clearance margin
+        const tgtRadius = Math.cbrt(Math.max(2, tgtDegree * 1.5)) * 4 + 2; // +2 clearance margin
+
+        const tubeStartFrac = srcRadius / dist;
+        const arrowTip = tgtRadius / dist;
+
+        // Get trimmed curve range — trim both ends to stop at node surfaces
+        const tubeEndFrac = Math.max(tubeStartFrac + 0.01, 1 - arrowTip - (arrowHeight / dist));
+        const trimmedPoints: THREE.Vector3[] = [];
+        const segments = 20;
+        for (let i = 0; i <= segments; i++) {
+          const t = tubeStartFrac + (tubeEndFrac - tubeStartFrac) * (i / segments);
+          trimmedPoints.push(curve.getPoint(t));
+        }
+
+        // Create a CatmullRom curve through the trimmed points (for TubeGeometry)
+        const tubePath = new THREE.CatmullRomCurve3(trimmedPoints);
+
+        // Replace tube geometry
+        if (tube.geometry) tube.geometry.dispose();
+        tube.geometry = new THREE.TubeGeometry(tubePath, 16, tubeRadius, 6, false);
+
+        // Reset tube transform — TubeGeometry is already in world coordinates
+        tube.position.set(0, 0, 0);
+        tube.rotation.set(0, 0, 0);
+        tube.scale.set(1, 1, 1);
+
+        // Position arrowhead at the end of the curve, just before the target node
+        const arrowFrac = Math.max(tubeStartFrac + 0.01, 1 - arrowTip - (arrowHeight * 0.5 / dist));
+        const arrowPos = curve.getPoint(arrowFrac);
+        arrow.position.copy(arrowPos);
+
+        // Orient arrowhead along the curve tangent at that point
+        const tangent = curve.getTangent(arrowFrac).normalize();
+        const arrowUp = new THREE.Vector3(0, 1, 0);
+        const arrowQuat = new THREE.Quaternion().setFromUnitVectors(arrowUp, tangent);
+        arrow.setRotationFromQuaternion(arrowQuat);
+
+        return true; // We've handled positioning
+      })
+      // Suppress the default line rendering — we handle everything via linkThreeObject
+      .linkColor(() => 'rgba(0,0,0,0)')
       .linkWidth(0)
-      .linkOpacity(0.7)
-      .linkColor((link: { source: unknown }) => {
-        const srcId = typeof link.source === 'object' && link.source !== null
-          ? (link.source as { id: string }).id
-          : link.source as string;
-        const srcNode = graphData.nodes.find((n) => n.id === srcId);
-        return srcNode ? getConcernColour(srcNode.bmmConcern) : '#6b7280';
-      })
-      .linkCurvature('curvature')
-      .linkCurveRotation('rotation')
-      .linkDirectionalArrowLength(6)
-      .linkDirectionalArrowRelPos(0.92)
-      .linkDirectionalArrowColor((link: { source: unknown }) => {
-        const srcId = typeof link.source === 'object' && link.source !== null
-          ? (link.source as { id: string }).id
-          : link.source as string;
-        const srcNode = graphData.nodes.find((n) => n.id === srcId);
-        return srcNode ? getConcernColour(srcNode.bmmConcern) : '#6b7280';
-      })
-      // Particles indicate edge strength — more/larger = stronger
-      .linkDirectionalParticles((link: { strength: string }) => {
-        const counts: Record<string, number> = { strong: 10, moderate: 6, weak: 2, contextual: 0 };
-        return counts[link.strength] ?? 1;
-      })
-      .linkDirectionalParticleWidth((link: { strength: string }) => {
-        const widths: Record<string, number> = { strong: 4, moderate: 2.5, weak: 1.5, contextual: 1 };
-        return widths[link.strength] ?? 2;
-      })
-      .linkDirectionalParticleSpeed(0.0004)
       .linkLabel((link: { source: unknown; target: unknown; strength: string; rationale?: string }) => {
         const srcLabel = typeof link.source === 'object' && link.source !== null
           ? (link.source as { friendlyName?: string; id: string }).friendlyName || (link.source as { id: string }).id
@@ -180,17 +414,45 @@
       .d3VelocityDecay(0.3)
 
       // === INTERACTION ===
-      .onNodeClick((node: { id: string; fx?: number; fy?: number; fz?: number }) => {
+      .onNodeClick((node: { id: string; fx?: number; fy?: number; fz?: number }, event: MouseEvent) => {
         const now = Date.now();
+
+        // Double-click: unpin node
         if (lastClickNodeId === node.id && now - lastClickTime < 400) {
           node.fx = undefined;
           node.fy = undefined;
           node.fz = undefined;
           lastClickNodeId = null;
-        } else {
-          onNodeSelect(node.id);
-          lastClickNodeId = node.id;
+          lastClickTime = now;
+          return;
         }
+
+        // F+click: focus-node exploration (F+click focused node to exit)
+        if (fKeyHeld) {
+          if (focusNodeId === node.id) {
+            exitFocusMode();
+            lastClickNodeId = node.id;
+            lastClickTime = now;
+            return;
+          }
+          if (adHocSelection.size > 0) clearSelection();
+          setFocusNode(node.id);
+          lastClickNodeId = node.id;
+          lastClickTime = now;
+          return;
+        }
+
+        // ⌘+click (Mac) or Ctrl+click (Windows/Linux): toggle ad-hoc multi-select
+        if (event.metaKey || event.ctrlKey) {
+          toggleAdHocNode(node.id);
+          lastClickNodeId = node.id;
+          lastClickTime = now;
+          return;
+        }
+
+        // Plain click: open side panel
+        onNodeSelect(node.id);
+        lastClickNodeId = node.id;
         lastClickTime = now;
       })
       .onNodeDragEnd((node: { x?: number; y?: number; z?: number; fx?: number; fy?: number; fz?: number }) => {
@@ -247,6 +509,34 @@
     const linkForce = fg.d3Force('link');
     if (linkForce) linkForce.distance(60).strength(0.7);
 
+    // Keyboard: F tracks focus-key state; Enter commits selection; Escape exits modes
+    handleKeydownFn = (e: KeyboardEvent) => {
+      if (e.key === 'f' || e.key === 'F') {
+        fKeyHeld = true;
+        return; // F alone does nothing else
+      }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        commitSelection();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        if (focusNodeId) {
+          exitFocusMode();
+        } else {
+          clearSelection();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeydownFn);
+
+    // Track F key release
+    handleKeyupFn = (e: KeyboardEvent) => {
+      if (e.key === 'f' || e.key === 'F') {
+        fKeyHeld = false;
+      }
+    };
+    window.addEventListener('keyup', handleKeyupFn);
+
     // === HTML OVERLAY LABELS ===
     // Injected into the container as an absolutely-positioned overlay.
     // The RAF loop projects 3D→2D each frame. The filter $effect syncs hiddenNodeIds
@@ -291,6 +581,22 @@
       const width = canvas.clientWidth || canvas.width;
       const height = canvas.clientHeight || canvas.height;
 
+      // Track selection ring positions
+      for (const [nodeId, ring] of selectionRings) {
+        const node = graphData.nodes.find((n: { id: string }) => n.id === nodeId);
+        if (node && node.x !== undefined && node.y !== undefined && node.z !== undefined) {
+          ring.position.set(node.x, node.y, node.z);
+        }
+      }
+
+      // Track focus ring position
+      if (focusRing && focusNodeId) {
+        const fNode = graphData.nodes.find((n: { id: string }) => n.id === focusNodeId);
+        if (fNode && fNode.x !== undefined && fNode.y !== undefined && fNode.z !== undefined) {
+          focusRing.position.set(fNode.x, fNode.y, fNode.z);
+        }
+      }
+
       for (const node of graphData.nodes) {
         const el = labelElements.get(node.id);
         if (!el) continue;
@@ -319,10 +625,14 @@
         el.style.left = `${x}px`;
         el.style.top = `${y + 14}px`;
 
-        // Fade labels at distance
+        // Scale labels with distance — larger when close, smaller when far
         const dist = camera.position.distanceTo(vecTemp.set(node.x, node.y, node.z));
         const opacity = Math.max(0.25, Math.min(1, 180 / dist));
         el.style.opacity = String(opacity);
+
+        // Font size: 10px at far distance, 18px at close, 14px at reference distance 120
+        const fontSize = Math.max(12, Math.min(36, 18 * (120 / dist)));
+        el.style.fontSize = `${fontSize}px`;
       }
     }
     requestAnimationFrame(updateLabels);
@@ -354,63 +664,176 @@
       return getConcernColour(node.bmmConcern);
     });
 
-    fg.linkOpacity((link: { source: unknown; target: unknown }) => {
-      if (!sel) return 0.7;
-      const src = typeof link.source === 'object' && link.source !== null ? (link.source as { id: string }).id : link.source as string;
-      const tgt = typeof link.target === 'object' && link.target !== null ? (link.target as { id: string }).id : link.target as string;
-      if (src === sel || tgt === sel) return 0.9;
-      return 0.05;
-    });
   });
 
-  // Filtering — re-runs when fg is set ($state) or any filter prop changes.
-  // Calls nodeVisibility/linkVisibility on the graph AND syncs hiddenNodeIds so
-  // the HTML label RAF loop knows which labels to hide.
+  // Ad-hoc selection rings — visible only while building (not committed)
+  $effect(() => {
+    if (!fg || !THREE_REF) return;
+
+    const scene = fg.scene();
+    if (!scene) return;
+
+    const currentSelection = adHocSelection;
+    const committed = selectionCommitted;
+
+    // If committed, remove ALL rings — the badge communicates the state now
+    if (committed) {
+      for (const [nodeId, ring] of selectionRings) {
+        scene.remove(ring);
+        selectionRings.delete(nodeId);
+      }
+      return;
+    }
+
+    // Remove rings for nodes no longer in the selection
+    for (const [nodeId, ring] of selectionRings) {
+      if (!currentSelection.has(nodeId)) {
+        scene.remove(ring);
+        selectionRings.delete(nodeId);
+      }
+    }
+
+    // Add rings for newly selected nodes
+    for (const nodeId of currentSelection) {
+      if (selectionRings.has(nodeId)) continue;
+      const node = graphData.nodes.find((n: { id: string }) => n.id === nodeId);
+      if (!node) continue;
+      const val = Math.max(2, (node.degree || 0) * 1.5);
+      const r = Math.cbrt(val) * 4 + 2;
+      const ringGeometry = new THREE_REF.SphereGeometry(r, 24, 16);
+      const ringMaterial = new THREE_REF.MeshBasicMaterial({
+        color: 0xffffff,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.35,
+      });
+      const ring = new THREE_REF.Mesh(ringGeometry, ringMaterial);
+      if (node.x !== undefined && node.y !== undefined && node.z !== undefined) {
+        ring.position.set(node.x, node.y, node.z);
+      }
+      scene.add(ring);
+      selectionRings.set(nodeId, ring);
+    }
+  });
+
+  // Focus node ring — amber/gold wireframe, visible only when in focus mode
+  $effect(() => {
+    if (!fg || !THREE_REF) return;
+
+    const scene = fg.scene();
+    if (!scene) return;
+
+    const currentFocus = focusNodeId;
+
+    // Remove existing focus ring whenever focus changes or clears
+    if (focusRing) {
+      scene.remove(focusRing);
+      focusRing = null;
+    }
+
+    if (currentFocus) {
+      const node = graphData.nodes.find((n: { id: string }) => n.id === currentFocus);
+      if (node) {
+        const val = Math.max(2, (node.degree || 0) * 1.5);
+        const r = Math.cbrt(val) * 4 + 3; // Slightly larger than selection rings
+        const ringGeometry = new THREE_REF.SphereGeometry(r, 24, 16);
+        const ringColour = getConcernColour(node.bmmConcern);
+        const ringMaterial = new THREE_REF.MeshBasicMaterial({
+          color: ringColour,
+          wireframe: true,
+          transparent: true,
+          opacity: 0.5,
+        });
+        focusRing = new THREE_REF.Mesh(ringGeometry, ringMaterial);
+        if (node.x !== undefined && node.y !== undefined && node.z !== undefined) {
+          focusRing.position.set(node.x, node.y, node.z);
+        }
+        scene.add(focusRing);
+      }
+    }
+  });
+
+  // Filtering — pill filters, search, ad-hoc selection, and focus-node exploration all compose here.
+  // Syncs hiddenNodeIds so the HTML label RAF loop knows which labels to hide.
   $effect(() => {
     if (!fg) return;
 
-    const cf = concernFilter;
-    const sf = strengthFilter;
+    const concerns = selectedConcerns;
+    const strengths = selectedStrengths;
     const st = searchText;
+    const committed = selectionCommitted;
+    const selection = adHocSelection;
+    const focus = focusNodeId;
+    const direction = focusDirection;
 
-    // Rebuild hiddenNodeIds so the label RAF loop can check it
-    const newHidden = new Set<string>();
+    // Step 1: compute pill/search hidden set
+    // In focus mode, the focus node is exempt from the concern pill filter
+    // (it must remain visible as the anchor of the neighbourhood view).
+    const pillHidden = new Set<string>();
     for (const node of graphData.nodes) {
       let hidden = false;
-      if (cf !== 'all' && node.bmmConcern !== cf) hidden = true;
+
+      // Concern pill filter — focus node is exempt
+      if (concerns.size > 0 && !concerns.has(node.bmmConcern)) {
+        if (!(focus && node.id === focus)) {
+          hidden = true;
+        }
+      }
+
+      // Search filter — applies to all nodes including the focus node
       if (!hidden && st) {
         const s = st.toLowerCase();
         if (!node.friendlyName.toLowerCase().includes(s) && !node.id.toLowerCase().includes(s)) hidden = true;
       }
-      if (hidden) newHidden.add(node.id);
+
+      if (hidden) pillHidden.add(node.id);
     }
+
+    // Step 2: build final hidden set by composing additional filter layers
+    const newHidden = new Set<string>(pillHidden);
+
+    // Committed ad-hoc selection (ignored when focus mode is active)
+    if (!focus && committed && selection.size > 0) {
+      for (const node of graphData.nodes) {
+        if (!pillHidden.has(node.id) && !selection.has(node.id)) {
+          newHidden.add(node.id);
+        }
+      }
+    }
+
+    // Focus-node exploration — overrides ad-hoc selection when active
+    if (focus && !pillHidden.has(focus)) {
+      const visible = computeFocusNeighbours(focus, direction, pillHidden, strengths);
+      for (const node of graphData.nodes) {
+        if (!pillHidden.has(node.id) && !visible.has(node.id)) {
+          newHidden.add(node.id);
+        }
+      }
+    }
+
     hiddenNodeIds = newHidden;
 
-    // Update 3D graph visibility
-    fg.nodeVisibility((node: { id: string; friendlyName: string; bmmConcern: string }) => {
-      if (cf !== 'all' && node.bmmConcern !== cf) return false;
-      if (st) {
-        const s = st.toLowerCase();
-        if (!node.friendlyName.toLowerCase().includes(s) && !node.id.toLowerCase().includes(s)) return false;
-      }
-      return true;
-    });
+    fg.nodeVisibility((node: { id: string }) => !newHidden.has(node.id));
 
     fg.linkVisibility((link: { source: unknown; target: unknown; strength: string }) => {
       const srcId = typeof link.source === 'object' && link.source !== null ? (link.source as { id: string }).id : link.source as string;
       const tgtId = typeof link.target === 'object' && link.target !== null ? (link.target as { id: string }).id : link.target as string;
-      const srcNode = graphData.nodes.find((n) => n.id === srcId);
-      const tgtNode = graphData.nodes.find((n) => n.id === tgtId);
-      if (!srcNode || !tgtNode) return false;
 
-      if (sf !== 'all' && link.strength !== sf) return false;
-      if (cf !== 'all' && srcNode.bmmConcern !== cf && tgtNode.bmmConcern !== cf) return false;
-      if (st) {
-        const s = st.toLowerCase();
-        const srcMatch = srcNode.friendlyName.toLowerCase().includes(s) || srcNode.id.toLowerCase().includes(s);
-        const tgtMatch = tgtNode.friendlyName.toLowerCase().includes(s) || tgtNode.id.toLowerCase().includes(s);
-        if (!srcMatch && !tgtMatch) return false;
+      // Both endpoints must be visible
+      if (newHidden.has(srcId) || newHidden.has(tgtId)) return false;
+
+      // Strength filter
+      if (strengths.size > 0 && !strengths.has(link.strength)) return false;
+
+      // In focus mode: only show edges directly involving the focus node,
+      // and apply direction filtering to those edges
+      if (focus) {
+        const isFocusEdge = srcId === focus || tgtId === focus;
+        if (!isFocusEdge) return false;
+        if (direction === 'out' && srcId !== focus) return false;
+        if (direction === 'in' && tgtId !== focus) return false;
       }
+
       return true;
     });
 
@@ -418,21 +841,31 @@
   });
 
   onDestroy(() => {
+    if (handleKeydownFn) window.removeEventListener('keydown', handleKeydownFn);
+    if (handleKeyupFn) window.removeEventListener('keyup', handleKeyupFn);
     if (rafId !== null) cancelAnimationFrame(rafId);
     if (cameraTimer !== null) clearTimeout(cameraTimer);
     if (fg) {
+      const scene = fg.scene();
+      if (scene) {
+        for (const [, ring] of selectionRings) {
+          scene.remove(ring);
+        }
+        if (focusRing) scene.remove(focusRing);
+      }
       try {
         fg._destructor();
       } catch {
         // ignore cleanup errors
       }
     }
+    selectionRings.clear();
+    focusRing = null;
   });
 </script>
 
 <div
-  class="relative w-full overflow-hidden rounded-lg border border-secondary-200 dark:border-secondary-700"
-  style="height: calc(100vh - 260px); min-height: 500px;"
+  class="relative h-full w-full overflow-hidden rounded-lg border border-secondary-200 dark:border-secondary-700"
 >
   <!-- 3D WebGL graph container — label overlay injected here by onMount -->
   <div bind:this={containerEl} class="h-full w-full"></div>
@@ -445,4 +878,98 @@
   >
     Reset View
   </button>
+
+  <!-- Interaction hints — visible when no mode is active -->
+  {#if !focusNodeId && adHocSelection.size === 0}
+    <div class="absolute bottom-3 left-3 z-10 rounded-md px-2.5 py-1.5 text-[10px] text-secondary-400 backdrop-blur-sm dark:text-secondary-500"
+      style={overlayBg}>
+      <span class="font-medium">⌘+click</span> multi-select · <span class="font-medium">F+click</span> focus · <span class="font-medium">drag</span> pin
+    </div>
+  {/if}
+
+  <!-- Ad-hoc selection indicator (hidden while focus mode is active) -->
+  {#if adHocSelection.size > 0 && !focusNodeId}
+    <div class="absolute bottom-3 left-3 z-10 flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium text-secondary-700 shadow-sm ring-1 ring-secondary-200 backdrop-blur-sm dark:text-secondary-300 dark:ring-secondary-700"
+      style={overlayBg}>
+      {#if selectionCommitted}
+        <span class="inline-block h-2 w-2 rounded-full bg-primary-500"></span>
+        Showing {adHocSelection.size} nodes
+      {:else}
+        <span class="inline-block h-2 w-2 rounded-full bg-amber-400"></span>
+        {adHocSelection.size} selected — <kbd class="rounded bg-secondary-200 px-1 py-0.5 text-[10px] dark:bg-secondary-700">Enter</kbd> to focus
+      {/if}
+      <button
+        onclick={clearSelection}
+        class="ml-1 rounded px-1.5 py-0.5 text-secondary-400 transition hover:bg-secondary-200 hover:text-secondary-600 dark:hover:bg-secondary-700 dark:hover:text-secondary-200"
+        title="Clear selection (Esc)"
+      >
+        ✕
+      </button>
+    </div>
+  {/if}
+
+  <!-- Focus mode overlay: direction toggles + breadcrumb trail -->
+  {#if focusNodeId}
+    {@const focusNode = graph.nodes.find(n => n.id === focusNodeId)}
+    <div class="absolute bottom-3 left-3 z-10 flex flex-col gap-2 rounded-lg p-3 shadow-lg ring-1 ring-secondary-200 backdrop-blur-sm dark:ring-secondary-700"
+      style="{overlayBg}; max-width: 420px;">
+      <!-- Header: focus node name + exit -->
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="inline-block h-2.5 w-2.5 shrink-0 rounded-full" style="background-color: {getConcernColour(focusNode?.bmmConcern || '')}"></span>
+          <span class="truncate text-sm font-semibold text-secondary-800 dark:text-white">
+            {focusNode?.friendlyName || focusNodeId}
+          </span>
+          <span class="shrink-0 text-xs text-secondary-400 dark:text-secondary-500">
+            — hold F + click to travel
+          </span>
+        </div>
+        <button
+          onclick={exitFocusMode}
+          class="shrink-0 rounded px-1.5 py-0.5 text-secondary-400 transition hover:bg-secondary-200 hover:text-secondary-600 dark:hover:bg-secondary-700 dark:hover:text-secondary-200"
+          title="Exit focus mode (Esc)"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Direction toggles -->
+      <div class="flex items-center gap-1">
+        <span class="mr-1 text-xs text-secondary-500 dark:text-secondary-400">Direction</span>
+        {#each [{ value: 'in', label: '← In' }, { value: 'both', label: '↔ Both' }, { value: 'out', label: 'Out →' }] as dir}
+          <button
+            onclick={() => focusDirection = dir.value as 'in' | 'out' | 'both'}
+            class="rounded-full border px-2.5 py-0.5 text-xs font-medium transition
+              {focusDirection === dir.value
+                ? 'text-white'
+                : 'border-secondary-300 text-secondary-500 hover:border-secondary-400 dark:border-secondary-600 dark:text-secondary-400 dark:hover:border-secondary-500'}"
+            style={focusDirection === dir.value
+              ? `background-color: ${getConcernColour(focusNode?.bmmConcern || '')}; border-color: ${getConcernColour(focusNode?.bmmConcern || '')}`
+              : ''}
+          >
+            {dir.label}
+          </button>
+        {/each}
+      </div>
+
+      <!-- Breadcrumb trail (only shown after at least one traversal) -->
+      {#if focusBreadcrumb.length > 0}
+        <div class="flex flex-wrap items-center gap-1 text-xs">
+          {#each focusBreadcrumb as crumbId, idx}
+            {@const crumbNode = graph.nodes.find(n => n.id === crumbId)}
+            <button
+              onclick={() => jumpToBreadcrumb(idx)}
+              class="rounded px-1.5 py-0.5 text-secondary-500 transition hover:bg-secondary-100 hover:text-secondary-700 dark:text-secondary-400 dark:hover:bg-secondary-700 dark:hover:text-secondary-200"
+            >
+              {crumbNode?.friendlyName || crumbId}
+            </button>
+            <span class="text-secondary-300 dark:text-secondary-600">→</span>
+          {/each}
+          <span class="font-medium" style="color: {getConcernColour(focusNode?.bmmConcern || '')}">
+            {focusNode?.friendlyName || focusNodeId}
+          </span>
+        </div>
+      {/if}
+    </div>
+  {/if}
 </div>

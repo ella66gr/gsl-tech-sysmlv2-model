@@ -7,13 +7,13 @@
 
   const graph: WeightedRelationshipGraph = data.graph;
 
-  const filters: { concernFilter: string; strengthFilter: string; searchText: string } =
+  const filters: { selectedConcerns: Set<string>; selectedStrengths: Set<string>; searchText: string } =
     getContext('relationships-filters');
 </script>
 
 <RelationshipTable
   {graph}
-  concernFilter={filters.concernFilter}
-  strengthFilter={filters.strengthFilter}
+  selectedConcerns={filters.selectedConcerns}
+  selectedStrengths={filters.selectedStrengths}
   searchText={filters.searchText}
 />
