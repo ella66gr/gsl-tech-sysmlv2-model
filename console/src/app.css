@@ -35,9 +35,9 @@
   --color-secondary-900: #1f2933;
 }
 
-/* Dark mode body background */
+/* Dark mode body background — midpoint between secondary-800 and 900 (Session 94) */
 .dark body {
-  background-color: var(--color-secondary-800);
+  background-color: #29343f;
 }
 
 /* Flowbite Input/Select dark mode overrides */
