@@ -27,6 +27,7 @@ package PawsBusinessModel {
     private import BusinessModel::ServiceConcept::*;
     private import BusinessModel::ActivityModel::*;
     private import BusinessModel::StakeholderModel::*;
+    private import Foundation::CommonTypes::*;
 
     doc /* Paws dog grooming service business model. Instantiates the
          * ServiceConcept and ActivityModel part defs from the main
@@ -487,6 +488,7 @@ package PawsResourceFinancial {
     private import ScalarValues::*;
     private import BusinessModel::ResourcePlanning::*;
     private import BusinessModel::FinancialPlanning::*;
+    private import Foundation::CommonTypes::*;
     private import PawsBusinessModel::*;
 
     // -- Resource types ----------------------------------------

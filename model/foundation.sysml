@@ -317,6 +317,49 @@ package Foundation {
             attribute rationale : String;
         }
 
+        // -- BFO ontological grounding metadata ---------------
+        // Added Session 98: Knowledge graph architecture (Session 97).
+        // Source: ontara-discussion-bfo-type-mapping-2026-04-01.md
+        // Meta model: Business System (cross-cutting metadata).
+
+        metadata def BfoType {
+            doc /* BFO ontological grounding annotation. Declares the
+                 * BFO 2020 category and mid-level ontology parent for
+                 * a BMM or SMM element.
+                 *
+                 * This annotation is the input to Stage 2 of the
+                 * OWL mapping pipeline — the classification step that
+                 * determines how each SysML element projects into the
+                 * knowledge graph's domain graph stratum.
+                 *
+                 * bfoClass: the BFO 2020 class name. Uses the standard
+                 *   BFO label (e.g. "Role", "Process", "Quality",
+                 *   "GenericallyDependentContinuant"). Validated against
+                 *   the loaded BFO OWL file at pipeline Stage 4.
+                 * midLevelClass: the CCO, IAO, OGMS, or other mid-level
+                 *   ontology class that this element maps to. Uses
+                 *   prefix:ClassName format (e.g. "CCO:ActOfServiceProvision",
+                 *   "IAO:InformationContentEntity"). Empty string if no
+                 *   mid-level mapping is identified yet.
+                 * mappingNotes: brief rationale for the classification,
+                 *   especially where the mapping is non-obvious or where
+                 *   alternatives were considered.
+                 *
+                 * Annotation ordering convention (Position A, prefix):
+                 *   @CatalogueTag → @BfoType → @UserFacing →
+                 *   @PurposiveDescription → @Comprehension →
+                 *   @WeightedRelationship (multiple)
+                 *
+                 * Ontological grounding (B18, B19). OWL 2 DL (B23).
+                 * Knowledge graph (B22). Mapping ontology (B24).
+                 * Domain-semantic mapping (Session 97 D6).
+                 * System meta model concept.
+                 * Session 98. */
+            attribute bfoClass : String;
+            attribute midLevelClass : String;
+            attribute mappingNotes : String;
+        }
+
         // -- Agency classification metadata -----------------------
         // System meta model concepts: annotate pathway
         // action nodes with the agent who performs them.

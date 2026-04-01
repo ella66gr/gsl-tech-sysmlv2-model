@@ -68,6 +68,11 @@ package BusinessModel {
         // -- Part definitions ----------------------------------
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "CCO:GroupOfAgents";
+            mappingNotes = "A segment characterises a class of agents. GDC because the grouping pattern migrates between populations.";
+        }
         @UserFacing {
             friendlyName = "Customer Segment";
             shortDescription = "A defined group of customers with shared needs and willingness to pay.";
@@ -109,6 +114,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "A specification of promised value. Migrates between bearers (documents, conversations).";
+        }
         @UserFacing {
             friendlyName = "Value Proposition";
             shortDescription = "A promise of value to a customer segment — what they get and why it matters.";
@@ -149,6 +159,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "A packaged specification of what can be delivered — the plan/template, not the delivery itself.";
+        }
         @UserFacing {
             friendlyName = "Service Offering";
             shortDescription = "A packaged unit of service that can be priced, resourced, and delivered to customers.";
@@ -220,6 +235,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @BfoType {
+            bfoClass = "Role";
+            midLevelClass = "CCO:ArtifactFunction";
+            mappingNotes = "A role played by a medium/platform in connecting business to customers. Extrinsic — same entity can be different channels.";
+        }
         @UserFacing {
             friendlyName = "Channel";
             shortDescription = "A way that customers find, reach, or receive your service.";
@@ -256,6 +276,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "An assertion with truth conditions and evidence basis.";
+        }
         @UserFacing {
             friendlyName = "Differentiation Claim";
             shortDescription = "An explicit, testable statement of how your service differs from alternatives.";
@@ -297,6 +322,11 @@ package BusinessModel {
         // See: ontara-discussion-service-participation-model-2026-03-21.md
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @BfoType {
+            bfoClass = "Role";
+            midLevelClass = "";
+            mappingNotes = "The entity upon which a service is performed. Role because subject status is extrinsic and context-dependent. Candidate: ontara:ServiceSubjectRole.";
+        }
         @UserFacing {
             friendlyName = "Service Subject";
             shortDescription = "The entity upon which a service is performed — a person, animal, object, or organisation that receives the service.";
@@ -371,6 +401,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @BfoType {
+            bfoClass = "Role";
+            midLevelClass = "";
+            mappingNotes = "An entity involved in a service in a defined role. Same person can hold multiple roles simultaneously. Candidate: ontara:ServiceParticipantRole.";
+        }
         @UserFacing {
             friendlyName = "Service Participant";
             shortDescription = "An entity involved in a service engagement in a defined role — customer, payer, commissioner, decision-maker, or any other role.";
@@ -451,6 +486,11 @@ package BusinessModel {
         // these generic shapes.
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "A record linking item definition to business-context properties (price, availability, status).";
+        }
         @UserFacing {
             friendlyName = "Catalogue Entry";
             shortDescription = "A record of something your business has decided to offer, with its price and status.";
@@ -505,6 +545,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ServiceConcept"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "A referential pointer to external knowledge. Information content whose purpose is denotation.";
+        }
         @UserFacing {
             friendlyName = "External Reference";
             shortDescription = "A link to authoritative knowledge that lives outside your system.";
@@ -788,6 +833,11 @@ package BusinessModel {
         // -- Part definitions ----------------------------------
 
         @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "A template for a kind of activity — the specification, not the doing. Actual activities are Processes.";
+        }
         @UserFacing {
             friendlyName = "Activity Type";
             shortDescription = "A defined kind of business activity, classified into one of five categories.";
@@ -843,6 +893,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "A record documenting what happened. The activity was a Process; the record is information about it.";
+        }
         @UserFacing {
             friendlyName = "Activity Record";
             shortDescription = "A recorded instance of an activity that actually happened.";
@@ -874,6 +929,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "A forward-looking allocation of activity volume. Specifies desired future states.";
+        }
         @UserFacing {
             friendlyName = "Activity Budget";
             shortDescription = "A planned allocation of activity volume by type and period.";
@@ -909,6 +969,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "A policy declaration about tracking precision — governs how the system observes and records.";
+        }
         @UserFacing {
             friendlyName = "Activity Granularity";
             shortDescription = "A policy declaration of how precisely activity is tracked in a given area.";
@@ -942,6 +1007,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ActivityModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "A mapping from activity to financial cost. Characterising, not process-like.";
+        }
         @UserFacing {
             friendlyName = "Activity Cost Allocation";
             shortDescription = "The mapping from an activity type to its financial cost.";
@@ -1007,6 +1077,11 @@ package BusinessModel {
         // -- Part definitions ----------------------------------
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "A category specification defining what a kind of resource is. The actual resource is an IndependentContinuant; the type is the specification.";
+        }
         @UserFacing {
             friendlyName = "Resource Type";
             shortDescription = "A category of resource needed to run the service — people, equipment, premises, or external services.";
@@ -1063,6 +1138,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @BfoType {
+            bfoClass = "Role";
+            midLevelClass = "CCO:Agent";
+            mappingNotes = "A planning-level archetype — a role. Same person can be different ResourceInstances. CCO:Agent for personnel; pipeline specialises by category attribute.";
+        }
         @UserFacing {
             friendlyName = "Resource Instance";
             shortDescription = "A specific resource available at a defined capacity and cost.";
@@ -1100,6 +1180,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @BfoType {
+            bfoClass = "Disposition";
+            midLevelClass = "CCO:ArtifactFunction";
+            mappingNotes = "An organised ability — what the business can do given resources. Disposition because it describes potential, not actuality. CCO:ArtifactFunction because designed.";
+        }
         @UserFacing {
             friendlyName = "Capability";
             shortDescription = "An organised combination of resources that produces a defined service function.";
@@ -1153,6 +1238,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "A planning assertion relating resource configuration to throughput. A claim about the system.";
+        }
         @UserFacing {
             friendlyName = "Capacity Model";
             shortDescription = "The relationship between your resource configuration and service throughput.";
@@ -1194,6 +1284,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "A recorded limit on resource availability. The constraint is information; its effect is felt through processes.";
+        }
         @UserFacing {
             friendlyName = "Resource Constraint";
             shortDescription = "A limit on resource availability that affects service delivery.";
@@ -1242,6 +1337,11 @@ package BusinessModel {
         // Source: gsl-spec-catalogue-inventory-v2.1.md §8.2
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:MeasurementDatum";
+            mappingNotes = "A point-in-time stock measurement. IAO:MeasurementDatum because it captures a quantity at a specific time.";
+        }
         @UserFacing {
             friendlyName = "Inventory Record";
             shortDescription = "A point-in-time record of stock level for a catalogue item.";
@@ -1517,6 +1617,11 @@ package BusinessModel {
         // relationships to constraint usages if needed).
 
         @CatalogueTag { bmmConcern = "ResourceCapability"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "A declared traceability connection — an assertion linking strategy to operations.";
+        }
         @UserFacing {
             friendlyName = "Objective–Capability Mapping";
             shortDescription = "A declared connection between a strategic objective and the capabilities that support it.";
@@ -1604,6 +1709,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "FinancialModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "A specification of how money flows in. The stream is the structural specification; actual transactions are Processes.";
+        }
         @UserFacing {
             friendlyName = "Revenue Stream";
             shortDescription = "A mechanism by which the business generates income from its services.";
@@ -1642,6 +1752,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "FinancialModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "A characterisation of a resource's cost behaviour. About the resource, not the resource itself.";
+        }
         @UserFacing {
             friendlyName = "Cost Driver";
             shortDescription = "A structural factor that generates cost in the business — linked to a resource or activity.";
@@ -1685,6 +1800,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "FinancialModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "Computed/declared financial profile per service unit. Revenue, cost, and margin figures.";
+        }
         @UserFacing {
             friendlyName = "Unit Economics";
             shortDescription = "The revenue, cost, and margin for a single unit of service delivery.";
@@ -1718,6 +1838,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "FinancialModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "Pricing rules governing future commercial exchanges.";
+        }
         @UserFacing {
             friendlyName = "Pricing Model";
             shortDescription = "How prices are set for services — per-episode, subscription, tiered, or other basis.";
@@ -1756,6 +1881,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "FinancialModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "A forward-looking financial picture. Explicitly a planning instrument combining assumptions.";
+        }
         @UserFacing {
             friendlyName = "Financial Projection";
             shortDescription = "A forward-looking financial picture combining revenues, costs, and growth assumptions.";
@@ -1985,6 +2115,11 @@ package BusinessModel {
         // -- Governance Requirement --------------------------------
 
         @CatalogueTag { bmmConcern = "Governance"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:ObjectiveSpecification";
+            mappingNotes = "A governance obligation — specifies a required state of affairs. The requirement is about the obligation; compliance is a Process.";
+        }
         @UserFacing {
             friendlyName = "Governance Requirement";
             shortDescription = "A regulatory or standards obligation that the business must satisfy, with defined evidence.";
@@ -2035,6 +2170,11 @@ package BusinessModel {
         // -- Audit Evidence Record ---------------------------------
 
         @CatalogueTag { bmmConcern = "Governance"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "A record demonstrating compliance. Evidence about a process, not the process itself.";
+        }
         @UserFacing {
             friendlyName = "Audit Evidence Record";
             shortDescription = "A record that demonstrates compliance with a governance requirement — the proof that obligations are met.";
@@ -2107,6 +2247,11 @@ package BusinessModel {
         // -- Part definitions ----------------------------------
 
         @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "";
+            mappingNotes = "A relational entity depending on both parties. GDC because the pattern migrates. Not Role (between entities, not played by one). Candidate: ontara:StakeholderRelation.";
+        }
         @UserFacing {
             friendlyName = "Stakeholder Relationship";
             shortDescription = "A typed, ongoing, structured relationship between the business and an external entity.";
@@ -2160,6 +2305,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "A formalised agreement specifying shared responsibilities and protocols. The arrangement is informational; joint delivery is a Process.";
+        }
         @UserFacing {
             friendlyName = "Cooperative Arrangement";
             shortDescription = "A formalised agreement to jointly deliver or manage something — neither party can deliver independently.";
@@ -2212,6 +2362,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "A structured route specification. The pathway as concept is a plan; actual referrals are Processes.";
+        }
         @UserFacing {
             friendlyName = "Referral Pathway";
             shortDescription = "A structured route for directing or receiving work between organisations.";
@@ -2253,6 +2408,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "A record of asymmetric reliance. The dependency is informational; consequences are felt through resource availability.";
+        }
         @UserFacing {
             friendlyName = "External Dependency";
             shortDescription = "Something the business depends on that it does not control — characterised by asymmetric reliance.";
@@ -2309,6 +2469,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "";
+            mappingNotes = "Constitutive connection to community. GDC — relational, depends on both parties. Candidate: ontara:CommunityRelation.";
+        }
         @UserFacing {
             friendlyName = "Community Relationship";
             shortDescription = "The business's connection to its broader community of interest — constitutive, not transactional.";
@@ -2348,6 +2513,11 @@ package BusinessModel {
         }
 
         @CatalogueTag { bmmConcern = "StakeholderModel"; classification = "General"; }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:PlanSpecification";
+            mappingNotes = "A specification of how customers/patients participate. The model is a plan; actual participation is a Process.";
+        }
         @UserFacing {
             friendlyName = "Participation Model";
             shortDescription = "How the customer or patient participates as co-producer, not merely recipient, of the service.";
