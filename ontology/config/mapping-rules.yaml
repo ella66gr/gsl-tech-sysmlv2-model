@@ -1,0 +1,127 @@
+# Ontara Knowledge Graph — Mapping Classification Rules
+# ======================================================
+#
+# Declarative specification for how SysML v2 constructs map to
+# OWL/RDF entities in the knowledge graph. Used by gen_owl_pipeline.py
+# (pipeline Stage 2) to classify each parsed element.
+#
+# Decision S100-D5: these rules are declarative and version-controlled,
+# not embedded in procedural code.
+#
+# Source: Stage 5 Phase 1 — Step 4 (Session 100 plan §3, Step 4)
+# Status: Skeleton — to be populated at Step 4 implementation.
+
+version: "0.1.0"
+session: 101
+
+# IRI namespaces
+namespaces:
+  ontara-bmm: "https://ontara.dev/ontology/bmm/"
+  ontara-data: "https://ontara.dev/data/"
+  ontara-meta: "https://ontara.dev/ontology/meta/"
+  bfo: "http://purl.obolibrary.org/obo/"
+  cco: "https://www.commoncoreontologies.org/"
+  iao: "http://purl.obolibrary.org/obo/IAO_"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  owl: "http://www.w3.org/2002/07/owl#"
+  skos: "http://www.w3.org/2004/02/skos/core#"
+
+# Named graphs (three-stratum architecture, B28)
+named_graphs:
+  metamodel: "https://ontara.dev/graph/metamodel"
+  domain: "https://ontara.dev/graph/domain"
+  correspondence: "https://ontara.dev/graph/correspondence"
+
+# Classification rules
+# Each rule matches a SysML construct pattern and assigns a mapping category.
+# Rules are evaluated in order; first match wins.
+rules:
+
+  - match:
+      construct: "part_def"
+      package_pattern: "BusinessModel::*"
+      has_annotation: "@BfoType"
+    classification: "DomainClass"
+    target_graph: "domain"
+    iri_template: "{ontara-bmm}{ElementName}"
+    notes: "BMM part defs with BFO mapping → OWL classes in domain graph"
+
+  - match:
+      construct: "part_def"
+      package_pattern: "BusinessModel::*"
+      has_annotation: null
+    classification: "StructuralOnly"
+    target_graph: null
+    notes: "BMM part defs without BFO mapping — flag for review"
+
+  - match:
+      construct: "part"
+      parent_classification: "DomainClass"
+    classification: "DomainIndividual"
+    target_graph: "domain"
+    iri_template: "{ontara-data}{domain}/{InstanceName}"
+    notes: "Demonstrator instances of mapped part defs → OWL individuals"
+
+  - match:
+      construct: "enum_def"
+      package_pattern: "BusinessModel::*"
+    classification: "DomainEnumeration"
+    target_graph: "domain"
+    iri_template: "{ontara-bmm}{EnumName}"
+    notes: "BMM enums → OWL classes or SKOS concept schemes (TBD)"
+
+  - match:
+      construct: "attribute"
+      parent_classification: "DomainClass"
+    classification: "DomainProperty"
+    target_graph: "domain"
+    iri_template: "{ontara-bmm}{ClassName}/{propertyName}"
+    notes: "Typed attributes on domain classes → OWL properties"
+
+  - match:
+      construct: "metadata_def"
+    classification: "MetadataAnnotation"
+    target_graph: "metamodel"
+    notes: "Metadata defs → metamodel graph (pipeline traceability)"
+
+  - match:
+      construct: "part_def"
+      package_pattern: "Foundation::*|SMM::*|Knowledge::*|ServiceDelivery::*|Platform::*|Operations::*"
+    classification: "StructuralOnly"
+    target_graph: null
+    notes: "SMM/Foundation/infrastructure — excluded from Phase 1 domain graph"
+
+# Annotation extraction for domain graph entities
+annotation_mapping:
+  rdfs_label:
+    source: "@UserFacing.friendlyName"
+    notes: "Authority zone: shared-constrained"
+  rdfs_comment:
+    source: "@UserFacing.shortDescription"
+    notes: "Authority zone: shared-constrained"
+  skos_definition:
+    source: "@PurposiveDescription.description"
+    notes: "Authority zone: shared-constrained"
+  bfo_parent:
+    source: "@BfoType.bfoClass"
+    notes: "Authority zone: OWL-authoritative (inferred from SysML annotation)"
+  mid_level_parent:
+    source: "@BfoType.midLevelClass"
+    notes: "Authority zone: OWL-authoritative"
+
+# Authority zones (B29 / E020)
+authority_zones:
+  sysml_authoritative:
+    - "package structure"
+    - "part def / part relationships"
+    - "attribute types and multiplicities"
+    - "weighted relationships"
+    - "comprehension metadata"
+  owl_authoritative:
+    - "BFO classification (inferred hierarchy)"
+    - "ontological semantics"
+    - "reasoner-derived inferences"
+  shared_constrained:
+    - "rdfs:label (from @UserFacing.friendlyName)"
+    - "rdfs:comment (from @UserFacing.shortDescription)"
+    - "skos:definition (from @PurposiveDescription.description)"
