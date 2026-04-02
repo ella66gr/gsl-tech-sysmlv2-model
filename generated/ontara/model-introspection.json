@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-02T08:45:25.774120",
+  "generatedAt": "2026-04-02T16:02:22.765577",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
@@ -15,7 +15,7 @@
     "suds": {
       "label": "Suds",
       "description": "Laundry service demonstrator \u2014 cross-domain validation",
-      "elementCount": 61
+      "elementCount": 67
     },
     "paws": {
       "label": "Paws",
@@ -24,12 +24,12 @@
     }
   },
   "summary": {
-    "totalElements": 753,
+    "totalElements": 759,
     "byKind": {
       "enum_def": 57,
       "metadata_def": 17,
       "part_def": 126,
-      "part": 505,
+      "part": 511,
       "requirement_def": 15,
       "requirement": 7,
       "constraint_def": 14,
@@ -38,14 +38,14 @@
     },
     "byLayer": {
       "smm": 248,
-      "unknown": 38,
+      "unknown": 44,
       "bmm": 199,
       "domain": 268
     },
     "byDomain": {
       "core": 507,
       "cafe": 125,
-      "suds": 61,
+      "suds": 67,
       "paws": 60
     },
     "bfoTypeCoverage": 34
@@ -3209,6 +3209,12 @@
             "package": "CoffeeShopBusinessModel"
           }
         ],
+        "suds": [
+          {
+            "name": "hseRelationship",
+            "package": "SudsStakeholderModel"
+          }
+        ],
         "paws": [
           {
             "name": "animalWelfareRegulator",
@@ -3271,6 +3277,12 @@
           {
             "name": "deliveryPlatformPartnership",
             "package": "CoffeeShopBusinessModel"
+          }
+        ],
+        "suds": [
+          {
+            "name": "commercialLinenService",
+            "package": "SudsStakeholderModel"
           }
         ],
         "paws": [
@@ -3390,6 +3402,16 @@
             "package": "CoffeeShopBusinessModel"
           }
         ],
+        "suds": [
+          {
+            "name": "equipmentMaintenance",
+            "package": "SudsStakeholderModel"
+          },
+          {
+            "name": "chemicalSupply",
+            "package": "SudsStakeholderModel"
+          }
+        ],
         "paws": [
           {
             "name": "groomingProductSupply",
@@ -3443,6 +3465,12 @@
           {
             "name": "localNeighbourhood",
             "package": "CoffeeShopBusinessModel"
+          }
+        ],
+        "suds": [
+          {
+            "name": "localBusinessCommunity",
+            "package": "SudsStakeholderModel"
           }
         ],
         "paws": [
@@ -3503,6 +3531,12 @@
           {
             "name": "cafeParticipation",
             "package": "CoffeeShopBusinessModel"
+          }
+        ],
+        "suds": [
+          {
+            "name": "dropOffParticipation",
+            "package": "SudsStakeholderModel"
           }
         ],
         "paws": [
@@ -7333,7 +7367,7 @@
         },
         {
           "name": "linkedResource",
-          "type": "ResourceType[0..1]"
+          "type": "ResourceType[0..*]"
         },
         {
           "name": "costBehaviour",
@@ -7731,6 +7765,12 @@
             "landlordRelationship"
           ]
         },
+        "suds": {
+          "count": 1,
+          "instances": [
+            "hseRelationship"
+          ]
+        },
         "paws": {
           "count": 2,
           "instances": [
@@ -7822,6 +7862,12 @@
           "count": 1,
           "instances": [
             "deliveryPlatformPartnership"
+          ]
+        },
+        "suds": {
+          "count": 1,
+          "instances": [
+            "commercialLinenService"
           ]
         },
         "paws": {
@@ -8010,6 +8056,13 @@
             "coffeeBeanSupply"
           ]
         },
+        "suds": {
+          "count": 2,
+          "instances": [
+            "equipmentMaintenance",
+            "chemicalSupply"
+          ]
+        },
         "paws": {
           "count": 1,
           "instances": [
@@ -8094,6 +8147,12 @@
             "localNeighbourhood"
           ]
         },
+        "suds": {
+          "count": 1,
+          "instances": [
+            "localBusinessCommunity"
+          ]
+        },
         "paws": {
           "count": 1,
           "instances": [
@@ -8168,6 +8227,12 @@
           "count": 1,
           "instances": [
             "cafeParticipation"
+          ]
+        },
+        "suds": {
+          "count": 1,
+          "instances": [
+            "dropOffParticipation"
           ]
         },
         "paws": {
@@ -15971,7 +16036,7 @@
         },
         {
           "name": "linkedResource",
-          "type": "ResourceType[0..1]",
+          "type": "ResourceType[0..*]",
           "isRef": true
         },
         {
@@ -38994,7 +39059,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 705,
+      "lineNumber": 706,
       "specialises": "ExternalReference",
       "attributes": [
         {
@@ -39027,7 +39092,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "domain",
-      "lineNumber": 714,
+      "lineNumber": 715,
       "specialises": "ExternalReference",
       "attributes": [
         {
@@ -39048,6 +39113,314 @@
         {
           "name": "referenceNotes",
           "value": "Mandatory under COSHH. Covers composition, hazards, first aid, handling, storage, exposure controls, disposal.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "hseRelationship",
+      "parentPackage": "SudsStakeholderModel",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "unknown",
+      "lineNumber": 756,
+      "specialises": "StakeholderRelationship",
+      "attributes": [
+        {
+          "name": "stakeholderName",
+          "value": "Health and Safety Executive (HSE)",
+          "isRedefinition": true
+        },
+        {
+          "name": "stakeholderDescription",
+          "value": "Enforces workplace health and safety legislation including COSHH for cleaning chemicals.",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipNature",
+          "value": "RelationshipNature::regulatory",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsInward",
+          "value": "HSE sets and enforces COSHH regulations. Provides guidance, may conduct inspections.",
+          "isRedefinition": true
+        },
+        {
+          "name": "obligationsOutward",
+          "value": "Suds must comply with COSHH regulations, maintain risk assessments, ensure staff training.",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationExchanged",
+          "value": "COSHH risk assessments, incident reports (outward). Guidance, inspection outcomes (inward).",
+          "isRedefinition": true
+        },
+        {
+          "name": "governanceArrangements",
+          "value": "Statutory compliance. HSE may inspect following incident or complaint.",
+          "isRedefinition": true
+        },
+        {
+          "name": "healthIndicators",
+          "value": "Compliance status, time since last COSHH review, staff training currency.",
+          "isRedefinition": true
+        },
+        {
+          "name": "reviewCadence",
+          "value": "COSHH risk assessment reviewed annually and on introduction of new chemicals.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "equipmentMaintenance",
+      "parentPackage": "SudsStakeholderModel",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "unknown",
+      "lineNumber": 771,
+      "specialises": "ExternalDependency",
+      "attributes": [
+        {
+          "name": "dependencyName",
+          "value": "Commercial laundry equipment maintenance",
+          "isRedefinition": true
+        },
+        {
+          "name": "provider",
+          "value": "Specialist laundry equipment service contractor",
+          "isRedefinition": true
+        },
+        {
+          "name": "dependencyDescription",
+          "value": "Maintenance, repair, and emergency callout for commercial washing machines and dryers. Essential for continuous operation.",
+          "isRedefinition": true
+        },
+        {
+          "name": "criticality",
+          "value": "DependencyCriticality::essential",
+          "isRedefinition": true
+        },
+        {
+          "name": "substitutability",
+          "value": "Limited \u2014 specialist commercial laundry engineers. 2-3 alternative contractors in the area.",
+          "isRedefinition": true
+        },
+        {
+          "name": "contingencyPlan",
+          "value": "Secondary contractor relationship maintained. Basic maintenance performed in-house (filter cleaning, descaling).",
+          "isRedefinition": true
+        },
+        {
+          "name": "contractualTerms",
+          "value": "Annual maintenance contract with 24-hour emergency callout. Quarterly planned servicing.",
+          "isRedefinition": true
+        },
+        {
+          "name": "supplyRisk",
+          "value": "Moderate \u2014 specialist engineers in limited supply. Machine breakdown during peak periods is the primary risk.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "chemicalSupply",
+      "parentPackage": "SudsStakeholderModel",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "unknown",
+      "lineNumber": 784,
+      "specialises": "ExternalDependency",
+      "attributes": [
+        {
+          "name": "dependencyName",
+          "value": "Cleaning chemical supply",
+          "isRedefinition": true
+        },
+        {
+          "name": "provider",
+          "value": "Commercial cleaning product wholesalers",
+          "isRedefinition": true
+        },
+        {
+          "name": "dependencyDescription",
+          "value": "Supply of commercial laundry detergent, fabric softener, stain removers, and specialist products. Subject to COSHH documentation requirements.",
+          "isRedefinition": true
+        },
+        {
+          "name": "criticality",
+          "value": "DependencyCriticality::essential",
+          "isRedefinition": true
+        },
+        {
+          "name": "substitutability",
+          "value": "Good \u2014 multiple suppliers available. Product switching requires updated COSHH data sheets and staff briefing.",
+          "isRedefinition": true
+        },
+        {
+          "name": "contingencyPlan",
+          "value": "Maintain accounts with two suppliers. Minimum 2-week stock buffer.",
+          "isRedefinition": true
+        },
+        {
+          "name": "contractualTerms",
+          "value": "Standard trade terms. Monthly account with 30-day payment.",
+          "isRedefinition": true
+        },
+        {
+          "name": "supplyRisk",
+          "value": "Low \u2014 commodity products with multiple suppliers. Risk of specific product discontinuation requiring reformulation adjustment.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "localBusinessCommunity",
+      "parentPackage": "SudsStakeholderModel",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "unknown",
+      "lineNumber": 797,
+      "specialises": "CommunityRelationship",
+      "attributes": [
+        {
+          "name": "communityName",
+          "value": "Local business and residential community",
+          "isRedefinition": true
+        },
+        {
+          "name": "communityDescription",
+          "value": "Businesses and residents in the immediate catchment area who form the primary customer base.",
+          "isRedefinition": true
+        },
+        {
+          "name": "relationshipToService",
+          "value": "Constitutive \u2014 Suds exists to serve local demand for convenient laundry services. Walk-in trade depends on community awareness and trust.",
+          "isRedefinition": true
+        },
+        {
+          "name": "engagementMode",
+          "value": "Local advertising, shop front presence, word of mouth, community notice boards, local business networking.",
+          "isRedefinition": true
+        },
+        {
+          "name": "mutualBenefit",
+          "value": "Community gains convenient laundry service. Suds gains loyal customer base and referral through community networks.",
+          "isRedefinition": true
+        },
+        {
+          "name": "communityVoice",
+          "value": "Customer feedback, online reviews, direct conversation at the counter.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "commercialLinenService",
+      "parentPackage": "SudsStakeholderModel",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "unknown",
+      "lineNumber": 808,
+      "specialises": "CooperativeArrangement",
+      "attributes": [
+        {
+          "name": "arrangementName",
+          "value": "Commercial linen service for local businesses",
+          "isRedefinition": true
+        },
+        {
+          "name": "cooperatingEntity",
+          "value": "Local restaurants, cafes, and B&Bs",
+          "isRedefinition": true
+        },
+        {
+          "name": "sharedOutcome",
+          "value": "Regular, reliable linen laundering service with scheduled collection and delivery \u2014 neither party can manage independently at this scale.",
+          "isRedefinition": true
+        },
+        {
+          "name": "responsibilitySplit",
+          "value": "Suds: collection, laundering, pressing, delivery on schedule. Client: clean separation of items, agreed volumes, payment per schedule.",
+          "isRedefinition": true
+        },
+        {
+          "name": "protocolReference",
+          "value": "Individual service agreements per client.",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationSharing",
+          "value": "Suds provides delivery schedules and quality reports. Clients provide volume forecasts and special requirements.",
+          "isRedefinition": true
+        },
+        {
+          "name": "disputeResolution",
+          "value": "Direct discussion. Service credit for missed SLAs.",
+          "isRedefinition": true
+        },
+        {
+          "name": "performanceIndicators",
+          "value": "On-time delivery rate, quality complaints per 100 orders, client retention rate.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "dropOffParticipation",
+      "parentPackage": "SudsStakeholderModel",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "unknown",
+      "lineNumber": 821,
+      "specialises": "ParticipationModel",
+      "attributes": [
+        {
+          "name": "participationName",
+          "value": "Customer drop-off participation",
+          "isRedefinition": true
+        },
+        {
+          "name": "participantRole",
+          "value": "Active contributor \u2014 customer sorts and delivers laundry, specifies preferences",
+          "isRedefinition": true
+        },
+        {
+          "name": "participationDescription",
+          "value": "Customer brings laundry to the shop, specifies wash type and any special handling requirements, collects completed order. Level of participation varies: walk-in customers interact at the counter",
+          "isRedefinition": true
+        },
+        {
+          "name": "informationContribution",
+          "value": "Fabric care instructions, special handling requests, preferred turnaround, contact details for collection notification.",
+          "isRedefinition": true
+        },
+        {
+          "name": "decisionInvolvement",
+          "value": "Customer decides wash type, turnaround preference, and any special handling. Suds advises on fabric care where relevant.",
+          "isRedefinition": true
+        },
+        {
+          "name": "selfServiceScope",
+          "value": "Online booking for subscription customers. Order tracking via SMS notification. Walk-in customers: counter interaction only.",
+          "isRedefinition": true
+        },
+        {
+          "name": "supportRequired",
+          "value": "Clear signage for wash types and pricing. Staff guidance on fabric care for delicates.",
           "isRedefinition": true
         }
       ]
