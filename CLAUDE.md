@@ -96,6 +96,9 @@ python3 scripts/gen_owl_pipeline.py --verify         # Check CCO lookup complete
 python3 scripts/gen_owl_pipeline.py --ir-only        # Print mapping IR (classification) only
 python3 scripts/gen_owl_pipeline.py --dry-run        # Print Turtle to stdout
 python3 scripts/setup_graphdb.py --verify            # Verify GraphDB repository state
+python3 scripts/validate_kg.py                   # Validate KG against SPARQL test suite
+python3 scripts/validate_kg.py --load             # Reload pipeline output into GraphDB + validate
+python3 scripts/validate_kg.py --load-only        # Reload pipeline output into GraphDB
 ```
 
 Generated ontology outputs (in `generated/ontology/`):
