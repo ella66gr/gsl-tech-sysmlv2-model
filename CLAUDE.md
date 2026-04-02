@@ -6,24 +6,30 @@ Ontara is a service system development and delivery platform built on SysML v2. 
 
 ## Architecture in Brief
 
-- **Two meta models:** Business Meta Model (BMM — what a service business *is*) and Business System Meta Model (BSMM — how a system *works*). They are distinct and connected by explicit mappings.
+- **Two meta models:** Business Meta Model (BMM — what a service business *is*) and Service Meta Model (SMM — how a system *works*). They are distinct and connected by explicit mappings. Note: SMM was previously called BSMM (Business System Meta Model). Renamed Session 92. The SysML section name `bsmm-general-vocabulary` is a structural identifier and stays.
 - **Six layers:** L6 SysML v2 language → L5 BMM → L4 BSMM → L3 Business model instances → L2 System model instances → L1 Runtime
 - **Three demonstrator domains:** Cafe (coffee shop, full app), Suds (laundry, BMM only), Paws (dog grooming, BMM only) — used for cross-domain validation
 - **Six BMM concerns:** ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel (Session 81). 34 General elements.
 - **Comprehension architecture:** Every BMM element has @UserFacing, @PurposiveDescription, @Comprehension, and @WeightedRelationship annotations. 34/34 coverage, 96 weighted relationships.
+- **Knowledge graph (Stage 5):** Dual-formalism platform — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO as mid-level. GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence.
 
 ## Repository Layout
 
 ```
-model/                     # Core SysML v2 model (11 .sysml files)
+model/                     # Core SysML v2 model (12 .sysml files)
 exercises/
   coffeeshop-demonstrator/ # Full running app (SvelteKit + Temporal + EHRbase + PostgreSQL)
   suds-demonstrator/       # Laundry BMM instance
   paws-demonstrator/       # Dog grooming BMM instance
 console/                   # Ontara Console (SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4)
-scripts/                   # Python generators and shell tools
+scripts/                   # Python generators, shared modules, and shell tools
+  archive/                 # Archived superseded generators (with provenance)
 generated/                 # All generated output (DO NOT EDIT manually)
   ontara/model-introspection.json  # Console data source
+  ontology/                # Generated OWL/Turtle and mapping IR
+ontology/                  # Knowledge graph config and imported ontologies
+  config/                  # Mapping rules (YAML), CCO IRI lookup (JSON)
+  imports/                 # BFO 2020, CCO, IAO ontology files
 documentation/
   reference/               # SysML syntax ref, KerML reserved words
   archive/                 # Committed snapshots (strategic, plans, session-reports, design)
@@ -34,12 +40,17 @@ spikes/                    # Experimental code
 
 ## Key File Paths
 
-- **SysML model files:** `model/*.sysml` (11 files: business-model, foundation, knowledge, service-delivery, platform, operations, enterprise, business-scenarios, business-strategy, pattern-catalogue, gendersense)
+- **SysML model files:** `model/*.sysml` (12 files: architectural-structure, business-model, business-scenarios, business-strategy, enterprise, foundation, gendersense, knowledge, operations, pattern-catalogue, platform, service-delivery)
 - **Demonstrator models:** `exercises/coffeeshop-demonstrator/model/`, `exercises/suds-demonstrator/`, `exercises/paws-demonstrator/`
 - **Console app:** `console/` (SvelteKit, uses pnpm)
 - **Console data:** `console/static/data/model-introspection.json` (copied from `generated/ontara/`)
 - **Introspection generator:** `scripts/gen_model_introspection.py`
+- **OWL pipeline generator:** `scripts/gen_owl_pipeline.py` (Stage 5 — reads SysML, classifies via mapping rules, outputs OWL/Turtle)
+- **Shared SysML parser:** `scripts/sysml_parser.py` (used by introspection and OWL pipeline generators)
+- **GraphDB setup:** `scripts/setup_graphdb.py`
 - **Other generators:** `scripts/gen_concept_graph.py`, `scripts/gen_package_hierarchy.py`, `scripts/gen_system_manifest.py`, `scripts/gen_constraint_evaluator.py`, `scripts/gen_decision_table_evaluator.py`, `scripts/projection_engine.py`
+- **Mapping rules:** `ontology/config/mapping-rules.yaml` (declarative classification rules for SysML→OWL)
+- **CCO IRI lookup:** `ontology/config/cco-iri-lookup.json` (opaque CCO IRIs resolved from GraphDB)
 - **SysML syntax reference:** `documentation/reference/gsl-sysml-v2-syntax-reference.md`
 - **KerML reserved words:** `documentation/reference/KerML-Reserved-Words.md`
 - **Existing CLI tool:** `scripts/ontara` (shell script for package hierarchy views — renamed from `gsl` Session 65)
@@ -48,7 +59,8 @@ spikes/                    # Experimental code
 
 - **Console:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4. Package manager: pnpm.
 - **Coffee Shop Demonstrator:** SvelteKit + Temporal (workflow engine) + EHRbase (CDR) + PostgreSQL. pnpm workspace monorepo with packages: web, temporal, shared.
-- **Generators:** Python 3. No virtual env required — standard library plus regex parsing.
+- **Generators:** Python 3. No virtual env required. Introspection generator uses standard library only. OWL pipeline generator requires `rdflib` and `PyYAML` (`pip3 install rdflib PyYAML`).
+- **Knowledge graph:** GraphDB Free 10.x (local Java app, port 7200). Protégé 5.6+ for ontology debugging. BFO 2020 + CCO 2.0 + IAO as imported ontologies.
 - **Model editing:** Syside Modeler (VS Code extension for SysML v2). Claude cannot run Syside — only Ella can verify SysML parses.
 
 ## Console Commands
@@ -72,6 +84,24 @@ python3 scripts/gen_system_manifest.py --save                 # Generate manifes
 python3 scripts/gen_constraint_evaluator.py --save            # Generate constraint evaluators
 python3 scripts/gen_decision_table_evaluator.py --save        # Generate decision tables
 ```
+
+## Knowledge Graph Commands
+
+```bash
+# From repo root
+python3 scripts/gen_owl_pipeline.py --save         # Generate OWL ontology + correspondence + mapping IR
+python3 scripts/gen_owl_pipeline.py --validate      # Compare output to baseline (graph isomorphism)
+python3 scripts/gen_owl_pipeline.py --resolve-cco   # Populate CCO IRI lookup from GraphDB
+python3 scripts/gen_owl_pipeline.py --verify         # Check CCO lookup completeness
+python3 scripts/gen_owl_pipeline.py --ir-only        # Print mapping IR (classification) only
+python3 scripts/gen_owl_pipeline.py --dry-run        # Print Turtle to stdout
+python3 scripts/setup_graphdb.py --verify            # Verify GraphDB repository state
+```
+
+Generated ontology outputs (in `generated/ontology/`):
+- `ontara-bmm.ttl` — domain ontology (34 OWL classes)
+- `ontara-correspondence.ttl` — SysML↔OWL mapping records
+- `mapping-ir.json` — full classification intermediate representation
 
 ## Coffee Shop Demonstrator Commands
 
@@ -98,7 +128,7 @@ Or use `cd console && pnpm run refresh-data`.
 - **Doc blocks** on every `part def` must include meta model classification (Business Meta Model or Business System Meta Model).
 - **`part def` vs `part`:** A `part def` is a meta model concept (abstract definition). A `part` is an instance (concrete usage). Do not conflate them.
 - **General vs Tailored:** BMM components are classified as General (common to most service businesses) or Tailored (sector-specific).
-- **Metadata annotations:** `@CatalogueTag`, `@UserFacing`, `@PurposiveDescription`, `@Comprehension`, `@WeightedRelationship` — all in the Foundation metadata library.
+- **Metadata annotations:** `@CatalogueTag`, `@BfoType`, `@UserFacing`, `@PurposiveDescription`, `@Comprehension`, `@WeightedRelationship`, `@ArchitecturalLocation` — all in the Foundation metadata library. Canonical ordering: CatalogueTag → BfoType → UserFacing → PurposiveDescription → Comprehension → WeightedRelationship(s).
 
 ## Development Principles
 
