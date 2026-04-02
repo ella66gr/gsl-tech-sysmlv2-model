@@ -167,7 +167,7 @@ package ArchitecturalStructure {
     }
     @ArchitecturalLocation {
         representationalModalitySummary = "OWL 2 DL. Imported directly from the OBO Foundry as a maintained external ontology.";
-        persistenceSummary = "Target: triple store (knowledge graph). Currently: referenced in discussion papers and architecture diagram; not yet implemented.";
+        persistenceSummary = "Triple store (knowledge graph). BFO 2020 loaded into GraphDB (Session 101) as the foundational upper ontology.";
         interfacesSummary = "Vertical downward to both domain ontologies (left stack) and system ontological categories (right stack). Spans both stacks as a shared foundation; does not connect horizontally.";
         domainIllustrationSummary = "For Paws: Sam is a BFO Continuant bearing a Role; a ServiceOffering is an Occurrent; a Room is an Independent Continuant; a PricingRule is a Generically Dependent Continuant.";
     }
@@ -178,7 +178,7 @@ package ArchitecturalStructure {
         attribute :>> presentationOrder = 1;
         attribute :>> primaryFormalism = Formalism::owl2dl;
         attribute :>> persistenceMechanism = "triple-store";
-        attribute :>> implementationStatus = ImplementationStatus::referenced;
+        attribute :>> implementationStatus = ImplementationStatus::implemented;
         attribute :>> docKey = "bfo";
     }
 
@@ -197,7 +197,7 @@ package ArchitecturalStructure {
     }
     @ArchitecturalLocation {
         representationalModalitySummary = "OWL 2 DL. Existing OBO Foundry ontologies, imported directly.";
-        persistenceSummary = "Target: triple store (knowledge graph), alongside BFO. Currently: referenced only.";
+        persistenceSummary = "Triple store (knowledge graph), alongside BFO. CCO and IAO loaded into GraphDB (Session 101).";
         interfacesSummary = "Vertical downward to BMM General vocabulary. Vertical upward to BFO. Horizontal rightward to system ontological categories — the topmost horizontal mapping.";
         domainIllustrationSummary = "For Paws: OCE (Ontology of Commercial Enterprises) as primary domain ontology. For GSL: OGMS+GSSO+IAO — same BMM structure, fundamentally different semantic grounding.";
     }
@@ -208,7 +208,7 @@ package ArchitecturalStructure {
         attribute :>> presentationOrder = 2;
         attribute :>> primaryFormalism = Formalism::owl2dl;
         attribute :>> persistenceMechanism = "triple-store";
-        attribute :>> implementationStatus = ImplementationStatus::referenced;
+        attribute :>> implementationStatus = ImplementationStatus::implemented;
         attribute :>> docKey = "domain-ontologies";
     }
 
@@ -547,11 +547,11 @@ package ArchitecturalStructure {
         shortDescription = "The OWL bridge between the two formalisms — formally declaring how SysML v2 elements correspond to ontological classes.";
     }
     @PurposiveDescription {
-        description = "The bridge between the two formalisms. Everything above the formalism boundary is OWL 2 DL; everything below is SysML v2. The mapping ontology (B24), itself expressed in OWL, formally declares correspondences: SysML blocks/parts to OWL classes, SysML relationships to OWL object properties, SysML value types to OWL datatype properties. Its existence is committed; its design is deferred.";
+        description = "The bridge between the two formalisms. Everything above the formalism boundary is OWL 2 DL; everything below is SysML v2. The mapping ontology (B24), itself expressed in OWL, formally declares correspondences: SysML blocks/parts to OWL classes, SysML relationships to OWL object properties, SysML value types to OWL datatype properties. Phase 1 implemented as the correspondence graph (Session 105) — 306 triples generated from @BfoType annotations via the OWL pipeline.";
     }
     @ArchitecturalLocation {
         representationalModalitySummary = "OWL 2 DL — the mapping ontology is itself an ontology, living on the OWL side but describing the SysML side. openCAESAR may provide bridge infrastructure.";
-        persistenceSummary = "Triple store (knowledge graph), alongside the domain ontologies and system ontological categories.";
+        persistenceSummary = "Triple store (knowledge graph), alongside the domain ontologies and system ontological categories. Correspondence graph operational (Session 105) with 306 triples mapping SysML BMM elements to OWL classes via @BfoType annotations.";
         interfacesSummary = "Interfaces with everything: connects ontological layers on both stacks, enables SysML content to be represented in and retrieved from the knowledge graph. Makes the knowledge-graph-as-canonical commitment (B22) technically feasible.";
         domainIllustrationSummary = "For Paws: SysML part def ServiceOffering maps to OWL class ontara:ServiceOffering classified under BFO via OCE. Part usage standardGroom maps to OWL individual paws:StandardGroom. Attribute basePrice maps to datatype property ontara:hasBasePrice.";
     }
@@ -562,7 +562,7 @@ package ArchitecturalStructure {
         attribute :>> presentationOrder = 15;
         attribute :>> primaryFormalism = Formalism::owl2dl;
         attribute :>> persistenceMechanism = "triple-store";
-        attribute :>> implementationStatus = ImplementationStatus::referenced;
+        attribute :>> implementationStatus = ImplementationStatus::implemented;
         attribute :>> docKey = "mapping-ontology";
     }
 
@@ -577,7 +577,7 @@ package ArchitecturalStructure {
     }
     @ArchitecturalLocation {
         representationalModalitySummary = "OWL 2 DL — the native formalism. Target home for everything above the formalism boundary and, via the mapping ontology, a canonical representation of everything below it.";
-        persistenceSummary = "Triple store / graph database — this is a persistence section. Persists: ontological axioms, meta model vocabulary, instance data, weighted relationships, comprehension metadata, coordinate space snapshots, reflective simulation derived knowledge, mapping ontology.";
+        persistenceSummary = "Triple store / graph database — this is a persistence section. GraphDB operational (Session 106) with 24,663 domain triples and SPARQL validation suite. Persists: ontological axioms, meta model vocabulary, instance data, weighted relationships, comprehension metadata, coordinate space snapshots, reflective simulation derived knowledge, mapping ontology.";
         interfacesSummary = "Everything feeds into or reads from the knowledge graph. SPARQL is the query interface. The SysML v2 model is a projection maintained in bidirectional sync.";
         domainIllustrationSummary = "For Paws: BFO axioms, OCE ontology, BMM vocabulary as OWL classes, all Paws entities as OWL individuals, weighted relationships, coordinate space snapshots for current state, goals, and what-if scenarios.";
     }
@@ -588,7 +588,7 @@ package ArchitecturalStructure {
         attribute :>> presentationOrder = 16;
         attribute :>> primaryFormalism = Formalism::owl2dl;
         attribute :>> persistenceMechanism = "triple-store";
-        attribute :>> implementationStatus = ImplementationStatus::referenced;
+        attribute :>> implementationStatus = ImplementationStatus::implemented;
         attribute :>> docKey = "knowledge-graph";
     }
 
