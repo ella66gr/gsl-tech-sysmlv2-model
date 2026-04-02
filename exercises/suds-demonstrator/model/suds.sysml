@@ -466,7 +466,7 @@ package SudsResourceFinancial {
         doc /* Water, electricity, and gas — significant for a
              * laundry service. Partially variable with volume. */
         attribute :>> driverName = "Utility costs";
-        ref :>> linkedResource = washingMachine;
+        ref :>> linkedResource = (washingMachine, tumbleDryer);
         attribute :>> costBehaviour = "semi-variable";
         attribute :>> estimatedUnitCost = 0.60;
         attribute :>> scalingFactor = "per kg of laundry";
@@ -702,6 +702,7 @@ package SudsGovernance {
     // Regulatory source documents — distinct from audit evidence
     // (which is proof of compliance, not the rules themselves).
 
+
     part coshhGuidance : ExternalReference {
         doc /* HSE COSHH guidance — the primary regulatory reference
              * for handling cleaning chemicals in a workplace. */
@@ -719,5 +720,112 @@ package SudsGovernance {
         attribute :>> referenceId = "SDS-DETERGENT-001";
         attribute :>> referenceSource = "Supplier-provided — updated annually";
         attribute :>> referenceNotes = "Mandatory under COSHH. Covers composition, hazards, first aid, handling, storage, exposure controls, disposal.";
+    }
+}
+
+// =========================================================================
+// SUDS DEMONSTRATOR — Stakeholder Model
+// =========================================================================
+//
+// Six StakeholderModel instantiations for a lightly-regulated laundry
+// service. Proportionate to Suds's context — less rich than GSL
+// (sector-regulated), comparable to Paws (lightly regulated, 7 items).
+//
+// Closes the cross-domain validation gap: Cafe (6), Paws (7), Suds (6).
+//
+// Session 108 (2 April 2026): initial StakeholderModel instantiations.
+// =========================================================================
+
+package SudsStakeholderModel {
+    private import ScalarValues::*;
+    private import BusinessModel::StakeholderModel::*;
+    private import BusinessModel::ServiceConcept::*;
+    private import BusinessModel::GovernanceMapping::*;
+    private import Foundation::CommonTypes::*;
+    private import SudsBusinessModel::*;
+    private import SudsGovernance::*;
+
+    doc /* StakeholderModel instantiations for the Suds laundry service.
+         * Covers regulatory relationship (HSE/COSHH), two external
+         * dependencies (equipment, chemicals), community relationship,
+         * cooperative arrangement (commercial linen), and customer
+         * participation model. */
+
+    // -- Stakeholder Relationship: HSE regulatory relationship ----
+
+    part hseRelationship : StakeholderRelationship {
+        attribute :>> stakeholderName = "Health and Safety Executive (HSE)";
+        attribute :>> stakeholderDescription = "Enforces workplace health and safety legislation including COSHH for cleaning chemicals.";
+        attribute :>> relationshipNature = RelationshipNature::regulatory;
+        attribute :>> obligationsInward = "HSE sets and enforces COSHH regulations. Provides guidance, may conduct inspections.";
+        attribute :>> obligationsOutward = "Suds must comply with COSHH regulations, maintain risk assessments, ensure staff training.";
+        attribute :>> informationExchanged = "COSHH risk assessments, incident reports (outward). Guidance, inspection outcomes (inward).";
+        attribute :>> governanceArrangements = "Statutory compliance. HSE may inspect following incident or complaint.";
+        attribute :>> healthIndicators = "Compliance status, time since last COSHH review, staff training currency.";
+        attribute :>> reviewCadence = "COSHH risk assessment reviewed annually and on introduction of new chemicals.";
+        ref :>> relatedGovernanceRequirements = (coshhCompliance);
+    }
+
+    // -- External Dependency: Equipment maintenance contractor ----
+
+    part equipmentMaintenance : ExternalDependency {
+        attribute :>> dependencyName = "Commercial laundry equipment maintenance";
+        attribute :>> provider = "Specialist laundry equipment service contractor";
+        attribute :>> dependencyDescription = "Maintenance, repair, and emergency callout for commercial washing machines and dryers. Essential for continuous operation.";
+        attribute :>> criticality = DependencyCriticality::essential;
+        attribute :>> substitutability = "Limited — specialist commercial laundry engineers. 2-3 alternative contractors in the area.";
+        attribute :>> contingencyPlan = "Secondary contractor relationship maintained. Basic maintenance performed in-house (filter cleaning, descaling).";
+        attribute :>> contractualTerms = "Annual maintenance contract with 24-hour emergency callout. Quarterly planned servicing.";
+        attribute :>> supplyRisk = "Moderate — specialist engineers in limited supply. Machine breakdown during peak periods is the primary risk.";
+    }
+
+    // -- External Dependency: Chemical supplier -------------------
+
+    part chemicalSupply : ExternalDependency {
+        attribute :>> dependencyName = "Cleaning chemical supply";
+        attribute :>> provider = "Commercial cleaning product wholesalers";
+        attribute :>> dependencyDescription = "Supply of commercial laundry detergent, fabric softener, stain removers, and specialist products. Subject to COSHH documentation requirements.";
+        attribute :>> criticality = DependencyCriticality::essential;
+        attribute :>> substitutability = "Good — multiple suppliers available. Product switching requires updated COSHH data sheets and staff briefing.";
+        attribute :>> contingencyPlan = "Maintain accounts with two suppliers. Minimum 2-week stock buffer.";
+        attribute :>> contractualTerms = "Standard trade terms. Monthly account with 30-day payment.";
+        attribute :>> supplyRisk = "Low — commodity products with multiple suppliers. Risk of specific product discontinuation requiring reformulation adjustment.";
+    }
+
+    // -- Community Relationship: Local business community ---------
+
+    part localBusinessCommunity : CommunityRelationship {
+        attribute :>> communityName = "Local business and residential community";
+        attribute :>> communityDescription = "Businesses and residents in the immediate catchment area who form the primary customer base.";
+        attribute :>> relationshipToService = "Constitutive — Suds exists to serve local demand for convenient laundry services. Walk-in trade depends on community awareness and trust.";
+        attribute :>> engagementMode = "Local advertising, shop front presence, word of mouth, community notice boards, local business networking.";
+        attribute :>> mutualBenefit = "Community gains convenient laundry service. Suds gains loyal customer base and referral through community networks.";
+        attribute :>> communityVoice = "Customer feedback, online reviews, direct conversation at the counter.";
+    }
+
+    // -- Cooperative Arrangement: Commercial linen client ---------
+
+    part commercialLinenService : CooperativeArrangement {
+        attribute :>> arrangementName = "Commercial linen service for local businesses";
+        attribute :>> cooperatingEntity = "Local restaurants, cafes, and B&Bs";
+        attribute :>> sharedOutcome = "Regular, reliable linen laundering service with scheduled collection and delivery — neither party can manage independently at this scale.";
+        attribute :>> responsibilitySplit = "Suds: collection, laundering, pressing, delivery on schedule. Client: clean separation of items, agreed volumes, payment per schedule.";
+        attribute :>> protocolReference = "Individual service agreements per client.";
+        attribute :>> informationSharing = "Suds provides delivery schedules and quality reports. Clients provide volume forecasts and special requirements.";
+        attribute :>> disputeResolution = "Direct discussion. Service credit for missed SLAs.";
+        attribute :>> performanceIndicators = "On-time delivery rate, quality complaints per 100 orders, client retention rate.";
+    }
+
+    // -- Participation Model: Customer drop-off -------------------
+
+    part dropOffParticipation : ParticipationModel {
+        attribute :>> participationName = "Customer drop-off participation";
+        attribute :>> participantRole = "Active contributor — customer sorts and delivers laundry, specifies preferences";
+        attribute :>> participationDescription = "Customer brings laundry to the shop, specifies wash type and any special handling requirements, collects completed order. Level of participation varies: walk-in customers interact at the counter; subscription customers may use scheduled collection.";
+        attribute :>> informationContribution = "Fabric care instructions, special handling requests, preferred turnaround, contact details for collection notification.";
+        attribute :>> decisionInvolvement = "Customer decides wash type, turnaround preference, and any special handling. Suds advises on fabric care where relevant.";
+        attribute :>> selfServiceScope = "Online booking for subscription customers. Order tracking via SMS notification. Walk-in customers: counter interaction only.";
+        attribute :>> supportRequired = "Clear signage for wash types and pricing. Staff guidance on fabric care for delicates.";
+        ref :>> relatedServiceOffering = (standardWash, delicatesWash, expressWash);
     }
 }

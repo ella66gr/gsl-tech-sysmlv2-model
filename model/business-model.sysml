@@ -1793,7 +1793,7 @@ package BusinessModel {
         part def CostDriver {
             doc /* A structural factor that generates cost. */
             attribute driverName : String;
-            ref linkedResource : ResourceType[0..1];
+            ref linkedResource : ResourceType[0..*];
             attribute costBehaviour : String;
             attribute estimatedUnitCost : Real;
             attribute scalingFactor : String;
