@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-03-31T22:59:18.181989",
+  "generatedAt": "2026-04-02T08:45:25.774120",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 506
+      "elementCount": 507
     },
     "cafe": {
       "label": "Cafe",
@@ -24,10 +24,10 @@
     }
   },
   "summary": {
-    "totalElements": 752,
+    "totalElements": 753,
     "byKind": {
       "enum_def": 57,
-      "metadata_def": 16,
+      "metadata_def": 17,
       "part_def": 126,
       "part": 505,
       "requirement_def": 15,
@@ -37,17 +37,18 @@
       "satisfy": 2
     },
     "byLayer": {
-      "smm": 247,
+      "smm": 248,
       "unknown": 38,
       "bmm": 199,
       "domain": 268
     },
     "byDomain": {
-      "core": 506,
+      "core": 507,
       "cafe": 125,
       "suds": 61,
       "paws": 60
-    }
+    },
+    "bfoTypeCoverage": 34
   },
   "facets": {
     "bmmConcern": {
@@ -11289,7 +11290,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 99,
+      "lineNumber": 104,
       "attributes": [
         {
           "name": "segmentName",
@@ -11360,6 +11361,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "CCO:GroupOfAgents",
+            "mappingNotes": "A segment characterises a class of agents. GDC because the grouping pattern migrates between populations."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Customer Segment",
@@ -11405,7 +11414,12 @@
             "rationale": "Channels are how segments are reached. A change to the target segment may require reviewing acquisition and delivery channels, but the relationship is many-to-many."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "CCO:GroupOfAgents",
+        "mappingNotes": "A segment characterises a class of agents. GDC because the grouping pattern migrates between populations."
+      }
     },
     {
       "kind": "part_def",
@@ -11415,7 +11429,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 140,
+      "lineNumber": 150,
       "attributes": [
         {
           "name": "propositionName",
@@ -11486,6 +11500,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "A specification of promised value. Migrates between bearers (documents, conversations)."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Value Proposition",
@@ -11531,7 +11553,12 @@
             "rationale": "Claims articulate how the proposition differs from alternatives. A change to the proposition may require reviewing its supporting claims, but a proposition can exist before claims are formalised."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "A specification of promised value. Migrates between bearers (documents, conversations)."
+      }
     },
     {
       "kind": "part_def",
@@ -11541,7 +11568,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 205,
+      "lineNumber": 220,
       "attributes": [
         {
           "name": "offeringName",
@@ -11642,6 +11669,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "A packaged specification of what can be delivered \u2014 the plan/template, not the delivery itself."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Service Offering",
@@ -11727,7 +11762,12 @@
             "rationale": "Resources are consumed by activities which deliver offerings. A change to the offering may affect resource requirements, but the relationship is indirect \u2014 mediated through activity types and capabilities."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "A packaged specification of what can be delivered \u2014 the plan/template, not the delivery itself."
+      }
     },
     {
       "kind": "part_def",
@@ -11737,7 +11777,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 246,
+      "lineNumber": 266,
       "attributes": [
         {
           "name": "channelName",
@@ -11808,6 +11848,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "Role",
+            "midLevelClass": "CCO:ArtifactFunction",
+            "mappingNotes": "A role played by a medium/platform in connecting business to customers. Extrinsic \u2014 same entity can be different channels."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Channel",
@@ -11845,7 +11893,12 @@
             "rationale": "Channels deliver service offerings. A change to a channel may require reviewing which offerings flow through it, but the coupling is loose."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "Role",
+        "midLevelClass": "CCO:ArtifactFunction",
+        "mappingNotes": "A role played by a medium/platform in connecting business to customers. Extrinsic \u2014 same entity can be different channels."
+      }
     },
     {
       "kind": "part_def",
@@ -11855,7 +11908,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 282,
+      "lineNumber": 307,
       "attributes": [
         {
           "name": "claimName",
@@ -11916,6 +11969,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "An assertion with truth conditions and evidence basis."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Differentiation Claim",
@@ -11953,7 +12014,12 @@
             "rationale": "Claims relate to offerings indirectly, via the value proposition. A change to a claim has a distant effect on offerings \u2014 mediated through the proposition."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An assertion with truth conditions and evidence basis."
+      }
     },
     {
       "kind": "part_def",
@@ -11963,7 +12029,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 338,
+      "lineNumber": 368,
       "attributes": [
         {
           "name": "subjectName",
@@ -12044,6 +12110,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "Role",
+            "midLevelClass": "",
+            "mappingNotes": "The entity upon which a service is performed. Role because subject status is extrinsic and context-dependent. Candidate: ontara:ServiceSubjectRole."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Service Subject",
@@ -12105,7 +12179,12 @@
             "rationale": "Different customer segments may involve different subject types, but the segment is defined by its needs and willingness to pay, not by the subject."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "Role",
+        "midLevelClass": "",
+        "mappingNotes": "The entity upon which a service is performed. Role because subject status is extrinsic and context-dependent. Candidate: ontara:ServiceSubjectRole."
+      }
     },
     {
       "kind": "part_def",
@@ -12115,7 +12194,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 407,
+      "lineNumber": 442,
       "attributes": [
         {
           "name": "participantName",
@@ -12191,6 +12270,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "Role",
+            "midLevelClass": "",
+            "mappingNotes": "An entity involved in a service in a defined role. Same person can hold multiple roles simultaneously. Candidate: ontara:ServiceParticipantRole."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Service Participant",
@@ -12244,7 +12331,12 @@
             "rationale": "Governance requirements may apply to participants (commissioner must approve, payer must authorise), but the primary governance binding is to the subject."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "Role",
+        "midLevelClass": "",
+        "mappingNotes": "An entity involved in a service in a defined role. Same person can hold multiple roles simultaneously. Candidate: ontara:ServiceParticipantRole."
+      }
     },
     {
       "kind": "part_def",
@@ -12254,7 +12346,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 482,
+      "lineNumber": 522,
       "attributes": [
         {
           "name": "entryName",
@@ -12335,6 +12427,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A record linking item definition to business-context properties (price, availability, status)."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Catalogue Entry",
@@ -12380,7 +12480,12 @@
             "rationale": "Inventory tracks stock of catalogue items. A change to a catalogue entry may require updating its associated inventory records."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A record linking item definition to business-context properties (price, availability, status)."
+      }
     },
     {
       "kind": "part_def",
@@ -12390,7 +12495,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 526,
+      "lineNumber": 571,
       "attributes": [
         {
           "name": "referenceType",
@@ -12446,6 +12551,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A referential pointer to external knowledge. Information content whose purpose is denotation."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "External Reference",
@@ -12475,7 +12588,12 @@
             "rationale": "External references attach to catalogue items. A change to an external reference may require reviewing the catalogue entries that depend on it."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A referential pointer to external knowledge. Information content whose purpose is denotation."
+      }
     },
     {
       "kind": "part",
@@ -12485,7 +12603,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 550,
+      "lineNumber": 595,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -12523,7 +12641,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 561,
+      "lineNumber": 606,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -12561,7 +12679,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 574,
+      "lineNumber": 619,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -12594,7 +12712,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 582,
+      "lineNumber": 627,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -12627,7 +12745,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 590,
+      "lineNumber": 635,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -12660,7 +12778,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 600,
+      "lineNumber": 645,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -12703,7 +12821,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 612,
+      "lineNumber": 657,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -12746,7 +12864,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 624,
+      "lineNumber": 669,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -12789,7 +12907,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 638,
+      "lineNumber": 683,
       "specialises": "Channel",
       "attributes": [
         {
@@ -12832,7 +12950,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 647,
+      "lineNumber": 692,
       "specialises": "Channel",
       "attributes": [
         {
@@ -12875,7 +12993,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 658,
+      "lineNumber": 703,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -12908,7 +13026,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 665,
+      "lineNumber": 710,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -12941,7 +13059,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 674,
+      "lineNumber": 719,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -12984,7 +13102,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 687,
+      "lineNumber": 732,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -13027,7 +13145,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 699,
+      "lineNumber": 744,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -13070,7 +13188,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 711,
+      "lineNumber": 756,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -13113,7 +13231,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 727,
+      "lineNumber": 772,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -13146,7 +13264,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 768,
+      "lineNumber": 813,
       "attributes": [
         {
           "name": "serviceDelivery;"
@@ -13173,7 +13291,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 780,
+      "lineNumber": 825,
       "attributes": [
         {
           "name": "envelope;"
@@ -13194,7 +13312,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 834,
+      "lineNumber": 884,
       "attributes": [
         {
           "name": "activityTypeName",
@@ -13280,6 +13398,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "A template for a kind of activity \u2014 the specification, not the doing. Actual activities are Processes."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Activity Type",
@@ -13349,7 +13475,12 @@
             "rationale": "Channels deliver services which contain activities, but the relationship is distant \u2014 mediated through service offerings."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "A template for a kind of activity \u2014 the specification, not the doing. Actual activities are Processes."
+      }
     },
     {
       "kind": "part_def",
@@ -13359,7 +13490,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 864,
+      "lineNumber": 919,
       "attributes": [
         {
           "name": "activityType",
@@ -13420,6 +13551,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A record documenting what happened. The activity was a Process; the record is information about it."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Activity Record",
@@ -13449,7 +13588,12 @@
             "rationale": "Every record is typed by an activity type. If the record format or granularity changes, the activity type may need reviewing \u2014 but an operational change to how records are produced does not redefine what the activity type is."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A record documenting what happened. The activity was a Process; the record is information about it."
+      }
     },
     {
       "kind": "part_def",
@@ -13459,7 +13603,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 900,
+      "lineNumber": 960,
       "attributes": [
         {
           "name": "budgetPeriod",
@@ -13525,6 +13669,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "A forward-looking allocation of activity volume. Specifies desired future states."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Activity Budget",
@@ -13562,7 +13714,12 @@
             "rationale": "Activity budgets feed into financial projections as volume inputs. If the budget changes, the projection may need updating \u2014 but the projection aggregates many inputs beyond activity volumes."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "A forward-looking allocation of activity volume. Specifies desired future states."
+      }
     },
     {
       "kind": "part_def",
@@ -13572,7 +13729,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 935,
+      "lineNumber": 1000,
       "attributes": [
         {
           "name": "businessArea",
@@ -13633,6 +13790,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "A policy declaration about tracking precision \u2014 governs how the system observes and records."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Activity Granularity",
@@ -13670,7 +13835,12 @@
             "rationale": "Granularity determines the detail level of records. If the granularity changes, the record format may need adjustment \u2014 but records are produced by the tracking system, not directly defined by the policy declaration."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "A policy declaration about tracking precision \u2014 governs how the system observes and records."
+      }
     },
     {
       "kind": "part_def",
@@ -13680,7 +13850,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 973,
+      "lineNumber": 1043,
       "attributes": [
         {
           "name": "activityType",
@@ -13746,6 +13916,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A mapping from activity to financial cost. Characterising, not process-like."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Activity Cost Allocation",
@@ -13791,7 +13969,12 @@
             "rationale": "Cost allocations ultimately feed unit economics through cost drivers. If an allocation changes, unit economics may need updating \u2014 but the relationship is mediated through cost drivers, not direct."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A mapping from activity to financial cost. Characterising, not process-like."
+      }
     },
     {
       "kind": "part_def",
@@ -13801,7 +13984,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1053,
+      "lineNumber": 1128,
       "attributes": [
         {
           "name": "resourceTypeName",
@@ -13887,6 +14070,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "A category specification defining what a kind of resource is. The actual resource is an IndependentContinuant; the type is the specification."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Resource Type",
@@ -13956,7 +14147,12 @@
             "rationale": "Activities consume resources. A change to a resource type may affect which activities can be performed, but the coupling is many-to-many and context-dependent."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "A category specification defining what a kind of resource is. The actual resource is an IndependentContinuant; the type is the specification."
+      }
     },
     {
       "kind": "part_def",
@@ -13966,7 +14162,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1089,
+      "lineNumber": 1169,
       "attributes": [
         {
           "name": "instanceName",
@@ -14037,6 +14233,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "Role",
+            "midLevelClass": "CCO:Agent",
+            "mappingNotes": "A planning-level archetype \u2014 a role. Same person can be different ResourceInstances. CCO:Agent for personnel; pipeline specialises by category attribute."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Resource Instance",
@@ -14074,7 +14278,12 @@
             "rationale": "Capacity models are built from resource configurations. A change to an instance (e.g. clinician drops from 0.8 to 0.5 FTE) may require reviewing the throughput calculation, but the capacity model aggregates across instances."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "Role",
+        "midLevelClass": "CCO:Agent",
+        "mappingNotes": "A planning-level archetype \u2014 a role. Same person can be different ResourceInstances. CCO:Agent for personnel; pipeline specialises by category attribute."
+      }
     },
     {
       "kind": "part_def",
@@ -14084,7 +14293,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1136,
+      "lineNumber": 1221,
       "attributes": [
         {
           "name": "capabilityName",
@@ -14160,6 +14369,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "Disposition",
+            "midLevelClass": "CCO:ArtifactFunction",
+            "mappingNotes": "An organised ability \u2014 what the business can do given resources. Disposition because it describes potential, not actuality. CCO:ArtifactFunction because designed."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Capability",
@@ -14213,7 +14430,12 @@
             "rationale": "Capacity models describe throughput for a resource configuration that delivers a capability. If the capability changes, the throughput model may need recalibrating, but the relationship is indirect."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "Disposition",
+        "midLevelClass": "CCO:ArtifactFunction",
+        "mappingNotes": "An organised ability \u2014 what the business can do given resources. Disposition because it describes potential, not actuality. CCO:ArtifactFunction because designed."
+      }
     },
     {
       "kind": "part_def",
@@ -14223,7 +14445,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1179,
+      "lineNumber": 1269,
       "attributes": [
         {
           "name": "resourceConfiguration",
@@ -14289,6 +14511,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A planning assertion relating resource configuration to throughput. A claim about the system."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Capacity Model",
@@ -14326,7 +14556,12 @@
             "rationale": "Capacity models and constraints are complementary planning concepts. If the capacity model changes (e.g. higher throughput targets), the constraints that limit resource availability may need reviewing."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A planning assertion relating resource configuration to throughput. A claim about the system."
+      }
     },
     {
       "kind": "part_def",
@@ -14336,7 +14571,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1220,
+      "lineNumber": 1315,
       "attributes": [
         {
           "name": "constraintName",
@@ -14402,6 +14637,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A recorded limit on resource availability. The constraint is information; its effect is felt through processes."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Resource Constraint",
@@ -14439,7 +14682,12 @@
             "rationale": "Constraints limit what a resource configuration can deliver. If a constraint changes, the throughput assumptions in the capacity model may need reviewing."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A recorded limit on resource availability. The constraint is information; its effect is felt through processes."
+      }
     },
     {
       "kind": "part_def",
@@ -14449,7 +14697,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1263,
+      "lineNumber": 1363,
       "attributes": [
         {
           "name": "catalogueEntry",
@@ -14515,6 +14763,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:MeasurementDatum",
+            "mappingNotes": "A point-in-time stock measurement. IAO:MeasurementDatum because it captures a quantity at a specific time."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Inventory Record",
@@ -14544,7 +14800,12 @@
             "rationale": "Inventory tracks stock of catalogue items. If the inventory record changes (e.g. stock level drops below threshold), the catalogue entry's availability status needs reassessment \u2014 the catalogue promises what inventory must deliver."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:MeasurementDatum",
+        "mappingNotes": "A point-in-time stock measurement. IAO:MeasurementDatum because it captures a quantity at a specific time."
+      }
     },
     {
       "kind": "part",
@@ -14554,7 +14815,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1290,
+      "lineNumber": 1390,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -14592,7 +14853,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1301,
+      "lineNumber": 1401,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -14630,7 +14891,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1309,
+      "lineNumber": 1409,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -14668,7 +14929,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1319,
+      "lineNumber": 1419,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -14706,7 +14967,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1327,
+      "lineNumber": 1427,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -14744,7 +15005,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1335,
+      "lineNumber": 1435,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -14782,7 +15043,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1345,
+      "lineNumber": 1445,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -14820,7 +15081,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1356,
+      "lineNumber": 1456,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -14858,7 +15119,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1367,
+      "lineNumber": 1467,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -14896,7 +15157,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1376,
+      "lineNumber": 1476,
       "specialises": "Capability",
       "attributes": [
         {
@@ -14929,7 +15190,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1386,
+      "lineNumber": 1486,
       "specialises": "Capability",
       "attributes": [
         {
@@ -14962,7 +15223,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1393,
+      "lineNumber": 1493,
       "specialises": "Capability",
       "attributes": [
         {
@@ -14995,7 +15256,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1400,
+      "lineNumber": 1500,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -15033,7 +15294,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1410,
+      "lineNumber": 1510,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -15066,7 +15327,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1418,
+      "lineNumber": 1518,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -15099,7 +15360,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1431,
+      "lineNumber": 1531,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -15137,7 +15398,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1441,
+      "lineNumber": 1541,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -15175,7 +15436,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1451,
+      "lineNumber": 1551,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -15213,7 +15474,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1460,
+      "lineNumber": 1560,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -15251,7 +15512,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1469,
+      "lineNumber": 1569,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -15289,7 +15550,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1480,
+      "lineNumber": 1580,
       "specialises": "Capability",
       "attributes": [
         {
@@ -15322,7 +15583,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1487,
+      "lineNumber": 1587,
       "specialises": "Capability",
       "attributes": [
         {
@@ -15355,7 +15616,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1494,
+      "lineNumber": 1594,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -15393,7 +15654,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1538,
+      "lineNumber": 1643,
       "attributes": [
         {
           "name": "strategicObjective",
@@ -15439,6 +15700,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A declared traceability connection \u2014 an assertion linking strategy to operations."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Objective\u2013Capability Mapping",
@@ -15468,7 +15737,12 @@
             "rationale": "The mapping declares which capabilities support a strategic objective. If the mapping changes, the capabilities involved need reassessment \u2014 they may gain or lose strategic justification."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A declared traceability connection \u2014 an assertion linking strategy to operations."
+      }
     },
     {
       "kind": "part",
@@ -15478,7 +15752,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1546,
+      "lineNumber": 1651,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -15489,7 +15763,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1552,
+      "lineNumber": 1657,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -15500,7 +15774,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1559,
+      "lineNumber": 1664,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -15511,7 +15785,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1566,
+      "lineNumber": 1671,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -15522,7 +15796,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1597,
+      "lineNumber": 1702,
       "attributes": [
         {
           "name": "perEpisode"
@@ -15549,7 +15823,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1635,
+      "lineNumber": 1745,
       "attributes": [
         {
           "name": "streamName",
@@ -15620,6 +15894,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "A specification of how money flows in. The stream is the structural specification; actual transactions are Processes."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Revenue Stream",
@@ -15665,7 +15947,12 @@
             "rationale": "Revenue streams inform the revenue side of unit economics. If a stream changes, revenue-per-unit may need reviewing \u2014 but unit economics are per-offering, not per-stream."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "A specification of how money flows in. The stream is the structural specification; actual transactions are Processes."
+      }
     },
     {
       "kind": "part_def",
@@ -15675,7 +15962,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1678,
+      "lineNumber": 1793,
       "attributes": [
         {
           "name": "driverName",
@@ -15751,6 +16038,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A characterisation of a resource's cost behaviour. About the resource, not the resource itself."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Cost Driver",
@@ -15804,7 +16099,12 @@
             "rationale": "Revenue streams and cost drivers together determine profitability. If a cost driver changes significantly, revenue assumptions may need reviewing \u2014 but the relationship is indirect, mediated through unit economics and financial projections."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A characterisation of a resource's cost behaviour. About the resource, not the resource itself."
+      }
     },
     {
       "kind": "part_def",
@@ -15814,7 +16114,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1711,
+      "lineNumber": 1831,
       "attributes": [
         {
           "name": "offering",
@@ -15880,6 +16180,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "Computed/declared financial profile per service unit. Revenue, cost, and margin figures."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Unit Economics",
@@ -15917,7 +16225,12 @@
             "rationale": "Financial projections aggregate unit-level economics. If unit economics change, the projection may need updating \u2014 but the projection also depends on volume assumptions and other inputs."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "Computed/declared financial profile per service unit. Revenue, cost, and margin figures."
+      }
     },
     {
       "kind": "part_def",
@@ -15927,7 +16240,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1749,
+      "lineNumber": 1874,
       "attributes": [
         {
           "name": "pricingModelName",
@@ -15998,6 +16311,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "Pricing rules governing future commercial exchanges."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Pricing Model",
@@ -16043,7 +16364,12 @@
             "rationale": "Unit economics calculate margin per unit of service. If the pricing model changes, the revenue-per-unit figure needs reviewing \u2014 but unit economics also depend on cost factors that are independent of pricing."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "Pricing rules governing future commercial exchanges."
+      }
     },
     {
       "kind": "part_def",
@@ -16053,7 +16379,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1782,
+      "lineNumber": 1912,
       "attributes": [
         {
           "name": "projectionName",
@@ -16124,6 +16450,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "A forward-looking financial picture. Explicitly a planning instrument combining assumptions."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Financial Projection",
@@ -16161,7 +16495,12 @@
             "rationale": "A projection aggregates cost drivers. If the projection changes, the cost assumptions may need reviewing \u2014 but cost drivers exist independently of any one projection."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "A forward-looking financial picture. Explicitly a planning instrument combining assumptions."
+      }
     },
     {
       "kind": "part",
@@ -16171,7 +16510,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1796,
+      "lineNumber": 1926,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -16204,7 +16543,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1804,
+      "lineNumber": 1934,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -16237,7 +16576,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1812,
+      "lineNumber": 1942,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -16270,7 +16609,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1820,
+      "lineNumber": 1950,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -16303,7 +16642,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1828,
+      "lineNumber": 1958,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -16336,7 +16675,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1836,
+      "lineNumber": 1966,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -16369,7 +16708,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1844,
+      "lineNumber": 1974,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -16402,7 +16741,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1852,
+      "lineNumber": 1982,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -16435,7 +16774,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1859,
+      "lineNumber": 1989,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -16468,7 +16807,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1867,
+      "lineNumber": 1997,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -16501,7 +16840,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1875,
+      "lineNumber": 2005,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -16539,7 +16878,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1883,
+      "lineNumber": 2013,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -16577,7 +16916,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1894,
+      "lineNumber": 2024,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -16610,7 +16949,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1906,
+      "lineNumber": 2036,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -16643,7 +16982,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1914,
+      "lineNumber": 2044,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -16676,7 +17015,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1922,
+      "lineNumber": 2052,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -16714,7 +17053,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1933,
+      "lineNumber": 2063,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -16747,7 +17086,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1946,
+      "lineNumber": 2076,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -16785,7 +17124,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2016,
+      "lineNumber": 2151,
       "attributes": [
         {
           "name": "requirementId",
@@ -16856,6 +17195,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:ObjectiveSpecification",
+            "mappingNotes": "A governance obligation \u2014 specifies a required state of affairs. The requirement is about the obligation; compliance is a Process."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Governance Requirement",
@@ -16901,7 +17248,12 @@
             "rationale": "A change to a governance requirement may require reviewing the relationship through which it is enforced, but the relationship exists independently of any single requirement (H1, H5)."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:ObjectiveSpecification",
+        "mappingNotes": "A governance obligation \u2014 specifies a required state of affairs. The requirement is about the obligation; compliance is a Process."
+      }
     },
     {
       "kind": "part_def",
@@ -16911,7 +17263,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2051,
+      "lineNumber": 2191,
       "attributes": [
         {
           "name": "evidenceType",
@@ -16965,6 +17317,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A record demonstrating compliance. Evidence about a process, not the process itself."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Audit Evidence Record",
@@ -16986,7 +17346,12 @@
             "surfaceAttributes": true
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A record demonstrating compliance. Evidence about a process, not the process itself."
+      }
     },
     {
       "kind": "part_def",
@@ -16996,7 +17361,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2138,
+      "lineNumber": 2283,
       "attributes": [
         {
           "name": "stakeholderName",
@@ -17092,6 +17457,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "",
+            "mappingNotes": "A relational entity depending on both parties. GDC because the pattern migrates. Not Role (between entities, not played by one). Candidate: ontara:StakeholderRelation."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Stakeholder Relationship",
@@ -17137,7 +17510,12 @@
             "rationale": "Some stakeholder relationships involve resource implications (e.g. regulatory requirements for qualified staff), but the link is mediated through GovernanceRequirement and ResourceConstraint (H4)."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "",
+        "mappingNotes": "A relational entity depending on both parties. GDC because the pattern migrates. Not Role (between entities, not played by one). Candidate: ontara:StakeholderRelation."
+      }
     },
     {
       "kind": "part_def",
@@ -17147,7 +17525,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2191,
+      "lineNumber": 2341,
       "attributes": [
         {
           "name": "arrangementName",
@@ -17233,6 +17611,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "A formalised agreement specifying shared responsibilities and protocols. The arrangement is informational; joint delivery is a Process."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Cooperative Arrangement",
@@ -17278,7 +17664,12 @@
             "rationale": "Cooperative arrangements may involve shared resources, but the resource types exist independently (H4)."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "A formalised agreement specifying shared responsibilities and protocols. The arrangement is informational; joint delivery is a Process."
+      }
     },
     {
       "kind": "part_def",
@@ -17288,7 +17679,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2238,
+      "lineNumber": 2393,
       "attributes": [
         {
           "name": "pathwayName",
@@ -17369,6 +17760,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "A structured route specification. The pathway as concept is a plan; actual referrals are Processes."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Referral Pathway",
@@ -17406,7 +17805,12 @@
             "rationale": "Referral pathways generate activities (intake, triage, acknowledgement), but these activities are typed independently (H4)."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "A structured route specification. The pathway as concept is a plan; actual referrals are Processes."
+      }
     },
     {
       "kind": "part_def",
@@ -17416,7 +17820,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2284,
+      "lineNumber": 2444,
       "attributes": [
         {
           "name": "dependencyName",
@@ -17502,6 +17906,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A record of asymmetric reliance. The dependency is informational; consequences are felt through resource availability."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "External Dependency",
@@ -17547,7 +17959,12 @@
             "rationale": "Dependencies have cost implications (supplier pricing, contractual terms), but cost drivers are characterising, not definitional (H1, H2)."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A record of asymmetric reliance. The dependency is informational; consequences are felt through resource availability."
+      }
     },
     {
       "kind": "part_def",
@@ -17557,7 +17974,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2335,
+      "lineNumber": 2500,
       "attributes": [
         {
           "name": "communityName",
@@ -17628,6 +18045,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "",
+            "mappingNotes": "Constitutive connection to community. GDC \u2014 relational, depends on both parties. Candidate: ontara:CommunityRelation."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Community Relationship",
@@ -17665,7 +18090,12 @@
             "rationale": "Communities overlap with customer segments, but they are not the same thing \u2014 a community relationship may serve non-customers (H4)."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "",
+        "mappingNotes": "Constitutive connection to community. GDC \u2014 relational, depends on both parties. Candidate: ontara:CommunityRelation."
+      }
     },
     {
       "kind": "part_def",
@@ -17675,7 +18105,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2379,
+      "lineNumber": 2549,
       "attributes": [
         {
           "name": "participationName",
@@ -17761,6 +18191,14 @@
           }
         },
         {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:PlanSpecification",
+            "mappingNotes": "A specification of how customers/patients participate. The model is a plan; actual participation is a Process."
+          }
+        },
+        {
           "name": "UserFacing",
           "attrs": {
             "friendlyName": "Participation Model",
@@ -17806,7 +18244,12 @@
             "rationale": "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4)."
           }
         }
-      ]
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:PlanSpecification",
+        "mappingNotes": "A specification of how customers/patients participate. The model is a plan; actual participation is a Process."
+      }
     },
     {
       "kind": "part",
@@ -17816,7 +18259,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2403,
+      "lineNumber": 2573,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -17874,7 +18317,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2418,
+      "lineNumber": 2588,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -17932,7 +18375,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2432,
+      "lineNumber": 2602,
       "specialises": "CooperativeArrangement",
       "attributes": [
         {
@@ -17985,7 +18428,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2446,
+      "lineNumber": 2616,
       "specialises": "ReferralPathway",
       "attributes": [
         {
@@ -18038,7 +18481,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2460,
+      "lineNumber": 2630,
       "specialises": "ReferralPathway",
       "attributes": [
         {
@@ -18091,7 +18534,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2473,
+      "lineNumber": 2643,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -18144,7 +18587,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2487,
+      "lineNumber": 2657,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -18197,7 +18640,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2500,
+      "lineNumber": 2670,
       "specialises": "CommunityRelationship",
       "attributes": [
         {
@@ -18240,7 +18683,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2512,
+      "lineNumber": 2682,
       "specialises": "ParticipationModel",
       "attributes": [
         {
@@ -23147,6 +23590,33 @@
       ]
     },
     {
+      "kind": "metadata_def",
+      "name": "BfoType",
+      "parentPackage": "MetadataLibrary",
+      "doc": "BFO ontological grounding annotation. Declares the\nBFO 2020 category and mid-level ontology parent for\na BMM or SMM element.\nThis annotation is the input to Stage 2 of the\nOWL mapping pipeline \u2014 the classification step that\ndetermines how each SysML element projects into the\nknowledge graph's domain",
+      "sourceFile": "model/foundation.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 325,
+      "attributes": [
+        {
+          "name": "bfoClass",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "midLevelClass",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "mappingNotes",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
       "kind": "enum_def",
       "name": "AgencyType",
       "parentPackage": "MetadataLibrary",
@@ -23154,7 +23624,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 330,
+      "lineNumber": 373,
       "attributes": [
         {
           "name": "patientAgent"
@@ -23178,7 +23648,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 353,
+      "lineNumber": 396,
       "attributes": [
         {
           "name": "agencyType",
@@ -23205,7 +23675,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 388,
+      "lineNumber": 431,
       "attributes": [
         {
           "name": "male"
@@ -23232,7 +23702,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 397,
+      "lineNumber": 440,
       "attributes": [
         {
           "name": "email"
@@ -23259,7 +23729,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 406,
+      "lineNumber": 449,
       "attributes": [
         {
           "name": "faceToFace"
@@ -23283,7 +23753,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 414,
+      "lineNumber": 457,
       "attributes": [
         {
           "name": "inbound"
@@ -23304,7 +23774,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 426,
+      "lineNumber": 469,
       "attributes": [
         {
           "name": "regulatory"
@@ -23334,7 +23804,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 442,
+      "lineNumber": 485,
       "attributes": [
         {
           "name": "essential"
@@ -23355,7 +23825,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 454,
+      "lineNumber": 497,
       "attributes": [
         {
           "name": "given"
@@ -23379,7 +23849,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 462,
+      "lineNumber": 505,
       "attributes": [
         {
           "name": "line1",
@@ -23416,7 +23886,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 471,
+      "lineNumber": 514,
       "attributes": [
         {
           "name": "email",
@@ -23443,7 +23913,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 481,
+      "lineNumber": 524,
       "attributes": [
         {
           "name": "pass"
@@ -23464,7 +23934,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 490,
+      "lineNumber": 533,
       "attributes": [
         {
           "name": "critical"
@@ -23485,7 +23955,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 498,
+      "lineNumber": 541,
       "attributes": [
         {
           "name": "patient"
@@ -23512,7 +23982,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 508,
+      "lineNumber": 551,
       "attributes": [
         {
           "name": "cdr;"
@@ -23539,7 +24009,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 522,
+      "lineNumber": 565,
       "attributes": [
         {
           "name": "clinical"
@@ -23566,7 +24036,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 538,
+      "lineNumber": 581,
       "attributes": [
         {
           "name": "automatic"
@@ -23587,7 +24057,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 553,
+      "lineNumber": 596,
       "attributes": [
         {
           "name": "healthy"
@@ -23608,7 +24078,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 562,
+      "lineNumber": 605,
       "attributes": [
         {
           "name": "low"
@@ -23632,7 +24102,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 572,
+      "lineNumber": 615,
       "attributes": [
         {
           "name": "oestrogen"
@@ -23653,7 +24123,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 581,
+      "lineNumber": 624,
       "attributes": [
         {
           "name": "noContraindication"
@@ -23680,7 +24150,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 593,
+      "lineNumber": 636,
       "attributes": [
         {
           "name": "estradiolValerate"
@@ -23710,7 +24180,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 605,
+      "lineNumber": 648,
       "attributes": [
         {
           "name": "oral"
@@ -23734,7 +24204,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 613,
+      "lineNumber": 656,
       "attributes": [
         {
           "name": "low"
@@ -23758,7 +24228,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 624,
+      "lineNumber": 667,
       "attributes": [
         {
           "name": "satisfied"
@@ -23779,7 +24249,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 632,
+      "lineNumber": 675,
       "attributes": [
         {
           "name": "stable"
@@ -23803,7 +24273,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 641,
+      "lineNumber": 684,
       "attributes": [
         {
           "name": "continueCurrentRegimen"
@@ -23830,7 +24300,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 654,
+      "lineNumber": 697,
       "attributes": [
         {
           "name": "clinical"
@@ -23854,7 +24324,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 665,
+      "lineNumber": 708,
       "attributes": [
         {
           "name": "pending"
@@ -23881,7 +24351,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 680,
+      "lineNumber": 723,
       "attributes": [
         {
           "name": "baseline"
@@ -23908,7 +24378,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 690,
+      "lineNumber": 733,
       "attributes": [
         {
           "name": "within"
@@ -23932,7 +24402,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 713,
+      "lineNumber": 756,
       "attributes": [
         {
           "name": "clinicalDataRepository"
@@ -23956,7 +24426,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 733,
+      "lineNumber": 776,
       "attributes": [
         {
           "name": "clinicalSignificance"
@@ -24001,7 +24471,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 753,
+      "lineNumber": 796,
       "attributes": [
         {
           "name": "domainConcept",
@@ -38590,7 +39060,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 51,
+      "lineNumber": 52,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -38623,7 +39093,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 59,
+      "lineNumber": 60,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -38666,7 +39136,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 72,
+      "lineNumber": 73,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -38709,7 +39179,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 85,
+      "lineNumber": 86,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -38752,7 +39222,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 97,
+      "lineNumber": 98,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -38790,7 +39260,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 105,
+      "lineNumber": 106,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -38828,7 +39298,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 117,
+      "lineNumber": 118,
       "specialises": "Channel",
       "attributes": [
         {
@@ -38871,7 +39341,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 126,
+      "lineNumber": 127,
       "specialises": "Channel",
       "attributes": [
         {
@@ -38914,7 +39384,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 137,
+      "lineNumber": 138,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -38947,7 +39417,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 144,
+      "lineNumber": 145,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -38980,7 +39450,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 158,
+      "lineNumber": 159,
       "specialises": "ServiceSubject",
       "attributes": [
         {
@@ -39018,7 +39488,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 177,
+      "lineNumber": 178,
       "specialises": "ServiceParticipant",
       "attributes": [
         {
@@ -39056,7 +39526,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 196,
+      "lineNumber": 197,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -39104,7 +39574,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 208,
+      "lineNumber": 209,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -39152,7 +39622,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 219,
+      "lineNumber": 220,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -39200,7 +39670,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 236,
+      "lineNumber": 237,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -39238,7 +39708,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 248,
+      "lineNumber": 249,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -39276,7 +39746,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 260,
+      "lineNumber": 261,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -39314,7 +39784,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 273,
+      "lineNumber": 274,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -39352,7 +39822,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 284,
+      "lineNumber": 285,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -39390,7 +39860,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 296,
+      "lineNumber": 297,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -39428,7 +39898,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 307,
+      "lineNumber": 308,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -39466,7 +39936,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 319,
+      "lineNumber": 320,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -39504,7 +39974,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 332,
+      "lineNumber": 333,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -39537,7 +40007,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 342,
+      "lineNumber": 343,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -39570,7 +40040,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 349,
+      "lineNumber": 350,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -39603,7 +40073,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 356,
+      "lineNumber": 357,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -39636,7 +40106,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 363,
+      "lineNumber": 364,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -39669,7 +40139,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 372,
+      "lineNumber": 373,
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
@@ -39697,7 +40167,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 382,
+      "lineNumber": 383,
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
@@ -39725,7 +40195,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 397,
+      "lineNumber": 398,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -39783,7 +40253,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 411,
+      "lineNumber": 412,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -39841,7 +40311,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 423,
+      "lineNumber": 424,
       "specialises": "CooperativeArrangement",
       "attributes": [
         {
@@ -39894,7 +40364,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 436,
+      "lineNumber": 437,
       "specialises": "ReferralPathway",
       "attributes": [
         {
@@ -39947,7 +40417,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 449,
+      "lineNumber": 450,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -40000,7 +40470,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 460,
+      "lineNumber": 461,
       "specialises": "CommunityRelationship",
       "attributes": [
         {
@@ -40043,7 +40513,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 469,
+      "lineNumber": 470,
       "specialises": "ParticipationModel",
       "attributes": [
         {
@@ -40091,7 +40561,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 494,
+      "lineNumber": 496,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -40129,7 +40599,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 505,
+      "lineNumber": 507,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -40167,7 +40637,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 516,
+      "lineNumber": 518,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -40205,7 +40675,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 526,
+      "lineNumber": 528,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -40243,7 +40713,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 534,
+      "lineNumber": 536,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -40281,7 +40751,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 545,
+      "lineNumber": 547,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -40319,7 +40789,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 558,
+      "lineNumber": 560,
       "specialises": "Capability",
       "attributes": [
         {
@@ -40352,7 +40822,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 567,
+      "lineNumber": 569,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -40390,7 +40860,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 581,
+      "lineNumber": 583,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -40423,7 +40893,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 599,
+      "lineNumber": 601,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -40456,7 +40926,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 609,
+      "lineNumber": 611,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -40489,7 +40959,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 617,
+      "lineNumber": 619,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -40522,7 +40992,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 625,
+      "lineNumber": 627,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -40555,7 +41025,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 633,
+      "lineNumber": 635,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -40588,7 +41058,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 643,
+      "lineNumber": 645,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -40621,7 +41091,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 654,
+      "lineNumber": 656,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -40654,7 +41124,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 665,
+      "lineNumber": 667,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -40687,7 +41157,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 679,
+      "lineNumber": 681,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -40725,7 +41195,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 732,
+      "lineNumber": 734,
       "specialises": "GovernanceRequirement",
       "attributes": [
         {
@@ -40763,7 +41233,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 756,
+      "lineNumber": 758,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -40801,7 +41271,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 767,
+      "lineNumber": 769,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -40839,7 +41309,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 779,
+      "lineNumber": 781,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -40877,7 +41347,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 792,
+      "lineNumber": 794,
       "specialises": "ExternalReference",
       "attributes": [
         {
