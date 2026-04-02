@@ -1,0 +1,127 @@
+@prefix : <https://ontara.dev/ontology/bmm/axioms#> .
+@prefix bfo: <http://purl.obolibrary.org/obo/> .
+@prefix cco: <https://www.commoncoreontologies.org/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ontara-bmm: <https://ontara.dev/ontology/bmm/> .
+@base <https://ontara.dev/ontology/bmm/axioms> .
+
+<https://ontara.dev/ontology/bmm/axioms> rdf:type owl:Ontology ;
+                                          owl:imports ontara-bmm: ;
+                                          dcterms:created "2026-04-02"^^xsd:date ;
+                                          rdfs:comment "Hand-authored OWL axioms for the Ontara BMM. Phase 2 Step 1: concern group disjointness. OWL-authoritative (B29)."@en ;
+                                          rdfs:label "Ontara BMM Axioms"@en ;
+                                          owl:versionInfo "Session 112 — Step 1: disjointness axioms"@en .
+
+#################################################################
+#    Classes
+#################################################################
+
+###  https://ontara.dev/ontology/bmm/ActivityModelElement
+ontara-bmm:ActivityModelElement rdf:type owl:Class ;
+                                owl:equivalentClass [ rdf:type owl:Class ;
+                                                      owl:unionOf ( ontara-bmm:ActivityBudget
+                                                                    ontara-bmm:ActivityCostAllocation
+                                                                    ontara-bmm:ActivityGranularity
+                                                                    ontara-bmm:ActivityRecord
+                                                                    ontara-bmm:ActivityType
+                                                                  )
+                                                    ] ;
+                                rdfs:comment "Union class collecting all BMM classes in the ActivityModel concern group."@en ;
+                                rdfs:label "Activity Model Element"@en .
+
+
+###  https://ontara.dev/ontology/bmm/FinancialPlanningElement
+ontara-bmm:FinancialPlanningElement rdf:type owl:Class ;
+                                    owl:equivalentClass [ rdf:type owl:Class ;
+                                                          owl:unionOf ( ontara-bmm:CostDriver
+                                                                        ontara-bmm:FinancialProjection
+                                                                        ontara-bmm:PricingModel
+                                                                        ontara-bmm:RevenueStream
+                                                                        ontara-bmm:UnitEconomics
+                                                                      )
+                                                        ] ;
+                                    rdfs:comment "Union class collecting all BMM classes in the FinancialPlanning concern group."@en ;
+                                    rdfs:label "Financial Planning Element"@en .
+
+
+###  https://ontara.dev/ontology/bmm/GovernanceMappingElement
+ontara-bmm:GovernanceMappingElement rdf:type owl:Class ;
+                                    owl:equivalentClass [ rdf:type owl:Class ;
+                                                          owl:unionOf ( ontara-bmm:AuditEvidenceRecord
+                                                                        ontara-bmm:GovernanceRequirement
+                                                                      )
+                                                        ] ;
+                                    rdfs:comment "Union class collecting all BMM classes in the GovernanceMapping concern group."@en ;
+                                    rdfs:label "Governance Mapping Element"@en .
+
+
+###  https://ontara.dev/ontology/bmm/ResourcePlanningElement
+ontara-bmm:ResourcePlanningElement rdf:type owl:Class ;
+                                   owl:equivalentClass [ rdf:type owl:Class ;
+                                                         owl:unionOf ( ontara-bmm:Capability
+                                                                       ontara-bmm:CapacityModel
+                                                                       ontara-bmm:InventoryRecord
+                                                                       ontara-bmm:ObjectiveCapabilityMapping
+                                                                       ontara-bmm:ResourceConstraint
+                                                                       ontara-bmm:ResourceInstance
+                                                                       ontara-bmm:ResourceType
+                                                                     )
+                                                       ] ;
+                                   rdfs:comment "Union class collecting all BMM classes in the ResourcePlanning concern group."@en ;
+                                   rdfs:label "Resource Planning Element"@en .
+
+
+###  https://ontara.dev/ontology/bmm/ServiceConceptElement
+ontara-bmm:ServiceConceptElement rdf:type owl:Class ;
+                                 owl:equivalentClass [ rdf:type owl:Class ;
+                                                       owl:unionOf ( ontara-bmm:CatalogueEntry
+                                                                     ontara-bmm:Channel
+                                                                     ontara-bmm:CustomerSegment
+                                                                     ontara-bmm:DifferentiationClaim
+                                                                     ontara-bmm:ExternalReference
+                                                                     ontara-bmm:ServiceOffering
+                                                                     ontara-bmm:ServiceParticipant
+                                                                     ontara-bmm:ServiceSubject
+                                                                     ontara-bmm:ValueProposition
+                                                                   )
+                                                     ] ;
+                                 rdfs:comment "Union class collecting all BMM classes in the ServiceConcept concern group."@en ;
+                                 rdfs:label "Service Concept Element"@en .
+
+
+###  https://ontara.dev/ontology/bmm/StakeholderModelElement
+ontara-bmm:StakeholderModelElement rdf:type owl:Class ;
+                                   owl:equivalentClass [ rdf:type owl:Class ;
+                                                         owl:unionOf ( ontara-bmm:CommunityRelationship
+                                                                       ontara-bmm:CooperativeArrangement
+                                                                       ontara-bmm:ExternalDependency
+                                                                       ontara-bmm:ParticipationModel
+                                                                       ontara-bmm:ReferralPathway
+                                                                       ontara-bmm:StakeholderRelationship
+                                                                     )
+                                                       ] ;
+                                   rdfs:comment "Union class collecting all BMM classes in the StakeholderModel concern group."@en ;
+                                   rdfs:label "Stakeholder Model Element"@en .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( ontara-bmm:ActivityModelElement
+                ontara-bmm:FinancialPlanningElement
+                ontara-bmm:GovernanceMappingElement
+                ontara-bmm:ResourcePlanningElement
+                ontara-bmm:ServiceConceptElement
+                ontara-bmm:StakeholderModelElement
+              )
+] .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
