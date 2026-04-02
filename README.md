@@ -1,69 +1,132 @@
-# GenderSense — SysML v2 High-Level Package Model
+# Ontara Platform — SysML v2 Model and Tooling Repository
 
-## Purpose
+## What Ontara Is
 
-This project contains the top-level SysML v2 package hierarchy for the GenderSense clinical service management platform. It defines the complete namespace structure and scope for the business system, from enterprise context through clinical service delivery, platform infrastructure, operations, knowledge/decision support, and cross-cutting foundation services.
+**Ontara** is a service system development, delivery, and execution platform, particularly strong in supporting regulated care service delivery. A model serves as the single source of truth for what a service business is, how it works, what rules govern it, and how the technology platform supports it. The model *generates* the running system rather than merely documenting it, and *comprehends itself* — it can explain what it contains and why.
 
-## Status
+**GenderSense Limited (GSL)**, a private gender-affirming healthcare service, is the primary motivating use case and first production tenant. Ontara is the platform; GSL is one tenant of that platform.
 
-**Package skeleton established and split into per-domain files:** 5 March 2026. All packages declared with doc comments and placeholder `use case def` / `part def` / `enum def` / `state def` / `metadata def` content. `satisfy` traceability from requirements to constraints verified. All files parse clean in Syside Modeler 0.8.5.
+## Architecture
 
-## Project Structure
+Ontara maintains two distinct meta models connected by explicit horizontal mappings:
+
+- **Business Meta Model (BMM)** — what a service business *is*. 34 elements across six concerns (ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel).
+- **System Meta Model (SMM)** — how a business system *works*. Currently: ArchitecturalSection (20 section instances describing the dual-stack architecture).
+
+The **dual-stack architecture** (Session 73) pairs these as two parallel vertical stacks with horizontal mappings at every tier. The knowledge graph (OWL 2 DL in GraphDB) serves as the eventual canonical store, with SysML v2 as an engineering projection. BFO 2020 is the mandatory upper ontology.
+
+## Repository Structure
 
 ```
 gsl-sysml-model/
-├── model/
-│   ├── gendersense.sysml       — Root package (imports all domains)
-│   ├── enterprise.sysml        — Organisation, Regulation, Strategy, Risk
-│   ├── knowledge.sysml         — CDS, Constraints, Logic, Decisions, Outcomes, Learning, Analytics
-│   ├── service-delivery.sysml  — PatientJourney, ClinicalPathways, Consent, Coaching, Governance, Entities
-│   ├── platform.sysml          — Portal, Booking, EHR, Forms, Messaging, Video, Labs, Rx, Payments, Docs, Identity, Orchestration, Integration
-│   ├── operations.sysml        — Finance, People, Marketing, CRM, Reporting
-│   └── foundation.sysml        — MetadataLibrary, CommonTypes, StatePatterns, GenerationPipeline
+├── model/                          SysML v2 model files (source of truth)
+│   ├── gendersense.sysml           Root package — imports all domain packages
+│   ├── business-model.sysml        BMM: 34 part defs across 6 concern packages
+│   ├── business-scenarios.sysml    Business scenario definitions
+│   ├── business-strategy.sysml     Business strategy definitions
+│   ├── architectural-structure.sysml  SMM: ArchitecturalSection + 20 instances
+│   ├── pattern-catalogue.sysml     22 validated patterns, 8 principles
+│   ├── foundation.sysml            MetadataLibrary, CommonTypes, StatePatterns
+│   ├── enterprise.sysml            Organisation, Regulation, Strategy, Risk
+│   ├── knowledge.sysml             CDS, Constraints, Logic, Decisions
+│   ├── service-delivery.sysml      Clinical pathways, consent, governance
+│   ├── platform.sysml              Portal, EHR, messaging, integration
+│   └── operations.sysml            Finance, people, reporting
+├── exercises/                      Demonstrator domains
+│   ├── coffeeshop-demonstrator/    Cafe — full-stack reference implementation
+│   ├── suds-demonstrator/          Suds — batch processing launderette
+│   └── paws-demonstrator/          Paws — appointment-based dog grooming
+├── scripts/                        Generation pipeline (Python)
+│   ├── gen_model_introspection.py  Console data generator (JSON from SysML)
+│   ├── gen_ontara_bmm.py           OWL/Turtle generator (BMM → ontara-bmm.ttl)
+│   ├── gen_concept_graph.py        Mermaid + Obsidian concept graph
+│   ├── gen_package_hierarchy.py    Package hierarchy generator
+│   ├── gen_system_manifest.py      System manifest generator
+│   ├── gen_constraint_evaluator.py Constraint evaluator (TypeScript)
+│   ├── gen_decision_table_evaluator.py  Decision table evaluator (TypeScript)
+│   ├── projection_engine.py        Projection engine
+│   ├── setup_graphdb.py            GraphDB repository setup script
+│   └── archive-documentation.sh    Vault → repo archive helper
+├── console/                        Ontara Console (SvelteKit + Svelte 5)
+│   ├── src/                        12 views: Home, Coverage Matrix, Package Navigator,
+│   │                               Component Catalogue, Glossary, Governance, Meta-Model,
+│   │                               Patterns, Domain Views, Weighted Relationship Graph (3D),
+│   │                               Architecture (visual map)
+│   └── static/data/                model-introspection.json (console data source)
+├── generated/                      Generated artefacts (DO NOT EDIT)
+│   ├── ontara/                     model-introspection.json
+│   ├── ontology/                   OWL/Turtle output (ontara-bmm.ttl, etc.)
+│   ├── concept-graph/              Mermaid diagrams
+│   └── projections/                Projection engine output
+├── ontology/                       Ontological assets
+│   ├── imports/                    External ontologies (BFO 2020, CCO, IAO)
+│   └── config/                     Mapping config (cco-iri-lookup.json, etc.)
 ├── documentation/
-│   └── gendersense-package-hierarchy.sysml.archive  — Original single-file version (for reference)
-└── README.md
+│   ├── reference/                  SysML syntax reference, versioned snapshots
+│   ├── archive/                    Committed vault snapshots (session reports, plans, design docs)
+│   └── generated/                  Generated documentation
+├── libraries/                      Shared SysML metadata definitions
+├── concept-graph/                  Concept graph source
+├── spikes/                         Experimental spikes
+├── CLAUDE.md                       Claude Code project context
+└── .claude/skills/                 Claude Code skills
 ```
 
-Each domain file declares a standalone top-level package (e.g. `package Enterprise { }`). The root `gendersense.sysml` declares `package GenderSense` and imports all domain packages. Cross-file imports (e.g. `private import Enterprise::Regulation::*;`) resolve across the workspace.
+## Technology Stack
 
-## Workspace Dependencies
+| Component | Technology |
+|---|---|
+| Modelling language | SysML v2 (OMG ratified July 2025) |
+| Modelling tool | Syside Modeler (VS Code extension) |
+| Ontological formalism | OWL 2 DL — BFO 2020 + CCO + IAO |
+| Triple store | GraphDB Free 10.x (OWL-Horst reasoning) |
+| Ontology authoring | Protégé 5.6+ |
+| Console | SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4 |
+| 3D relationship graph | 3d-force-graph + Three.js r183 + three-spritetext |
+| Generation pipeline | Python (9 generators reading .sysml, producing JSON/TS/Mermaid/Turtle) |
+| Coffee Shop app | SvelteKit + Temporal + XState v5 + EHRbase CDR + PostgreSQL |
+| Knowledge base | Obsidian (separate vault, not in this repo) |
+| Development | macOS, VS Code |
 
-This project should be in the same VS Code workspace as:
+## Current State (Session 104, April 2026)
 
-- **`sysml-metadata-lib/`** — Shared metadata definitions (`@TemporalWorkflow`, `@TemporalActivity`, etc.) validated in the coffee shop demonstrator. Foundation::MetadataLibrary will import from this.
-- **`coffeeshop-demonstrator/`** — Reference implementation and syntax reference (`documentation/sysml-v2-syntax-reference-v3.1-2026-03-05.md`).
+- **Stage 5 — Knowledge Graph Implementation** is the active workstream. GraphDB running with BFO/CCO/IAO loaded (Session 101). Ontara BMM ontology (`ontara-bmm.ttl`) generated and loaded with all 34 BMM classes verified via SPARQL (Session 102). Parser refactoring (Step 3) next.
+- **BMM structurally complete** at General level — 34 elements, 96 weighted relationships, full comprehension metadata (34/34 @UserFacing, @PurposiveDescription, @Comprehension, @BfoType).
+- **Console** has 12 views including an interactive 3D weighted relationship graph and a spatial visual architecture map.
+- **Three demonstrator domains** validated (Cafe, Suds, Paws), with Ears (community ear care) outlined as a fourth.
 
-Syside resolves `private import PackageName::*;` across all `.sysml` files in the VS Code workspace folder tree.
+## Key Commands
 
-## Verified Patterns
+```bash
+# Generate console data from SysML model
+python scripts/gen_model_introspection.py --save
 
-- `use case def` with `doc` blocks (50+ instances)
-- `requirement def` with `subject` and cross-package type references
-- `constraint def` with evaluable boolean bodies
-- `satisfy requirement X by Y;` traceability (constraint usage satisfying requirement)
-- `metadata def` with typed attributes
-- `state def` with transitions and events
-- Multi-file split with cross-file imports
-- Deep package nesting (3 levels)
+# Generate OWL/Turtle from BMM
+python scripts/gen_ontara_bmm.py
 
-## Companion Documents
+# Run the console (dev mode)
+cd console && pnpm dev
 
-- **Architecture Principles** (`gendersense-architecture-principles.md`)
-- **Modelling Strategy** (`gendersense-sysml-modelling-strategy.md`)
-- **Package Hierarchy Proposal** (`gendersense-package-hierarchy-proposal.md`)
-- **SysML v2 Syntax Reference** (`sysml-v2-syntax-reference-v3.1-2026-03-05.md`)
+# Build the console
+cd console && pnpm build
+```
 
-## Tooling
+## Companion Knowledge Base
 
-- **Syside Modeler** 0.8.5 (VS Code extension, 1 March 2026)
-- **SysML v2.0** (OMG ratified July 2025)
-- **KerML 1.0**
+The Obsidian vault (not in this repo) contains ~190 registered design concepts, 24 discussion papers, 72+ session reports, and the full governance structure. The vault is under separate git version control.
 
-## Next Steps
+Key documents: Strategic Reference, Master Concept Register, Development Workflow Guide, Architecture Principles (v3), SysML Modelling Strategy (v3), Service Business Meta Modelling (v2).
 
-1. Begin first clinical pathway model (Hormone Therapy Initiation) in `service-delivery.sysml`
-2. Test `verify` relationship syntax
-3. Evaluate Syside Automator for generator migration
-4. Test use case diagram and other visualisations on the split files
-5. Validate openEHR integration patterns via coffee shop CDR extension
+## Development Methodology
+
+Three governing principles:
+
+1. **Cross-domain validation** — every meta model concept must validate in at least two demonstrator domains.
+2. **Co-evolution of model and tooling** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
+3. **Non-constraining architecture** — decisions should not foreclose future development paths.
+
+Development is conducted through a structured session programme (currently Session 104) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
+
+---
+
+*README last updated: Session 104, 2 April 2026.*
