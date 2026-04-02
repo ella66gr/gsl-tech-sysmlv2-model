@@ -11,8 +11,8 @@
 # Source: Stage 5 Phase 1 — Step 4 (Session 100 plan §3, Step 4)
 # Status: Skeleton — to be populated at Step 4 implementation.
 
-version: "0.1.0"
-session: 101
+version: "1.0.0"
+session: 105
 
 # IRI namespaces
 namespaces:
@@ -37,59 +37,59 @@ named_graphs:
 # Rules are evaluated in order; first match wins.
 rules:
 
+  # --- Phase 1: DomainClass (part_def) ---
   - match:
       construct: "part_def"
-      package_pattern: "BusinessModel::*"
+      package_set:
+        - "ServiceConcept"
+        - "ActivityModel"
+        - "ResourcePlanning"
+        - "FinancialPlanning"
+        - "GovernanceMapping"
+        - "StakeholderModel"
       has_annotation: "@BfoType"
     classification: "DomainClass"
     target_graph: "domain"
     iri_template: "{ontara-bmm}{ElementName}"
     notes: "BMM part defs with BFO mapping → OWL classes in domain graph"
 
+  # --- Phase 1: DomainClass (requirement_def) ---
+  - match:
+      construct: "requirement_def"
+      package_set:
+        - "ServiceConcept"
+        - "ActivityModel"
+        - "ResourcePlanning"
+        - "FinancialPlanning"
+        - "GovernanceMapping"
+        - "StakeholderModel"
+      has_annotation: "@BfoType"
+    classification: "DomainClass"
+    target_graph: "domain"
+    iri_template: "{ontara-bmm}{ElementName}"
+    notes: "BMM requirement defs with BFO mapping → OWL classes in domain graph"
+
+  # --- Phase 1: StructuralOnly (BMM without BFO) ---
   - match:
       construct: "part_def"
-      package_pattern: "BusinessModel::*"
+      package_set:
+        - "ServiceConcept"
+        - "ActivityModel"
+        - "ResourcePlanning"
+        - "FinancialPlanning"
+        - "GovernanceMapping"
+        - "StakeholderModel"
       has_annotation: null
     classification: "StructuralOnly"
     target_graph: null
     notes: "BMM part defs without BFO mapping — flag for review"
 
+  # --- Phase 1: StructuralOnly (everything else) ---
   - match:
-      construct: "part"
-      parent_classification: "DomainClass"
-    classification: "DomainIndividual"
-    target_graph: "domain"
-    iri_template: "{ontara-data}{domain}/{InstanceName}"
-    notes: "Demonstrator instances of mapped part defs → OWL individuals"
-
-  - match:
-      construct: "enum_def"
-      package_pattern: "BusinessModel::*"
-    classification: "DomainEnumeration"
-    target_graph: "domain"
-    iri_template: "{ontara-bmm}{EnumName}"
-    notes: "BMM enums → OWL classes or SKOS concept schemes (TBD)"
-
-  - match:
-      construct: "attribute"
-      parent_classification: "DomainClass"
-    classification: "DomainProperty"
-    target_graph: "domain"
-    iri_template: "{ontara-bmm}{ClassName}/{propertyName}"
-    notes: "Typed attributes on domain classes → OWL properties"
-
-  - match:
-      construct: "metadata_def"
-    classification: "MetadataAnnotation"
-    target_graph: "metamodel"
-    notes: "Metadata defs → metamodel graph (pipeline traceability)"
-
-  - match:
-      construct: "part_def"
-      package_pattern: "Foundation::*|SMM::*|Knowledge::*|ServiceDelivery::*|Platform::*|Operations::*"
+      construct: "*"
     classification: "StructuralOnly"
     target_graph: null
-    notes: "SMM/Foundation/infrastructure — excluded from Phase 1 domain graph"
+    notes: "All non-BMM constructs excluded from Phase 1 domain graph"
 
 # Annotation extraction for domain graph entities
 annotation_mapping:

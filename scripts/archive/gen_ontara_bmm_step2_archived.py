@@ -1,3 +1,20 @@
+# ================================================================
+# ARCHIVED — Superseded by gen_owl_pipeline.py (Session 105)
+# ================================================================
+# Original: scripts/gen_ontara_bmm.py
+# Produced: Session 102 (Stage 5 Phase 1 Step 2)
+# Archived: Session 105 (2 April 2026)
+# Verified against: GraphDB ontara-dev repository (Session 102)
+# Commit at archive: 1e128f1 (Step 3 parser extraction)
+#
+# This is a known-good generator that produces ontara-bmm.ttl
+# from hardcoded BMM data. It was the first OWL ontology generator
+# and validated all 34 BMM classes in GraphDB. Retained as a
+# reference implementation.
+#
+# The pipeline generator (gen_owl_pipeline.py) reads from
+# SysML source files via the shared parser instead of hardcoded data.
+# ================================================================
 #!/usr/bin/env python3
 """
 Ontara BMM Ontology Generator — gen_ontara_bmm.py

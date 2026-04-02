@@ -6,7 +6,7 @@ Ontara SysML v2 Parser — Shared Module
 Reusable SysML v2 text parser extracted from gen_model_introspection.py.
 Used by:
   - gen_model_introspection.py (console data generation)
-  - gen_owl_pipeline.py (OWL/RDF generation, planned)
+  - gen_owl_pipeline.py (OWL/RDF generation — Session 105)
 
 Extracts: part defs, part usages, enum defs, metadata defs,
 requirement defs, constraint defs, satisfy relationships,

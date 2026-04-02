@@ -1,0 +1,345 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ontara-bmm: <https://ontara.dev/ontology/bmm/> .
+@prefix ontara-corr: <https://ontara.dev/ontology/correspondence/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ontara-corr:map-ActivityBudget a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ActivityBudget ;
+    ontara-corr:sourceHash "87e2e28c8598a59c" ;
+    ontara-corr:sysmlElementName "ActivityBudget" ;
+    ontara-corr:sysmlLineNumber 960 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ActivityCostAllocation a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ActivityCostAllocation ;
+    ontara-corr:sourceHash "dcf138465a738a65" ;
+    ontara-corr:sysmlElementName "ActivityCostAllocation" ;
+    ontara-corr:sysmlLineNumber 1043 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ActivityGranularity a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ActivityGranularity ;
+    ontara-corr:sourceHash "2ce52e0cdf2239e9" ;
+    ontara-corr:sysmlElementName "ActivityGranularity" ;
+    ontara-corr:sysmlLineNumber 1000 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ActivityRecord a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ActivityRecord ;
+    ontara-corr:sourceHash "563df9f01d45dd75" ;
+    ontara-corr:sysmlElementName "ActivityRecord" ;
+    ontara-corr:sysmlLineNumber 919 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ActivityType a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ActivityType ;
+    ontara-corr:sourceHash "dec0e6c3968de33d" ;
+    ontara-corr:sysmlElementName "ActivityType" ;
+    ontara-corr:sysmlLineNumber 884 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-AuditEvidenceRecord a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:AuditEvidenceRecord ;
+    ontara-corr:sourceHash "118f84cc5a9791fb" ;
+    ontara-corr:sysmlElementName "AuditEvidenceRecord" ;
+    ontara-corr:sysmlLineNumber 2191 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-Capability a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:Capability ;
+    ontara-corr:sourceHash "35af9108951d4736" ;
+    ontara-corr:sysmlElementName "Capability" ;
+    ontara-corr:sysmlLineNumber 1221 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-CapacityModel a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:CapacityModel ;
+    ontara-corr:sourceHash "9ca70d82745a1e7f" ;
+    ontara-corr:sysmlElementName "CapacityModel" ;
+    ontara-corr:sysmlLineNumber 1269 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-CatalogueEntry a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:CatalogueEntry ;
+    ontara-corr:sourceHash "f3286f1a2d18d423" ;
+    ontara-corr:sysmlElementName "CatalogueEntry" ;
+    ontara-corr:sysmlLineNumber 522 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-Channel a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:Channel ;
+    ontara-corr:sourceHash "8853547d78c660e1" ;
+    ontara-corr:sysmlElementName "Channel" ;
+    ontara-corr:sysmlLineNumber 266 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-CommunityRelationship a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:CommunityRelationship ;
+    ontara-corr:sourceHash "6ca1906ceb23ff44" ;
+    ontara-corr:sysmlElementName "CommunityRelationship" ;
+    ontara-corr:sysmlLineNumber 2500 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-CooperativeArrangement a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:CooperativeArrangement ;
+    ontara-corr:sourceHash "85de918a8f7f2b76" ;
+    ontara-corr:sysmlElementName "CooperativeArrangement" ;
+    ontara-corr:sysmlLineNumber 2341 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-CostDriver a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:CostDriver ;
+    ontara-corr:sourceHash "3fb7d1c83bfcec5f" ;
+    ontara-corr:sysmlElementName "CostDriver" ;
+    ontara-corr:sysmlLineNumber 1793 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-CustomerSegment a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:CustomerSegment ;
+    ontara-corr:sourceHash "103608095a75cf1d" ;
+    ontara-corr:sysmlElementName "CustomerSegment" ;
+    ontara-corr:sysmlLineNumber 104 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-DifferentiationClaim a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:DifferentiationClaim ;
+    ontara-corr:sourceHash "5c8918dcdf394d92" ;
+    ontara-corr:sysmlElementName "DifferentiationClaim" ;
+    ontara-corr:sysmlLineNumber 307 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ExternalDependency a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ExternalDependency ;
+    ontara-corr:sourceHash "96e7ca22f7ab9cc0" ;
+    ontara-corr:sysmlElementName "ExternalDependency" ;
+    ontara-corr:sysmlLineNumber 2444 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ExternalReference a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ExternalReference ;
+    ontara-corr:sourceHash "54eb854584e1c130" ;
+    ontara-corr:sysmlElementName "ExternalReference" ;
+    ontara-corr:sysmlLineNumber 571 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-FinancialProjection a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:FinancialProjection ;
+    ontara-corr:sourceHash "37160fd1e9dacdad" ;
+    ontara-corr:sysmlElementName "FinancialProjection" ;
+    ontara-corr:sysmlLineNumber 1912 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-GovernanceRequirement a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:GovernanceRequirement ;
+    ontara-corr:sourceHash "a00a1489f8f24901" ;
+    ontara-corr:sysmlElementName "GovernanceRequirement" ;
+    ontara-corr:sysmlLineNumber 2151 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-InventoryRecord a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:InventoryRecord ;
+    ontara-corr:sourceHash "567814154e9969b3" ;
+    ontara-corr:sysmlElementName "InventoryRecord" ;
+    ontara-corr:sysmlLineNumber 1363 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ObjectiveCapabilityMapping a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ObjectiveCapabilityMapping ;
+    ontara-corr:sourceHash "cb70062e3e93bf37" ;
+    ontara-corr:sysmlElementName "ObjectiveCapabilityMapping" ;
+    ontara-corr:sysmlLineNumber 1643 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ParticipationModel a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ParticipationModel ;
+    ontara-corr:sourceHash "5a621de7f953788a" ;
+    ontara-corr:sysmlElementName "ParticipationModel" ;
+    ontara-corr:sysmlLineNumber 2549 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-PricingModel a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:PricingModel ;
+    ontara-corr:sourceHash "d77689f3417b53c0" ;
+    ontara-corr:sysmlElementName "PricingModel" ;
+    ontara-corr:sysmlLineNumber 1874 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ReferralPathway a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ReferralPathway ;
+    ontara-corr:sourceHash "9671e661130b6eb5" ;
+    ontara-corr:sysmlElementName "ReferralPathway" ;
+    ontara-corr:sysmlLineNumber 2393 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ResourceConstraint a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ResourceConstraint ;
+    ontara-corr:sourceHash "2e7af7394fc7aa4e" ;
+    ontara-corr:sysmlElementName "ResourceConstraint" ;
+    ontara-corr:sysmlLineNumber 1315 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ResourceInstance a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ResourceInstance ;
+    ontara-corr:sourceHash "dce2a83dfab4d018" ;
+    ontara-corr:sysmlElementName "ResourceInstance" ;
+    ontara-corr:sysmlLineNumber 1169 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ResourceType a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ResourceType ;
+    ontara-corr:sourceHash "993b2fca53f2f724" ;
+    ontara-corr:sysmlElementName "ResourceType" ;
+    ontara-corr:sysmlLineNumber 1128 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-RevenueStream a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:RevenueStream ;
+    ontara-corr:sourceHash "e100b5eea4117adf" ;
+    ontara-corr:sysmlElementName "RevenueStream" ;
+    ontara-corr:sysmlLineNumber 1745 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ServiceOffering a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ServiceOffering ;
+    ontara-corr:sourceHash "e8b97a4b4f1d9e29" ;
+    ontara-corr:sysmlElementName "ServiceOffering" ;
+    ontara-corr:sysmlLineNumber 220 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ServiceParticipant a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ServiceParticipant ;
+    ontara-corr:sourceHash "eb8938a37d23d3a4" ;
+    ontara-corr:sysmlElementName "ServiceParticipant" ;
+    ontara-corr:sysmlLineNumber 442 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ServiceSubject a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ServiceSubject ;
+    ontara-corr:sourceHash "cbc1206a73573d66" ;
+    ontara-corr:sysmlElementName "ServiceSubject" ;
+    ontara-corr:sysmlLineNumber 368 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-StakeholderRelationship a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:StakeholderRelationship ;
+    ontara-corr:sourceHash "08ab49f017349aba" ;
+    ontara-corr:sysmlElementName "StakeholderRelationship" ;
+    ontara-corr:sysmlLineNumber 2283 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-UnitEconomics a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:UnitEconomics ;
+    ontara-corr:sourceHash "23bfb4bdb5c8006b" ;
+    ontara-corr:sysmlElementName "UnitEconomics" ;
+    ontara-corr:sysmlLineNumber 1831 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-ValueProposition a ontara-corr:MappingRecord ;
+    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ValueProposition ;
+    ontara-corr:sourceHash "e6d859a1d5df7653" ;
+    ontara-corr:sysmlElementName "ValueProposition" ;
+    ontara-corr:sysmlLineNumber 150 ;
+    ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
