@@ -24,7 +24,7 @@
   // Group ordering and display labels
   const GROUP_ORDER = [
     'sharedFoundation', 'leftStack', 'rightStack',
-    'crossCutting', 'greenContainer', 'infrastructure',
+    'crossCutting', 'rulesAndConstraintsContainer', 'infrastructure',
   ] as const;
 
   const GROUP_LABELS: Record<string, string> = {
@@ -32,7 +32,7 @@
     leftStack: 'Left Stack — Business Model',
     rightStack: 'Right Stack — Business System Model',
     crossCutting: 'Cross-Cutting',
-    greenContainer: 'Green Container',
+    rulesAndConstraintsContainer: 'Rules & Constraints Container',
     infrastructure: 'Infrastructure',
   };
 

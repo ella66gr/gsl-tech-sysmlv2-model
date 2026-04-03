@@ -110,8 +110,8 @@
   Row  7 : BMM Gen Vocab (col 1) | Mapping B (col 2) | SMM Gen Vocab (col 3)
   Row  8 : Arrow row — terracotta↓ col 1, blue↓ col 3
   Row  9 : Business Instance (col 1) | Mapping C (col 2) | System Instance (col 3)
-  Row 10 : Arrow row — terracotta↓ col 1, blue↓ col 3  (entering green container)
-  Row 11 : Green Container wrapper (col 1–3)
+  Row 10 : Arrow row — terracotta↓ col 1, blue↓ col 3  (entering rules & constraints container)
+  Row 11 : Rules & Constraints Container wrapper (col 1–3)
   Row 12 : Infrastructure (col 1–4)
   Row 13 : Operator (col 1–4)
 -->
@@ -289,11 +289,11 @@
       </div>
     {/if}
 
-    <!-- ── Row 10: Arrow row — entering green container ──────── -->
+    <!-- ── Row 10: Arrow row — entering rules & constraints container ── -->
     <div style="grid-column: 1; grid-row: 10;">{@render verticalArrow('var(--arch-left-heading)', 0.5)}</div>
     <div style="grid-column: 3; grid-row: 10;">{@render verticalArrow('var(--arch-right-heading)', 0.5)}</div>
 
-    <!-- ── Row 11: Green Container (cols 1–3) ───────────────────── -->
+    <!-- ── Row 11: Rules & Constraints Container (cols 1–3) ────── -->
     <div class="green-container-wrapper" style="grid-column: 1 / 4; grid-row: 11;">
       <div class="green-label">Rules &amp; Constraints Container</div>
       <div class="green-inner-grid">

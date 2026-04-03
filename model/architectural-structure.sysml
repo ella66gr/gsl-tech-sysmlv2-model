@@ -30,8 +30,8 @@ package ArchitecturalStructure {
          *
          * 20 sections across six architectural groups: shared
          * foundation, left stack (business model), right stack
-         * (business system model), cross-cutting, green container,
-         * and infrastructure.
+         * (business system model), cross-cutting, rules and
+         * constraints container, and infrastructure.
          *
          * Single part def, 20 instances — the sections share the
          * same structural shape (I9: part def / part distinction).
@@ -55,7 +55,7 @@ package ArchitecturalStructure {
         leftStack;
         rightStack;
         crossCutting;
-        greenContainer;
+        rulesAndConstraintsContainer;
         infrastructure;
     }
 
@@ -276,7 +276,7 @@ package ArchitecturalStructure {
     @ArchitecturalLocation {
         representationalModalitySummary = "SysML v2. Currently partially implicit — operational domains emerge from the instance layer but are not explicitly modelled as distinct packages.";
         persistenceSummary = "Currently: implicit in the instance layer structure. Target: explicit in the knowledge graph and/or SysML model.";
-        interfacesSummary = "Vertical downward to business process patterns. Vertical upward: emerges from the business instance. Horizontal rightward to system domains. Inside the green container: operates under rules and constraints.";
+        interfacesSummary = "Vertical downward to business process patterns. Vertical upward: emerges from the business instance. Horizontal rightward to system domains. Inside the rules and constraints container.";
         domainIllustrationSummary = "For Paws: nine operational domains — Booking, Scheduling, Finance, Customer Management, Inventory, Compliance, Reporting, Marketing, and Document Management — each in Sam's language.";
     }
     part operationalDomains : ArchitecturalSection {
@@ -302,7 +302,7 @@ package ArchitecturalStructure {
     @ArchitecturalLocation {
         representationalModalitySummary = "SysML v2 for archetype and pattern definitions. Process sketch DSL (proposed) for human-readable instances. Currently: described in discussion papers; not yet formally modelled.";
         persistenceSummary = "Currently: discussion papers only. Target: knowledge graph (canonical) with SysML v2 as projection.";
-        interfacesSummary = "Vertical upward: parameterised by BMM vocabulary. Horizontal rightward: the pipeline crossing — executed as operational simulation workflows. Inside the green container: operates under rules and constraints.";
+        interfacesSummary = "Vertical upward: parameterised by BMM vocabulary. Horizontal rightward: the pipeline crossing — executed as operational simulation workflows. Inside the rules and constraints container.";
         domainIllustrationSummary = "For Paws: Resource Allocation (room to groom), Scheduling (appointment booking), Transaction (payment), Fulfilment (deliver groom), Replenishment (reorder shampoo) — each determined by typed relations in the instance.";
     }
     part businessProcessPatterns : ArchitecturalSection {
@@ -410,7 +410,7 @@ package ArchitecturalStructure {
     @ArchitecturalLocation {
         representationalModalitySummary = "SysML v2 for model descriptions; the system domains also have an execution dimension as running code. Dual nature: model content and operational modules.";
         persistenceSummary = "Dual: model descriptions in SysML v2 / knowledge graph; running instances in their own operational stores (PostgreSQL, workflow state, CDR).";
-        interfacesSummary = "Vertical downward to operational simulation. Vertical upward: instantiates system instance configurations. Horizontal leftward to operational domains — realised-by. Inside the green container: operates under rules and constraints.";
+        interfacesSummary = "Vertical downward to operational simulation. Vertical upward: instantiates system instance configurations. Horizontal leftward to operational domains — realised-by. Inside the rules and constraints container.";
         domainIllustrationSummary = "For Paws: Booking Service, Grooming Workflow Manager, Financial Module, Customer Management, Inventory Tracker, Compliance Module — each mapping horizontally to a business operational domain.";
     }
     part systemDomains : ArchitecturalSection {
@@ -436,7 +436,7 @@ package ArchitecturalStructure {
     @ArchitecturalLocation {
         representationalModalitySummary = "Temporal workflows, event streams, and durable state management — execution formalisms generated from the SysML model (A3). The coffee shop FulfilDrink workflow is a working example.";
         persistenceSummary = "Temporal workflow state (durable, resumable), event logs, and operational databases. The simulation state is the business's current operational state — the most ephemeral section, changing continuously.";
-        interfacesSummary = "Upward from system domains. Cross-cutting: the reflective simulation reads continuously. Inside the green container: rules and constraints govern permissible behaviour. Horizontal leftward to business process patterns — the pipeline crossing.";
+        interfacesSummary = "Upward from system domains. Cross-cutting: the reflective simulation reads continuously. Inside the rules and constraints container. Horizontal leftward to business process patterns — the pipeline crossing.";
         domainIllustrationSummary = "For Paws: the living business — a StandardGroom workflow assigns groomer Pol to a Medium Labrador, moves through bath/dry/style stages, calculates price with surcharges, and processes payment, all with full semantic lineage.";
     }
     part operationalSimulation : ArchitecturalSection {
@@ -481,17 +481,17 @@ package ArchitecturalStructure {
     }
 
     // =================================================================
-    // GREEN CONTAINER
+    // RULES AND CONSTRAINTS CONTAINER
     // =================================================================
 
     // Section 13: Rules and Constraints
 
     @UserFacing {
         friendlyName = "Rules and Constraints";
-        shortDescription = "The green container governing what is permissible in dynamic behaviour, wrapping the bottom two pairs on both stacks.";
+        shortDescription = "The rules and constraints container governing what is permissible in dynamic behaviour, wrapping the bottom two pairs on both stacks.";
     }
     @PurposiveDescription {
-        description = "Rules and constraints govern what is permissible in dynamic behaviour — not what structures can exist (that is the ontological layers' job). The green container wraps the bottom two pairs on both stacks. Critical distinction: constraint definitions live in the instance layers above (structural); constraint enforcement happens inside the container at runtime (dynamic). This parallels the governance traceability chain (A8).";
+        description = "Rules and constraints govern what is permissible in dynamic behaviour — not what structures can exist (that is the ontological layers' job). The rules and constraints container wraps the bottom two pairs on both stacks. Critical distinction: constraint definitions live in the instance layers above (structural); constraint enforcement happens inside the container at runtime (dynamic). This parallels the governance traceability chain (A8).";
     }
     @ArchitecturalLocation {
         representationalModalitySummary = "Mixed. Definitions: SysML v2 (requirement defs, constraint defs, decision tables). Enforcement: CLP(FD), Temporal guards, XState validation, business rule evaluation. Spans eligibility, scheduling, safety, governance, and probabilistic rule types.";
@@ -502,7 +502,7 @@ package ArchitecturalStructure {
     part rulesAndConstraints : ArchitecturalSection {
         attribute :>> name = "rules-and-constraints";
         attribute :>> displayName = "Rules and Constraints";
-        attribute :>> group = ArchitecturalGroup::greenContainer;
+        attribute :>> group = ArchitecturalGroup::rulesAndConstraintsContainer;
         attribute :>> presentationOrder = 13;
         attribute :>> primaryFormalism = Formalism::mixed;
         attribute :>> persistenceMechanism = "model-and-evidence";
