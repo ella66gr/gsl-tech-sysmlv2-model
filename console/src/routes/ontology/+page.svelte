@@ -267,14 +267,14 @@
         <!-- Consistency -->
         <div class="flex flex-col items-center justify-center gap-1 rounded-lg border p-4 text-center
           {reasoning.consistent
-            ? 'border-green-200 bg-green-50 dark:border-green-800/40 dark:bg-green-900/10'
-            : 'border-red-200 bg-red-50 dark:border-red-800/40 dark:bg-red-900/10'}">
+            ? 'border-green-200 bg-green-50 dark:border-green-700/50 dark:bg-green-900/20'
+            : 'border-red-200 bg-red-50 dark:border-red-700/50 dark:bg-red-900/20'}">
           {#if reasoning.consistent}
             <CheckCircleOutline class="h-7 w-7 text-green-500 dark:text-green-400" />
-            <span class="text-sm font-semibold text-green-700 dark:text-green-400">Consistent</span>
+            <span class="text-sm font-semibold text-green-700 dark:text-green-300">Consistent</span>
           {:else}
             <CloseCircleOutline class="h-7 w-7 text-red-500 dark:text-red-400" />
-            <span class="text-sm font-semibold text-red-700 dark:text-red-400">Inconsistent</span>
+            <span class="text-sm font-semibold text-red-700 dark:text-red-300">Inconsistent</span>
           {/if}
           <span class="text-xs text-secondary-500 dark:text-secondary-400">HermiT</span>
         </div>
@@ -385,7 +385,7 @@
                     {#if prop.functional}
                       <Badge color="green" class="text-xs">Functional</Badge>
                     {:else}
-                      <Badge color="dark" class="text-xs">Non-functional</Badge>
+                      <span class="rounded px-2.5 py-0.5 text-xs font-medium bg-secondary-100 text-secondary-700 dark:bg-secondary-700 dark:text-secondary-200">Non-functional</span>
                     {/if}
                   </td>
                 </tr>
