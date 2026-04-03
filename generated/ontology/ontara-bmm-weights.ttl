@@ -1,0 +1,810 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ontara-bmm: <https://ontara.dev/ontology/bmm/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ontara-bmm:weight-ActivityBudget-to-ActivityType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityBudget → ActivityType (moderate)"@en ;
+    ontara-bmm:weightRationale "Budgets are structured by activity type. If the budget changes (e.g. planned volumes revised), the activity type may need reviewing — but a quantitative change to volume does not redefine what the activity type is."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityBudget ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityType .
+
+ontara-bmm:weight-ActivityBudget-to-FinancialProjection a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityBudget → FinancialProjection (moderate)"@en ;
+    ontara-bmm:weightRationale "Activity budgets feed into financial projections as volume inputs. If the budget changes, the projection may need updating — but the projection aggregates many inputs beyond activity volumes."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityBudget ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:FinancialProjection .
+
+ontara-bmm:weight-ActivityCostAllocation-to-ActivityType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityCostAllocation → ActivityType (moderate)"@en ;
+    ontara-bmm:weightRationale "Cost allocations are defined per activity type. If the allocation changes (method, estimated cost), the activity type may need reviewing — but a financial change to how the activity is costed does not redefine what the activity type is."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityCostAllocation ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityType .
+
+ontara-bmm:weight-ActivityCostAllocation-to-CostDriver a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityCostAllocation → CostDriver (moderate)"@en ;
+    ontara-bmm:weightRationale "Cost allocations use cost driver rates to compute per-activity costs. If the allocation method changes, the cost driver may need reviewing — but the driver describes the resource's cost behaviour independently of how individual activities are costed against it."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityCostAllocation ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CostDriver .
+
+ontara-bmm:weight-ActivityCostAllocation-to-UnitEconomics a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityCostAllocation → UnitEconomics (moderate)"@en ;
+    ontara-bmm:weightRationale "Cost allocations ultimately feed unit economics through cost drivers. If an allocation changes, unit economics may need updating — but the relationship is mediated through cost drivers, not direct."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityCostAllocation ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:UnitEconomics .
+
+ontara-bmm:weight-ActivityGranularity-to-ActivityRecord a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityGranularity → ActivityRecord (moderate)"@en ;
+    ontara-bmm:weightRationale "Granularity determines the detail level of records. If the granularity changes, the record format may need adjustment — but records are produced by the tracking system, not directly defined by the policy declaration."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityGranularity ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityRecord .
+
+ontara-bmm:weight-ActivityGranularity-to-ActivityType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityGranularity → ActivityType (moderate)"@en ;
+    ontara-bmm:weightRationale "Granularity governs how activity types are tracked. If the granularity policy changes, the activity types in that area may need reviewing — but a policy change about tracking precision does not redefine what the activity type is."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityGranularity ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityType .
+
+ontara-bmm:weight-ActivityRecord-to-ActivityType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityRecord → ActivityType (moderate)"@en ;
+    ontara-bmm:weightRationale "Every record is typed by an activity type. If the record format or granularity changes, the activity type may need reviewing — but an operational change to how records are produced does not redefine what the activity type is."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityRecord ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityType .
+
+ontara-bmm:weight-ActivityType-to-ActivityBudget a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityType → ActivityBudget (moderate)"@en ;
+    ontara-bmm:weightRationale "Budgets aggregate by activity type but the relationship is indirect — mediated through cost allocation."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityType ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityBudget .
+
+ontara-bmm:weight-ActivityType-to-ActivityCostAllocation a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityType → ActivityCostAllocation (strong)"@en ;
+    ontara-bmm:weightRationale "Cost allocation is structurally determined by activity type — every cost line traces back to an activity category."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityType ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityCostAllocation .
+
+ontara-bmm:weight-ActivityType-to-ActivityGranularity a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityType → ActivityGranularity (strong)"@en ;
+    ontara-bmm:weightRationale "Granularity level directly governs how an activity type is tracked and costed — envelope vs category vs tracked."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityType ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityGranularity .
+
+ontara-bmm:weight-ActivityType-to-ActivityRecord a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityType → ActivityRecord (moderate)"@en ;
+    ontara-bmm:weightRationale "Activity records are typed by activity type but the record is an operational artefact, not a structural dependency."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityType ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityRecord .
+
+ontara-bmm:weight-ActivityType-to-Channel a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityType → Channel (weak)"@en ;
+    ontara-bmm:weightRationale "Channels deliver services which contain activities, but the relationship is distant — mediated through service offerings."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityType ;
+    ontara-bmm:weightStrength "weak"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:Channel .
+
+ontara-bmm:weight-ActivityType-to-ResourceType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ActivityType → ResourceType (moderate)"@en ;
+    ontara-bmm:weightRationale "Resources are consumed by activities but the mapping is many-to-many and context-dependent."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ActivityType ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceType .
+
+ontara-bmm:weight-Capability-to-CapacityModel a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "Capability → CapacityModel (moderate)"@en ;
+    ontara-bmm:weightRationale "Capacity models describe throughput for a resource configuration that delivers a capability. If the capability changes, the throughput model may need recalibrating, but the relationship is indirect."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:Capability ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CapacityModel .
+
+ontara-bmm:weight-Capability-to-ObjectiveCapabilityMapping a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "Capability → ObjectiveCapabilityMapping (moderate)"@en ;
+    ontara-bmm:weightRationale "Capabilities are the downstream end of strategy-to-operations traceability. If a capability changes, the mapping from strategic objectives to that capability may need reviewing, but the mapping is a declared connection, not a definitional dependency."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:Capability ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ObjectiveCapabilityMapping .
+
+ontara-bmm:weight-Capability-to-ResourceType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "Capability → ResourceType (strong)"@en ;
+    ontara-bmm:weightRationale "Capabilities are defined by the resources they combine. If a capability changes (e.g. a new resource requirement is added), the resource types involved need reassessment."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:Capability ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceType .
+
+ontara-bmm:weight-Capability-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "Capability → ServiceOffering (strong)"@en ;
+    ontara-bmm:weightRationale "Capabilities enable service offerings. If a capability changes, the offerings it enables need reassessment — you can't offer what you can't deliver."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:Capability ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-CapacityModel-to-ResourceConstraint a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CapacityModel → ResourceConstraint (moderate)"@en ;
+    ontara-bmm:weightRationale "Capacity models and constraints are complementary planning concepts. If the capacity model changes (e.g. higher throughput targets), the constraints that limit resource availability may need reviewing."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CapacityModel ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceConstraint .
+
+ontara-bmm:weight-CapacityModel-to-ResourceType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CapacityModel → ResourceType (moderate)"@en ;
+    ontara-bmm:weightRationale "A capacity model makes claims about throughput given a resource configuration. If the capacity model changes, the resource types it references may need reassessment — but the resource type exists independently of any one capacity model."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CapacityModel ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceType .
+
+ontara-bmm:weight-CatalogueEntry-to-ExternalReference a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CatalogueEntry → ExternalReference (moderate)"@en ;
+    ontara-bmm:weightRationale "Catalogue entries link to external knowledge sources. A change to a catalogue entry may require reviewing its external references — the four-layer item model connects them."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CatalogueEntry ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ExternalReference .
+
+ontara-bmm:weight-CatalogueEntry-to-InventoryRecord a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CatalogueEntry → InventoryRecord (moderate)"@en ;
+    ontara-bmm:weightRationale "Inventory tracks stock of catalogue items. A change to a catalogue entry may require updating its associated inventory records."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CatalogueEntry ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:InventoryRecord .
+
+ontara-bmm:weight-CatalogueEntry-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CatalogueEntry → ServiceOffering (moderate)"@en ;
+    ontara-bmm:weightRationale "The catalogue records what is offered. A change to a catalogue entry may require reviewing the offering it represents, but the catalogue is the operational wrapper, not the strategic definition."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CatalogueEntry ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-Channel-to-CustomerSegment a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "Channel → CustomerSegment (moderate)"@en ;
+    ontara-bmm:weightRationale "Channels serve customer segments. A change to a channel may require reviewing which segments it reaches, but the coupling is operational and many-to-many."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:Channel ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CustomerSegment .
+
+ontara-bmm:weight-Channel-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "Channel → ServiceOffering (moderate)"@en ;
+    ontara-bmm:weightRationale "Channels deliver service offerings. A change to a channel may require reviewing which offerings flow through it, but the coupling is loose."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:Channel ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-CommunityRelationship-to-CustomerSegment a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CommunityRelationship → CustomerSegment (moderate)"@en ;
+    ontara-bmm:weightRationale "Communities overlap with customer segments, but they are not the same thing — a community relationship may serve non-customers (H4)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CommunityRelationship ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CustomerSegment .
+
+ontara-bmm:weight-CommunityRelationship-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CommunityRelationship → ServiceOffering (moderate)"@en ;
+    ontara-bmm:weightRationale "Community relationships shape what the business offers (community needs influence service design), but the link is characterising, not definitional (H1)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CommunityRelationship ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-CooperativeArrangement-to-ActivityType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CooperativeArrangement → ActivityType (strong)"@en ;
+    ontara-bmm:weightRationale "A cooperative arrangement defines shared activities. A change to the arrangement directly affects what activities are performed and by whom (H1)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CooperativeArrangement ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityType .
+
+ontara-bmm:weight-CooperativeArrangement-to-ResourceType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CooperativeArrangement → ResourceType (moderate)"@en ;
+    ontara-bmm:weightRationale "Cooperative arrangements may involve shared resources, but the resource types exist independently (H4)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CooperativeArrangement ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceType .
+
+ontara-bmm:weight-CooperativeArrangement-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CooperativeArrangement → ServiceOffering (strong)"@en ;
+    ontara-bmm:weightRationale "Some cooperative arrangements define jointly-delivered services. A change to the arrangement may fundamentally alter what can be offered (H1)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CooperativeArrangement ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-CostDriver-to-ActivityCostAllocation a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CostDriver → ActivityCostAllocation (moderate)"@en ;
+    ontara-bmm:weightRationale "Cost allocations map activities to costs. If a cost driver changes, the allocation method may need reviewing — but the allocation is a mapping mechanism, not directly defined by the cost driver."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CostDriver ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityCostAllocation .
+
+ontara-bmm:weight-CostDriver-to-ResourceType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CostDriver → ResourceType (moderate)"@en ;
+    ontara-bmm:weightRationale "Cost drivers characterise resources financially. If a cost driver changes (e.g. unit cost revised), the resource type's cost profile may need updating — but the resource type's category, acquisition method, and structural definition are independent of its cost behaviour."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CostDriver ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceType .
+
+ontara-bmm:weight-CostDriver-to-RevenueStream a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CostDriver → RevenueStream (moderate)"@en ;
+    ontara-bmm:weightRationale "Revenue streams and cost drivers together determine profitability. If a cost driver changes significantly, revenue assumptions may need reviewing — but the relationship is indirect, mediated through unit economics and financial projections."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CostDriver ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:RevenueStream .
+
+ontara-bmm:weight-CostDriver-to-UnitEconomics a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CostDriver → UnitEconomics (strong)"@en ;
+    ontara-bmm:weightRationale "Unit economics aggregate costs per service unit. If a cost driver changes, the cost-per-unit calculation needs reassessment — cost drivers are the input to that calculation."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CostDriver ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:UnitEconomics .
+
+ontara-bmm:weight-CustomerSegment-to-Channel a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CustomerSegment → Channel (moderate)"@en ;
+    ontara-bmm:weightRationale "Channels are how segments are reached. A change to the target segment may require reviewing acquisition and delivery channels, but the relationship is many-to-many."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CustomerSegment ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:Channel .
+
+ontara-bmm:weight-CustomerSegment-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CustomerSegment → ServiceOffering (strong)"@en ;
+    ontara-bmm:weightRationale "Offerings are what the segment actually receives. A change to the target audience requires reassessing what is offered to them."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CustomerSegment ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-CustomerSegment-to-ValueProposition a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CustomerSegment → ValueProposition (strong)"@en ;
+    ontara-bmm:weightRationale "Each segment has one or more propositions designed for it. A change to the target segment requires reassessing the value promises made to it."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CustomerSegment ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ValueProposition .
+
+ontara-bmm:weight-DifferentiationClaim-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "DifferentiationClaim → ServiceOffering (weak)"@en ;
+    ontara-bmm:weightRationale "Claims relate to offerings indirectly, via the value proposition. A change to a claim has a distant effect on offerings — mediated through the proposition."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:DifferentiationClaim ;
+    ontara-bmm:weightStrength "weak"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-DifferentiationClaim-to-ValueProposition a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "DifferentiationClaim → ValueProposition (strong)"@en ;
+    ontara-bmm:weightRationale "Claims exist to substantiate a value proposition. A change to a claim requires reassessing the proposition it supports — a claim without a proposition is orphaned."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:DifferentiationClaim ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ValueProposition .
+
+ontara-bmm:weight-ExternalDependency-to-CostDriver a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ExternalDependency → CostDriver (moderate)"@en ;
+    ontara-bmm:weightRationale "Dependencies have cost implications (supplier pricing, contractual terms), but cost drivers are characterising, not definitional (H1, H2)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ExternalDependency ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CostDriver .
+
+ontara-bmm:weight-ExternalDependency-to-ResourceType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ExternalDependency → ResourceType (strong)"@en ;
+    ontara-bmm:weightRationale "An external dependency is something the business depends on — often a resource it cannot provide itself. A change to the dependency (e.g. supplier withdrawal) directly affects resource availability (H1)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ExternalDependency ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceType .
+
+ontara-bmm:weight-ExternalDependency-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ExternalDependency → ServiceOffering (moderate)"@en ;
+    ontara-bmm:weightRationale "Loss of a critical dependency may affect what can be offered, but the link is mediated through resources (H4)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ExternalDependency ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-ExternalReference-to-CatalogueEntry a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ExternalReference → CatalogueEntry (moderate)"@en ;
+    ontara-bmm:weightRationale "External references attach to catalogue items. A change to an external reference may require reviewing the catalogue entries that depend on it."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ExternalReference ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CatalogueEntry .
+
+ontara-bmm:weight-FinancialProjection-to-CostDriver a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "FinancialProjection → CostDriver (moderate)"@en ;
+    ontara-bmm:weightRationale "A projection aggregates cost drivers. If the projection changes, the cost assumptions may need reviewing — but cost drivers exist independently of any one projection."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:FinancialProjection ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CostDriver .
+
+ontara-bmm:weight-FinancialProjection-to-RevenueStream a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "FinancialProjection → RevenueStream (moderate)"@en ;
+    ontara-bmm:weightRationale "A projection aggregates revenue streams. If the projection changes (e.g. revised timeline, different scenario), the revenue streams feeding it may need reviewing — but revenue streams exist independently of any one projection."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:FinancialProjection ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:RevenueStream .
+
+ontara-bmm:weight-GovernanceRequirement-to-AuditEvidenceRecord a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "GovernanceRequirement → AuditEvidenceRecord (strong)"@en ;
+    ontara-bmm:weightRationale "Each governance requirement defines what evidence must be produced. If the requirement changes, the evidence records need reassessment — you may need different proof, different frequency, or different responsible roles."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:GovernanceRequirement ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:AuditEvidenceRecord .
+
+ontara-bmm:weight-GovernanceRequirement-to-ResourceConstraint a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "GovernanceRequirement → ResourceConstraint (moderate)"@en ;
+    ontara-bmm:weightRationale "Governance requirements often impose resource constraints (regulatory qualification requirements, capacity limits). If a requirement changes, associated resource constraints may need reviewing — but not all requirements produce resource constraints."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:GovernanceRequirement ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceConstraint .
+
+ontara-bmm:weight-GovernanceRequirement-to-StakeholderRelationship a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "GovernanceRequirement → StakeholderRelationship (moderate)"@en ;
+    ontara-bmm:weightRationale "A change to a governance requirement may require reviewing the relationship through which it is enforced, but the relationship exists independently of any single requirement (H1, H5)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:GovernanceRequirement ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:StakeholderRelationship .
+
+ontara-bmm:weight-InventoryRecord-to-CatalogueEntry a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "InventoryRecord → CatalogueEntry (strong)"@en ;
+    ontara-bmm:weightRationale "Inventory tracks stock of catalogue items. If the inventory record changes (e.g. stock level drops below threshold), the catalogue entry's availability status needs reassessment — the catalogue promises what inventory must deliver."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:InventoryRecord ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CatalogueEntry .
+
+ontara-bmm:weight-ObjectiveCapabilityMapping-to-Capability a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ObjectiveCapabilityMapping → Capability (strong)"@en ;
+    ontara-bmm:weightRationale "The mapping declares which capabilities support a strategic objective. If the mapping changes, the capabilities involved need reassessment — they may gain or lose strategic justification."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ObjectiveCapabilityMapping ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:Capability .
+
+ontara-bmm:weight-ParticipationModel-to-ActivityType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ParticipationModel → ActivityType (moderate)"@en ;
+    ontara-bmm:weightRationale "Participation generates activities (self-service actions, shared decision-making), but the activity types exist independently (H4)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ParticipationModel ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityType .
+
+ontara-bmm:weight-ParticipationModel-to-Channel a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ParticipationModel → Channel (moderate)"@en ;
+    ontara-bmm:weightRationale "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ParticipationModel ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:Channel .
+
+ontara-bmm:weight-ParticipationModel-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ParticipationModel → ServiceOffering (strong)"@en ;
+    ontara-bmm:weightRationale "Participation patterns are defined for specific service offerings — the ref relationship is typed. A change to how customers participate directly affects the offering's delivery model (H1)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ParticipationModel ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-PricingModel-to-RevenueStream a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "PricingModel → RevenueStream (strong)"@en ;
+    ontara-bmm:weightRationale "Revenue streams reference a pricing model as their revenue mechanism. If the pricing model changes, the revenue projections that depend on it need reassessment."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:PricingModel ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:RevenueStream .
+
+ontara-bmm:weight-PricingModel-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "PricingModel → ServiceOffering (moderate)"@en ;
+    ontara-bmm:weightRationale "Pricing models define how offerings are charged for. If the pricing logic changes, the offering's commercial packaging may need reviewing — but the offering itself (what is delivered, to whom, using what resources) is defined independently of how it is priced."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:PricingModel ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-PricingModel-to-UnitEconomics a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "PricingModel → UnitEconomics (moderate)"@en ;
+    ontara-bmm:weightRationale "Unit economics calculate margin per unit of service. If the pricing model changes, the revenue-per-unit figure needs reviewing — but unit economics also depend on cost factors that are independent of pricing."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:PricingModel ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:UnitEconomics .
+
+ontara-bmm:weight-ReferralPathway-to-ActivityType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ReferralPathway → ActivityType (moderate)"@en ;
+    ontara-bmm:weightRationale "Referral pathways generate activities (intake, triage, acknowledgement), but these activities are typed independently (H4)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ReferralPathway ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityType .
+
+ontara-bmm:weight-ReferralPathway-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ReferralPathway → ServiceOffering (moderate)"@en ;
+    ontara-bmm:weightRationale "Referral pathways channel demand to specific offerings, but the offerings exist independently. A change to a referral pathway affects volume and flow, not the offering's identity (H1, H2)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ReferralPathway ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-ResourceConstraint-to-CapacityModel a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ResourceConstraint → CapacityModel (moderate)"@en ;
+    ontara-bmm:weightRationale "Constraints limit what a resource configuration can deliver. If a constraint changes, the throughput assumptions in the capacity model may need reviewing."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ResourceConstraint ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CapacityModel .
+
+ontara-bmm:weight-ResourceConstraint-to-ResourceType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ResourceConstraint → ResourceType (strong)"@en ;
+    ontara-bmm:weightRationale "Constraints are defined against specific resource types. If a constraint changes (e.g. a regulatory limit is tightened or lifted), the resource type it governs needs reassessment — the type's effective availability and cost profile may have changed."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ResourceConstraint ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceType .
+
+ontara-bmm:weight-ResourceInstance-to-CapacityModel a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ResourceInstance → CapacityModel (moderate)"@en ;
+    ontara-bmm:weightRationale "Capacity models are built from resource configurations. A change to an instance (e.g. clinician drops from 0.8 to 0.5 FTE) may require reviewing the throughput calculation, but the capacity model aggregates across instances."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ResourceInstance ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CapacityModel .
+
+ontara-bmm:weight-ResourceInstance-to-ResourceType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ResourceInstance → ResourceType (moderate)"@en ;
+    ontara-bmm:weightRationale "An instance is a concrete realisation of its type. If the instance changes (capacity, cost, availability), the type may need reviewing — but an operational change to one instance does not redefine the resource type's category, acquisition method, or capacity unit."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ResourceInstance ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceType .
+
+ontara-bmm:weight-ResourceType-to-ActivityType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ResourceType → ActivityType (moderate)"@en ;
+    ontara-bmm:weightRationale "Activities consume resources. A change to a resource type may affect which activities can be performed, but the coupling is many-to-many and context-dependent."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ResourceType ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityType .
+
+ontara-bmm:weight-ResourceType-to-Capability a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ResourceType → Capability (moderate)"@en ;
+    ontara-bmm:weightRationale "Capabilities combine resources into service functions. A change to a resource type may require reviewing the capabilities that use it, but capabilities are resilient to substitution within a resource category."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ResourceType ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:Capability .
+
+ontara-bmm:weight-ResourceType-to-CapacityModel a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ResourceType → CapacityModel (moderate)"@en ;
+    ontara-bmm:weightRationale "Capacity models describe throughput given a resource configuration. A change to a resource type may affect throughput calculations, but the relationship is mediated through the specific configuration."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ResourceType ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CapacityModel .
+
+ontara-bmm:weight-ResourceType-to-CostDriver a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ResourceType → CostDriver (moderate)"@en ;
+    ontara-bmm:weightRationale "Cost drivers are linked to resources. A change to a resource type (especially its cost profile) may require reviewing the associated cost driver, but the link is structural rather than definitional."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ResourceType ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CostDriver .
+
+ontara-bmm:weight-ResourceType-to-ResourceConstraint a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ResourceType → ResourceConstraint (strong)"@en ;
+    ontara-bmm:weightRationale "Constraints are scoped to specific resource types. If the resource type changes, the constraints that limit its availability need reassessment — a constraint on a specific resource assumes specific properties of that type."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ResourceType ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceConstraint .
+
+ontara-bmm:weight-ResourceType-to-ResourceInstance a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ResourceType → ResourceInstance (strong)"@en ;
+    ontara-bmm:weightRationale "Instances are typed by ResourceType. If the type definition changes (category, cost profile, capacity unit), every instance of that type needs reassessment."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ResourceType ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceInstance .
+
+ontara-bmm:weight-RevenueStream-to-FinancialProjection a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "RevenueStream → FinancialProjection (strong)"@en ;
+    ontara-bmm:weightRationale "Financial projections aggregate revenue streams. If a revenue stream changes, the projection that depends on it needs reassessment."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:RevenueStream ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:FinancialProjection .
+
+ontara-bmm:weight-RevenueStream-to-PricingModel a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "RevenueStream → PricingModel (strong)"@en ;
+    ontara-bmm:weightRationale "Each revenue stream references a pricing model. If the revenue stream changes (e.g. new trigger event, different source segment), the pricing model may need reassessment to match."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:RevenueStream ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:PricingModel .
+
+ontara-bmm:weight-RevenueStream-to-UnitEconomics a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "RevenueStream → UnitEconomics (moderate)"@en ;
+    ontara-bmm:weightRationale "Revenue streams inform the revenue side of unit economics. If a stream changes, revenue-per-unit may need reviewing — but unit economics are per-offering, not per-stream."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:RevenueStream ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:UnitEconomics .
+
+ontara-bmm:weight-ServiceOffering-to-ActivityType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceOffering → ActivityType (strong)"@en ;
+    ontara-bmm:weightRationale "Every service offering requires activities to deliver it. A change to the offering requires reassessing the activity types involved."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceOffering ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityType .
+
+ontara-bmm:weight-ServiceOffering-to-CatalogueEntry a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceOffering → CatalogueEntry (moderate)"@en ;
+    ontara-bmm:weightRationale "The catalogue records the business decision to offer something. A change to the offering may require updating catalogue entries, but the catalogue is operational, not definitional."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceOffering ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CatalogueEntry .
+
+ontara-bmm:weight-ServiceOffering-to-Channel a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceOffering → Channel (moderate)"@en ;
+    ontara-bmm:weightRationale "Channels deliver service offerings to customers. A change to the offering may require reviewing delivery channels, but the coupling is not definitional."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceOffering ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:Channel .
+
+ontara-bmm:weight-ServiceOffering-to-CustomerSegment a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceOffering → CustomerSegment (strong)"@en ;
+    ontara-bmm:weightRationale "Every service offering exists for defined customer segments. A change to what is offered requires reassessing who it is for."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceOffering ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CustomerSegment .
+
+ontara-bmm:weight-ServiceOffering-to-DifferentiationClaim a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceOffering → DifferentiationClaim (moderate)"@en ;
+    ontara-bmm:weightRationale "Claims support the value proposition which the offering delivers. A change to the offering may require reviewing claims, but the link is mediated through the value proposition."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceOffering ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:DifferentiationClaim .
+
+ontara-bmm:weight-ServiceOffering-to-PricingModel a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceOffering → PricingModel (strong)"@en ;
+    ontara-bmm:weightRationale "Each offering has a pricing basis. A change to the offering directly affects how it is priced."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceOffering ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:PricingModel .
+
+ontara-bmm:weight-ServiceOffering-to-ResourceType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceOffering → ResourceType (moderate)"@en ;
+    ontara-bmm:weightRationale "Resources are consumed by activities which deliver offerings. A change to the offering may affect resource requirements, but the relationship is indirect — mediated through activity types and capabilities."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceOffering ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceType .
+
+ontara-bmm:weight-ServiceOffering-to-ValueProposition a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceOffering → ValueProposition (strong)"@en ;
+    ontara-bmm:weightRationale "A service offering is the concrete realisation of a value proposition. A change to what is offered requires reassessing the promise of value it delivers."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceOffering ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ValueProposition .
+
+ontara-bmm:weight-ServiceParticipant-to-CustomerSegment a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceParticipant → CustomerSegment (moderate)"@en ;
+    ontara-bmm:weightRationale "Participants often belong to or represent a customer segment, but the mapping is characterising — a segment is not defined by its participants."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceParticipant ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CustomerSegment .
+
+ontara-bmm:weight-ServiceParticipant-to-GovernanceRequirement a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceParticipant → GovernanceRequirement (moderate)"@en ;
+    ontara-bmm:weightRationale "Governance requirements may apply to participants (commissioner must approve, payer must authorise), but the primary governance binding is to the subject."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceParticipant ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:GovernanceRequirement .
+
+ontara-bmm:weight-ServiceParticipant-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceParticipant → ServiceOffering (moderate)"@en ;
+    ontara-bmm:weightRationale "The participant influences the offering — a commissioner may constrain scope, a payer may limit options — but the offering is primarily shaped by the subject's needs."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceParticipant ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-ServiceParticipant-to-ServiceSubject a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceParticipant → ServiceSubject (strong)"@en ;
+    ontara-bmm:weightRationale "The participant's role is defined in relation to the subject — they commission, fund, authorise, or contribute to the service on or for the subject."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceParticipant ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceSubject .
+
+ontara-bmm:weight-ServiceSubject-to-ActivityType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceSubject → ActivityType (strong)"@en ;
+    ontara-bmm:weightRationale "The subject's characteristics directly determine the activities required — breed-specific grooming, patient-specific procedures, item-specific repair."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceSubject ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ActivityType .
+
+ontara-bmm:weight-ServiceSubject-to-CustomerSegment a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceSubject → CustomerSegment (moderate)"@en ;
+    ontara-bmm:weightRationale "Different customer segments may involve different subject types, but the segment is defined by its needs and willingness to pay, not by the subject."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceSubject ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CustomerSegment .
+
+ontara-bmm:weight-ServiceSubject-to-GovernanceRequirement a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceSubject → GovernanceRequirement (strong)"@en ;
+    ontara-bmm:weightRationale "Governance obligations attach to the subject independently of the customer. Duty of care is to the dog, the patient, the object in custody."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceSubject ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:GovernanceRequirement .
+
+ontara-bmm:weight-ServiceSubject-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceSubject → ServiceOffering (strong)"@en ;
+    ontara-bmm:weightRationale "What is offered depends directly on the nature of the subject. A different breed, clinical condition, or item type requires reassessing the offering."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceSubject ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-ServiceSubject-to-ServiceParticipant a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ServiceSubject → ServiceParticipant (moderate)"@en ;
+    ontara-bmm:weightRationale "Subject and participants are related — participants commission, fund, or authorise services on or for the subject — but they are independently defined."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ServiceSubject ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceParticipant .
+
+ontara-bmm:weight-StakeholderRelationship-to-GovernanceRequirement a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "StakeholderRelationship → GovernanceRequirement (strong)"@en ;
+    ontara-bmm:weightRationale "A change to the regulatory relationship (e.g. new regulator, changed inspection regime) directly affects what governance requirements apply. Definitional for regulatory-natured relationships (H1)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:StakeholderRelationship ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:GovernanceRequirement .
+
+ontara-bmm:weight-StakeholderRelationship-to-ResourceType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "StakeholderRelationship → ResourceType (moderate)"@en ;
+    ontara-bmm:weightRationale "Some stakeholder relationships involve resource implications (e.g. regulatory requirements for qualified staff), but the link is mediated through GovernanceRequirement and ResourceConstraint (H4)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:StakeholderRelationship ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ResourceType .
+
+ontara-bmm:weight-StakeholderRelationship-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "StakeholderRelationship → ServiceOffering (moderate)"@en ;
+    ontara-bmm:weightRationale "A change to a stakeholder relationship may affect what services can be offered (e.g. loss of a commissioning relationship), but the offering's identity is defined independently in ServiceConcept (H1, H4)."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:StakeholderRelationship ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-UnitEconomics-to-FinancialProjection a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "UnitEconomics → FinancialProjection (moderate)"@en ;
+    ontara-bmm:weightRationale "Financial projections aggregate unit-level economics. If unit economics change, the projection may need updating — but the projection also depends on volume assumptions and other inputs."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:UnitEconomics ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:FinancialProjection .
+
+ontara-bmm:weight-UnitEconomics-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "UnitEconomics → ServiceOffering (moderate)"@en ;
+    ontara-bmm:weightRationale "Unit economics characterise an offering's financial viability. If the unit economics change (e.g. margin drops below zero), the offering itself needs reassessment — but the offering's definition doesn't depend on its economics."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:UnitEconomics ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-ValueProposition-to-CustomerSegment a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ValueProposition → CustomerSegment (strong)"@en ;
+    ontara-bmm:weightRationale "Every value proposition is made to a specific segment. A change to the promise of value requires reassessing the audience it addresses."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ValueProposition ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CustomerSegment .
+
+ontara-bmm:weight-ValueProposition-to-DifferentiationClaim a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ValueProposition → DifferentiationClaim (moderate)"@en ;
+    ontara-bmm:weightRationale "Claims articulate how the proposition differs from alternatives. A change to the proposition may require reviewing its supporting claims, but a proposition can exist before claims are formalised."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ValueProposition ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:DifferentiationClaim .
+
+ontara-bmm:weight-ValueProposition-to-ServiceOffering a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ValueProposition → ServiceOffering (strong)"@en ;
+    ontara-bmm:weightRationale "The offering is the concrete realisation of the proposition. A change to the value promise requires reassessing what is offered to deliver it."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ValueProposition ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weightRationale a owl:DatatypeProperty ;
+    rdfs:label "weight rationale"@en ;
+    rdfs:comment "Authored explanation of why this strength was assigned."@en ;
+    rdfs:domain ontara-bmm:WeightedRelationship ;
+    rdfs:range xsd:string .
+
+ontara-bmm:weightSource a owl:ObjectProperty ;
+    rdfs:label "weight source"@en ;
+    rdfs:comment "The BMM class from which this weighted relationship originates."@en ;
+    rdfs:domain ontara-bmm:WeightedRelationship ;
+    rdfs:range owl:Class .
+
+ontara-bmm:weightStrength a owl:DatatypeProperty ;
+    rdfs:label "weight strength"@en ;
+    rdfs:comment "Ordinal strength classification of the relationship. Current vocabulary: strong, moderate, weak, contextual. Stored as xsd:string for non-constraining evolution."@en ;
+    rdfs:domain ontara-bmm:WeightedRelationship ;
+    rdfs:range xsd:string .
+
+ontara-bmm:weightTarget a owl:ObjectProperty ;
+    rdfs:label "weight target"@en ;
+    rdfs:comment "The BMM class to which this weighted relationship points."@en ;
+    rdfs:domain ontara-bmm:WeightedRelationship ;
+    rdfs:range owl:Class .
+
+ontara-bmm:weights a owl:Ontology ;
+    rdfs:label "Ontara BMM Weighted Relationships (pipeline-generated)"@en ;
+    dcterms:created "2026-04-03"^^xsd:date ;
+    rdfs:comment "Reified weighted relationship individuals generated from @WeightedRelationship annotations in SysML BMM part defs. Pipeline Stage 3e (Session 117)."@en ;
+    owl:imports ontara-bmm: ;
+    owl:versionInfo "Generated by gen_owl_pipeline.py Stage 3e — Session 117"@en .
+
+ontara-bmm:WeightedRelationship a owl:Class ;
+    rdfs:label "Weighted Relationship"@en ;
+    rdfs:comment "A reified relationship between two BMM domain classes, carrying strength and rationale attributes. Generated from @WeightedRelationship SysML annotations."@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000031> .
+

@@ -1,12 +1,13 @@
 {
   "version": "2.0.0",
-  "generated_at": "2026-04-03T06:58:02.261637+00:00",
+  "generated_at": "2026-04-03T08:19:09.555122+00:00",
   "session": 116,
   "summary": {
     "StructuralOnly": 695,
     "DomainClass": 34,
     "ObjectProperty": 14,
-    "DeferredProperty": 2
+    "DeferredProperty": 2,
+    "WeightedRelationship": 96
   },
   "elements": [
     {
@@ -6901,6 +6902,872 @@
       "refName": "scenario",
       "targetType": "ScenarioDefinition",
       "reason": "ScenarioDefinition not in current DomainClass set"
+    }
+  ],
+  "weightedRelationships": [
+    {
+      "individualName": "weight-CustomerSegment-to-ValueProposition",
+      "source": "CustomerSegment",
+      "target": "ValueProposition",
+      "strength": "strong",
+      "rationale": "Each segment has one or more propositions designed for it. A change to the target segment requires reassessing the value promises made to it.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 104
+    },
+    {
+      "individualName": "weight-CustomerSegment-to-ServiceOffering",
+      "source": "CustomerSegment",
+      "target": "ServiceOffering",
+      "strength": "strong",
+      "rationale": "Offerings are what the segment actually receives. A change to the target audience requires reassessing what is offered to them.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 104
+    },
+    {
+      "individualName": "weight-CustomerSegment-to-Channel",
+      "source": "CustomerSegment",
+      "target": "Channel",
+      "strength": "moderate",
+      "rationale": "Channels are how segments are reached. A change to the target segment may require reviewing acquisition and delivery channels, but the relationship is many-to-many.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 104
+    },
+    {
+      "individualName": "weight-ValueProposition-to-ServiceOffering",
+      "source": "ValueProposition",
+      "target": "ServiceOffering",
+      "strength": "strong",
+      "rationale": "The offering is the concrete realisation of the proposition. A change to the value promise requires reassessing what is offered to deliver it.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 150
+    },
+    {
+      "individualName": "weight-ValueProposition-to-CustomerSegment",
+      "source": "ValueProposition",
+      "target": "CustomerSegment",
+      "strength": "strong",
+      "rationale": "Every value proposition is made to a specific segment. A change to the promise of value requires reassessing the audience it addresses.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 150
+    },
+    {
+      "individualName": "weight-ValueProposition-to-DifferentiationClaim",
+      "source": "ValueProposition",
+      "target": "DifferentiationClaim",
+      "strength": "moderate",
+      "rationale": "Claims articulate how the proposition differs from alternatives. A change to the proposition may require reviewing its supporting claims, but a proposition can exist before claims are formalised.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 150
+    },
+    {
+      "individualName": "weight-ServiceOffering-to-ValueProposition",
+      "source": "ServiceOffering",
+      "target": "ValueProposition",
+      "strength": "strong",
+      "rationale": "A service offering is the concrete realisation of a value proposition. A change to what is offered requires reassessing the promise of value it delivers.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 220
+    },
+    {
+      "individualName": "weight-ServiceOffering-to-CustomerSegment",
+      "source": "ServiceOffering",
+      "target": "CustomerSegment",
+      "strength": "strong",
+      "rationale": "Every service offering exists for defined customer segments. A change to what is offered requires reassessing who it is for.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 220
+    },
+    {
+      "individualName": "weight-ServiceOffering-to-PricingModel",
+      "source": "ServiceOffering",
+      "target": "PricingModel",
+      "strength": "strong",
+      "rationale": "Each offering has a pricing basis. A change to the offering directly affects how it is priced.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 220
+    },
+    {
+      "individualName": "weight-ServiceOffering-to-ActivityType",
+      "source": "ServiceOffering",
+      "target": "ActivityType",
+      "strength": "strong",
+      "rationale": "Every service offering requires activities to deliver it. A change to the offering requires reassessing the activity types involved.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 220
+    },
+    {
+      "individualName": "weight-ServiceOffering-to-Channel",
+      "source": "ServiceOffering",
+      "target": "Channel",
+      "strength": "moderate",
+      "rationale": "Channels deliver service offerings to customers. A change to the offering may require reviewing delivery channels, but the coupling is not definitional.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 220
+    },
+    {
+      "individualName": "weight-ServiceOffering-to-CatalogueEntry",
+      "source": "ServiceOffering",
+      "target": "CatalogueEntry",
+      "strength": "moderate",
+      "rationale": "The catalogue records the business decision to offer something. A change to the offering may require updating catalogue entries, but the catalogue is operational, not definitional.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 220
+    },
+    {
+      "individualName": "weight-ServiceOffering-to-DifferentiationClaim",
+      "source": "ServiceOffering",
+      "target": "DifferentiationClaim",
+      "strength": "moderate",
+      "rationale": "Claims support the value proposition which the offering delivers. A change to the offering may require reviewing claims, but the link is mediated through the value proposition.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 220
+    },
+    {
+      "individualName": "weight-ServiceOffering-to-ResourceType",
+      "source": "ServiceOffering",
+      "target": "ResourceType",
+      "strength": "moderate",
+      "rationale": "Resources are consumed by activities which deliver offerings. A change to the offering may affect resource requirements, but the relationship is indirect \u2014 mediated through activity types and capabilities.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 220
+    },
+    {
+      "individualName": "weight-Channel-to-CustomerSegment",
+      "source": "Channel",
+      "target": "CustomerSegment",
+      "strength": "moderate",
+      "rationale": "Channels serve customer segments. A change to a channel may require reviewing which segments it reaches, but the coupling is operational and many-to-many.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 266
+    },
+    {
+      "individualName": "weight-Channel-to-ServiceOffering",
+      "source": "Channel",
+      "target": "ServiceOffering",
+      "strength": "moderate",
+      "rationale": "Channels deliver service offerings. A change to a channel may require reviewing which offerings flow through it, but the coupling is loose.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 266
+    },
+    {
+      "individualName": "weight-DifferentiationClaim-to-ValueProposition",
+      "source": "DifferentiationClaim",
+      "target": "ValueProposition",
+      "strength": "strong",
+      "rationale": "Claims exist to substantiate a value proposition. A change to a claim requires reassessing the proposition it supports \u2014 a claim without a proposition is orphaned.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 307
+    },
+    {
+      "individualName": "weight-DifferentiationClaim-to-ServiceOffering",
+      "source": "DifferentiationClaim",
+      "target": "ServiceOffering",
+      "strength": "weak",
+      "rationale": "Claims relate to offerings indirectly, via the value proposition. A change to a claim has a distant effect on offerings \u2014 mediated through the proposition.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 307
+    },
+    {
+      "individualName": "weight-ServiceSubject-to-ServiceOffering",
+      "source": "ServiceSubject",
+      "target": "ServiceOffering",
+      "strength": "strong",
+      "rationale": "What is offered depends directly on the nature of the subject. A different breed, clinical condition, or item type requires reassessing the offering.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 368
+    },
+    {
+      "individualName": "weight-ServiceSubject-to-GovernanceRequirement",
+      "source": "ServiceSubject",
+      "target": "GovernanceRequirement",
+      "strength": "strong",
+      "rationale": "Governance obligations attach to the subject independently of the customer. Duty of care is to the dog, the patient, the object in custody.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 368
+    },
+    {
+      "individualName": "weight-ServiceSubject-to-ActivityType",
+      "source": "ServiceSubject",
+      "target": "ActivityType",
+      "strength": "strong",
+      "rationale": "The subject's characteristics directly determine the activities required \u2014 breed-specific grooming, patient-specific procedures, item-specific repair.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 368
+    },
+    {
+      "individualName": "weight-ServiceSubject-to-ServiceParticipant",
+      "source": "ServiceSubject",
+      "target": "ServiceParticipant",
+      "strength": "moderate",
+      "rationale": "Subject and participants are related \u2014 participants commission, fund, or authorise services on or for the subject \u2014 but they are independently defined.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 368
+    },
+    {
+      "individualName": "weight-ServiceSubject-to-CustomerSegment",
+      "source": "ServiceSubject",
+      "target": "CustomerSegment",
+      "strength": "moderate",
+      "rationale": "Different customer segments may involve different subject types, but the segment is defined by its needs and willingness to pay, not by the subject.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 368
+    },
+    {
+      "individualName": "weight-ServiceParticipant-to-ServiceSubject",
+      "source": "ServiceParticipant",
+      "target": "ServiceSubject",
+      "strength": "strong",
+      "rationale": "The participant's role is defined in relation to the subject \u2014 they commission, fund, authorise, or contribute to the service on or for the subject.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 442
+    },
+    {
+      "individualName": "weight-ServiceParticipant-to-ServiceOffering",
+      "source": "ServiceParticipant",
+      "target": "ServiceOffering",
+      "strength": "moderate",
+      "rationale": "The participant influences the offering \u2014 a commissioner may constrain scope, a payer may limit options \u2014 but the offering is primarily shaped by the subject's needs.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 442
+    },
+    {
+      "individualName": "weight-ServiceParticipant-to-CustomerSegment",
+      "source": "ServiceParticipant",
+      "target": "CustomerSegment",
+      "strength": "moderate",
+      "rationale": "Participants often belong to or represent a customer segment, but the mapping is characterising \u2014 a segment is not defined by its participants.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 442
+    },
+    {
+      "individualName": "weight-ServiceParticipant-to-GovernanceRequirement",
+      "source": "ServiceParticipant",
+      "target": "GovernanceRequirement",
+      "strength": "moderate",
+      "rationale": "Governance requirements may apply to participants (commissioner must approve, payer must authorise), but the primary governance binding is to the subject.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 442
+    },
+    {
+      "individualName": "weight-CatalogueEntry-to-ServiceOffering",
+      "source": "CatalogueEntry",
+      "target": "ServiceOffering",
+      "strength": "moderate",
+      "rationale": "The catalogue records what is offered. A change to a catalogue entry may require reviewing the offering it represents, but the catalogue is the operational wrapper, not the strategic definition.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 522
+    },
+    {
+      "individualName": "weight-CatalogueEntry-to-ExternalReference",
+      "source": "CatalogueEntry",
+      "target": "ExternalReference",
+      "strength": "moderate",
+      "rationale": "Catalogue entries link to external knowledge sources. A change to a catalogue entry may require reviewing its external references \u2014 the four-layer item model connects them.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 522
+    },
+    {
+      "individualName": "weight-CatalogueEntry-to-InventoryRecord",
+      "source": "CatalogueEntry",
+      "target": "InventoryRecord",
+      "strength": "moderate",
+      "rationale": "Inventory tracks stock of catalogue items. A change to a catalogue entry may require updating its associated inventory records.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 522
+    },
+    {
+      "individualName": "weight-ExternalReference-to-CatalogueEntry",
+      "source": "ExternalReference",
+      "target": "CatalogueEntry",
+      "strength": "moderate",
+      "rationale": "External references attach to catalogue items. A change to an external reference may require reviewing the catalogue entries that depend on it.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 571
+    },
+    {
+      "individualName": "weight-ActivityType-to-ActivityCostAllocation",
+      "source": "ActivityType",
+      "target": "ActivityCostAllocation",
+      "strength": "strong",
+      "rationale": "Cost allocation is structurally determined by activity type \u2014 every cost line traces back to an activity category.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 884
+    },
+    {
+      "individualName": "weight-ActivityType-to-ActivityGranularity",
+      "source": "ActivityType",
+      "target": "ActivityGranularity",
+      "strength": "strong",
+      "rationale": "Granularity level directly governs how an activity type is tracked and costed \u2014 envelope vs category vs tracked.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 884
+    },
+    {
+      "individualName": "weight-ActivityType-to-ActivityBudget",
+      "source": "ActivityType",
+      "target": "ActivityBudget",
+      "strength": "moderate",
+      "rationale": "Budgets aggregate by activity type but the relationship is indirect \u2014 mediated through cost allocation.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 884
+    },
+    {
+      "individualName": "weight-ActivityType-to-ActivityRecord",
+      "source": "ActivityType",
+      "target": "ActivityRecord",
+      "strength": "moderate",
+      "rationale": "Activity records are typed by activity type but the record is an operational artefact, not a structural dependency.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 884
+    },
+    {
+      "individualName": "weight-ActivityType-to-ResourceType",
+      "source": "ActivityType",
+      "target": "ResourceType",
+      "strength": "moderate",
+      "rationale": "Resources are consumed by activities but the mapping is many-to-many and context-dependent.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 884
+    },
+    {
+      "individualName": "weight-ActivityType-to-Channel",
+      "source": "ActivityType",
+      "target": "Channel",
+      "strength": "weak",
+      "rationale": "Channels deliver services which contain activities, but the relationship is distant \u2014 mediated through service offerings.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 884
+    },
+    {
+      "individualName": "weight-ActivityRecord-to-ActivityType",
+      "source": "ActivityRecord",
+      "target": "ActivityType",
+      "strength": "moderate",
+      "rationale": "Every record is typed by an activity type. If the record format or granularity changes, the activity type may need reviewing \u2014 but an operational change to how records are produced does not redefine what the activity type is.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 919
+    },
+    {
+      "individualName": "weight-ActivityBudget-to-ActivityType",
+      "source": "ActivityBudget",
+      "target": "ActivityType",
+      "strength": "moderate",
+      "rationale": "Budgets are structured by activity type. If the budget changes (e.g. planned volumes revised), the activity type may need reviewing \u2014 but a quantitative change to volume does not redefine what the activity type is.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 960
+    },
+    {
+      "individualName": "weight-ActivityBudget-to-FinancialProjection",
+      "source": "ActivityBudget",
+      "target": "FinancialProjection",
+      "strength": "moderate",
+      "rationale": "Activity budgets feed into financial projections as volume inputs. If the budget changes, the projection may need updating \u2014 but the projection aggregates many inputs beyond activity volumes.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 960
+    },
+    {
+      "individualName": "weight-ActivityGranularity-to-ActivityType",
+      "source": "ActivityGranularity",
+      "target": "ActivityType",
+      "strength": "moderate",
+      "rationale": "Granularity governs how activity types are tracked. If the granularity policy changes, the activity types in that area may need reviewing \u2014 but a policy change about tracking precision does not redefine what the activity type is.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1000
+    },
+    {
+      "individualName": "weight-ActivityGranularity-to-ActivityRecord",
+      "source": "ActivityGranularity",
+      "target": "ActivityRecord",
+      "strength": "moderate",
+      "rationale": "Granularity determines the detail level of records. If the granularity changes, the record format may need adjustment \u2014 but records are produced by the tracking system, not directly defined by the policy declaration.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1000
+    },
+    {
+      "individualName": "weight-ActivityCostAllocation-to-ActivityType",
+      "source": "ActivityCostAllocation",
+      "target": "ActivityType",
+      "strength": "moderate",
+      "rationale": "Cost allocations are defined per activity type. If the allocation changes (method, estimated cost), the activity type may need reviewing \u2014 but a financial change to how the activity is costed does not redefine what the activity type is.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1043
+    },
+    {
+      "individualName": "weight-ActivityCostAllocation-to-CostDriver",
+      "source": "ActivityCostAllocation",
+      "target": "CostDriver",
+      "strength": "moderate",
+      "rationale": "Cost allocations use cost driver rates to compute per-activity costs. If the allocation method changes, the cost driver may need reviewing \u2014 but the driver describes the resource's cost behaviour independently of how individual activities are costed against it.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1043
+    },
+    {
+      "individualName": "weight-ActivityCostAllocation-to-UnitEconomics",
+      "source": "ActivityCostAllocation",
+      "target": "UnitEconomics",
+      "strength": "moderate",
+      "rationale": "Cost allocations ultimately feed unit economics through cost drivers. If an allocation changes, unit economics may need updating \u2014 but the relationship is mediated through cost drivers, not direct.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1043
+    },
+    {
+      "individualName": "weight-ResourceType-to-ResourceInstance",
+      "source": "ResourceType",
+      "target": "ResourceInstance",
+      "strength": "strong",
+      "rationale": "Instances are typed by ResourceType. If the type definition changes (category, cost profile, capacity unit), every instance of that type needs reassessment.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1128
+    },
+    {
+      "individualName": "weight-ResourceType-to-ResourceConstraint",
+      "source": "ResourceType",
+      "target": "ResourceConstraint",
+      "strength": "strong",
+      "rationale": "Constraints are scoped to specific resource types. If the resource type changes, the constraints that limit its availability need reassessment \u2014 a constraint on a specific resource assumes specific properties of that type.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1128
+    },
+    {
+      "individualName": "weight-ResourceType-to-Capability",
+      "source": "ResourceType",
+      "target": "Capability",
+      "strength": "moderate",
+      "rationale": "Capabilities combine resources into service functions. A change to a resource type may require reviewing the capabilities that use it, but capabilities are resilient to substitution within a resource category.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1128
+    },
+    {
+      "individualName": "weight-ResourceType-to-CapacityModel",
+      "source": "ResourceType",
+      "target": "CapacityModel",
+      "strength": "moderate",
+      "rationale": "Capacity models describe throughput given a resource configuration. A change to a resource type may affect throughput calculations, but the relationship is mediated through the specific configuration.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1128
+    },
+    {
+      "individualName": "weight-ResourceType-to-CostDriver",
+      "source": "ResourceType",
+      "target": "CostDriver",
+      "strength": "moderate",
+      "rationale": "Cost drivers are linked to resources. A change to a resource type (especially its cost profile) may require reviewing the associated cost driver, but the link is structural rather than definitional.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1128
+    },
+    {
+      "individualName": "weight-ResourceType-to-ActivityType",
+      "source": "ResourceType",
+      "target": "ActivityType",
+      "strength": "moderate",
+      "rationale": "Activities consume resources. A change to a resource type may affect which activities can be performed, but the coupling is many-to-many and context-dependent.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1128
+    },
+    {
+      "individualName": "weight-ResourceInstance-to-ResourceType",
+      "source": "ResourceInstance",
+      "target": "ResourceType",
+      "strength": "moderate",
+      "rationale": "An instance is a concrete realisation of its type. If the instance changes (capacity, cost, availability), the type may need reviewing \u2014 but an operational change to one instance does not redefine the resource type's category, acquisition method, or capacity unit.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1169
+    },
+    {
+      "individualName": "weight-ResourceInstance-to-CapacityModel",
+      "source": "ResourceInstance",
+      "target": "CapacityModel",
+      "strength": "moderate",
+      "rationale": "Capacity models are built from resource configurations. A change to an instance (e.g. clinician drops from 0.8 to 0.5 FTE) may require reviewing the throughput calculation, but the capacity model aggregates across instances.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1169
+    },
+    {
+      "individualName": "weight-Capability-to-ServiceOffering",
+      "source": "Capability",
+      "target": "ServiceOffering",
+      "strength": "strong",
+      "rationale": "Capabilities enable service offerings. If a capability changes, the offerings it enables need reassessment \u2014 you can't offer what you can't deliver.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1221
+    },
+    {
+      "individualName": "weight-Capability-to-ResourceType",
+      "source": "Capability",
+      "target": "ResourceType",
+      "strength": "strong",
+      "rationale": "Capabilities are defined by the resources they combine. If a capability changes (e.g. a new resource requirement is added), the resource types involved need reassessment.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1221
+    },
+    {
+      "individualName": "weight-Capability-to-ObjectiveCapabilityMapping",
+      "source": "Capability",
+      "target": "ObjectiveCapabilityMapping",
+      "strength": "moderate",
+      "rationale": "Capabilities are the downstream end of strategy-to-operations traceability. If a capability changes, the mapping from strategic objectives to that capability may need reviewing, but the mapping is a declared connection, not a definitional dependency.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1221
+    },
+    {
+      "individualName": "weight-Capability-to-CapacityModel",
+      "source": "Capability",
+      "target": "CapacityModel",
+      "strength": "moderate",
+      "rationale": "Capacity models describe throughput for a resource configuration that delivers a capability. If the capability changes, the throughput model may need recalibrating, but the relationship is indirect.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1221
+    },
+    {
+      "individualName": "weight-CapacityModel-to-ResourceType",
+      "source": "CapacityModel",
+      "target": "ResourceType",
+      "strength": "moderate",
+      "rationale": "A capacity model makes claims about throughput given a resource configuration. If the capacity model changes, the resource types it references may need reassessment \u2014 but the resource type exists independently of any one capacity model.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1269
+    },
+    {
+      "individualName": "weight-CapacityModel-to-ResourceConstraint",
+      "source": "CapacityModel",
+      "target": "ResourceConstraint",
+      "strength": "moderate",
+      "rationale": "Capacity models and constraints are complementary planning concepts. If the capacity model changes (e.g. higher throughput targets), the constraints that limit resource availability may need reviewing.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1269
+    },
+    {
+      "individualName": "weight-ResourceConstraint-to-ResourceType",
+      "source": "ResourceConstraint",
+      "target": "ResourceType",
+      "strength": "strong",
+      "rationale": "Constraints are defined against specific resource types. If a constraint changes (e.g. a regulatory limit is tightened or lifted), the resource type it governs needs reassessment \u2014 the type's effective availability and cost profile may have changed.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1315
+    },
+    {
+      "individualName": "weight-ResourceConstraint-to-CapacityModel",
+      "source": "ResourceConstraint",
+      "target": "CapacityModel",
+      "strength": "moderate",
+      "rationale": "Constraints limit what a resource configuration can deliver. If a constraint changes, the throughput assumptions in the capacity model may need reviewing.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1315
+    },
+    {
+      "individualName": "weight-InventoryRecord-to-CatalogueEntry",
+      "source": "InventoryRecord",
+      "target": "CatalogueEntry",
+      "strength": "strong",
+      "rationale": "Inventory tracks stock of catalogue items. If the inventory record changes (e.g. stock level drops below threshold), the catalogue entry's availability status needs reassessment \u2014 the catalogue promises what inventory must deliver.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1363
+    },
+    {
+      "individualName": "weight-ObjectiveCapabilityMapping-to-Capability",
+      "source": "ObjectiveCapabilityMapping",
+      "target": "Capability",
+      "strength": "strong",
+      "rationale": "The mapping declares which capabilities support a strategic objective. If the mapping changes, the capabilities involved need reassessment \u2014 they may gain or lose strategic justification.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1643
+    },
+    {
+      "individualName": "weight-RevenueStream-to-PricingModel",
+      "source": "RevenueStream",
+      "target": "PricingModel",
+      "strength": "strong",
+      "rationale": "Each revenue stream references a pricing model. If the revenue stream changes (e.g. new trigger event, different source segment), the pricing model may need reassessment to match.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1745
+    },
+    {
+      "individualName": "weight-RevenueStream-to-FinancialProjection",
+      "source": "RevenueStream",
+      "target": "FinancialProjection",
+      "strength": "strong",
+      "rationale": "Financial projections aggregate revenue streams. If a revenue stream changes, the projection that depends on it needs reassessment.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1745
+    },
+    {
+      "individualName": "weight-RevenueStream-to-UnitEconomics",
+      "source": "RevenueStream",
+      "target": "UnitEconomics",
+      "strength": "moderate",
+      "rationale": "Revenue streams inform the revenue side of unit economics. If a stream changes, revenue-per-unit may need reviewing \u2014 but unit economics are per-offering, not per-stream.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1745
+    },
+    {
+      "individualName": "weight-CostDriver-to-ResourceType",
+      "source": "CostDriver",
+      "target": "ResourceType",
+      "strength": "moderate",
+      "rationale": "Cost drivers characterise resources financially. If a cost driver changes (e.g. unit cost revised), the resource type's cost profile may need updating \u2014 but the resource type's category, acquisition method, and structural definition are independent of its cost behaviour.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1793
+    },
+    {
+      "individualName": "weight-CostDriver-to-UnitEconomics",
+      "source": "CostDriver",
+      "target": "UnitEconomics",
+      "strength": "strong",
+      "rationale": "Unit economics aggregate costs per service unit. If a cost driver changes, the cost-per-unit calculation needs reassessment \u2014 cost drivers are the input to that calculation.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1793
+    },
+    {
+      "individualName": "weight-CostDriver-to-ActivityCostAllocation",
+      "source": "CostDriver",
+      "target": "ActivityCostAllocation",
+      "strength": "moderate",
+      "rationale": "Cost allocations map activities to costs. If a cost driver changes, the allocation method may need reviewing \u2014 but the allocation is a mapping mechanism, not directly defined by the cost driver.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1793
+    },
+    {
+      "individualName": "weight-CostDriver-to-RevenueStream",
+      "source": "CostDriver",
+      "target": "RevenueStream",
+      "strength": "moderate",
+      "rationale": "Revenue streams and cost drivers together determine profitability. If a cost driver changes significantly, revenue assumptions may need reviewing \u2014 but the relationship is indirect, mediated through unit economics and financial projections.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1793
+    },
+    {
+      "individualName": "weight-UnitEconomics-to-ServiceOffering",
+      "source": "UnitEconomics",
+      "target": "ServiceOffering",
+      "strength": "moderate",
+      "rationale": "Unit economics characterise an offering's financial viability. If the unit economics change (e.g. margin drops below zero), the offering itself needs reassessment \u2014 but the offering's definition doesn't depend on its economics.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1831
+    },
+    {
+      "individualName": "weight-UnitEconomics-to-FinancialProjection",
+      "source": "UnitEconomics",
+      "target": "FinancialProjection",
+      "strength": "moderate",
+      "rationale": "Financial projections aggregate unit-level economics. If unit economics change, the projection may need updating \u2014 but the projection also depends on volume assumptions and other inputs.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1831
+    },
+    {
+      "individualName": "weight-PricingModel-to-RevenueStream",
+      "source": "PricingModel",
+      "target": "RevenueStream",
+      "strength": "strong",
+      "rationale": "Revenue streams reference a pricing model as their revenue mechanism. If the pricing model changes, the revenue projections that depend on it need reassessment.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1874
+    },
+    {
+      "individualName": "weight-PricingModel-to-ServiceOffering",
+      "source": "PricingModel",
+      "target": "ServiceOffering",
+      "strength": "moderate",
+      "rationale": "Pricing models define how offerings are charged for. If the pricing logic changes, the offering's commercial packaging may need reviewing \u2014 but the offering itself (what is delivered, to whom, using what resources) is defined independently of how it is priced.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1874
+    },
+    {
+      "individualName": "weight-PricingModel-to-UnitEconomics",
+      "source": "PricingModel",
+      "target": "UnitEconomics",
+      "strength": "moderate",
+      "rationale": "Unit economics calculate margin per unit of service. If the pricing model changes, the revenue-per-unit figure needs reviewing \u2014 but unit economics also depend on cost factors that are independent of pricing.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1874
+    },
+    {
+      "individualName": "weight-FinancialProjection-to-RevenueStream",
+      "source": "FinancialProjection",
+      "target": "RevenueStream",
+      "strength": "moderate",
+      "rationale": "A projection aggregates revenue streams. If the projection changes (e.g. revised timeline, different scenario), the revenue streams feeding it may need reviewing \u2014 but revenue streams exist independently of any one projection.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1912
+    },
+    {
+      "individualName": "weight-FinancialProjection-to-CostDriver",
+      "source": "FinancialProjection",
+      "target": "CostDriver",
+      "strength": "moderate",
+      "rationale": "A projection aggregates cost drivers. If the projection changes, the cost assumptions may need reviewing \u2014 but cost drivers exist independently of any one projection.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 1912
+    },
+    {
+      "individualName": "weight-GovernanceRequirement-to-AuditEvidenceRecord",
+      "source": "GovernanceRequirement",
+      "target": "AuditEvidenceRecord",
+      "strength": "strong",
+      "rationale": "Each governance requirement defines what evidence must be produced. If the requirement changes, the evidence records need reassessment \u2014 you may need different proof, different frequency, or different responsible roles.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2151
+    },
+    {
+      "individualName": "weight-GovernanceRequirement-to-ResourceConstraint",
+      "source": "GovernanceRequirement",
+      "target": "ResourceConstraint",
+      "strength": "moderate",
+      "rationale": "Governance requirements often impose resource constraints (regulatory qualification requirements, capacity limits). If a requirement changes, associated resource constraints may need reviewing \u2014 but not all requirements produce resource constraints.",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2151
+    },
+    {
+      "individualName": "weight-GovernanceRequirement-to-StakeholderRelationship",
+      "source": "GovernanceRequirement",
+      "target": "StakeholderRelationship",
+      "strength": "moderate",
+      "rationale": "A change to a governance requirement may require reviewing the relationship through which it is enforced, but the relationship exists independently of any single requirement (H1, H5).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2151
+    },
+    {
+      "individualName": "weight-StakeholderRelationship-to-GovernanceRequirement",
+      "source": "StakeholderRelationship",
+      "target": "GovernanceRequirement",
+      "strength": "strong",
+      "rationale": "A change to the regulatory relationship (e.g. new regulator, changed inspection regime) directly affects what governance requirements apply. Definitional for regulatory-natured relationships (H1).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2283
+    },
+    {
+      "individualName": "weight-StakeholderRelationship-to-ServiceOffering",
+      "source": "StakeholderRelationship",
+      "target": "ServiceOffering",
+      "strength": "moderate",
+      "rationale": "A change to a stakeholder relationship may affect what services can be offered (e.g. loss of a commissioning relationship), but the offering's identity is defined independently in ServiceConcept (H1, H4).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2283
+    },
+    {
+      "individualName": "weight-StakeholderRelationship-to-ResourceType",
+      "source": "StakeholderRelationship",
+      "target": "ResourceType",
+      "strength": "moderate",
+      "rationale": "Some stakeholder relationships involve resource implications (e.g. regulatory requirements for qualified staff), but the link is mediated through GovernanceRequirement and ResourceConstraint (H4).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2283
+    },
+    {
+      "individualName": "weight-CooperativeArrangement-to-ActivityType",
+      "source": "CooperativeArrangement",
+      "target": "ActivityType",
+      "strength": "strong",
+      "rationale": "A cooperative arrangement defines shared activities. A change to the arrangement directly affects what activities are performed and by whom (H1).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2341
+    },
+    {
+      "individualName": "weight-CooperativeArrangement-to-ServiceOffering",
+      "source": "CooperativeArrangement",
+      "target": "ServiceOffering",
+      "strength": "strong",
+      "rationale": "Some cooperative arrangements define jointly-delivered services. A change to the arrangement may fundamentally alter what can be offered (H1).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2341
+    },
+    {
+      "individualName": "weight-CooperativeArrangement-to-ResourceType",
+      "source": "CooperativeArrangement",
+      "target": "ResourceType",
+      "strength": "moderate",
+      "rationale": "Cooperative arrangements may involve shared resources, but the resource types exist independently (H4).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2341
+    },
+    {
+      "individualName": "weight-ReferralPathway-to-ServiceOffering",
+      "source": "ReferralPathway",
+      "target": "ServiceOffering",
+      "strength": "moderate",
+      "rationale": "Referral pathways channel demand to specific offerings, but the offerings exist independently. A change to a referral pathway affects volume and flow, not the offering's identity (H1, H2).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2393
+    },
+    {
+      "individualName": "weight-ReferralPathway-to-ActivityType",
+      "source": "ReferralPathway",
+      "target": "ActivityType",
+      "strength": "moderate",
+      "rationale": "Referral pathways generate activities (intake, triage, acknowledgement), but these activities are typed independently (H4).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2393
+    },
+    {
+      "individualName": "weight-ExternalDependency-to-ResourceType",
+      "source": "ExternalDependency",
+      "target": "ResourceType",
+      "strength": "strong",
+      "rationale": "An external dependency is something the business depends on \u2014 often a resource it cannot provide itself. A change to the dependency (e.g. supplier withdrawal) directly affects resource availability (H1).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2444
+    },
+    {
+      "individualName": "weight-ExternalDependency-to-ServiceOffering",
+      "source": "ExternalDependency",
+      "target": "ServiceOffering",
+      "strength": "moderate",
+      "rationale": "Loss of a critical dependency may affect what can be offered, but the link is mediated through resources (H4).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2444
+    },
+    {
+      "individualName": "weight-ExternalDependency-to-CostDriver",
+      "source": "ExternalDependency",
+      "target": "CostDriver",
+      "strength": "moderate",
+      "rationale": "Dependencies have cost implications (supplier pricing, contractual terms), but cost drivers are characterising, not definitional (H1, H2).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2444
+    },
+    {
+      "individualName": "weight-CommunityRelationship-to-ServiceOffering",
+      "source": "CommunityRelationship",
+      "target": "ServiceOffering",
+      "strength": "moderate",
+      "rationale": "Community relationships shape what the business offers (community needs influence service design), but the link is characterising, not definitional (H1).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2500
+    },
+    {
+      "individualName": "weight-CommunityRelationship-to-CustomerSegment",
+      "source": "CommunityRelationship",
+      "target": "CustomerSegment",
+      "strength": "moderate",
+      "rationale": "Communities overlap with customer segments, but they are not the same thing \u2014 a community relationship may serve non-customers (H4).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2500
+    },
+    {
+      "individualName": "weight-ParticipationModel-to-ServiceOffering",
+      "source": "ParticipationModel",
+      "target": "ServiceOffering",
+      "strength": "strong",
+      "rationale": "Participation patterns are defined for specific service offerings \u2014 the ref relationship is typed. A change to how customers participate directly affects the offering's delivery model (H1).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2549
+    },
+    {
+      "individualName": "weight-ParticipationModel-to-ActivityType",
+      "source": "ParticipationModel",
+      "target": "ActivityType",
+      "strength": "moderate",
+      "rationale": "Participation generates activities (self-service actions, shared decision-making), but the activity types exist independently (H4).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2549
+    },
+    {
+      "individualName": "weight-ParticipationModel-to-Channel",
+      "source": "ParticipationModel",
+      "target": "Channel",
+      "strength": "moderate",
+      "rationale": "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4).",
+      "sysmlSourceFile": "model/business-model.sysml",
+      "sysmlLineNumber": 2549
     }
   ]
 }

@@ -6,7 +6,7 @@ OWL 2 DL Reasoning via Robot
 Runs the HermiT reasoner (via Robot) against the full Ontara ontology
 stack and reports consistency, unsatisfiable classes, and inferred axioms.
 
-Part of Stage 5 Phase 2 — Step 4.
+Part of Stage 5 Phase 2 — Steps 4 and 6.
 
 Prerequisites:
   - Java 11+ installed (java on PATH)
@@ -39,6 +39,7 @@ import tempfile
 REPO_ROOT = pathlib.Path(__file__).parent.parent
 
 ROBOT_JAR = REPO_ROOT / "tools" / "robot.jar"
+CATALOG_FILE = REPO_ROOT / "ontology" / "catalog-v001.xml"
 
 # Ontology files — loaded in order (imports first, then domain, then axioms)
 ONTOLOGY_FILES = [
@@ -70,6 +71,11 @@ ONTOLOGY_FILES = [
     {
         "file": REPO_ROOT / "generated" / "ontology" / "ontara-bmm-properties.ttl",
         "name": "Ontara BMM Properties (pipeline-generated)",
+        "required": False,
+    },
+    {
+        "file": REPO_ROOT / "generated" / "ontology" / "ontara-bmm-weights.ttl",
+        "name": "Ontara BMM Weighted Relationships (pipeline-generated)",
         "required": False,
     },
 ]
@@ -229,6 +235,10 @@ def reason_ontology(verbose=False, output_path=None):
     # Robot supports chaining: merge --input A --input B reason --reasoner hermit
     args = ["merge"]
 
+    # Use XML catalog for local IRI resolution (avoids network fetch)
+    if CATALOG_FILE.exists():
+        args.extend(["--catalog", str(CATALOG_FILE)])
+
     for entry in ONTOLOGY_FILES:
         if not entry["file"].exists():
             if entry["required"]:
@@ -313,6 +323,10 @@ def test_violation(verbose=False):
     try:
         # Build merge + reason with the violation file added
         args = ["merge"]
+
+        # Use XML catalog for local IRI resolution
+        if CATALOG_FILE.exists():
+            args.extend(["--catalog", str(CATALOG_FILE)])
 
         for entry in ONTOLOGY_FILES:
             if not entry["file"].exists():

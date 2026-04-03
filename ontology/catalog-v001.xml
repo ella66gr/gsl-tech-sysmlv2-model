@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- OWL API XML Catalog for local IRI resolution.
+     Maps ontology IRIs to local file paths so that Robot, Protégé,
+     and other OWL tools can resolve imports without network access.
+
+     Session 117: Created to resolve ontara-bmm: import in axioms
+     and properties files during Robot reasoning. -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+         prefer="public">
+
+    <!-- Ontara BMM domain ontology (pipeline-generated) -->
+    <uri name="https://ontara.dev/ontology/bmm/"
+         uri="../generated/ontology/ontara-bmm.ttl"/>
+
+    <!-- Ontara BMM axioms (hand-authored, OWL-authoritative) -->
+    <uri name="https://ontara.dev/ontology/bmm/axioms"
+         uri="axioms/ontara-bmm-axioms.ttl"/>
+
+</catalog>
