@@ -671,6 +671,126 @@ def build_governance_traceability(all_elements):
 
 
 # ---------------------------------------------------------------
+# Stage 5 Phase 2 Block B Step 9: Ontological hierarchy
+# ---------------------------------------------------------------
+
+def build_ontological_hierarchy(coverage_matrix):
+    """Build a tree-structured ontological hierarchy from @BfoType coverage data.
+
+    Uses a hardcoded BFO 2020 intermediate hierarchy (stable — ISO standard),
+    groups BMM elements under their BFO class, optionally via a mid-level node
+    (CCO / IAO).
+
+    Stage 5 Phase 2 Block B Step 9 — Session 119.
+    """
+    # Collect BMM elements that have a bfoClass annotation
+    bmm_elements = []
+    for name, entry in coverage_matrix.items():
+        bfo_type = entry.get("bfoType", {})
+        if not bfo_type or not bfo_type.get("bfoClass"):
+            continue
+        friendly_name = name
+        if entry.get("userFacing") and entry["userFacing"].get("friendlyName"):
+            friendly_name = entry["userFacing"]["friendlyName"]
+        bmm_concern = ""
+        if entry.get("catalogueTag"):
+            bmm_concern = entry["catalogueTag"].get("bmmConcern", "")
+        bmm_elements.append({
+            "name": name,
+            "tier": "bmm",
+            "package": entry.get("package", ""),
+            "friendlyName": friendly_name,
+            "bmmConcern": bmm_concern,
+            "bfoClass": bfo_type.get("bfoClass", ""),
+            "midLevelClass": bfo_type.get("midLevelClass", ""),
+        })
+
+    # Group: bfoClass -> midLevelClass -> [elements]
+    grouped = defaultdict(lambda: defaultdict(list))
+    for elem in bmm_elements:
+        grouped[elem["bfoClass"]][elem["midLevelClass"]].append(elem)
+
+    def make_bfo_node(name, children=None):
+        node = {"name": name, "tier": "bfo"}
+        if children is not None:
+            node["children"] = children
+        return node
+
+    def make_mid_level_node(full_name, children):
+        parts = full_name.split(":", 1)
+        prefix = parts[0] if len(parts) == 2 else ""
+        class_name = parts[1] if len(parts) == 2 else full_name
+        return {
+            "name": full_name,
+            "tier": "midLevel",
+            "prefix": prefix,
+            "className": class_name,
+            "children": children,
+        }
+
+    def make_bmm_leaf(elem):
+        return {
+            "name": elem["name"],
+            "tier": "bmm",
+            "package": elem["package"],
+            "friendlyName": elem["friendlyName"],
+            "bmmConcern": elem["bmmConcern"],
+        }
+
+    def build_bfo_class_node(bfo_class_name):
+        """Build a BFO leaf node with its mid-level and BMM children."""
+        mid_groups = grouped.get(bfo_class_name, {})
+        if not mid_groups:
+            return None
+        children = []
+        # Mid-level nodes: sort alphabetically
+        for mid_name in sorted(k for k in mid_groups if k):
+            bmm_leaves = sorted(mid_groups[mid_name], key=lambda e: e["friendlyName"])
+            children.append(make_mid_level_node(mid_name, [make_bmm_leaf(e) for e in bmm_leaves]))
+        # BMM elements with no mid-level class: attach directly to BFO class node
+        if "" in mid_groups:
+            direct = sorted(mid_groups[""], key=lambda e: e["friendlyName"])
+            children.extend(make_bmm_leaf(e) for e in direct)
+        return make_bfo_node(bfo_class_name, children)
+
+    # Build BFO class nodes
+    gdc_node = build_bfo_class_node("GenericallyDependentContinuant")
+    role_node = build_bfo_class_node("Role")
+    disposition_node = build_bfo_class_node("Disposition")
+
+    # Assemble the hierarchy skeleton, pruning empty branches
+    realizable_children = [n for n in [role_node, disposition_node] if n is not None]
+    realizable_node = make_bfo_node("RealizableEntity", realizable_children) if realizable_children else None
+
+    sdc_children = [n for n in [realizable_node] if n is not None]
+    sdc_node = make_bfo_node("SpecificallyDependentContinuant", sdc_children) if sdc_children else None
+
+    continuant_children = [n for n in [gdc_node, sdc_node] if n is not None]
+    continuant_node = make_bfo_node("Continuant", continuant_children) if continuant_children else None
+
+    entity_children = [n for n in [continuant_node] if n is not None]
+    tree = make_bfo_node("Entity", entity_children)
+
+    # Stats
+    bfo_classes_used = [c for c in ["GenericallyDependentContinuant", "Role", "Disposition"]
+                        if c in grouped]
+    mid_level_classes_used = sorted({
+        mid for bfc in grouped.values() for mid in bfc if mid
+    })
+    unmapped_mid_level = sorted(elem["name"] for elem in bmm_elements if not elem["midLevelClass"])
+
+    return {
+        "tree": tree,
+        "stats": {
+            "bmmElementCount": len(bmm_elements),
+            "bfoClassesUsed": bfo_classes_used,
+            "midLevelClassesUsed": mid_level_classes_used,
+            "unmappedMidLevel": unmapped_mid_level,
+        },
+    }
+
+
+# ---------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------
 
@@ -722,6 +842,9 @@ def main():
 
     # Session 88: build architectural sections
     architectural_sections = build_architectural_sections(all_elements)
+
+    # Stage 5 Phase 2 Block B Step 9: build ontological hierarchy
+    ontological_hierarchy = build_ontological_hierarchy(coverage)
 
     # Summary stats
     by_kind = defaultdict(int)
@@ -809,6 +932,13 @@ def main():
         print(f"  {section['presentationOrder']:2d}. {section['displayName']} [{section['group']}] ({section['implementationStatus']})",
               file=sys.stderr)
 
+    # Stage 5 Phase 2 Block B Step 9: ontological hierarchy diagnostics
+    print(f"\n--- Ontological Hierarchy ---", file=sys.stderr)
+    print(f"BFO classes used: {len(ontological_hierarchy['stats']['bfoClassesUsed'])}", file=sys.stderr)
+    print(f"Mid-level classes used: {len(ontological_hierarchy['stats']['midLevelClassesUsed'])}", file=sys.stderr)
+    print(f"BMM elements in tree: {ontological_hierarchy['stats']['bmmElementCount']}", file=sys.stderr)
+    print(f"Unmapped mid-level: {', '.join(ontological_hierarchy['stats']['unmappedMidLevel']) or 'none'}", file=sys.stderr)
+
     # Coverage summary
     print(f"\n--- Coverage Matrix ---", file=sys.stderr)
     for def_name, info in sorted(coverage.items()):
@@ -843,6 +973,7 @@ def main():
         "comprehensionContent": comprehension_content,
         "weightedRelationshipGraph": relationship_graph,
         "architecturalSections": architectural_sections,  # NEW — Session 88
+        "ontologicalHierarchy": ontological_hierarchy,    # NEW — Session 119
         "elements": [e.to_dict() for e in all_elements],
     }
     
