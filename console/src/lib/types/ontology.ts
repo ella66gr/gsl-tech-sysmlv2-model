@@ -37,3 +37,46 @@ export interface OntologyPageData {
   generatedAt: string;
   generator: string;
 }
+
+// --- Reasoning summary types ---
+
+export interface OntologyFileEntry {
+  name: string;
+  file: string;
+  sizeBytes: number;
+  present: boolean;
+}
+
+export interface ObjectProperty {
+  name: string;
+  label: string;
+  domain: string;
+  range: string;
+  functional: boolean;
+  comment: string;
+}
+
+export interface ReasoningStats {
+  ontologyFileCount: number;
+  objectPropertyCount: number;
+  reifiedWeightCount: number;
+  domainClassCount: number;
+  axiomFilePresent: boolean;
+}
+
+export interface ViolationTest {
+  ran: boolean;
+  passed: boolean | null;
+}
+
+export interface ReasoningSummary {
+  generatedAt: string;
+  generator: string;
+  reasoner: string;
+  consistent: boolean;
+  unsatisfiableClasses: string[];
+  ontologyStack: OntologyFileEntry[];
+  objectProperties: ObjectProperty[];
+  stats: ReasoningStats;
+  violationTest: ViolationTest;
+}

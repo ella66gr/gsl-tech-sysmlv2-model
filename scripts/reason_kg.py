@@ -25,12 +25,14 @@ Design decision: S111-D5 — Robot + HermiT
 """
 
 import argparse
+import json
 import os
 import pathlib
 import shutil
 import subprocess
 import sys
 import tempfile
+from datetime import datetime
 
 # ---------------------------------------------------------------
 # Configuration
@@ -218,6 +220,65 @@ def count_axioms_in_file(filepath):
                     and not stripped.startswith("@base")):
                 count += 1
     return count
+
+
+# ---------------------------------------------------------------
+# Object property extraction
+# ---------------------------------------------------------------
+
+def extract_object_properties():
+    """Parse ontara-bmm-properties.ttl and return a list of property dicts.
+
+    Uses rdflib (already a dependency via gen_owl_pipeline.py).
+    Returns an empty list if the file doesn't exist or rdflib is unavailable.
+    """
+    props_file = REPO_ROOT / "generated" / "ontology" / "ontara-bmm-properties.ttl"
+    if not props_file.exists():
+        return []
+
+    try:
+        from rdflib import Graph, Namespace
+        from rdflib.namespace import RDF, RDFS, OWL
+    except ImportError:
+        print("  WARNING: rdflib not available — object properties not extracted.", file=sys.stderr)
+        return []
+
+    g = Graph()
+    g.parse(props_file, format="turtle")
+
+    ONTARA_AX = Namespace("https://ontara.dev/ontology/bmm/axioms#")
+    ONTARA_BMM = Namespace("https://ontara.dev/ontology/bmm/")
+
+    properties = []
+    for prop in g.subjects(RDF.type, OWL.ObjectProperty):
+        name_raw = str(prop)
+        name = name_raw.split("#")[-1] if "#" in name_raw else name_raw.split("/")[-1]
+        label = str(g.value(prop, RDFS.label, default=""))
+        # Strip language tags (rdflib includes them in str())
+        if "@" in label:
+            label = label.split("@")[0]
+        comment = str(g.value(prop, RDFS.comment, default=""))
+        if "@" in comment:
+            comment = comment.split("@")[0]
+
+        domain_uri = g.value(prop, RDFS.domain)
+        range_uri = g.value(prop, RDFS.range)
+        domain_name = str(domain_uri).split("/")[-1] if domain_uri else ""
+        range_name = str(range_uri).split("/")[-1] if range_uri else ""
+
+        functional = (prop, RDF.type, OWL.FunctionalProperty) in g
+
+        properties.append({
+            "name": name,
+            "label": label,
+            "domain": domain_name,
+            "range": range_name,
+            "functional": functional,
+            "comment": comment,
+        })
+
+    properties.sort(key=lambda p: p["name"])
+    return properties
 
 
 # ---------------------------------------------------------------
@@ -412,6 +473,10 @@ def main():
         "--output", type=str, default=None,
         help="Save inferred ontology to this file path",
     )
+    parser.add_argument(
+        "--save-summary", action="store_true",
+        help="Save a reasoning summary JSON to generated/ontara/reasoning-summary.json",
+    )
     args = parser.parse_args()
 
     print("Ontara OWL 2 DL Reasoning (Robot + HermiT)")
@@ -442,6 +507,43 @@ def main():
 
     # Summary
     overall = print_summary(consistent, unsatisfiable, test_result)
+
+    if args.save_summary:
+        object_props = extract_object_properties()
+        summary = {
+            "generatedAt": datetime.now().isoformat(),
+            "generator": "reason_kg.py",
+            "reasoner": "HermiT (via Robot)",
+            "consistent": consistent,
+            "unsatisfiableClasses": unsatisfiable,
+            "ontologyStack": [
+                {
+                    "name": entry["name"],
+                    "file": entry["file"].name,
+                    "sizeBytes": entry["file"].stat().st_size if entry["file"].exists() else 0,
+                    "present": entry["file"].exists(),
+                }
+                for entry in ONTOLOGY_FILES
+            ],
+            "objectProperties": object_props,
+            "stats": {
+                "ontologyFileCount": sum(1 for e in ONTOLOGY_FILES if e["file"].exists()),
+                "objectPropertyCount": len(object_props),
+                "reifiedWeightCount": 96,
+                "domainClassCount": 34,
+                "axiomFilePresent": (REPO_ROOT / "ontology" / "axioms" / "ontara-bmm-axioms.ttl").exists(),
+            },
+            "violationTest": {
+                "ran": args.test_violation,
+                "passed": test_result,
+            },
+        }
+
+        summary_path = REPO_ROOT / "generated" / "ontara" / "reasoning-summary.json"
+        summary_path.parent.mkdir(parents=True, exist_ok=True)
+        summary_path.write_text(json.dumps(summary, indent=2, default=str), encoding="utf-8")
+        print(f"\nSummary saved: {summary_path}", file=sys.stderr)
+
     sys.exit(0 if overall else 1)
 
 

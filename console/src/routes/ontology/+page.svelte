@@ -1,12 +1,21 @@
 <script lang="ts">
   import { Badge } from 'flowbite-svelte';
-  import { ChevronDownOutline, ChevronRightOutline, ArrowRightOutline } from 'flowbite-svelte-icons';
-  import type { HierarchyNode } from '$lib/types/ontology';
+  import { ChevronDownOutline, ChevronRightOutline, ArrowRightOutline, CheckCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
+  import type { HierarchyNode, ReasoningSummary } from '$lib/types/ontology';
 
   let { data } = $props();
 
   const hierarchy = data.ontology.hierarchy;
   const stats = hierarchy.stats;
+  const reasoning: ReasoningSummary | null = data.reasoning ?? null;
+
+  function formatBytes(bytes: number): string {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  let ontologyStackExpanded = $state(false);
 
   // --- Collect all node paths that can be expanded (bfo and midLevel) ---
   function collectExpandablePaths(node: HierarchyNode, path: string): string[] {
@@ -234,8 +243,165 @@
     {@render treeNode(hierarchy.tree, hierarchy.tree.name, 0)}
   </div>
 
+  <!-- KG Status separator -->
+  <hr class="my-2 border-secondary-200 dark:border-secondary-700" />
+
+  <!-- Knowledge Graph Status -->
+  <div class="space-y-6">
+    <div>
+      <h2 class="text-xl font-bold text-secondary-800 dark:text-white">Knowledge Graph Status</h2>
+      <p class="mt-1 text-secondary-500 dark:text-secondary-300">
+        OWL 2 DL reasoning results and formal relationship declarations
+      </p>
+    </div>
+
+    {#if reasoning === null}
+      <div class="rounded-lg border border-secondary-200 bg-secondary-50 px-4 py-6 text-sm text-secondary-500 dark:border-secondary-700 dark:bg-secondary-800/50 dark:text-secondary-400">
+        No reasoning summary available — run
+        <code class="rounded bg-secondary-100 px-1.5 py-0.5 font-mono text-xs dark:bg-secondary-700">python3 scripts/reason_kg.py --save-summary</code>
+        to generate.
+      </div>
+    {:else}
+      <!-- Stat cards -->
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        <!-- Consistency -->
+        <div class="flex flex-col items-center justify-center gap-1 rounded-lg border p-4 text-center
+          {reasoning.consistent
+            ? 'border-green-200 bg-green-50 dark:border-green-800/40 dark:bg-green-900/10'
+            : 'border-red-200 bg-red-50 dark:border-red-800/40 dark:bg-red-900/10'}">
+          {#if reasoning.consistent}
+            <CheckCircleOutline class="h-7 w-7 text-green-500 dark:text-green-400" />
+            <span class="text-sm font-semibold text-green-700 dark:text-green-400">Consistent</span>
+          {:else}
+            <CloseCircleOutline class="h-7 w-7 text-red-500 dark:text-red-400" />
+            <span class="text-sm font-semibold text-red-700 dark:text-red-400">Inconsistent</span>
+          {/if}
+          <span class="text-xs text-secondary-500 dark:text-secondary-400">HermiT</span>
+        </div>
+
+        <!-- Ontology Stack -->
+        <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-secondary-200 bg-white p-4 text-center dark:border-secondary-700 dark:bg-secondary-900">
+          <span class="text-2xl font-bold text-secondary-800 dark:text-white">{reasoning.stats.ontologyFileCount}</span>
+          <button
+            onclick={() => ontologyStackExpanded = !ontologyStackExpanded}
+            class="text-xs text-primary-600 hover:underline dark:text-primary-400"
+          >
+            {ontologyStackExpanded ? 'hide files' : 'ontology files'}
+          </button>
+        </div>
+
+        <!-- Object Properties -->
+        <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-secondary-200 bg-white p-4 text-center dark:border-secondary-700 dark:bg-secondary-900">
+          <span class="text-2xl font-bold text-secondary-800 dark:text-white">{reasoning.stats.objectPropertyCount}</span>
+          <span class="text-xs text-secondary-500 dark:text-secondary-400">typed relationships</span>
+        </div>
+
+        <!-- Reified Weights -->
+        <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-secondary-200 bg-white p-4 text-center dark:border-secondary-700 dark:bg-secondary-900">
+          <span class="text-2xl font-bold text-secondary-800 dark:text-white">{reasoning.stats.reifiedWeightCount}</span>
+          <span class="text-xs text-secondary-500 dark:text-secondary-400">weighted relationships</span>
+        </div>
+
+        <!-- Domain Classes -->
+        <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-secondary-200 bg-white p-4 text-center dark:border-secondary-700 dark:bg-secondary-900">
+          <span class="text-2xl font-bold text-secondary-800 dark:text-white">{reasoning.stats.domainClassCount}</span>
+          <span class="text-xs text-secondary-500 dark:text-secondary-400">OWL classes</span>
+        </div>
+      </div>
+
+      <!-- Ontology stack detail (expandable) -->
+      {#if ontologyStackExpanded}
+        <div class="rounded-lg border border-secondary-200 bg-secondary-50 p-3 dark:border-secondary-700 dark:bg-secondary-800/50">
+          <table class="w-full text-xs">
+            <thead>
+              <tr class="border-b border-secondary-200 dark:border-secondary-700">
+                <th class="pb-1.5 text-left font-semibold text-secondary-500 dark:text-secondary-400">File</th>
+                <th class="pb-1.5 text-left font-semibold text-secondary-500 dark:text-secondary-400">Name</th>
+                <th class="pb-1.5 text-right font-semibold text-secondary-500 dark:text-secondary-400">Size</th>
+                <th class="pb-1.5 text-center font-semibold text-secondary-500 dark:text-secondary-400">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {#each reasoning.ontologyStack as entry}
+                <tr class="border-b border-secondary-100 last:border-0 dark:border-secondary-700/50">
+                  <td class="py-1.5 pr-3 font-mono text-secondary-500 dark:text-secondary-400">{entry.file}</td>
+                  <td class="py-1.5 pr-3 text-secondary-700 dark:text-secondary-300">{entry.name}</td>
+                  <td class="py-1.5 pr-3 text-right text-secondary-500 dark:text-secondary-400">{formatBytes(entry.sizeBytes)}</td>
+                  <td class="py-1.5 text-center">
+                    {#if entry.present}
+                      <span class="text-green-600 dark:text-green-400">✓</span>
+                    {:else}
+                      <span class="text-red-500 dark:text-red-400">✗</span>
+                    {/if}
+                  </td>
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        </div>
+      {/if}
+
+      <!-- Object properties table -->
+      <div>
+        <h3 class="mb-3 text-sm font-semibold text-secondary-700 dark:text-secondary-300">
+          OWL Object Properties ({reasoning.objectProperties.length})
+        </h3>
+        <div class="overflow-x-auto rounded-lg border border-secondary-200 dark:border-secondary-700">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-secondary-200 bg-secondary-50 dark:border-secondary-700 dark:bg-secondary-800/50">
+                <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-secondary-500 dark:text-secondary-400">Property</th>
+                <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-secondary-500 dark:text-secondary-400">Domain</th>
+                <th class="px-2 py-2.5 text-center text-xs text-secondary-300 dark:text-secondary-600">→</th>
+                <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-secondary-500 dark:text-secondary-400">Range</th>
+                <th class="px-4 py-2.5 text-center text-xs font-semibold uppercase tracking-wider text-secondary-500 dark:text-secondary-400">Functional?</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-secondary-100 dark:divide-secondary-700/50">
+              {#each reasoning.objectProperties as prop, i}
+                <tr class="{i % 2 === 0 ? 'bg-white dark:bg-secondary-900' : 'bg-secondary-50/50 dark:bg-secondary-800/30'}">
+                  <td class="px-4 py-2.5">
+                    <span class="font-medium text-secondary-800 dark:text-white">{prop.label}</span>
+                    <span class="ml-1.5 font-mono text-xs text-secondary-400 dark:text-secondary-500">{prop.name}</span>
+                  </td>
+                  <td class="px-4 py-2.5">
+                    <a
+                      href="/glossary?entry={encodeURIComponent(prop.domain)}"
+                      class="text-primary-600 hover:underline dark:text-primary-400"
+                    >
+                      {prop.domain}
+                    </a>
+                  </td>
+                  <td class="px-2 py-2.5 text-center text-secondary-300 dark:text-secondary-600">→</td>
+                  <td class="px-4 py-2.5">
+                    <a
+                      href="/glossary?entry={encodeURIComponent(prop.range)}"
+                      class="text-primary-600 hover:underline dark:text-primary-400"
+                    >
+                      {prop.range}
+                    </a>
+                  </td>
+                  <td class="px-4 py-2.5 text-center">
+                    {#if prop.functional}
+                      <Badge color="green" class="text-xs">Functional</Badge>
+                    {:else}
+                      <Badge color="dark" class="text-xs">Non-functional</Badge>
+                    {/if}
+                  </td>
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-2 text-xs text-secondary-400 dark:text-secondary-500">
+          Reasoning summary generated {new Date(reasoning.generatedAt).toLocaleString()} by {reasoning.generator}
+        </p>
+      </div>
+    {/if}
+  </div>
+
   <!-- Footer -->
   <p class="text-xs text-secondary-400 dark:text-secondary-500">
-    Generated {new Date(data.ontology.generatedAt).toLocaleString()} by {data.ontology.generator}
+    Hierarchy generated {new Date(data.ontology.generatedAt).toLocaleString()} by {data.ontology.generator}
   </p>
 </div>

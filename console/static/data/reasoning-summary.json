@@ -1,0 +1,176 @@
+{
+  "generatedAt": "2026-04-03T09:19:00",
+  "generator": "reason_kg.py",
+  "reasoner": "HermiT (via Robot)",
+  "consistent": true,
+  "unsatisfiableClasses": [],
+  "ontologyStack": [
+    {
+      "name": "BFO 2020 Core",
+      "file": "bfo-core.owl",
+      "sizeBytes": 98418,
+      "present": true
+    },
+    {
+      "name": "IAO (Information Artifact Ontology)",
+      "file": "iao.owl",
+      "sizeBytes": 589716,
+      "present": true
+    },
+    {
+      "name": "CCO (Common Core Ontologies)",
+      "file": "CommonCoreOntologiesMerged.ttl",
+      "sizeBytes": 1274898,
+      "present": true
+    },
+    {
+      "name": "Ontara BMM (pipeline-generated)",
+      "file": "ontara-bmm.ttl",
+      "sizeBytes": 21264,
+      "present": true
+    },
+    {
+      "name": "Ontara BMM Axioms (hand-authored)",
+      "file": "ontara-bmm-axioms.ttl",
+      "sizeBytes": 20124,
+      "present": true
+    },
+    {
+      "name": "Ontara BMM Properties (pipeline-generated)",
+      "file": "ontara-bmm-properties.ttl",
+      "sizeBytes": 5941,
+      "present": true
+    },
+    {
+      "name": "Ontara BMM Weighted Relationships (pipeline-generated)",
+      "file": "ontara-bmm-weights.ttl",
+      "sizeBytes": 57678,
+      "present": true
+    }
+  ],
+  "objectProperties": [
+    {
+      "name": "hasActivityType",
+      "label": "has activity type",
+      "domain": "ActivityRecord",
+      "range": "ActivityType",
+      "functional": true,
+      "comment": "SysML: ActivityRecord.activityType [1]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasAffectedResource",
+      "label": "has affected resource",
+      "domain": "ResourceConstraint",
+      "range": "ResourceType",
+      "functional": true,
+      "comment": "SysML: ResourceConstraint.affectedResource [1]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasAllocatedActivityType",
+      "label": "has allocated activity type",
+      "domain": "ActivityCostAllocation",
+      "range": "ActivityType",
+      "functional": true,
+      "comment": "SysML: ActivityCostAllocation.activityType [1]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasBudgetActivityType",
+      "label": "has budget activity type",
+      "domain": "ActivityBudget",
+      "range": "ActivityType",
+      "functional": true,
+      "comment": "SysML: ActivityBudget.activityType [1]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasCatalogueEntry",
+      "label": "has catalogue entry",
+      "domain": "InventoryRecord",
+      "range": "CatalogueEntry",
+      "functional": true,
+      "comment": "SysML: InventoryRecord.catalogueEntry [1]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasEnabledServiceOffering",
+      "label": "has enabled service offering",
+      "domain": "Capability",
+      "range": "ServiceOffering",
+      "functional": false,
+      "comment": "SysML: Capability.enabledServiceOfferings [0..*]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasLinkedResource",
+      "label": "has linked resource",
+      "domain": "CostDriver",
+      "range": "ResourceType",
+      "functional": false,
+      "comment": "SysML: CostDriver.linkedResource [0..*]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasOffering",
+      "label": "has offering",
+      "domain": "UnitEconomics",
+      "range": "ServiceOffering",
+      "functional": true,
+      "comment": "SysML: UnitEconomics.offering [1]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasPricingModel",
+      "label": "has pricing model",
+      "domain": "RevenueStream",
+      "range": "PricingModel",
+      "functional": true,
+      "comment": "SysML: RevenueStream.pricingModel [1]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasRelatedGovernanceRequirement",
+      "label": "has related governance requirement",
+      "domain": "StakeholderRelationship",
+      "range": "GovernanceRequirement",
+      "functional": false,
+      "comment": "SysML: StakeholderRelationship.relatedGovernanceRequirements [0..*]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasRelatedServiceOffering",
+      "label": "has related service offering",
+      "domain": "ParticipationModel",
+      "range": "ServiceOffering",
+      "functional": false,
+      "comment": "SysML: ParticipationModel.relatedServiceOffering [0..*]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasResourceType",
+      "label": "has resource type",
+      "domain": "ResourceInstance",
+      "range": "ResourceType",
+      "functional": true,
+      "comment": "SysML: ResourceInstance.resourceType [1]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasSupportingCapability",
+      "label": "has supporting capability",
+      "domain": "ObjectiveCapabilityMapping",
+      "range": "Capability",
+      "functional": false,
+      "comment": "SysML: ObjectiveCapabilityMapping.supportingCapabilities [1..*]. Pipeline-generated from typed ref attribute."
+    },
+    {
+      "name": "hasTargetSegment",
+      "label": "has target segment",
+      "domain": "ValueProposition",
+      "range": "CustomerSegment",
+      "functional": true,
+      "comment": "SysML: ValueProposition.targetSegment [1]. Pipeline-generated from typed ref attribute."
+    }
+  ],
+  "stats": {
+    "ontologyFileCount": 7,
+    "objectPropertyCount": 14,
+    "reifiedWeightCount": 96,
+    "domainClassCount": 34,
+    "axiomFilePresent": true
+  },
+  "violationTest": {
+    "ran": false,
+    "passed": null
+  }
+}
