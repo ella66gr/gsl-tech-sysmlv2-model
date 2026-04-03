@@ -22,3 +22,6 @@ CLAUDE.local.md
 
 # pnpm
 pnpm-lock.yaml
+
+# External tool binaries (downloaded per-developer)
+tools/*.jar

@@ -47,6 +47,7 @@ gsl-sysml-model/
 │   ├── sysml_parser.py             SysML v2 parser (shared across generators)
 │   ├── projection_engine.py        Projection engine
 │   ├── validate_kg.py              Knowledge graph validation (SPARQL suite)
+│   ├── reason_kg.py               OWL 2 DL reasoning (Robot + HermiT)
 │   ├── setup_graphdb.py            GraphDB repository setup script
 │   ├── ontara                      CLI entry point
 │   └── archive-documentation.sh    Vault → repo archive helper
@@ -71,6 +72,7 @@ gsl-sysml-model/
 │   └── generated/                  Generated documentation
 ├── libraries/                      Shared SysML metadata definitions
 ├── concept-graph/                  Concept graph source
+├── tools/                          External tool binaries (robot.jar, etc.)
 ├── spikes/                         Experimental spikes
 ├── CLAUDE.md                       Claude Code project context
 └── .claude/skills/                 Claude Code skills
@@ -85,6 +87,7 @@ gsl-sysml-model/
 | Ontological formalism | OWL 2 DL — BFO 2020 + CCO + IAO |
 | Triple store | GraphDB Free 10.x (OWL-Horst reasoning) |
 | Ontology authoring | Protégé 5.6+ |
+| OWL reasoning | Robot 1.9.8 (wrapping HermiT) |
 | Console | SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4 |
 | 3D relationship graph | 3d-force-graph + Three.js r183 + three-spritetext |
 | Generation pipeline | Python (9 generators reading .sysml, producing JSON/TS/Mermaid/Turtle) |
@@ -94,7 +97,7 @@ gsl-sysml-model/
 
 ## Current State (Session 114, April 2026)
 
-- **Stage 5 — Knowledge Graph Implementation** is the active workstream. Phase 1 (taxonomy, Sessions 100–107) is complete: 34 OWL classes with BFO/CCO/IAO parentage, correspondence graph, generation pipeline, GraphDB loaded and validated. Phase 2 (ontological enrichment) is in progress — Steps 1–2 complete: six concern-group union classes with `AllDisjointClasses`, 13 object properties with domain/range/functional characteristics, all hand-authored in `ontology/axioms/ontara-bmm-axioms.ttl` and verified via HermiT consistency check. Step 3 (existential and cardinality restrictions) is next.
+- **Stage 5 — Knowledge Graph Implementation** is the active workstream. Phase 1 (taxonomy, Sessions 100–107) is complete: 34 OWL classes with BFO/CCO/IAO parentage, correspondence graph, generation pipeline, GraphDB loaded and validated. Phase 2 (ontological enrichment) is in progress — Steps 1–3 complete: six concern-group union classes with `AllDisjointClasses`, 13 object properties with domain/range/functional characteristics, 9 cardinality restrictions, all hand-authored in `ontology/axioms/ontara-bmm-axioms.ttl`. Step 4 delivered Robot + HermiT integration for full OWL 2 DL consistency checking (`scripts/reason_kg.py`).
 - **BMM structurally complete** at General level — 34 elements, 96 weighted relationships, full comprehension metadata (34/34 @UserFacing, @PurposiveDescription, @Comprehension, @BfoType).
 - **Console** has 12 views including an interactive 3D weighted relationship graph and a spatial visual architecture map.
 - **Three demonstrator domains** validated (Cafe, Suds, Paws), with Ears (community ear care) outlined as a fourth.
@@ -113,6 +116,12 @@ cd console && pnpm dev
 
 # Build the console
 cd console && pnpm build
+
+# Run OWL 2 DL reasoner (requires Robot JAR in tools/)
+python scripts/reason_kg.py
+
+# Run reasoner with violation test
+python scripts/reason_kg.py --test-violation
 ```
 
 ## Companion Knowledge Base
@@ -133,4 +142,4 @@ Development is conducted through a structured session programme (currently Sessi
 
 ---
 
-*README last updated: Session 114, 3 April 2026.*
+*README last updated: Session 115, 3 April 2026.*
