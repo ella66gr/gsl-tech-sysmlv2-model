@@ -506,51 +506,51 @@
 <style>
   :global(html) {
     --arch-panel-bg: rgba(255, 255, 255, 0.18);
-    --arch-left-bg: #F5D6B8;
-    --arch-left-border: #8B3518;
-    --arch-left-heading: #5C2210;
-    --arch-right-bg: #CCDFF2;
-    --arch-right-border: #14548C;
-    --arch-right-heading: #0A3866;
-    --arch-found-bg: #E8DFD4;
-    --arch-found-border: #7A6347;
-    --arch-found-heading: #4A3824;
-    --arch-reflect-bg: #F5D1DE;
-    --arch-reflect-border: #882E4C;
-    --arch-reflect-heading: #5E1C32;
-    --arch-green-border: #568019;
-    --arch-green-bg: rgba(86,128,25,0.06);
-    --arch-green-heading: #345010;
-    --arch-infra-bg: #E8E6E4;
-    --arch-infra-border: #8F8983;
-    --arch-infra-heading: #44403C;
-    --arch-operator-bg: #FDE68A;
-    --arch-operator-border: #B45309;
-    --arch-operator-heading: #78350F;
+    --arch-left-bg: #FFB4A2;
+    --arch-left-border: #E5989B;
+    --arch-left-heading: #4a2020;
+    --arch-right-bg: #E5989B;
+    --arch-right-border: #B5838D;
+    --arch-right-heading: #3d1a2a;
+    --arch-found-bg: #FFCDB2;
+    --arch-found-border: #E5989B;
+    --arch-found-heading: #3a1a0e;
+    --arch-reflect-bg: #B5838D;
+    --arch-reflect-border: #917681;
+    --arch-reflect-heading: #2a0e18;
+    --arch-green-border: #917681;
+    --arch-green-bg: #f5ebe8;
+    --arch-green-heading: #4a3040;
+    --arch-infra-bg: #ebe4e1;
+    --arch-infra-border: #917681;
+    --arch-infra-heading: #3d2e35;
+    --arch-operator-bg: #917681;
+    --arch-operator-border: #6D6875;
+    --arch-operator-heading: #ffffff;
   }
   :global(html.dark) {
     --arch-panel-bg: rgba(31, 41, 55, 0.22);
-    --arch-left-bg: rgba(153,60,29,0.12);
-    --arch-left-border: rgba(153,60,29,0.5);
-    --arch-left-heading: #E8B4A0;
-    --arch-right-bg: rgba(24,95,165,0.12);
-    --arch-right-border: rgba(24,95,165,0.5);
-    --arch-right-heading: #93C5FD;
-    --arch-found-bg: rgba(139,115,85,0.1);
-    --arch-found-border: rgba(139,115,85,0.4);
-    --arch-found-heading: #D6C8B4;
-    --arch-reflect-bg: rgba(153,53,86,0.12);
-    --arch-reflect-border: rgba(153,53,86,0.5);
-    --arch-reflect-heading: #F9A8C9;
-    --arch-green-border: rgba(99,153,34,0.55);
-    --arch-green-bg: rgba(99,153,34,0.06);
-    --arch-green-heading: #A3D977;
-    --arch-infra-bg: rgba(120,113,108,0.08);
-    --arch-infra-border: rgba(120,113,108,0.3);
-    --arch-infra-heading: #D6D3D1;
-    --arch-operator-bg: rgba(217,119,6,0.12);
-    --arch-operator-border: rgba(217,119,6,0.4);
-    --arch-operator-heading: #FCD34D;
+    --arch-left-bg: #1F2F22;
+    --arch-left-border: #3E563E;
+    --arch-left-heading: #CED9DF;
+    --arch-right-bg: #3E563E;
+    --arch-right-border: #5a7a5a;
+    --arch-right-heading: #CED9DF;
+    --arch-found-bg: #7993A0;
+    --arch-found-border: #93aab5;
+    --arch-found-heading: #ffffff;
+    --arch-reflect-bg: #93A889;
+    --arch-reflect-border: #adbfa5;
+    --arch-reflect-heading: #ffffff;
+    --arch-green-border: #3E563E;
+    --arch-green-bg: #151f16;
+    --arch-green-heading: #93A889;
+    --arch-infra-bg: #1a2520;
+    --arch-infra-border: #3E563E;
+    --arch-infra-heading: #CED9DF;
+    --arch-operator-bg: #091008;
+    --arch-operator-border: #1F2F22;
+    --arch-operator-heading: #CED9DF;
   }
 
   /* Main grid — 1rem gap gives arrow rows room to breathe */
@@ -576,8 +576,11 @@
 
   .arch-card-header { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.375rem; }
   .arch-card-badges { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: 0.25rem; }
-  .arch-card-desc { font-size: 0.75rem; color: #6b7280; margin-top: 0.375rem; line-height: 1.4; }
-  :global(html.dark) .arch-card-desc { color: #9ca3af; }
+  .arch-card-desc { font-size: 0.75rem; color: #4a3040; margin-top: 0.375rem; line-height: 1.4; }
+  :global(html.dark) .arch-card-desc { color: #dce4e8; }
+
+  .arch-operator .arch-card-desc { color: #2a1520; }
+  .arch-reflect .arch-card-desc { color: #2a1520; }
 
   .arch-left    { background-color: var(--arch-left-bg);     border-color: var(--arch-left-border); }
   .arch-right   { background-color: var(--arch-right-bg);    border-color: var(--arch-right-border); }
@@ -600,12 +603,13 @@
   .reflect-chip {
     font-size: 0.7rem; font-weight: 500; padding: 0.2rem 0.6rem;
     border-radius: 9999px;
-    background-color: rgba(153,53,86,0.15);
-    color: var(--arch-reflect-heading);
+    background-color: rgba(255,255,255,0.45);
+    color: #2a0e18;
     border: 1px solid var(--arch-reflect-border);
-    animation: shimmer 3s ease-in-out infinite;
   }
-  @keyframes shimmer { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
+  :global(html.dark) .reflect-chip {
+    background-color: rgba(147,168,137,0.25);
+  }
 
   .formalism-boundary {
     border-radius: 0.375rem; padding: 0.375rem 1rem; text-align: center;
@@ -662,18 +666,42 @@
   }
 
   /* ============================================================
-     DO NOT REMOVE — Custom orange override for 'Designed' badge.
-     Flowbite's default bg-orange-100 (#ffedd5) is too close to
-     the terracotta left-stack background (#FAEBD7).
-     This override was agreed with Ella in Session 92.
-     DO NOT REVERT THIS CHANGE.
+     Badge colour overrides — light and dark mode.
+     More intense than Flowbite defaults for visual clarity.
+     Original Designed override agreed Session 92; expanded Session 122.
   ============================================================ */
-  :global(.relative :is([class*="bg-orange-100"])) {
-    background-color: #fb923c !important;
+  /* Purple — OWL 2 DL */
+  :global(.relative :is([class*="bg-purple-100"])) {
+    background-color: #7c3aed !important;
     color: #ffffff !important;
   }
+  /* Blue — SysML v2 */
+  :global(.relative :is([class*="bg-blue-100"])) {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+  }
+  /* Green — Implemented / Runtime */
+  :global(.relative :is([class*="bg-green-100"])) {
+    background-color: #16a34a !important;
+    color: #ffffff !important;
+  }
+  /* Yellow — Mixed / Referenced */
+  :global(.relative :is([class*="bg-yellow-100"])) {
+    background-color: #ca8a04 !important;
+    color: #ffffff !important;
+  }
+  /* Orange — Designed */
+  :global(.relative :is([class*="bg-orange-100"])) {
+    background-color: #ea580c !important;
+    color: #ffffff !important;
+  }
+  /* Dark mode overrides */
   :global(html.dark .relative :is([class*="bg-orange-"])) {
-    background-color: #9a3412 !important;
-    color: #fdba74 !important;
+    background-color: #5c4033 !important;
+    color: #d4b8a0 !important;
+  }
+  :global(html.dark .relative :is([class*="bg-yellow-"])) {
+    background-color: #3d3c1e !important;
+    color: #c8c48a !important;
   }
 </style>
