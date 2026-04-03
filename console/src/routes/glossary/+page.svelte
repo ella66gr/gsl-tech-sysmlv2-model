@@ -24,6 +24,13 @@
   let layerFilter = $state('all');
   let expandedEntries = $state<Set<string>>(new Set());
 
+  // Cross-route back navigation
+  const fromRoute = $derived(
+    typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('from')
+      : null
+  );
+
   // Deep link: if ?entry= param is present, focus on that entry
   if (typeof window !== 'undefined') {
     const entryParam = new URLSearchParams(window.location.search).get('entry');
@@ -187,6 +194,18 @@
 </script>
 
 <div class="space-y-4">
+  <!-- Cross-route breadcrumb -->
+  {#if fromRoute === 'ontology'}
+    <div>
+      <a
+        href="/ontology"
+        class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-primary-600 hover:bg-primary-50 hover:text-primary-800 dark:text-primary-400 dark:hover:bg-primary-900/30 dark:hover:text-primary-300"
+      >
+        ← Back to Ontological Hierarchy
+      </a>
+    </div>
+  {/if}
+
   <!-- Header -->
   <div>
     <h1 class="text-2xl font-bold text-secondary-800 dark:text-white">Glossary</h1>

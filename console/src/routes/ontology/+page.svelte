@@ -149,7 +149,7 @@
       <!-- BMM leaf node -->
       {@const isUnmapped = stats.unmappedMidLevel.includes(node.name)}
       <a
-        href="/glossary?entry={encodeURIComponent(node.name)}"
+        href="/glossary?entry={encodeURIComponent(node.name)}&from=ontology"
         class="mb-1 flex items-center gap-2.5 rounded-md border px-3 py-2 text-left text-sm transition
           {isUnmapped
             ? 'border-dashed border-secondary-300 bg-secondary-50 hover:bg-secondary-100 dark:border-secondary-600 dark:bg-secondary-800/50 dark:hover:bg-secondary-700/50'
@@ -366,7 +366,7 @@
                   </td>
                   <td class="px-4 py-2.5">
                     <a
-                      href="/glossary?entry={encodeURIComponent(prop.domain)}"
+                      href="/glossary?entry={encodeURIComponent(prop.domain)}&from=ontology"
                       class="text-primary-600 hover:underline dark:text-primary-400"
                     >
                       {prop.domain}
@@ -375,7 +375,7 @@
                   <td class="px-2 py-2.5 text-center text-secondary-300 dark:text-secondary-600">→</td>
                   <td class="px-4 py-2.5">
                     <a
-                      href="/glossary?entry={encodeURIComponent(prop.range)}"
+                      href="/glossary?entry={encodeURIComponent(prop.range)}&from=ontology"
                       class="text-primary-600 hover:underline dark:text-primary-400"
                     >
                       {prop.range}
