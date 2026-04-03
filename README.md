@@ -52,10 +52,10 @@ gsl-sysml-model/
 │   ├── ontara                      CLI entry point
 │   └── archive-documentation.sh    Vault → repo archive helper
 ├── console/                        Ontara Console (SvelteKit + Svelte 5)
-│   ├── src/                        12 views: Home, Coverage Matrix, Package Navigator,
+│   ├── src/                        13 views: Home, Coverage Matrix, Package Navigator,
 │   │                               Component Catalogue, Glossary, Governance, Meta-Model,
 │   │                               Patterns, Domain Views, Weighted Relationship Graph (3D),
-│   │                               Architecture (visual map)
+│   │                               Architecture (visual map), Ontology (BFO hierarchy + KG status)
 │   └── static/data/                model-introspection.json (console data source)
 ├── generated/                      Generated artefacts (DO NOT EDIT)
 │   ├── ontara/                     model-introspection.json
@@ -65,7 +65,8 @@ gsl-sysml-model/
 ├── ontology/                       Ontological assets
 │   ├── axioms/                     Hand-authored OWL axioms (ontara-bmm-axioms.ttl)
 │   ├── imports/                    External ontologies (BFO 2020, CCO, IAO)
-│   └── config/                     Mapping config (cco-iri-lookup.json, etc.)
+│   ├── config/                     Mapping config (mapping-rules.yaml, cco-iri-lookup.json)
+│   └── catalog-v001.xml            Robot IRI resolution catalogue
 ├── documentation/
 │   ├── reference/                  SysML syntax reference, versioned snapshots
 │   ├── archive/                    Committed vault snapshots (session reports, plans, design docs)
@@ -90,17 +91,18 @@ gsl-sysml-model/
 | OWL reasoning | Robot 1.9.8 (wrapping HermiT) |
 | Console | SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4 |
 | 3D relationship graph | 3d-force-graph + Three.js r183 + three-spritetext |
-| Generation pipeline | Python (9 generators reading .sysml, producing JSON/TS/Mermaid/Turtle) |
+| Generation pipeline | Python (7 generators + OWL pipeline reading .sysml, producing JSON/TS/Mermaid/Turtle) |
 | Coffee Shop app | SvelteKit + Temporal + XState v5 + EHRbase CDR + PostgreSQL |
 | Knowledge base | Obsidian (separate vault, not in this repo) |
 | Development | macOS, VS Code |
 
-## Current State (Session 114, April 2026)
+## Current State (Session 124, April 2026)
 
-- **Stage 5 — Knowledge Graph Implementation** is the active workstream. Phase 1 (taxonomy, Sessions 100–107) is complete: 34 OWL classes with BFO/CCO/IAO parentage, correspondence graph, generation pipeline, GraphDB loaded and validated. Phase 2 (ontological enrichment) is in progress — Steps 1–3 complete: six concern-group union classes with `AllDisjointClasses`, 13 object properties with domain/range/functional characteristics, 9 cardinality restrictions, all hand-authored in `ontology/axioms/ontara-bmm-axioms.ttl`. Step 4 delivered Robot + HermiT integration for full OWL 2 DL consistency checking (`scripts/reason_kg.py`).
+- **Stage 5 — Knowledge Graph Implementation** Phases 1 and 2 are both formally closed. Phase 1 (taxonomy, Sessions 100–107): 34 OWL classes with BFO/CCO/IAO parentage, correspondence graph, generation pipeline, GraphDB loaded and validated. Phase 2 (ontological enrichment, Sessions 111–120): 6 concern-group disjointness declarations, 14 object properties (pipeline-generated from SysML typed refs), 9 cardinality restrictions, 96 reified weighted relationship individuals (702 triples), Robot + HermiT full OWL 2 DL consistency checking. Correspondence graph: 1,378 triples. 7-file ontology stack.
+- **Governance workstream** active: deontic governance architecture discussion paper produced (Session 121), third systematic documentation review completed (Session 123, 19 findings), vault restructured (Session 120).
 - **BMM structurally complete** at General level — 34 elements, 96 weighted relationships, full comprehension metadata (34/34 @UserFacing, @PurposiveDescription, @Comprehension, @BfoType).
-- **Console** has 12 views including an interactive 3D weighted relationship graph and a spatial visual architecture map.
-- **Three demonstrator domains** validated (Cafe, Suds, Paws), with Ears (community ear care) outlined as a fourth.
+- **Console** has 13 views including an interactive 3D weighted relationship graph, a spatial visual architecture map, and an ontological hierarchy view with KG status panel.
+- **Three demonstrator domains** validated (Cafe, Suds, Paws), with Ears (community ear care) outlined as a fifth domain (second clinical).
 
 ## Key Commands
 
@@ -120,13 +122,16 @@ cd console && pnpm build
 # Run OWL 2 DL reasoner (requires Robot JAR in tools/)
 python scripts/reason_kg.py
 
+# Run reasoner and save summary for console
+python scripts/reason_kg.py --save-summary
+
 # Run reasoner with violation test
 python scripts/reason_kg.py --test-violation
 ```
 
 ## Companion Knowledge Base
 
-The Obsidian vault (not in this repo) contains ~190 registered design concepts, 24 discussion papers, 113+ session reports, and the full governance structure. The vault is under separate git version control.
+The Obsidian vault (not in this repo) contains ~190 registered design concepts, 25 discussion papers, 96 session reports (Sessions 28–123), and the full governance structure. The vault is under separate git version control.
 
 Key documents: Strategic Reference, Master Concept Register, Development Workflow Guide, Architecture Principles (v3), SysML Modelling Strategy (v3), Service Business Meta Modelling (v2).
 
@@ -138,8 +143,8 @@ Three governing principles:
 2. **Co-evolution of model and tooling** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
 3. **Non-constraining architecture** — decisions should not foreclose future development paths.
 
-Development is conducted through a structured session programme (currently Session 114) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
+Development is conducted through a structured session programme (currently Session 124) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
 
 ---
 
-*README last updated: Session 115, 3 April 2026.*
+*README last updated: Session 124, 3 April 2026.*
