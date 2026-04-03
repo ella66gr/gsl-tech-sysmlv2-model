@@ -294,6 +294,125 @@ ORDER BY ?graph
         ],
         "display_vars": ["graph", "triples"],
     },
+    # --- Group 5: Governance Vocabulary ---
+    {
+        "id": "Q11",
+        "group": "Governance",
+        "name": "All governance classes with labels",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+
+SELECT ?class ?label ?parent WHERE {
+  ?class a owl:Class ;
+         rdfs:label ?label .
+  OPTIONAL { ?class rdfs:subClassOf ?parent .
+             FILTER(isIRI(?parent)) }
+  FILTER(STRSTARTS(STR(?class), STR(ontara-gov:)))
+}
+ORDER BY ?label
+""",
+        "expect_at_least": 19,
+        "display_vars": ["class", "label", "parent"],
+    },
+    {
+        "id": "Q12",
+        "group": "Governance",
+        "name": "Governance enumeration individuals",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+
+SELECT ?ind ?label WHERE {
+  ?ind a owl:NamedIndividual ;
+       rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?ind), STR(ontara-gov:)))
+}
+ORDER BY ?ind
+""",
+        "expect_at_least": 24,
+        "display_vars": ["ind", "label"],
+    },
+    {
+        "id": "Q13",
+        "group": "Governance",
+        "name": "Governance object properties with domain and range",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-gov-ax: <https://ontara.dev/ontology/governance/axioms#>
+
+SELECT ?prop ?label ?domain ?range WHERE {
+  ?prop a owl:ObjectProperty ;
+        rdfs:label ?label .
+  OPTIONAL { ?prop rdfs:domain ?domain }
+  OPTIONAL { ?prop rdfs:range ?range }
+  FILTER(STRSTARTS(STR(?prop), STR(ontara-gov-ax:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 20,
+        "display_vars": ["prop", "label", "domain", "range"],
+    },
+    {
+        "id": "Q14",
+        "group": "Governance",
+        "name": "Governance data properties with domain and range",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-gov-ax: <https://ontara.dev/ontology/governance/axioms#>
+
+SELECT ?prop ?label ?domain ?range WHERE {
+  ?prop a owl:DatatypeProperty ;
+        rdfs:label ?label .
+  OPTIONAL { ?prop rdfs:domain ?domain }
+  OPTIONAL { ?prop rdfs:range ?range }
+  FILTER(STRSTARTS(STR(?prop), STR(ontara-gov-ax:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 16,
+        "display_vars": ["prop", "label", "domain", "range"],
+    },
+    {
+        "id": "Q15",
+        "group": "Governance",
+        "name": "DeonticDirective subclasses grounded in IAO",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+
+SELECT ?class ?label WHERE {
+  ?class rdfs:subClassOf ontara-gov:DeonticDirective ;
+         rdfs:label ?label .
+  FILTER(?class != ontara-gov:DeonticDirective)
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 4,
+        "display_vars": ["class", "label"],
+    },
+    {
+        "id": "Q16",
+        "group": "Governance",
+        "name": "NormativeInstrument subclasses (11 types)",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+
+SELECT ?class ?label WHERE {
+  ?class rdfs:subClassOf ontara-gov:NormativeInstrument ;
+         rdfs:label ?label .
+  FILTER(?class != ontara-gov:NormativeInstrument)
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 11,
+        "display_vars": ["class", "label"],
+    },
 ]
 
 

@@ -80,6 +80,16 @@ ONTOLOGY_FILES = [
         "name": "Ontara BMM Weighted Relationships (pipeline-generated)",
         "required": False,
     },
+    {
+        "file": REPO_ROOT / "ontology" / "governance" / "ontara-governance.ttl",
+        "name": "Ontara Governance Vocabulary (hand-authored)",
+        "required": False,
+    },
+    {
+        "file": REPO_ROOT / "ontology" / "governance" / "test-individuals.ttl",
+        "name": "Ontara Governance Test Individuals",
+        "required": False,
+    },
 ]
 
 # Violation test: a Turtle snippet that makes ValueProposition a subclass

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- OWL API XML Catalog for local IRI resolution within the governance module.
+     Maps the governance ontology IRI to the local Turtle file so that Robot,
+     Protégé, and other OWL tools can resolve imports without network access.
+
+     Session 126: Created for the governance ontology module. -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
+         prefer="public">
+
+    <!-- Ontara Governance Vocabulary (hand-authored, OWL-authoritative) -->
+    <uri name="https://ontara.dev/ontology/governance/"
+         uri="ontara-governance.ttl"/>
+
+</catalog>
