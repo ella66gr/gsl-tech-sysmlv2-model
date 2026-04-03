@@ -162,6 +162,7 @@ Or use `cd console && pnpm run refresh-data`.
 
 ## Commit Convention
 
+- **Code should always commit at the end of a task**, with a descriptive commit message, unless there is a specific reason not to (e.g. Ella has asked to review before committing). Do not leave uncommitted changes for Ella to commit manually.
 - Commit messages reference the session number: `Session NN: description of changes`
 - Repo archive paths: `documentation/archive/strategic/`, `documentation/archive/plans/`, `documentation/archive/session-reports/`, `documentation/archive/design/`
 
