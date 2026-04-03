@@ -13,9 +13,139 @@
 <https://ontara.dev/ontology/bmm/axioms> rdf:type owl:Ontology ;
                                           owl:imports ontara-bmm: ;
                                           dcterms:created "2026-04-02"^^xsd:date ;
-                                          rdfs:comment "Hand-authored OWL axioms for the Ontara BMM. Phase 2 Step 1: concern group disjointness. OWL-authoritative (B29)."@en ;
+                                          rdfs:comment "Hand-authored OWL axioms for the Ontara BMM. Phase 2 Steps 1-2: concern group disjointness and object property declarations. OWL-authoritative (B29)."@en ;
                                           rdfs:label "Ontara BMM Axioms"@en ;
-                                          owl:versionInfo "Session 112 — Step 1: disjointness axioms"@en .
+                                          owl:versionInfo "Session 113 — Steps 1-2: disjointness axioms + 13 object property declarations"@en .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://ontara.dev/ontology/bmm/axioms#hasActivityType
+:hasActivityType rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf owl:topObjectProperty ;
+                 rdf:type owl:FunctionalProperty ;
+                 rdfs:domain ontara-bmm:ActivityRecord ;
+                 rdfs:range ontara-bmm:ActivityType ;
+                 rdfs:comment "The activity type that this record documents. SysML: ActivityRecord.activityType [1]."@en ;
+                 rdfs:label "has activity type"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasAffectedResource
+:hasAffectedResource rdf:type owl:ObjectProperty ;
+                     rdfs:subPropertyOf owl:topObjectProperty ;
+                     rdf:type owl:FunctionalProperty ;
+                     rdfs:domain ontara-bmm:ResourceConstraint ;
+                     rdfs:range ontara-bmm:ResourceType ;
+                     rdfs:comment "The resource type whose availability this constraint limits. SysML: ResourceConstraint.affectedResource [1]."@en ;
+                     rdfs:label "has affected resource"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasAllocatedActivityType
+:hasAllocatedActivityType rdf:type owl:ObjectProperty ;
+                          rdfs:subPropertyOf owl:topObjectProperty ;
+                          rdf:type owl:FunctionalProperty ;
+                          rdfs:domain ontara-bmm:ActivityCostAllocation ;
+                          rdfs:range ontara-bmm:ActivityType ;
+                          rdfs:comment "The activity type to which this cost allocation applies. SysML: ActivityCostAllocation.activityType [1]."@en ;
+                          rdfs:label "has allocated activity type"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasBudgetActivityType
+:hasBudgetActivityType rdf:type owl:ObjectProperty ;
+                       rdfs:subPropertyOf owl:topObjectProperty ;
+                       rdf:type owl:FunctionalProperty ;
+                       rdfs:domain ontara-bmm:ActivityBudget ;
+                       rdfs:range ontara-bmm:ActivityType ;
+                       rdfs:comment "The activity type for which this budget allocates planned volume. SysML: ActivityBudget.activityType [1]."@en ;
+                       rdfs:label "has budget activity type"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasCatalogueEntry
+:hasCatalogueEntry rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf owl:topObjectProperty ;
+                   rdf:type owl:FunctionalProperty ;
+                   rdfs:domain ontara-bmm:InventoryRecord ;
+                   rdfs:range ontara-bmm:CatalogueEntry ;
+                   rdfs:comment "The catalogue entry whose stock level this inventory record tracks. SysML: InventoryRecord.catalogueEntry [1]."@en ;
+                   rdfs:label "has catalogue entry"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasEnabledServiceOffering
+:hasEnabledServiceOffering rdf:type owl:ObjectProperty ;
+                           rdfs:subPropertyOf owl:topObjectProperty ;
+                           rdfs:domain ontara-bmm:Capability ;
+                           rdfs:range ontara-bmm:ServiceOffering ;
+                           rdfs:comment "A service offering that this capability enables. SysML: Capability.enabledServiceOfferings [0..*]."@en ;
+                           rdfs:label "has enabled service offering"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasLinkedResource
+:hasLinkedResource rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf owl:topObjectProperty ;
+                   rdfs:domain ontara-bmm:CostDriver ;
+                   rdfs:range ontara-bmm:ResourceType ;
+                   rdfs:comment "A resource type whose cost behaviour this driver characterises. SysML: CostDriver.linkedResource [0..*]."@en ;
+                   rdfs:label "has linked resource"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasOffering
+:hasOffering rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf owl:topObjectProperty ;
+             rdf:type owl:FunctionalProperty ;
+             rdfs:domain ontara-bmm:UnitEconomics ;
+             rdfs:range ontara-bmm:ServiceOffering ;
+             rdfs:comment "The service offering whose unit economics this instance describes. SysML: UnitEconomics.offering [1]."@en ;
+             rdfs:label "has offering"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasPricingModel
+:hasPricingModel rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf owl:topObjectProperty ;
+                 rdf:type owl:FunctionalProperty ;
+                 rdfs:domain ontara-bmm:RevenueStream ;
+                 rdfs:range ontara-bmm:PricingModel ;
+                 rdfs:comment "The pricing model that governs this revenue stream. SysML: RevenueStream.pricingModel [1]."@en ;
+                 rdfs:label "has pricing model"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasRelatedGovernanceRequirement
+:hasRelatedGovernanceRequirement rdf:type owl:ObjectProperty ;
+                                 rdfs:subPropertyOf owl:topObjectProperty ;
+                                 rdfs:domain ontara-bmm:StakeholderRelationship ;
+                                 rdfs:range ontara-bmm:GovernanceRequirement ;
+                                 rdfs:comment "A governance requirement associated with this stakeholder relationship. SysML: StakeholderRelationship.relatedGovernanceRequirements [0..*]."@en ;
+                                 rdfs:label "has related governance requirement"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasRelatedServiceOffering
+:hasRelatedServiceOffering rdf:type owl:ObjectProperty ;
+                           rdfs:subPropertyOf owl:topObjectProperty ;
+                           rdfs:domain ontara-bmm:ParticipationModel ;
+                           rdfs:range ontara-bmm:ServiceOffering ;
+                           rdfs:comment "A service offering to which this participation model applies. SysML: ParticipationModel.relatedServiceOffering [0..*]."@en ;
+                           rdfs:label "has related service offering"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasResourceType
+:hasResourceType rdf:type owl:ObjectProperty ;
+                 rdfs:subPropertyOf owl:topObjectProperty ;
+                 rdf:type owl:FunctionalProperty ;
+                 rdfs:domain ontara-bmm:ResourceInstance ;
+                 rdfs:range ontara-bmm:ResourceType ;
+                 rdfs:comment "The resource type that this instance instantiates. SysML: ResourceInstance.resourceType [1]."@en ;
+                 rdfs:label "has resource type"@en .
+
+
+###  https://ontara.dev/ontology/bmm/axioms#hasTargetSegment
+:hasTargetSegment rdf:type owl:ObjectProperty ;
+                  rdfs:subPropertyOf owl:topObjectProperty ;
+                  rdf:type owl:FunctionalProperty ;
+                  rdfs:domain ontara-bmm:ValueProposition ;
+                  rdfs:range ontara-bmm:CustomerSegment ;
+                  rdfs:comment "The customer segment to which a value proposition is addressed. SysML: ValueProposition.targetSegment [1]."@en ;
+                  rdfs:label "has target segment"@en .
+
 
 #################################################################
 #    Classes
