@@ -67,6 +67,12 @@ export interface ComprehensionContent {
   attributes?: AttributeSurface[];
 }
 
+export interface BfoType {
+  bfoClass: string;
+  midLevelClass: string;
+  mappingNotes?: string;
+}
+
 export interface CatalogueElement {
   name: string;
   layer: string;
@@ -76,6 +82,7 @@ export interface CatalogueElement {
   userFacing?: UserFacing;
   purposiveDescription?: PurposiveDescription;
   comprehension?: ComprehensionFlags;
+  bfoType?: BfoType;
   /** Keyed by domain identifier (core, csw, suds, paws). */
   domains: Record<string, DomainInstance[]>;
 }

@@ -356,6 +356,22 @@
                 </div>
               {/if}
 
+              <!-- BFO ontological grounding -->
+              {#if entry.bfoType}
+                {@const midLevel = entry.bfoType.midLevelClass || ''}
+                {@const midParts = midLevel.includes(':') ? midLevel.split(':') : ['', midLevel]}
+                <div class="flex items-baseline gap-2 rounded-md border border-purple-100 bg-purple-50/30 px-3 py-2 dark:border-purple-900/30 dark:bg-purple-900/10">
+                  <span class="text-xs font-semibold uppercase tracking-wider text-purple-500 dark:text-purple-400">Ontological grounding</span>
+                  <span class="text-sm text-secondary-700 dark:text-secondary-300">
+                    BFO: <span class="font-medium">{entry.bfoType.bfoClass}</span>
+                    {#if midLevel}
+                      <span class="mx-1 text-secondary-300 dark:text-secondary-600">→</span>
+                      {#if midParts[0]}<span class="text-secondary-500 dark:text-secondary-400">{midParts[0]}:</span>{/if}<span class="font-medium">{midParts[1] || midLevel}</span>
+                    {/if}
+                  </span>
+                </div>
+              {/if}
+
               <!-- Comprehension: intrinsic content from model traversal -->
               {#if comprehensionContent[entry.name]}
                 {@const cc = comprehensionContent[entry.name]}

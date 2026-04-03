@@ -201,6 +201,7 @@ def build_coverage_matrix(all_elements):
                 "purposiveDescription": elem.purposive_description if elem.purposive_description else {},
                 "comprehension": elem.comprehension if elem.comprehension else {},
                 "weightedRelationships": elem.weighted_relationships if elem.weighted_relationships else [],
+                "bfoType": elem.bfo_type if elem.bfo_type else {},
                 "domains": {},
             }
     

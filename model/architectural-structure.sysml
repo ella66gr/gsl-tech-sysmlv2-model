@@ -224,7 +224,7 @@ package ArchitecturalStructure {
     @ArchitecturalLocation {
         representationalModalitySummary = "SysML v2 part defs. The most mature section — 34 part defs with full comprehension metadata (34/34 UserFacing, PurposiveDescription, Comprehension; 96 WeightedRelationship).";
         persistenceSummary = "Currently: .sysml files in the git repository. Target: knowledge graph (canonical) with SysML v2 files as projection.";
-        interfacesSummary = "Vertical downward: instantiated by the business instance layer. Vertical upward: traces through domain ontologies to BFO. Horizontal rightward: many-to-many mapping to BSMM General vocabulary.";
+        interfacesSummary = "Vertical downward: instantiated by the business instance layer. Vertical upward: traces through domain ontologies to BFO. Horizontal rightward: many-to-many mapping to SMM General vocabulary.";
         domainIllustrationSummary = "For Paws: exclusively General vocabulary — 34 part defs provide the structural skeleton for all service offerings, staff, facilities, pricing, and stakeholder relationships.";
     }
     part bmmGeneralVocabulary : ArchitecturalSection {
@@ -332,7 +332,7 @@ package ArchitecturalStructure {
     @ArchitecturalLocation {
         representationalModalitySummary = "OWL 2 DL — ontological categories above the formalism boundary. Not yet implemented.";
         persistenceSummary = "Target: triple store (knowledge graph) as named classes and axioms. Currently: exists only in discussion papers.";
-        interfacesSummary = "Vertical downward: classifies everything in the BSMM General vocabulary. Vertical upward to BFO. Horizontal leftward: mapping to domain ontologies — the topmost horizontal mapping constraining what system entities can realise which business entities.";
+        interfacesSummary = "Vertical downward: classifies everything in the SMM General vocabulary. Vertical upward to BFO. Horizontal leftward: mapping to domain ontologies — the topmost horizontal mapping constraining what system entities can realise which business entities.";
         domainIllustrationSummary = "For Paws: a BookingWorkflow is a Process; a GroomingRecord is an Information Content Entity; a PaymentReceivedEvent is a Process Boundary; a RoomAvailabilityState is a Quality.";
     }
     part systemOntologicalCategories : ArchitecturalSection {
@@ -349,7 +349,7 @@ package ArchitecturalStructure {
     // Section 8: SMM General Vocabulary
 
     @UserFacing {
-        friendlyName = "BSMM General Vocabulary";
+        friendlyName = "SMM General Vocabulary";
         shortDescription = "Domain-neutral system concepts organised into six capability groups — the right-stack counterpart of the BMM vocabulary.";
     }
     @PurposiveDescription {
@@ -357,13 +357,13 @@ package ArchitecturalStructure {
     }
     @ArchitecturalLocation {
         representationalModalitySummary = "SysML v2 part defs. Designed (Session 76 discussion paper) but not yet implemented. Individual concepts exist scattered across Foundation, Knowledge, ServiceDelivery, Platform, and Operations.";
-        persistenceSummary = "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: distributed across existing SysML packages without explicit BSMM organisation.";
+        persistenceSummary = "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: distributed across existing SysML packages without explicit SMM organisation.";
         interfacesSummary = "Vertical downward: instantiated by the system instance. Vertical upward: traces to system ontological categories. Horizontal leftward: explicit many-to-many mappings to BMM General vocabulary.";
         domainIllustrationSummary = "For Paws: PersistencePolicy for data storage, ProcessSpecification for workflow shapes, ConstraintEvaluationSpec for scheduling rules, ExternalServiceBinding for payment integration, CommunicationChannel for notifications.";
     }
     part bsmmGeneralVocabulary : ArchitecturalSection {
         attribute :>> name = "bsmm-general-vocabulary";
-        attribute :>> displayName = "BSMM General Vocabulary";
+        attribute :>> displayName = "SMM General Vocabulary";
         attribute :>> group = ArchitecturalGroup::rightStack;
         attribute :>> presentationOrder = 8;
         attribute :>> primaryFormalism = Formalism::sysmlV2;
@@ -379,12 +379,12 @@ package ArchitecturalStructure {
         shortDescription = "The concrete system configuration for a specific tenant — which database, workflow engine, integration endpoints, and access control policies.";
     }
     @PurposiveDescription {
-        description = "The right-stack counterpart of the business instance. Where the business instance holds the concrete populated data for a specific tenant, the system instance holds the concrete system configuration: which database, which workflow engine configuration, which integration endpoints, which access control policies. The system instance makes the generic BSMM vocabulary into this tenant's system.";
+        description = "The right-stack counterpart of the business instance. Where the business instance holds the concrete populated data for a specific tenant, the system instance holds the concrete system configuration: which database, which workflow engine configuration, which integration endpoints, which access control policies. The system instance makes the generic SMM vocabulary into this tenant's system.";
     }
     @ArchitecturalLocation {
-        representationalModalitySummary = "SysML v2 part usages instantiating BSMM part defs. Currently partially implicit in the coffee shop demonstrator — the running application embodies choices not explicitly modelled.";
+        representationalModalitySummary = "SysML v2 part usages instantiating SMM part defs. Currently partially implicit in the coffee shop demonstrator — the running application embodies choices not explicitly modelled.";
         persistenceSummary = "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: embodied in application code and configuration.";
-        interfacesSummary = "Vertical downward to system domains. Vertical upward: every element instantiates a BSMM General concept. Horizontal leftward to business instance — the realised-by relationship.";
+        interfacesSummary = "Vertical downward to system domains. Vertical upward: every element instantiates an SMM General concept. Horizontal leftward to business instance — the realised-by relationship.";
         domainIllustrationSummary = "For Paws: PostgreSQL for transactional data, Temporal for workflows, appointment-based scheduling config, base-price-plus-surcharge pricing engine, payment processor integration, notification templates, role-based access control.";
     }
     part systemInstance : ArchitecturalSection {
@@ -431,7 +431,7 @@ package ArchitecturalStructure {
         shortDescription = "The bottom of the right stack — where the business system is live, with Temporal workflows coordinating execution per tenant.";
     }
     @PurposiveDescription {
-        description = "The BSMM made operational: Temporal workflows coordinating business execution per tenant, with human actors and connected applications as participants. This is where business operations happen in system terms. The groomer, the receptionist, the payment processor are all participants inside the simulation. Every workflow, activity, and state transition traces through BSMM to BMM to ontology to BFO, preserving semantic lineage end-to-end.";
+        description = "The SMM made operational: Temporal workflows coordinating business execution per tenant, with human actors and connected applications as participants. This is where business operations happen in system terms. The groomer, the receptionist, the payment processor are all participants inside the simulation. Every workflow, activity, and state transition traces through SMM to BMM to ontology to BFO, preserving semantic lineage end-to-end.";
     }
     @ArchitecturalLocation {
         representationalModalitySummary = "Temporal workflows, event streams, and durable state management — execution formalisms generated from the SysML model (A3). The coffee shop FulfilDrink workflow is a working example.";
@@ -547,11 +547,11 @@ package ArchitecturalStructure {
         shortDescription = "The OWL bridge between the two formalisms — formally declaring how SysML v2 elements correspond to ontological classes.";
     }
     @PurposiveDescription {
-        description = "The bridge between the two formalisms. Everything above the formalism boundary is OWL 2 DL; everything below is SysML v2. The mapping ontology (B24), itself expressed in OWL, formally declares correspondences: SysML blocks/parts to OWL classes, SysML relationships to OWL object properties, SysML value types to OWL datatype properties. Phase 1 implemented as the correspondence graph (Session 105) — 306 triples generated from @BfoType annotations via the OWL pipeline.";
+        description = "The bridge between the two formalisms. Everything above the formalism boundary is OWL 2 DL; everything below is SysML v2. The mapping ontology (B24), itself expressed in OWL, formally declares correspondences: SysML blocks/parts to OWL classes, SysML relationships to OWL object properties, SysML value types to OWL datatype properties. Implemented as the correspondence graph (Sessions 105–117) with class, property, and weight mapping records generated from SysML annotations via the OWL pipeline.";
     }
     @ArchitecturalLocation {
         representationalModalitySummary = "OWL 2 DL — the mapping ontology is itself an ontology, living on the OWL side but describing the SysML side. openCAESAR may provide bridge infrastructure.";
-        persistenceSummary = "Triple store (knowledge graph), alongside the domain ontologies and system ontological categories. Correspondence graph operational (Session 105) with 306 triples mapping SysML BMM elements to OWL classes via @BfoType annotations.";
+        persistenceSummary = "Triple store (knowledge graph), alongside the domain ontologies and system ontological categories. Correspondence graph operational (Session 105, extended Session 117) with class, property, and weight mapping records linking SysML BMM elements to OWL via @BfoType annotations.";
         interfacesSummary = "Interfaces with everything: connects ontological layers on both stacks, enables SysML content to be represented in and retrieved from the knowledge graph. Makes the knowledge-graph-as-canonical commitment (B22) technically feasible.";
         domainIllustrationSummary = "For Paws: SysML part def ServiceOffering maps to OWL class ontara:ServiceOffering classified under BFO via OCE. Part usage standardGroom maps to OWL individual paws:StandardGroom. Attribute basePrice maps to datatype property ontara:hasBasePrice.";
     }

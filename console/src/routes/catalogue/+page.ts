@@ -17,6 +17,7 @@ export const load: PageLoad = async ({ fetch }) => {
       doc: entry.doc || '',
       catalogueTag: entry.catalogueTag,
       userFacing: entry.userFacing || undefined,
+      bfoType: entry.bfoType && entry.bfoType.bfoClass ? entry.bfoType : undefined,
       domains: entry.domains || {},
     }));
 

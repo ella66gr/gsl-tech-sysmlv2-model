@@ -180,6 +180,7 @@
       ResourceCapability: 'purple',
       FinancialModel: 'yellow',
       Governance: 'red',
+      StakeholderModel: 'indigo',
     };
     return colors[concern] || 'dark';
   }
@@ -382,7 +383,7 @@
               {#each Object.entries(elem.catalogueTag) as [dimension, value]}
                 <div class="flex items-center gap-1">
                   <span class="text-xs text-secondary-400 dark:text-secondary-500">{facetDimensionLabel(dimension)}:</span>
-                  <Badge color={dimension === 'bmmConcern' ? concernBadgeColor(value) : 'dark'} class="text-xs">
+                  <Badge color={dimension === 'bmmConcern' ? concernBadgeColor(value) : 'none'} class="text-xs {dimension !== 'bmmConcern' ? 'bg-secondary-200 text-secondary-700 dark:bg-secondary-600 dark:text-secondary-200' : ''}">
                     {value}
                   </Badge>
                 </div>
@@ -395,6 +396,26 @@
               </div>
             </div>
           </div>
+
+          <!-- BFO ontological grounding -->
+          {#if elem.bfoType}
+            {@const midLevel = elem.bfoType.midLevelClass || ''}
+            {@const midParts = midLevel.includes(':') ? midLevel.split(':') : ['', midLevel]}
+            <div>
+              <h3 class="mb-2 text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500">
+                Ontological Grounding
+              </h3>
+              <div class="flex items-baseline gap-2 rounded-md border border-purple-100 bg-purple-50/30 px-3 py-2 dark:border-purple-900/30 dark:bg-purple-900/10">
+                <span class="text-sm text-secondary-700 dark:text-secondary-300">
+                  BFO: <span class="font-medium">{elem.bfoType.bfoClass}</span>
+                  {#if midLevel}
+                    <span class="mx-1 text-secondary-300 dark:text-secondary-600">→</span>
+                    {#if midParts[0]}<span class="text-secondary-500 dark:text-secondary-400">{midParts[0]}:</span>{/if}<span class="font-medium">{midParts[1] || midLevel}</span>
+                  {/if}
+                </span>
+              </div>
+            </div>
+          {/if}
 
           <!-- Cross-domain instantiation -->
           <div>

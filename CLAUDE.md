@@ -7,11 +7,11 @@ Ontara is a service system development and delivery platform built on SysML v2. 
 ## Architecture in Brief
 
 - **Two meta models:** Business Meta Model (BMM — what a service business *is*) and Service Meta Model (SMM — how a system *works*). They are distinct and connected by explicit mappings. Note: SMM was previously called BSMM (Business System Meta Model). Renamed Session 92. The SysML section name `bsmm-general-vocabulary` is a structural identifier and stays.
-- **Six layers:** L6 SysML v2 language → L5 BMM → L4 BSMM → L3 Business model instances → L2 System model instances → L1 Runtime
+- **Six layers:** L6 SysML v2 language → L5 BMM → L4 SMM → L3 Business model instances → L2 System model instances → L1 Runtime
 - **Three demonstrator domains:** Cafe (coffee shop, full app), Suds (laundry, BMM only), Paws (dog grooming, BMM only) — used for cross-domain validation
 - **Six BMM concerns:** ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel (Session 81). 34 General elements.
-- **Comprehension architecture:** Every BMM element has @UserFacing, @PurposiveDescription, @Comprehension, and @WeightedRelationship annotations. 34/34 coverage, 96 weighted relationships.
-- **Knowledge graph (Stage 5):** Dual-formalism platform — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO as mid-level. GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence.
+- **Comprehension architecture:** Every BMM element has @BfoType, @UserFacing, @PurposiveDescription, @Comprehension, and @WeightedRelationship annotations. 34/34 coverage, 96 weighted relationships. @BfoType maps each element to its BFO 2020 category and mid-level ontology parent.
+- **Knowledge graph (Stage 5):** Dual-formalism platform — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO + IAO as mid-level. GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence. Full OWL 2 DL reasoning via HermiT (Robot). Phase 2 Block A complete: disjointness axioms, 14 object properties, existential/cardinality restrictions, 96 reified weighted relationships. 7-file ontology stack reasons consistent.
 
 ## Repository Layout
 
@@ -24,12 +24,17 @@ exercises/
 console/                   # Ontara Console (SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4)
 scripts/                   # Python generators, shared modules, and shell tools
   archive/                 # Archived superseded generators (with provenance)
+  reason_kg.py             # OWL 2 DL reasoning via Robot + HermiT
 generated/                 # All generated output (DO NOT EDIT manually)
   ontara/model-introspection.json  # Console data source
-  ontology/                # Generated OWL/Turtle and mapping IR
+  ontology/                # Generated OWL/Turtle and mapping IR (5 files)
 ontology/                  # Knowledge graph config and imported ontologies
+  axioms/                  # Hand-authored OWL axioms (ontara-bmm-axioms.ttl)
   config/                  # Mapping rules (YAML), CCO IRI lookup (JSON)
   imports/                 # BFO 2020, CCO, IAO ontology files
+  catalog-v001.xml         # XML catalog for Robot IRI resolution
+tools/                     # External tooling
+  robot.jar                # Robot OWL tool (wraps HermiT reasoner)
 documentation/
   reference/               # SysML syntax ref, KerML reserved words
   archive/                 # Committed snapshots (strategic, plans, session-reports, design)
@@ -48,6 +53,10 @@ spikes/                    # Experimental code
 - **OWL pipeline generator:** `scripts/gen_owl_pipeline.py` (Stage 5 — reads SysML, classifies via mapping rules, outputs OWL/Turtle)
 - **Shared SysML parser:** `scripts/sysml_parser.py` (used by introspection and OWL pipeline generators)
 - **GraphDB setup:** `scripts/setup_graphdb.py`
+- **OWL 2 DL reasoner:** `scripts/reason_kg.py` (HermiT via Robot)
+- **Hand-authored axioms:** `ontology/axioms/ontara-bmm-axioms.ttl` (disjointness, object properties, restrictions)
+- **Robot JAR:** `tools/robot.jar` (OWL tool, wraps HermiT)
+- **XML catalog:** `ontology/catalog-v001.xml` (local IRI resolution for Robot/Protégé)
 - **Other generators:** `scripts/gen_concept_graph.py`, `scripts/gen_package_hierarchy.py`, `scripts/gen_system_manifest.py`, `scripts/gen_constraint_evaluator.py`, `scripts/gen_decision_table_evaluator.py`, `scripts/projection_engine.py`
 - **Mapping rules:** `ontology/config/mapping-rules.yaml` (declarative classification rules for SysML→OWL)
 - **CCO IRI lookup:** `ontology/config/cco-iri-lookup.json` (opaque CCO IRIs resolved from GraphDB)
@@ -60,7 +69,7 @@ spikes/                    # Experimental code
 - **Console:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4. Package manager: pnpm.
 - **Coffee Shop Demonstrator:** SvelteKit + Temporal (workflow engine) + EHRbase (CDR) + PostgreSQL. pnpm workspace monorepo with packages: web, temporal, shared.
 - **Generators:** Python 3. No virtual env required. Introspection generator uses standard library only. OWL pipeline generator requires `rdflib` and `PyYAML` (`pip3 install rdflib PyYAML`).
-- **Knowledge graph:** GraphDB Free 10.x (local Java app, port 7200). Protégé 5.6+ for ontology debugging. BFO 2020 + CCO 2.0 + IAO as imported ontologies.
+- **Knowledge graph:** GraphDB Free 10.x (local Java app, port 7200). Robot (wraps HermiT reasoner, `tools/robot.jar`) for full OWL 2 DL consistency checking. Protégé 5.6+ for ontology debugging. BFO 2020 + CCO 2.0 + IAO as imported ontologies. Reasoning runtime ~10 minutes with 7-file stack.
 - **Model editing:** Syside Modeler (VS Code extension for SysML v2). Claude cannot run Syside — only Ella can verify SysML parses.
 
 ## Console Commands
@@ -99,12 +108,23 @@ python3 scripts/setup_graphdb.py --verify            # Verify GraphDB repository
 python3 scripts/validate_kg.py                   # Validate KG against SPARQL test suite
 python3 scripts/validate_kg.py --load             # Reload pipeline output into GraphDB + validate
 python3 scripts/validate_kg.py --load-only        # Reload pipeline output into GraphDB
+
+# OWL 2 DL Reasoning (requires Java 11+, tools/robot.jar)
+python3 scripts/reason_kg.py                       # Reason over full 7-file ontology stack
+python3 scripts/reason_kg.py --verbose             # Show detailed output
+python3 scripts/reason_kg.py --test-violation      # Inject contradiction, confirm reasoner catches it
+python3 scripts/reason_kg.py --output results      # Save inferred ontology to file
 ```
 
 Generated ontology outputs (in `generated/ontology/`):
 - `ontara-bmm.ttl` — domain ontology (34 OWL classes)
-- `ontara-correspondence.ttl` — SysML↔OWL mapping records
+- `ontara-bmm-properties.ttl` — 14 object properties with domains, ranges, and characteristics
+- `ontara-bmm-weights.ttl` — 96 reified weighted relationship individuals
+- `ontara-correspondence.ttl` — SysML↔OWL mapping records (class + property + weight)
 - `mapping-ir.json` — full classification intermediate representation
+
+Hand-authored axiom file (in `ontology/axioms/`):
+- `ontara-bmm-axioms.ttl` — disjointness declarations, existential/cardinality restrictions (OWL-authoritative per B29)
 
 ## Coffee Shop Demonstrator Commands
 
