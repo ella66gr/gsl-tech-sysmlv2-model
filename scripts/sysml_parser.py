@@ -157,14 +157,28 @@ def parse_attributes(lines, start_idx, end_idx):
             })
             continue
 
-        # ref name : Type
-        m = re.match(r'ref\s+(?::>>\s+)?(\w+)\s*:\s*(\S+)', line)
+        # ref name : Type  OR  ref name : Package::Type[multiplicity]
+        m = re.match(
+            r'ref\s+(?::>>\s+)?(\w+)\s*:\s*'
+            r'((?:\w+::)*\w+)'
+            r'(?:\[(\d+\.\.[\d*]+|\d+)\])?',
+            line
+        )
         if m:
-            attrs.append({
+            raw_type = m.group(2)
+            # Strip package qualifier — keep only the final class name
+            target_type = raw_type.split("::")[-1]
+            multiplicity = m.group(3)  # e.g. "0..*", "1..*", "0..1", "1", or None
+            ref_attr = {
                 "name": m.group(1),
-                "type": m.group(2).rstrip(";").strip(),
+                "type": target_type,
                 "isRef": True,
-            })
+            }
+            if raw_type != target_type:
+                ref_attr["qualifiedType"] = raw_type
+            if multiplicity:
+                ref_attr["multiplicity"] = multiplicity
+            attrs.append(ref_attr)
     return attrs
 
 

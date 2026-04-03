@@ -1,10 +1,12 @@
 {
-  "version": "1.0.0",
-  "generated_at": "2026-04-02T08:43:57.339605+00:00",
-  "session": 105,
+  "version": "2.0.0",
+  "generated_at": "2026-04-03T06:58:02.261637+00:00",
+  "session": 116,
   "summary": {
-    "StructuralOnly": 689,
-    "DomainClass": 34
+    "StructuralOnly": 695,
+    "DomainClass": 34,
+    "ObjectProperty": 14,
+    "DeferredProperty": 2
   },
   "elements": [
     {
@@ -6179,6 +6181,60 @@
       "targetGraph": null
     },
     {
+      "name": "hseRelationship",
+      "kind": "part",
+      "parentPackage": "SudsStakeholderModel",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "equipmentMaintenance",
+      "kind": "part",
+      "parentPackage": "SudsStakeholderModel",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "chemicalSupply",
+      "kind": "part",
+      "parentPackage": "SudsStakeholderModel",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "localBusinessCommunity",
+      "kind": "part",
+      "parentPackage": "SudsStakeholderModel",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "commercialLinenService",
+      "kind": "part",
+      "parentPackage": "SudsStakeholderModel",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "dropOffParticipation",
+      "kind": "part",
+      "parentPackage": "SudsStakeholderModel",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
       "name": "pawsValueProposition",
       "kind": "part",
       "parentPackage": "PawsBusinessModel",
@@ -6717,6 +6773,134 @@
       "sourceDomain": "paws",
       "classification": "StructuralOnly",
       "targetGraph": null
+    }
+  ],
+  "objectProperties": [
+    {
+      "propertyName": "hasTargetSegment",
+      "owningClass": "ValueProposition",
+      "refName": "targetSegment",
+      "targetType": "CustomerSegment",
+      "multiplicity": "1",
+      "isFunctional": true
+    },
+    {
+      "propertyName": "hasActivityType",
+      "owningClass": "ActivityRecord",
+      "refName": "activityType",
+      "targetType": "ActivityType",
+      "multiplicity": "1",
+      "isFunctional": true
+    },
+    {
+      "propertyName": "hasBudgetActivityType",
+      "owningClass": "ActivityBudget",
+      "refName": "activityType",
+      "targetType": "ActivityType",
+      "multiplicity": "1",
+      "isFunctional": true
+    },
+    {
+      "propertyName": "hasAllocatedActivityType",
+      "owningClass": "ActivityCostAllocation",
+      "refName": "activityType",
+      "targetType": "ActivityType",
+      "multiplicity": "1",
+      "isFunctional": true
+    },
+    {
+      "propertyName": "hasResourceType",
+      "owningClass": "ResourceInstance",
+      "refName": "resourceType",
+      "targetType": "ResourceType",
+      "multiplicity": "1",
+      "isFunctional": true
+    },
+    {
+      "propertyName": "hasEnabledServiceOffering",
+      "owningClass": "Capability",
+      "refName": "enabledServiceOfferings",
+      "targetType": "ServiceOffering",
+      "multiplicity": "0..*",
+      "isFunctional": false
+    },
+    {
+      "propertyName": "hasAffectedResource",
+      "owningClass": "ResourceConstraint",
+      "refName": "affectedResource",
+      "targetType": "ResourceType",
+      "multiplicity": "1",
+      "isFunctional": true
+    },
+    {
+      "propertyName": "hasCatalogueEntry",
+      "owningClass": "InventoryRecord",
+      "refName": "catalogueEntry",
+      "targetType": "CatalogueEntry",
+      "multiplicity": "1",
+      "isFunctional": true
+    },
+    {
+      "propertyName": "hasSupportingCapability",
+      "owningClass": "ObjectiveCapabilityMapping",
+      "refName": "supportingCapabilities",
+      "targetType": "Capability",
+      "multiplicity": "1..*",
+      "isFunctional": false
+    },
+    {
+      "propertyName": "hasPricingModel",
+      "owningClass": "RevenueStream",
+      "refName": "pricingModel",
+      "targetType": "PricingModel",
+      "multiplicity": "1",
+      "isFunctional": true
+    },
+    {
+      "propertyName": "hasLinkedResource",
+      "owningClass": "CostDriver",
+      "refName": "linkedResource",
+      "targetType": "ResourceType",
+      "multiplicity": "0..*",
+      "isFunctional": false
+    },
+    {
+      "propertyName": "hasOffering",
+      "owningClass": "UnitEconomics",
+      "refName": "offering",
+      "targetType": "ServiceOffering",
+      "multiplicity": "1",
+      "isFunctional": true
+    },
+    {
+      "propertyName": "hasRelatedGovernanceRequirement",
+      "owningClass": "StakeholderRelationship",
+      "refName": "relatedGovernanceRequirements",
+      "targetType": "GovernanceRequirement",
+      "multiplicity": "0..*",
+      "isFunctional": false
+    },
+    {
+      "propertyName": "hasRelatedServiceOffering",
+      "owningClass": "ParticipationModel",
+      "refName": "relatedServiceOffering",
+      "targetType": "ServiceOffering",
+      "multiplicity": "0..*",
+      "isFunctional": false
+    }
+  ],
+  "deferredProperties": [
+    {
+      "owningClass": "ObjectiveCapabilityMapping",
+      "refName": "strategicObjective",
+      "targetType": "StrategicObjective",
+      "reason": "StrategicObjective not in current DomainClass set"
+    },
+    {
+      "owningClass": "FinancialProjection",
+      "refName": "scenario",
+      "targetType": "ScenarioDefinition",
+      "reason": "ScenarioDefinition not in current DomainClass set"
     }
   ]
 }

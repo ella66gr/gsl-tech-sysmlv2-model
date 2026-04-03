@@ -67,6 +67,11 @@ ONTOLOGY_FILES = [
         "name": "Ontara BMM Axioms (hand-authored)",
         "required": True,
     },
+    {
+        "file": REPO_ROOT / "generated" / "ontology" / "ontara-bmm-properties.ttl",
+        "name": "Ontara BMM Properties (pipeline-generated)",
+        "required": False,
+    },
 ]
 
 # Violation test: a Turtle snippet that makes ValueProposition a subclass
@@ -151,6 +156,8 @@ def check_ontology_files():
         if not exists and entry["required"]:
             all_ok = False
             marker = "FAIL"
+        elif not exists:
+            marker = "SKIP"
 
         print(f"  [{marker}] {entry['name']}: {entry['file'].name} ({status})")
 
@@ -223,6 +230,13 @@ def reason_ontology(verbose=False, output_path=None):
     args = ["merge"]
 
     for entry in ONTOLOGY_FILES:
+        if not entry["file"].exists():
+            if entry["required"]:
+                print(f"  ERROR: Required file missing: {entry['name']}")
+                return False, [], "Missing required file"
+            else:
+                print(f"  Skipping optional: {entry['name']}")
+                continue
         args.extend(["--input", str(entry["file"])])
 
     # Collapse imports so Robot doesn't try to fetch remote IRIs
@@ -301,6 +315,8 @@ def test_violation(verbose=False):
         args = ["merge"]
 
         for entry in ONTOLOGY_FILES:
+            if not entry["file"].exists():
+                continue
             args.extend(["--input", str(entry["file"])])
 
         # Add the violation file

@@ -10,9 +10,12 @@ using rdflib.
 Pipeline stages:
   Stage 1 — Parse: Read .sysml files via the shared parser (sysml_parser.py)
   Stage 2 — Classify: Apply mapping-rules.yaml to categorise each element
-  Stage 3 — Generate: Emit OWL/Turtle for classified elements using rdflib
+  Stage 3a — Generate domain ontology (ontara-bmm.ttl)
+  Stage 3b — Generate correspondence graph (ontara-correspondence.ttl)
+  Stage 3c — Generate object properties from typed refs (ontara-bmm-properties.ttl)
 
 Phase 1 scope: DomainClass + StructuralOnly classifications only.
+Phase 2 extension (Session 116): ObjectProperty generation from typed refs.
 Produces output semantically identical to the Session 102 gen_ontara_bmm.py
 (validated by graph isomorphism).
 
@@ -39,6 +42,7 @@ import argparse
 import hashlib
 import json
 import pathlib
+import re
 import sys
 import urllib.request
 import urllib.error
@@ -464,6 +468,199 @@ def stage3_generate_domain(classified, cco_lookup):
     return g, domain_class_count, unresolved
 
 # ---------------------------------------------------------------
+# Namespace for axiom properties
+# ---------------------------------------------------------------
+
+ONTARA_AX = Namespace("https://ontara.dev/ontology/bmm/axioms#")
+
+# ---------------------------------------------------------------
+# Pipeline Stage 3c — Generate object properties from typed refs
+# ---------------------------------------------------------------
+
+# Property name disambiguation table.
+# When multiple part defs have a ref with the same name (e.g. three
+# classes all have 'ref activityType : ActivityType'), the simple
+# 'has' + PascalCase(refName) rule would produce collisions. This
+# table maps (owningClass, refName) → disambiguated OWL property name.
+# Only entries that diverge from the simple rule need to appear here.
+PROPERTY_NAME_OVERRIDES = {
+    ("ActivityCostAllocation", "activityType"): "hasAllocatedActivityType",
+    ("ActivityBudget", "activityType"): "hasBudgetActivityType",
+}
+
+# Set of BMM class names that are valid DomainClass targets.
+# Built dynamically in stage3c from the classified elements.
+# If a ref target type is not in this set, the property is deferred.
+
+
+def ref_name_to_property_name(owning_class, ref_name):
+    """
+    Convert a SysML ref attribute name to an OWL property local name.
+
+    Rules:
+      1. Check disambiguation table first.
+      2. Otherwise: 'has' + PascalCase(refName).
+      3. Singularise trailing 's' for plural ref names
+         (e.g. enabledServiceOfferings → hasEnabledServiceOffering).
+    """
+    # Check override table
+    key = (owning_class, ref_name)
+    if key in PROPERTY_NAME_OVERRIDES:
+        return PROPERTY_NAME_OVERRIDES[key]
+
+    # Simple rule: has + PascalCase
+    pascal = ref_name[0].upper() + ref_name[1:]
+    prop_name = f"has{pascal}"
+
+    # Singularise trailing 's' (but not 'ss' like 'address')
+    if prop_name.endswith("ings") or prop_name.endswith("ments"):
+        # enabledServiceOfferings → hasEnabledServiceOffering
+        # relatedGovernanceRequirements → hasRelatedGovernanceRequirement
+        prop_name = prop_name[:-1]
+    elif prop_name.endswith("ities"):
+        # supportingCapabilities → supportingCapability
+        prop_name = prop_name[:-3] + "y"
+
+    return prop_name
+
+
+def multiplicity_is_functional(multiplicity):
+    """
+    Determine if a ref's multiplicity makes the property functional.
+
+    Design decision S111-D1:
+      - None (bare ref, no multiplicity) → functional (implicit [1])
+      - [1] → functional
+      - [0..1] → functional
+      - [0..*] → non-functional
+      - [1..*] → non-functional
+    """
+    if multiplicity is None:
+        return True  # bare ref = implicit [1]
+    if multiplicity == "1":
+        return True
+    if multiplicity == "0..1":
+        return True
+    # 0..*, 1..* → non-functional
+    return False
+
+
+def stage3c_generate_properties(classified):
+    """
+    Pipeline Stage 3c: Generate object property declarations from
+    typed ref attributes in DomainClass elements.
+
+    For each DomainClass element with ref attributes:
+      - Mint property IRI: ontara-ax:{propertyName}
+      - Declare owl:ObjectProperty
+      - Add rdfs:domain → ontara-bmm:{OwningClass}
+      - Add rdfs:range → ontara-bmm:{TargetType}
+      - Add owl:FunctionalProperty if multiplicity warrants it
+      - Add rdfs:subPropertyOf owl:topObjectProperty
+      - Add rdfs:label and rdfs:comment
+
+    Returns (graph, property_count, deferred_list, property_records).
+    """
+    g = Graph()
+
+    # Bind prefixes
+    g.bind("ontara-ax", ONTARA_AX)
+    g.bind("ontara-bmm", ONTARA_BMM)
+    g.bind("owl", OWL)
+    g.bind("rdfs", RDFS)
+    g.bind("xsd", XSD)
+
+    # Ontology declaration
+    ont_uri = URIRef(str(ONTARA_AX).rstrip("#"))
+    g.add((ont_uri, RDF.type, OWL.Ontology))
+    g.add((ont_uri, OWL.imports, URIRef(str(ONTARA_BMM))))
+    g.add((ont_uri, RDFS.label, Literal(
+        "Ontara BMM Properties (pipeline-generated)", lang="en")))
+    g.add((ont_uri, RDFS.comment, Literal(
+        "OWL object property declarations generated from typed ref attributes "
+        "in SysML BMM part defs. Pipeline Stage 3c (Session 116).",
+        lang="en")))
+    g.add((ont_uri, OWL.versionInfo, Literal(
+        "Generated by gen_owl_pipeline.py Stage 3c — Session 116", lang="en")))
+    g.add((ont_uri, DCTERMS.created, Literal(
+        datetime.now(timezone.utc).strftime("%Y-%m-%d"), datatype=XSD.date)))
+
+    # Build set of valid DomainClass names for range checking
+    domain_class_names = set()
+    for elem, result in classified:
+        if result["classification"] == "DomainClass":
+            domain_class_names.add(elem.name)
+
+    property_count = 0
+    deferred = []
+    property_records = []  # for correspondence graph and mapping IR
+
+    for elem, result in classified:
+        if result["classification"] != "DomainClass":
+            continue
+
+        # Find ref attributes
+        for attr in elem.attributes:
+            if not attr.get("isRef"):
+                continue
+
+            ref_name = attr["name"]
+            target_type = attr["type"]
+            multiplicity = attr.get("multiplicity")  # may be None
+
+            # Check if target type is a known DomainClass
+            if target_type not in domain_class_names:
+                deferred.append({
+                    "owningClass": elem.name,
+                    "refName": ref_name,
+                    "targetType": target_type,
+                    "reason": f"{target_type} not in current DomainClass set",
+                })
+                continue
+
+            # Generate property name
+            prop_name = ref_name_to_property_name(elem.name, ref_name)
+            prop_uri = ONTARA_AX[prop_name]
+
+            # Declare owl:ObjectProperty
+            g.add((prop_uri, RDF.type, OWL.ObjectProperty))
+            g.add((prop_uri, RDFS.subPropertyOf, OWL.topObjectProperty))
+
+            # Functional?
+            is_functional = multiplicity_is_functional(multiplicity)
+            if is_functional:
+                g.add((prop_uri, RDF.type, OWL.FunctionalProperty))
+
+            # Domain and range
+            g.add((prop_uri, RDFS.domain, ONTARA_BMM[elem.name]))
+            g.add((prop_uri, RDFS.range, ONTARA_BMM[target_type]))
+
+            # Label: convert camelCase to spaced lowercase
+            # hasTargetSegment → "has target segment"
+            label_parts = re.sub(r'([A-Z])', r' \1', prop_name).lower().strip()
+            g.add((prop_uri, RDFS.label, Literal(label_parts, lang="en")))
+
+            # Comment with SysML provenance
+            mult_str = f" [{multiplicity}]" if multiplicity else " [1]"
+            comment = (
+                f"SysML: {elem.name}.{ref_name}{mult_str}. "
+                f"Pipeline-generated from typed ref attribute."
+            )
+            g.add((prop_uri, RDFS.comment, Literal(comment, lang="en")))
+
+            property_count += 1
+            property_records.append({
+                "propertyName": prop_name,
+                "owningClass": elem.name,
+                "refName": ref_name,
+                "targetType": target_type,
+                "multiplicity": multiplicity or "1",
+                "isFunctional": is_functional,
+            })
+
+    return g, property_count, deferred, property_records
+
+# ---------------------------------------------------------------
 # Pipeline Stage 3b — Generate correspondence graph
 # ---------------------------------------------------------------
 
@@ -633,7 +830,7 @@ def main():
 
     # --- Pipeline execution ---
     print("=" * 60)
-    print("Ontara OWL Pipeline — Stage 5 Phase 1 Step 4")
+    print("Ontara OWL Pipeline — Stage 5 Phase 2")
     print("=" * 60)
 
     # Stage 1: Parse
@@ -675,6 +872,45 @@ def main():
     corr_graph = stage3_generate_correspondence(classified, cco_lookup)
     print(f"  Correspondence graph: {len(corr_graph)} triples")
 
+    # 3c: Object properties from typed refs
+    prop_graph, prop_count, deferred_props, prop_records = \
+        stage3c_generate_properties(classified)
+    print(f"  Property graph: {len(prop_graph)} triples, {prop_count} object properties")
+
+    if deferred_props:
+        print(f"  Deferred properties ({len(deferred_props)}):")
+        for d in deferred_props:
+            print(f"    {d['owningClass']}.{d['refName']} → {d['targetType']} ({d['reason']})")
+
+    # Add property records to mapping IR
+    mapping_ir["objectProperties"] = prop_records
+    mapping_ir["deferredProperties"] = deferred_props
+    mapping_ir["summary"]["ObjectProperty"] = prop_count
+    mapping_ir["summary"]["DeferredProperty"] = len(deferred_props)
+
+    # 3d: Add property mapping records to correspondence graph
+    generation_time = Literal(
+        datetime.now(timezone.utc).isoformat(),
+        datatype=XSD.dateTime
+    )
+    for rec in prop_records:
+        record_uri = ONTARA_CORR[f"map-prop-{rec['propertyName']}"]
+        corr_graph.add((record_uri, RDF.type, ONTARA_CORR["PropertyMappingRecord"]))
+        corr_graph.add((record_uri, ONTARA_CORR["sysmlElementName"],
+                        Literal(f"{rec['owningClass']}.{rec['refName']}")))
+        corr_graph.add((record_uri, ONTARA_CORR["owlEntity"],
+                        ONTARA_AX[rec["propertyName"]]))
+        corr_graph.add((record_uri, ONTARA_CORR["classification"],
+                        Literal("ObjectProperty")))
+        corr_graph.add((record_uri, ONTARA_CORR["authorityZone"],
+                        Literal("shared-constrained")))
+        corr_graph.add((record_uri, ONTARA_CORR["multiplicity"],
+                        Literal(rec["multiplicity"])))
+        corr_graph.add((record_uri, ONTARA_CORR["isFunctional"],
+                        Literal(rec["isFunctional"], datatype=XSD.boolean)))
+        corr_graph.add((record_uri, DCTERMS.created, generation_time))
+    print(f"  Correspondence graph (with properties): {len(corr_graph)} triples")
+
     # --- Output ---
     if args.dry_run:
         print("\n--- Domain ontology (Turtle) ---\n")
@@ -694,19 +930,26 @@ def main():
         corr_graph.serialize(str(corr_path), format="turtle")
         print(f"  Saved: {corr_path} ({corr_path.stat().st_size:,} bytes)")
 
+        # Object properties
+        prop_path = OUTPUT_DIR / "ontara-bmm-properties.ttl"
+        prop_graph.serialize(str(prop_path), format="turtle")
+        print(f"  Saved: {prop_path} ({prop_path.stat().st_size:,} bytes)")
+
         # Mapping IR
         ir_path = OUTPUT_DIR / "mapping-ir.json"
         with open(ir_path, "w") as f:
             json.dump(mapping_ir, f, indent=2)
         print(f"  Saved: {ir_path} ({ir_path.stat().st_size:,} bytes)")
 
-        print(f"\nPipeline complete. {class_count} domain classes generated.")
+        print(f"\nPipeline complete. {class_count} domain classes, "
+              f"{prop_count} object properties generated.")
 
         if (OUTPUT_DIR / "ontara-bmm-baseline.ttl").exists():
             print("\nRun validation: python scripts/gen_owl_pipeline.py --validate")
     else:
         # Default: just print summary without saving
         print(f"\nPipeline summary: {class_count} domain classes, "
+              f"{prop_count} object properties, "
               f"{len(corr_graph)} correspondence triples. "
               f"Use --save to write files.")
 

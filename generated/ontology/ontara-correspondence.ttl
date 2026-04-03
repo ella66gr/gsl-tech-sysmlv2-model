@@ -4,7 +4,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 ontara-corr:map-ActivityBudget a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ActivityBudget ;
@@ -14,7 +14,7 @@ ontara-corr:map-ActivityBudget a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ActivityCostAllocation a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ActivityCostAllocation ;
@@ -24,7 +24,7 @@ ontara-corr:map-ActivityCostAllocation a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ActivityGranularity a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ActivityGranularity ;
@@ -34,7 +34,7 @@ ontara-corr:map-ActivityGranularity a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ActivityRecord a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ActivityRecord ;
@@ -44,7 +44,7 @@ ontara-corr:map-ActivityRecord a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ActivityType a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ActivityType ;
@@ -54,7 +54,7 @@ ontara-corr:map-ActivityType a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-AuditEvidenceRecord a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:AuditEvidenceRecord ;
@@ -64,7 +64,7 @@ ontara-corr:map-AuditEvidenceRecord a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-Capability a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:Capability ;
@@ -74,7 +74,7 @@ ontara-corr:map-Capability a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CapacityModel a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CapacityModel ;
@@ -84,7 +84,7 @@ ontara-corr:map-CapacityModel a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CatalogueEntry a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CatalogueEntry ;
@@ -94,7 +94,7 @@ ontara-corr:map-CatalogueEntry a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-Channel a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:Channel ;
@@ -104,7 +104,7 @@ ontara-corr:map-Channel a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CommunityRelationship a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CommunityRelationship ;
@@ -114,7 +114,7 @@ ontara-corr:map-CommunityRelationship a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CooperativeArrangement a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CooperativeArrangement ;
@@ -124,7 +124,7 @@ ontara-corr:map-CooperativeArrangement a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CostDriver a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CostDriver ;
@@ -134,7 +134,7 @@ ontara-corr:map-CostDriver a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CustomerSegment a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CustomerSegment ;
@@ -144,7 +144,7 @@ ontara-corr:map-CustomerSegment a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-DifferentiationClaim a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:DifferentiationClaim ;
@@ -154,7 +154,7 @@ ontara-corr:map-DifferentiationClaim a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ExternalDependency a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ExternalDependency ;
@@ -164,7 +164,7 @@ ontara-corr:map-ExternalDependency a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ExternalReference a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ExternalReference ;
@@ -174,7 +174,7 @@ ontara-corr:map-ExternalReference a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-FinancialProjection a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:FinancialProjection ;
@@ -184,7 +184,7 @@ ontara-corr:map-FinancialProjection a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-GovernanceRequirement a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:GovernanceRequirement ;
@@ -194,7 +194,7 @@ ontara-corr:map-GovernanceRequirement a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-InventoryRecord a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:InventoryRecord ;
@@ -204,7 +204,7 @@ ontara-corr:map-InventoryRecord a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ObjectiveCapabilityMapping a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ObjectiveCapabilityMapping ;
@@ -214,7 +214,7 @@ ontara-corr:map-ObjectiveCapabilityMapping a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ParticipationModel a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ParticipationModel ;
@@ -224,7 +224,7 @@ ontara-corr:map-ParticipationModel a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-PricingModel a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:PricingModel ;
@@ -234,7 +234,7 @@ ontara-corr:map-PricingModel a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ReferralPathway a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ReferralPathway ;
@@ -244,7 +244,7 @@ ontara-corr:map-ReferralPathway a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ResourceConstraint a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ResourceConstraint ;
@@ -254,7 +254,7 @@ ontara-corr:map-ResourceConstraint a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ResourceInstance a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ResourceInstance ;
@@ -264,7 +264,7 @@ ontara-corr:map-ResourceInstance a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ResourceType a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ResourceType ;
@@ -274,7 +274,7 @@ ontara-corr:map-ResourceType a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-RevenueStream a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:RevenueStream ;
@@ -284,7 +284,7 @@ ontara-corr:map-RevenueStream a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ServiceOffering a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ServiceOffering ;
@@ -294,7 +294,7 @@ ontara-corr:map-ServiceOffering a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ServiceParticipant a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ServiceParticipant ;
@@ -304,7 +304,7 @@ ontara-corr:map-ServiceParticipant a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ServiceSubject a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ServiceSubject ;
@@ -314,7 +314,7 @@ ontara-corr:map-ServiceSubject a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-StakeholderRelationship a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:StakeholderRelationship ;
@@ -324,7 +324,7 @@ ontara-corr:map-StakeholderRelationship a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-UnitEconomics a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:UnitEconomics ;
@@ -334,7 +334,7 @@ ontara-corr:map-UnitEconomics a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ValueProposition a ontara-corr:MappingRecord ;
-    dcterms:created "2026-04-02T08:43:57.344872+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-04-03T06:58:02.264770+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ValueProposition ;
@@ -342,4 +342,130 @@ ontara-corr:map-ValueProposition a ontara-corr:MappingRecord ;
     ontara-corr:sysmlElementName "ValueProposition" ;
     ontara-corr:sysmlLineNumber 150 ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
+
+ontara-corr:map-prop-hasActivityType a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional true ;
+    ontara-corr:multiplicity "1" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasActivityType> ;
+    ontara-corr:sysmlElementName "ActivityRecord.activityType" .
+
+ontara-corr:map-prop-hasAffectedResource a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional true ;
+    ontara-corr:multiplicity "1" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasAffectedResource> ;
+    ontara-corr:sysmlElementName "ResourceConstraint.affectedResource" .
+
+ontara-corr:map-prop-hasAllocatedActivityType a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional true ;
+    ontara-corr:multiplicity "1" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasAllocatedActivityType> ;
+    ontara-corr:sysmlElementName "ActivityCostAllocation.activityType" .
+
+ontara-corr:map-prop-hasBudgetActivityType a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional true ;
+    ontara-corr:multiplicity "1" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasBudgetActivityType> ;
+    ontara-corr:sysmlElementName "ActivityBudget.activityType" .
+
+ontara-corr:map-prop-hasCatalogueEntry a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional true ;
+    ontara-corr:multiplicity "1" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasCatalogueEntry> ;
+    ontara-corr:sysmlElementName "InventoryRecord.catalogueEntry" .
+
+ontara-corr:map-prop-hasEnabledServiceOffering a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional false ;
+    ontara-corr:multiplicity "0..*" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasEnabledServiceOffering> ;
+    ontara-corr:sysmlElementName "Capability.enabledServiceOfferings" .
+
+ontara-corr:map-prop-hasLinkedResource a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional false ;
+    ontara-corr:multiplicity "0..*" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasLinkedResource> ;
+    ontara-corr:sysmlElementName "CostDriver.linkedResource" .
+
+ontara-corr:map-prop-hasOffering a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional true ;
+    ontara-corr:multiplicity "1" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasOffering> ;
+    ontara-corr:sysmlElementName "UnitEconomics.offering" .
+
+ontara-corr:map-prop-hasPricingModel a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional true ;
+    ontara-corr:multiplicity "1" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasPricingModel> ;
+    ontara-corr:sysmlElementName "RevenueStream.pricingModel" .
+
+ontara-corr:map-prop-hasRelatedGovernanceRequirement a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional false ;
+    ontara-corr:multiplicity "0..*" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasRelatedGovernanceRequirement> ;
+    ontara-corr:sysmlElementName "StakeholderRelationship.relatedGovernanceRequirements" .
+
+ontara-corr:map-prop-hasRelatedServiceOffering a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional false ;
+    ontara-corr:multiplicity "0..*" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasRelatedServiceOffering> ;
+    ontara-corr:sysmlElementName "ParticipationModel.relatedServiceOffering" .
+
+ontara-corr:map-prop-hasResourceType a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional true ;
+    ontara-corr:multiplicity "1" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasResourceType> ;
+    ontara-corr:sysmlElementName "ResourceInstance.resourceType" .
+
+ontara-corr:map-prop-hasSupportingCapability a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional false ;
+    ontara-corr:multiplicity "1..*" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasSupportingCapability> ;
+    ontara-corr:sysmlElementName "ObjectiveCapabilityMapping.supportingCapabilities" .
+
+ontara-corr:map-prop-hasTargetSegment a ontara-corr:PropertyMappingRecord ;
+    dcterms:created "2026-04-03T06:58:02.268108+00:00"^^xsd:dateTime ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "ObjectProperty" ;
+    ontara-corr:isFunctional true ;
+    ontara-corr:multiplicity "1" ;
+    ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasTargetSegment> ;
+    ontara-corr:sysmlElementName "ValueProposition.targetSegment" .
 

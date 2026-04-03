@@ -11,8 +11,8 @@
 # Source: Stage 5 Phase 1 — Step 4 (Session 100 plan §3, Step 4)
 # Status: Skeleton — to be populated at Step 4 implementation.
 
-version: "1.0.0"
-session: 105
+version: "2.0.0"
+session: 116
 
 # IRI namespaces
 namespaces:
@@ -69,6 +69,14 @@ rules:
     iri_template: "{ontara-bmm}{ElementName}"
     notes: "BMM requirement defs with BFO mapping → OWL classes in domain graph"
 
+  # --- Phase 2: ObjectProperty (typed refs in DomainClass elements) ---
+  # Typed ref attributes in BMM part defs become OWL object properties.
+  # The ref is extracted by the parser; this rule is evaluated against
+  # the ref attribute data attached to DomainClass elements, not against
+  # standalone elements. See gen_owl_pipeline.py Stage 3c.
+  # Classification applied programmatically in Stage 3c — no match rule
+  # needed here. This entry documents the category for the mapping IR.
+
   # --- Phase 1: StructuralOnly (BMM without BFO) ---
   - match:
       construct: "part_def"
@@ -108,6 +116,21 @@ annotation_mapping:
   mid_level_parent:
     source: "@BfoType.midLevelClass"
     notes: "Authority zone: OWL-authoritative"
+
+# Object property mapping (Phase 2 — typed ref extraction)
+# Typed ref attributes in DomainClass part defs are mapped to OWL object
+# properties. The mapping is programmatic (Stage 3c of the pipeline):
+#   - ref name → property local name (camelCase → has + PascalCase)
+#   - owning part def → rdfs:domain
+#   - target type → rdfs:range
+#   - multiplicity [1] or [0..1] → owl:FunctionalProperty
+#   - multiplicity [0..*] or [1..*] → non-functional
+#   - no multiplicity (bare ref) → owl:FunctionalProperty (implicit [1])
+object_property_mapping:
+  iri_namespace: "https://ontara.dev/ontology/bmm/axioms#"
+  naming_convention: "camelCase with 'has' prefix"
+  authority_zone: "shared-constrained"
+  notes: "Pipeline-generated properties must validate against hand-authored axioms in ontara-bmm-axioms.ttl"
 
 # Authority zones (B29 / E020)
 authority_zones:
