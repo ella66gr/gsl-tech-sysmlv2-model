@@ -13,9 +13,9 @@
 <https://ontara.dev/ontology/bmm/axioms> rdf:type owl:Ontology ;
                                           owl:imports ontara-bmm: ;
                                           dcterms:created "2026-04-02"^^xsd:date ;
-                                          rdfs:comment "Hand-authored OWL axioms for the Ontara BMM. Phase 2 Steps 1-2: concern group disjointness and object property declarations. OWL-authoritative (B29)."@en ;
+                                          rdfs:comment "Hand-authored OWL axioms for the Ontara BMM. Phase 2 Steps 1-3: concern group disjointness, object property declarations, and cardinality restrictions. OWL-authoritative (B29)."@en ;
                                           rdfs:label "Ontara BMM Axioms"@en ;
-                                          owl:versionInfo "Session 113 — Steps 1-2: disjointness axioms + 13 object property declarations"@en .
+                                          owl:versionInfo "Session 114 — Steps 1-3: disjointness axioms, 13 object property declarations, 9 cardinality restrictions"@en .
 
 #################################################################
 #    Object Properties
@@ -145,6 +145,74 @@
                   rdfs:range ontara-bmm:CustomerSegment ;
                   rdfs:comment "The customer segment to which a value proposition is addressed. SysML: ValueProposition.targetSegment [1]."@en ;
                   rdfs:label "has target segment"@en .
+
+
+#################################################################
+#    Cardinality Restrictions (Step 3)
+#################################################################
+
+###  Every ValueProposition has exactly one target CustomerSegment.
+ontara-bmm:ValueProposition rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                              owl:onProperty :hasTargetSegment ;
+                                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                              owl:onClass ontara-bmm:CustomerSegment
+                                            ] .
+
+###  Every InventoryRecord has exactly one CatalogueEntry.
+ontara-bmm:InventoryRecord rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                             owl:onProperty :hasCatalogueEntry ;
+                                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                             owl:onClass ontara-bmm:CatalogueEntry
+                                           ] .
+
+###  Every ActivityCostAllocation has exactly one allocated ActivityType.
+ontara-bmm:ActivityCostAllocation rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                                    owl:onProperty :hasAllocatedActivityType ;
+                                                    owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                    owl:onClass ontara-bmm:ActivityType
+                                                  ] .
+
+###  Every ActivityBudget has exactly one budget ActivityType.
+ontara-bmm:ActivityBudget rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                            owl:onProperty :hasBudgetActivityType ;
+                                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                            owl:onClass ontara-bmm:ActivityType
+                                          ] .
+
+###  Every ActivityRecord has exactly one ActivityType.
+ontara-bmm:ActivityRecord rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                            owl:onProperty :hasActivityType ;
+                                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                            owl:onClass ontara-bmm:ActivityType
+                                          ] .
+
+###  Every ResourceInstance has exactly one ResourceType.
+ontara-bmm:ResourceInstance rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                              owl:onProperty :hasResourceType ;
+                                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                              owl:onClass ontara-bmm:ResourceType
+                                            ] .
+
+###  Every ResourceConstraint has exactly one affected ResourceType.
+ontara-bmm:ResourceConstraint rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                                owl:onProperty :hasAffectedResource ;
+                                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                owl:onClass ontara-bmm:ResourceType
+                                              ] .
+
+###  Every RevenueStream has exactly one PricingModel.
+ontara-bmm:RevenueStream rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                           owl:onProperty :hasPricingModel ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                           owl:onClass ontara-bmm:PricingModel
+                                         ] .
+
+###  Every UnitEconomics has exactly one ServiceOffering.
+ontara-bmm:UnitEconomics rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                           owl:onProperty :hasOffering ;
+                                           owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                           owl:onClass ontara-bmm:ServiceOffering
+                                         ] .
 
 
 #################################################################

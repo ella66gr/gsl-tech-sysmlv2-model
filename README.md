@@ -38,14 +38,17 @@ gsl-sysml-model/
 │   └── paws-demonstrator/          Paws — appointment-based dog grooming
 ├── scripts/                        Generation pipeline (Python)
 │   ├── gen_model_introspection.py  Console data generator (JSON from SysML)
-│   ├── gen_ontara_bmm.py           OWL/Turtle generator (BMM → ontara-bmm.ttl)
+│   ├── gen_owl_pipeline.py          OWL/Turtle generator (BMM → ontara-bmm.ttl)
 │   ├── gen_concept_graph.py        Mermaid + Obsidian concept graph
 │   ├── gen_package_hierarchy.py    Package hierarchy generator
 │   ├── gen_system_manifest.py      System manifest generator
 │   ├── gen_constraint_evaluator.py Constraint evaluator (TypeScript)
 │   ├── gen_decision_table_evaluator.py  Decision table evaluator (TypeScript)
+│   ├── sysml_parser.py             SysML v2 parser (shared across generators)
 │   ├── projection_engine.py        Projection engine
+│   ├── validate_kg.py              Knowledge graph validation (SPARQL suite)
 │   ├── setup_graphdb.py            GraphDB repository setup script
+│   ├── ontara                      CLI entry point
 │   └── archive-documentation.sh    Vault → repo archive helper
 ├── console/                        Ontara Console (SvelteKit + Svelte 5)
 │   ├── src/                        12 views: Home, Coverage Matrix, Package Navigator,
@@ -59,6 +62,7 @@ gsl-sysml-model/
 │   ├── concept-graph/              Mermaid diagrams
 │   └── projections/                Projection engine output
 ├── ontology/                       Ontological assets
+│   ├── axioms/                     Hand-authored OWL axioms (ontara-bmm-axioms.ttl)
 │   ├── imports/                    External ontologies (BFO 2020, CCO, IAO)
 │   └── config/                     Mapping config (cco-iri-lookup.json, etc.)
 ├── documentation/
@@ -88,9 +92,9 @@ gsl-sysml-model/
 | Knowledge base | Obsidian (separate vault, not in this repo) |
 | Development | macOS, VS Code |
 
-## Current State (Session 104, April 2026)
+## Current State (Session 114, April 2026)
 
-- **Stage 5 — Knowledge Graph Implementation** is the active workstream. GraphDB running with BFO/CCO/IAO loaded (Session 101). Ontara BMM ontology (`ontara-bmm.ttl`) generated and loaded with all 34 BMM classes verified via SPARQL (Session 102). Parser refactoring (Step 3) next.
+- **Stage 5 — Knowledge Graph Implementation** is the active workstream. Phase 1 (taxonomy, Sessions 100–107) is complete: 34 OWL classes with BFO/CCO/IAO parentage, correspondence graph, generation pipeline, GraphDB loaded and validated. Phase 2 (ontological enrichment) is in progress — Steps 1–2 complete: six concern-group union classes with `AllDisjointClasses`, 13 object properties with domain/range/functional characteristics, all hand-authored in `ontology/axioms/ontara-bmm-axioms.ttl` and verified via HermiT consistency check. Step 3 (existential and cardinality restrictions) is next.
 - **BMM structurally complete** at General level — 34 elements, 96 weighted relationships, full comprehension metadata (34/34 @UserFacing, @PurposiveDescription, @Comprehension, @BfoType).
 - **Console** has 12 views including an interactive 3D weighted relationship graph and a spatial visual architecture map.
 - **Three demonstrator domains** validated (Cafe, Suds, Paws), with Ears (community ear care) outlined as a fourth.
@@ -102,7 +106,7 @@ gsl-sysml-model/
 python scripts/gen_model_introspection.py --save
 
 # Generate OWL/Turtle from BMM
-python scripts/gen_ontara_bmm.py
+python scripts/gen_owl_pipeline.py
 
 # Run the console (dev mode)
 cd console && pnpm dev
@@ -113,7 +117,7 @@ cd console && pnpm build
 
 ## Companion Knowledge Base
 
-The Obsidian vault (not in this repo) contains ~190 registered design concepts, 24 discussion papers, 72+ session reports, and the full governance structure. The vault is under separate git version control.
+The Obsidian vault (not in this repo) contains ~190 registered design concepts, 24 discussion papers, 113+ session reports, and the full governance structure. The vault is under separate git version control.
 
 Key documents: Strategic Reference, Master Concept Register, Development Workflow Guide, Architecture Principles (v3), SysML Modelling Strategy (v3), Service Business Meta Modelling (v2).
 
@@ -125,8 +129,8 @@ Three governing principles:
 2. **Co-evolution of model and tooling** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
 3. **Non-constraining architecture** — decisions should not foreclose future development paths.
 
-Development is conducted through a structured session programme (currently Session 104) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
+Development is conducted through a structured session programme (currently Session 114) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
 
 ---
 
-*README last updated: Session 104, 2 April 2026.*
+*README last updated: Session 114, 3 April 2026.*
