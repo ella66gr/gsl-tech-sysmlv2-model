@@ -31,15 +31,17 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-# ---------------------------------------------------------------
-# Configuration
-# ---------------------------------------------------------------
-
-GRAPHDB_BASE = "http://localhost:7200"
-REPO_ID = "ontara-dev"
-REPO_ROOT = pathlib.Path(__file__).parent.parent
-
-GENERATED_ONTOLOGY_DIR = REPO_ROOT / "generated" / "ontology"
+from kg_utils import (
+    GRAPHDB_BASE,
+    REPO_ID,
+    REPO_ROOT,
+    GENERATED_ONTOLOGY_DIR,
+    graphdb_request,
+    sparql_query,
+    sparql_update,
+    shorten,
+    check_graphdb,
+)
 
 # Files to load and their target named graphs
 PIPELINE_FILES = [
@@ -689,78 +691,6 @@ ORDER BY ?sysmlName ?weightTarget
 # Helpers
 # ---------------------------------------------------------------
 
-def graphdb_request(path, method="GET", data=None, content_type=None,
-                    accept="application/json"):
-    """Make a request to the GraphDB REST API."""
-    url = f"{GRAPHDB_BASE}{path}"
-    headers = {"Accept": accept}
-    if content_type:
-        headers["Content-Type"] = content_type
-
-    if data is not None:
-        if isinstance(data, str):
-            data = data.encode("utf-8")
-        req = urllib.request.Request(url, data=data, headers=headers, method=method)
-    else:
-        req = urllib.request.Request(url, headers=headers, method=method)
-
-    try:
-        with urllib.request.urlopen(req) as resp:
-            body = resp.read().decode("utf-8")
-            if accept == "application/json" and body.strip():
-                return json.loads(body)
-            return body
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8") if e.fp else ""
-        print(f"  HTTP {e.code}: {body[:500]}")
-        raise
-    except urllib.error.URLError as e:
-        print(f"  Connection error: {e.reason}")
-        print(f"  Is GraphDB running on {GRAPHDB_BASE}?")
-        sys.exit(1)
-
-
-def sparql_query(sparql):
-    """Run a SPARQL SELECT query; return list of binding dicts."""
-    encoded = urllib.parse.quote(sparql)
-    result = graphdb_request(
-        f"/repositories/{REPO_ID}?query={encoded}",
-        accept="application/sparql-results+json",
-    )
-    if isinstance(result, str):
-        result = json.loads(result)
-    return result.get("results", {}).get("bindings", [])
-
-
-def sparql_update(update):
-    """Run a SPARQL UPDATE against the statements endpoint."""
-    graphdb_request(
-        f"/repositories/{REPO_ID}/statements",
-        method="POST",
-        data=update,
-        content_type="application/sparql-update",
-        accept="text/plain",
-    )
-
-
-def shorten(iri):
-    """Return a compact curie-style label for display."""
-    prefixes = {
-        "https://ontara.dev/ontology/bmm/": "ontara-bmm:",
-        "https://ontara.dev/ontology/correspondence/": "corr:",
-        "https://ontara.dev/ontology/governance/axioms#": "ontara-gov-ax:",
-        "https://ontara.dev/ontology/governance/": "ontara-gov:",
-        "https://ontara.dev/graph/": "graph:",
-        "http://purl.obolibrary.org/obo/": "obo:",
-        "https://www.commoncoreontologies.org/": "cco:",
-        "http://www.w3.org/2000/01/rdf-schema#": "rdfs:",
-        "http://www.w3.org/2002/07/owl#": "owl:",
-    }
-    for prefix, curie in prefixes.items():
-        if iri.startswith(prefix):
-            return curie + iri[len(prefix):]
-    return iri
-
 
 def format_row(row, display_vars):
     """Format a binding row for display."""
@@ -1050,9 +980,7 @@ def main():
     print(f"Generated ontology dir: {GENERATED_ONTOLOGY_DIR}")
 
     # Check GraphDB is reachable
-    try:
-        graphdb_request("/rest/repositories")
-    except SystemExit:
+    if not check_graphdb():
         return
 
     if args.load or args.load_only:

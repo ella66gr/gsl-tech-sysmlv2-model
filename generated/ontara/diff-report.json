@@ -1,0 +1,37 @@
+{
+  "generated": "2026-04-04T22:11:42.947201+00:00",
+  "source": "diff_kg.py \u2014 Stage 5 Phase 3 Step 5",
+  "summary": {
+    "added": 0,
+    "removed": 0,
+    "modified": 0,
+    "unchanged": 288
+  },
+  "by_type": {
+    "ClassDeclaration": {
+      "added": 0,
+      "removed": 0,
+      "modified": 0,
+      "unchanged": 34
+    },
+    "PropertyDeclaration": {
+      "added": 0,
+      "removed": 0,
+      "modified": 0,
+      "unchanged": 14
+    },
+    "WeightIndividual": {
+      "added": 0,
+      "removed": 0,
+      "modified": 0,
+      "unchanged": 96
+    },
+    "MappingRecord": {
+      "added": 0,
+      "removed": 0,
+      "modified": 0,
+      "unchanged": 144
+    }
+  },
+  "entries": []
+}
