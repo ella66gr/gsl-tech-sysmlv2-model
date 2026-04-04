@@ -551,7 +551,7 @@ package ArchitecturalStructure {
     }
     @ArchitecturalLocation {
         representationalModalitySummary = "OWL 2 DL — the mapping ontology is itself an ontology, living on the OWL side but describing the SysML side. openCAESAR may provide bridge infrastructure.";
-        persistenceSummary = "Triple store (knowledge graph), alongside the domain ontologies and system ontological categories. Correspondence graph operational (Session 105, extended Session 117) with class, property, and weight mapping records linking SysML BMM elements to OWL via @BfoType annotations.";
+        persistenceSummary = "Triple store (knowledge graph), alongside the domain ontologies and system ontological categories. Correspondence graph operational (Session 105, extended Session 117) with class, property, and weight mapping records linking SysML BMM elements to OWL via @BfoType annotations. Extended Session 126 with governance module correspondence records from the ontara-gov: namespace.";
         interfacesSummary = "Interfaces with everything: connects ontological layers on both stacks, enables SysML content to be represented in and retrieved from the knowledge graph. Makes the knowledge-graph-as-canonical commitment (B22) technically feasible.";
         domainIllustrationSummary = "For Paws: SysML part def ServiceOffering maps to OWL class ontara:ServiceOffering classified under BFO via OCE. Part usage standardGroom maps to OWL individual paws:StandardGroom. Attribute basePrice maps to datatype property ontara:hasBasePrice.";
     }
@@ -577,7 +577,7 @@ package ArchitecturalStructure {
     }
     @ArchitecturalLocation {
         representationalModalitySummary = "OWL 2 DL — the native formalism. Target home for everything above the formalism boundary and, via the mapping ontology, a canonical representation of everything below it.";
-        persistenceSummary = "Triple store / graph database — this is a persistence section. GraphDB operational (Session 106) with 24,663 domain triples and SPARQL validation suite. Persists: ontological axioms, meta model vocabulary, instance data, weighted relationships, comprehension metadata, coordinate space snapshots, reflective simulation derived knowledge, mapping ontology.";
+        persistenceSummary = "Triple store / graph database — this is a persistence section. GraphDB operational with 9-file ontology stack (BFO, IAO, CCO, BMM classes, BMM axioms, BMM properties, BMM weights, governance vocabulary, governance test individuals) and 16-query SPARQL validation suite. Persists: ontological axioms, meta model vocabulary, instance data, weighted relationships, comprehension metadata, governance directives and normative instruments, coordinate space snapshots, reflective simulation derived knowledge, mapping ontology.";
         interfacesSummary = "Everything feeds into or reads from the knowledge graph. SPARQL is the query interface. The SysML v2 model is a projection maintained in bidirectional sync.";
         domainIllustrationSummary = "For Paws: BFO axioms, OCE ontology, BMM vocabulary as OWL classes, all Paws entities as OWL individuals, weighted relationships, coordinate space snapshots for current state, goals, and what-if scenarios.";
     }
