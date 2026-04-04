@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-03T09:19:00",
+  "generatedAt": "2026-04-04T11:58:22.924499",
   "generator": "reason_kg.py",
   "reasoner": "HermiT (via Robot)",
   "consistent": true,
@@ -45,6 +45,18 @@
       "name": "Ontara BMM Weighted Relationships (pipeline-generated)",
       "file": "ontara-bmm-weights.ttl",
       "sizeBytes": 57678,
+      "present": true
+    },
+    {
+      "name": "Ontara Governance Vocabulary (hand-authored)",
+      "file": "ontara-governance.ttl",
+      "sizeBytes": 28967,
+      "present": true
+    },
+    {
+      "name": "Ontara Governance Test Individuals",
+      "file": "test-individuals.ttl",
+      "sizeBytes": 6946,
       "present": true
     }
   ],
@@ -163,7 +175,7 @@
     }
   ],
   "stats": {
-    "ontologyFileCount": 7,
+    "ontologyFileCount": 9,
     "objectPropertyCount": 14,
     "reifiedWeightCount": 96,
     "domainClassCount": 34,
