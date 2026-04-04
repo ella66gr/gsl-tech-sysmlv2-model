@@ -11,7 +11,7 @@ Ontara is a service system development and delivery platform built on SysML v2. 
 - **Three demonstrator domains:** Cafe (coffee shop, full app), Suds (laundry, BMM only), Paws (dog grooming, BMM only) — used for cross-domain validation
 - **Six BMM concerns:** ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel (Session 81). 34 General elements.
 - **Comprehension architecture:** Every BMM element has @BfoType, @UserFacing, @PurposiveDescription, @Comprehension, and @WeightedRelationship annotations. 34/34 coverage, 96 weighted relationships. @BfoType maps each element to its BFO 2020 category and mid-level ontology parent.
-- **Knowledge graph (Stage 5):** Dual-formalism platform — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO + IAO as mid-level. GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence. Full OWL 2 DL reasoning via HermiT (Robot). Phase 2 Block A complete: disjointness axioms, 14 object properties, existential/cardinality restrictions, 96 reified weighted relationships. 7-file ontology stack reasons consistent.
+- **Knowledge graph (Stage 5):** Dual-formalism platform — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO + IAO as mid-level. GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence. Full OWL 2 DL reasoning via HermiT (Robot). Phase 2 complete: disjointness axioms, 14 object properties, existential/cardinality restrictions, 96 reified weighted relationships. Governance ontology module (`ontara-gov:` namespace) hand-authored and validated (Session 126). 10-file ontology stack reasons CONSISTENT. 23-query SPARQL validation suite (5 groups, all PASSED). MVP CQC Regulation 12 test individuals validated.
 
 ## Repository Layout
 
@@ -31,6 +31,7 @@ generated/                 # All generated output (DO NOT EDIT manually)
 ontology/                  # Knowledge graph config and imported ontologies
   axioms/                  # Hand-authored OWL axioms (ontara-bmm-axioms.ttl)
   config/                  # Mapping rules (YAML), CCO IRI lookup (JSON)
+  governance/              # Hand-authored governance ontology (ontara-governance.ttl) + test individuals
   imports/                 # BFO 2020, CCO, IAO ontology files
   catalog-v001.xml         # XML catalog for Robot IRI resolution
 tools/                     # External tooling
@@ -66,10 +67,10 @@ spikes/                    # Experimental code
 
 ## Tech Stack
 
-- **Console:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4. Package manager: pnpm.
+- **Console:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4. Package manager: pnpm. **Navigation infrastructure (Session 133):** `NavigationStore` in `$lib/stores/navigation.svelte.ts` with `NavigationProvider`, `NavLink`, and `Breadcrumb` components. Glossary and Ontology routes migrated. Other routes can opt in incrementally — see `$lib/types/navigation.ts` for the `PageStateContract` interface.
 - **Coffee Shop Demonstrator:** SvelteKit + Temporal (workflow engine) + EHRbase (CDR) + PostgreSQL. pnpm workspace monorepo with packages: web, temporal, shared.
 - **Generators:** Python 3. No virtual env required. Introspection generator uses standard library only. OWL pipeline generator requires `rdflib` and `PyYAML` (`pip3 install rdflib PyYAML`).
-- **Knowledge graph:** GraphDB Free 10.x (local Java app, port 7200). Robot (wraps HermiT reasoner, `tools/robot.jar`) for full OWL 2 DL consistency checking. Protégé 5.6+ for ontology debugging. BFO 2020 + CCO 2.0 + IAO as imported ontologies. Reasoning runtime ~10 minutes with 7-file stack.
+- **Knowledge graph:** GraphDB Free 10.x (local Java app, port 7200). Robot (wraps HermiT reasoner, `tools/robot.jar`) for full OWL 2 DL consistency checking. Protégé 5.6+ for ontology debugging. BFO 2020 + CCO 2.0 + IAO as imported ontologies. Reasoning runtime ~10 minutes with 10-file stack.
 - **Model editing:** Syside Modeler (VS Code extension for SysML v2). Claude cannot run Syside — only Ella can verify SysML parses.
 
 ## Console Commands
@@ -105,12 +106,12 @@ python3 scripts/gen_owl_pipeline.py --verify         # Check CCO lookup complete
 python3 scripts/gen_owl_pipeline.py --ir-only        # Print mapping IR (classification) only
 python3 scripts/gen_owl_pipeline.py --dry-run        # Print Turtle to stdout
 python3 scripts/setup_graphdb.py --verify            # Verify GraphDB repository state
-python3 scripts/validate_kg.py                   # Validate KG against SPARQL test suite
+python3 scripts/validate_kg.py                   # Validate KG against SPARQL test suite (23 queries, 5 groups)
 python3 scripts/validate_kg.py --load             # Reload pipeline output into GraphDB + validate
 python3 scripts/validate_kg.py --load-only        # Reload pipeline output into GraphDB
 
 # OWL 2 DL Reasoning (requires Java 11+, tools/robot.jar)
-python3 scripts/reason_kg.py                       # Reason over full 7-file ontology stack
+python3 scripts/reason_kg.py                       # Reason over full 10-file ontology stack
 python3 scripts/reason_kg.py --verbose             # Show detailed output
 python3 scripts/reason_kg.py --test-violation      # Inject contradiction, confirm reasoner catches it
 python3 scripts/reason_kg.py --output results      # Save inferred ontology to file
@@ -125,6 +126,11 @@ Generated ontology outputs (in `generated/ontology/`):
 
 Hand-authored axiom file (in `ontology/axioms/`):
 - `ontara-bmm-axioms.ttl` — disjointness declarations, existential/cardinality restrictions (OWL-authoritative per B29)
+
+Hand-authored governance ontology (in `ontology/governance/`):
+- `ontara-governance.ttl` — 19 classes, 6 enum classes, 20 object properties, 16 data properties (OWL-authoritative per B29)
+- `cqc-reg12-individuals.ttl` — MVP test individuals for CQC Regulation 12
+- `catalog-v001.xml` — governance module catalog for Robot IRI resolution
 
 ## Coffee Shop Demonstrator Commands
 
