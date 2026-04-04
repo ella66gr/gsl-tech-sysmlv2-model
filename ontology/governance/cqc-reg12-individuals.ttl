@@ -1,0 +1,450 @@
+@prefix ontara-gov: <https://ontara.dev/ontology/governance/> .
+@prefix ontara-gov-ax: <https://ontara.dev/ontology/governance/axioms#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# =============================================================================
+# CQC Governance MVP — Regulation 12 (Safe Care and Treatment)
+#
+# Production-quality formalisation of CQC Regulation 12 using the Ontara
+# governance vocabulary (ontara-governance.ttl). This is the first real
+# exercise of the deontic governance vocabulary (B30, B31, B33, B35).
+#
+# Scope: Single regulation, full depth.
+#   - 4 normative instruments (HSCA 2008, Regulations 2014, CQC Guidance x2)
+#   - 1 parent obligation: Regulation 12(1)
+#   - 9 sub-obligations: Regulation 12(2)(a)-(i)
+#   - 5 guidance-level directives (CQC guidance decomposition)
+#   - 1 permission (risk-proportionate approach)
+#   - 1 obligation group ("Safe")
+#   - 1 governance framework
+#
+# Formalised by: Ella Green (domain expert, GP specialist in gender identity
+#   healthcare, CQC-registered provider) and Claude (Session 131), based on
+#   the Health and Social Care Act 2008 (Regulated Activities) Regulations
+#   2014 as in force at April 2026, and CQC Guidance for Providers on
+#   Meeting the Regulations (March 2015, updated).
+#
+# Design decisions: S130-D1 (archive test individuals), S130-D2 (reasonably
+#   practicable in directiveContent + exceptionCondition), S130-D3 (full
+#   pipeline integration).
+#
+# Supersedes: test-individuals.ttl (Session 126, archived as
+#   test-individuals-s126-archive.ttl).
+#
+# Session 131, 4 April 2026.
+# =============================================================================
+
+
+# =============================================================================
+# PHASE A — Normative Instrument Hierarchy
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# NI-1: Health and Social Care Act 2008 (primary legislation)
+# -----------------------------------------------------------------------------
+
+ontara-gov:hsca-2008 a ontara-gov:PrimaryLegislation ;
+    rdfs:label "Health and Social Care Act 2008"@en ;
+    ontara-gov-ax:instrumentTitle "Health and Social Care Act 2008"^^xsd:string ;
+    ontara-gov-ax:instrumentReference "2008 c.14"^^xsd:string ;
+    ontara-gov-ax:issuingAuthority "UK Parliament"^^xsd:string ;
+    ontara-gov-ax:jurisdiction "England and Wales"^^xsd:string ;
+    ontara-gov-ax:effectiveDate "2008-07-21"^^xsd:date ;
+    ontara-gov-ax:hasAuthorityType ontara-gov:StatutoryAuthority ;
+    ontara-gov-ax:hasCurrencyStatus ontara-gov:AmendedStatus .
+
+
+# -----------------------------------------------------------------------------
+# NI-2: HSCA 2008 (Regulated Activities) Regulations 2014 (secondary legislation)
+# -----------------------------------------------------------------------------
+
+ontara-gov:regulated-activities-regs-2014 a ontara-gov:SecondaryLegislation ;
+    rdfs:label "Health and Social Care Act 2008 (Regulated Activities) Regulations 2014"@en ;
+    ontara-gov-ax:instrumentTitle "The Health and Social Care Act 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:instrumentReference "SI 2014/2936"^^xsd:string ;
+    ontara-gov-ax:issuingAuthority "Secretary of State for Health"^^xsd:string ;
+    ontara-gov-ax:jurisdiction "England"^^xsd:string ;
+    ontara-gov-ax:effectiveDate "2015-04-01"^^xsd:date ;
+    ontara-gov-ax:hasAuthorityType ontara-gov:StatutoryAuthority ;
+    ontara-gov-ax:hasCurrencyStatus ontara-gov:CurrentStatus ;
+    ontara-gov-ax:implementsInstrument ontara-gov:hsca-2008 .
+
+
+# -----------------------------------------------------------------------------
+# NI-3: CQC Guidance for Providers on Meeting the Regulations (statutory guidance)
+# -----------------------------------------------------------------------------
+
+ontara-gov:cqc-guidance-for-providers a ontara-gov:StatutoryGuidance ;
+    rdfs:label "CQC Guidance for Providers on Meeting the Regulations"@en ;
+    ontara-gov-ax:instrumentTitle "Guidance for Providers on Meeting the Regulations: Health and Social Care Act 2008 (Regulated Activities) Regulations 2014 (Part 3)"^^xsd:string ;
+    ontara-gov-ax:instrumentReference "CQC-GPR-2015"^^xsd:string ;
+    ontara-gov-ax:issuingAuthority "Care Quality Commission"^^xsd:string ;
+    ontara-gov-ax:jurisdiction "England"^^xsd:string ;
+    ontara-gov-ax:effectiveDate "2015-03-01"^^xsd:date ;
+    ontara-gov-ax:hasAuthorityType ontara-gov:QuasiStatutoryAuthority ;
+    ontara-gov-ax:hasCurrencyStatus ontara-gov:CurrentStatus ;
+    ontara-gov-ax:interpretsInstrument ontara-gov:regulated-activities-regs-2014 .
+
+
+# -----------------------------------------------------------------------------
+# NI-4: CQC Scope of Registration Guidance (statutory guidance)
+# -----------------------------------------------------------------------------
+
+ontara-gov:cqc-scope-of-registration a ontara-gov:StatutoryGuidance ;
+    rdfs:label "CQC Scope of Registration Guidance"@en ;
+    ontara-gov-ax:instrumentTitle "Scope of Registration"^^xsd:string ;
+    ontara-gov-ax:instrumentReference "CQC-SOR-2015"^^xsd:string ;
+    ontara-gov-ax:issuingAuthority "Care Quality Commission"^^xsd:string ;
+    ontara-gov-ax:jurisdiction "England"^^xsd:string ;
+    ontara-gov-ax:effectiveDate "2015-04-01"^^xsd:date ;
+    ontara-gov-ax:hasAuthorityType ontara-gov:QuasiStatutoryAuthority ;
+    ontara-gov-ax:hasCurrencyStatus ontara-gov:CurrentStatus ;
+    ontara-gov-ax:interpretsInstrument ontara-gov:regulated-activities-regs-2014 .
+
+
+# =============================================================================
+# PHASE B — Regulation 12 Obligation Decomposition
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Reg12-1: Parent obligation — Safe care and treatment
+# -----------------------------------------------------------------------------
+
+ontara-gov:reg12-1-safe-care a ontara-gov:Obligation ;
+    rdfs:label "Regulation 12(1) — Safe care and treatment"@en ;
+    ontara-gov-ax:directiveContent "Care and treatment must be provided in a safe way for service users."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons carrying on or managing a regulated activity in England."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Overarching obligation — compliance demonstrated through satisfaction of all component sub-obligations 12(2)(a)-(i). Assessed holistically through CQC 'Safe' key question inspection."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(1), HSCA 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:StateOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:regulated-activities-regs-2014 ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:reg12-2a-risk-assessment ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:reg12-2b-risk-mitigation ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:reg12-2c-staff-competence ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:reg12-2d-safe-premises ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:reg12-2e-safe-equipment ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:reg12-2f-sufficient-supplies ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:reg12-2g-medicines-management ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:reg12-2h-infection-control ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:reg12-2i-shared-care .
+
+
+# -----------------------------------------------------------------------------
+# Reg12-2a: Assessing risks to health and safety
+# -----------------------------------------------------------------------------
+
+ontara-gov:reg12-2a-risk-assessment a ontara-gov:Obligation ;
+    rdfs:label "Regulation 12(2)(a) — Risk assessment"@en ;
+    ontara-gov-ax:directiveContent "Assessing the risks to the health and safety of service users of receiving the care or treatment."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons carrying on or managing a regulated activity in England."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Documented individual risk assessments for each service user; environmental risk assessments for premises and equipment; risk registers maintained and reviewed; clinical risk assessment tools used where appropriate (e.g. falls risk, pressure ulcer risk, medication interaction risk); evidence that risk assessments are updated when care needs change or incidents occur."^^xsd:string ;
+    ontara-gov-ax:freshnessRequirement "Risk assessments must be reviewed at each care episode or at minimum annually, and updated whenever there is a change in the service user's condition, care plan, or treatment regime."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(2)(a), HSCA 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:ActionOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:regulated-activities-regs-2014 ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:guidance-risk-assessment-methodology .
+
+
+# -----------------------------------------------------------------------------
+# Reg12-2b: Doing all reasonably practicable to mitigate risks
+# -----------------------------------------------------------------------------
+
+ontara-gov:reg12-2b-risk-mitigation a ontara-gov:Obligation ;
+    rdfs:label "Regulation 12(2)(b) — Risk mitigation"@en ;
+    ontara-gov-ax:directiveContent "Doing all that is reasonably practicable to mitigate any such risks."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons carrying on or managing a regulated activity in England."^^xsd:string ;
+    ontara-gov-ax:exceptionCondition "Defence of 'all reasonably practicable steps' available per Regulation 22 (offences) — the registered person may prove they took all reasonable steps and exercised all due diligence."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Evidence that identified risks have corresponding mitigation plans; implementation records showing mitigations are in place and effective; incident and near-miss reports demonstrating responsive action; evidence of learning from incidents with documented changes to practice; records of risk-benefit discussions with service users where applicable."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(2)(b), HSCA 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:AchievementOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:regulated-activities-regs-2014 .
+
+
+# -----------------------------------------------------------------------------
+# Reg12-2c: Staff qualifications, competence, skills and experience
+# -----------------------------------------------------------------------------
+
+ontara-gov:reg12-2c-staff-competence a ontara-gov:Obligation ;
+    rdfs:label "Regulation 12(2)(c) — Staff competence"@en ;
+    ontara-gov-ax:directiveContent "Ensuring that persons providing care or treatment to service users have the qualifications, competence, skills and experience to do so safely."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons carrying on or managing a regulated activity in England."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Staff training records including induction, mandatory training, and role-specific competency assessments; professional registration checks (GMC, NMC, GPhC, HCPC as applicable); supervision records; appraisal documentation; evidence of continuing professional development; recruitment records demonstrating qualifications verified at appointment; competency frameworks for specialist roles."^^xsd:string ;
+    ontara-gov-ax:freshnessRequirement "Professional registration must be verified at appointment and annually thereafter. Mandatory training must be current per the provider's training matrix. Competency assessments at minimum annually."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(2)(c), HSCA 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:StateOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:regulated-activities-regs-2014 ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:guidance-staff-competence-gender-identity .
+
+
+# -----------------------------------------------------------------------------
+# Reg12-2d: Safe premises
+# -----------------------------------------------------------------------------
+
+ontara-gov:reg12-2d-safe-premises a ontara-gov:Obligation ;
+    rdfs:label "Regulation 12(2)(d) — Safe premises"@en ;
+    ontara-gov-ax:directiveContent "Ensuring that the premises used by the service provider are safe to use for their intended purpose and are used in a safe way."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons carrying on or managing a regulated activity in England."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Premises risk assessments; fire safety certificates and drill records; health and safety audit reports; maintenance logs; disability access assessments; environmental cleanliness audits; legionella testing records; electrical and gas safety certificates."^^xsd:string ;
+    ontara-gov-ax:freshnessRequirement "Fire safety assessments reviewed annually. Electrical testing every 5 years (or per insurer requirements). Gas safety annually. Legionella risk assessment every 2 years."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(2)(d), HSCA 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:StateOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:regulated-activities-regs-2014 .
+
+
+# -----------------------------------------------------------------------------
+# Reg12-2e: Safe equipment
+# -----------------------------------------------------------------------------
+
+ontara-gov:reg12-2e-safe-equipment a ontara-gov:Obligation ;
+    rdfs:label "Regulation 12(2)(e) — Safe equipment"@en ;
+    ontara-gov-ax:directiveContent "Ensuring that the equipment used by the service provider for providing care or treatment to a service user is safe for such use and is used in a safe way."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons carrying on or managing a regulated activity in England."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Equipment maintenance and calibration logs; PAT testing records; staff training records for equipment use; medical device registers; MHRA safety alert response records; decontamination records for reusable devices; evidence of manufacturer instructions followed."^^xsd:string ;
+    ontara-gov-ax:freshnessRequirement "PAT testing annually or per equipment risk category. Calibration per manufacturer specifications. Medical device servicing per manufacturer schedules."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(2)(e), HSCA 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:StateOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:regulated-activities-regs-2014 .
+
+
+# -----------------------------------------------------------------------------
+# Reg12-2f: Sufficient quantities of equipment and medicines
+# -----------------------------------------------------------------------------
+
+ontara-gov:reg12-2f-sufficient-supplies a ontara-gov:Obligation ;
+    rdfs:label "Regulation 12(2)(f) — Sufficient supplies"@en ;
+    ontara-gov-ax:directiveContent "Where equipment or medicines are supplied by the service provider, ensuring that there are sufficient quantities of these to ensure the safety of service users and to meet their needs."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons who supply equipment or medicines as part of a regulated activity in England."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Stock management records; prescription and dispensing logs; evidence of supply chain management; records of occasions where supplies were insufficient and corrective action taken; contingency plans for supply disruption."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(2)(f), HSCA 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:StateOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:regulated-activities-regs-2014 .
+
+
+# -----------------------------------------------------------------------------
+# Reg12-2g: Proper and safe management of medicines
+# -----------------------------------------------------------------------------
+
+ontara-gov:reg12-2g-medicines-management a ontara-gov:Obligation ;
+    rdfs:label "Regulation 12(2)(g) — Medicines management"@en ;
+    ontara-gov-ax:directiveContent "The proper and safe management of medicines."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons carrying on or managing a regulated activity in England."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Medicines management policy aligned with NICE guidance; prescribing records; dispensing and administration records; controlled drugs register and audit trail; medication error reporting and learning records; fridge temperature monitoring for cold-chain medicines; patient group directions (PGDs) where used; shared care protocol compliance records."^^xsd:string ;
+    ontara-gov-ax:freshnessRequirement "Controlled drugs audits at minimum quarterly. Medicines management policy reviewed annually. Fridge temperature monitoring daily. Medication error reviews within 72 hours of incident."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(2)(g), HSCA 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:AchievementOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:regulated-activities-regs-2014 ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:guidance-medicines-management-gender-affirming .
+
+
+# -----------------------------------------------------------------------------
+# Reg12-2h: Infection prevention and control
+# -----------------------------------------------------------------------------
+
+ontara-gov:reg12-2h-infection-control a ontara-gov:Obligation ;
+    rdfs:label "Regulation 12(2)(h) — Infection prevention and control"@en ;
+    ontara-gov-ax:directiveContent "Assessing the risk of, and preventing, detecting and controlling the spread of, infections, including those that are health care associated."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons carrying on or managing a regulated activity in England. Providers should have regard to the HSCA 2008 Code of Practice on the Prevention and Control of Infections."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Infection prevention and control (IPC) policy; hand hygiene audit records; environmental cleanliness audits; sharps disposal records and audit; antimicrobial stewardship records; surveillance data for healthcare-associated infections; staff IPC training records; outbreak management plans; compliance with the Hygiene Code (10 criteria)."^^xsd:string ;
+    ontara-gov-ax:freshnessRequirement "Hand hygiene audits at minimum quarterly. IPC policy reviewed annually. Cleanliness audits monthly. Sharps audit quarterly."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(2)(h), HSCA 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:ActionOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:regulated-activities-regs-2014 .
+
+
+# -----------------------------------------------------------------------------
+# Reg12-2i: Working with others when care is shared or transferred
+# -----------------------------------------------------------------------------
+
+ontara-gov:reg12-2i-shared-care a ontara-gov:Obligation ;
+    rdfs:label "Regulation 12(2)(i) — Shared and transferred care"@en ;
+    ontara-gov-ax:directiveContent "Where responsibility for the care and treatment of service users is shared with, or transferred to, other persons, working with such other persons, service users and other appropriate persons to ensure that timely care planning takes place to ensure the health, safety and welfare of the service users."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons where responsibility for care is shared with or transferred to other persons. Activated when care involves multi-agency working, referrals, discharges, or transitions between services."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Shared care protocols and agreements; referral and discharge documentation; care plan transfer records; multi-disciplinary team meeting minutes; communication records with receiving/sending providers; evidence of timely information sharing in line with data protection requirements; transition risk assessments."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(2)(i), HSCA 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:ActionOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Triggered ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:regulated-activities-regs-2014 .
+
+
+# =============================================================================
+# PHASE B (continued) — Guidance-Level Directives
+#
+# These derive from CQC's own guidance, not the statutory text. They represent
+# CQC's interpretation of what compliance looks like in practice. Linked to the
+# relevant statutory sub-obligation via hasComponentDirective.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# GL-1: Risk assessment methodology (guidance on 12(2)(a))
+# -----------------------------------------------------------------------------
+
+ontara-gov:guidance-risk-assessment-methodology a ontara-gov:Obligation ;
+    rdfs:label "CQC Guidance — Risk assessment methodology"@en ;
+    ontara-gov-ax:directiveContent "Providers should use recognised, validated risk assessment tools appropriate to the care setting. Risk assessments should be person-centred, proportionate to the level of risk, and involve the service user (or their representative) in the assessment process. When assessing risk, providers should consider the link between infection prevention and control, antimicrobial stewardship, how medicines are managed, and cleanliness."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons carrying on or managing a regulated activity in England."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Named risk assessment tools in use with documented rationale for selection; evidence of service user involvement in risk assessments (consent records, care plan signatures); records showing risk assessment outcomes inform care planning; audit trail showing risk assessments trigger appropriate referrals or escalation."^^xsd:string ;
+    ontara-gov-ax:freshnessRequirement "Risk assessment tools should be reviewed for continued appropriateness annually or when national guidance changes."^^xsd:string ;
+    ontara-gov-ax:sourceReference "CQC Guidance for Providers, Regulation 12 section"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:ActionOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Administrative ;
+    ontara-gov-ax:derivesFrom ontara-gov:cqc-guidance-for-providers .
+
+
+# -----------------------------------------------------------------------------
+# GL-2: Staff competence in gender identity healthcare (guidance on 12(2)(c))
+# -----------------------------------------------------------------------------
+
+ontara-gov:guidance-staff-competence-gender-identity a ontara-gov:Obligation ;
+    rdfs:label "CQC Guidance — Staff competence in gender identity healthcare"@en ;
+    ontara-gov-ax:directiveContent "Staff providing gender identity healthcare must have specialist training and competence in transgender health, including understanding of endocrine management, mental health considerations specific to gender dysphoria, and awareness of the particular vulnerabilities and safeguarding needs of transgender service users. Staff should follow current professional guidance including relevant NHS service specifications and professional body standards."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "Registered persons providing gender identity healthcare services, including hormone prescribing, psychological support, and surgical referral."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Evidence of specialist training in gender identity healthcare (e.g. RCP Gender Identity Healthcare Certificate or equivalent); supervision arrangements with appropriately experienced clinicians; evidence of adherence to current NHS service specifications for gender identity services; CPD records showing engagement with current evidence base in transgender health; competency assessment specific to gender identity care delivery."^^xsd:string ;
+    ontara-gov-ax:freshnessRequirement "Specialist competency review annually. CPD in gender identity healthcare evidenced at each appraisal cycle."^^xsd:string ;
+    ontara-gov-ax:sourceReference "CQC Guidance for Providers, Regulation 12(2)(c), applied to gender identity healthcare setting"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:StateOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Administrative ;
+    ontara-gov-ax:derivesFrom ontara-gov:cqc-guidance-for-providers .
+
+
+# -----------------------------------------------------------------------------
+# GL-3: Medicines management in gender-affirming care (guidance on 12(2)(g))
+# -----------------------------------------------------------------------------
+
+ontara-gov:guidance-medicines-management-gender-affirming a ontara-gov:Obligation ;
+    rdfs:label "CQC Guidance — Medicines management in gender-affirming care"@en ;
+    ontara-gov-ax:directiveContent "Providers prescribing gender-affirming hormone therapy must ensure: appropriate baseline investigations before initiating treatment; monitoring schedules aligned with current endocrine guidance; shared care arrangements with the patient's GP are documented and agreed; patients are informed of risks, benefits, and monitoring requirements; prescribing follows evidence-based protocols and is within the prescriber's competence."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "Registered persons prescribing or managing gender-affirming hormone therapy."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Prescribing protocols documented and aligned with current guidance (e.g. Endocrine Society guidelines, NHS England service specifications); baseline blood test records before hormone initiation; monitoring blood test records at specified intervals; shared care agreements with GPs on file; patient consent and information-giving records; adverse event and side effect monitoring records; evidence of dose adjustment based on monitoring results."^^xsd:string ;
+    ontara-gov-ax:freshnessRequirement "Blood monitoring per prescribing protocol — typically 3-monthly in first year, 6-12 monthly thereafter. Shared care agreements reviewed annually. Prescribing protocols reviewed when national guidance updates."^^xsd:string ;
+    ontara-gov-ax:sourceReference "CQC Guidance for Providers, Regulation 12(2)(g), applied to gender-affirming hormone prescribing"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:AchievementOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Administrative ;
+    ontara-gov-ax:derivesFrom ontara-gov:cqc-guidance-for-providers .
+
+
+# -----------------------------------------------------------------------------
+# GL-4: Risk-proportionate approach (permission, from CQC guidance)
+# -----------------------------------------------------------------------------
+
+ontara-gov:guidance-risk-proportionate-approach a ontara-gov:Permission ;
+    rdfs:label "CQC Guidance — Risk-proportionate approach permitted"@en ;
+    ontara-gov-ax:directiveContent "The registered person may take a risk-proportionate approach to care provision where clinical judgement supports that the benefits to the service user outweigh the risks, and this is documented in the care plan with the service user's informed consent."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "Where clinical judgement supports a risk-proportionate approach and the service user (or their representative) has given informed consent to the approach."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Documented risk-benefit analysis in the care record; service user consent to the risk-proportionate approach; clinical rationale recorded by an appropriately qualified practitioner; evidence of ongoing monitoring and review of the risk-benefit balance."^^xsd:string ;
+    ontara-gov-ax:sourceReference "CQC Guidance for Providers, Regulation 12 general guidance"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:AchievementOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Triggered ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Administrative ;
+    ontara-gov-ax:derivesFrom ontara-gov:cqc-guidance-for-providers .
+
+
+# -----------------------------------------------------------------------------
+# GL-5: Multi-agency safety in shared care (guidance on 12(2)(i))
+# -----------------------------------------------------------------------------
+
+ontara-gov:guidance-shared-care-safety a ontara-gov:Obligation ;
+    rdfs:label "CQC Guidance — Multi-agency safety in shared care"@en ;
+    ontara-gov-ax:directiveContent "When care is shared between providers or where integrated services operate, providers must have appropriate arrangements to share relevant information promptly and in line with current legislation and guidance, and to plan and deliver care in partnership. The responsibility for providing safe care rests with the principal care provider at the time it is given. Arrangements should support people in transition between services."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons where care is delivered through multi-agency partnerships or shared care arrangements."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Information sharing agreements with partner organisations; documented principal provider responsibility at each point of care; transition protocols with risk assessments for service users moving between providers; evidence of timely communication (referral letters, discharge summaries sent within agreed timeframes); multi-disciplinary team meeting records where applicable."^^xsd:string ;
+    ontara-gov-ax:sourceReference "CQC Guidance for Providers, Regulation 12(2)(i) guidance notes"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:ActionOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Triggered ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Administrative ;
+    ontara-gov-ax:derivesFrom ontara-gov:cqc-guidance-for-providers .
+
+
+# =============================================================================
+# PHASE C — Framework and Group Assembly
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Obligation Group: CQC "Safe" key question
+# -----------------------------------------------------------------------------
+
+ontara-gov:cqc-safe-group a ontara-gov:ObligationGroup ;
+    rdfs:label "Safe (CQC Key Question S1)"@en ;
+    ontara-gov-ax:groupLabel "Safe"^^xsd:string .
+
+
+# -----------------------------------------------------------------------------
+# Governance Framework: CQC Fundamental Standards — Regulation 12 MVP
+# -----------------------------------------------------------------------------
+
+ontara-gov:cqc-reg12-framework a ontara-gov:GovernanceFramework ;
+    rdfs:label "CQC Fundamental Standards (Healthcare) — Regulation 12 MVP"@en ;
+    ontara-gov-ax:frameworkVersion "0.1"^^xsd:string ;
+    ontara-gov-ax:currencyDate "2026-04-04"^^xsd:date ;
+    ontara-gov-ax:formalisationProvenance "Hand-authored by Ella Green (domain expert, GP specialist in gender identity healthcare, CQC-registered provider) and Claude (Session 131), based on Regulation 12 as in force at April 2026 and CQC Guidance for Providers (March 2015, updated)."^^xsd:string ;
+    ontara-gov-ax:hasEndorsementStatus ontara-gov:ExpertReviewed ;
+    # Source instruments
+    ontara-gov-ax:hasSourceInstrument ontara-gov:hsca-2008 ;
+    ontara-gov-ax:hasSourceInstrument ontara-gov:regulated-activities-regs-2014 ;
+    ontara-gov-ax:hasSourceInstrument ontara-gov:cqc-guidance-for-providers ;
+    ontara-gov-ax:hasSourceInstrument ontara-gov:cqc-scope-of-registration ;
+    # Obligation group
+    ontara-gov-ax:containsGroup ontara-gov:cqc-safe-group ;
+    # Statutory directives
+    ontara-gov-ax:containsDirective ontara-gov:reg12-1-safe-care ;
+    ontara-gov-ax:containsDirective ontara-gov:reg12-2a-risk-assessment ;
+    ontara-gov-ax:containsDirective ontara-gov:reg12-2b-risk-mitigation ;
+    ontara-gov-ax:containsDirective ontara-gov:reg12-2c-staff-competence ;
+    ontara-gov-ax:containsDirective ontara-gov:reg12-2d-safe-premises ;
+    ontara-gov-ax:containsDirective ontara-gov:reg12-2e-safe-equipment ;
+    ontara-gov-ax:containsDirective ontara-gov:reg12-2f-sufficient-supplies ;
+    ontara-gov-ax:containsDirective ontara-gov:reg12-2g-medicines-management ;
+    ontara-gov-ax:containsDirective ontara-gov:reg12-2h-infection-control ;
+    ontara-gov-ax:containsDirective ontara-gov:reg12-2i-shared-care ;
+    # Guidance-level directives
+    ontara-gov-ax:containsDirective ontara-gov:guidance-risk-assessment-methodology ;
+    ontara-gov-ax:containsDirective ontara-gov:guidance-staff-competence-gender-identity ;
+    ontara-gov-ax:containsDirective ontara-gov:guidance-medicines-management-gender-affirming ;
+    ontara-gov-ax:containsDirective ontara-gov:guidance-risk-proportionate-approach ;
+    ontara-gov-ax:containsDirective ontara-gov:guidance-shared-care-safety .
+
+
+# =============================================================================
+# Obligation Group Membership
+#
+# All Regulation 12 directives belong to the "Safe" group.
+# =============================================================================
+
+ontara-gov:reg12-1-safe-care ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:reg12-2a-risk-assessment ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:reg12-2b-risk-mitigation ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:reg12-2c-staff-competence ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:reg12-2d-safe-premises ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:reg12-2e-safe-equipment ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:reg12-2f-sufficient-supplies ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:reg12-2g-medicines-management ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:reg12-2h-infection-control ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:reg12-2i-shared-care ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:guidance-risk-assessment-methodology ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:guidance-staff-competence-gender-identity ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:guidance-medicines-management-gender-affirming ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:guidance-risk-proportionate-approach ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .
+ontara-gov:guidance-shared-care-safety ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group .

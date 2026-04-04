@@ -86,8 +86,8 @@ ONTOLOGY_FILES = [
         "required": False,
     },
     {
-        "file": REPO_ROOT / "ontology" / "governance" / "test-individuals.ttl",
-        "name": "Ontara Governance Test Individuals",
+        "file": REPO_ROOT / "ontology" / "governance" / "cqc-reg12-individuals.ttl",
+        "name": "CQC Regulation 12 Governance MVP (hand-authored)",
         "required": False,
     },
 ]

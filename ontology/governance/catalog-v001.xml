@@ -11,4 +11,8 @@
     <uri name="https://ontara.dev/ontology/governance/"
          uri="ontara-governance.ttl"/>
 
+    <!-- CQC Regulation 12 Governance MVP (hand-authored, Session 131) -->
+    <uri name="https://ontara.dev/ontology/governance/cqc-reg12"
+         uri="cqc-reg12-individuals.ttl"/>
+
 </catalog>

@@ -413,6 +413,158 @@ ORDER BY ?label
         "expect_exactly": 11,
         "display_vars": ["class", "label"],
     },
+    # --- Group 6: Governance MVP (CQC Regulation 12) ---
+    {
+        "id": "Q17",
+        "group": "Governance-MVP",
+        "name": "Obligation decomposition: Reg 12(1) components",
+        "sparql": """
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+PREFIX ontara-gov-ax: <https://ontara.dev/ontology/governance/axioms#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?component ?label WHERE {
+  ontara-gov:reg12-1-safe-care ontara-gov-ax:hasComponentDirective ?component .
+  ?component rdfs:label ?label .
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 9,
+        "display_vars": ["component", "label"],
+    },
+    {
+        "id": "Q18",
+        "group": "Governance-MVP",
+        "name": "Normative instrument lineage",
+        "sparql": """
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+PREFIX ontara-gov-ax: <https://ontara.dev/ontology/governance/axioms#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?source ?sourceLabel ?rel ?target ?targetLabel WHERE {
+  VALUES ?rel { ontara-gov-ax:implementsInstrument ontara-gov-ax:interpretsInstrument }
+  ?source ?rel ?target .
+  ?source rdfs:label ?sourceLabel .
+  ?target rdfs:label ?targetLabel .
+  FILTER(STRSTARTS(STR(?source), STR(ontara-gov:)))
+  FILTER(!CONTAINS(STR(?source), "test-"))
+}
+ORDER BY ?sourceLabel
+""",
+        "expect_exactly": 3,
+        "display_vars": ["sourceLabel", "rel", "targetLabel"],
+    },
+    {
+        "id": "Q19",
+        "group": "Governance-MVP",
+        "name": "Directive provenance completeness (no orphans)",
+        "sparql": """
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+PREFIX ontara-gov-ax: <https://ontara.dev/ontology/governance/axioms#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?directive ?label WHERE {
+  ?directive a/rdfs:subClassOf* ontara-gov:DeonticDirective ;
+             rdfs:label ?label .
+  FILTER(!CONTAINS(STR(?directive), "test-"))
+  FILTER NOT EXISTS {
+    ?directive ontara-gov-ax:derivesFrom ?instrument .
+  }
+}
+""",
+        "expect_exactly": 0,
+        "display_vars": ["directive", "label"],
+        "zero_is_pass": True,
+    },
+    {
+        "id": "Q20",
+        "group": "Governance-MVP",
+        "name": "Structural property completeness",
+        "sparql": """
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+PREFIX ontara-gov-ax: <https://ontara.dev/ontology/governance/axioms#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?directive ?label ?missing WHERE {
+  ?directive a/rdfs:subClassOf* ontara-gov:DeonticDirective ;
+             rdfs:label ?label .
+  FILTER(!CONTAINS(STR(?directive), "test-"))
+  FILTER(
+    NOT EXISTS { ?directive ontara-gov-ax:hasContentModality ?cm } ||
+    NOT EXISTS { ?directive ontara-gov-ax:hasTemporalScope ?ts } ||
+    NOT EXISTS { ?directive ontara-gov-ax:hasSanctionSeverity ?ss }
+  )
+  BIND(
+    CONCAT(
+      IF(!EXISTS { ?directive ontara-gov-ax:hasContentModality ?cm2 }, "contentModality ", ""),
+      IF(!EXISTS { ?directive ontara-gov-ax:hasTemporalScope ?ts2 }, "temporalScope ", ""),
+      IF(!EXISTS { ?directive ontara-gov-ax:hasSanctionSeverity ?ss2 }, "sanctionSeverity ", "")
+    ) AS ?missing
+  )
+}
+""",
+        "expect_exactly": 0,
+        "display_vars": ["directive", "label", "missing"],
+        "zero_is_pass": True,
+    },
+    {
+        "id": "Q21",
+        "group": "Governance-MVP",
+        "name": "Evidential specification coverage",
+        "sparql": """
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+PREFIX ontara-gov-ax: <https://ontara.dev/ontology/governance/axioms#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?directive ?label WHERE {
+  ?directive a/rdfs:subClassOf* ontara-gov:DeonticDirective ;
+             rdfs:label ?label .
+  FILTER(!CONTAINS(STR(?directive), "test-"))
+  FILTER NOT EXISTS {
+    ?directive ontara-gov-ax:evidentialSpecification ?ev .
+  }
+}
+""",
+        "expect_exactly": 0,
+        "display_vars": ["directive", "label"],
+        "zero_is_pass": True,
+    },
+    {
+        "id": "Q22",
+        "group": "Governance-MVP",
+        "name": "Framework directive containment",
+        "sparql": """
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+PREFIX ontara-gov-ax: <https://ontara.dev/ontology/governance/axioms#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?directive ?label WHERE {
+  ontara-gov:cqc-reg12-framework ontara-gov-ax:containsDirective ?directive .
+  ?directive rdfs:label ?label .
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 15,
+        "display_vars": ["directive", "label"],
+    },
+    {
+        "id": "Q23",
+        "group": "Governance-MVP",
+        "name": "Safe group membership",
+        "sparql": """
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+PREFIX ontara-gov-ax: <https://ontara.dev/ontology/governance/axioms#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?directive ?label WHERE {
+  ?directive ontara-gov-ax:belongsToGroup ontara-gov:cqc-safe-group ;
+            rdfs:label ?label .
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 15,
+        "display_vars": ["directive", "label"],
+    },
 ]
 
 

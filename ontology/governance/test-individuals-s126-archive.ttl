@@ -1,0 +1,128 @@
+@prefix ontara-gov: <https://ontara.dev/ontology/governance/> .
+@prefix ontara-gov-ax: <https://ontara.dev/ontology/governance/axioms#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# =============================================================================
+# ARCHIVED — Test Individuals — Governance Vocabulary
+#
+# Original file: test-individuals.ttl
+# Archived: Session 131 (4 April 2026) per S130-D1 option (c).
+# Superseded by: cqc-reg12-individuals.ttl (CQC Governance MVP)
+#
+# One individual per major class to verify axioms fire correctly.
+# Uses CQC Regulation 12 (Safe Care and Treatment) as the illustrative example.
+#
+# Session 126: Created alongside ontara-governance.ttl for axiom verification.
+# These are test fixtures, not production data.
+# =============================================================================
+
+
+# --- Normative Instrument: Health and Social Care Act 2008 ---
+
+ontara-gov:test-hsca-2008 a ontara-gov:PrimaryLegislation ;
+    rdfs:label "Health and Social Care Act 2008 (test)"@en ;
+    ontara-gov-ax:instrumentTitle "Health and Social Care Act 2008"^^xsd:string ;
+    ontara-gov-ax:instrumentReference "c.14"^^xsd:string ;
+    ontara-gov-ax:issuingAuthority "UK Parliament"^^xsd:string ;
+    ontara-gov-ax:jurisdiction "England and Wales"^^xsd:string ;
+    ontara-gov-ax:effectiveDate "2008-07-21"^^xsd:date ;
+    ontara-gov-ax:hasAuthorityType ontara-gov:StatutoryAuthority ;
+    ontara-gov-ax:hasCurrencyStatus ontara-gov:AmendedStatus .
+
+
+# --- Normative Instrument: CQC Fundamental Standards (secondary legislation) ---
+
+ontara-gov:test-cqc-fundamental-standards a ontara-gov:SecondaryLegislation ;
+    rdfs:label "Health and Social Care Act 2008 (Regulated Activities) Regulations 2014 (test)"@en ;
+    ontara-gov-ax:instrumentTitle "Health and Social Care Act 2008 (Regulated Activities) Regulations 2014"^^xsd:string ;
+    ontara-gov-ax:instrumentReference "SI 2014/2936"^^xsd:string ;
+    ontara-gov-ax:issuingAuthority "Secretary of State for Health"^^xsd:string ;
+    ontara-gov-ax:jurisdiction "England"^^xsd:string ;
+    ontara-gov-ax:effectiveDate "2015-04-01"^^xsd:date ;
+    ontara-gov-ax:hasAuthorityType ontara-gov:StatutoryAuthority ;
+    ontara-gov-ax:hasCurrencyStatus ontara-gov:CurrentStatus ;
+    ontara-gov-ax:implementsInstrument ontara-gov:test-hsca-2008 .
+
+
+# --- Obligation: CQC Regulation 12 (Safe Care and Treatment) ---
+
+ontara-gov:test-reg12-safe-care a ontara-gov:Obligation ;
+    rdfs:label "CQC Regulation 12 — Safe Care and Treatment (test)"@en ;
+    ontara-gov-ax:directiveContent "Care and treatment must be provided in a safe way for service users."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "All registered persons carrying on or managing a regulated activity."^^xsd:string ;
+    ontara-gov-ax:evidentialSpecification "Risk assessments, incident reports, staff training records, medication management records."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(1)"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:StateOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:test-cqc-fundamental-standards .
+
+
+# --- Prohibition: CQC Regulation 12(2)(g) ---
+
+ontara-gov:test-reg12-prohibition a ontara-gov:Prohibition ;
+    rdfs:label "CQC Regulation 12(2)(g) — Prohibition on unnecessary risk (test)"@en ;
+    ontara-gov-ax:directiveContent "The registered person must not expose service users to avoidable risk of unsafe or inappropriate care and treatment."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12(2)(g)"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:ActionOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Continuous ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Criminal ;
+    ontara-gov-ax:derivesFrom ontara-gov:test-cqc-fundamental-standards ;
+    ontara-gov-ax:hasComponentDirective ontara-gov:test-reg12-safe-care .
+
+
+# --- Permission: CQC Regulation 12 risk-proportionate approach ---
+
+ontara-gov:test-reg12-risk-permission a ontara-gov:Permission ;
+    rdfs:label "Risk-proportionate care permitted (test)"@en ;
+    ontara-gov-ax:directiveContent "The registered person may take a risk-proportionate approach to care provision where the benefits to the service user outweigh the risks."^^xsd:string ;
+    ontara-gov-ax:applicabilityCondition "Where clinical judgement supports a risk-proportionate approach."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Regulation 12 guidance note"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:AchievementOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Triggered ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Administrative ;
+    ontara-gov-ax:derivesFrom ontara-gov:test-cqc-fundamental-standards .
+
+
+# --- RegulatoryPower: CQC power to impose conditions ---
+
+ontara-gov:test-cqc-impose-conditions a ontara-gov:RegulatoryPower ;
+    rdfs:label "CQC power to impose conditions on registration (test)"@en ;
+    ontara-gov-ax:directiveContent "CQC may impose, vary, or remove conditions on a service provider's registration."^^xsd:string ;
+    ontara-gov-ax:sourceReference "Section 26, Health and Social Care Act 2008"^^xsd:string ;
+    ontara-gov-ax:hasContentModality ontara-gov:ActionOriented ;
+    ontara-gov-ax:hasTemporalScope ontara-gov:Triggered ;
+    ontara-gov-ax:hasSanctionSeverity ontara-gov:Enforcement ;
+    ontara-gov-ax:derivesFrom ontara-gov:test-hsca-2008 .
+
+
+# --- ObligationGroup: CQC "Safe" key question ---
+
+ontara-gov:test-cqc-safe-group a ontara-gov:ObligationGroup ;
+    rdfs:label "Safe (CQC Key Question) (test)"@en ;
+    ontara-gov-ax:groupLabel "Safe"^^xsd:string .
+
+
+# --- GovernanceFramework: CQC Fundamental Standards framework ---
+
+ontara-gov:test-cqc-framework a ontara-gov:GovernanceFramework ;
+    rdfs:label "CQC Fundamental Standards Framework (test)"@en ;
+    ontara-gov-ax:frameworkVersion "1.0-test"^^xsd:string ;
+    ontara-gov-ax:currencyDate "2026-04-03"^^xsd:date ;
+    ontara-gov-ax:formalisationProvenance "Test fixture created Session 126 for axiom verification."^^xsd:string ;
+    ontara-gov-ax:hasEndorsementStatus ontara-gov:Unreviewed ;
+    ontara-gov-ax:containsDirective ontara-gov:test-reg12-safe-care ;
+    ontara-gov-ax:containsDirective ontara-gov:test-reg12-prohibition ;
+    ontara-gov-ax:containsDirective ontara-gov:test-reg12-risk-permission ;
+    ontara-gov-ax:containsDirective ontara-gov:test-cqc-impose-conditions ;
+    ontara-gov-ax:hasSourceInstrument ontara-gov:test-hsca-2008 ;
+    ontara-gov-ax:hasSourceInstrument ontara-gov:test-cqc-fundamental-standards ;
+    ontara-gov-ax:containsGroup ontara-gov:test-cqc-safe-group .
+
+
+# --- Link directives to obligation group ---
+
+ontara-gov:test-reg12-safe-care ontara-gov-ax:belongsToGroup ontara-gov:test-cqc-safe-group .
+ontara-gov:test-reg12-prohibition ontara-gov-ax:belongsToGroup ontara-gov:test-cqc-safe-group .
