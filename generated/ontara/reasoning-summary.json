@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-04T20:03:25.629522",
+  "generatedAt": "2026-04-04T20:41:56.980748",
   "generator": "reason_kg.py",
   "reasoner": "HermiT (via Robot)",
   "consistent": true,
@@ -50,7 +50,7 @@
     {
       "name": "Ontara Governance Vocabulary (hand-authored)",
       "file": "ontara-governance.ttl",
-      "sizeBytes": 28967,
+      "sizeBytes": 30668,
       "present": true
     },
     {

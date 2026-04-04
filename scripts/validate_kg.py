@@ -75,8 +75,10 @@ SELECT ?class ?label ?parent WHERE {
   GRAPH <https://ontara.dev/graph/domain> {
     ?class a owl:Class ;
            rdfs:label ?label ;
-           rdfs:subClassOf ?parent .
+           rdfs:subClassOf ?parent ;
+           <http://www.w3.org/2004/02/skos/core#definition> ?defn .
     FILTER(STRSTARTS(STR(?class), "https://ontara.dev/ontology/bmm/"))
+    FILTER(isIRI(?parent))
   }
 }
 ORDER BY ?label
@@ -174,7 +176,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?class ?label WHERE {
   GRAPH <https://ontara.dev/graph/domain> {
     ?class a owl:Class ;
-           rdfs:label ?label .
+           rdfs:label ?label ;
+           <http://www.w3.org/2004/02/skos/core#definition> ?defn .
     FILTER(STRSTARTS(STR(?class), "https://ontara.dev/ontology/bmm/"))
   }
   FILTER NOT EXISTS {
@@ -353,7 +356,7 @@ SELECT ?prop ?label ?domain ?range WHERE {
 }
 ORDER BY ?label
 """,
-        "expect_exactly": 20,
+        "expect_exactly": 23,
         "display_vars": ["prop", "label", "domain", "range"],
     },
     {
@@ -374,7 +377,7 @@ SELECT ?prop ?label ?domain ?range WHERE {
 }
 ORDER BY ?label
 """,
-        "expect_exactly": 16,
+        "expect_exactly": 17,
         "display_vars": ["prop", "label", "domain", "range"],
     },
     {
@@ -565,6 +568,120 @@ ORDER BY ?label
         "expect_exactly": 15,
         "display_vars": ["directive", "label"],
     },
+    # --- Group 7: Properties ---
+    {
+        "id": "Q24",
+        "group": "Properties",
+        "name": "BMM object properties with domain and range",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?prop ?label ?domain ?range WHERE {
+  ?prop a owl:ObjectProperty ;
+        rdfs:label ?label ;
+        rdfs:domain ?domain ;
+        rdfs:range ?range .
+  FILTER(STRSTARTS(STR(?prop), "https://ontara.dev/ontology/bmm/axioms#"))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 14,
+        "display_vars": ["prop", "label", "domain", "range"],
+    },
+    {
+        "id": "Q25",
+        "group": "Properties",
+        "name": "Functional BMM object properties",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?prop ?label WHERE {
+  ?prop a owl:ObjectProperty, owl:FunctionalProperty ;
+        rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?prop), "https://ontara.dev/ontology/bmm/axioms#"))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 9,
+        "display_vars": ["prop", "label"],
+    },
+    # --- Group 8: Axioms ---
+    {
+        "id": "Q26",
+        "group": "Axioms",
+        "name": "BMM concern-group disjointness declarations",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?disjoint WHERE {
+  ?disjoint a owl:AllDisjointClasses .
+}
+""",
+        "expect_at_least": 9,
+        "display_vars": ["count"],
+    },
+    {
+        "id": "Q27",
+        "group": "Axioms",
+        "name": "Qualified cardinality restrictions on BMM classes",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?class ?label ?prop ?cardinality WHERE {
+  ?class rdfs:subClassOf ?restriction .
+  ?restriction a owl:Restriction ;
+               owl:onProperty ?prop ;
+               owl:qualifiedCardinality ?cardinality .
+  ?class rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?class), "https://ontara.dev/ontology/bmm/"))
+  FILTER(STRSTARTS(STR(?prop), "https://ontara.dev/ontology/bmm/axioms#"))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 9,
+        "display_vars": ["class", "label", "prop", "cardinality"],
+    },
+    # --- Group 9: Weights ---
+    {
+        "id": "Q28",
+        "group": "Weights",
+        "name": "Reified weighted relationship individuals",
+        "sparql": """
+PREFIX ontara-bmm: <https://ontara.dev/ontology/bmm/>
+
+SELECT ?weight ?source ?target ?strength WHERE {
+  ?weight a ontara-bmm:WeightedRelationship ;
+          ontara-bmm:weightSource ?source ;
+          ontara-bmm:weightTarget ?target ;
+          ontara-bmm:weightStrength ?strength .
+}
+ORDER BY ?weight
+""",
+        "expect_exactly": 96,
+        "display_vars": ["weight", "source", "target", "strength"],
+    },
+    {
+        "id": "Q29",
+        "group": "Weights",
+        "name": "Weighted relationship correspondence records",
+        "sparql": """
+PREFIX ontara-corr: <https://ontara.dev/ontology/correspondence/>
+
+SELECT ?record ?sysmlName ?weightTarget WHERE {
+  GRAPH <https://ontara.dev/graph/correspondence> {
+    ?record a ontara-corr:WeightMappingRecord ;
+            ontara-corr:sysmlElementName ?sysmlName ;
+            ontara-corr:weightTarget ?weightTarget .
+  }
+}
+ORDER BY ?sysmlName ?weightTarget
+""",
+        "expect_exactly": 96,
+        "display_vars": ["record", "sysmlName", "weightTarget"],
+    },
 ]
 
 
@@ -631,6 +748,8 @@ def shorten(iri):
     prefixes = {
         "https://ontara.dev/ontology/bmm/": "ontara-bmm:",
         "https://ontara.dev/ontology/correspondence/": "corr:",
+        "https://ontara.dev/ontology/governance/axioms#": "ontara-gov-ax:",
+        "https://ontara.dev/ontology/governance/": "ontara-gov:",
         "https://ontara.dev/graph/": "graph:",
         "http://purl.obolibrary.org/obo/": "obo:",
         "https://www.commoncoreontologies.org/": "cco:",

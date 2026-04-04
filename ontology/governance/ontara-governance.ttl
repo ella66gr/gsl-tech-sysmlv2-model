@@ -18,7 +18,7 @@ ontara-gov: a owl:Ontology ;
     rdfs:label "Ontara Governance Vocabulary"@en ;
     dcterms:created "2026-04-03"^^xsd:date ;
     rdfs:comment "OWL 2 DL representation of the deontic governance vocabulary for the Ontara platform. Grounded in BFO 2020 via IAO. Designed Session 125, following the Deontic Governance Architecture paper (Session 121)."@en ;
-    owl:versionInfo "Session 125 — initial design"@en .
+    owl:versionInfo "Session 126 — governance vocabulary; Session 136 — cross-reference and amendment properties (Phase 3 Step 3)"@en .
 
 
 # =============================================================================
@@ -315,6 +315,18 @@ ontara-gov-ax:triggersObligation a owl:ObjectProperty ;
     rdfs:range ontara-gov:DeonticDirective ;
     rdfs:comment "Cascading obligations: activation of this directive triggers further directives."@en .
 
+ontara-gov-ax:crossReferencesRegulation a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:label "cross-references regulation"@en ;
+    rdfs:domain ontara-gov:DeonticDirective ;
+    rdfs:range ontara-gov:DeonticDirective ;
+    rdfs:comment "Symmetric cross-reference between deontic directives. If Regulation 12(2)(h) references a hygiene code criterion, the inverse is automatically available. S135-D1: the cross-reference relationship is semantically bidirectional even when the legislative text mentions it in only one direction."@en .
+
+ontara-gov-ax:qualifiedBy a owl:ObjectProperty ;
+    rdfs:label "qualified by"@en ;
+    rdfs:domain ontara-gov:DeonticDirective ;
+    rdfs:range ontara-gov:DeonticDirective ;
+    rdfs:comment "A directive whose scope or application is qualified by another directive. Not symmetric — 'A is qualified by B' does not imply 'B is qualified by A'. Supports conditional obligations where one directive narrows or specifies another."@en .
+
 # --- Normative instrument properties ---
 
 ontara-gov-ax:isSourceOf a owl:ObjectProperty ;
@@ -359,6 +371,12 @@ ontara-gov-ax:crossReferencesInstrument a owl:ObjectProperty, owl:SymmetricPrope
     rdfs:domain ontara-gov:NormativeInstrument ;
     rdfs:range ontara-gov:NormativeInstrument ;
     rdfs:comment "Instruments that reference each other. Symmetric relationship."@en .
+
+ontara-gov-ax:amendsInstrument a owl:ObjectProperty ;
+    rdfs:label "amends instrument"@en ;
+    rdfs:domain ontara-gov:NormativeInstrument ;
+    rdfs:range ontara-gov:NormativeInstrument ;
+    rdfs:comment "This instrument amends the target instrument. Distinct from supersedesInstrument — an amendment modifies but does not replace."@en .
 
 # --- Framework properties ---
 
@@ -428,6 +446,12 @@ ontara-gov-ax:sourceReference a owl:DatatypeProperty ;
     rdfs:domain ontara-gov:DeonticDirective ;
     rdfs:range xsd:string ;
     rdfs:comment "Specific clause, section, or regulation reference in the source instrument."@en .
+
+ontara-gov-ax:crossReferenceNote a owl:DatatypeProperty ;
+    rdfs:label "cross-reference note"@en ;
+    rdfs:domain ontara-gov:DeonticDirective ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Free-text annotation describing the nature or context of a cross-reference between directives."@en .
 
 # --- Normative instrument data properties ---
 
