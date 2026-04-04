@@ -1,13 +1,17 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { page } from '$app/stores';
   import { setContext } from 'svelte';
   import { SearchOutline } from 'flowbite-svelte-icons';
   import type { WeightedRelationshipGraph } from '$lib/types/relationships';
   import { getConcernColour } from '$lib/utils/colours';
+  import { useNavigation } from '$lib/stores/navigation.svelte';
 
   let { data, children } = $props();
 
   const graph: WeightedRelationshipGraph = data.graph;
+
+  const navStore = useNavigation();
 
   // --- Filter state (shared between graph and table via context) ---
   // Initialise from URL search params (restored after browser Back navigation)
@@ -115,6 +119,26 @@
     get selectedStrengths() { return selectedStrengths; },
     get searchText() { return searchText; },
     syncToUrl,
+  });
+
+  onMount(() => {
+    navStore.register({
+      captureState: () => ({
+        selectedConcerns: [...selectedConcerns],
+        selectedStrengths: [...selectedStrengths],
+        searchText,
+        currentTab: currentPath.endsWith('/table') ? 'table' : 'graph',
+        scrollY: window.scrollY,
+      }),
+      restoreState: (state) => {
+        selectedConcerns = new Set(state.selectedConcerns as string[]);
+        selectedStrengths = new Set(state.selectedStrengths as string[]);
+        searchText = state.searchText as string;
+        requestAnimationFrame(() => window.scrollTo(0, state.scrollY as number));
+      },
+    });
+
+    navStore.refineCurrentLabel('Relationships');
   });
 </script>
 

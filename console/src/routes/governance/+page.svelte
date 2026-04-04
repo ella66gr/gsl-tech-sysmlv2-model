@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { Badge, Tooltip } from 'flowbite-svelte';
   import {
     ChevronDownOutline,
@@ -13,8 +14,11 @@
     GovernanceConstraintDef,
     AuditEvidenceInstance,
   } from '$lib/types/governance';
+  import { useNavigation } from '$lib/stores/navigation.svelte';
 
   let { data } = $props();
+
+  const navStore = useNavigation();
 
   const gov = data.governance.governance;
   const domains = data.governance.domains;
@@ -92,6 +96,25 @@
     };
     return colors[domainKey] || 'gray';
   }
+
+  onMount(() => {
+    navStore.register({
+      captureState: () => ({
+        reqDefFilter,
+        domainFilter,
+        expandedRequirement,
+        scrollY: window.scrollY,
+      }),
+      restoreState: (state) => {
+        reqDefFilter = state.reqDefFilter as string;
+        domainFilter = state.domainFilter as string;
+        expandedRequirement = state.expandedRequirement as string | null;
+        requestAnimationFrame(() => window.scrollTo(0, state.scrollY as number));
+      },
+    });
+
+    navStore.refineCurrentLabel('Governance');
+  });
 </script>
 
 <div class="space-y-6">

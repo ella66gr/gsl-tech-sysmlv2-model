@@ -128,6 +128,28 @@ class NavigationStore {
     };
   }
 
+  exportJourneyAsMarkdown(): string {
+    const journey = this.exportJourney();
+    const date = new Date(journey.startTime).toLocaleDateString('en-GB', {
+      day: 'numeric', month: 'long', year: 'numeric',
+    });
+    const time = new Date(journey.startTime).toLocaleTimeString('en-GB', {
+      hour: '2-digit', minute: '2-digit',
+    });
+
+    let md = `## Exploration Journey — ${date}, ${time}\n\n`;
+    journey.steps.forEach((step, i) => {
+      const rel = step.relationship ? ` — followed \`${step.relationship}\`` : '';
+      if (i === 0) {
+        md += `${i + 1}. **${step.label}** — started here\n`;
+      } else {
+        md += `${i + 1}. **${step.label}**${rel}\n`;
+      }
+    });
+
+    return md;
+  }
+
   private captureCurrentState(): void {
     if (this.contract && this.currentIndex >= 0) {
       const state = this.contract.captureState();

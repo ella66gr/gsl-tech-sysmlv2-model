@@ -5,6 +5,10 @@
   import type { ComprehensionContent, CatalogueElement } from '$lib/types/catalogue';
   import { getConcernColour } from '$lib/utils/colours';
   import { ArrowRightOutline, CloseOutline, InfoCircleOutline } from 'flowbite-svelte-icons';
+  import { useNavigation } from '$lib/stores/navigation.svelte';
+  import NavLink from '$lib/components/NavLink.svelte';
+
+  const navStore = useNavigation();
 
   let { data } = $props();
 
@@ -212,12 +216,15 @@
 
         <!-- Glossary link -->
         <div class="pt-2">
-          <a
-            href="/glossary?entry={encodeURIComponent(selectedNodeId || '')}"
+          <NavLink
+            href="/glossary"
+            label="Glossary: {selectedNodeId || ''}"
+            relationship="exploreElement"
+            query={{ entry: selectedNodeId || '' }}
             class="inline-flex items-center gap-1 rounded-md border border-primary-200 bg-primary-50 px-3 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-primary-100 dark:border-primary-800 dark:bg-primary-900/20 dark:text-primary-400 dark:hover:bg-primary-900/40"
           >
             View in Glossary <ArrowRightOutline class="h-3 w-3" />
-          </a>
+          </NavLink>
         </div>
       </div>
     </div>

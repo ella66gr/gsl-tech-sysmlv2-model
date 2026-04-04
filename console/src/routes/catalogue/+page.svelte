@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { page } from '$app/stores';
   import { Badge } from 'flowbite-svelte';
   import {
     ChevronDownOutline,
@@ -10,8 +12,12 @@
     GroupingAxis,
     GroupingOption,
   } from '$lib/types/catalogue';
+  import { useNavigation } from '$lib/stores/navigation.svelte';
+  import NavLink from '$lib/components/NavLink.svelte';
 
   let { data } = $props();
+
+  const navStore = useNavigation();
 
   const catalogue = data.catalogue;
   const allElements = catalogue.elements;
@@ -51,7 +57,7 @@
   // --- State ---
   let groupBy: GroupingAxis = $state('bmmConcern');
   let selectedElement = $state<CatalogueElement | null>(null);
-  let searchText = $state('');
+  let searchText = $state($page.url.searchParams.get('search') || '');
   let layerFilter = $state('all');
   let collapsedGroups = $state<Set<string>>(new Set());
 
@@ -184,6 +190,35 @@
     };
     return colors[concern] || 'dark';
   }
+
+  onMount(() => {
+    navStore.register({
+      captureState: () => ({
+        groupBy,
+        layerFilter,
+        searchText,
+        collapsedGroups: [...collapsedGroups],
+        selectedElementName: selectedElement?.name ?? null,
+        scrollY: window.scrollY,
+      }),
+      restoreState: (state) => {
+        groupBy = state.groupBy as GroupingAxis;
+        layerFilter = state.layerFilter as string;
+        searchText = state.searchText as string;
+        collapsedGroups = new Set(state.collapsedGroups as string[]);
+        const elemName = state.selectedElementName as string | null;
+        selectedElement = elemName ? allElements.find((e) => e.name === elemName) ?? null : null;
+        requestAnimationFrame(() => window.scrollTo(0, state.scrollY as number));
+      },
+    });
+
+    const searchParam = new URLSearchParams(window.location.search).get('search');
+    if (searchParam) {
+      navStore.refineCurrentLabel(`Catalogue: ${decodeURIComponent(searchParam)}`);
+    } else {
+      navStore.refineCurrentLabel('Component Catalogue');
+    }
+  });
 </script>
 
 <div class="space-y-4">
@@ -470,12 +505,15 @@
 
           <!-- Cross-link to coverage matrix -->
           <div class="pt-2">
-            <a
-              href="/coverage?search={encodeURIComponent(elem.name)}"
+            <NavLink
+              href="/coverage"
+              label="Coverage Matrix: {elem.name}"
+              relationship="viewInCoverage"
+              query={{ search: elem.name }}
               class="inline-flex items-center gap-1 rounded-md border border-primary-200 bg-primary-50 px-3 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-primary-100 dark:border-primary-800 dark:bg-primary-900/20 dark:text-primary-400 dark:hover:bg-primary-900/40"
             >
               View in Coverage Matrix →
-            </a>
+            </NavLink>
           </div>
         </div>
       {:else}

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { Badge, Input, Select, Tooltip } from 'flowbite-svelte';
   import {
     CheckCircleOutline,
@@ -8,8 +9,11 @@
     SearchOutline,
   } from 'flowbite-svelte-icons';
   import { page } from '$app/stores';
+  import { useNavigation } from '$lib/stores/navigation.svelte';
 
   let { data } = $props();
+
+  const navStore = useNavigation();
 
   const matrix = data.introspection.coverageMatrix;
   const domains = data.introspection.domains;
@@ -123,6 +127,36 @@
   function layerColor(layer: string): string {
     return layer === 'bmm' ? 'blue' : 'purple';
   }
+
+  onMount(() => {
+    navStore.register({
+      captureState: () => ({
+        layerFilter,
+        coverageFilter,
+        searchText,
+        collapsedPackages: [...collapsedPackages],
+        hiddenDomains: [...hiddenDomains],
+        expandedCell,
+        scrollY: window.scrollY,
+      }),
+      restoreState: (state) => {
+        layerFilter = state.layerFilter as string;
+        coverageFilter = state.coverageFilter as string;
+        searchText = state.searchText as string;
+        collapsedPackages = new Set(state.collapsedPackages as string[]);
+        hiddenDomains = new Set(state.hiddenDomains as string[]);
+        expandedCell = state.expandedCell as string | null;
+        requestAnimationFrame(() => window.scrollTo(0, state.scrollY as number));
+      },
+    });
+
+    const searchParam = new URLSearchParams(window.location.search).get('search');
+    if (searchParam) {
+      navStore.refineCurrentLabel(`Coverage: ${decodeURIComponent(searchParam)}`);
+    } else {
+      navStore.refineCurrentLabel('Coverage Matrix');
+    }
+  });
 </script>
 
 <div class="space-y-4">
