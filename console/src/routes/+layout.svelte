@@ -1,6 +1,8 @@
 <script lang="ts">
   import '../app.css';
   import { page } from '$app/stores';
+  import NavigationProvider from '$lib/components/NavigationProvider.svelte';
+  import Breadcrumb from '$lib/components/Breadcrumb.svelte';
   import { DarkMode } from 'flowbite-svelte';
   import {
     TableColumnOutline,
@@ -166,8 +168,11 @@
 {/if}
 
 <!-- Main content area -->
-<div class="mt-16 p-4 md:ml-64">
-  <main class="mx-auto max-w-7xl">
-    {@render children()}
-  </main>
-</div>
+<NavigationProvider>
+  <div class="mt-16 p-4 md:ml-64">
+    <Breadcrumb />
+    <main class="mx-auto max-w-7xl">
+      {@render children()}
+    </main>
+  </div>
+</NavigationProvider>

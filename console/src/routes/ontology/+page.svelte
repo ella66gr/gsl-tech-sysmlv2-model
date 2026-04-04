@@ -1,7 +1,12 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { Badge } from 'flowbite-svelte';
   import { ChevronDownOutline, ChevronRightOutline, ArrowRightOutline, CheckCircleOutline, CloseCircleOutline } from 'flowbite-svelte-icons';
   import type { HierarchyNode, ReasoningSummary } from '$lib/types/ontology';
+  import { useNavigation } from '$lib/stores/navigation.svelte';
+  import NavLink from '$lib/components/NavLink.svelte';
+
+  const navStore = useNavigation();
 
   let { data } = $props();
 
@@ -72,6 +77,21 @@
     if (node.tier === 'bmm') return 1;
     return (node.children ?? []).reduce((sum, c) => sum + countBmmLeaves(c), 0);
   }
+
+  onMount(() => {
+    navStore.register({
+      captureState: () => ({
+        expandedPaths: [...expandedPaths],
+        ontologyStackExpanded,
+        scrollY: window.scrollY,
+      }),
+      restoreState: (state) => {
+        expandedPaths = new Set(state.expandedPaths as string[]);
+        ontologyStackExpanded = state.ontologyStackExpanded as boolean;
+        requestAnimationFrame(() => window.scrollTo(0, state.scrollY as number));
+      },
+    });
+  });
 </script>
 
 {#snippet treeNode(node: HierarchyNode, path: string, depth: number)}
@@ -148,8 +168,11 @@
     {:else}
       <!-- BMM leaf node -->
       {@const isUnmapped = stats.unmappedMidLevel.includes(node.name)}
-      <a
-        href="/glossary?entry={encodeURIComponent(node.name)}&from=ontology"
+      <NavLink
+        href="/glossary"
+        label="Glossary: {node.friendlyName || node.name}"
+        relationship="hasBfoType"
+        query={{ entry: node.name }}
         class="mb-1 flex items-center gap-2.5 rounded-md border px-3 py-2 text-left text-sm transition
           {isUnmapped
             ? 'border-dashed border-secondary-300 bg-secondary-50 hover:bg-secondary-100 dark:border-secondary-600 dark:bg-secondary-800/50 dark:hover:bg-secondary-700/50'
@@ -178,7 +201,7 @@
           {/if}
           <ArrowRightOutline class="h-3 w-3 text-secondary-300 dark:text-secondary-600" />
         </div>
-      </a>
+      </NavLink>
     {/if}
   </div>
 {/snippet}
@@ -365,21 +388,27 @@
                     <span class="ml-1.5 font-mono text-xs text-secondary-400 dark:text-secondary-500">{prop.name}</span>
                   </td>
                   <td class="px-4 py-2.5">
-                    <a
-                      href="/glossary?entry={encodeURIComponent(prop.domain)}&from=ontology"
+                    <NavLink
+                      href="/glossary"
+                      label="Glossary: {prop.domain}"
+                      relationship="hasBfoType"
+                      query={{ entry: prop.domain }}
                       class="text-primary-600 hover:underline dark:text-primary-400"
                     >
                       {prop.domain}
-                    </a>
+                    </NavLink>
                   </td>
                   <td class="px-2 py-2.5 text-center text-secondary-300 dark:text-secondary-600">→</td>
                   <td class="px-4 py-2.5">
-                    <a
-                      href="/glossary?entry={encodeURIComponent(prop.range)}&from=ontology"
+                    <NavLink
+                      href="/glossary"
+                      label="Glossary: {prop.range}"
+                      relationship="hasBfoType"
+                      query={{ entry: prop.range }}
                       class="text-primary-600 hover:underline dark:text-primary-400"
                     >
                       {prop.range}
-                    </a>
+                    </NavLink>
                   </td>
                   <td class="px-4 py-2.5 text-center">
                     {#if prop.functional}

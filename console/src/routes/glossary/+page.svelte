@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { Badge } from 'flowbite-svelte';
   import {
     ChevronDownOutline,
@@ -7,6 +8,10 @@
     ArrowRightOutline,
   } from 'flowbite-svelte-icons';
   import type { CatalogueElement, ComprehensionContent } from '$lib/types/catalogue';
+  import { useNavigation } from '$lib/stores/navigation.svelte';
+  import NavLink from '$lib/components/NavLink.svelte';
+
+  const navStore = useNavigation();
 
   let { data } = $props();
 
@@ -23,13 +28,6 @@
   let concernFilter = $state('all');
   let layerFilter = $state('all');
   let expandedEntries = $state<Set<string>>(new Set());
-
-  // Cross-route back navigation
-  const fromRoute = $derived(
-    typeof window !== 'undefined'
-      ? new URLSearchParams(window.location.search).get('from')
-      : null
-  );
 
   // Deep link: if ?entry= param is present, focus on that entry
   if (typeof window !== 'undefined') {
@@ -191,21 +189,35 @@
     layerFilter = prev.layerFilter;
     expandedEntries = new Set(prev.expandedEntries);
   }
+
+  onMount(() => {
+    navStore.register({
+      captureState: () => ({
+        searchText,
+        concernFilter,
+        layerFilter,
+        expandedEntries: [...expandedEntries],
+        scrollY: window.scrollY,
+      }),
+      restoreState: (state) => {
+        searchText = state.searchText as string;
+        concernFilter = state.concernFilter as string;
+        layerFilter = state.layerFilter as string;
+        expandedEntries = new Set(state.expandedEntries as string[]);
+        requestAnimationFrame(() => window.scrollTo(0, state.scrollY as number));
+      },
+    });
+
+    const entryParam = new URLSearchParams(window.location.search).get('entry');
+    if (entryParam) {
+      navStore.refineCurrentLabel(`Glossary: ${decodeURIComponent(entryParam)}`);
+    } else {
+      navStore.refineCurrentLabel('Glossary');
+    }
+  });
 </script>
 
 <div class="space-y-4">
-  <!-- Cross-route breadcrumb -->
-  {#if fromRoute === 'ontology'}
-    <div>
-      <a
-        href="/ontology"
-        class="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-primary-600 hover:bg-primary-50 hover:text-primary-800 dark:text-primary-400 dark:hover:bg-primary-900/30 dark:hover:text-primary-300"
-      >
-        ← Back to Ontological Hierarchy
-      </a>
-    </div>
-  {/if}
-
   <!-- Header -->
   <div>
     <h1 class="text-2xl font-bold text-secondary-800 dark:text-white">Glossary</h1>
@@ -504,18 +516,24 @@
 
               <!-- Cross-links -->
               <div class="flex flex-wrap gap-2 pt-1">
-                <a
-                  href="/catalogue?search={encodeURIComponent(entry.name)}"
+                <NavLink
+                  href="/catalogue"
+                  label="Component Catalogue: {entry.name}"
+                  relationship="viewInCatalogue"
+                  query={{ search: entry.name }}
                   class="inline-flex items-center gap-1 rounded-md border border-primary-200 bg-primary-50 px-3 py-1.5 text-xs font-medium text-primary-700 transition hover:bg-primary-100 dark:border-primary-800 dark:bg-primary-900/20 dark:text-primary-400 dark:hover:bg-primary-900/40"
                 >
                   Component Catalogue <ArrowRightOutline class="h-3 w-3" />
-                </a>
-                <a
-                  href="/coverage?search={encodeURIComponent(entry.name)}"
+                </NavLink>
+                <NavLink
+                  href="/coverage"
+                  label="Coverage Matrix: {entry.name}"
+                  relationship="viewInCoverage"
+                  query={{ search: entry.name }}
                   class="inline-flex items-center gap-1 rounded-md border border-secondary-200 bg-secondary-50 px-3 py-1.5 text-xs font-medium text-secondary-600 transition hover:bg-secondary-100 dark:border-secondary-700 dark:bg-secondary-800 dark:text-secondary-400 dark:hover:bg-secondary-700"
                 >
                   Coverage Matrix <ArrowRightOutline class="h-3 w-3" />
-                </a>
+                </NavLink>
               </div>
             </div>
           </div>
