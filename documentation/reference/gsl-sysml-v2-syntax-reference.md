@@ -1,7 +1,7 @@
 # SysML v2 Syntax Reference — Syside Modeler
 
-> **Version:** 3.18 — 22 March 2026
-> **Previous version:** v3.17 (21 March 2026). Full version history in `documentation/reference/syntax-versions/`
+> **Version:** 3.19 — 5 April 2026
+> **Previous version:** v3.18 (22 March 2026). Full version history in `documentation/reference/syntax-versions/`
 > **Purpose:** Concise reference for writing `.sysml` files against Syside Modeler.
 > Consult before writing new SysML code. Update as new patterns are verified.
 >
@@ -12,7 +12,7 @@
 > - `gsl-validated-architectural-patterns.md` — integration patterns, generation pipelines, design rationale
 > - `gsl-guide-repo-conventions.md` — file structure, generators, git practices, `gsl` toolkit
 >
-> **What's new in v3.18:** Session 58 — (1) `@PurposiveDescription` on `package` declarations verified (E003 syntax spike). Both top-level and nested packages accept metadata annotations. See §8. (2) `objective` confirmed as a SysML v2 contextual keyword — cannot be used as a ref/attribute name (parsing error). Discovered during Phase 5 O25 typed-ref migration. See §2.
+> **What's new in v3.19:** Session 143 — (1) Multi-valued `attribute :>>` with tuple syntax verified: `attribute :>> field = (EnumType::a, EnumType::b)` works for both `[1..*]` and `[0..*]` multiplicities. Extends v3.13 `ref :>>` tuple finding. See §2. (2) `individual` confirmed as a Syside-rejected enum literal (parse error, not in KerML reserved list). Use `registeredIndividual` or other compound name. See §10. (3) New safe enum literals confirmed (97 total): `registeredIndividual`. See §3.
 >
 > **v3.17:** Session 51 — Multiple annotations of the same metaclass on one element verified (Stage 3 Phase 3, Step 4 syntax test). Two, three, and six same-metaclass annotations all parse cleanly. Mixed same-metaclass + different-metaclass also works. Overturns v3.14 finding (which was specific to `@CatalogueTag`, not a general restriction). Enum-typed attribute (`RelationshipStrength`) on `metadata def` confirmed. See §8.
 >
@@ -224,6 +224,33 @@ part def RegimenSelectionTable :> DecisionTableDef {
 **Scale:** Eighteen `:>>` redefinitions across multiple part usages in a single sub-package (v3.10, ScenarioModelling projection parameters). Ten in a single part usage (v3.7, outcome definitions). Seven in a single usage (v3.6, decision table rows).
 
 **Not yet tested:** Nested `:>>` redefinition inside contained parts inside part usages.
+
+### Multi-valued attribute :>> with tuple syntax (verified v3.19, Session 143)
+
+Multi-valued `attribute :>>` redefinitions accept the same tuple syntax as `ref :>>` (v3.13):
+
+```sysml
+part def DomainIdentity {
+    attribute domainPurpose : DomainPurpose[1..*];
+    attribute regulatedActivities : RegulatedActivity[0..*];
+}
+
+part pawsIdentity : DomainIdentity {
+    attribute :>> domainPurpose = (DomainPurpose::pedagogicalAnchoring,
+        DomainPurpose::crossDomainValidation);                          // multi-valued attribute tuple ✅
+}
+
+part gslIdentity : DomainIdentity {
+    attribute :>> regulatedActivities = (RegulatedActivity::treatment,
+        RegulatedActivity::diagnosticAndScreeningProcedures);           // multi-valued attribute tuple ✅
+}
+```
+
+**Verified (Session 143, Domain Identity implementation):**
+- Multi-valued enum-typed attribute `[1..*]` with two-value tuple ✅
+- Multi-valued enum-typed attribute `[0..*]` with two-value tuple ✅
+- Single-valued assignment (no tuple) for `[1..*]` attributes also works ✅
+- Extends v3.13 finding (ref :>> tuples) to attribute :>> tuples
 
 ---
 
@@ -631,6 +658,7 @@ Basic `use case def` with `doc` verified (v3.1). Advanced patterns (`include use
 | `action` | SysML v2 keyword (`action def`, `action`) | Attribute names (v3.6) |
 | `default` | KerML reserved | Attribute names (v3.10 — identified from KerML 1.0 §8.2.2.6, not tested) |
 | `system` | KerML reserved | Enum literals (v3.12 — Session 29). Silent parse failure: Foundation package becomes unresolvable, cascading reference-errors. No error at the literal itself. Use `automated` or compound names. |
+| `individual` | Syside contextual keyword (not in KerML reserved list) | Enum literals (v3.19 — Session 143). Parse error: `Unexpected 'individual'`. Use `registeredIndividual` or other compound name. |
 
 ### Confirmed safe as attribute names
 
@@ -813,6 +841,7 @@ view renderedView {
 
 | Version | Date | Key additions |
 |---|---|---|
+| 3.19 | 5 Apr 2026 | **Session 143 — Multi-valued attribute :>> tuple syntax verified, `individual` reserved.** `attribute :>> field = (EnumType::a, EnumType::b)` works for `[1..*]` and `[0..*]` multiplicities (extends v3.13 ref :>> finding). `individual` rejected as enum literal by Syside (not in KerML list); use `registeredIndividual`. 1 new safe enum literal (97 total). |
 | 3.17 | 21 Mar 2026 | **Session 51 — Multiple same-metaclass annotations verified (Stage 3 Phase 3, Step 4).** Two, three, and six annotations of the same `metadata def` on one `part def` all parse. Mixed same + different metaclass also works. Overturns v3.14 `@CatalogueTag`-specific finding. Enum-typed attribute (`RelationshipStrength`) on metadata def confirmed. Four new safe enum literals (96 total): `strong`, `moderate`, `weak`, `contextual`. |
 | 3.16 | 20 Mar 2026 | **Session 49 — `ref` inside `metadata def` verified (Stage 3 Phase 3, Step 1 syntax spike).** All six test patterns pass: singular ref, multi-valued ref, ref to part def / metadata def / enum def, mixed attributes + refs, and annotation application. See §8. |
 | 3.15 | 19 Mar 2026 | **Session 43 Viewpoint/View Investigation (Stage 2 Phase 5).** New §12: `viewpoint def` (bare) verified; `view def` and `view` (typed + untyped) verified; `expose` (wildcard, named, cross-package against live model) verified; `filter` (trivial + metadata-based) verified; `rendering def` fails (reference-error); `render` in view fails; `frame concern` and `stakeholder` in viewpoint defs fail (subject parameter constraint). Six test case files in `model/syntax-tests/`. |

@@ -814,6 +814,322 @@ package Foundation {
             attribute rationale : String;
             attribute characteristics : DataCharacteristic [1..*];
         }
+
+        // -- Domain identity enums (Session 59 design, Session 142 extension) --
+        // Three original enums from Session 59 domain identity paper (B15).
+        // Three new enums from Session 142 dual-stack extension (S142-D7).
+        // All placed in CommonTypes for independent importability by
+        // governance, generators, and other subsystems.
+
+        enum def RegulatoryTier {
+            doc /* Four-tier classification of regulatory environment.
+                 * Determines which governance frameworks are relevant
+                 * during governance activation. Ordered from least to
+                 * most regulated.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 59, confirmed Session 142. */
+            generallyGoverned;
+            lightlyRegulated;
+            partiallyRegulated;
+            sectorRegulated;
+        }
+
+        enum def BmmVocabularyScope {
+            doc /* Which subset of the Business Meta Model vocabulary
+                 * a domain instantiates.
+                 * generalOnly: uses only General-level BMM elements.
+                 * full: uses both General and Tailored elements.
+                 * production: full vocabulary plus production-grade
+                 *   governance, audit, and operational requirements.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 59, confirmed Session 142. */
+            generalOnly;
+            full;
+            production;
+        }
+
+        enum def DomainPurpose {
+            doc /* Why a domain exists in the Ontara platform.
+                 * A domain may have multiple purposes (e.g. Paws is
+                 * both pedagogicalAnchoring and crossDomainValidation).
+                 *
+                 * referenceValidation: the original demonstrator domain
+                 *   against which patterns are first developed.
+                 * crossDomainValidation: validates that meta model
+                 *   concepts generalise beyond the reference domain.
+                 * pedagogicalAnchoring: simple domain used to introduce
+                 *   concepts and verify understanding.
+                 * production: a real service business using the platform
+                 *   for actual service delivery.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 59, confirmed Session 142 (S142-D6: multi-valued). */
+            referenceValidation;
+            crossDomainValidation;
+            pedagogicalAnchoring;
+            production;
+        }
+
+        enum def Jurisdiction {
+            doc /* Territorial jurisdiction for governance framework
+                 * applicability. Based on UK devolution structure — the
+                 * primary governance frameworks Ontara supports have
+                 * jurisdiction-specific scope. Extensible as the platform
+                 * supports non-UK jurisdictions.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 142 (S142-D7). */
+            england;
+            scotland;
+            wales;
+            northernIreland;
+            unitedKingdom;
+        }
+
+        enum def RegulatedActivity {
+            doc /* Activities regulated by CQC under the Health and Social
+                 * Care Act 2008. A service providing any of these must be
+                 * registered with CQC. Used during governance framework
+                 * activation to determine directive applicability.
+                 *
+                 * Source: HSCA 2008 (Regulated Activities) Regulations 2014,
+                 * Schedule 1.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 142 (S142-D7). */
+            personalCare;
+            accommodationForPersonsRequiringNursingOrPersonalCare;
+            accommodationForPersonsRequiringTreatmentForSubstanceMisuse;
+            treatment;
+            assessmentOrMedicalTreatmentForPersonsDetainedUnderMentalHealthAct;
+            surgicalProcedures;
+            diagnosticAndScreeningProcedures;
+            managementOfSupplyOfBloodAndBloodDerivedProducts;
+            transportServicesTimedAndUntimed;
+            maternity;
+            terminationOfPregnancies;
+            familyPlanning;
+            nursingCare;
+        }
+
+        enum def OrganisationalForm {
+            doc /* The legal/organisational form of a service provider.
+                 * Some governance directives apply only to specific forms
+                 * (e.g. "body corporate" provisions in CQC regulations).
+                 *
+                 * Source: CQC registration requirements; Companies Act 2006.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 142 (S142-D7). */
+            registeredIndividual;
+            partnership;
+            organisation;
+            bodyCorporate;
+        }
+    }
+
+    package DomainRegistry {
+        private import ScalarValues::*;
+        private import Foundation::CommonTypes::*;
+
+        doc /* Domain identity infrastructure: the formal representation
+             * of each service business domain in the Ontara platform.
+             *
+             * Contains two part defs (DomainIdentity, DomainConfiguration)
+             * implementing the dual-stack split (S142-D1), plus concrete
+             * domain instances for all four domains.
+             *
+             * DomainIdentity is the BMM-side concept — what the service
+             * business is. DomainConfiguration is the SMM-side concept —
+             * how the platform manages it. Connected by a horizontal
+             * mapping (bidirectional ref).
+             *
+             * Multi-tenancy principle (A13): only the meta model is core;
+             * every domain is a tenant instantiation.
+             *
+             * Session 59 (original design, B15).
+             * Session 142 (dual-stack extension, S142-D1 to D7).
+             * Session 143 (SysML implementation). */
+
+        // ============================================================
+        // Part definitions
+        // ============================================================
+
+        part def DomainIdentity {
+            doc /* Business Meta Model concept.
+                 * The business identity of a domain: what kind of service
+                 * business it is, what regulatory environment it operates
+                 * in, and why it exists in the platform.
+                 *
+                 * In the dual-stack architecture, DomainIdentity is the
+                 * BMM-side of domain identity. The SMM-side is
+                 * DomainConfiguration, connected by a horizontal mapping.
+                 *
+                 * In the multi-tenancy architecture (A13), only the meta
+                 * model is core. Every DomainIdentity represents a tenant
+                 * instantiation.
+                 *
+                 * BFO grounding: IAO:plan_specification (S142-D2).
+                 * Domain identity (B15). Dual-stack (B21).
+                 * Multi-tenancy (A13). Session 142 design, Session 143. */
+
+            attribute regulatoryTier : RegulatoryTier;
+            attribute bmmVocabularyScope : BmmVocabularyScope;
+            attribute domainPurpose : DomainPurpose[1..*];
+            attribute jurisdiction : Jurisdiction;
+            attribute regulatedActivities : RegulatedActivity[0..*];
+            attribute organisationalForm : OrganisationalForm;
+            attribute description : String;
+            attribute introducedSession : Integer;
+            ref domainConfiguration : DomainConfiguration;
+        }
+
+        part def DomainConfiguration {
+            doc /* System Meta Model concept.
+                 * The system configuration for a domain: how the platform
+                 * discovers, organises, presents, and manages this domain.
+                 *
+                 * Connected to DomainIdentity via horizontal mapping.
+                 * Changes to configuration (package paths, display names)
+                 * do not affect business identity or governance bindings.
+                 *
+                 * BFO grounding: IAO:data_item (S142-D2).
+                 * Domain identity (B15). Dual-stack (B21).
+                 * Session 142 design, Session 143. */
+
+            attribute canonicalKey : String;
+            attribute displayLabel : String;
+            attribute fullName : String;
+            attribute packageName : String;
+            attribute modelPath : String;
+            attribute isActive : Boolean;
+            ref domainIdentity : DomainIdentity;
+        }
+
+        // ============================================================
+        // Domain instances
+        // ============================================================
+        // Each domain has a DomainIdentity (BMM) and a
+        // DomainConfiguration (SMM), cross-referenced via
+        // bidirectional ref :>> redefinitions.
+
+        // --- Cafe (Coffee Shop) ------------------------------------
+
+        part cafeIdentity : DomainIdentity {
+            doc /* Reference validation domain — the original demonstrator
+                 * against which all meta model patterns were first
+                 * developed. Immediate retail, walk-in, 2-minute cycle.
+                 * Generally governed (no sector-specific regulation). */
+
+            attribute :>> regulatoryTier = RegulatoryTier::generallyGoverned;
+            attribute :>> bmmVocabularyScope = BmmVocabularyScope::full;
+            attribute :>> domainPurpose = DomainPurpose::referenceValidation;
+            attribute :>> jurisdiction = Jurisdiction::england;
+            attribute :>> organisationalForm = OrganisationalForm::registeredIndividual;
+            attribute :>> description = "Reference validation domain — original demonstrator. Immediate retail service with walk-in customers and 2-minute fulfilment cycle.";
+            attribute :>> introducedSession = 1;
+            ref :>> domainConfiguration = cafeConfiguration;
+        }
+
+        part cafeConfiguration : DomainConfiguration {
+            attribute :>> canonicalKey = "cafe";
+            attribute :>> displayLabel = "Cafe";
+            attribute :>> fullName = "Cafe (Coffee Shop)";
+            attribute :>> packageName = "CoffeeShop";
+            attribute :>> modelPath = "exercises/coffeeshop-demonstrator/model";
+            attribute :>> isActive = true;
+            ref :>> domainIdentity = cafeIdentity;
+        }
+
+        // --- Suds (Laundry Service) ---------------------------------
+
+        part sudsIdentity : DomainIdentity {
+            doc /* Cross-domain validation domain — batch processing
+                 * laundry service. Validates meta model generality
+                 * beyond immediate retail. Weight/type pricing,
+                 * COSHH governance chain. */
+
+            attribute :>> regulatoryTier = RegulatoryTier::lightlyRegulated;
+            attribute :>> bmmVocabularyScope = BmmVocabularyScope::full;
+            attribute :>> domainPurpose = DomainPurpose::crossDomainValidation;
+            attribute :>> jurisdiction = Jurisdiction::england;
+            attribute :>> organisationalForm = OrganisationalForm::registeredIndividual;
+            attribute :>> description = "Cross-domain validation domain — batch processing laundry service. Weight/type pricing, COSHH governance chain.";
+            attribute :>> introducedSession = 16;
+            ref :>> domainConfiguration = sudsConfiguration;
+        }
+
+        part sudsConfiguration : DomainConfiguration {
+            attribute :>> canonicalKey = "suds";
+            attribute :>> displayLabel = "Suds";
+            attribute :>> fullName = "Suds (Laundry Service)";
+            attribute :>> packageName = "SudsLaundry";
+            attribute :>> modelPath = "exercises/suds-demonstrator";
+            attribute :>> isActive = true;
+            ref :>> domainIdentity = sudsIdentity;
+        }
+
+        // --- Paws (Dog Grooming) ------------------------------------
+
+        part pawsIdentity : DomainIdentity {
+            doc /* Pedagogical anchoring and cross-domain validation
+                 * domain — appointment-based dog grooming service.
+                 * Dual purpose (S142-D6): simple enough to introduce
+                 * concepts, different enough to validate generalisation.
+                 * Breed/size surcharges. */
+
+            attribute :>> regulatoryTier = RegulatoryTier::lightlyRegulated;
+            attribute :>> bmmVocabularyScope = BmmVocabularyScope::generalOnly;
+            attribute :>> domainPurpose = (DomainPurpose::pedagogicalAnchoring, DomainPurpose::crossDomainValidation);
+            attribute :>> jurisdiction = Jurisdiction::england;
+            attribute :>> organisationalForm = OrganisationalForm::registeredIndividual;
+            attribute :>> description = "Pedagogical anchoring and cross-domain validation domain — appointment-based dog grooming. Breed/size surcharges.";
+            attribute :>> introducedSession = 43;
+            ref :>> domainConfiguration = pawsConfiguration;
+        }
+
+        part pawsConfiguration : DomainConfiguration {
+            attribute :>> canonicalKey = "paws";
+            attribute :>> displayLabel = "Paws";
+            attribute :>> fullName = "Paws (Dog Grooming)";
+            attribute :>> packageName = "PawsGrooming";
+            attribute :>> modelPath = "exercises/paws-demonstrator";
+            attribute :>> isActive = true;
+            ref :>> domainIdentity = pawsIdentity;
+        }
+
+        // --- GSL (GenderSense Limited) ------------------------------
+
+        part gslIdentity : DomainIdentity {
+            doc /* Production domain — GenderSense Limited, a private
+                 * gender-affirming healthcare service. The primary
+                 * motivating use case and first production tenant.
+                 * Sector-regulated (CQC). Under A13, GSL is the most
+                 * important tenant but still a tenant — not structurally
+                 * privileged over demonstrator domains. */
+
+            attribute :>> regulatoryTier = RegulatoryTier::sectorRegulated;
+            attribute :>> bmmVocabularyScope = BmmVocabularyScope::production;
+            attribute :>> domainPurpose = DomainPurpose::production;
+            attribute :>> jurisdiction = Jurisdiction::england;
+            attribute :>> regulatedActivities = (RegulatedActivity::treatment, RegulatedActivity::diagnosticAndScreeningProcedures);
+            attribute :>> organisationalForm = OrganisationalForm::registeredIndividual;
+            attribute :>> description = "Production domain — GenderSense Limited. Private gender-affirming healthcare service. First production tenant.";
+            attribute :>> introducedSession = 8;
+            ref :>> domainConfiguration = gslConfiguration;
+        }
+
+        part gslConfiguration : DomainConfiguration {
+            attribute :>> canonicalKey = "gsl";
+            attribute :>> displayLabel = "GSL";
+            attribute :>> fullName = "GenderSense Limited";
+            attribute :>> packageName = "GenderSense";
+            attribute :>> modelPath = "exercises/gendersense";
+            attribute :>> isActive = true;
+            ref :>> domainIdentity = gslIdentity;
+        }
     }
 
     package StatePatterns {
