@@ -20,4 +20,8 @@
     <uri name="https://ontara.dev/ontology/governance/"
          uri="governance/ontara-governance.ttl"/>
 
+    <!-- Ontara Domain Identity Vocabulary (hand-authored, OWL-authoritative, Session 144) -->
+    <uri name="https://ontara.dev/ontology/domain/"
+         uri="domain/ontara-domain.ttl"/>
+
 </catalog>

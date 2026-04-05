@@ -37,6 +37,7 @@ Source: Ontara Console — Phase 1 model data foundation, Phase 2 catalogue meta
 import argparse
 import json
 import pathlib
+import re
 import sys
 from collections import defaultdict
 from sysml_parser import SysmlElement, parse_sysml_file, extract_doc_block, parse_attributes, find_block_end
@@ -791,6 +792,178 @@ def build_ontological_hierarchy(coverage_matrix):
 
 
 # ---------------------------------------------------------------
+# Session 144: Domain Registry extraction
+# ---------------------------------------------------------------
+
+def build_domain_registry():
+    """Extract DomainIdentity and DomainConfiguration instances from
+    Foundation::DomainRegistry in foundation.sysml.
+
+    Reads the file directly and parses attribute :>> redefinitions
+    and ref :>> redefinitions to produce structured domain data.
+    This replaces the hardcoded DOMAIN_SOURCES metadata with
+    model-derived domain information.
+
+    Session 144 — Block A Step 5 (pipeline extension).
+    A3 (model generates everything), A13 (multi-tenancy).
+    """
+    foundation_file = MODEL_DIR / "foundation.sysml"
+    if not foundation_file.exists():
+        return {"domains": [], "error": "foundation.sysml not found"}
+
+    lines = foundation_file.read_text(encoding="utf-8").splitlines()
+    domains = []  # list of {"identity": {...}, "configuration": {...}}
+    identity_parts = {}   # name -> dict of parsed attributes
+    config_parts = {}     # name -> dict of parsed attributes
+
+    in_registry = False
+    current_part = None    # (kind, name, type_name)
+    current_attrs = {}     # attribute name -> value
+    brace_depth = 0
+    part_start_depth = 0
+
+    for line in lines:
+        stripped = line.strip()
+
+        # Track when we enter DomainRegistry package
+        if "package DomainRegistry" in stripped:
+            in_registry = True
+            continue
+
+        if not in_registry:
+            continue
+
+        # Track brace depth within DomainRegistry
+        brace_depth += stripped.count("{") - stripped.count("}")
+
+        # Exit DomainRegistry when braces close
+        if brace_depth < 0:
+            in_registry = False
+            break
+
+        # Detect part instance declarations
+        # Pattern: part someName : DomainIdentity {
+        #          part someName : DomainConfiguration {
+        part_match = re.match(
+            r'part\s+(\w+)\s*:\s*(DomainIdentity|DomainConfiguration)\s*\{',
+            stripped
+        )
+        if part_match:
+            # Save previous part if any
+            if current_part:
+                _save_domain_part(current_part, current_attrs,
+                                  identity_parts, config_parts)
+            current_part = (part_match.group(2), part_match.group(1))
+            current_attrs = {}
+            part_start_depth = brace_depth
+            continue
+
+        # Detect end of current part block
+        if current_part and brace_depth < part_start_depth:
+            _save_domain_part(current_part, current_attrs,
+                              identity_parts, config_parts)
+            current_part = None
+            current_attrs = {}
+            continue
+
+        # Parse attribute :>> and ref :>> redefinitions inside a part
+        if current_part:
+            # attribute :>> name = value;
+            attr_match = re.match(
+                r'attribute\s+:>>\s+(\w+)\s*=\s*(.+?)\s*;',
+                stripped
+            )
+            if attr_match:
+                attr_name = attr_match.group(1)
+                raw_value = attr_match.group(2)
+                current_attrs[attr_name] = _parse_attr_value(raw_value)
+                continue
+
+            # ref :>> name = value;
+            ref_match = re.match(
+                r'ref\s+:>>\s+(\w+)\s*=\s*(.+?)\s*;',
+                stripped
+            )
+            if ref_match:
+                current_attrs[ref_match.group(1)] = ref_match.group(2).strip()
+                continue
+
+    # Save last part if file ended inside one
+    if current_part:
+        _save_domain_part(current_part, current_attrs,
+                          identity_parts, config_parts)
+
+    # Pair identity and configuration by cross-references
+    for id_name, id_attrs in identity_parts.items():
+        config_ref = id_attrs.get("domainConfiguration", "")
+        config_attrs = config_parts.get(config_ref, {})
+        domains.append({
+            "identity": id_attrs,
+            "configuration": config_attrs,
+        })
+
+    return {"domains": domains}
+
+
+def _save_domain_part(current_part, attrs, identity_parts, config_parts):
+    """Store parsed part attributes into the appropriate dict."""
+    type_name, part_name = current_part
+    attrs["_partName"] = part_name
+    if type_name == "DomainIdentity":
+        identity_parts[part_name] = dict(attrs)
+    elif type_name == "DomainConfiguration":
+        config_parts[part_name] = dict(attrs)
+
+
+def _parse_attr_value(raw):
+    """Parse a SysML attribute value into a Python value.
+
+    Handles:
+    - Enum references: EnumType::value  ->  "value"
+    - Tuple values: (EnumType::a, EnumType::b)  ->  ["a", "b"]
+    - String literals: "text"  ->  "text"
+    - Integer literals: 42  ->  42
+    - Boolean literals: true/false  ->  True/False
+    """
+    raw = raw.strip()
+
+    # Tuple of enum values: (Type::a, Type::b)
+    if raw.startswith("(") and raw.endswith(")"):
+        inner = raw[1:-1]
+        parts = [p.strip() for p in inner.split(",")]
+        return [_parse_single_value(p) for p in parts]
+
+    return _parse_single_value(raw)
+
+
+def _parse_single_value(raw):
+    """Parse a single SysML value (not a tuple)."""
+    raw = raw.strip()
+
+    # Enum reference: EnumType::value
+    if "::" in raw:
+        return raw.split("::")[-1]
+
+    # String literal
+    if raw.startswith('"') and raw.endswith('"'):
+        return raw[1:-1]
+
+    # Boolean
+    if raw == "true":
+        return True
+    if raw == "false":
+        return False
+
+    # Integer
+    try:
+        return int(raw)
+    except ValueError:
+        pass
+
+    return raw
+
+
+# ---------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------
 
@@ -845,6 +1018,9 @@ def main():
 
     # Stage 5 Phase 2 Block B Step 9: build ontological hierarchy
     ontological_hierarchy = build_ontological_hierarchy(coverage)
+
+    # Session 144: extract domain registry from Foundation::DomainRegistry
+    domain_registry = build_domain_registry()
 
     # Summary stats
     by_kind = defaultdict(int)
@@ -939,6 +1115,14 @@ def main():
     print(f"BMM elements in tree: {ontological_hierarchy['stats']['bmmElementCount']}", file=sys.stderr)
     print(f"Unmapped mid-level: {', '.join(ontological_hierarchy['stats']['unmappedMidLevel']) or 'none'}", file=sys.stderr)
 
+    # Session 144: domain registry diagnostics
+    print(f"\n--- Domain Registry ---", file=sys.stderr)
+    print(f"Domains found: {len(domain_registry['domains'])}", file=sys.stderr)
+    for d in domain_registry['domains']:
+        tier = d['identity'].get('regulatoryTier', '?')
+        key = d['configuration'].get('canonicalKey', '?')
+        print(f"  {key}: {tier} ({d['identity'].get('domainPurpose', '?')})", file=sys.stderr)
+
     # Coverage summary
     print(f"\n--- Coverage Matrix ---", file=sys.stderr)
     for def_name, info in sorted(coverage.items()):
@@ -974,6 +1158,7 @@ def main():
         "weightedRelationshipGraph": relationship_graph,
         "architecturalSections": architectural_sections,  # NEW — Session 88
         "ontologicalHierarchy": ontological_hierarchy,    # NEW — Session 119
+        "domainRegistry": domain_registry,                # NEW — Session 144
         "elements": [e.to_dict() for e in all_elements],
     }
     

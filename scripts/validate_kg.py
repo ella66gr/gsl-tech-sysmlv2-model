@@ -684,6 +684,140 @@ ORDER BY ?sysmlName ?weightTarget
         "expect_exactly": 96,
         "display_vars": ["record", "sysmlName", "weightTarget"],
     },
+    # --- Group 10: Domain Identity (Session 144) ---
+    {
+        "id": "Q30",
+        "group": "Domain-Identity",
+        "name": "Domain identity classes with BFO grounding",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-domain: <https://ontara.dev/ontology/domain/>
+
+SELECT ?class ?label ?parent WHERE {
+  GRAPH <https://ontara.dev/graph/domain> {
+    ?class a owl:Class ;
+           rdfs:label ?label ;
+           rdfs:subClassOf ?parent .
+    FILTER(?class IN (ontara-domain:DomainIdentity, ontara-domain:DomainConfiguration))
+    FILTER(isIRI(?parent))
+    FILTER(STRSTARTS(STR(?parent), "http://purl.obolibrary.org/obo/IAO"))
+  }
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 2,
+        "display_vars": ["class", "label", "parent"],
+    },
+    {
+        "id": "Q31",
+        "group": "Domain-Identity",
+        "name": "Domain identity individuals by regulatory tier",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-domain: <https://ontara.dev/ontology/domain/>
+PREFIX ontara-domain-ax: <https://ontara.dev/ontology/domain/axioms#>
+
+SELECT ?identity ?label ?tier ?tierLabel WHERE {
+  ?identity a ontara-domain:DomainIdentity ;
+            rdfs:label ?label ;
+            ontara-domain-ax:hasRegulatoryTier ?tier .
+  ?tier rdfs:label ?tierLabel .
+}
+ORDER BY ?tierLabel ?label
+""",
+        "expect_exactly": 4,
+        "display_vars": ["label", "tierLabel"],
+    },
+    {
+        "id": "Q32",
+        "group": "Domain-Identity",
+        "name": "Regulated activities for sector-regulated domains",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-domain: <https://ontara.dev/ontology/domain/>
+PREFIX ontara-domain-ax: <https://ontara.dev/ontology/domain/axioms#>
+
+SELECT ?identity ?identityLabel ?activity ?activityLabel WHERE {
+  ?identity a ontara-domain:DomainIdentity ;
+            rdfs:label ?identityLabel ;
+            ontara-domain-ax:hasRegulatoryTier ontara-domain:sectorRegulated ;
+            ontara-domain-ax:hasRegulatedActivity ?activity .
+  ?activity rdfs:label ?activityLabel .
+}
+ORDER BY ?identityLabel ?activityLabel
+""",
+        "expect_exactly": 2,
+        "display_vars": ["identityLabel", "activityLabel"],
+    },
+    {
+        "id": "Q33",
+        "group": "Domain-Identity",
+        "name": "Horizontal mapping traversal (identity to configuration)",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-domain: <https://ontara.dev/ontology/domain/>
+PREFIX ontara-domain-ax: <https://ontara.dev/ontology/domain/axioms#>
+
+SELECT ?identityLabel ?configLabel ?canonicalKey ?tier WHERE {
+  ?identity a ontara-domain:DomainIdentity ;
+            rdfs:label ?identityLabel ;
+            ontara-domain-ax:hasConfiguration ?config ;
+            ontara-domain-ax:hasRegulatoryTier ?tierInd .
+  ?config a ontara-domain:DomainConfiguration ;
+          rdfs:label ?configLabel ;
+          ontara-domain-ax:canonicalKey ?canonicalKey .
+  ?tierInd rdfs:label ?tier .
+}
+ORDER BY ?canonicalKey
+""",
+        "expect_exactly": 4,
+        "display_vars": ["identityLabel", "configLabel", "canonicalKey", "tier"],
+    },
+    {
+        "id": "Q34",
+        "group": "Domain-Identity",
+        "name": "Domain enumeration classes with closed membership",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-domain: <https://ontara.dev/ontology/domain/>
+
+SELECT ?class ?label (COUNT(?member) AS ?memberCount) WHERE {
+  ?class a owl:Class ;
+         rdfs:label ?label ;
+         owl:equivalentClass ?eqClass .
+  ?eqClass owl:oneOf ?list .
+  ?list rdf:rest*/rdf:first ?member .
+  FILTER(STRSTARTS(STR(?class), STR(ontara-domain:)))
+}
+GROUP BY ?class ?label
+ORDER BY ?label
+""",
+        "expect_exactly": 6,
+        "display_vars": ["label", "memberCount"],
+    },
+    {
+        "id": "Q35",
+        "group": "Domain-Identity",
+        "name": "Domain object properties with domain and range",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-domain-ax: <https://ontara.dev/ontology/domain/axioms#>
+
+SELECT ?prop ?label ?domain ?range WHERE {
+  ?prop a owl:ObjectProperty ;
+        rdfs:label ?label .
+  OPTIONAL { ?prop rdfs:domain ?domain }
+  OPTIONAL { ?prop rdfs:range ?range }
+  FILTER(STRSTARTS(STR(?prop), STR(ontara-domain-ax:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 8,
+        "display_vars": ["prop", "label", "domain", "range"],
+    },
 ]
 
 

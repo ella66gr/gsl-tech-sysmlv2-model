@@ -90,6 +90,11 @@ ONTOLOGY_FILES = [
         "name": "CQC Regulation 12 Governance MVP (hand-authored)",
         "required": False,
     },
+    {
+        "file": REPO_ROOT / "ontology" / "domain" / "ontara-domain.ttl",
+        "name": "Ontara Domain Identity Vocabulary (hand-authored, Session 144)",
+        "required": False,
+    },
 ]
 
 # Violation test: a Turtle snippet that makes ValueProposition a subclass

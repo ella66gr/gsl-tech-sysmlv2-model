@@ -1,0 +1,630 @@
+@prefix bfo: <http://purl.obolibrary.org/obo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ontara-domain: <https://ontara.dev/ontology/domain/> .
+@prefix ontara-domain-ax: <https://ontara.dev/ontology/domain/axioms#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+# =============================================================================
+# Ontology declaration
+# =============================================================================
+
+ontara-domain: a owl:Ontology ;
+    rdfs:label "Ontara Domain Identity Vocabulary"@en ;
+    dcterms:created "2026-04-05"^^xsd:date ;
+    rdfs:comment """OWL 2 DL representation of the domain identity vocabulary for the Ontara
+platform. Two classes (DomainIdentity / DomainConfiguration) representing the
+dual-stack split of domain identity (S142-D1). Grounded in BFO 2020 via IAO:
+DomainIdentity as plan_specification, DomainConfiguration as data_item (S142-D2).
+Designed Session 142 (discussion paper), implemented Session 144."""@en ;
+    owl:versionInfo "Session 144 — initial domain identity vocabulary"@en .
+
+
+# =============================================================================
+# Classes
+# =============================================================================
+
+ontara-domain:DomainIdentity a owl:Class ;
+    rdfs:label "Domain Identity"@en ;
+    rdfs:subClassOf bfo:IAO_0000104 ;
+    rdfs:comment """The business identity of a domain: what kind of service business it is,
+its regulatory environment, its purpose in the platform, and its jurisdictional
+and organisational characteristics. BMM-side of the dual-stack domain identity
+split (S142-D1). In the multi-tenancy architecture (A13), every DomainIdentity
+represents a tenant instantiation of the meta model."""@en ;
+    skos:definition """A formally specified description of a service business domain's characteristics —
+its regulatory tier, vocabulary scope, purpose, jurisdiction, regulated activities,
+and organisational form. When the governance activation tier evaluates which
+frameworks apply to a domain, it evaluates the DomainIdentity's properties."""@en .
+
+ontara-domain:DomainConfiguration a owl:Class ;
+    rdfs:label "Domain Configuration"@en ;
+    rdfs:subClassOf bfo:IAO_0000027 ;
+    rdfs:comment """The platform configuration for a domain: how the system discovers, organises,
+presents, and manages the domain. SMM-side of the dual-stack domain identity
+split (S142-D1). Changes to configuration do not affect business identity or
+governance bindings."""@en ;
+    skos:definition """Platform-generated configuration data for a domain — its canonical key, display
+label, package structure, model path, and lifecycle state. The system uses this
+to discover and present domains to users and generators."""@en .
+
+# Disjointness
+ontara-domain:DomainIdentity owl:disjointWith ontara-domain:DomainConfiguration .
+
+# Minimum cardinality: every DomainIdentity has at least one DomainPurpose
+ontara-domain:DomainIdentity rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty ontara-domain-ax:hasDomainPurpose ;
+    owl:minCardinality "1"^^xsd:nonNegativeInteger
+] .
+
+
+# =============================================================================
+# Enumeration classes
+# =============================================================================
+
+# --- RegulatoryTier ---------------------------------------------------------
+
+ontara-domain:RegulatoryTier a owl:Class ;
+    rdfs:label "Regulatory Tier"@en ;
+    rdfs:comment "Four-tier classification of a domain's regulatory environment."@en ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (
+            ontara-domain:generallyGoverned
+            ontara-domain:lightlyRegulated
+            ontara-domain:partiallyRegulated
+            ontara-domain:sectorRegulated
+        )
+    ] .
+
+ontara-domain:generallyGoverned a owl:NamedIndividual, ontara-domain:RegulatoryTier ;
+    rdfs:label "Generally Governed"@en ;
+    rdfs:comment "Subject only to general law (consumer protection, employment, H&S). No sector-specific regulatory body."@en .
+
+ontara-domain:lightlyRegulated a owl:NamedIndividual, ontara-domain:RegulatoryTier ;
+    rdfs:label "Lightly Regulated"@en ;
+    rdfs:comment "Subject to specific regulations (e.g. COSHH) but no sector-specific regulator with inspection powers."@en .
+
+ontara-domain:partiallyRegulated a owl:NamedIndividual, ontara-domain:RegulatoryTier ;
+    rdfs:label "Partially Regulated"@en ;
+    rdfs:comment "Some activities regulated by a sector body but not all aspects of service delivery."@en .
+
+ontara-domain:sectorRegulated a owl:NamedIndividual, ontara-domain:RegulatoryTier ;
+    rdfs:label "Sector Regulated"@en ;
+    rdfs:comment "Fully regulated by a sector-specific body (e.g. CQC) with registration, inspection, and enforcement powers."@en .
+
+ontara-domain:generallyGoverned owl:differentFrom ontara-domain:lightlyRegulated ,
+    ontara-domain:partiallyRegulated , ontara-domain:sectorRegulated .
+ontara-domain:lightlyRegulated owl:differentFrom ontara-domain:partiallyRegulated ,
+    ontara-domain:sectorRegulated .
+ontara-domain:partiallyRegulated owl:differentFrom ontara-domain:sectorRegulated .
+
+
+# --- BmmVocabularyScope -----------------------------------------------------
+
+ontara-domain:BmmVocabularyScope a owl:Class ;
+    rdfs:label "BMM Vocabulary Scope"@en ;
+    rdfs:comment "Which subset of the Business Meta Model vocabulary a domain instantiates."@en ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (
+            ontara-domain:generalOnly
+            ontara-domain:full
+            ontara-domain:production
+        )
+    ] .
+
+ontara-domain:generalOnly a owl:NamedIndividual, ontara-domain:BmmVocabularyScope ;
+    rdfs:label "General Only"@en ;
+    rdfs:comment "Domain instantiates only General BMM vocabulary — no Tailored elements."@en .
+
+ontara-domain:full a owl:NamedIndividual, ontara-domain:BmmVocabularyScope ;
+    rdfs:label "Full"@en ;
+    rdfs:comment "Domain instantiates both General and Tailored BMM vocabulary."@en .
+
+ontara-domain:production a owl:NamedIndividual, ontara-domain:BmmVocabularyScope ;
+    rdfs:label "Production"@en ;
+    rdfs:comment "Full vocabulary scope plus production-grade completeness requirements."@en .
+
+ontara-domain:generalOnly owl:differentFrom ontara-domain:full , ontara-domain:production .
+ontara-domain:full owl:differentFrom ontara-domain:production .
+
+
+# --- DomainPurpose ----------------------------------------------------------
+
+ontara-domain:DomainPurpose a owl:Class ;
+    rdfs:label "Domain Purpose"@en ;
+    rdfs:comment "Why a domain exists in the platform. A domain may have multiple purposes (S142-D6)."@en ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (
+            ontara-domain:referenceValidation
+            ontara-domain:crossDomainValidation
+            ontara-domain:pedagogicalAnchoring
+            ontara-domain:productionUse
+        )
+    ] .
+
+ontara-domain:referenceValidation a owl:NamedIndividual, ontara-domain:DomainPurpose ;
+    rdfs:label "Reference Validation"@en ;
+    rdfs:comment "Primary reference domain against which meta model patterns are first developed and tested."@en .
+
+ontara-domain:crossDomainValidation a owl:NamedIndividual, ontara-domain:DomainPurpose ;
+    rdfs:label "Cross-Domain Validation"@en ;
+    rdfs:comment "Domain exists to validate that meta model concepts generalise beyond the reference domain."@en .
+
+ontara-domain:pedagogicalAnchoring a owl:NamedIndividual, ontara-domain:DomainPurpose ;
+    rdfs:label "Pedagogical Anchoring"@en ;
+    rdfs:comment "Domain is simple enough to introduce and explain meta model concepts to new audiences."@en .
+
+ontara-domain:productionUse a owl:NamedIndividual, ontara-domain:DomainPurpose ;
+    rdfs:label "Production Use"@en ;
+    rdfs:comment "Domain is a real service business operating in production."@en .
+
+ontara-domain:referenceValidation owl:differentFrom ontara-domain:crossDomainValidation ,
+    ontara-domain:pedagogicalAnchoring , ontara-domain:productionUse .
+ontara-domain:crossDomainValidation owl:differentFrom ontara-domain:pedagogicalAnchoring ,
+    ontara-domain:productionUse .
+ontara-domain:pedagogicalAnchoring owl:differentFrom ontara-domain:productionUse .
+
+
+# --- Jurisdiction -----------------------------------------------------------
+
+ontara-domain:Jurisdiction a owl:Class ;
+    rdfs:label "Jurisdiction"@en ;
+    rdfs:comment "Territorial jurisdiction for governance framework applicability. Based on UK devolution structure."@en ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (
+            ontara-domain:england
+            ontara-domain:scotland
+            ontara-domain:wales
+            ontara-domain:northernIreland
+            ontara-domain:unitedKingdom
+        )
+    ] .
+
+ontara-domain:england a owl:NamedIndividual, ontara-domain:Jurisdiction ;
+    rdfs:label "England"@en ;
+    rdfs:comment "England — CQC jurisdiction for health and social care."@en .
+
+ontara-domain:scotland a owl:NamedIndividual, ontara-domain:Jurisdiction ;
+    rdfs:label "Scotland"@en ;
+    rdfs:comment "Scotland — Care Inspectorate / Healthcare Improvement Scotland jurisdiction."@en .
+
+ontara-domain:wales a owl:NamedIndividual, ontara-domain:Jurisdiction ;
+    rdfs:label "Wales"@en ;
+    rdfs:comment "Wales — Care Inspectorate Wales / Healthcare Inspectorate Wales jurisdiction."@en .
+
+ontara-domain:northernIreland a owl:NamedIndividual, ontara-domain:Jurisdiction ;
+    rdfs:label "Northern Ireland"@en ;
+    rdfs:comment "Northern Ireland — RQIA jurisdiction."@en .
+
+ontara-domain:unitedKingdom a owl:NamedIndividual, ontara-domain:Jurisdiction ;
+    rdfs:label "United Kingdom"@en ;
+    rdfs:comment "UK-wide — applies across all four nations (e.g. GDPR as retained EU law, employment law)."@en .
+
+ontara-domain:england owl:differentFrom ontara-domain:scotland , ontara-domain:wales ,
+    ontara-domain:northernIreland , ontara-domain:unitedKingdom .
+ontara-domain:scotland owl:differentFrom ontara-domain:wales ,
+    ontara-domain:northernIreland , ontara-domain:unitedKingdom .
+ontara-domain:wales owl:differentFrom ontara-domain:northernIreland ,
+    ontara-domain:unitedKingdom .
+ontara-domain:northernIreland owl:differentFrom ontara-domain:unitedKingdom .
+
+
+# --- RegulatedActivity ------------------------------------------------------
+
+ontara-domain:RegulatedActivity a owl:Class ;
+    rdfs:label "Regulated Activity"@en ;
+    rdfs:comment """Activities regulated by CQC under the Health and Social Care Act 2008.
+Source: HSCA 2008 (Regulated Activities) Regulations 2014, Schedule 1."""@en ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (
+            ontara-domain:personalCare
+            ontara-domain:accommodationNursingPersonalCare
+            ontara-domain:accommodationSubstanceMisuse
+            ontara-domain:treatment
+            ontara-domain:assessmentMentalHealthAct
+            ontara-domain:surgicalProcedures
+            ontara-domain:diagnosticAndScreeningProcedures
+            ontara-domain:bloodManagement
+            ontara-domain:transportServices
+            ontara-domain:maternity
+            ontara-domain:terminationOfPregnancies
+            ontara-domain:familyPlanning
+            ontara-domain:nursingCare
+        )
+    ] .
+
+ontara-domain:personalCare a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Personal Care"@en ;
+    rdfs:comment "Provision of personal care to persons who by reason of illness or disability are unable to provide it for themselves."@en .
+
+ontara-domain:accommodationNursingPersonalCare a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Accommodation for Persons Requiring Nursing or Personal Care"@en ;
+    rdfs:comment "Accommodation with nursing or personal care for persons who require it by reason of illness, disability, or past/present dependence on substances."@en .
+
+ontara-domain:accommodationSubstanceMisuse a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Accommodation for Persons Requiring Treatment for Substance Misuse"@en ;
+    rdfs:comment "Accommodation for persons who require treatment for substance misuse."@en .
+
+ontara-domain:treatment a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Treatment of Disease, Disorder or Injury"@en ;
+    rdfs:comment "Treatment of disease, disorder or injury — includes medical, surgical, and therapeutic treatment."@en .
+
+ontara-domain:assessmentMentalHealthAct a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Assessment or Medical Treatment for Persons Detained under the Mental Health Act"@en ;
+    rdfs:comment "Assessment or medical treatment of persons detained under the Mental Health Act 1983."@en .
+
+ontara-domain:surgicalProcedures a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Surgical Procedures"@en ;
+    rdfs:comment "Surgical procedures — includes cosmetic surgery where performed for medical purposes."@en .
+
+ontara-domain:diagnosticAndScreeningProcedures a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Diagnostic and Screening Procedures"@en ;
+    rdfs:comment "Diagnostic and screening procedures — includes pathology, radiology, and other investigative services."@en .
+
+ontara-domain:bloodManagement a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Management of Supply of Blood and Blood-Derived Products"@en ;
+    rdfs:comment "Management of the supply of blood, blood components, and blood-derived products."@en .
+
+ontara-domain:transportServices a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Transport Services, Timed and Untimed"@en ;
+    rdfs:comment "Transport services for patients requiring medical care during transport."@en .
+
+ontara-domain:maternity a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Maternity and Midwifery Services"@en ;
+    rdfs:comment "Services relating to pregnancy and childbirth, including midwifery."@en .
+
+ontara-domain:terminationOfPregnancies a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Termination of Pregnancies"@en ;
+    rdfs:comment "Services for the termination of pregnancies under the Abortion Act 1967."@en .
+
+ontara-domain:familyPlanning a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Family Planning Services"@en ;
+    rdfs:comment "Services for family planning, including contraception advice and provision."@en .
+
+ontara-domain:nursingCare a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Nursing Care"@en ;
+    rdfs:comment "Provision of nursing care by a registered nurse."@en .
+
+# RegulatedActivity pairwise differentFrom
+ontara-domain:personalCare owl:differentFrom ontara-domain:accommodationNursingPersonalCare ,
+    ontara-domain:accommodationSubstanceMisuse , ontara-domain:treatment ,
+    ontara-domain:assessmentMentalHealthAct , ontara-domain:surgicalProcedures ,
+    ontara-domain:diagnosticAndScreeningProcedures , ontara-domain:bloodManagement ,
+    ontara-domain:transportServices , ontara-domain:maternity ,
+    ontara-domain:terminationOfPregnancies , ontara-domain:familyPlanning ,
+    ontara-domain:nursingCare .
+ontara-domain:accommodationNursingPersonalCare owl:differentFrom
+    ontara-domain:accommodationSubstanceMisuse , ontara-domain:treatment ,
+    ontara-domain:assessmentMentalHealthAct , ontara-domain:surgicalProcedures ,
+    ontara-domain:diagnosticAndScreeningProcedures , ontara-domain:bloodManagement ,
+    ontara-domain:transportServices , ontara-domain:maternity ,
+    ontara-domain:terminationOfPregnancies , ontara-domain:familyPlanning ,
+    ontara-domain:nursingCare .
+ontara-domain:accommodationSubstanceMisuse owl:differentFrom ontara-domain:treatment ,
+    ontara-domain:assessmentMentalHealthAct , ontara-domain:surgicalProcedures ,
+    ontara-domain:diagnosticAndScreeningProcedures , ontara-domain:bloodManagement ,
+    ontara-domain:transportServices , ontara-domain:maternity ,
+    ontara-domain:terminationOfPregnancies , ontara-domain:familyPlanning ,
+    ontara-domain:nursingCare .
+ontara-domain:treatment owl:differentFrom ontara-domain:assessmentMentalHealthAct ,
+    ontara-domain:surgicalProcedures , ontara-domain:diagnosticAndScreeningProcedures ,
+    ontara-domain:bloodManagement , ontara-domain:transportServices ,
+    ontara-domain:maternity , ontara-domain:terminationOfPregnancies ,
+    ontara-domain:familyPlanning , ontara-domain:nursingCare .
+ontara-domain:assessmentMentalHealthAct owl:differentFrom ontara-domain:surgicalProcedures ,
+    ontara-domain:diagnosticAndScreeningProcedures , ontara-domain:bloodManagement ,
+    ontara-domain:transportServices , ontara-domain:maternity ,
+    ontara-domain:terminationOfPregnancies , ontara-domain:familyPlanning ,
+    ontara-domain:nursingCare .
+ontara-domain:surgicalProcedures owl:differentFrom
+    ontara-domain:diagnosticAndScreeningProcedures , ontara-domain:bloodManagement ,
+    ontara-domain:transportServices , ontara-domain:maternity ,
+    ontara-domain:terminationOfPregnancies , ontara-domain:familyPlanning ,
+    ontara-domain:nursingCare .
+ontara-domain:diagnosticAndScreeningProcedures owl:differentFrom
+    ontara-domain:bloodManagement , ontara-domain:transportServices ,
+    ontara-domain:maternity , ontara-domain:terminationOfPregnancies ,
+    ontara-domain:familyPlanning , ontara-domain:nursingCare .
+ontara-domain:bloodManagement owl:differentFrom ontara-domain:transportServices ,
+    ontara-domain:maternity , ontara-domain:terminationOfPregnancies ,
+    ontara-domain:familyPlanning , ontara-domain:nursingCare .
+ontara-domain:transportServices owl:differentFrom ontara-domain:maternity ,
+    ontara-domain:terminationOfPregnancies , ontara-domain:familyPlanning ,
+    ontara-domain:nursingCare .
+ontara-domain:maternity owl:differentFrom ontara-domain:terminationOfPregnancies ,
+    ontara-domain:familyPlanning , ontara-domain:nursingCare .
+ontara-domain:terminationOfPregnancies owl:differentFrom ontara-domain:familyPlanning ,
+    ontara-domain:nursingCare .
+ontara-domain:familyPlanning owl:differentFrom ontara-domain:nursingCare .
+
+
+# --- OrganisationalForm -----------------------------------------------------
+
+ontara-domain:OrganisationalForm a owl:Class ;
+    rdfs:label "Organisational Form"@en ;
+    rdfs:comment """Legal/organisational structure of a service provider. Some governance
+directives apply only to specific forms. Source: CQC registration
+requirements; Companies Act 2006."""@en ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (
+            ontara-domain:registeredIndividual
+            ontara-domain:partnership
+            ontara-domain:organisation
+            ontara-domain:bodyCorporate
+        )
+    ] .
+
+ontara-domain:registeredIndividual a owl:NamedIndividual, ontara-domain:OrganisationalForm ;
+    rdfs:label "Registered Individual"@en ;
+    rdfs:comment "An individual person registered as the service provider (sole practitioner or registered manager acting in personal capacity)."@en .
+
+ontara-domain:partnership a owl:NamedIndividual, ontara-domain:OrganisationalForm ;
+    rdfs:label "Partnership"@en ;
+    rdfs:comment "A partnership of two or more persons carrying on a business together."@en .
+
+ontara-domain:organisation a owl:NamedIndividual, ontara-domain:OrganisationalForm ;
+    rdfs:label "Organisation"@en ;
+    rdfs:comment "A generic organisation — includes charities, NHS bodies, and other non-corporate entities."@en .
+
+ontara-domain:bodyCorporate a owl:NamedIndividual, ontara-domain:OrganisationalForm ;
+    rdfs:label "Body Corporate"@en ;
+    rdfs:comment "A body corporate within the meaning of the Companies Act 2006 — a company limited by shares, guarantee, or unlimited."@en .
+
+ontara-domain:registeredIndividual owl:differentFrom ontara-domain:partnership ,
+    ontara-domain:organisation , ontara-domain:bodyCorporate .
+ontara-domain:partnership owl:differentFrom ontara-domain:organisation ,
+    ontara-domain:bodyCorporate .
+ontara-domain:organisation owl:differentFrom ontara-domain:bodyCorporate .
+
+
+# =============================================================================
+# Object properties
+# =============================================================================
+
+# --- Horizontal mapping properties ------------------------------------------
+
+ontara-domain-ax:hasConfiguration a owl:ObjectProperty ;
+    rdfs:label "has configuration"@en ;
+    rdfs:domain ontara-domain:DomainIdentity ;
+    rdfs:range ontara-domain:DomainConfiguration ;
+    rdfs:comment "Horizontal mapping from DomainIdentity (BMM) to DomainConfiguration (SMM). One-to-one and bidirectional."@en ;
+    a owl:FunctionalProperty , owl:InverseFunctionalProperty .
+
+ontara-domain-ax:hasIdentity a owl:ObjectProperty ;
+    rdfs:label "has identity"@en ;
+    rdfs:domain ontara-domain:DomainConfiguration ;
+    rdfs:range ontara-domain:DomainIdentity ;
+    rdfs:comment "Horizontal mapping from DomainConfiguration (SMM) to DomainIdentity (BMM). Inverse of hasConfiguration."@en ;
+    a owl:FunctionalProperty , owl:InverseFunctionalProperty ;
+    owl:inverseOf ontara-domain-ax:hasConfiguration .
+
+# --- DomainIdentity enum-valued properties ----------------------------------
+
+ontara-domain-ax:hasRegulatoryTier a owl:ObjectProperty ;
+    rdfs:label "has regulatory tier"@en ;
+    rdfs:domain ontara-domain:DomainIdentity ;
+    rdfs:range ontara-domain:RegulatoryTier ;
+    rdfs:comment "The domain's regulatory tier — determines governance framework relevance."@en ;
+    a owl:FunctionalProperty .
+
+ontara-domain-ax:hasBmmVocabularyScope a owl:ObjectProperty ;
+    rdfs:label "has BMM vocabulary scope"@en ;
+    rdfs:domain ontara-domain:DomainIdentity ;
+    rdfs:range ontara-domain:BmmVocabularyScope ;
+    rdfs:comment "Which meta model vocabulary subset the domain exercises."@en ;
+    a owl:FunctionalProperty .
+
+ontara-domain-ax:hasDomainPurpose a owl:ObjectProperty ;
+    rdfs:label "has domain purpose"@en ;
+    rdfs:domain ontara-domain:DomainIdentity ;
+    rdfs:range ontara-domain:DomainPurpose ;
+    rdfs:comment "Why this domain exists in the platform. Multi-valued — a domain may have more than one purpose (S142-D6)."@en .
+
+ontara-domain-ax:hasJurisdiction a owl:ObjectProperty ;
+    rdfs:label "has jurisdiction"@en ;
+    rdfs:domain ontara-domain:DomainIdentity ;
+    rdfs:range ontara-domain:Jurisdiction ;
+    rdfs:comment "Territorial jurisdiction for governance framework applicability."@en ;
+    a owl:FunctionalProperty .
+
+ontara-domain-ax:hasRegulatedActivity a owl:ObjectProperty ;
+    rdfs:label "has regulated activity"@en ;
+    rdfs:domain ontara-domain:DomainIdentity ;
+    rdfs:range ontara-domain:RegulatedActivity ;
+    rdfs:comment "CQC-defined regulated activity provided by this domain. Multi-valued — a domain may provide multiple regulated activities."@en .
+
+ontara-domain-ax:hasOrganisationalForm a owl:ObjectProperty ;
+    rdfs:label "has organisational form"@en ;
+    rdfs:domain ontara-domain:DomainIdentity ;
+    rdfs:range ontara-domain:OrganisationalForm ;
+    rdfs:comment "The legal/organisational structure of the service provider."@en ;
+    a owl:FunctionalProperty .
+
+
+# =============================================================================
+# Data properties
+# =============================================================================
+
+# --- DomainIdentity data properties -----------------------------------------
+
+ontara-domain-ax:domainDescription a owl:DatatypeProperty ;
+    rdfs:label "domain description"@en ;
+    rdfs:domain ontara-domain:DomainIdentity ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Human-readable description of the domain."@en ;
+    a owl:FunctionalProperty .
+
+ontara-domain-ax:introducedAtSession a owl:DatatypeProperty ;
+    rdfs:label "introduced at session"@en ;
+    rdfs:domain ontara-domain:DomainIdentity ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "The project session number when this domain was first introduced."@en ;
+    a owl:FunctionalProperty .
+
+# --- DomainConfiguration data properties -----------------------------------
+
+ontara-domain-ax:canonicalKey a owl:DatatypeProperty ;
+    rdfs:label "canonical key"@en ;
+    rdfs:domain ontara-domain:DomainConfiguration ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Internal system identifier for the domain."@en ;
+    a owl:FunctionalProperty .
+
+ontara-domain-ax:displayLabel a owl:DatatypeProperty ;
+    rdfs:label "display label"@en ;
+    rdfs:domain ontara-domain:DomainConfiguration ;
+    rdfs:range xsd:string ;
+    rdfs:comment "User-facing label for the domain."@en ;
+    a owl:FunctionalProperty .
+
+ontara-domain-ax:fullName a owl:DatatypeProperty ;
+    rdfs:label "full name"@en ;
+    rdfs:domain ontara-domain:DomainConfiguration ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Full descriptive name of the domain."@en ;
+    a owl:FunctionalProperty .
+
+ontara-domain-ax:packageName a owl:DatatypeProperty ;
+    rdfs:label "package name"@en ;
+    rdfs:domain ontara-domain:DomainConfiguration ;
+    rdfs:range xsd:string ;
+    rdfs:comment "SysML package name for the domain's model content."@en ;
+    a owl:FunctionalProperty .
+
+ontara-domain-ax:modelPath a owl:DatatypeProperty ;
+    rdfs:label "model path"@en ;
+    rdfs:domain ontara-domain:DomainConfiguration ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Repository path to the domain's model files."@en ;
+    a owl:FunctionalProperty .
+
+ontara-domain-ax:isActive a owl:DatatypeProperty ;
+    rdfs:label "is active"@en ;
+    rdfs:domain ontara-domain:DomainConfiguration ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "Whether the platform currently manages this domain."@en ;
+    a owl:FunctionalProperty .
+
+
+# =============================================================================
+# Domain individuals — Identity (BMM-side)
+# =============================================================================
+
+# --- Cafe -------------------------------------------------------------------
+
+ontara-domain:cafe-identity a owl:NamedIndividual , ontara-domain:DomainIdentity ;
+    rdfs:label "Cafe Domain Identity"@en ;
+    ontara-domain-ax:hasRegulatoryTier ontara-domain:generallyGoverned ;
+    ontara-domain-ax:hasBmmVocabularyScope ontara-domain:full ;
+    ontara-domain-ax:hasDomainPurpose ontara-domain:referenceValidation ;
+    ontara-domain-ax:hasJurisdiction ontara-domain:england ;
+    ontara-domain-ax:hasOrganisationalForm ontara-domain:registeredIndividual ;
+    ontara-domain-ax:domainDescription "Reference validation domain — original demonstrator. Immediate retail service with walk-in customers and 2-minute fulfilment cycle."^^xsd:string ;
+    ontara-domain-ax:introducedAtSession "1"^^xsd:integer ;
+    ontara-domain-ax:hasConfiguration ontara-domain:cafe-configuration .
+
+# --- Suds -------------------------------------------------------------------
+
+ontara-domain:suds-identity a owl:NamedIndividual , ontara-domain:DomainIdentity ;
+    rdfs:label "Suds Domain Identity"@en ;
+    ontara-domain-ax:hasRegulatoryTier ontara-domain:lightlyRegulated ;
+    ontara-domain-ax:hasBmmVocabularyScope ontara-domain:full ;
+    ontara-domain-ax:hasDomainPurpose ontara-domain:crossDomainValidation ;
+    ontara-domain-ax:hasJurisdiction ontara-domain:england ;
+    ontara-domain-ax:hasOrganisationalForm ontara-domain:registeredIndividual ;
+    ontara-domain-ax:domainDescription "Cross-domain validation domain — batch processing laundry service. Weight/type pricing, COSHH governance chain."^^xsd:string ;
+    ontara-domain-ax:introducedAtSession "16"^^xsd:integer ;
+    ontara-domain-ax:hasConfiguration ontara-domain:suds-configuration .
+
+# --- Paws -------------------------------------------------------------------
+
+ontara-domain:paws-identity a owl:NamedIndividual , ontara-domain:DomainIdentity ;
+    rdfs:label "Paws Domain Identity"@en ;
+    ontara-domain-ax:hasRegulatoryTier ontara-domain:lightlyRegulated ;
+    ontara-domain-ax:hasBmmVocabularyScope ontara-domain:generalOnly ;
+    ontara-domain-ax:hasDomainPurpose ontara-domain:pedagogicalAnchoring ,
+        ontara-domain:crossDomainValidation ;
+    ontara-domain-ax:hasJurisdiction ontara-domain:england ;
+    ontara-domain-ax:hasOrganisationalForm ontara-domain:registeredIndividual ;
+    ontara-domain-ax:domainDescription "Pedagogical anchoring and cross-domain validation domain — appointment-based dog grooming. Breed/size surcharges."^^xsd:string ;
+    ontara-domain-ax:introducedAtSession "43"^^xsd:integer ;
+    ontara-domain-ax:hasConfiguration ontara-domain:paws-configuration .
+
+# --- GSL --------------------------------------------------------------------
+
+ontara-domain:gsl-identity a owl:NamedIndividual , ontara-domain:DomainIdentity ;
+    rdfs:label "GSL Domain Identity"@en ;
+    ontara-domain-ax:hasRegulatoryTier ontara-domain:sectorRegulated ;
+    ontara-domain-ax:hasBmmVocabularyScope ontara-domain:production ;
+    ontara-domain-ax:hasDomainPurpose ontara-domain:productionUse ;
+    ontara-domain-ax:hasJurisdiction ontara-domain:england ;
+    ontara-domain-ax:hasRegulatedActivity ontara-domain:treatment ,
+        ontara-domain:diagnosticAndScreeningProcedures ;
+    ontara-domain-ax:hasOrganisationalForm ontara-domain:registeredIndividual ;
+    ontara-domain-ax:domainDescription "Production domain — GenderSense Limited. Private gender-affirming healthcare service. First production tenant."^^xsd:string ;
+    ontara-domain-ax:introducedAtSession "8"^^xsd:integer ;
+    ontara-domain-ax:hasConfiguration ontara-domain:gsl-configuration .
+
+
+# =============================================================================
+# Domain individuals — Configuration (SMM-side)
+# =============================================================================
+
+# --- Cafe -------------------------------------------------------------------
+
+ontara-domain:cafe-configuration a owl:NamedIndividual , ontara-domain:DomainConfiguration ;
+    rdfs:label "Cafe Domain Configuration"@en ;
+    ontara-domain-ax:canonicalKey "cafe"^^xsd:string ;
+    ontara-domain-ax:displayLabel "Cafe"^^xsd:string ;
+    ontara-domain-ax:fullName "Cafe (Coffee Shop)"^^xsd:string ;
+    ontara-domain-ax:packageName "CoffeeShop"^^xsd:string ;
+    ontara-domain-ax:modelPath "exercises/coffeeshop-demonstrator/model"^^xsd:string ;
+    ontara-domain-ax:isActive "true"^^xsd:boolean ;
+    ontara-domain-ax:hasIdentity ontara-domain:cafe-identity .
+
+# --- Suds -------------------------------------------------------------------
+
+ontara-domain:suds-configuration a owl:NamedIndividual , ontara-domain:DomainConfiguration ;
+    rdfs:label "Suds Domain Configuration"@en ;
+    ontara-domain-ax:canonicalKey "suds"^^xsd:string ;
+    ontara-domain-ax:displayLabel "Suds"^^xsd:string ;
+    ontara-domain-ax:fullName "Suds (Laundry Service)"^^xsd:string ;
+    ontara-domain-ax:packageName "SudsLaundry"^^xsd:string ;
+    ontara-domain-ax:modelPath "exercises/suds-demonstrator"^^xsd:string ;
+    ontara-domain-ax:isActive "true"^^xsd:boolean ;
+    ontara-domain-ax:hasIdentity ontara-domain:suds-identity .
+
+# --- Paws -------------------------------------------------------------------
+
+ontara-domain:paws-configuration a owl:NamedIndividual , ontara-domain:DomainConfiguration ;
+    rdfs:label "Paws Domain Configuration"@en ;
+    ontara-domain-ax:canonicalKey "paws"^^xsd:string ;
+    ontara-domain-ax:displayLabel "Paws"^^xsd:string ;
+    ontara-domain-ax:fullName "Paws (Dog Grooming)"^^xsd:string ;
+    ontara-domain-ax:packageName "PawsGrooming"^^xsd:string ;
+    ontara-domain-ax:modelPath "exercises/paws-demonstrator"^^xsd:string ;
+    ontara-domain-ax:isActive "true"^^xsd:boolean ;
+    ontara-domain-ax:hasIdentity ontara-domain:paws-identity .
+
+# --- GSL --------------------------------------------------------------------
+
+ontara-domain:gsl-configuration a owl:NamedIndividual , ontara-domain:DomainConfiguration ;
+    rdfs:label "GSL Domain Configuration"@en ;
+    ontara-domain-ax:canonicalKey "gsl"^^xsd:string ;
+    ontara-domain-ax:displayLabel "GSL"^^xsd:string ;
+    ontara-domain-ax:fullName "GenderSense Limited"^^xsd:string ;
+    ontara-domain-ax:packageName "GenderSense"^^xsd:string ;
+    ontara-domain-ax:modelPath "exercises/gendersense"^^xsd:string ;
+    ontara-domain-ax:isActive "true"^^xsd:boolean ;
+    ontara-domain-ax:hasIdentity ontara-domain:gsl-identity .
