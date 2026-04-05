@@ -11,7 +11,7 @@ Ontara is a service system development and delivery platform built on SysML v2. 
 - **Three demonstrator domains:** Cafe (coffee shop, full app), Suds (laundry, BMM only), Paws (dog grooming, BMM only) — used for cross-domain validation
 - **Six BMM concerns:** ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel (Session 81). 34 General elements.
 - **Comprehension architecture:** Every BMM element has @BfoType, @UserFacing, @PurposiveDescription, @Comprehension, and @WeightedRelationship annotations. 34/34 coverage, 96 weighted relationships. @BfoType maps each element to its BFO 2020 category and mid-level ontology parent.
-- **Knowledge graph (Stage 5):** Dual-formalism platform — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO + IAO as mid-level. GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence. Full OWL 2 DL reasoning via HermiT (Robot). Phase 2 complete: disjointness axioms, 14 object properties, existential/cardinality restrictions, 96 reified weighted relationships. Governance ontology module (`ontara-gov:` namespace) hand-authored and validated (Session 126). 10-file ontology stack reasons CONSISTENT. 23-query SPARQL validation suite (5 groups, all PASSED). MVP CQC Regulation 12 test individuals validated.
+- **Knowledge graph (Stage 5–6):** Dual-formalism platform — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO + IAO as mid-level. GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence. Full OWL 2 DL reasoning via HermiT (Robot). Phase 2 complete: disjointness axioms, 14 object properties, existential/cardinality restrictions, 96 reified weighted relationships. Governance ontology module (`ontara-gov:` namespace) hand-authored and validated (Session 126). Domain identity module (`ontara-domain:` namespace) hand-authored (Session 144): 2 classes, 6 enums, 8+8 properties, 8 individuals. 11-file ontology stack reasons CONSISTENT. 35-query SPARQL validation suite (10 groups, all PASSED). MVP CQC Regulation 12 test individuals validated. Stage 7 (reasoning metamodel) in progress — Phase 0 (coordinate consolidation) complete, Phase 1 (OWL authoring) next.
 
 ## Repository Layout
 
@@ -32,6 +32,7 @@ ontology/                  # Knowledge graph config and imported ontologies
   axioms/                  # Hand-authored OWL axioms (ontara-bmm-axioms.ttl)
   config/                  # Mapping rules (YAML), CCO IRI lookup (JSON)
   governance/              # Hand-authored governance ontology (ontara-governance.ttl) + test individuals
+  domain/                  # Hand-authored domain identity ontology (ontara-domain.ttl)
   imports/                 # BFO 2020, CCO, IAO ontology files
   catalog-v001.xml         # XML catalog for Robot IRI resolution
 tools/                     # External tooling
@@ -107,7 +108,7 @@ python3 scripts/gen_owl_pipeline.py --verify         # Check CCO lookup complete
 python3 scripts/gen_owl_pipeline.py --ir-only        # Print mapping IR (classification) only
 python3 scripts/gen_owl_pipeline.py --dry-run        # Print Turtle to stdout
 python3 scripts/setup_graphdb.py --verify            # Verify GraphDB repository state
-python3 scripts/validate_kg.py                   # Validate KG against SPARQL test suite (29 queries, 8 groups)
+python3 scripts/validate_kg.py                   # Validate KG against SPARQL test suite (35 queries, 10 groups)
 python3 scripts/validate_kg.py --load             # Reload pipeline output into GraphDB + validate
 python3 scripts/validate_kg.py --load-only        # Reload pipeline output into GraphDB
 python3 scripts/diff_kg.py                        # Round-trip diff: compare generated OWL vs live store

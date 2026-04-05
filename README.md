@@ -152,7 +152,7 @@ python scripts/diff_kg.py
 
 ## Companion Knowledge Base
 
-The Obsidian vault (not in this repo) contains ~205 registered design concepts, 31 discussion papers, ~117 session reports (Sessions 28–144), and the full governance structure. The vault is under separate git version control.
+The Obsidian vault (not in this repo) contains ~212 registered design concepts, 31 discussion papers, ~120 session reports (Sessions 28–148), and the full governance structure. The vault is under separate git version control.
 
 Key documents: Strategic Reference, Master Concept Register, Development Workflow Guide, Architecture Principles (v3), SysML Modelling Strategy (v3), Service Business Meta Modelling (v2).
 
@@ -164,8 +164,8 @@ Three governing principles:
 2. **Co-evolution of model and tooling** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
 3. **Non-constraining architecture** — decisions should not foreclose future development paths.
 
-Development is conducted through a structured session programme (currently Session 146) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
+Development is conducted through a structured session programme (currently Session 149) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
 
 ---
 
-*README last updated: Session 146, 5 April 2026.*
+*README last updated: Session 149, 5 April 2026.*
