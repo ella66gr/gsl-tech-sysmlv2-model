@@ -48,6 +48,8 @@ gsl-sysml-model/
 │   ├── projection_engine.py        Projection engine
 │   ├── validate_kg.py              Knowledge graph validation (SPARQL suite)
 │   ├── reason_kg.py               OWL 2 DL reasoning (Robot + HermiT)
+│   ├── diff_kg.py                  Round-trip diff engine (288 semantic units)
+│   ├── kg_utils.py                 Shared KG utilities (GraphDB, SPARQL, IRI)
 │   ├── setup_graphdb.py            GraphDB repository setup script
 │   ├── ontara                      CLI entry point
 │   └── archive-documentation.sh    Vault → repo archive helper
@@ -70,6 +72,8 @@ gsl-sysml-model/
 │   │   ├── ontara-governance.ttl   19 classes, 6 enum classes, 20 object properties, 16 data properties
 │   │   ├── cqc-reg12-individuals.ttl  MVP test individuals (CQC Regulation 12)
 │   │   └── catalog-v001.xml        Governance module catalog for Robot
+│   ├── domain/                     Hand-authored domain identity vocabulary
+│   │   └── ontara-domain.ttl       2 classes, 6 enum classes, 8+8 properties, 8 individuals
 │   ├── imports/                    External ontologies (BFO 2020, CCO, IAO)
 │   ├── config/                     Mapping config (mapping-rules.yaml, cco-iri-lookup.json)
 │   └── catalog-v001.xml            Robot IRI resolution catalogue
@@ -102,12 +106,13 @@ gsl-sysml-model/
 | Knowledge base | Obsidian (separate vault, not in this repo) |
 | Development | macOS, VS Code |
 
-## Current State (Session 134, April 2026)
+## Current State (Session 145, April 2026)
 
-- **Stage 5 — Knowledge Graph Implementation** Phases 1 and 2 are both formally closed. Phase 1 (taxonomy, Sessions 100–107): 34 OWL classes with BFO/CCO/IAO parentage, correspondence graph, generation pipeline, GraphDB loaded and validated. Phase 2 (ontological enrichment, Sessions 111–120): 6 concern-group disjointness declarations, 14 object properties (pipeline-generated from SysML typed refs), 9 cardinality restrictions, 96 reified weighted relationship individuals (702 triples), Robot + HermiT full OWL 2 DL consistency checking. Correspondence graph: 1,378 triples. 10-file ontology stack. 23-query SPARQL validation suite (5 groups, all passing).
+- **Stage 5 — Knowledge Graph Implementation** Phases 1–3 formally closed. Phase 1 (taxonomy, Sessions 100–107): 34 OWL classes with BFO/CCO/IAO parentage, correspondence graph, generation pipeline, GraphDB loaded and validated. Phase 2 (ontological enrichment, Sessions 111–120): 6 concern-group disjointness declarations, 14 object properties (pipeline-generated from SysML typed refs), 9 cardinality restrictions, 96 reified weighted relationship individuals (702 triples), Robot + HermiT full OWL 2 DL consistency checking. Phase 3 (consolidation and round-trip, Sessions 135–137): SPARQL suite extended to 29 queries (8 groups), governance vocabulary extended, round-trip diff engine (`diff_kg.py`, 288 semantic units), shared `kg_utils.py`. Three layers of automated QA: SPARQL validation, OWL 2 DL reasoning (HermiT), round-trip diff.
+- **Domain Identity and Governance Convergence** (Stage 6, Sessions 141–144) — Block A complete. Dual-stack domain identity: `DomainIdentity` (BMM) + `DomainConfiguration` (SMM) in SysML, `ontara-domain.ttl` in OWL. A13 (multi-tenancy) promoted to binding T1. 11-file ontology stack. 35-query SPARQL validation suite (10 groups, all passing). Domain graph: 27,014 triples. Correspondence graph: 1,378 triples.
 - **Governance workstream** — vocabulary tier implemented and validated. Deontic governance architecture (Session 121), OWL class design (Session 125), governance ontology Turtle implemented (Session 126): `ontara-governance.ttl` in separate `ontara-gov:` namespace, 19 classes, 6 enum classes, 20 object properties, 16 data properties. MVP CQC Regulation 12 test individuals validated. First hand-authored ontology module outside BMM namespace.
 - **Console navigation context** (Sessions 132–134): global NavigationStore with semantic breadcrumb trail, page state capture/restore, journey export to clipboard. Six routes migrated (glossary, ontology, catalogue, governance, coverage, relationships). NavLink replaces per-route `from` parameter workarounds.
-- **BMM structurally complete** at General level — 34 elements, 96 weighted relationships, full comprehension metadata (34/34 @UserFacing, @PurposiveDescription, @Comprehension, @BfoType).
+- **BMM structurally complete** at General level — 36 elements (including DomainIdentity + DomainConfiguration), 96 weighted relationships, full comprehension metadata (34/34 @UserFacing, @PurposiveDescription, @Comprehension, @BfoType).
 - **Console** has 13 views including an interactive 3D weighted relationship graph, a spatial visual architecture map, and an ontological hierarchy view with KG status panel.
 - **Three demonstrator domains** validated (Cafe, Suds, Paws), with Ears (community ear care) outlined as a fifth domain (second clinical).
 
@@ -135,16 +140,19 @@ python scripts/reason_kg.py --save-summary
 # Run reasoner with violation test
 python scripts/reason_kg.py --test-violation
 
-# Validate knowledge graph (23-query SPARQL suite)
+# Validate knowledge graph (35-query SPARQL suite)
 python scripts/validate_kg.py
 
 # Reload pipeline output into GraphDB and validate
 python scripts/validate_kg.py --load
+
+# Round-trip diff (compare pipeline output against GraphDB)
+python scripts/diff_kg.py
 ```
 
 ## Companion Knowledge Base
 
-The Obsidian vault (not in this repo) contains ~200 registered design concepts, 26 discussion papers, ~106 session reports (Sessions 28–133), and the full governance structure. The vault is under separate git version control.
+The Obsidian vault (not in this repo) contains ~205 registered design concepts, 31 discussion papers, ~117 session reports (Sessions 28–144), and the full governance structure. The vault is under separate git version control.
 
 Key documents: Strategic Reference, Master Concept Register, Development Workflow Guide, Architecture Principles (v3), SysML Modelling Strategy (v3), Service Business Meta Modelling (v2).
 
@@ -156,8 +164,8 @@ Three governing principles:
 2. **Co-evolution of model and tooling** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
 3. **Non-constraining architecture** — decisions should not foreclose future development paths.
 
-Development is conducted through a structured session programme (currently Session 134) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
+Development is conducted through a structured session programme (currently Session 146) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
 
 ---
 
-*README last updated: Session 134, 4 April 2026.*
+*README last updated: Session 146, 5 April 2026.*
