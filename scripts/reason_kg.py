@@ -61,6 +61,11 @@ ONTOLOGY_FILES = [
         "required": True,
     },
     {
+        "file": REPO_ROOT / "ontology" / "imports" / "prov-core.ttl",
+        "name": "PROV-O Core Subset (W3C, Session 150)",
+        "required": False,
+    },
+    {
         "file": REPO_ROOT / "generated" / "ontology" / "ontara-bmm.ttl",
         "name": "Ontara BMM (pipeline-generated)",
         "required": True,
@@ -93,6 +98,11 @@ ONTOLOGY_FILES = [
     {
         "file": REPO_ROOT / "ontology" / "domain" / "ontara-domain.ttl",
         "name": "Ontara Domain Identity Vocabulary (hand-authored, Session 144)",
+        "required": False,
+    },
+    {
+        "file": REPO_ROOT / "ontology" / "reasoning" / "ontara-reasoning.ttl",
+        "name": "Ontara Reasoning Vocabulary (hand-authored, Session 150)",
         "required": False,
     },
 ]

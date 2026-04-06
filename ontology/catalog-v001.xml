@@ -4,7 +4,8 @@
      and other OWL tools can resolve imports without network access.
 
      Session 117: Created to resolve ontara-bmm: import in axioms
-     and properties files during Robot reasoning. -->
+     and properties files during Robot reasoning.
+     Session 150: Added PROV-O core subset and reasoning vocabulary. -->
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"
          prefer="public">
 
@@ -23,5 +24,13 @@
     <!-- Ontara Domain Identity Vocabulary (hand-authored, OWL-authoritative, Session 144) -->
     <uri name="https://ontara.dev/ontology/domain/"
          uri="domain/ontara-domain.ttl"/>
+
+    <!-- W3C PROV-O Core Subset (Starting Point classes and properties, Session 150) -->
+    <uri name="http://www.w3.org/ns/prov#core"
+         uri="imports/prov-core.ttl"/>
+
+    <!-- Ontara Reasoning Vocabulary (hand-authored, OWL-authoritative, Session 150) -->
+    <uri name="https://ontara.dev/ontology/reasoning/"
+         uri="reasoning/ontara-reasoning.ttl"/>
 
 </catalog>

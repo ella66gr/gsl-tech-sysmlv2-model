@@ -1,0 +1,174 @@
+@prefix bfo: <http://purl.obolibrary.org/obo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ontara-rsn: <https://ontara.dev/ontology/reasoning/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+# =============================================================================
+# Ontology declaration
+# =============================================================================
+
+ontara-rsn: a owl:Ontology ;
+    rdfs:label "Ontara Reasoning Vocabulary"@en ;
+    dcterms:created "2026-04-06"^^xsd:date ;
+    rdfs:comment """OWL 2 DL representation of the reasoning metamodel for the Ontara platform.
+Grounded in BFO 2020 via IAO and aligned with W3C PROV-O via dual subclassing
+(S147-D4). Designed across the Institutionalised Reasoning paper (Session 146)
+and the Coordinate Framework Revisited paper (Session 147). All fifteen design
+decisions (S146-D1 to D8, S147-D1 to D7) confirmed Session 148.
+
+This module follows the pattern established by ontara-governance.ttl — hand-authored,
+OWL-authoritative (B29). The reasoning metamodel is an extension of the Service
+Meta Model (S146-D1), not a third meta model.
+
+Phase 1 Step 1.1: PROV-O import and dual subclassing foundation.
+Further classes and properties will be added in Steps 1.2–1.7."""@en ;
+    owl:versionInfo "Session 150 — Phase 1 Step 1.1: PROV-O import and dual subclassing"@en .
+
+
+# =============================================================================
+# Dual-Subclassed Foundation Classes (S147-D4)
+# =============================================================================
+#
+# The dual subclassing pattern places each Ontara reasoning class under
+# both its BFO parent (for ontological grounding) and its PROV-O parent
+# (for provenance interoperability). This is the architectural bridge
+# between the ontological foundation (BFO 2020) and the provenance
+# standard (W3C PROV-O).
+#
+# BFO alignment:
+#   - ReasoningActivity → bfo:BFO_0000015 (process)
+#   - Claim → bfo:IAO_0000030 (information content entity)
+#   - ReasoningAgent → bfo:BFO_0000040 (material entity)
+#
+# PROV-O alignment:
+#   - ReasoningActivity → prov:Activity
+#   - Claim → prov:Entity
+#   - ReasoningAgent → prov:Agent
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# ReasoningActivity — the core reasoning episode
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ReasoningActivity a owl:Class ;
+    rdfs:label "Reasoning Activity"@en ;
+    rdfs:subClassOf bfo:BFO_0000015 ,
+                    prov:Activity ;
+    rdfs:comment """A single reasoning episode — a bounded process in which knowledge sources
+are consulted, constraints evaluated, and a decision or claim produced. Dual
+subclassing: BFO process (ontological grounding) and PROV-O Activity
+(provenance interoperability). Every ReasoningActivity has a context, may
+use entities, and produces decisions or claims with evidence trails.
+
+BFO grounding: process (BFO_0000015) — an entity that unfolds in time.
+PROV-O alignment: Activity — something that occurs over a period of time
+and acts upon or with entities."""@en ;
+    skos:definition """A bounded reasoning episode that consults knowledge sources, evaluates
+constraints, and produces decisions or claims. The fundamental unit of
+reasoning provenance in the Ontara platform."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Claim — an assertion produced by reasoning
+# -----------------------------------------------------------------------------
+
+ontara-rsn:Claim a owl:Class ;
+    rdfs:label "Claim"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ,
+                    prov:Entity ;
+    rdfs:comment """An assertion produced by a ReasoningActivity. Dual subclassing: IAO
+information content entity (ontological grounding — a claim is about
+something and is the output of a cognitive or computational process)
+and PROV-O Entity (provenance interoperability — a claim is a thing
+with provenance that can be attributed, derived, and traced).
+
+The evidence architecture (SEPIO pattern, S146-D7) will link Claims
+to EvidenceLines and ConfidenceAssessments in Step 1.3.
+
+BFO grounding: information content entity (IAO_0000030) — an entity
+that is generically dependent on some artifact and stands in the
+relation of aboutness to some entity.
+PROV-O alignment: Entity — a thing with fixed aspects."""@en ;
+    skos:definition """An assertion with provenance — the output of a reasoning episode,
+supported by evidence lines and carrying a confidence assessment
+with a declared interpretive frame."""@en .
+
+
+# -----------------------------------------------------------------------------
+# ReasoningAgent — an entity that performs reasoning
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ReasoningAgent a owl:Class ;
+    rdfs:label "Reasoning Agent"@en ;
+    rdfs:subClassOf bfo:BFO_0000040 ,
+                    prov:Agent ;
+    rdfs:comment """An entity that bears responsibility for a reasoning activity — a human
+practitioner, a software component, or a composite of both. Dual
+subclassing: BFO material entity (ontological grounding) and PROV-O
+Agent (provenance interoperability).
+
+In the Ontara context, ReasoningAgents include clinicians making
+treatment decisions, automated rule engines applying governance
+constraints, and hybrid human-machine reasoning pipelines.
+
+BFO grounding: material entity (BFO_0000040) — an independent
+continuant that has some portion of matter as part.
+PROV-O alignment: Agent — something that bears responsibility for
+an activity taking place."""@en ;
+    skos:definition """An entity (human, software, or composite) that bears responsibility
+for reasoning activities and their outputs."""@en .
+
+
+# =============================================================================
+# PROV-O Provenance Properties on ReasoningActivity
+# =============================================================================
+#
+# These property usages connect reasoning activities to the PROV-O
+# provenance chain. We do not re-declare the PROV-O properties (they
+# are imported via prov-core.ttl), but we establish the expected usage
+# patterns through rdfs:comment annotations on this module.
+#
+# Key PROV-O properties used by ReasoningActivity:
+#   prov:used              — knowledge sources consulted
+#   prov:wasAssociatedWith — agent(s) responsible
+#   prov:wasInformedBy     — prior reasoning activities in a chain
+#   prov:startedAtTime     — when reasoning began
+#   prov:endedAtTime       — when reasoning concluded
+#
+# Key PROV-O properties used by Claim:
+#   prov:wasGeneratedBy    — the ReasoningActivity that produced the claim
+#   prov:wasAttributedTo   — the ReasoningAgent responsible
+#   prov:wasDerivedFrom    — prior claims or entities this claim builds on
+#   prov:generatedAtTime   — when the claim was produced
+#
+# These are not re-declared here — they are inherited from prov-core.ttl
+# and apply naturally via the dual subclassing. A ReasoningActivity IS a
+# prov:Activity, so prov:used, prov:wasAssociatedWith, etc. apply directly.
+# A Claim IS a prov:Entity, so prov:wasGeneratedBy, prov:wasAttributedTo,
+# etc. apply directly.
+# =============================================================================
+
+
+# =============================================================================
+# End of Phase 1 Step 1.1
+# =============================================================================
+#
+# Next steps (to be added in subsequent sessions):
+#   Step 1.2: Core reasoning classes (ReasoningContext, Goal, Obstacle,
+#             Measure, Decision, Plan, Constraint hierarchy, KnowledgeSource,
+#             Heuristic) — all with BFO grounding
+#   Step 1.3: Evidence architecture (EvidenceLine, EvidenceItem,
+#             ConfidenceAssessment — SEPIO pattern)
+#   Step 1.4: Structured probabilistic reasoning types
+#   Step 1.5: Cross-domain validation
+#   Step 1.6: SPARQL validation suite extension
+#   Step 1.7: Integration with governance vocabulary
+# =============================================================================
