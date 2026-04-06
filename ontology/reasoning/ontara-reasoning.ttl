@@ -26,30 +26,21 @@ This module follows the pattern established by ontara-governance.ttl — hand-au
 OWL-authoritative (B29). The reasoning metamodel is an extension of the Service
 Meta Model (S146-D1), not a third meta model.
 
-Phase 1 Step 1.1: PROV-O import and dual subclassing foundation.
-Further classes and properties will be added in Steps 1.2–1.7."""@en ;
-    owl:versionInfo "Session 150 — Phase 1 Step 1.1: PROV-O import and dual subclassing"@en .
+Phase 1 Step 1.1 (Session 150): PROV-O import and dual subclassing foundation.
+Phase 1 Step 1.2 (Session 151): Core reasoning classes — ReasoningContext,
+  Goal, Obstacle, Measure, Decision, Plan, Constraint hierarchy (Hard, Soft,
+  Graded), KnowledgeSource, Heuristic, ReasoningComponent. Properties:
+  hasContext, hasGoal, hasConstraint, producedDecision, hasDecisionMode,
+  hasObstacle, hasMeasure, hasPlan, hasKnowledgeSource, plus domain/range."""@en ;
+    owl:versionInfo "Session 151 — Phase 1 Steps 1.2–1.4, 1.7: Core reasoning classes, evidence architecture, structured probabilistic types, governance alignment"@en .
 
 
 # =============================================================================
-# Dual-Subclassed Foundation Classes (S147-D4)
+# SECTION 1: Dual-Subclassed Foundation Classes (S147-D4)
 # =============================================================================
 #
-# The dual subclassing pattern places each Ontara reasoning class under
-# both its BFO parent (for ontological grounding) and its PROV-O parent
-# (for provenance interoperability). This is the architectural bridge
-# between the ontological foundation (BFO 2020) and the provenance
-# standard (W3C PROV-O).
-#
-# BFO alignment:
-#   - ReasoningActivity → bfo:BFO_0000015 (process)
-#   - Claim → bfo:IAO_0000030 (information content entity)
-#   - ReasoningAgent → bfo:BFO_0000040 (material entity)
-#
-# PROV-O alignment:
-#   - ReasoningActivity → prov:Activity
-#   - Claim → prov:Entity
-#   - ReasoningAgent → prov:Agent
+# Established Session 150 (Step 1.1). Three classes with dual BFO + PROV-O
+# parentage forming the provenance bridge.
 #
 # =============================================================================
 
@@ -93,9 +84,7 @@ with provenance that can be attributed, derived, and traced).
 The evidence architecture (SEPIO pattern, S146-D7) will link Claims
 to EvidenceLines and ConfidenceAssessments in Step 1.3.
 
-BFO grounding: information content entity (IAO_0000030) — an entity
-that is generically dependent on some artifact and stands in the
-relation of aboutness to some entity.
+BFO grounding: information content entity (IAO_0000030).
 PROV-O alignment: Entity — a thing with fixed aspects."""@en ;
     skos:definition """An assertion with provenance — the output of a reasoning episode,
 supported by evidence lines and carrying a confidence assessment
@@ -115,12 +104,7 @@ practitioner, a software component, or a composite of both. Dual
 subclassing: BFO material entity (ontological grounding) and PROV-O
 Agent (provenance interoperability).
 
-In the Ontara context, ReasoningAgents include clinicians making
-treatment decisions, automated rule engines applying governance
-constraints, and hybrid human-machine reasoning pipelines.
-
-BFO grounding: material entity (BFO_0000040) — an independent
-continuant that has some portion of matter as part.
+BFO grounding: material entity (BFO_0000040).
 PROV-O alignment: Agent — something that bears responsibility for
 an activity taking place."""@en ;
     skos:definition """An entity (human, software, or composite) that bears responsibility
@@ -128,13 +112,542 @@ for reasoning activities and their outputs."""@en .
 
 
 # =============================================================================
-# PROV-O Provenance Properties on ReasoningActivity
+# SECTION 2: Core Reasoning Classes (Step 1.2)
 # =============================================================================
 #
-# These property usages connect reasoning activities to the PROV-O
-# provenance chain. We do not re-declare the PROV-O properties (they
-# are imported via prov-core.ttl), but we establish the expected usage
-# patterns through rdfs:comment annotations on this module.
+# These classes define the abstract reasoning hierarchy per the Stage 7 plan
+# §4.1.2. BFO grounding follows the coordinate framework revisited paper
+# (Session 147) — in particular, constraint geometry (§7, S147-D3) and the
+# Region taxonomy (§6, S147-D2) determine BFO category assignments.
+#
+# Key BFO grounding principle for Step 1.2: reasoning concepts that specify
+# what should happen (goals, constraints, plans) are directive or prescriptive
+# information entities. Concepts that record what has happened or been observed
+# (decisions, measures, obstacles) are descriptive information entities.
+# Both families are generically dependent continuants (information).
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# ReasoningContext — the conditions under which reasoning occurs
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ReasoningContext a owl:Class ;
+    rdfs:label "Reasoning Context"@en ;
+    rdfs:subClassOf bfo:BFO_0000031 ;
+    rdfs:comment """The context within which a reasoning activity occurs. Captures the
+domain position, decision mode, available knowledge sources, active
+constraints, and applicable goals. A ReasoningContext is generically
+dependent — it is information about the conditions of reasoning, not
+the reasoning itself.
+
+The decision mode classification (S146-D5) is a property of
+ReasoningContext: clear, complicated, complex, or chaotic (Cynefin
+domain classification as ClassificationRegion in coordinate space,
+per S147-D2). Different decision modes activate different reasoning
+components.
+
+BFO grounding: generically dependent continuant (BFO_0000031) —
+context information depends on some bearer for its existence."""@en ;
+    skos:definition """The set of conditions — domain position, decision mode, goals,
+constraints, and knowledge sources — under which a reasoning
+activity is conducted."""@en .
+
+
+# -----------------------------------------------------------------------------
+# ReasoningComponent — abstract type for reasoning capabilities
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ReasoningComponent a owl:Class ;
+    rdfs:label "Reasoning Component"@en ;
+    rdfs:subClassOf bfo:BFO_0000031 ;
+    rdfs:comment """Abstract type for typed reasoning capabilities that can be activated
+within a ReasoningContext. Concrete subtypes include deterministic
+rule engines (Tier 1), inspectable logic components (Tier 2),
+structured probabilistic models (new category per S147-D5), and
+opaque probabilistic models (Tier 3, advisory only).
+
+ReasoningComponents are specifications — information about what kind
+of reasoning is available and how it operates. They are not processes
+themselves; they are activated by ReasoningActivities.
+
+BFO grounding: generically dependent continuant (BFO_0000031) —
+a specification that is concretised in a reasoning activity."""@en ;
+    skos:definition """An abstract specification of a typed reasoning capability. Concrete
+subtypes define specific reasoning regimes that can be activated
+within a reasoning context."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Goal — an intentional target referencing a GoalRegion
+# -----------------------------------------------------------------------------
+
+ontara-rsn:Goal a owl:Class ;
+    rdfs:label "Goal"@en ;
+    rdfs:subClassOf bfo:IAO_0000033 ;
+    rdfs:comment """An intentional target — a directive specifying what the system is trying
+to reach or maintain. In coordinate-framework terms (S147-D2, S146-D4),
+a Goal references a GoalRegion in coordinate space: a region the system
+is trying to reach or remain within. GoalRegions may be vague, multi-
+dimensional, and temporally evolving. Connected to valence (L7) — goal
+regions are valence anchors.
+
+Goal refinement is decomposition along coordinate axes. Goal-seeking
+computation (L9) is pathfinding toward a GoalRegion through the
+constrained coordinate space (S147-D3).
+
+BFO grounding: directive information entity (IAO_0000033) — a Goal
+directs the system toward a desired state, analogous to how governance
+obligations (ontara-gov:DeonticDirective) direct compliance. The
+parallel with the governance vocabulary is deliberate: goals and
+obligations are both directive information entities with different
+normative force."""@en ;
+    skos:definition """An intentional target referencing a GoalRegion in coordinate space.
+Specifies what the system is trying to reach or maintain, with
+possible decomposition along coordinate axes."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Obstacle — a condition constraining trajectories toward a goal
+# -----------------------------------------------------------------------------
+
+ontara-rsn:Obstacle a owl:Class ;
+    rdfs:label "Obstacle"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """A condition that constrains or impedes trajectories toward a Goal.
+An Obstacle is descriptive information — it records a fact about
+the environment that makes goal attainment harder. In coordinate-
+framework terms, an Obstacle identifies a region or condition in the
+coordinate space that the system must work around or overcome.
+
+Distinguished from Constraint: an Obstacle is a discovered condition
+in the environment; a Constraint is a declared rule or preference.
+An Obstacle may give rise to a Constraint (the discovery of a
+capacity limit becomes a HardConstraint on scheduling), but they
+are ontologically distinct.
+
+BFO grounding: information content entity (IAO_0000030) — an
+Obstacle is information about a condition in the environment."""@en ;
+    skos:definition """A condition that constrains or impedes trajectories toward a goal,
+identified through observation or analysis of the environment."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Measure — a projection onto a coordinate axis
+# -----------------------------------------------------------------------------
+
+ontara-rsn:Measure a owl:Class ;
+    rdfs:label "Measure"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """A projection onto a specific coordinate axis for evaluation. A Measure
+defines how progress toward a Goal or compliance with a Constraint is
+assessed — it selects one or more axes from the coordinate space and
+specifies the assessment semantics (threshold, range, trend, rate).
+
+In coordinate-framework terms (A12), a Measure is a named projection:
+it takes a multi-dimensional coordinate position and extracts a scalar
+or structured value from a specific axis or combination of axes.
+
+BFO grounding: information content entity (IAO_0000030) — a Measure
+is information about how to evaluate a dimension of the coordinate
+space."""@en ;
+    skos:definition """A projection onto a coordinate axis for evaluation — defines how
+progress, compliance, or state is assessed along a specific
+dimension of the coordinate space."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Decision — a choice among alternatives
+# -----------------------------------------------------------------------------
+
+ontara-rsn:Decision a owl:Class ;
+    rdfs:label "Decision"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ,
+                    prov:Entity ;
+    rdfs:comment """A choice among alternatives, produced by a ReasoningActivity. A Decision
+records which alternative was selected, the reasoning context in which
+the choice was made, and the justification. In coordinate-framework
+terms, a Decision selects a trajectory through the coordinate space
+from among the feasible alternatives.
+
+Dual subclassing with prov:Entity provides provenance traceability:
+every Decision records who made it, when, using what knowledge, and
+with what evidence basis.
+
+BFO grounding: information content entity (IAO_0000030) — a Decision
+is a recorded choice, information about what was decided.
+PROV-O alignment: Entity — a thing with provenance."""@en ;
+    skos:definition """A choice among alternatives, produced by a reasoning activity,
+with full provenance traceability."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Plan — a sequence of intended actions toward a Goal
+# -----------------------------------------------------------------------------
+
+ontara-rsn:Plan a owl:Class ;
+    rdfs:label "Plan"@en ;
+    rdfs:subClassOf bfo:IAO_0000104 ;
+    rdfs:comment """A sequence of intended actions toward a Goal. In coordinate-framework
+terms, a Plan specifies a trajectory through the coordinate space
+from the current position toward a GoalRegion, accounting for
+Constraints and Obstacles.
+
+BFO grounding: plan specification (IAO_0000104) — IAO defines plan
+specification as 'an information content entity whose concretization
+indicates to a performer what actions should be taken.' This is the
+precise BFO/IAO category for Plans."""@en ;
+    skos:definition """A sequence of intended actions specifying a trajectory through the
+coordinate space toward a goal, accounting for constraints and
+obstacles."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Constraint — abstract constraint type (S146-D8, S147-D3)
+# -----------------------------------------------------------------------------
+#
+# BFO grounding rationale (resolved Session 151):
+#
+# The prep note for this session posed the question: are constraints
+# GenericallyDependentContinuant (like information) or RealizableEntity
+# (like dispositions)?
+#
+# Answer: Constraints are INFORMATION. The coordinate framework revisited
+# paper (Session 147 §7) establishes constraint geometry: constraints
+# describe what is permissible (HardConstraint = boundary), preferred
+# (SoftConstraint = cost surface), or true to a degree (GradedRule =
+# truth-value surface). These are all specifications — things that can
+# be written down, communicated, and shared. They are generically
+# dependent continuants, specifically information content entities.
+#
+# This aligns with the governance ontology pattern where DeonticDirective
+# (ontara-gov:) is already an IAO directive information entity subclass.
+# Governance obligations ARE hard constraints in the reasoning metamodel's
+# terms (§7.1 of the coordinate framework revisited paper).
+#
+# -----------------------------------------------------------------------------
+
+ontara-rsn:Constraint a owl:Class ;
+    rdfs:label "Constraint"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """Abstract constraint type. In the reasoning metamodel, constraints shape
+the coordinate space through which reasoning navigates. The three-way
+distinction (S146-D8, grounded by S147-D3): HardConstraint (boundary),
+SoftConstraint (cost surface), GradedRule (truth-value surface).
+
+Constraints are information — they specify what is permissible,
+preferred, or true. They are not dispositions of material entities.
+A constraint can be written down, communicated, and shared across
+contexts. This parallels the governance vocabulary where
+ontara-gov:DeonticDirective is also an IAO subclass.
+
+The governance–reasoning connection: governance obligations are
+HardConstraints that define NormativeRegions (§7.1 of the coordinate
+framework revisited paper). This alignment is established in Step 1.7.
+
+BFO grounding: information content entity (IAO_0000030) — a
+constraint is information about what is permissible, preferred,
+or true in the coordinate space."""@en ;
+    skos:definition """A specification that shapes the coordinate space through which
+reasoning navigates. Subtyped into HardConstraint (boundary),
+SoftConstraint (cost surface), and GradedRule (truth-value
+surface)."""@en .
+
+
+# -----------------------------------------------------------------------------
+# HardConstraint — NormativeRegion boundary (S147-D3)
+# -----------------------------------------------------------------------------
+
+ontara-rsn:HardConstraint a owl:Class ;
+    rdfs:label "Hard Constraint"@en ;
+    rdfs:subClassOf ontara-rsn:Constraint ;
+    rdfs:comment """A constraint defining a boundary that cannot be violated. In coordinate-
+framework terms (S147-D3), a HardConstraint defines a NormativeRegion
+or StaticBoundary in the coordinate space. The constraint is satisfied
+when the entity's position is within the region; it is violated when
+the position crosses the boundary.
+
+Governance obligations from the deontic vocabulary (B30–B35) are
+HardConstraints that define NormativeRegions. Safety constraints from
+STAMP/STPA (Phase 3) will define safety-critical NormativeRegions
+whose boundaries must never be crossed.
+
+Examples: CQC Regulation 12 compliance boundary, therapeutic range
+limits, equipment capacity ceiling, staffing minimum."""@en ;
+    skos:definition """A constraint defining a boundary in the coordinate space that
+cannot be violated — crossing the boundary is a failure event
+with governance or safety consequences."""@en .
+
+
+# -----------------------------------------------------------------------------
+# SoftConstraint — ScalarField cost/preference surface (S147-D3)
+# -----------------------------------------------------------------------------
+
+ontara-rsn:SoftConstraint a owl:Class ;
+    rdfs:label "Soft Constraint"@en ;
+    rdfs:subClassOf ontara-rsn:Constraint ;
+    rdfs:comment """A constraint defining a continuous cost or preference landscape over
+the coordinate space. Every point in the space has a cost associated
+with it; the system seeks to minimise cost or maximise preference.
+A SoftConstraint shapes trajectories rather than bounding them.
+
+In coordinate-framework terms (S147-D3), a SoftConstraint is a
+ScalarField. The semiring framework provides the algebraic structure:
+min+ for costs, max× for preferences (from the probabilistic
+reasoning research).
+
+Phase 2 (Step 2.3) will elaborate semiring properties for
+SoftConstraints — combination operators, composition rules.
+
+Examples: resource allocation preferences, scheduling cost, patient
+travel distance, staff continuity preference."""@en ;
+    skos:definition """A constraint defining a cost or preference surface over the
+coordinate space. Shapes trajectories toward lower-cost paths
+rather than imposing sharp boundaries."""@en .
+
+
+# -----------------------------------------------------------------------------
+# GradedRule — ScalarField truth-value surface (S147-D3)
+# -----------------------------------------------------------------------------
+
+ontara-rsn:GradedRule a owl:Class ;
+    rdfs:label "Graded Rule"@en ;
+    rdfs:subClassOf ontara-rsn:Constraint ;
+    rdfs:comment """A constraint assigning a truth value in [0,1] to every point in the
+coordinate space, representing the degree to which a business rule
+or heuristic applies. PSL (Probabilistic Soft Logic) provides the
+computational semantics: graded rules combine via convex optimisation
+to find the most probable truth-value assignment.
+
+In coordinate-framework terms (S147-D3), a GradedRule is a ScalarField
+over the truth-value domain. Similar to SoftConstraint but with
+different semantics: degree of applicability rather than cost.
+
+Phase 2 (Step 2.3) will elaborate truth-value range and composition
+rules for GradedRules.
+
+Examples: degree-of-suitability for a treatment approach, strength
+of clinical indication, confidence in a diagnostic criterion."""@en ;
+    skos:definition """A constraint assigning a truth value in [0,1] to every point in
+the coordinate space, representing the degree to which a rule
+applies."""@en .
+
+
+# -----------------------------------------------------------------------------
+# KnowledgeSource — abstract type for knowledge inputs
+# -----------------------------------------------------------------------------
+
+ontara-rsn:KnowledgeSource a owl:Class ;
+    rdfs:label "Knowledge Source"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """An abstract type for knowledge inputs to reasoning. KnowledgeSources
+are consulted by ReasoningActivities (via prov:used) and contribute
+to the production of Claims and Decisions. Concrete subtypes include
+clinical guidelines, regulatory instruments, population data sets,
+expert knowledge, and heuristic collections.
+
+BFO grounding: information content entity (IAO_0000030) — a
+KnowledgeSource is information that can be consulted."""@en ;
+    skos:definition """A source of knowledge consulted during a reasoning activity.
+Abstract type — concrete subtypes specify the kind of knowledge
+and its provenance."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Heuristic — a declarative heuristic (S146-D6)
+# -----------------------------------------------------------------------------
+
+ontara-rsn:Heuristic a owl:Class ;
+    rdfs:label "Heuristic"@en ;
+    rdfs:subClassOf ontara-rsn:KnowledgeSource ;
+    rdfs:comment """A declarative heuristic — a practical rule of thumb that guides
+reasoning without being formally mandatory. Heuristics are OWL
+individuals with typed properties (S146-D6) declaring applicability
+conditions, ordering logic, and authority basis.
+
+In coordinate-framework terms (§7.4 of the coordinate framework
+revisited paper), heuristics are navigation strategies — rules for
+choosing among the many possible paths that satisfy the constraints.
+Heuristics expressed geometrically become formally comparable,
+composable, and overrideable (the override is a ReasoningActivity
+with provenance).
+
+Phase 2 (Step 2.1) will elaborate the heuristic type hierarchy
+and HeuristicPack structure.
+
+Examples: 'prefer same-barista continuity' (Cafe), 'high-temperature
+washes first' (Suds), 'prefer morning appointments for elderly
+patients' (clinical)."""@en ;
+    skos:definition """A declarative heuristic — a practical navigation strategy that
+guides reasoning along preferred paths through the coordinate
+space without imposing formal boundaries."""@en .
+
+
+# =============================================================================
+# SECTION 3: Object Properties (Step 1.2)
+# =============================================================================
+#
+# These properties connect the core reasoning classes. Domain and range
+# declarations are stated explicitly. OWL characteristics (functional,
+# inverse functional) are declared where appropriate.
+#
+# PROV-O properties (prov:used, prov:wasGeneratedBy, etc.) are inherited
+# via dual subclassing and not re-declared here.
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# hasContext — links ReasoningActivity to ReasoningContext
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasContext a owl:ObjectProperty ;
+    rdfs:label "has context"@en ;
+    rdfs:domain ontara-rsn:ReasoningActivity ;
+    rdfs:range ontara-rsn:ReasoningContext ;
+    rdfs:comment """Links a ReasoningActivity to the ReasoningContext in which it
+was conducted. Every reasoning episode occurs within a specific
+context that determines available knowledge, active constraints,
+applicable goals, and the decision mode."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasGoal — links ReasoningContext to Goal
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasGoal a owl:ObjectProperty ;
+    rdfs:label "has goal"@en ;
+    rdfs:domain ontara-rsn:ReasoningContext ;
+    rdfs:range ontara-rsn:Goal ;
+    rdfs:comment """Links a ReasoningContext to the Goal(s) that the reasoning is
+directed toward. A context may have multiple goals (which may
+be complementary, competing, or hierarchically decomposed)."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasConstraint — links ReasoningContext to Constraint
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasConstraint a owl:ObjectProperty ;
+    rdfs:label "has constraint"@en ;
+    rdfs:domain ontara-rsn:ReasoningContext ;
+    rdfs:range ontara-rsn:Constraint ;
+    rdfs:comment """Links a ReasoningContext to the Constraint(s) that shape the
+reasoning. Constraints include hard boundaries (HardConstraint),
+cost surfaces (SoftConstraint), and truth-value surfaces
+(GradedRule)."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasObstacle — links ReasoningContext to Obstacle
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasObstacle a owl:ObjectProperty ;
+    rdfs:label "has obstacle"@en ;
+    rdfs:domain ontara-rsn:ReasoningContext ;
+    rdfs:range ontara-rsn:Obstacle ;
+    rdfs:comment """Links a ReasoningContext to Obstacle(s) identified as impeding
+progress toward the context's goals."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasMeasure — links Goal to Measure
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasMeasure a owl:ObjectProperty ;
+    rdfs:label "has measure"@en ;
+    rdfs:domain ontara-rsn:Goal ;
+    rdfs:range ontara-rsn:Measure ;
+    rdfs:comment """Links a Goal to the Measure(s) used to assess progress toward it.
+Each Measure is a named projection onto a coordinate axis,
+defining how attainment of the goal is evaluated."""@en .
+
+
+# -----------------------------------------------------------------------------
+# producedDecision — links ReasoningActivity to Decision
+# -----------------------------------------------------------------------------
+
+ontara-rsn:producedDecision a owl:ObjectProperty ;
+    rdfs:label "produced decision"@en ;
+    rdfs:domain ontara-rsn:ReasoningActivity ;
+    rdfs:range ontara-rsn:Decision ;
+    rdfs:comment """Links a ReasoningActivity to the Decision it produced. Complements
+prov:wasGeneratedBy (which links from the Decision back to the
+Activity). A ReasoningActivity may produce zero or more Decisions
+(zero if the activity produces Claims but no decision)."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasDecisionMode — links ReasoningContext to decision mode classification
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasDecisionMode a owl:ObjectProperty ,
+                           owl:FunctionalProperty ;
+    rdfs:label "has decision mode"@en ;
+    rdfs:domain ontara-rsn:ReasoningContext ;
+    rdfs:range ontara-rsn:DecisionMode ;
+    rdfs:comment """Links a ReasoningContext to its decision mode classification (S146-D5).
+Functional — a context has exactly one active decision mode. The
+decision mode determines which ReasoningComponents are activated.
+
+Phase 2 (Step 2.2) will elaborate DecisionMode with Cynefin domain
+mapping and routing rules."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasPlan — links Decision to Plan
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasPlan a owl:ObjectProperty ;
+    rdfs:label "has plan"@en ;
+    rdfs:domain ontara-rsn:Decision ;
+    rdfs:range ontara-rsn:Plan ;
+    rdfs:comment """Links a Decision to the Plan that implements it. A Decision may
+have zero plans (immediate action) or one plan (a structured
+sequence of intended actions toward a goal)."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasKnowledgeSource — links ReasoningContext to KnowledgeSource
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasKnowledgeSource a owl:ObjectProperty ;
+    rdfs:label "has knowledge source"@en ;
+    rdfs:domain ontara-rsn:ReasoningContext ;
+    rdfs:range ontara-rsn:KnowledgeSource ;
+    rdfs:comment """Links a ReasoningContext to the KnowledgeSource(s) available for
+consultation during reasoning. This includes guidelines, regulatory
+instruments, heuristics, and any other information inputs."""@en .
+
+
+# =============================================================================
+# SECTION 4: DecisionMode Enumeration (placeholder for Phase 2)
+# =============================================================================
+#
+# DecisionMode is referenced by hasDecisionMode. It will be elaborated in
+# Phase 2 Step 2.2 with Cynefin domain mapping and routing rules. For now,
+# it exists as a minimal class to support the property declaration.
+#
+# =============================================================================
+
+ontara-rsn:DecisionMode a owl:Class ;
+    rdfs:label "Decision Mode"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """Classification of the reasoning context's problem domain (S146-D5).
+Determines which ReasoningComponents are activated. Phase 2 will
+elaborate with Cynefin domain mapping (clear, complicated, complex,
+chaotic) as ClassificationRegion instances (S147-D2).
+
+BFO grounding: information content entity (IAO_0000030) — a
+classification is information about the nature of the problem."""@en ;
+    skos:definition """A classification of the reasoning context's problem domain that
+determines which reasoning components are activated."""@en .
+
+
+# =============================================================================
+# PROV-O Provenance Properties — Usage Notes
+# =============================================================================
 #
 # Key PROV-O properties used by ReasoningActivity:
 #   prov:used              — knowledge sources consulted
@@ -143,31 +656,735 @@ for reasoning activities and their outputs."""@en .
 #   prov:startedAtTime     — when reasoning began
 #   prov:endedAtTime       — when reasoning concluded
 #
-# Key PROV-O properties used by Claim:
-#   prov:wasGeneratedBy    — the ReasoningActivity that produced the claim
+# Key PROV-O properties used by Claim and Decision:
+#   prov:wasGeneratedBy    — the ReasoningActivity that produced it
 #   prov:wasAttributedTo   — the ReasoningAgent responsible
-#   prov:wasDerivedFrom    — prior claims or entities this claim builds on
-#   prov:generatedAtTime   — when the claim was produced
+#   prov:wasDerivedFrom    — prior claims or entities it builds on
+#   prov:generatedAtTime   — when the entity was produced
 #
-# These are not re-declared here — they are inherited from prov-core.ttl
-# and apply naturally via the dual subclassing. A ReasoningActivity IS a
-# prov:Activity, so prov:used, prov:wasAssociatedWith, etc. apply directly.
-# A Claim IS a prov:Entity, so prov:wasGeneratedBy, prov:wasAttributedTo,
-# etc. apply directly.
+# These are inherited from prov-core.ttl via dual subclassing and not
+# re-declared. ReasoningActivity IS a prov:Activity; Claim and Decision
+# ARE prov:Entities. All PROV-O properties apply directly.
+#
 # =============================================================================
 
 
 # =============================================================================
-# End of Phase 1 Step 1.1
+# SECTION 5: Evidence Architecture (Step 1.3, SEPIO pattern, S146-D7)
 # =============================================================================
 #
-# Next steps (to be added in subsequent sessions):
-#   Step 1.2: Core reasoning classes (ReasoningContext, Goal, Obstacle,
-#             Measure, Decision, Plan, Constraint hierarchy, KnowledgeSource,
-#             Heuristic) — all with BFO grounding
-#   Step 1.3: Evidence architecture (EvidenceLine, EvidenceItem,
-#             ConfidenceAssessment — SEPIO pattern)
-#   Step 1.4: Structured probabilistic reasoning types
+# The evidence architecture follows the SEPIO (Scientific Evidence and
+# Provenance Information Ontology) pattern, adapted for Ontara. Every Claim
+# is supported by EvidenceLines, each composed of EvidenceItems. Every Claim
+# carries a ConfidenceAssessment with a declared interpretive frame.
+#
+# The three interpretive frames (S147-D1, stable since Session 46):
+#   - Probability: "70% likelihood" — combined via Bayesian updating
+#   - Fuzzy membership: "moderately suitable" — combined via fuzzy operators
+#   - Preference/cost: "preferred at strength 0.7" — combined via semiring
+#
+# Provenance note: Claim already subclasses prov:Entity (Step 1.1), so
+# prov:wasGeneratedBy links a Claim to the ReasoningActivity that produced
+# it. We do not create a parallel wasProducedBy property — the PROV-O
+# property is the correct one. The plan's "wasProducedBy" intent is
+# fulfilled by prov:wasGeneratedBy via dual subclassing.
+#
+# Connection to E026 (GraphRAG, Session 151): these evidence chains are
+# exactly the structures a future GraphRAG retrieval layer would traverse.
+# Ensuring they are complete and SPARQL-queryable serves both the immediate
+# reasoning architecture and the future LLM-grounding use case.
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# EvidenceLine — a line of evidence supporting a Claim
+# -----------------------------------------------------------------------------
+
+ontara-rsn:EvidenceLine a owl:Class ;
+    rdfs:label "Evidence Line"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """A coherent line of evidence supporting a Claim. An EvidenceLine groups
+related EvidenceItems into an argument — a reason to believe the Claim.
+A Claim may be supported by multiple EvidenceLines (converging evidence
+from different sources), and each EvidenceLine may contain multiple
+EvidenceItems (specific data points, observations, or references).
+
+The SEPIO pattern separates the assertion (Claim) from its evidential
+basis (EvidenceLine) and the individual evidence artifacts (EvidenceItem).
+This three-level structure enables: independent assessment of each
+evidence line, tracing of which evidence contributed to which conclusion,
+and updating of evidence without modifying the Claim itself.
+
+BFO grounding: information content entity (IAO_0000030) — an
+EvidenceLine is information about why a claim is supported."""@en ;
+    skos:definition """A coherent line of evidence supporting a Claim, grouping
+related evidence items into a structured argument."""@en .
+
+
+# -----------------------------------------------------------------------------
+# EvidenceItem — a specific piece of evidence
+# -----------------------------------------------------------------------------
+
+ontara-rsn:EvidenceItem a owl:Class ;
+    rdfs:label "Evidence Item"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """A specific piece of evidence within an EvidenceLine. An EvidenceItem
+may be an observation, a measurement, a document reference, a dataset,
+a prior Claim, or any other identifiable artifact that contributes to
+the evidential basis of a Claim.
+
+EvidenceItems carry their own provenance via PROV-O (they can be
+prov:Entities with wasGeneratedBy, wasAttributedTo, etc.) but are
+not dual-subclassed at the class level — individual EvidenceItem
+instances that need provenance tracing can be typed as both
+EvidenceItem and prov:Entity.
+
+BFO grounding: information content entity (IAO_0000030) — a specific
+piece of evidence is information."""@en ;
+    skos:definition """A specific piece of evidence — an observation, measurement,
+document reference, or prior claim — within an evidence line."""@en .
+
+
+# -----------------------------------------------------------------------------
+# ConfidenceAssessment — evidential confidence with interpretive frame
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ConfidenceAssessment a owl:Class ;
+    rdfs:label "Confidence Assessment"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """An assessment of evidential confidence attached to a Claim, with a
+declared interpretive frame (S147-D1). The interpretive frame specifies
+how the confidence value should be understood and combined:
+
+  - Probability frame: confidence is a probability (0–1), combined via
+    Bayesian updating, represented as distributions.
+  - Fuzzy membership frame: confidence is a degree of membership (0–1),
+    combined via fuzzy operators (max-min, etc.).
+  - Preference/cost frame: confidence is a preference weight (0–1),
+    combined via semiring operations (min+, max×).
+
+These three frames were first identified in the intrinsic self-knowledge
+paper (Session 46) §4.6 and have remained stable across 100+ sessions
+and two independent lines of architectural inquiry (comprehension and
+reasoning). Their stability validates them as a correct decomposition
+of the confidence space.
+
+A ConfidenceAssessment without a declared interpretive frame is
+meaningless — the frame determines the algebra. This is enforced
+by the hasInterpretiveFrame property.
+
+BFO grounding: information content entity (IAO_0000030) — a confidence
+assessment is information about the strength of evidential support."""@en ;
+    skos:definition """An assessment of evidential confidence with a declared interpretive
+frame (probability, fuzzy membership, or preference weight) that
+determines how the confidence value is understood and combined."""@en .
+
+
+# -----------------------------------------------------------------------------
+# InterpretiveFrame — the three confidence interpretation schemes
+# -----------------------------------------------------------------------------
+
+ontara-rsn:InterpretiveFrame a owl:Class ;
+    rdfs:label "Interpretive Frame"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """The interpretive frame for a ConfidenceAssessment — determines how
+the confidence value is understood and combined with other assessments.
+Three frames are defined (S147-D1, stable since Session 46):
+
+  - ProbabilityFrame: Bayesian probability semantics
+  - FuzzyMembershipFrame: fuzzy set membership semantics
+  - PreferenceWeightFrame: semiring preference/cost semantics
+
+Declared as an OWL class with three named individuals rather than as
+an enumeration, to allow future extension if additional interpretive
+frames emerge (consistent with J3, non-constraining).
+
+BFO grounding: information content entity (IAO_0000030) — an
+interpretive frame is a specification of how to read a value."""@en ;
+    skos:definition """A specification of how a confidence value should be interpreted
+and algebraically combined — probability, fuzzy membership, or
+preference weight."""@en .
+
+
+# --- InterpretiveFrame Individuals ---
+
+ontara-rsn:ProbabilityFrame a owl:NamedIndividual ,
+                             ontara-rsn:InterpretiveFrame ;
+    rdfs:label "Probability Frame"@en ;
+    rdfs:comment """Confidence interpreted as Bayesian probability (0–1). Combined via
+Bayesian updating. Represented as distributions over coordinate
+space regions (ProbabilityDistribution in the Region taxonomy,
+S147-D2)."""@en .
+
+ontara-rsn:FuzzyMembershipFrame a owl:NamedIndividual ,
+                                 ontara-rsn:InterpretiveFrame ;
+    rdfs:label "Fuzzy Membership Frame"@en ;
+    rdfs:comment """Confidence interpreted as fuzzy set membership degree (0–1). Combined
+via fuzzy operators (max-min, product-sum). Used for graded
+applicability assessments."""@en .
+
+ontara-rsn:PreferenceWeightFrame a owl:NamedIndividual ,
+                                  ontara-rsn:InterpretiveFrame ;
+    rdfs:label "Preference Weight Frame"@en ;
+    rdfs:comment """Confidence interpreted as preference or cost weight (0–1). Combined
+via semiring operations (min+, max×). Used for soft constraint
+satisfaction and resource allocation preferences."""@en .
+
+
+# =============================================================================
+# SECTION 6: Evidence Architecture Properties (Step 1.3)
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# supportedBy — links Claim to EvidenceLine
+# -----------------------------------------------------------------------------
+
+ontara-rsn:supportedBy a owl:ObjectProperty ;
+    rdfs:label "supported by"@en ;
+    rdfs:domain ontara-rsn:Claim ;
+    rdfs:range ontara-rsn:EvidenceLine ;
+    rdfs:comment """Links a Claim to the EvidenceLine(s) that support it. A Claim
+may have multiple evidence lines representing converging evidence
+from independent sources. The absence of any evidence lines
+indicates an unsupported assertion."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasEvidence — links EvidenceLine to EvidenceItem
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasEvidence a owl:ObjectProperty ;
+    rdfs:label "has evidence"@en ;
+    rdfs:domain ontara-rsn:EvidenceLine ;
+    rdfs:range ontara-rsn:EvidenceItem ;
+    rdfs:comment """Links an EvidenceLine to the EvidenceItem(s) that compose it.
+Each EvidenceItem is a specific artifact (observation, measurement,
+document, prior claim) contributing to the line of evidence."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasConfidence — links Claim to ConfidenceAssessment
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasConfidence a owl:ObjectProperty ;
+    rdfs:label "has confidence"@en ;
+    rdfs:domain ontara-rsn:Claim ;
+    rdfs:range ontara-rsn:ConfidenceAssessment ;
+    rdfs:comment """Links a Claim to its ConfidenceAssessment. A Claim may have multiple
+confidence assessments (e.g. from different evaluation methods or at
+different points in time), each with its own interpretive frame."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasInterpretiveFrame — links ConfidenceAssessment to InterpretiveFrame
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasInterpretiveFrame a owl:ObjectProperty ,
+                                 owl:FunctionalProperty ;
+    rdfs:label "has interpretive frame"@en ;
+    rdfs:domain ontara-rsn:ConfidenceAssessment ;
+    rdfs:range ontara-rsn:InterpretiveFrame ;
+    rdfs:comment """Links a ConfidenceAssessment to its InterpretiveFrame. Functional —
+each confidence assessment has exactly one interpretive frame that
+determines how the confidence value is understood and combined.
+A ConfidenceAssessment without a declared frame is meaningless."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasConfidenceValue — the numeric confidence value
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasConfidenceValue a owl:DatatypeProperty ,
+                               owl:FunctionalProperty ;
+    rdfs:label "has confidence value"@en ;
+    rdfs:domain ontara-rsn:ConfidenceAssessment ;
+    rdfs:range xsd:decimal ;
+    rdfs:comment """The numeric confidence value (typically 0–1) of a ConfidenceAssessment.
+The meaning of this value depends on the InterpretiveFrame:
+  - ProbabilityFrame: Bayesian probability
+  - FuzzyMembershipFrame: degree of membership
+  - PreferenceWeightFrame: preference strength
+
+Functional — each assessment has exactly one primary value. For
+assessments with bounds (e.g. confidence intervals), additional
+data properties (hasLowerBound, hasUpperBound) will be added in
+Step 1.4."""@en .
+
+
+# =============================================================================
+# PROV-O Note: wasProducedBy / prov:wasGeneratedBy
+# =============================================================================
+#
+# The Stage 7 plan (§4.1.3) lists "wasProducedBy" as a property linking
+# Claim to ReasoningActivity. This is fulfilled by prov:wasGeneratedBy,
+# which already applies to Claim via dual subclassing (Claim IS a
+# prov:Entity; ReasoningActivity IS a prov:Activity). No parallel
+# property is created — using the PROV-O property directly is the
+# architecturally correct choice.
+#
+# Usage: to record that a Claim was produced by a ReasoningActivity,
+# assert: :myClaim prov:wasGeneratedBy :myActivity .
+#
+# =============================================================================
+
+
+# =============================================================================
+# End of Phase 1 Steps 1.2 and 1.3
+# =============================================================================
+#
+# Class count: 20 (3 Step 1.1 + 13 Step 1.2 + 4 Step 1.3)
+#   Step 1.1: ReasoningActivity, Claim, ReasoningAgent
+#   Step 1.2: ReasoningContext, ReasoningComponent, Goal, Obstacle,
+#             Measure, Decision, Plan, Constraint, HardConstraint,
+#             SoftConstraint, GradedRule, KnowledgeSource, Heuristic
+#             DecisionMode
+#   Step 1.3: EvidenceLine, EvidenceItem, ConfidenceAssessment,
+#             InterpretiveFrame
+#
+# Named individuals: 3 (Step 1.3)
+#   ProbabilityFrame, FuzzyMembershipFrame, PreferenceWeightFrame
+#
+# Object property count: 13 (9 Step 1.2 + 4 Step 1.3)
+#   Step 1.2: hasContext, hasGoal, hasConstraint, hasObstacle, hasMeasure,
+#             producedDecision, hasDecisionMode, hasPlan, hasKnowledgeSource
+#   Step 1.3: supportedBy, hasEvidence, hasConfidence, hasInterpretiveFrame
+#
+# Datatype property count: 1 (Step 1.3)
+#   hasConfidenceValue
+#
+# Next steps:
+#   Step 1.5: Cross-domain validation
+#   Step 1.6: SPARQL validation suite extension
+#   Step 1.7: Integration with governance vocabulary
+# =============================================================================
+
+
+# =============================================================================
+# SECTION 9: Governance Vocabulary Alignment (Step 1.7)
+# =============================================================================
+#
+# This section establishes the connection between the reasoning vocabulary
+# (ontara-rsn:) and the governance vocabulary (ontara-gov:). The alignment
+# is declared HERE, in the reasoning module, not in the governance module.
+#
+# Dependency direction (resolved Session 151):
+#   ontara-rsn: → ontara-gov:  (reasoning knows about governance)
+#   ontara-gov: does NOT import ontara-rsn:
+#
+# This preserves governance module independence. The governance vocabulary
+# was authored Session 126 and predates the reasoning metamodel. Governance
+# obligations exist independently of the reasoning infrastructure — they
+# existed before Stage 7. The reasoning module is the one that recognises
+# governance obligations as a kind of constraint it can reason about.
+#
+# The alignment has two parts:
+#
+#   1. Subclass alignment: ontara-gov:Obligation is a subclass of
+#      ontara-rsn:HardConstraint. This captures the structural claim
+#      from the coordinate framework revisited paper §7.1: governance
+#      obligations ARE hard constraints that define NormativeRegion
+#      boundaries in the coordinate space.
+#
+#   2. Semantic connection: governance compliance assessments are
+#      structurally Claims with evidence. This is noted as a usage
+#      pattern, not a subclass declaration — individual compliance
+#      assessment instances can be typed as both governance concepts
+#      and ontara-rsn:Claim when evidence traceability is needed.
+#
+# Note on DeonticDirective covering axiom: the governance module declares
+# DeonticDirective as the exact union of Obligation, Permission,
+# Prohibition, and RegulatoryPower. Making Obligation a subclass of
+# HardConstraint does not violate this axiom — it adds an additional
+# superclass to Obligation, which is compatible with OWL 2 DL multiple
+# inheritance. An Obligation is simultaneously a DeonticDirective (by
+# the governance module's declaration) and a HardConstraint (by this
+# module's declaration).
+#
+# =============================================================================
+
+@prefix ontara-gov: <https://ontara.dev/ontology/governance/> .
+
+
+# -----------------------------------------------------------------------------
+# Governance → Reasoning alignment: Obligation as HardConstraint
+# -----------------------------------------------------------------------------
+#
+# From the coordinate framework revisited paper (Session 147) §7.1:
+#
+#   "Governance obligations from the deontic vocabulary (B30–B35) are
+#    HardConstraints that define NormativeRegions. Safety constraints
+#    from STAMP/STPA define safety-critical NormativeRegions whose
+#    boundaries must never be crossed."
+#
+# This is not an analogy — it is a structural identity. An obligation
+# to monitor within 12 weeks defines a boundary in governance-time
+# coordinate space. Crossing it is a compliance failure = constraint
+# violation. The HardConstraint class captures exactly this semantics.
+#
+# By declaring this subclass relationship in the reasoning module
+# (not the governance module), we establish that the reasoning
+# infrastructure can treat governance obligations as constraints
+# without requiring the governance module to know about reasoning.
+#
+# -----------------------------------------------------------------------------
+
+ontara-gov:Obligation rdfs:subClassOf ontara-rsn:HardConstraint .
+
+
+# -----------------------------------------------------------------------------
+# Governance → Reasoning alignment: Prohibition as HardConstraint
+# -----------------------------------------------------------------------------
+#
+# By the same logic, Prohibitions are also hard constraints — they
+# define boundaries that must not be crossed (actions that must not
+# be performed, states that must not obtain). A Prohibition is a
+# HardConstraint whose NormativeRegion boundary, when crossed,
+# constitutes a governance violation.
+#
+# -----------------------------------------------------------------------------
+
+ontara-gov:Prohibition rdfs:subClassOf ontara-rsn:HardConstraint .
+
+
+# -----------------------------------------------------------------------------
+# Usage note: Compliance assessments as Claims
+# -----------------------------------------------------------------------------
+#
+# A governance compliance assessment — e.g. "CQC Regulation 12 is
+# satisfied" — is structurally a Claim:
+#   - It is an assertion (Claim)
+#   - It is supported by evidence (EvidenceLine → EvidenceItems:
+#     audit records, training logs, clinical outcome data)
+#   - It carries confidence (ConfidenceAssessment: how certain
+#     are we of compliance?)
+#   - It has provenance (which ReasoningActivity produced this
+#     assessment? who was responsible?)
+#
+# This alignment is by instance typing, not class subclassing.
+# When a governance compliance assessment needs evidence traceability,
+# the individual is typed as both a governance concept and an
+# ontara-rsn:Claim. This preserves the governance module's
+# independence while giving compliance assessments full access to
+# the evidence architecture.
+#
+# Example (not loaded — illustrative):
+#
+#   :reg12-compliance-2026-Q1 a ontara-rsn:Claim ;
+#       rdfs:label "CQC Regulation 12 compliance assessment Q1 2026" ;
+#       ontara-rsn:supportedBy :reg12-evidence-line-clinical-outcomes ;
+#       ontara-rsn:supportedBy :reg12-evidence-line-staff-training ;
+#       ontara-rsn:hasConfidence :reg12-confidence-q1 ;
+#       prov:wasGeneratedBy :reg12-assessment-activity-q1 .
+#
+# =============================================================================
+
+
+# =============================================================================
+# End of Phase 1 Steps 1.2, 1.3, 1.4, and 1.7
+# =============================================================================
+#
+# Class count: 24 (3 Step 1.1 + 13 Step 1.2 + 4 Step 1.3 + 4 Step 1.4)
+# Plus 2 cross-module subclass axioms (Step 1.7)
+#
+#   Step 1.1: ReasoningActivity, Claim, ReasoningAgent
+#   Step 1.2: ReasoningContext, ReasoningComponent, Goal, Obstacle,
+#             Measure, Decision, Plan, Constraint, HardConstraint,
+#             SoftConstraint, GradedRule, KnowledgeSource, Heuristic
+#             DecisionMode
+#   Step 1.3: EvidenceLine, EvidenceItem, ConfidenceAssessment,
+#             InterpretiveFrame
+#   Step 1.4: StructuredProbabilisticComponent, BayesianUpdater,
+#             RiskCalculator, PrognosticModel, PredictiveAnalytics
+#   Step 1.7: ontara-gov:Obligation ⊆ HardConstraint,
+#             ontara-gov:Prohibition ⊆ HardConstraint
+#
+# Named individuals: 3 (Step 1.3)
+#   ProbabilityFrame, FuzzyMembershipFrame, PreferenceWeightFrame
+#
+# Object property count: 15 (9 Step 1.2 + 4 Step 1.3 + 2 Step 1.4)
+# Datatype property count: 4 (1 Step 1.3 + 3 Step 1.4)
+#
+# Remaining:
+#   Step 1.5: Cross-domain validation — DONE (Session 151, separate document)
+#   Step 1.6: SPARQL validation suite extension — Claude Code task
+# =============================================================================
+
+
+# =============================================================================
+# SECTION 7: Structured Probabilistic Reasoning Types (Step 1.4, S147-D5)
+# =============================================================================
+#
+# The A6 reformulation (S147-D5, coordinate framework revisited §10)
+# introduces a new category between Tier 2 (inspectable logic) and Tier 3
+# (opaque ML): structured probabilistic models that are deterministic in
+# mechanism, inspectable in structure, but probabilistic in output.
+#
+# These are abstract TYPES — OWL describes the class structure and
+# validation metadata requirements. Runtime engines execute the
+# computational semantics. Per B29 (authority zones): OWL is authoritative
+# for what kinds of probabilistic reasoning exist and what metadata they
+# must carry; runtime implementations are authoritative for how the
+# computation is actually performed.
+#
+# All subtypes inherit from ReasoningComponent (BFO_0000031, GDC) —
+# they are specifications of reasoning capabilities, not processes.
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# StructuredProbabilisticComponent — abstract type (S147-D5)
+# -----------------------------------------------------------------------------
+
+ontara-rsn:StructuredProbabilisticComponent a owl:Class ;
+    rdfs:label "Structured Probabilistic Component"@en ;
+    rdfs:subClassOf ontara-rsn:ReasoningComponent ;
+    rdfs:comment """Abstract type for validated probabilistic models — the new category
+between Tier 2 (inspectable logic) and Tier 3 (opaque ML) per the
+A6 reformulation (S147-D5).
+
+Structured probabilistic components share three defining properties:
+  1. Deterministic in mechanism — same inputs produce same outputs
+  2. Inspectable in structure — assumptions, parameters, and validation
+     data are explicit and examinable
+  3. Probabilistic in output — the output is a probability, distribution,
+     or confidence interval, not a binary decision
+
+In coordinate-framework terms (§10.4 of the coordinate framework
+revisited paper): these components characterise the probabilistic
+landscape through which deterministic decision paths are planned.
+The clinician navigates a deterministic path through a probabilistically
+characterised landscape.
+
+Governance requirement: every structured probabilistic component must
+carry validation metadata (validation population, performance metrics,
+confidence bounds) as a condition of being used as evidence input to
+authoritative clinical decisions."""@en ;
+    skos:definition """An abstract type for validated probabilistic models that are
+deterministic in mechanism, inspectable in structure, and
+probabilistic in output."""@en .
+
+
+# -----------------------------------------------------------------------------
+# BayesianUpdater — prior + evidence → posterior
+# -----------------------------------------------------------------------------
+
+ontara-rsn:BayesianUpdater a owl:Class ;
+    rdfs:label "Bayesian Updater"@en ;
+    rdfs:subClassOf ontara-rsn:StructuredProbabilisticComponent ;
+    rdfs:comment """A structured probabilistic component that takes a prior probability
+distribution and evidence, and produces a posterior distribution via
+Bayes' theorem. In coordinate-framework terms (reasoning metamodel
+§11.6): sequential Bayesian updating is a trajectory through
+probability space — the prior defines a ProbabilityDistribution over
+a coordinate region, evidence narrows that distribution, and the
+posterior is the refined distribution.
+
+Examples: diagnostic probability updating given test results,
+treatment response probability given patient characteristics."""@en ;
+    skos:definition """A probabilistic component that updates prior probability
+distributions with evidence to produce posterior distributions
+via Bayes' theorem."""@en .
+
+
+# -----------------------------------------------------------------------------
+# RiskCalculator — validated population-level risk model
+# -----------------------------------------------------------------------------
+
+ontara-rsn:RiskCalculator a owl:Class ;
+    rdfs:label "Risk Calculator"@en ;
+    rdfs:subClassOf ontara-rsn:BayesianUpdater ;
+    rdfs:comment """A BayesianUpdater with explicit validation metadata — a validated
+population-level risk model. Distinguished from a generic
+BayesianUpdater by the requirement for published validation data:
+validation population characteristics, performance metrics
+(AUC, sensitivity, specificity, calibration), and confidence
+intervals on outputs.
+
+This is the class that accommodates standard evidence-based clinical
+tools (QRISK, Framingham, FRAX) that A6 as originally formulated
+could not accommodate. The A6 reformulation (S147-D5) permits these
+as evidence inputs to clinical decisions, provided validation
+metadata is present and the decision path remains deterministic
+and inspectable.
+
+Examples: QRISK3 cardiovascular risk calculator, FRAX fracture
+risk assessment, validated scoring systems."""@en ;
+    skos:definition """A validated population-level risk model with explicit validation
+metadata — performance metrics, validation population, and
+confidence bounds."""@en .
+
+
+# -----------------------------------------------------------------------------
+# PrognosticModel — time-to-event or trajectory model
+# -----------------------------------------------------------------------------
+
+ontara-rsn:PrognosticModel a owl:Class ;
+    rdfs:label "Prognostic Model"@en ;
+    rdfs:subClassOf ontara-rsn:StructuredProbabilisticComponent ;
+    rdfs:comment """A structured probabilistic component that models time-to-event or
+trajectory outcomes. Produces probability distributions over future
+states at specified time horizons. In coordinate-framework terms:
+a PrognosticModel projects trajectories forward through the
+coordinate space, producing ProbabilityDistributions over future
+positions.
+
+Distinguished from BayesianUpdater by the explicit temporal
+dimension — a PrognosticModel's output is indexed by time, not
+just conditioned on evidence.
+
+Examples: survival curves, disease progression models, treatment
+response trajectory predictions."""@en ;
+    skos:definition """A probabilistic component that models time-to-event or trajectory
+outcomes, producing probability distributions over future states
+at specified time horizons."""@en .
+
+
+# -----------------------------------------------------------------------------
+# PredictiveAnalytics — population-level probabilistic analysis
+# -----------------------------------------------------------------------------
+
+ontara-rsn:PredictiveAnalytics a owl:Class ;
+    rdfs:label "Predictive Analytics"@en ;
+    rdfs:subClassOf ontara-rsn:StructuredProbabilisticComponent ;
+    rdfs:comment """A structured probabilistic component for population-level analysis
+that does not target individual patient outcomes. Produces aggregate
+probabilistic assessments: demand forecasting, resource utilisation
+projections, population health trend analysis.
+
+Distinguished from RiskCalculator and PrognosticModel by operating
+at the population level rather than the individual level. In
+coordinate-framework terms: PredictiveAnalytics produces
+ProbabilityDistributions over aggregate coordinate-space positions.
+
+Examples: clinic demand forecasting, medication stock prediction,
+waiting list trend analysis, population health screening yield."""@en ;
+    skos:definition """A probabilistic component for population-level analysis —
+demand forecasting, resource projections, and aggregate trend
+assessment."""@en .
+
+
+# =============================================================================
+# SECTION 8: Probabilistic Component Properties (Step 1.4)
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# hasPrior — links BayesianUpdater to prior distribution
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasPrior a owl:ObjectProperty ;
+    rdfs:label "has prior"@en ;
+    rdfs:domain ontara-rsn:BayesianUpdater ;
+    rdfs:range ontara-rsn:Claim ;
+    rdfs:comment """Links a BayesianUpdater to its prior probability distribution,
+represented as a Claim (an assertion about the prior state of
+knowledge). The prior Claim carries its own ConfidenceAssessment
+with ProbabilityFrame, and its own evidence chain.
+
+The choice to type the prior as a Claim (rather than a bare
+distribution) is deliberate: it ensures the prior has provenance
+(where did this prior come from? what evidence supports it?) and
+can be traced through the evidence architecture."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasPosterior — links BayesianUpdater to posterior distribution
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasPosterior a owl:ObjectProperty ;
+    rdfs:label "has posterior"@en ;
+    rdfs:domain ontara-rsn:BayesianUpdater ;
+    rdfs:range ontara-rsn:Claim ;
+    rdfs:comment """Links a BayesianUpdater to its posterior probability distribution,
+represented as a Claim. The posterior is the output of Bayesian
+updating — the refined distribution after incorporating evidence.
+As a Claim, it carries confidence assessment, evidence lines, and
+PROV-O provenance (prov:wasGeneratedBy the ReasoningActivity that
+executed the update)."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasValidationPopulation — validation metadata
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasValidationPopulation a owl:DatatypeProperty ;
+    rdfs:label "has validation population"@en ;
+    rdfs:domain ontara-rsn:StructuredProbabilisticComponent ;
+    rdfs:range xsd:string ;
+    rdfs:comment """Describes the population on which the probabilistic component was
+validated. Free-text description of cohort characteristics, size,
+and representativeness. A governance requirement for any structured
+probabilistic component used as evidence in clinical decisions.
+
+Examples: 'UK primary care population aged 25-84, n=2.29 million'
+(QRISK3), 'postmenopausal women, NHANES III cohort' (FRAX)."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasPerformanceMetric — validation metadata
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasPerformanceMetric a owl:DatatypeProperty ;
+    rdfs:label "has performance metric"@en ;
+    rdfs:domain ontara-rsn:StructuredProbabilisticComponent ;
+    rdfs:range xsd:string ;
+    rdfs:comment """Records a performance metric from the component's validation.
+Free-text for now — structured metric representation (AUC, C-statistic,
+calibration slope, sensitivity, specificity) is a candidate for
+future elaboration. Multiple values may be asserted.
+
+Examples: 'AUC 0.84 (95% CI 0.83-0.86)', 'Calibration slope 1.01'."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasConfidenceInterval — bounds on probabilistic output
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasConfidenceInterval a owl:DatatypeProperty ;
+    rdfs:label "has confidence interval"@en ;
+    rdfs:domain ontara-rsn:StructuredProbabilisticComponent ;
+    rdfs:range xsd:string ;
+    rdfs:comment """Records the confidence interval or bounds on the component's
+probabilistic output. Free-text for now — structured interval
+representation (lower bound, upper bound, confidence level) is
+a candidate for future elaboration.
+
+Examples: '95% CI: 9.2%-15.8%', 'Prediction interval: 3-18 months'."""@en .
+
+
+# =============================================================================
+# End of Phase 1 Steps 1.2, 1.3, and 1.4
+# =============================================================================
+#
+# Class count: 24 (3 Step 1.1 + 13 Step 1.2 + 4 Step 1.3 + 4 Step 1.4)
+#   Step 1.1: ReasoningActivity, Claim, ReasoningAgent
+#   Step 1.2: ReasoningContext, ReasoningComponent, Goal, Obstacle,
+#             Measure, Decision, Plan, Constraint, HardConstraint,
+#             SoftConstraint, GradedRule, KnowledgeSource, Heuristic
+#             DecisionMode
+#   Step 1.3: EvidenceLine, EvidenceItem, ConfidenceAssessment,
+#             InterpretiveFrame
+#   Step 1.4: StructuredProbabilisticComponent, BayesianUpdater,
+#             RiskCalculator, PrognosticModel, PredictiveAnalytics
+#
+# Named individuals: 3 (Step 1.3)
+#   ProbabilityFrame, FuzzyMembershipFrame, PreferenceWeightFrame
+#
+# Object property count: 15 (9 Step 1.2 + 4 Step 1.3 + 2 Step 1.4)
+#   Step 1.2: hasContext, hasGoal, hasConstraint, hasObstacle, hasMeasure,
+#             producedDecision, hasDecisionMode, hasPlan, hasKnowledgeSource
+#   Step 1.3: supportedBy, hasEvidence, hasConfidence, hasInterpretiveFrame
+#   Step 1.4: hasPrior, hasPosterior
+#
+# Datatype property count: 4 (1 Step 1.3 + 3 Step 1.4)
+#   Step 1.3: hasConfidenceValue
+#   Step 1.4: hasValidationPopulation, hasPerformanceMetric,
+#             hasConfidenceInterval
+#
+# Next steps:
 #   Step 1.5: Cross-domain validation
 #   Step 1.6: SPARQL validation suite extension
 #   Step 1.7: Integration with governance vocabulary
