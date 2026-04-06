@@ -100,6 +100,16 @@ python3 scripts/gen_constraint_evaluator.py --save            # Generate constra
 python3 scripts/gen_decision_table_evaluator.py --save        # Generate decision tables
 ```
 
+## Infrastructure Dependencies
+
+**GraphDB Free** (localhost:7200) is required by: `validate_kg.py` (SPARQL queries), `diff_kg.py` (round-trip comparison), `setup_graphdb.py`, `gen_owl_pipeline.py --resolve-cco`. It is NOT required by:
+- `reason_kg.py` — uses Robot + HermiT directly on Turtle files; `--save-summary` uses rdflib for property/vocabulary extraction. No GraphDB dependency.
+- `gen_owl_pipeline.py --save` — reads SysML, writes Turtle files. No GraphDB dependency.
+- `gen_model_introspection.py` — reads SysML, writes JSON. No GraphDB dependency.
+- Console dev server — reads static JSON files, not GraphDB.
+
+If a task instruction says "run reason_kg.py --save-summary", do NOT attempt to load GraphDB or run validate_kg.py unless explicitly instructed. These are independent operations.
+
 ## Knowledge Graph Commands
 
 ```bash
@@ -111,17 +121,18 @@ python3 scripts/gen_owl_pipeline.py --verify         # Check CCO lookup complete
 python3 scripts/gen_owl_pipeline.py --ir-only        # Print mapping IR (classification) only
 python3 scripts/gen_owl_pipeline.py --dry-run        # Print Turtle to stdout
 python3 scripts/setup_graphdb.py --verify            # Verify GraphDB repository state
-python3 scripts/validate_kg.py                   # Validate KG against SPARQL test suite (56 queries, 11 groups)
+python3 scripts/validate_kg.py                   # Validate KG against SPARQL test suite (requires GraphDB)
 python3 scripts/validate_kg.py --load             # Reload pipeline output into GraphDB + validate
 python3 scripts/validate_kg.py --load-only        # Reload pipeline output into GraphDB
 python3 scripts/diff_kg.py                        # Round-trip diff: compare generated OWL vs live store
 python3 scripts/diff_kg.py --verbose              # Diff with detailed per-type breakdown
 python3 scripts/diff_kg.py --json-only            # JSON report only, suppress stdout summary
 
-# OWL 2 DL Reasoning (requires Java 11+, tools/robot.jar)
-python3 scripts/reason_kg.py                       # Reason over full 13-file ontology stack
+# OWL 2 DL Reasoning (requires Java 11+, tools/robot.jar — does NOT require GraphDB)
+python3 scripts/reason_kg.py                       # Reason over full 12-file ontology stack
 python3 scripts/reason_kg.py --verbose             # Show detailed output
 python3 scripts/reason_kg.py --test-violation      # Inject contradiction, confirm reasoner catches it
+python3 scripts/reason_kg.py --save-summary        # Save reasoning-summary.json (uses rdflib, no GraphDB)
 python3 scripts/reason_kg.py --output results      # Save inferred ontology to file
 ```
 
