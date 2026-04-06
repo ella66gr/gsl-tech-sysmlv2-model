@@ -62,11 +62,63 @@ export interface ReasoningStats {
   reifiedWeightCount: number;
   domainClassCount: number;
   axiomFilePresent: boolean;
+  /** Added Phase 4 (Session 158) */
+  namedIndividualCount?: number;
+  datatypePropertyCount?: number;
+  sparqlQueryCount?: number;
 }
 
 export interface ViolationTest {
   ran: boolean;
   passed: boolean | null;
+}
+
+// --- Reasoning vocabulary types (Phase 4, Session 158) ---
+
+export interface ReasoningClass {
+  iri: string;
+  label: string;
+  comment: string;
+  parents: string[];
+  /** Functional grouping for display: foundation, core, evidence, probabilistic, constraints, knowledge, safety */
+  module: string;
+}
+
+export interface ReasoningNamedIndividual {
+  iri: string;
+  label: string;
+  types: string[];
+}
+
+export interface ReasoningDatatypeProperty {
+  iri: string;
+  label: string;
+  domain: string;
+  range: string;
+  comment: string;
+}
+
+export interface CrossModuleAxiom {
+  subject: string;
+  predicate: string;
+  object: string;
+  description: string;
+}
+
+export interface ReasoningModuleSummary {
+  classCount: number;
+  objectPropertyCount: number;
+  datatypePropertyCount: number;
+  namedIndividualCount: number;
+}
+
+export interface ReasoningVocabulary {
+  classes: ReasoningClass[];
+  namedIndividuals: ReasoningNamedIndividual[];
+  objectProperties: ObjectProperty[];
+  datatypeProperties: ReasoningDatatypeProperty[];
+  crossModuleAxioms: CrossModuleAxiom[];
+  moduleSummary: ReasoningModuleSummary;
 }
 
 export interface ReasoningSummary {
@@ -79,4 +131,6 @@ export interface ReasoningSummary {
   objectProperties: ObjectProperty[];
   stats: ReasoningStats;
   violationTest: ViolationTest;
+  /** Added Phase 4 (Session 158) — reasoning vocabulary structure */
+  reasoningVocabulary?: ReasoningVocabulary;
 }

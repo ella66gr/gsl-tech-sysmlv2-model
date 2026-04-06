@@ -22,6 +22,40 @@
 
   let ontologyStackExpanded = $state(false);
 
+  // Reasoning vocabulary explorer state
+  let reasoningExplorerExpanded = $state(true);
+  let reasoningClassesExpanded = $state(true);
+  let reasoningPropsExpanded = $state(false);
+  let reasoningIndividualsExpanded = $state(false);
+  let reasoningCrossModuleExpanded = $state(false);
+
+  // Group reasoning classes by module
+  const reasoningModuleGroups = $derived.by(() => {
+    if (!reasoning?.reasoningVocabulary?.classes) return [];
+    const groups = new Map<string, typeof reasoning.reasoningVocabulary.classes>();
+    for (const cls of reasoning.reasoningVocabulary.classes) {
+      const mod = cls.module || 'other';
+      if (!groups.has(mod)) groups.set(mod, []);
+      groups.get(mod)!.push(cls);
+    }
+    // Display order
+    const order = ['foundation', 'core', 'constraints', 'evidence', 'probabilistic', 'knowledge', 'safety'];
+    return order
+      .filter(m => groups.has(m))
+      .map(m => ({ module: m, classes: groups.get(m)! }));
+  });
+
+  // Module display names and colours
+  const MODULE_META: Record<string, { label: string; color: string; darkColor: string }> = {
+    foundation: { label: 'Foundation (PROV-O Dual Subclassing)', color: 'bg-indigo-100 text-indigo-700', darkColor: 'dark:bg-indigo-900/40 dark:text-indigo-300' },
+    core: { label: 'Core Reasoning', color: 'bg-blue-100 text-blue-700', darkColor: 'dark:bg-blue-900/40 dark:text-blue-300' },
+    constraints: { label: 'Constraint Hierarchy', color: 'bg-amber-100 text-amber-700', darkColor: 'dark:bg-amber-900/40 dark:text-amber-300' },
+    evidence: { label: 'Evidence Architecture (SEPIO)', color: 'bg-emerald-100 text-emerald-700', darkColor: 'dark:bg-emerald-900/40 dark:text-emerald-300' },
+    probabilistic: { label: 'Structured Probabilistic', color: 'bg-purple-100 text-purple-700', darkColor: 'dark:bg-purple-900/40 dark:text-purple-300' },
+    knowledge: { label: 'Knowledge & Heuristics', color: 'bg-cyan-100 text-cyan-700', darkColor: 'dark:bg-cyan-900/40 dark:text-cyan-300' },
+    safety: { label: 'Safety & Resilience', color: 'bg-rose-100 text-rose-700', darkColor: 'dark:bg-rose-900/40 dark:text-rose-300' },
+  };
+
   // --- Collect all node paths that can be expanded (bfo and midLevel) ---
   function collectExpandablePaths(node: HierarchyNode, path: string): string[] {
     const paths: string[] = [];
@@ -83,11 +117,21 @@
       captureState: () => ({
         expandedPaths: [...expandedPaths],
         ontologyStackExpanded,
+        reasoningExplorerExpanded,
+        reasoningClassesExpanded,
+        reasoningPropsExpanded,
+        reasoningIndividualsExpanded,
+        reasoningCrossModuleExpanded,
         scrollY: window.scrollY,
       }),
       restoreState: (state) => {
         expandedPaths = new Set(state.expandedPaths as string[]);
         ontologyStackExpanded = state.ontologyStackExpanded as boolean;
+        reasoningExplorerExpanded = state.reasoningExplorerExpanded as boolean;
+        reasoningClassesExpanded = state.reasoningClassesExpanded as boolean;
+        reasoningPropsExpanded = state.reasoningPropsExpanded as boolean;
+        reasoningIndividualsExpanded = state.reasoningIndividualsExpanded as boolean;
+        reasoningCrossModuleExpanded = state.reasoningCrossModuleExpanded as boolean;
         requestAnimationFrame(() => window.scrollTo(0, state.scrollY as number));
       },
     });
@@ -286,7 +330,7 @@
       </div>
     {:else}
       <!-- Stat cards -->
-      <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
         <!-- Consistency -->
         <div class="flex flex-col items-center justify-center gap-1 rounded-lg border p-4 text-center
           {reasoning.consistent
@@ -330,6 +374,24 @@
           <span class="text-2xl font-bold text-secondary-800 dark:text-white">{reasoning.stats.domainClassCount}</span>
           <span class="text-xs text-secondary-500 dark:text-secondary-400">OWL classes</span>
         </div>
+
+        <!-- Named Individuals -->
+        <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-secondary-200 bg-white p-4 text-center dark:border-secondary-700 dark:bg-secondary-900">
+          <span class="text-2xl font-bold text-secondary-800 dark:text-white">{reasoning.stats.namedIndividualCount ?? 0}</span>
+          <span class="text-xs text-secondary-500 dark:text-secondary-400">named individuals</span>
+        </div>
+
+        <!-- Datatype Properties -->
+        <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-secondary-200 bg-white p-4 text-center dark:border-secondary-700 dark:bg-secondary-900">
+          <span class="text-2xl font-bold text-secondary-800 dark:text-white">{reasoning.stats.datatypePropertyCount ?? 0}</span>
+          <span class="text-xs text-secondary-500 dark:text-secondary-400">datatype properties</span>
+        </div>
+
+        <!-- SPARQL Queries -->
+        <div class="flex flex-col items-center justify-center gap-1 rounded-lg border border-secondary-200 bg-white p-4 text-center dark:border-secondary-700 dark:bg-secondary-900">
+          <span class="text-2xl font-bold text-secondary-800 dark:text-white">{reasoning.stats.sparqlQueryCount ?? 0}</span>
+          <span class="text-xs text-secondary-500 dark:text-secondary-400">SPARQL queries</span>
+        </div>
       </div>
 
       <!-- Ontology stack detail (expandable) -->
@@ -361,6 +423,33 @@
               {/each}
             </tbody>
           </table>
+        </div>
+      {/if}
+
+      <!-- Vocabulary module breakdown -->
+      {#if reasoning.reasoningVocabulary}
+        <div>
+          <h3 class="mb-3 text-sm font-semibold text-secondary-700 dark:text-secondary-300">
+            Reasoning Vocabulary ({reasoning.reasoningVocabulary.moduleSummary.classCount} classes)
+          </h3>
+          <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+            <div class="rounded-lg border border-secondary-200 bg-white p-3 text-center dark:border-secondary-700 dark:bg-secondary-900">
+              <span class="text-lg font-bold text-secondary-800 dark:text-white">{reasoning.reasoningVocabulary.moduleSummary.classCount}</span>
+              <span class="block text-xs text-secondary-500 dark:text-secondary-400">classes</span>
+            </div>
+            <div class="rounded-lg border border-secondary-200 bg-white p-3 text-center dark:border-secondary-700 dark:bg-secondary-900">
+              <span class="text-lg font-bold text-secondary-800 dark:text-white">{reasoning.reasoningVocabulary.moduleSummary.objectPropertyCount}</span>
+              <span class="block text-xs text-secondary-500 dark:text-secondary-400">object properties</span>
+            </div>
+            <div class="rounded-lg border border-secondary-200 bg-white p-3 text-center dark:border-secondary-700 dark:bg-secondary-900">
+              <span class="text-lg font-bold text-secondary-800 dark:text-white">{reasoning.reasoningVocabulary.moduleSummary.datatypePropertyCount}</span>
+              <span class="block text-xs text-secondary-500 dark:text-secondary-400">datatype properties</span>
+            </div>
+            <div class="rounded-lg border border-secondary-200 bg-white p-3 text-center dark:border-secondary-700 dark:bg-secondary-900">
+              <span class="text-lg font-bold text-secondary-800 dark:text-white">{reasoning.reasoningVocabulary.moduleSummary.namedIndividualCount}</span>
+              <span class="block text-xs text-secondary-500 dark:text-secondary-400">named individuals</span>
+            </div>
+          </div>
         </div>
       {/if}
 
@@ -428,6 +517,205 @@
       </div>
     {/if}
   </div>
+
+  <!-- Reasoning Vocabulary Explorer -->
+  {#if reasoning?.reasoningVocabulary}
+    <hr class="my-2 border-secondary-200 dark:border-secondary-700" />
+
+    <div class="space-y-4">
+      <div>
+        <h2 class="text-xl font-bold text-secondary-800 dark:text-white">Reasoning Vocabulary</h2>
+        <p class="mt-1 text-secondary-500 dark:text-secondary-300">
+          <code class="text-xs">ontara-rsn:</code> namespace ·
+          {reasoning.reasoningVocabulary.moduleSummary.classCount} classes ·
+          {reasoning.reasoningVocabulary.moduleSummary.namedIndividualCount} named individuals ·
+          {reasoning.reasoningVocabulary.moduleSummary.objectPropertyCount + reasoning.reasoningVocabulary.moduleSummary.datatypePropertyCount} properties
+        </p>
+      </div>
+
+      <!-- Class hierarchy by module -->
+      <div>
+        <button
+          onclick={() => reasoningClassesExpanded = !reasoningClassesExpanded}
+          class="mb-2 flex items-center gap-2 text-sm font-semibold text-secondary-700 dark:text-secondary-300"
+        >
+          <span class="shrink-0 text-secondary-400">
+            {#if reasoningClassesExpanded}
+              <ChevronDownOutline class="h-3 w-3" />
+            {:else}
+              <ChevronRightOutline class="h-3 w-3" />
+            {/if}
+          </span>
+          Class Hierarchy ({reasoning.reasoningVocabulary.classes.length})
+        </button>
+
+        {#if reasoningClassesExpanded}
+          <div class="space-y-3">
+            {#each reasoningModuleGroups as group}
+              {@const meta = MODULE_META[group.module] || { label: group.module, color: 'bg-secondary-100 text-secondary-700', darkColor: 'dark:bg-secondary-700 dark:text-secondary-300' }}
+              <div class="rounded-lg border border-secondary-200 bg-white p-3 dark:border-secondary-700 dark:bg-secondary-900">
+                <div class="mb-2 flex items-center gap-2">
+                  <span class="rounded-full px-2.5 py-0.5 text-xs font-medium {meta.color} {meta.darkColor}">
+                    {meta.label}
+                  </span>
+                  <span class="text-xs text-secondary-400 dark:text-secondary-500">
+                    {group.classes.length} class{group.classes.length !== 1 ? 'es' : ''}
+                  </span>
+                </div>
+                <div class="space-y-1.5">
+                  {#each group.classes as cls}
+                    <div class="rounded-md border border-secondary-100 px-3 py-2 dark:border-secondary-700/50">
+                      <div class="flex items-center gap-2">
+                        <span class="font-medium text-secondary-800 dark:text-white">{cls.label}</span>
+                        <span class="font-mono text-xs text-secondary-400 dark:text-secondary-500">{cls.iri}</span>
+                      </div>
+                      {#if cls.parents.length > 0}
+                        <div class="mt-0.5 text-xs text-secondary-500 dark:text-secondary-400">
+                          ↑ {cls.parents.join(', ')}
+                        </div>
+                      {/if}
+                      {#if cls.comment}
+                        <p class="mt-1 text-xs leading-relaxed text-secondary-500 dark:text-secondary-400">
+                          {cls.comment.length > 200 ? cls.comment.slice(0, 197) + '...' : cls.comment}
+                        </p>
+                      {/if}
+                    </div>
+                  {/each}
+                </div>
+              </div>
+            {/each}
+          </div>
+        {/if}
+      </div>
+
+      <!-- Named Individuals -->
+      <div>
+        <button
+          onclick={() => reasoningIndividualsExpanded = !reasoningIndividualsExpanded}
+          class="mb-2 flex items-center gap-2 text-sm font-semibold text-secondary-700 dark:text-secondary-300"
+        >
+          <span class="shrink-0 text-secondary-400">
+            {#if reasoningIndividualsExpanded}
+              <ChevronDownOutline class="h-3 w-3" />
+            {:else}
+              <ChevronRightOutline class="h-3 w-3" />
+            {/if}
+          </span>
+          Named Individuals ({reasoning.reasoningVocabulary.namedIndividuals.length})
+        </button>
+
+        {#if reasoningIndividualsExpanded}
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {#each reasoning.reasoningVocabulary.namedIndividuals as ind}
+              <div class="rounded-lg border border-secondary-200 bg-white px-3 py-2 dark:border-secondary-700 dark:bg-secondary-900">
+                <span class="font-medium text-secondary-800 dark:text-white">{ind.label}</span>
+                <div class="mt-0.5 flex flex-wrap gap-1">
+                  {#each ind.types as t}
+                    <span class="rounded bg-secondary-100 px-1.5 py-0.5 text-xs text-secondary-600 dark:bg-secondary-700 dark:text-secondary-300">{t}</span>
+                  {/each}
+                </div>
+              </div>
+            {/each}
+          </div>
+        {/if}
+      </div>
+
+      <!-- Object + Datatype Properties -->
+      <div>
+        <button
+          onclick={() => reasoningPropsExpanded = !reasoningPropsExpanded}
+          class="mb-2 flex items-center gap-2 text-sm font-semibold text-secondary-700 dark:text-secondary-300"
+        >
+          <span class="shrink-0 text-secondary-400">
+            {#if reasoningPropsExpanded}
+              <ChevronDownOutline class="h-3 w-3" />
+            {:else}
+              <ChevronRightOutline class="h-3 w-3" />
+            {/if}
+          </span>
+          Properties ({reasoning.reasoningVocabulary.objectProperties.length} object + {reasoning.reasoningVocabulary.datatypeProperties.length} datatype)
+        </button>
+
+        {#if reasoningPropsExpanded}
+          <div class="overflow-x-auto rounded-lg border border-secondary-200 dark:border-secondary-700">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b border-secondary-200 bg-secondary-50 dark:border-secondary-700 dark:bg-secondary-800/50">
+                  <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-secondary-500 dark:text-secondary-400">Property</th>
+                  <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-secondary-500 dark:text-secondary-400">Domain</th>
+                  <th class="px-2 py-2.5 text-center text-xs text-secondary-300 dark:text-secondary-600">→</th>
+                  <th class="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wider text-secondary-500 dark:text-secondary-400">Range</th>
+                  <th class="px-4 py-2.5 text-center text-xs font-semibold uppercase tracking-wider text-secondary-500 dark:text-secondary-400">Kind</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-secondary-100 dark:divide-secondary-700/50">
+                {#each reasoning.reasoningVocabulary.objectProperties as prop, i}
+                  <tr class="{i % 2 === 0 ? 'bg-white dark:bg-secondary-900' : 'bg-secondary-50/50 dark:bg-secondary-800/30'}">
+                    <td class="px-4 py-2">
+                      <span class="font-medium text-secondary-800 dark:text-white">{prop.label}</span>
+                    </td>
+                    <td class="px-4 py-2 text-secondary-600 dark:text-secondary-300">{prop.domain}</td>
+                    <td class="px-2 py-2 text-center text-secondary-300 dark:text-secondary-600">→</td>
+                    <td class="px-4 py-2 text-secondary-600 dark:text-secondary-300">{prop.range}</td>
+                    <td class="px-4 py-2 text-center">
+                      <Badge color="blue" class="text-xs">Object</Badge>
+                    </td>
+                  </tr>
+                {/each}
+                {#each reasoning.reasoningVocabulary.datatypeProperties as prop, i}
+                  <tr class="{(i + reasoning.reasoningVocabulary.objectProperties.length) % 2 === 0 ? 'bg-white dark:bg-secondary-900' : 'bg-secondary-50/50 dark:bg-secondary-800/30'}">
+                    <td class="px-4 py-2">
+                      <span class="font-medium text-secondary-800 dark:text-white">{prop.label}</span>
+                    </td>
+                    <td class="px-4 py-2 text-secondary-600 dark:text-secondary-300">{prop.domain}</td>
+                    <td class="px-2 py-2 text-center text-secondary-300 dark:text-secondary-600">→</td>
+                    <td class="px-4 py-2 text-secondary-600 dark:text-secondary-300">{prop.range}</td>
+                    <td class="px-4 py-2 text-center">
+                      <Badge color="green" class="text-xs">Datatype</Badge>
+                    </td>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          </div>
+        {/if}
+      </div>
+
+      <!-- Cross-module connections -->
+      {#if reasoning.reasoningVocabulary.crossModuleAxioms.length > 0}
+        <div>
+          <button
+            onclick={() => reasoningCrossModuleExpanded = !reasoningCrossModuleExpanded}
+            class="mb-2 flex items-center gap-2 text-sm font-semibold text-secondary-700 dark:text-secondary-300"
+          >
+            <span class="shrink-0 text-secondary-400">
+              {#if reasoningCrossModuleExpanded}
+                <ChevronDownOutline class="h-3 w-3" />
+              {:else}
+                <ChevronRightOutline class="h-3 w-3" />
+              {/if}
+            </span>
+            Cross-Module Connections ({reasoning.reasoningVocabulary.crossModuleAxioms.length})
+          </button>
+
+          {#if reasoningCrossModuleExpanded}
+            <div class="space-y-2">
+              {#each reasoning.reasoningVocabulary.crossModuleAxioms as axiom}
+                <div class="rounded-lg border border-secondary-200 bg-white px-3 py-2 dark:border-secondary-700 dark:bg-secondary-900">
+                  <div class="flex items-center gap-2 text-sm">
+                    <span class="font-mono text-xs font-medium text-secondary-700 dark:text-secondary-200">{axiom.subject}</span>
+                    <span class="text-xs text-secondary-400">→</span>
+                    <span class="font-mono text-xs font-medium text-secondary-700 dark:text-secondary-200">{axiom.object}</span>
+                  </div>
+                  <p class="mt-0.5 text-xs text-secondary-500 dark:text-secondary-400">{axiom.description}</p>
+                </div>
+              {/each}
+            </div>
+          {/if}
+        </div>
+      {/if}
+    </div>
+  {/if}
 
   <!-- Footer -->
   <p class="text-xs text-secondary-400 dark:text-secondary-500">
