@@ -306,6 +306,310 @@ def extract_object_properties():
     return properties
 
 
+def extract_reasoning_vocabulary():
+    """Parse ontara-reasoning.ttl and extract vocabulary structure for console display.
+
+    Returns a dict with classes, namedIndividuals, objectProperties,
+    datatypeProperties, crossModuleAxioms, and moduleSummary.
+
+    Stage 7 Phase 4, Session 158.
+    """
+    reasoning_file = REPO_ROOT / "ontology" / "reasoning" / "ontara-reasoning.ttl"
+    if not reasoning_file.exists():
+        return None
+
+    try:
+        from rdflib import Graph, Namespace, URIRef, Literal
+        from rdflib.namespace import RDF, RDFS, OWL, XSD
+    except ImportError:
+        print("  WARNING: rdflib not available — reasoning vocabulary not extracted.", file=sys.stderr)
+        return None
+
+    g = Graph()
+    g.parse(reasoning_file, format="turtle")
+
+    ONTARA_RSN = Namespace("https://ontara.dev/ontology/reasoning/")
+    ONTARA_GOV = Namespace("https://ontara.dev/ontology/governance/")
+    PROV = Namespace("http://www.w3.org/ns/prov#")
+    BFO = Namespace("http://purl.obolibrary.org/obo/")
+
+    def short_iri(uri):
+        """Convert full IRI to short display form."""
+        uri_str = str(uri)
+        prefixes = {
+            "https://ontara.dev/ontology/reasoning/": "ontara-rsn:",
+            "https://ontara.dev/ontology/governance/": "ontara-gov:",
+            "https://ontara.dev/ontology/bmm/": "ontara-bmm:",
+            "https://ontara.dev/ontology/domain/": "ontara-dom:",
+            "http://purl.obolibrary.org/obo/": "bfo:",
+            "http://www.w3.org/ns/prov#": "prov:",
+            "http://purl.org/dc/terms/": "dcterms:",
+        }
+        for prefix_iri, prefix_label in prefixes.items():
+            if uri_str.startswith(prefix_iri):
+                return prefix_label + uri_str[len(prefix_iri):]
+        return uri_str.split("/")[-1].split("#")[-1]
+
+    def get_label(subject):
+        label = g.value(subject, RDFS.label)
+        if label:
+            return str(label).split("@")[0]  # strip language tag
+        return short_iri(subject)
+
+    def get_comment(subject):
+        comment = g.value(subject, RDFS.comment)
+        if comment:
+            raw = str(comment).split("@")[0]
+            # Truncate long comments for JSON
+            if len(raw) > 300:
+                return raw[:297] + "..."
+            return raw
+        return ""
+
+    # --- Functional grouping for classes ---
+    # Map classes to display groups based on their characteristics
+    FOUNDATION_CLASSES = {
+        "ReasoningActivity", "Claim", "ReasoningAgent", "Decision",
+    }
+    EVIDENCE_CLASSES = {
+        "EvidenceLine", "EvidenceItem", "ConfidenceAssessment",
+    }
+    PROBABILISTIC_CLASSES = {
+        "StructuredProbabilisticComponent", "BayesianUpdater",
+        "RiskCalculator", "PrognosticModel", "PredictiveAnalytics",
+    }
+    CONSTRAINT_CLASSES = {
+        "Constraint", "HardConstraint", "SoftConstraint", "GradedRule",
+    }
+    SAFETY_CLASSES = {
+        "SafetyConstraint", "ControlStructure", "ControlLoop",
+        "ControlAction", "UnsafeControlAction",
+        "FRAMFunction", "VariabilityProfile",
+    }
+    KNOWLEDGE_CLASSES = {
+        "KnowledgeSource", "Heuristic", "HeuristicPack", "DecisionMode",
+        "OrderingHeuristic", "ResourceAllocationHeuristic",
+        "RiskPrioritisationHeuristic", "EscalationHeuristic",
+    }
+
+    def classify_module(class_name):
+        if class_name in FOUNDATION_CLASSES:
+            return "foundation"
+        if class_name in EVIDENCE_CLASSES:
+            return "evidence"
+        if class_name in PROBABILISTIC_CLASSES:
+            return "probabilistic"
+        if class_name in CONSTRAINT_CLASSES:
+            return "constraints"
+        if class_name in SAFETY_CLASSES:
+            return "safety"
+        if class_name in KNOWLEDGE_CLASSES:
+            return "knowledge"
+        return "core"
+
+    # --- Extract classes ---
+    classes = []
+    for cls in g.subjects(RDF.type, OWL.Class):
+        cls_str = str(cls)
+        if not cls_str.startswith(str(ONTARA_RSN)):
+            continue  # only ontara-rsn: classes
+        class_name = cls_str[len(str(ONTARA_RSN)):]
+        parents = []
+        for parent in g.objects(cls, RDFS.subClassOf):
+            if isinstance(parent, URIRef):
+                parents.append(short_iri(parent))
+        classes.append({
+            "iri": short_iri(cls),
+            "label": get_label(cls),
+            "comment": get_comment(cls),
+            "parents": parents,
+            "module": classify_module(class_name),
+        })
+    classes.sort(key=lambda c: c["iri"])
+
+    # --- Extract named individuals ---
+    named_individuals = []
+    for ind in g.subjects(RDF.type, OWL.NamedIndividual):
+        ind_str = str(ind)
+        if not ind_str.startswith(str(ONTARA_RSN)):
+            continue
+        types = []
+        for t in g.objects(ind, RDF.type):
+            if t != OWL.NamedIndividual:
+                types.append(short_iri(t))
+        named_individuals.append({
+            "iri": short_iri(ind),
+            "label": get_label(ind),
+            "types": types,
+        })
+    named_individuals.sort(key=lambda i: i["iri"])
+
+    # --- Extract object properties ---
+    obj_properties = []
+    for prop in g.subjects(RDF.type, OWL.ObjectProperty):
+        prop_str = str(prop)
+        if not prop_str.startswith(str(ONTARA_RSN)):
+            continue
+        domain_uri = g.value(prop, RDFS.domain)
+        range_uri = g.value(prop, RDFS.range)
+        functional = (prop, RDF.type, OWL.FunctionalProperty) in g
+        obj_properties.append({
+            "name": short_iri(prop),
+            "label": get_label(prop),
+            "domain": short_iri(domain_uri) if domain_uri else "",
+            "range": short_iri(range_uri) if range_uri else "",
+            "functional": functional,
+            "comment": get_comment(prop),
+        })
+    obj_properties.sort(key=lambda p: p["name"])
+
+    # --- Extract datatype properties ---
+    dt_properties = []
+    for prop in g.subjects(RDF.type, OWL.DatatypeProperty):
+        prop_str = str(prop)
+        if not prop_str.startswith(str(ONTARA_RSN)):
+            continue
+        domain_uri = g.value(prop, RDFS.domain)
+        range_uri = g.value(prop, RDFS.range)
+        dt_properties.append({
+            "iri": short_iri(prop),
+            "label": get_label(prop),
+            "domain": short_iri(domain_uri) if domain_uri else "",
+            "range": short_iri(range_uri) if range_uri else "" if not range_uri else str(range_uri).split("#")[-1],
+            "comment": get_comment(prop),
+        })
+    dt_properties.sort(key=lambda p: p["iri"])
+
+    # --- Extract cross-module axioms ---
+    # Look for rdfs:subClassOf triples where subject is ontara-rsn: or ontara-gov:
+    # and object is in a different namespace
+    cross_module = []
+    for s, p, o in g.triples((None, RDFS.subClassOf, None)):
+        if not isinstance(s, URIRef) or not isinstance(o, URIRef):
+            continue
+        s_str, o_str = str(s), str(o)
+        s_ns = s_str.rsplit("/", 1)[0] + "/" if "/" in s_str else ""
+        o_ns = o_str.rsplit("/", 1)[0] + "/" if "/" in o_str else ""
+        # Cross-module: different namespaces, and at least one is ontara-rsn:
+        if s_ns != o_ns and (str(ONTARA_RSN) in s_str or str(ONTARA_RSN) in o_str):
+            # Describe the connection
+            s_short = short_iri(s)
+            o_short = short_iri(o)
+            if str(ONTARA_GOV) in s_str:
+                desc = f"{s_short} is a subclass of {o_short} (governance → reasoning alignment)"
+            elif str(PROV) in o_str:
+                desc = f"{s_short} inherits from {o_short} (PROV-O dual subclassing)"
+            elif str(BFO) in o_str or "obo/" in o_str:
+                desc = f"{s_short} grounded in {o_short} (BFO alignment)"
+            else:
+                desc = f"{s_short} rdfs:subClassOf {o_short}"
+            cross_module.append({
+                "subject": s_short,
+                "predicate": "rdfs:subClassOf",
+                "object": o_short,
+                "description": desc,
+            })
+
+    # Also check governance file for cross-module axioms pointing into reasoning
+    gov_file = REPO_ROOT / "ontology" / "governance" / "ontara-governance.ttl"
+    if gov_file.exists():
+        g_gov = Graph()
+        g_gov.parse(gov_file, format="turtle")
+        for s, p, o in g_gov.triples((None, RDFS.subClassOf, None)):
+            if not isinstance(s, URIRef) or not isinstance(o, URIRef):
+                continue
+            if str(ONTARA_RSN) in str(o) and str(ONTARA_GOV) in str(s):
+                cross_module.append({
+                    "subject": short_iri(s),
+                    "predicate": "rdfs:subClassOf",
+                    "object": short_iri(o),
+                    "description": f"{short_iri(s)} is a subclass of {short_iri(o)} (governance → reasoning alignment)",
+                })
+
+    cross_module.sort(key=lambda a: a["subject"])
+
+    return {
+        "classes": classes,
+        "namedIndividuals": named_individuals,
+        "objectProperties": obj_properties,
+        "datatypeProperties": dt_properties,
+        "crossModuleAxioms": cross_module,
+        "moduleSummary": {
+            "classCount": len(classes),
+            "objectPropertyCount": len(obj_properties),
+            "datatypePropertyCount": len(dt_properties),
+            "namedIndividualCount": len(named_individuals),
+        },
+    }
+
+
+def count_domain_classes():
+    """Count OWL classes in Ontara domain ontology files using rdflib.
+
+    Counts classes in ontara-bmm.ttl, ontara-governance.ttl, ontara-domain.ttl,
+    and ontara-reasoning.ttl (all Ontara namespace classes, not imports).
+    """
+    try:
+        from rdflib import Graph, URIRef
+        from rdflib.namespace import RDF, OWL
+    except ImportError:
+        return 34  # fallback to old hardcoded value
+
+    ontara_prefixes = [
+        "https://ontara.dev/ontology/bmm/",
+        "https://ontara.dev/ontology/governance/",
+        "https://ontara.dev/ontology/domain/",
+        "https://ontara.dev/ontology/reasoning/",
+    ]
+
+    domain_files = [
+        REPO_ROOT / "generated" / "ontology" / "ontara-bmm.ttl",
+        REPO_ROOT / "ontology" / "governance" / "ontara-governance.ttl",
+        REPO_ROOT / "ontology" / "domain" / "ontara-domain.ttl",
+        REPO_ROOT / "ontology" / "reasoning" / "ontara-reasoning.ttl",
+    ]
+
+    all_classes = set()
+    for f in domain_files:
+        if not f.exists():
+            continue
+        g = Graph()
+        g.parse(f, format="turtle")
+        for cls in g.subjects(RDF.type, OWL.Class):
+            cls_str = str(cls)
+            if any(cls_str.startswith(p) for p in ontara_prefixes):
+                all_classes.add(cls_str)
+
+    return len(all_classes) if all_classes else 34
+
+
+def count_reified_weights():
+    """Count reified weighted relationship individuals in ontara-bmm-weights.ttl."""
+    weights_file = REPO_ROOT / "generated" / "ontology" / "ontara-bmm-weights.ttl"
+    if not weights_file.exists():
+        return 96  # fallback
+
+    try:
+        from rdflib import Graph
+        from rdflib.namespace import RDF, OWL
+    except ImportError:
+        return 96
+
+    g = Graph()
+    g.parse(weights_file, format="turtle")
+    return sum(1 for _ in g.subjects(RDF.type, OWL.NamedIndividual))
+
+
+def count_sparql_queries():
+    """Count SPARQL validation queries in validate_kg.py by scanning QUERIES list."""
+    validate_file = REPO_ROOT / "scripts" / "validate_kg.py"
+    if not validate_file.exists():
+        return 0
+    content = validate_file.read_text(encoding="utf-8")
+    # Count entries in the QUERIES list — each query is a dict with "name" key
+    return content.count('"name":')
+
+
 # ---------------------------------------------------------------
 # Core reasoning
 # ---------------------------------------------------------------
@@ -535,6 +839,11 @@ def main():
 
     if args.save_summary:
         object_props = extract_object_properties()
+        reasoning_vocab = extract_reasoning_vocabulary()
+        domain_class_count = count_domain_classes()
+        reified_weight_count = count_reified_weights()
+        sparql_query_count = count_sparql_queries()
+
         summary = {
             "generatedAt": datetime.now().isoformat(),
             "generator": "reason_kg.py",
@@ -554,15 +863,21 @@ def main():
             "stats": {
                 "ontologyFileCount": sum(1 for e in ONTOLOGY_FILES if e["file"].exists()),
                 "objectPropertyCount": len(object_props),
-                "reifiedWeightCount": 96,
-                "domainClassCount": 34,
+                "reifiedWeightCount": reified_weight_count,
+                "domainClassCount": domain_class_count,
                 "axiomFilePresent": (REPO_ROOT / "ontology" / "axioms" / "ontara-bmm-axioms.ttl").exists(),
+                "namedIndividualCount": reasoning_vocab["moduleSummary"]["namedIndividualCount"] if reasoning_vocab else 0,
+                "datatypePropertyCount": reasoning_vocab["moduleSummary"]["datatypePropertyCount"] if reasoning_vocab else 0,
+                "sparqlQueryCount": sparql_query_count,
             },
             "violationTest": {
                 "ran": args.test_violation,
                 "passed": test_result,
             },
         }
+
+        if reasoning_vocab:
+            summary["reasoningVocabulary"] = reasoning_vocab
 
         summary_path = REPO_ROOT / "generated" / "ontara" / "reasoning-summary.json"
         summary_path.parent.mkdir(parents=True, exist_ok=True)

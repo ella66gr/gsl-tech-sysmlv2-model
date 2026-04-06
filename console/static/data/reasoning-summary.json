@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-07T00:20:39.165179",
+  "generatedAt": "2026-04-07T00:32:03.194176",
   "generator": "reason_kg.py",
   "reasoner": "HermiT (via Robot)",
   "consistent": true,
@@ -196,11 +196,1110 @@
     "ontologyFileCount": 12,
     "objectPropertyCount": 14,
     "reifiedWeightCount": 96,
-    "domainClassCount": 34,
-    "axiomFilePresent": true
+    "domainClassCount": 109,
+    "axiomFilePresent": true,
+    "namedIndividualCount": 15,
+    "datatypePropertyCount": 11,
+    "sparqlQueryCount": 66
   },
   "violationTest": {
     "ran": false,
     "passed": null
+  },
+  "reasoningVocabulary": {
+    "classes": [
+      {
+        "iri": "ontara-rsn:BayesianUpdater",
+        "label": "Bayesian Updater",
+        "comment": "A structured probabilistic component that takes a prior probability\ndistribution and evidence, and produces a posterior distribution via\nBayes' theorem. In coordinate-framework terms (reasoning metamodel\n\u00a711.6): sequential Bayesian updating is a trajectory through\nprobability space \u2014 the prior de...",
+        "parents": [
+          "ontara-rsn:StructuredProbabilisticComponent"
+        ],
+        "module": "probabilistic"
+      },
+      {
+        "iri": "ontara-rsn:Claim",
+        "label": "Claim",
+        "comment": "An assertion produced by a ReasoningActivity. Dual subclassing: IAO\ninformation content entity (ontological grounding \u2014 a claim is about\nsomething and is the output of a cognitive or computational process)\nand PROV-O Entity (provenance interoperability \u2014 a claim is a thing\nwith provenance that ca...",
+        "parents": [
+          "bfo:IAO_0000030",
+          "prov:Entity"
+        ],
+        "module": "foundation"
+      },
+      {
+        "iri": "ontara-rsn:CombinationAlgebra",
+        "label": "Combination Algebra",
+        "comment": "The algebraic structure governing how constraint values combine. A\nCombinationAlgebra specifies the combination operator (how values aggregate)\nand the selection operator (how the best option is chosen).\n\nBFO grounding: information content entity (IAO_0000030) \u2014 a specification\nof combination sem...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:ConfidenceAssessment",
+        "label": "Confidence Assessment",
+        "comment": "An assessment of evidential confidence attached to a Claim, with a\ndeclared interpretive frame (S147-D1). The interpretive frame specifies\nhow the confidence value should be understood and combined:\n\n  - Probability frame: confidence is a probability (0\u20131), combined via\n    Bayesian updating, rep...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "evidence"
+      },
+      {
+        "iri": "ontara-rsn:Constraint",
+        "label": "Constraint",
+        "comment": "Abstract constraint type. In the reasoning metamodel, constraints shape\nthe coordinate space through which reasoning navigates. The three-way\ndistinction (S146-D8, grounded by S147-D3): HardConstraint (boundary),\nSoftConstraint (cost surface), GradedRule (truth-value surface).\n\nConstraints are in...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "constraints"
+      },
+      {
+        "iri": "ontara-rsn:ControlAction",
+        "label": "Control Action",
+        "comment": "An action taken by a controller to enforce a safety constraint. A\nControlAction is a process \u2014 something that happens in time \u2014 as opposed\nto the ControlStructure (an information entity specifying who can act) or\nthe SafetyConstraint (an information entity specifying what must hold).\n\nBFO groundi...",
+        "parents": [
+          "bfo:BFO_0000015"
+        ],
+        "module": "safety"
+      },
+      {
+        "iri": "ontara-rsn:ControlLoop",
+        "label": "Control Loop",
+        "comment": "A specific controller \u2192 actuator \u2192 controlled process \u2192 sensor \u2192 controller\nfeedback cycle within a broader ControlStructure. A ControlStructure may\ncontain multiple ControlLoops operating at different levels of the hierarchy.\n\nCoordinate-framework grounding: a ControlLoop is the operational unit...",
+        "parents": [
+          "ontara-rsn:ControlStructure"
+        ],
+        "module": "safety"
+      },
+      {
+        "iri": "ontara-rsn:ControlStructure",
+        "label": "Control Structure",
+        "comment": "A hierarchical arrangement of controllers, controlled processes, and\nfeedback loops. The control structure describes the mechanisms that maintain\nentity trajectories within safe NormativeRegions.\n\nBFO grounding: information content entity (IAO_0000030) \u2014 a ControlStructure\nis information about co...",
+        "parents": [
+          "bfo:IAO_0000030",
+          "prov:Entity"
+        ],
+        "module": "safety"
+      },
+      {
+        "iri": "ontara-rsn:CoordinationHeuristic",
+        "label": "Coordination Heuristic",
+        "comment": "A heuristic for care coordination and team management. Minimises\nhandoff count, maximises accountability continuity, and prefers known\ncompetent teams.\n\nCoordinate-framework grounding: minimise discontinuity in agent-assignment\ndimensions \u2014 smooth agent transitions preserve contextual knowledge.",
+        "parents": [
+          "ontara-rsn:Heuristic"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:Decision",
+        "label": "Decision",
+        "comment": "A choice among alternatives, produced by a ReasoningActivity. A Decision\nrecords which alternative was selected, the reasoning context in which\nthe choice was made, and the justification. In coordinate-framework\nterms, a Decision selects a trajectory through the coordinate space\nfrom among the fe...",
+        "parents": [
+          "bfo:IAO_0000030",
+          "prov:Entity"
+        ],
+        "module": "foundation"
+      },
+      {
+        "iri": "ontara-rsn:DecisionMode",
+        "label": "Decision Mode",
+        "comment": "Classification of the reasoning context's problem domain (S146-D5).\nDetermines which ReasoningComponents are activated. Phase 2 will\nelaborate with Cynefin domain mapping (clear, complicated, complex,\nchaotic) as ClassificationRegion instances (S147-D2).\n\nBFO grounding: information content entity...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "knowledge"
+      },
+      {
+        "iri": "ontara-rsn:DiagnosticHeuristic",
+        "label": "Diagnostic Heuristic",
+        "comment": "A heuristic for diagnostic reasoning. Generates hypotheses broadly\nthen prunes using discriminating evidence.\n\nCoordinate-framework grounding: maximise information gain per reasoning\nstep \u2014 choose tests and observations that most efficiently reduce\nuncertainty about the entity's position in the c...",
+        "parents": [
+          "ontara-rsn:Heuristic"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:EvidenceItem",
+        "label": "Evidence Item",
+        "comment": "A specific piece of evidence within an EvidenceLine. An EvidenceItem\nmay be an observation, a measurement, a document reference, a dataset,\na prior Claim, or any other identifiable artifact that contributes to\nthe evidential basis of a Claim.\n\nEvidenceItems carry their own provenance via PROV-O (...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "evidence"
+      },
+      {
+        "iri": "ontara-rsn:EvidenceLine",
+        "label": "Evidence Line",
+        "comment": "A coherent line of evidence supporting a Claim. An EvidenceLine groups\nrelated EvidenceItems into an argument \u2014 a reason to believe the Claim.\nA Claim may be supported by multiple EvidenceLines (converging evidence\nfrom different sources), and each EvidenceLine may contain multiple\nEvidenceItems ...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "evidence"
+      },
+      {
+        "iri": "ontara-rsn:FRAMFunction",
+        "label": "FRAM Function",
+        "comment": "A function description in the FRAM sense: a unit of activity with\nsix coupling aspects (Input, Output, Control, Precondition, Resource, Time).\nA FRAMFunction describes what a function does, not the function itself.\n\nBFO grounding: information content entity (IAO_0000030) \u2014 a FRAMFunction\nis a des...",
+        "parents": [
+          "bfo:IAO_0000030",
+          "prov:Entity"
+        ],
+        "module": "safety"
+      },
+      {
+        "iri": "ontara-rsn:Goal",
+        "label": "Goal",
+        "comment": "An intentional target \u2014 a directive specifying what the system is trying\nto reach or maintain. In coordinate-framework terms (S147-D2, S146-D4),\na Goal references a GoalRegion in coordinate space: a region the system\nis trying to reach or remain within. GoalRegions may be vague, multi-\ndimensiona...",
+        "parents": [
+          "bfo:IAO_0000033"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:GoalOrderingHeuristic",
+        "label": "Goal Ordering Heuristic",
+        "comment": "A heuristic for sequencing goals and tasks. Prioritises prerequisite,\nhigh-risk, irreversible, or high-information-gain tasks first.\n\nCoordinate-framework grounding: prioritise movement along axes with\nthe highest goal-region proximity gradient \u2014 move fastest toward the\nregion boundaries that mat...",
+        "parents": [
+          "ontara-rsn:Heuristic"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:GovernanceHeuristic",
+        "label": "Governance Heuristic",
+        "comment": "A heuristic for governance-aware escalation. Requires human review\nwhen confidence is low, novelty is high, explanation is weak, or\ndownstream risk is material.\n\nCoordinate-framework grounding: escalate when the entity's position is\nnear the FormalisationFrontier or a NormativeRegion boundary \u2014 t...",
+        "parents": [
+          "ontara-rsn:Heuristic"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:GradedRule",
+        "label": "Graded Rule",
+        "comment": "A constraint assigning a truth value in [0,1] to every point in the\ncoordinate space, representing the degree to which a business rule\nor heuristic applies. PSL (Probabilistic Soft Logic) provides the\ncomputational semantics: graded rules combine via convex optimisation\nto find the most probable ...",
+        "parents": [
+          "ontara-rsn:Constraint"
+        ],
+        "module": "constraints"
+      },
+      {
+        "iri": "ontara-rsn:HardConstraint",
+        "label": "Hard Constraint",
+        "comment": "A constraint defining a boundary that cannot be violated. In coordinate-\nframework terms (S147-D3), a HardConstraint defines a NormativeRegion\nor StaticBoundary in the coordinate space. The constraint is satisfied\nwhen the entity's position is within the region; it is violated when\nthe position c...",
+        "parents": [
+          "ontara-rsn:Constraint"
+        ],
+        "module": "constraints"
+      },
+      {
+        "iri": "ontara-rsn:Heuristic",
+        "label": "Heuristic",
+        "comment": "A declarative heuristic \u2014 a practical rule of thumb that guides\nreasoning without being formally mandatory. Heuristics are OWL\nindividuals with typed properties (S146-D6) declaring applicability\nconditions, ordering logic, and authority basis.\n\nIn coordinate-framework terms (\u00a77.4 of the coordinat...",
+        "parents": [
+          "ontara-rsn:KnowledgeSource"
+        ],
+        "module": "knowledge"
+      },
+      {
+        "iri": "ontara-rsn:HeuristicPack",
+        "label": "Heuristic Pack",
+        "comment": "A named, versionable collection of heuristics applicable to a domain,\nservice line, or regulatory context. A HeuristicPack bundles the heuristics\nthat apply to a particular operational situation \u2014 selecting the right pack\nis the first step in heuristic reasoning.\n\nBFO grounding: information conte...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "knowledge"
+      },
+      {
+        "iri": "ontara-rsn:InterpretiveFrame",
+        "label": "Interpretive Frame",
+        "comment": "The interpretive frame for a ConfidenceAssessment \u2014 determines how\nthe confidence value is understood and combined with other assessments.\nThree frames are defined (S147-D1, stable since Session 46):\n\n  - ProbabilityFrame: Bayesian probability semantics\n  - FuzzyMembershipFrame: fuzzy set members...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:KnowledgeSource",
+        "label": "Knowledge Source",
+        "comment": "An abstract type for knowledge inputs to reasoning. KnowledgeSources\nare consulted by ReasoningActivities (via prov:used) and contribute\nto the production of Claims and Decisions. Concrete subtypes include\nclinical guidelines, regulatory instruments, population data sets,\nexpert knowledge, and he...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "knowledge"
+      },
+      {
+        "iri": "ontara-rsn:Measure",
+        "label": "Measure",
+        "comment": "A projection onto a specific coordinate axis for evaluation. A Measure\ndefines how progress toward a Goal or compliance with a Constraint is\nassessed \u2014 it selects one or more axes from the coordinate space and\nspecifies the assessment semantics (threshold, range, trend, rate).\n\nIn coordinate-fram...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:Obstacle",
+        "label": "Obstacle",
+        "comment": "A condition that constrains or impedes trajectories toward a Goal.\nAn Obstacle is descriptive information \u2014 it records a fact about\nthe environment that makes goal attainment harder. In coordinate-\nframework terms, an Obstacle identifies a region or condition in the\ncoordinate space that the syst...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:Plan",
+        "label": "Plan",
+        "comment": "A sequence of intended actions toward a Goal. In coordinate-framework\nterms, a Plan specifies a trajectory through the coordinate space\nfrom the current position toward a GoalRegion, accounting for\nConstraints and Obstacles.\n\nBFO grounding: plan specification (IAO_0000104) \u2014 IAO defines plan\nspec...",
+        "parents": [
+          "bfo:IAO_0000104"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:PredictiveAnalytics",
+        "label": "Predictive Analytics",
+        "comment": "A structured probabilistic component for population-level analysis\nthat does not target individual patient outcomes. Produces aggregate\nprobabilistic assessments: demand forecasting, resource utilisation\nprojections, population health trend analysis.\n\nDistinguished from RiskCalculator and Prognos...",
+        "parents": [
+          "ontara-rsn:StructuredProbabilisticComponent"
+        ],
+        "module": "probabilistic"
+      },
+      {
+        "iri": "ontara-rsn:PrognosticModel",
+        "label": "Prognostic Model",
+        "comment": "A structured probabilistic component that models time-to-event or\ntrajectory outcomes. Produces probability distributions over future\nstates at specified time horizons. In coordinate-framework terms:\na PrognosticModel projects trajectories forward through the\ncoordinate space, producing Probabili...",
+        "parents": [
+          "ontara-rsn:StructuredProbabilisticComponent"
+        ],
+        "module": "probabilistic"
+      },
+      {
+        "iri": "ontara-rsn:ReasoningActivity",
+        "label": "Reasoning Activity",
+        "comment": "A single reasoning episode \u2014 a bounded process in which knowledge sources\nare consulted, constraints evaluated, and a decision or claim produced. Dual\nsubclassing: BFO process (ontological grounding) and PROV-O Activity\n(provenance interoperability). Every ReasoningActivity has a context, may\nuse...",
+        "parents": [
+          "bfo:BFO_0000015",
+          "prov:Activity"
+        ],
+        "module": "foundation"
+      },
+      {
+        "iri": "ontara-rsn:ReasoningAgent",
+        "label": "Reasoning Agent",
+        "comment": "An entity that bears responsibility for a reasoning activity \u2014 a human\npractitioner, a software component, or a composite of both. Dual\nsubclassing: BFO material entity (ontological grounding) and PROV-O\nAgent (provenance interoperability).\n\nBFO grounding: material entity (BFO_0000040).\nPROV-O al...",
+        "parents": [
+          "bfo:BFO_0000040",
+          "prov:Agent"
+        ],
+        "module": "foundation"
+      },
+      {
+        "iri": "ontara-rsn:ReasoningComponent",
+        "label": "Reasoning Component",
+        "comment": "Abstract type for typed reasoning capabilities that can be activated\nwithin a ReasoningContext. Concrete subtypes include deterministic\nrule engines (Tier 1), inspectable logic components (Tier 2),\nstructured probabilistic models (new category per S147-D5), and\nopaque probabilistic models (Tier 3...",
+        "parents": [
+          "bfo:BFO_0000031"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:ReasoningContext",
+        "label": "Reasoning Context",
+        "comment": "The context within which a reasoning activity occurs. Captures the\ndomain position, decision mode, available knowledge sources, active\nconstraints, and applicable goals. A ReasoningContext is generically\ndependent \u2014 it is information about the conditions of reasoning, not\nthe reasoning itself.\n\nT...",
+        "parents": [
+          "bfo:BFO_0000031"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:ResourceHeuristic",
+        "label": "Resource Heuristic",
+        "comment": "A heuristic for resource-allocation decisions. Prefers scarce-resource\npreservation, continuity-preserving allocations, and local-capacity balancing.\n\nCoordinate-framework grounding: minimise rate of change in resource-axis\ndimensions \u2014 smooth allocation trajectories preserve capacity.",
+        "parents": [
+          "ontara-rsn:Heuristic"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:RiskCalculator",
+        "label": "Risk Calculator",
+        "comment": "A BayesianUpdater with explicit validation metadata \u2014 a validated\npopulation-level risk model. Distinguished from a generic\nBayesianUpdater by the requirement for published validation data:\nvalidation population characteristics, performance metrics\n(AUC, sensitivity, specificity, calibration), an...",
+        "parents": [
+          "ontara-rsn:BayesianUpdater"
+        ],
+        "module": "probabilistic"
+      },
+      {
+        "iri": "ontara-rsn:RiskHeuristic",
+        "label": "Risk Heuristic",
+        "comment": "A heuristic for risk recognition and escalation. Activates on\nred-flag combinations, uncertainty plus severity, and vulnerable-population\nmarkers.\n\nCoordinate-framework grounding: increase monitoring density near\nNormativeRegion boundaries \u2014 proximity to a constraint boundary\nwarrants heightened ...",
+        "parents": [
+          "ontara-rsn:Heuristic"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:SafetyConstraint",
+        "label": "Safety Constraint",
+        "comment": "A HardConstraint whose violation constitutes a safety hazard. Safety\nconstraints are the hardest of hard constraints \u2014 they define the\nboundaries of safety-critical NormativeRegions that must never be crossed.\n\nCoordinate-framework grounding: a SafetyConstraint defines a safety-critical\nNormative...",
+        "parents": [
+          "ontara-rsn:HardConstraint"
+        ],
+        "module": "safety"
+      },
+      {
+        "iri": "ontara-rsn:SoftConstraint",
+        "label": "Soft Constraint",
+        "comment": "A constraint defining a continuous cost or preference landscape over\nthe coordinate space. Every point in the space has a cost associated\nwith it; the system seeks to minimise cost or maximise preference.\nA SoftConstraint shapes trajectories rather than bounding them.\n\nIn coordinate-framework ter...",
+        "parents": [
+          "ontara-rsn:Constraint"
+        ],
+        "module": "constraints"
+      },
+      {
+        "iri": "ontara-rsn:StructuredProbabilisticComponent",
+        "label": "Structured Probabilistic Component",
+        "comment": "Abstract type for validated probabilistic models \u2014 the new category\nbetween Tier 2 (inspectable logic) and Tier 3 (opaque ML) per the\nA6 reformulation (S147-D5).\n\nStructured probabilistic components share three defining properties:\n  1. Deterministic in mechanism \u2014 same inputs produce same output...",
+        "parents": [
+          "ontara-rsn:ReasoningComponent"
+        ],
+        "module": "probabilistic"
+      },
+      {
+        "iri": "ontara-rsn:UnsafeControlAction",
+        "label": "Unsafe Control Action",
+        "comment": "A ControlAction that leads to a hazard. The STPA method identifies\nfour types of unsafe control actions (the four ways boundary maintenance\ncan fail):\n\n1. NotProvided: required action not taken \u2014 the controller fails to issue\n   an action when the boundary is being approached. The trajectory cros...",
+        "parents": [
+          "ontara-rsn:ControlAction"
+        ],
+        "module": "safety"
+      },
+      {
+        "iri": "ontara-rsn:UnsafeControlActionType",
+        "label": "Unsafe Control Action Type",
+        "comment": "A classification of the type of unsafe control action. The four STPA\ntypes are the standard vocabulary for describing how a control action can\ncause a hazard. This class is instantiated as a closed enumeration of four\nnamed individuals.\n\nBFO grounding: information content entity (IAO_0000030) \u2014 a...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "core"
+      },
+      {
+        "iri": "ontara-rsn:VariabilityProfile",
+        "label": "Variability Profile",
+        "comment": "A description of how a FRAMFunction's performance varies. The\nVariabilityProfile captures both internal variability (from within the\nfunction itself) and external variability (from upstream coupling with\nother functions).\n\nCoordinate-framework grounding: describes the spread of actual trajectorie...",
+        "parents": [
+          "bfo:IAO_0000030"
+        ],
+        "module": "safety"
+      }
+    ],
+    "namedIndividuals": [
+      {
+        "iri": "ontara-rsn:ChaoticMode",
+        "label": "Chaotic Mode",
+        "types": [
+          "ontara-rsn:DecisionMode"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:ClearMode",
+        "label": "Clear Mode",
+        "types": [
+          "ontara-rsn:DecisionMode"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:ComplexMode",
+        "label": "Complex Mode",
+        "types": [
+          "ontara-rsn:DecisionMode"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:ComplicatedMode",
+        "label": "Complicated Mode",
+        "types": [
+          "ontara-rsn:DecisionMode"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:FuzzyMembershipFrame",
+        "label": "Fuzzy Membership Frame",
+        "types": [
+          "ontara-rsn:InterpretiveFrame"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:FuzzyMinMax",
+        "label": "Fuzzy Min-Max",
+        "types": [
+          "ontara-rsn:CombinationAlgebra"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:MaxTimesSemiring",
+        "label": "Max-Times Semiring",
+        "types": [
+          "ontara-rsn:CombinationAlgebra"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:MinPlusSemiring",
+        "label": "Min-Plus Semiring",
+        "types": [
+          "ontara-rsn:CombinationAlgebra"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:NotProvided",
+        "label": "Not Provided",
+        "types": [
+          "ontara-rsn:UnsafeControlActionType"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:PSLConvexOptimisation",
+        "label": "PSL Convex Optimisation",
+        "types": [
+          "ontara-rsn:CombinationAlgebra"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:PreferenceWeightFrame",
+        "label": "Preference Weight Frame",
+        "types": [
+          "ontara-rsn:InterpretiveFrame"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:ProbabilityFrame",
+        "label": "Probability Frame",
+        "types": [
+          "ontara-rsn:InterpretiveFrame"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:ProvidedWhenNotNeeded",
+        "label": "Provided When Not Needed",
+        "types": [
+          "ontara-rsn:UnsafeControlActionType"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:WrongDuration",
+        "label": "Wrong Duration",
+        "types": [
+          "ontara-rsn:UnsafeControlActionType"
+        ]
+      },
+      {
+        "iri": "ontara-rsn:WrongTiming",
+        "label": "Wrong Timing",
+        "types": [
+          "ontara-rsn:UnsafeControlActionType"
+        ]
+      }
+    ],
+    "objectProperties": [
+      {
+        "name": "ontara-rsn:activatesComponent",
+        "label": "activates component",
+        "domain": "ontara-rsn:DecisionMode",
+        "range": "ontara-rsn:ReasoningComponent",
+        "functional": false,
+        "comment": "Links a DecisionMode to the ReasoningComponent types it activates.\nThis is the routing mechanism: given a context's decision mode, the\nsystem knows which components to engage. The routing is not exclusive\n\u2014 modes may activate overlapping sets of components, with higher\nmodes activating all compon..."
+      },
+      {
+        "name": "ontara-rsn:applicableToContext",
+        "label": "applicable to context",
+        "domain": "ontara-rsn:Heuristic",
+        "range": "ontara-rsn:ReasoningContext",
+        "functional": false,
+        "comment": "Links a Heuristic to the ReasoningContext types that activate it.\nA heuristic is applicable to a context when the context's properties\n(goal type, decision mode, domain) match the heuristic's activation\ncriteria."
+      },
+      {
+        "name": "ontara-rsn:applicableToDomain",
+        "label": "applicable to domain",
+        "domain": "Thing",
+        "range": "ontara-dom:DomainIdentity",
+        "functional": false,
+        "comment": "Links a Heuristic or HeuristicPack to the DomainIdentity it applies to.\nBoth individual heuristics and entire packs can declare domain applicability.\nDomain-specific heuristics override or supplement the default set for that\noperational context."
+      },
+      {
+        "name": "ontara-rsn:composedWith",
+        "label": "composed with",
+        "domain": "ontara-rsn:Constraint",
+        "range": "ontara-rsn:Constraint",
+        "functional": false,
+        "comment": "Expresses that two Constraints interact and should be evaluated\ntogether. Symmetric \u2014 if A is composedWith B, then B is composedWith A.\nComposition may be necessary when constraints share variables, conflict,\nor must be satisfied jointly for a decision to be valid."
+      },
+      {
+        "name": "ontara-rsn:coupledWith",
+        "label": "coupled with",
+        "domain": "ontara-rsn:FRAMFunction",
+        "range": "ontara-rsn:FRAMFunction",
+        "functional": false,
+        "comment": "Symmetric coupling between FRAMFunctions. If function A is coupled\nwith function B, then B is coupled with A. Coupling is the mechanism by\nwhich variability propagates \u2014 a variable output from one function becomes\na variable input to another.\n\nCoordinate-framework grounding: coupling propagates t..."
+      },
+      {
+        "name": "ontara-rsn:enforces",
+        "label": "enforces",
+        "domain": "ontara-rsn:ControlAction",
+        "range": "ontara-rsn:SafetyConstraint",
+        "functional": false,
+        "comment": "Links a ControlAction to the SafetyConstraint it enforces. A\nControlAction is always issued to enforce some constraint \u2014 this property\nmakes that connection explicit and auditable."
+      },
+      {
+        "name": "ontara-rsn:hasAuthorityBasis",
+        "label": "has authority basis",
+        "domain": "ontara-rsn:Heuristic",
+        "range": "ontara-rsn:KnowledgeSource",
+        "functional": false,
+        "comment": "Links a Heuristic to the KnowledgeSource that justifies its use.\nA heuristic is not an arbitrary rule \u2014 it is grounded in evidence,\nclinical guidelines, domain expertise, or regulatory requirements.\nThis property makes that grounding explicit and auditable."
+      },
+      {
+        "name": "ontara-rsn:hasCombinationAlgebra",
+        "label": "has combination algebra",
+        "domain": "ontara-rsn:Constraint",
+        "range": "ontara-rsn:CombinationAlgebra",
+        "functional": true,
+        "comment": "Links a Constraint to its CombinationAlgebra. Functional \u2014 each\nconstraint has exactly one combination algebra. This determines how\nthe constraint's values aggregate and how the best-satisfying option\nis selected when multiple options are available."
+      },
+      {
+        "name": "ontara-rsn:hasConfidence",
+        "label": "has confidence",
+        "domain": "ontara-rsn:Claim",
+        "range": "ontara-rsn:ConfidenceAssessment",
+        "functional": false,
+        "comment": "Links a Claim to its ConfidenceAssessment. A Claim may have multiple\nconfidence assessments (e.g. from different evaluation methods or at\ndifferent points in time), each with its own interpretive frame."
+      },
+      {
+        "name": "ontara-rsn:hasConstraint",
+        "label": "has constraint",
+        "domain": "ontara-rsn:ReasoningContext",
+        "range": "ontara-rsn:Constraint",
+        "functional": false,
+        "comment": "Links a ReasoningContext to the Constraint(s) that shape the\nreasoning. Constraints include hard boundaries (HardConstraint),\ncost surfaces (SoftConstraint), and truth-value surfaces\n(GradedRule)."
+      },
+      {
+        "name": "ontara-rsn:hasContext",
+        "label": "has context",
+        "domain": "ontara-rsn:ReasoningActivity",
+        "range": "ontara-rsn:ReasoningContext",
+        "functional": false,
+        "comment": "Links a ReasoningActivity to the ReasoningContext in which it\nwas conducted. Every reasoning episode occurs within a specific\ncontext that determines available knowledge, active constraints,\napplicable goals, and the decision mode."
+      },
+      {
+        "name": "ontara-rsn:hasControlLoop",
+        "label": "has control loop",
+        "domain": "ontara-rsn:ControlStructure",
+        "range": "ontara-rsn:ControlLoop",
+        "functional": false,
+        "comment": "Links a ControlStructure to its constituent ControlLoops. A\nControlStructure may contain multiple loops operating at different\nlevels of the hierarchy."
+      },
+      {
+        "name": "ontara-rsn:hasControlledProcess",
+        "label": "has controlled process",
+        "domain": "ontara-rsn:ControlLoop",
+        "range": "Thing",
+        "functional": false,
+        "comment": "Links a ControlLoop to the controlled process \u2014 the activity or\nsystem whose trajectory the loop monitors and corrects. The controlled\nprocess is what can cross a NormativeRegion boundary if not properly\nmanaged."
+      },
+      {
+        "name": "ontara-rsn:hasController",
+        "label": "has controller",
+        "domain": "ontara-rsn:ControlLoop",
+        "range": "Thing",
+        "functional": false,
+        "comment": "Links a ControlLoop to its controller \u2014 the entity (agent, system,\nor role) that issues ControlActions. The controller can be a person,\nan automated system, a regulatory body, or any other thing that has\nauthority to take corrective action."
+      },
+      {
+        "name": "ontara-rsn:hasDecisionMode",
+        "label": "has decision mode",
+        "domain": "ontara-rsn:ReasoningContext",
+        "range": "ontara-rsn:DecisionMode",
+        "functional": true,
+        "comment": "Links a ReasoningContext to its decision mode classification (S146-D5).\nFunctional \u2014 a context has exactly one active decision mode. The\ndecision mode determines which ReasoningComponents are activated.\n\nPhase 2 (Step 2.2) will elaborate DecisionMode with Cynefin domain\nmapping and routing rules."
+      },
+      {
+        "name": "ontara-rsn:hasEvidence",
+        "label": "has evidence",
+        "domain": "ontara-rsn:EvidenceLine",
+        "range": "ontara-rsn:EvidenceItem",
+        "functional": false,
+        "comment": "Links an EvidenceLine to the EvidenceItem(s) that compose it.\nEach EvidenceItem is a specific artifact (observation, measurement,\ndocument, prior claim) contributing to the line of evidence."
+      },
+      {
+        "name": "ontara-rsn:hasFunctionControl",
+        "label": "has function control",
+        "domain": "ontara-rsn:FRAMFunction",
+        "range": "Thing",
+        "functional": false,
+        "comment": "Links a FRAMFunction to its control \u2014 conditions or constraints that\nregulate how the function is executed. Controls correspond to SafetyConstraints\nand governance obligations that bound the function's trajectory."
+      },
+      {
+        "name": "ontara-rsn:hasFunctionInput",
+        "label": "has function input",
+        "domain": "ontara-rsn:FRAMFunction",
+        "range": "Thing",
+        "functional": false,
+        "comment": "Links a FRAMFunction to its input \u2014 what initiates or is transformed\nby the function. In coordinate-framework terms: the region of coordinate\nspace that the function starts from."
+      },
+      {
+        "name": "ontara-rsn:hasFunctionOutput",
+        "label": "has function output",
+        "domain": "ontara-rsn:FRAMFunction",
+        "range": "Thing",
+        "functional": false,
+        "comment": "Links a FRAMFunction to its output \u2014 what the function produces or\ntransforms its input into. In coordinate-framework terms: the region of\ncoordinate space that the function moves toward."
+      },
+      {
+        "name": "ontara-rsn:hasFunctionPrecondition",
+        "label": "has function precondition",
+        "domain": "ontara-rsn:FRAMFunction",
+        "range": "Thing",
+        "functional": false,
+        "comment": "Links a FRAMFunction to its precondition \u2014 what must be true before\nthe function can execute. Preconditions define the entry conditions for\nthe function's coordinate-space transformation."
+      },
+      {
+        "name": "ontara-rsn:hasFunctionResource",
+        "label": "has function resource",
+        "domain": "ontara-rsn:FRAMFunction",
+        "range": "Thing",
+        "functional": false,
+        "comment": "Links a FRAMFunction to its resource \u2014 what is consumed or used\n(but not transformed) during function execution. Resources constrain\nwhen and how often the function can execute."
+      },
+      {
+        "name": "ontara-rsn:hasFunctionTime",
+        "label": "has function time",
+        "domain": "ontara-rsn:FRAMFunction",
+        "range": "Thing",
+        "functional": false,
+        "comment": "Links a FRAMFunction to its time aspect \u2014 temporal constraints on\nwhen and for how long the function executes. In coordinate-framework\nterms: the time axis is always present as a dimension; this property\nmakes the temporal bounds of a function explicit."
+      },
+      {
+        "name": "ontara-rsn:hasGoal",
+        "label": "has goal",
+        "domain": "ontara-rsn:ReasoningContext",
+        "range": "ontara-rsn:Goal",
+        "functional": false,
+        "comment": "Links a ReasoningContext to the Goal(s) that the reasoning is\ndirected toward. A context may have multiple goals (which may\nbe complementary, competing, or hierarchically decomposed)."
+      },
+      {
+        "name": "ontara-rsn:hasInterpretiveFrame",
+        "label": "has interpretive frame",
+        "domain": "ontara-rsn:ConfidenceAssessment",
+        "range": "ontara-rsn:InterpretiveFrame",
+        "functional": true,
+        "comment": "Links a ConfidenceAssessment to its InterpretiveFrame. Functional \u2014\neach confidence assessment has exactly one interpretive frame that\ndetermines how the confidence value is understood and combined.\nA ConfidenceAssessment without a declared frame is meaningless."
+      },
+      {
+        "name": "ontara-rsn:hasKnowledgeSource",
+        "label": "has knowledge source",
+        "domain": "ontara-rsn:ReasoningContext",
+        "range": "ontara-rsn:KnowledgeSource",
+        "functional": false,
+        "comment": "Links a ReasoningContext to the KnowledgeSource(s) available for\nconsultation during reasoning. This includes guidelines, regulatory\ninstruments, heuristics, and any other information inputs."
+      },
+      {
+        "name": "ontara-rsn:hasMeasure",
+        "label": "has measure",
+        "domain": "ontara-rsn:Goal",
+        "range": "ontara-rsn:Measure",
+        "functional": false,
+        "comment": "Links a Goal to the Measure(s) used to assess progress toward it.\nEach Measure is a named projection onto a coordinate axis,\ndefining how attainment of the goal is evaluated."
+      },
+      {
+        "name": "ontara-rsn:hasMember",
+        "label": "has member",
+        "domain": "ontara-rsn:HeuristicPack",
+        "range": "ontara-rsn:Heuristic",
+        "functional": false,
+        "comment": "Links a HeuristicPack to its constituent heuristics. A pack contains\none or more heuristics that collectively cover the reasoning situation\nfor which the pack is designed."
+      },
+      {
+        "name": "ontara-rsn:hasObstacle",
+        "label": "has obstacle",
+        "domain": "ontara-rsn:ReasoningContext",
+        "range": "ontara-rsn:Obstacle",
+        "functional": false,
+        "comment": "Links a ReasoningContext to Obstacle(s) identified as impeding\nprogress toward the context's goals."
+      },
+      {
+        "name": "ontara-rsn:hasPlan",
+        "label": "has plan",
+        "domain": "ontara-rsn:Decision",
+        "range": "ontara-rsn:Plan",
+        "functional": false,
+        "comment": "Links a Decision to the Plan that implements it. A Decision may\nhave zero plans (immediate action) or one plan (a structured\nsequence of intended actions toward a goal)."
+      },
+      {
+        "name": "ontara-rsn:hasPosterior",
+        "label": "has posterior",
+        "domain": "ontara-rsn:BayesianUpdater",
+        "range": "ontara-rsn:Claim",
+        "functional": false,
+        "comment": "Links a BayesianUpdater to its posterior probability distribution,\nrepresented as a Claim. The posterior is the output of Bayesian\nupdating \u2014 the refined distribution after incorporating evidence.\nAs a Claim, it carries confidence assessment, evidence lines, and\nPROV-O provenance (prov:wasGenerat..."
+      },
+      {
+        "name": "ontara-rsn:hasPrior",
+        "label": "has prior",
+        "domain": "ontara-rsn:BayesianUpdater",
+        "range": "ontara-rsn:Claim",
+        "functional": false,
+        "comment": "Links a BayesianUpdater to its prior probability distribution,\nrepresented as a Claim (an assertion about the prior state of\nknowledge). The prior Claim carries its own ConfidenceAssessment\nwith ProbabilityFrame, and its own evidence chain.\n\nThe choice to type the prior as a Claim (rather than a ..."
+      },
+      {
+        "name": "ontara-rsn:hasSafetyEvidence",
+        "label": "has safety evidence",
+        "domain": "ontara-rsn:SafetyConstraint",
+        "range": "ontara-rsn:Claim",
+        "functional": false,
+        "comment": "Links a SafetyConstraint to a Claim that provides evidence of its\nsatisfaction or violation. This reuses the SEPIO evidence architecture\n(Sections 5 and 6) for safety compliance: a safety constraint is satisfied\nwhen there is a Claim (backed by EvidenceLines and EvidenceItems) that\nthe controlled..."
+      },
+      {
+        "name": "ontara-rsn:hasUnsafeActionType",
+        "label": "has unsafe action type",
+        "domain": "ontara-rsn:UnsafeControlAction",
+        "range": "ontara-rsn:UnsafeControlActionType",
+        "functional": false,
+        "comment": "Links an UnsafeControlAction to its STPA type classification.\nProvides a structured vocabulary for describing how the control action\ncaused or contributed to a hazard."
+      },
+      {
+        "name": "ontara-rsn:hasVariabilityProfile",
+        "label": "has variability profile",
+        "domain": "ontara-rsn:FRAMFunction",
+        "range": "ontara-rsn:VariabilityProfile",
+        "functional": true,
+        "comment": "Links a FRAMFunction to its VariabilityProfile. Functional \u2014 each\nfunction has exactly one variability profile (though the profile may\ndescribe multiple variability sources). The variability profile is the\nprimary input for FRAM resonance analysis."
+      },
+      {
+        "name": "ontara-rsn:hierarchicallyControls",
+        "label": "hierarchically controls",
+        "domain": "Thing",
+        "range": "Thing",
+        "functional": false,
+        "comment": "A transitive hierarchical control relationship. Enables modelling\nof multi-level governance hierarchies, e.g.: HSE \u2192 COSHH regulator \u2192\noperator \u2192 machine. Transitivity means that if A hierarchically controls\nB and B hierarchically controls C, then A hierarchically controls C.\n\nCoordinate-framewor..."
+      },
+      {
+        "name": "ontara-rsn:monitoredBy",
+        "label": "monitored by",
+        "domain": "ontara-rsn:SafetyConstraint",
+        "range": "ontara-rsn:ControlLoop",
+        "functional": false,
+        "comment": "Links a SafetyConstraint to the ControlLoop that monitors and\nenforces it. This is the operational connection between the constraint\n(the rule that must hold) and the mechanism (the loop that detects\nviolations and issues ControlActions to correct them).\n\nA SafetyConstraint may be monitored by mu..."
+      },
+      {
+        "name": "ontara-rsn:overrides",
+        "label": "overrides",
+        "domain": "ontara-rsn:Heuristic",
+        "range": "ontara-rsn:Heuristic",
+        "functional": false,
+        "comment": "Links a Heuristic to the Heuristic it overrides. Used when a domain-\nor context-specific heuristic replaces a more general default.\n\nOverride events are recorded via PROV-O: prov:wasGeneratedBy on the\noverriding heuristic links to the ReasoningActivity that decided the\noverride, preserving full p..."
+      },
+      {
+        "name": "ontara-rsn:producedDecision",
+        "label": "produced decision",
+        "domain": "ontara-rsn:ReasoningActivity",
+        "range": "ontara-rsn:Decision",
+        "functional": false,
+        "comment": "Links a ReasoningActivity to the Decision it produced. Complements\nprov:wasGeneratedBy (which links from the Decision back to the\nActivity). A ReasoningActivity may produce zero or more Decisions\n(zero if the activity produces Claims but no decision)."
+      },
+      {
+        "name": "ontara-rsn:supportedBy",
+        "label": "supported by",
+        "domain": "ontara-rsn:Claim",
+        "range": "ontara-rsn:EvidenceLine",
+        "functional": false,
+        "comment": "Links a Claim to the EvidenceLine(s) that support it. A Claim\nmay have multiple evidence lines representing converging evidence\nfrom independent sources. The absence of any evidence lines\nindicates an unsupported assertion."
+      },
+      {
+        "name": "ontara-rsn:transitionsTo",
+        "label": "transitions to",
+        "domain": "ontara-rsn:DecisionMode",
+        "range": "ontara-rsn:DecisionMode",
+        "functional": false,
+        "comment": "Links one DecisionMode to another that the context may transition to.\nA mode transition is a ReasoningActivity \u2014 the recognition that the\nproblem character has changed. Transitions may be triggered by new\nevidence, escalation conditions, or stabilisation events."
+      }
+    ],
+    "datatypeProperties": [
+      {
+        "iri": "ontara-rsn:hasConfidenceInterval",
+        "label": "has confidence interval",
+        "domain": "ontara-rsn:StructuredProbabilisticComponent",
+        "range": "string",
+        "comment": "Records the confidence interval or bounds on the component's\nprobabilistic output. Free-text for now \u2014 structured interval\nrepresentation (lower bound, upper bound, confidence level) is\na candidate for future elaboration.\n\nExamples: '95% CI: 9.2%-15.8%', 'Prediction interval: 3-18 months'."
+      },
+      {
+        "iri": "ontara-rsn:hasConfidenceValue",
+        "label": "has confidence value",
+        "domain": "ontara-rsn:ConfidenceAssessment",
+        "range": "decimal",
+        "comment": "The numeric confidence value (typically 0\u20131) of a ConfidenceAssessment.\nThe meaning of this value depends on the InterpretiveFrame:\n  - ProbabilityFrame: Bayesian probability\n  - FuzzyMembershipFrame: degree of membership\n  - PreferenceWeightFrame: preference strength\n\nFunctional \u2014 each assessmen..."
+      },
+      {
+        "iri": "ontara-rsn:hasExternalVariability",
+        "label": "has external variability",
+        "domain": "ontara-rsn:VariabilityProfile",
+        "range": "string",
+        "comment": "Describes the external variability of a FRAMFunction \u2014 variation\npropagated from upstream coupled functions. A function with low internal\nvariability can still have high effective variability if its inputs are\nhighly variable."
+      },
+      {
+        "iri": "ontara-rsn:hasHazardDescription",
+        "label": "has hazard description",
+        "domain": "nbee5ae3cebc344a895cc9812b29031c0b1",
+        "range": "string",
+        "comment": "A natural-language description of the hazard associated with a\nSafetyConstraint or UnsafeControlAction. For SafetyConstraint: describes\nwhat harm results from violating the constraint. For UnsafeControlAction:\ndescribes the hazard the unsafe action caused or could cause."
+      },
+      {
+        "iri": "ontara-rsn:hasIdentityElement",
+        "label": "has identity element",
+        "domain": "ontara-rsn:CombinationAlgebra",
+        "range": "string",
+        "comment": "The identity element of the CombinationAlgebra. String type to\naccommodate \"not applicable\" for algebras such as PSLConvexOptimisation\nwhere no scalar identity exists. For semirings, this is the identity\nof the combination operator (addition or multiplication)."
+      },
+      {
+        "iri": "ontara-rsn:hasInternalVariability",
+        "label": "has internal variability",
+        "domain": "ontara-rsn:VariabilityProfile",
+        "range": "string",
+        "comment": "Describes the internal variability of a FRAMFunction \u2014 variation\narising from within the function itself (e.g. skill variation, equipment\ndrift, cognitive load). Free-text for now; structured variability\nscales are a candidate for future elaboration."
+      },
+      {
+        "iri": "ontara-rsn:hasOrderingLogic",
+        "label": "has ordering logic",
+        "domain": "ontara-rsn:Heuristic",
+        "range": "string",
+        "comment": "Describes the ordering or selection logic of the Heuristic in natural\nlanguage. This is the human-readable rationale for why this heuristic\napplies and how it ranks or selects among options. Required for\ninterpretability and governance audit."
+      },
+      {
+        "iri": "ontara-rsn:hasPerformanceMetric",
+        "label": "has performance metric",
+        "domain": "ontara-rsn:StructuredProbabilisticComponent",
+        "range": "string",
+        "comment": "Records a performance metric from the component's validation.\nFree-text for now \u2014 structured metric representation (AUC, C-statistic,\ncalibration slope, sensitivity, specificity) is a candidate for\nfuture elaboration. Multiple values may be asserted.\n\nExamples: 'AUC 0.84 (95% CI 0.83-0.86)', 'Cal..."
+      },
+      {
+        "iri": "ontara-rsn:hasPriority",
+        "label": "has priority",
+        "domain": "ontara-rsn:Constraint",
+        "range": "integer",
+        "comment": "Relative priority for constraint relaxation ordering. Higher integer\nvalues take priority over lower values. When constraints conflict, lower-\npriority constraints are relaxed first. HardConstraints should carry\nhigher priorities than SoftConstraints; governance obligations (aligned\nas HardConstr..."
+      },
+      {
+        "iri": "ontara-rsn:hasTruthValueRange",
+        "label": "has truth value range",
+        "domain": "ontara-rsn:GradedRule",
+        "range": "string",
+        "comment": "Documents the truth-value range of a GradedRule. Typically \"[0,1]\"\nfor standard fuzzy logic and PSL, but may differ for other graded\nlogics. String type to accommodate non-standard ranges.\n\nUsed by the reasoning runtime to validate that GradedRule outputs\nare within the declared range before they..."
+      },
+      {
+        "iri": "ontara-rsn:hasValidationPopulation",
+        "label": "has validation population",
+        "domain": "ontara-rsn:StructuredProbabilisticComponent",
+        "range": "string",
+        "comment": "Describes the population on which the probabilistic component was\nvalidated. Free-text description of cohort characteristics, size,\nand representativeness. A governance requirement for any structured\nprobabilistic component used as evidence in clinical decisions.\n\nExamples: 'UK primary care popul..."
+      }
+    ],
+    "crossModuleAxioms": [
+      {
+        "subject": "ontara-gov:Obligation",
+        "predicate": "rdfs:subClassOf",
+        "object": "ontara-rsn:HardConstraint",
+        "description": "ontara-gov:Obligation is a subclass of ontara-rsn:HardConstraint (governance \u2192 reasoning alignment)"
+      },
+      {
+        "subject": "ontara-gov:Prohibition",
+        "predicate": "rdfs:subClassOf",
+        "object": "ontara-rsn:HardConstraint",
+        "description": "ontara-gov:Prohibition is a subclass of ontara-rsn:HardConstraint (governance \u2192 reasoning alignment)"
+      },
+      {
+        "subject": "ontara-rsn:Claim",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:Claim grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:Claim",
+        "predicate": "rdfs:subClassOf",
+        "object": "prov:Entity",
+        "description": "ontara-rsn:Claim inherits from prov:Entity (PROV-O dual subclassing)"
+      },
+      {
+        "subject": "ontara-rsn:CombinationAlgebra",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:CombinationAlgebra grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:ConfidenceAssessment",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:ConfidenceAssessment grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:Constraint",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:Constraint grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:ControlAction",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:BFO_0000015",
+        "description": "ontara-rsn:ControlAction grounded in bfo:BFO_0000015 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:ControlStructure",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:ControlStructure grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:ControlStructure",
+        "predicate": "rdfs:subClassOf",
+        "object": "prov:Entity",
+        "description": "ontara-rsn:ControlStructure inherits from prov:Entity (PROV-O dual subclassing)"
+      },
+      {
+        "subject": "ontara-rsn:Decision",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:Decision grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:Decision",
+        "predicate": "rdfs:subClassOf",
+        "object": "prov:Entity",
+        "description": "ontara-rsn:Decision inherits from prov:Entity (PROV-O dual subclassing)"
+      },
+      {
+        "subject": "ontara-rsn:DecisionMode",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:DecisionMode grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:EvidenceItem",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:EvidenceItem grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:EvidenceLine",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:EvidenceLine grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:FRAMFunction",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:FRAMFunction grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:FRAMFunction",
+        "predicate": "rdfs:subClassOf",
+        "object": "prov:Entity",
+        "description": "ontara-rsn:FRAMFunction inherits from prov:Entity (PROV-O dual subclassing)"
+      },
+      {
+        "subject": "ontara-rsn:Goal",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000033",
+        "description": "ontara-rsn:Goal grounded in bfo:IAO_0000033 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:HeuristicPack",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:HeuristicPack grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:InterpretiveFrame",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:InterpretiveFrame grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:KnowledgeSource",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:KnowledgeSource grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:Measure",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:Measure grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:Obstacle",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:Obstacle grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:Plan",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000104",
+        "description": "ontara-rsn:Plan grounded in bfo:IAO_0000104 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:ReasoningActivity",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:BFO_0000015",
+        "description": "ontara-rsn:ReasoningActivity grounded in bfo:BFO_0000015 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:ReasoningActivity",
+        "predicate": "rdfs:subClassOf",
+        "object": "prov:Activity",
+        "description": "ontara-rsn:ReasoningActivity inherits from prov:Activity (PROV-O dual subclassing)"
+      },
+      {
+        "subject": "ontara-rsn:ReasoningAgent",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:BFO_0000040",
+        "description": "ontara-rsn:ReasoningAgent grounded in bfo:BFO_0000040 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:ReasoningAgent",
+        "predicate": "rdfs:subClassOf",
+        "object": "prov:Agent",
+        "description": "ontara-rsn:ReasoningAgent inherits from prov:Agent (PROV-O dual subclassing)"
+      },
+      {
+        "subject": "ontara-rsn:ReasoningComponent",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:BFO_0000031",
+        "description": "ontara-rsn:ReasoningComponent grounded in bfo:BFO_0000031 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:ReasoningContext",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:BFO_0000031",
+        "description": "ontara-rsn:ReasoningContext grounded in bfo:BFO_0000031 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:UnsafeControlActionType",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:UnsafeControlActionType grounded in bfo:IAO_0000030 (BFO alignment)"
+      },
+      {
+        "subject": "ontara-rsn:VariabilityProfile",
+        "predicate": "rdfs:subClassOf",
+        "object": "bfo:IAO_0000030",
+        "description": "ontara-rsn:VariabilityProfile grounded in bfo:IAO_0000030 (BFO alignment)"
+      }
+    ],
+    "moduleSummary": {
+      "classCount": 42,
+      "objectPropertyCount": 40,
+      "datatypePropertyCount": 11,
+      "namedIndividualCount": 15
+    }
   }
 }
