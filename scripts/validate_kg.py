@@ -3,8 +3,9 @@
 Knowledge Graph Validation Suite
 =================================
 
-Loads pipeline-generated OWL/Turtle into GraphDB and validates
-correctness with a SPARQL query suite.
+Loads the full Ontara ontology stack (pipeline-generated and hand-authored
+OWL/Turtle modules) into GraphDB and validates correctness with a SPARQL
+query suite.
 
 Part of Stage 5 Phase 1 — Step 5.
 
@@ -13,6 +14,7 @@ Prerequisites:
   - Repository 'ontara-dev' exists with BFO/CCO/IAO loaded
     (see setup_graphdb.py)
   - Pipeline has been run: python3 scripts/gen_owl_pipeline.py --save
+  - Hand-authored ontology modules present in ontology/ subdirectories
 
 Usage:
     python3 scripts/validate_kg.py                # Validate only
@@ -43,8 +45,12 @@ from kg_utils import (
     check_graphdb,
 )
 
-# Files to load and their target named graphs
+# Files to load and their target named graphs.
+# "file" is relative to GENERATED_ONTOLOGY_DIR for pipeline files.
+# "path" is relative to REPO_ROOT for hand-authored files.
+# Exactly one of "file" or "path" should be set.
 PIPELINE_FILES = [
+    # --- Pipeline-generated (from generated/ontology/) ---
     {
         "file": "ontara-bmm.ttl",
         "name": "Ontara BMM (pipeline)",
@@ -52,9 +58,58 @@ PIPELINE_FILES = [
         "content_type": "text/turtle",
     },
     {
+        "file": "ontara-bmm-properties.ttl",
+        "name": "Ontara BMM Properties (pipeline)",
+        "graph": "https://ontara.dev/graph/domain",
+        "content_type": "text/turtle",
+    },
+    {
+        "file": "ontara-bmm-weights.ttl",
+        "name": "Ontara BMM Weighted Relationships (pipeline)",
+        "graph": "https://ontara.dev/graph/domain",
+        "content_type": "text/turtle",
+    },
+    {
         "file": "ontara-correspondence.ttl",
         "name": "Ontara Correspondence (pipeline)",
         "graph": "https://ontara.dev/graph/correspondence",
+        "content_type": "text/turtle",
+    },
+    # --- Hand-authored (from repo paths relative to REPO_ROOT) ---
+    {
+        "path": "ontology/axioms/ontara-bmm-axioms.ttl",
+        "name": "Ontara BMM Axioms (hand-authored)",
+        "graph": "https://ontara.dev/graph/domain",
+        "content_type": "text/turtle",
+    },
+    {
+        "path": "ontology/imports/prov-core.ttl",
+        "name": "PROV-O Core Subset (Session 150)",
+        "graph": "https://ontara.dev/graph/domain",
+        "content_type": "text/turtle",
+    },
+    {
+        "path": "ontology/governance/ontara-governance.ttl",
+        "name": "Ontara Governance Vocabulary (hand-authored, Session 126)",
+        "graph": "https://ontara.dev/graph/domain",
+        "content_type": "text/turtle",
+    },
+    {
+        "path": "ontology/governance/cqc-reg12-individuals.ttl",
+        "name": "CQC Regulation 12 Individuals (hand-authored, Session 131)",
+        "graph": "https://ontara.dev/graph/domain",
+        "content_type": "text/turtle",
+    },
+    {
+        "path": "ontology/domain/ontara-domain.ttl",
+        "name": "Ontara Domain Identity Vocabulary (hand-authored, Session 144)",
+        "graph": "https://ontara.dev/graph/domain",
+        "content_type": "text/turtle",
+    },
+    {
+        "path": "ontology/reasoning/ontara-reasoning.ttl",
+        "name": "Ontara Reasoning Vocabulary (hand-authored, Session 150)",
+        "graph": "https://ontara.dev/graph/domain",
         "content_type": "text/turtle",
     },
 ]
@@ -835,13 +890,13 @@ SELECT DISTINCT ?class ?label WHERE {
 }
 ORDER BY ?label
 """,
-        "expect_exactly": 34,
+        "expect_exactly": 42,
         "display_vars": ["class", "label"],
     },
     {
         "id": "Q37",
         "group": "Reasoning",
-        "name": "Reasoning object properties with domain and range (Phase 1+2)",
+        "name": "Reasoning object properties with domain and range (Phase 1+2+3)",
         "sparql": """
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -856,13 +911,13 @@ SELECT ?prop ?label ?domain ?range WHERE {
 }
 ORDER BY ?label
 """,
-        "expect_exactly": 24,
+        "expect_exactly": 40,
         "display_vars": ["prop", "label", "domain", "range"],
     },
     {
         "id": "Q38",
         "group": "Reasoning",
-        "name": "PROV-O dual subclassing (BFO + PROV-O parents)",
+        "name": "PROV-O dual subclassing (BFO + PROV-O parents, all phases)",
         "sparql": """
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
@@ -876,7 +931,7 @@ SELECT ?class ?label ?provParent WHERE {
 }
 ORDER BY ?label
 """,
-        "expect_exactly": 4,
+        "expect_exactly": 7,
         "display_vars": ["class", "label", "provParent"],
     },
     {
@@ -906,7 +961,7 @@ ORDER BY ?label
     {
         "id": "Q40",
         "group": "Reasoning",
-        "name": "Constraint subtypes (Hard, Soft, Graded)",
+        "name": "Constraint subtypes (Hard, Soft, Graded, Safety)",
         "sparql": """
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
@@ -919,7 +974,7 @@ SELECT ?class ?label WHERE {
 }
 ORDER BY ?label
 """,
-        "expect_exactly": 3,
+        "expect_exactly": 4,
         "display_vars": ["class", "label"],
     },
     {
@@ -1133,6 +1188,151 @@ SELECT ?prop ?label WHERE {
         "expect_exactly": 1,
         "display_vars": ["prop", "label"],
     },
+    # --- Phase 3: Safety and Resilience (Session 157) ---
+    {
+        "id": "Q51",
+        "group": "Reasoning",
+        "name": "Phase 3 safety classes declared under correct parents",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+PREFIX bfo: <http://purl.obolibrary.org/obo/>
+
+SELECT ?class ?label WHERE {
+  VALUES ?class {
+    ontara-rsn:SafetyConstraint
+    ontara-rsn:ControlStructure
+    ontara-rsn:ControlLoop
+    ontara-rsn:ControlAction
+    ontara-rsn:UnsafeControlAction
+    ontara-rsn:UnsafeControlActionType
+    ontara-rsn:FRAMFunction
+    ontara-rsn:VariabilityProfile
+  }
+  ?class a owl:Class ;
+         rdfs:label ?label .
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 8,
+        "display_vars": ["class", "label"],
+    },
+    {
+        "id": "Q52",
+        "group": "Reasoning",
+        "name": "Phase 3 object and datatype properties declared",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?prop ?label WHERE {
+  VALUES ?prop {
+    ontara-rsn:hasController
+    ontara-rsn:hasControlledProcess
+    ontara-rsn:enforces
+    ontara-rsn:hasUnsafeActionType
+    ontara-rsn:hasControlLoop
+    ontara-rsn:hierarchicallyControls
+    ontara-rsn:hasHazardDescription
+    ontara-rsn:hasFunctionInput
+    ontara-rsn:hasFunctionOutput
+    ontara-rsn:hasFunctionControl
+    ontara-rsn:hasFunctionPrecondition
+    ontara-rsn:hasFunctionResource
+    ontara-rsn:hasFunctionTime
+    ontara-rsn:hasVariabilityProfile
+    ontara-rsn:coupledWith
+    ontara-rsn:hasInternalVariability
+    ontara-rsn:hasExternalVariability
+    ontara-rsn:hasSafetyEvidence
+    ontara-rsn:monitoredBy
+  }
+  ?prop rdfs:label ?label .
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 19,
+        "display_vars": ["prop", "label"],
+    },
+    {
+        "id": "Q53",
+        "group": "Reasoning",
+        "name": "STAMP UnsafeControlActionType named individuals (4)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?ind ?label WHERE {
+  ?ind a owl:NamedIndividual ,
+         ontara-rsn:UnsafeControlActionType ;
+       rdfs:label ?label .
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 4,
+        "display_vars": ["ind", "label"],
+    },
+    {
+        "id": "Q54",
+        "group": "Reasoning",
+        "name": "SafetyConstraint declared as HardConstraint subclass",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?class ?label WHERE {
+  ontara-rsn:SafetyConstraint rdfs:subClassOf ontara-rsn:HardConstraint ;
+                               rdfs:label ?label .
+  BIND(ontara-rsn:SafetyConstraint AS ?class)
+}
+""",
+        "expect_exactly": 1,
+        "display_vars": ["class", "label"],
+    },
+    {
+        "id": "Q55",
+        "group": "Reasoning",
+        "name": "FRAM six coupling aspect properties on FRAMFunction",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?prop ?label WHERE {
+  ?prop a owl:ObjectProperty ;
+        rdfs:label ?label ;
+        rdfs:domain ontara-rsn:FRAMFunction .
+  FILTER(STRSTARTS(STR(?prop), STR(ontara-rsn:hasFunction)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 6,
+        "display_vars": ["prop", "label"],
+    },
+    {
+        "id": "Q56",
+        "group": "Reasoning",
+        "name": "hasVariabilityProfile is functional linking FRAMFunction to VariabilityProfile",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?prop ?label ?domain ?range WHERE {
+  ontara-rsn:hasVariabilityProfile a owl:ObjectProperty ,
+                                     owl:FunctionalProperty ;
+                                   rdfs:label ?label ;
+                                   rdfs:domain ?domain ;
+                                   rdfs:range ?range .
+  BIND(ontara-rsn:hasVariabilityProfile AS ?prop)
+}
+""",
+        "expect_exactly": 1,
+        "display_vars": ["prop", "label", "domain", "range"],
+    },
 ]
 
 
@@ -1170,26 +1370,6 @@ SELECT (COUNT(*) AS ?count) WHERE {{
 # Loading
 # ---------------------------------------------------------------
 
-def clear_bmm_namespace():
-    """Delete triples with subjects in the ontara-bmm: namespace from the domain graph."""
-    print("  Clearing ontara-bmm: triples from domain graph...")
-    update = """
-DELETE {
-  GRAPH <https://ontara.dev/graph/domain> {
-    ?s ?p ?o .
-  }
-}
-WHERE {
-  GRAPH <https://ontara.dev/graph/domain> {
-    ?s ?p ?o .
-    FILTER(STRSTARTS(STR(?s), "https://ontara.dev/ontology/bmm/"))
-  }
-}
-"""
-    sparql_update(update)
-    print("  Done.")
-
-
 def clear_correspondence_graph():
     """Clear the correspondence graph entirely (pipeline-only content)."""
     print("  Clearing correspondence graph...")
@@ -1199,14 +1379,22 @@ def clear_correspondence_graph():
 
 
 def load_pipeline_file(entry):
-    """Load a pipeline-generated Turtle file into its named graph."""
-    filepath = GENERATED_ONTOLOGY_DIR / entry["file"]
+    """Load a Turtle file into its named graph.
+
+    Resolves the file path from either 'file' (relative to GENERATED_ONTOLOGY_DIR)
+    or 'path' (relative to REPO_ROOT).
+    """
+    if "path" in entry:
+        filepath = REPO_ROOT / entry["path"]
+    else:
+        filepath = GENERATED_ONTOLOGY_DIR / entry["file"]
+
     if not filepath.exists():
-        print(f"  ERROR: {filepath} not found. Run gen_owl_pipeline.py --save first.")
+        print(f"  ERROR: {filepath} not found.")
         return False
 
     file_size = filepath.stat().st_size
-    print(f"  Loading {entry['name']} ({entry['file']}, {file_size:,} bytes) "
+    print(f"  Loading {entry['name']} ({filepath.name}, {file_size:,} bytes) "
           f"into <{entry['graph']}>...")
 
     data = filepath.read_bytes()
@@ -1224,22 +1412,51 @@ def load_pipeline_file(entry):
         count = graph_triple_count(entry["graph"])
         print(f"  Loaded. Graph now has {count:,} triples.")
         return True
-    except urllib.error.HTTPError:
-        print(f"  Failed to load {entry['name']}.")
+    except urllib.error.HTTPError as e:
+        print(f"  Failed to load {entry['name']}: {e}")
         return False
 
 
 def load_pipeline_output():
-    """Clear old pipeline data and reload from generated files."""
-    print(f"\nLoading pipeline output into GraphDB ({REPO_ID})...")
+    """Clear old Ontara data and reload all ontology files into GraphDB."""
+    print(f"\nLoading ontology stack into GraphDB ({REPO_ID})...")
 
-    # Step 1: clear BMM namespace triples from domain graph
-    clear_bmm_namespace()
+    # Step 1: clear all Ontara namespace triples from domain graph.
+    # This covers pipeline-generated (ontara-bmm:) and hand-authored
+    # (ontara-gov:, ontara-dom:, ontara-rsn:, ontara-ax:) content.
+    # Foundation imports (BFO, CCO, IAO) are untouched.
+    ontara_namespaces = [
+        "https://ontara.dev/ontology/bmm/",
+        "https://ontara.dev/ontology/bmm/axioms#",
+        "https://ontara.dev/ontology/governance/",
+        "https://ontara.dev/ontology/domain/",
+        "https://ontara.dev/ontology/reasoning/",
+        "https://ontara.dev/data/governance/",
+        "http://www.w3.org/ns/prov#",
+    ]
+
+    for ns in ontara_namespaces:
+        print(f"  Clearing <{ns}> triples from domain graph...")
+        update = f"""
+DELETE {{
+  GRAPH <https://ontara.dev/graph/domain> {{
+    ?s ?p ?o .
+  }}
+}}
+WHERE {{
+  GRAPH <https://ontara.dev/graph/domain> {{
+    ?s ?p ?o .
+    FILTER(STRSTARTS(STR(?s), "{ns}"))
+  }}
+}}
+"""
+        sparql_update(update)
+    print("  Namespace clearing complete.")
 
     # Step 2: clear correspondence graph
     clear_correspondence_graph()
 
-    # Step 3: load each pipeline file
+    # Step 3: load each file
     results = []
     for entry in PIPELINE_FILES:
         ok = load_pipeline_file(entry)

@@ -33,7 +33,7 @@ Phase 1 Step 1.2 (Session 151): Core reasoning classes — ReasoningContext,
   Graded), KnowledgeSource, Heuristic, ReasoningComponent. Properties:
   hasContext, hasGoal, hasConstraint, producedDecision, hasDecisionMode,
   hasObstacle, hasMeasure, hasPlan, hasKnowledgeSource, plus domain/range."""@en ;
-    owl:versionInfo "Session 155 — Phase 2: Heuristic packs (6 subtypes + HeuristicPack), decision mode routing (4 Cynefin individuals), constraint satisfaction structures (CombinationAlgebra with 4 algebras)"@en .
+    owl:versionInfo "Session 157 — Phase 3: STAMP/STPA safety control structures (SafetyConstraint, ControlStructure, ControlLoop, ControlAction, UnsafeControlAction), FRAM-ready slots (FRAMFunction, VariabilityProfile), safety–governance alignment"@en .
 
 
 # =============================================================================
@@ -1949,5 +1949,590 @@ are within the declared range before they are used in combination."""@en .
 #   Step 2.3: hasIdentityElement, hasPriority, hasTruthValueRange
 #   (Note: hasIdentityElement is declared as both datatype property and
 #    used in named individual assertions — confirm it is a DatatypeProperty)
+#
+# =============================================================================
+
+
+# =============================================================================
+# SECTION 13: STAMP/STPA Safety Control Structures (Phase 3 Step 3.1)
+# =============================================================================
+#
+# STAMP (Systems-Theoretic Accident Model and Processes) treats accidents
+# as control failures, not chain-of-events failures. STPA (System-Theoretic
+# Process Analysis) identifies Unsafe Control Actions — the four ways a
+# control action can cause a hazard.
+#
+# In coordinate-framework terms (Session 147 §7):
+#   - A SafetyConstraint defines a safety-critical NormativeRegion boundary
+#   - A ControlStructure describes the mechanisms that maintain entity
+#     trajectories within safe NormativeRegions
+#   - An UnsafeControlAction is one of four failure modes of boundary maintenance
+#
+# Six classes: SafetyConstraint, ControlStructure, ControlLoop, ControlAction,
+# UnsafeControlAction, UnsafeControlActionType.
+# Four named individuals (UnsafeControlActionType enumeration).
+# Six object properties + one datatype property.
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# SafetyConstraint — a constraint whose violation constitutes a hazard
+# -----------------------------------------------------------------------------
+
+ontara-rsn:SafetyConstraint a owl:Class ;
+    rdfs:label "Safety Constraint"@en ;
+    rdfs:subClassOf ontara-rsn:HardConstraint ;
+    rdfs:comment """A HardConstraint whose violation constitutes a safety hazard. Safety
+constraints are the hardest of hard constraints — they define the
+boundaries of safety-critical NormativeRegions that must never be crossed.
+
+Coordinate-framework grounding: a SafetyConstraint defines a safety-critical
+NormativeRegion boundary. Crossing it is not merely a compliance failure
+but a physical or systemic harm event. Examples: COSHH chemical handling
+limits, food hygiene temperature requirements, clinical dose thresholds.
+
+Inherits BFO grounding from HardConstraint → Constraint → ReasoningComponent
+(BFO:GDC/IAO). The safety constraint IS a specification — a statement of
+what must hold. The ControlStructure (Section 13) describes the mechanisms
+that enforce it."""@en ;
+    skos:definition """A hard constraint whose violation constitutes a safety hazard,
+defining a safety-critical NormativeRegion boundary."""@en .
+
+
+# -----------------------------------------------------------------------------
+# ControlStructure — hierarchical arrangement of controllers and processes
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ControlStructure a owl:Class ;
+    rdfs:label "Control Structure"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ,
+                    prov:Entity ;
+    rdfs:comment """A hierarchical arrangement of controllers, controlled processes, and
+feedback loops. The control structure describes the mechanisms that maintain
+entity trajectories within safe NormativeRegions.
+
+BFO grounding: information content entity (IAO_0000030) — a ControlStructure
+is information about control relationships, not the physical mechanisms
+themselves.
+
+Dual subclassed with prov:Entity following the Phase 1 pattern: control
+structures have provenance (who designed them, when, based on what analysis)
+and this should be traceable.
+
+Coordinate-framework grounding: the control structure is the governance
+architecture that enforces NormativeRegion boundaries. It describes who
+controls what, with what authority, and via what feedback channels.
+Examples: HSE regulatory hierarchy, clinical governance framework,
+food safety management system."""@en ;
+    skos:definition """A hierarchical arrangement of controllers, controlled processes, and
+feedback loops that maintain trajectories within safe operating regions."""@en .
+
+
+# -----------------------------------------------------------------------------
+# ControlLoop — a specific controller/process/sensor feedback cycle
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ControlLoop a owl:Class ;
+    rdfs:label "Control Loop"@en ;
+    rdfs:subClassOf ontara-rsn:ControlStructure ;
+    rdfs:comment """A specific controller → actuator → controlled process → sensor → controller
+feedback cycle within a broader ControlStructure. A ControlStructure may
+contain multiple ControlLoops operating at different levels of the hierarchy.
+
+Coordinate-framework grounding: a ControlLoop is the operational unit of
+boundary maintenance — the specific mechanism that detects boundary proximity
+and corrects the trajectory. Each loop is responsible for enforcing specific
+SafetyConstraints."""@en ;
+    skos:definition """A specific controller-actuator-process-sensor feedback cycle within
+a control structure."""@en .
+
+
+# -----------------------------------------------------------------------------
+# ControlAction — an action taken by a controller to enforce a constraint
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ControlAction a owl:Class ;
+    rdfs:label "Control Action"@en ;
+    rdfs:subClassOf bfo:BFO_0000015 ;
+    rdfs:comment """An action taken by a controller to enforce a safety constraint. A
+ControlAction is a process — something that happens in time — as opposed
+to the ControlStructure (an information entity specifying who can act) or
+the SafetyConstraint (an information entity specifying what must hold).
+
+BFO grounding: process (BFO_0000015) — a ControlAction is an occurrent,
+something that unfolds over time.
+
+Coordinate-framework grounding: a ControlAction is a trajectory correction
+event. When the ControlLoop detects that an entity's position is approaching
+or has crossed a NormativeRegion boundary, the controller issues a
+ControlAction to correct the trajectory."""@en ;
+    skos:definition """An action taken by a controller to enforce a safety constraint,
+correcting a trajectory toward or away from a NormativeRegion boundary."""@en .
+
+
+# -----------------------------------------------------------------------------
+# UnsafeControlAction — a control action that leads to a hazard
+# -----------------------------------------------------------------------------
+
+ontara-rsn:UnsafeControlAction a owl:Class ;
+    rdfs:label "Unsafe Control Action"@en ;
+    rdfs:subClassOf ontara-rsn:ControlAction ;
+    rdfs:comment """A ControlAction that leads to a hazard. The STPA method identifies
+four types of unsafe control actions (the four ways boundary maintenance
+can fail):
+
+1. NotProvided: required action not taken — the controller fails to issue
+   an action when the boundary is being approached. The trajectory crosses
+   the safety boundary unchecked.
+
+2. ProvidedWhenNotNeeded: action taken when it should not be — the
+   controller issues an action that moves the entity away from a safe
+   region when it was already within safe bounds.
+
+3. WrongTiming: action taken too early or too late — the timing of the
+   trajectory correction is misaligned with the actual boundary proximity.
+
+4. WrongDuration: action applied too long or stopped too soon — the
+   correction is applied for the wrong duration, either overshooting or
+   under-correcting.
+
+Each type corresponds to a different failure mode of coordinate-space
+boundary maintenance."""@en ;
+    skos:definition """A control action that leads to a hazard, classified by the STPA
+method into four failure modes of safety boundary maintenance."""@en .
+
+
+# -----------------------------------------------------------------------------
+# UnsafeControlActionType — classification of unsafe action failure modes
+# -----------------------------------------------------------------------------
+
+ontara-rsn:UnsafeControlActionType a owl:Class ;
+    rdfs:label "Unsafe Control Action Type"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """A classification of the type of unsafe control action. The four STPA
+types are the standard vocabulary for describing how a control action can
+cause a hazard. This class is instantiated as a closed enumeration of four
+named individuals.
+
+BFO grounding: information content entity (IAO_0000030) — a type
+classification is information about the nature of the failure mode."""@en ;
+    skos:definition """A classification of the four STPA unsafe control action types."""@en .
+
+
+# -----------------------------------------------------------------------------
+# UnsafeControlActionType named individuals (STPA enumeration)
+# -----------------------------------------------------------------------------
+
+ontara-rsn:NotProvided a owl:NamedIndividual ,
+                         ontara-rsn:UnsafeControlActionType ;
+    rdfs:label "Not Provided"@en ;
+    rdfs:comment """Required control action not taken. The controller fails to issue
+an action when the safety boundary is being approached or crossed.
+Coordinate-framework: the trajectory crosses the NormativeRegion
+boundary without correction."""@en .
+
+ontara-rsn:ProvidedWhenNotNeeded a owl:NamedIndividual ,
+                                    ontara-rsn:UnsafeControlActionType ;
+    rdfs:label "Provided When Not Needed"@en ;
+    rdfs:comment """Control action taken when it should not be. The controller issues
+an action that pushes the entity away from a safe region when it was
+already within safe bounds. Coordinate-framework: spurious trajectory
+correction creates a new boundary-proximity risk."""@en .
+
+ontara-rsn:WrongTiming a owl:NamedIndividual ,
+                          ontara-rsn:UnsafeControlActionType ;
+    rdfs:label "Wrong Timing"@en ;
+    rdfs:comment """Control action taken too early or too late. The timing of the
+trajectory correction is misaligned with actual boundary proximity.
+Coordinate-framework: the correction arrives when the trajectory has
+already crossed the boundary, or before the boundary is actually
+approached."""@en .
+
+ontara-rsn:WrongDuration a owl:NamedIndividual ,
+                            ontara-rsn:UnsafeControlActionType ;
+    rdfs:label "Wrong Duration"@en ;
+    rdfs:comment """Control action applied too long or stopped too soon. The correction
+is applied for the wrong duration, either overshooting the safe region
+or failing to bring the trajectory back within bounds.
+Coordinate-framework: over- or under-correction of a trajectory
+deviation."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasController — links ControlLoop to its controller
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasController a owl:ObjectProperty ;
+    rdfs:label "has controller"@en ;
+    rdfs:domain ontara-rsn:ControlLoop ;
+    rdfs:range owl:Thing ;
+    rdfs:comment """Links a ControlLoop to its controller — the entity (agent, system,
+or role) that issues ControlActions. The controller can be a person,
+an automated system, a regulatory body, or any other thing that has
+authority to take corrective action."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasControlledProcess — links ControlLoop to the process it governs
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasControlledProcess a owl:ObjectProperty ;
+    rdfs:label "has controlled process"@en ;
+    rdfs:domain ontara-rsn:ControlLoop ;
+    rdfs:range owl:Thing ;
+    rdfs:comment """Links a ControlLoop to the controlled process — the activity or
+system whose trajectory the loop monitors and corrects. The controlled
+process is what can cross a NormativeRegion boundary if not properly
+managed."""@en .
+
+
+# -----------------------------------------------------------------------------
+# enforces — links ControlAction to the SafetyConstraint it enforces
+# -----------------------------------------------------------------------------
+
+ontara-rsn:enforces a owl:ObjectProperty ;
+    rdfs:label "enforces"@en ;
+    rdfs:domain ontara-rsn:ControlAction ;
+    rdfs:range ontara-rsn:SafetyConstraint ;
+    rdfs:comment """Links a ControlAction to the SafetyConstraint it enforces. A
+ControlAction is always issued to enforce some constraint — this property
+makes that connection explicit and auditable."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasUnsafeActionType — links UnsafeControlAction to its STPA type
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasUnsafeActionType a owl:ObjectProperty ;
+    rdfs:label "has unsafe action type"@en ;
+    rdfs:domain ontara-rsn:UnsafeControlAction ;
+    rdfs:range ontara-rsn:UnsafeControlActionType ;
+    rdfs:comment """Links an UnsafeControlAction to its STPA type classification.
+Provides a structured vocabulary for describing how the control action
+caused or contributed to a hazard."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasControlLoop — links ControlStructure to its constituent loops
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasControlLoop a owl:ObjectProperty ;
+    rdfs:label "has control loop"@en ;
+    rdfs:domain ontara-rsn:ControlStructure ;
+    rdfs:range ontara-rsn:ControlLoop ;
+    rdfs:comment """Links a ControlStructure to its constituent ControlLoops. A
+ControlStructure may contain multiple loops operating at different
+levels of the hierarchy."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hierarchicallyControls — transitive hierarchical control relationship
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hierarchicallyControls a owl:ObjectProperty ,
+                                     owl:TransitiveProperty ;
+    rdfs:label "hierarchically controls"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    rdfs:comment """A transitive hierarchical control relationship. Enables modelling
+of multi-level governance hierarchies, e.g.: HSE → COSHH regulator →
+operator → machine. Transitivity means that if A hierarchically controls
+B and B hierarchically controls C, then A hierarchically controls C.
+
+Coordinate-framework grounding: hierarchical control corresponds to
+the governance layer that enforces NormativeRegion boundaries at
+multiple scales simultaneously."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasHazardDescription — natural-language hazard description
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasHazardDescription a owl:DatatypeProperty ;
+    rdfs:label "has hazard description"@en ;
+    rdfs:domain [ a owl:Class ;
+                  owl:unionOf ( ontara-rsn:SafetyConstraint
+                                ontara-rsn:UnsafeControlAction ) ] ;
+    rdfs:range xsd:string ;
+    rdfs:comment """A natural-language description of the hazard associated with a
+SafetyConstraint or UnsafeControlAction. For SafetyConstraint: describes
+what harm results from violating the constraint. For UnsafeControlAction:
+describes the hazard the unsafe action caused or could cause."""@en .
+
+
+# =============================================================================
+# SECTION 14: FRAM-Ready Slots (Phase 3 Step 3.2)
+# =============================================================================
+#
+# FRAM (Functional Resonance Analysis Method) models work as functions with
+# six coupling aspects. Rather than implementing full FRAM (which would require
+# a separate module), these slots provide OWL anchors that a FRAM analysis can
+# populate — making the ontology FRAM-ready without over-specifying the method.
+#
+# In coordinate-framework terms: a FRAM function transforms a region of
+# coordinate space (inputs) into another region (outputs), subject to controls
+# and preconditions, consuming resources, within a time window.
+#
+# Variability is the key FRAM concept: real functions have variable performance.
+# The VariabilityProfile captures how a function's actual trajectory spreads
+# around its specified trajectory.
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# FRAMFunction — a function description with six coupling aspects
+# -----------------------------------------------------------------------------
+
+ontara-rsn:FRAMFunction a owl:Class ;
+    rdfs:label "FRAM Function"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ,
+                    prov:Entity ;
+    rdfs:comment """A function description in the FRAM sense: a unit of activity with
+six coupling aspects (Input, Output, Control, Precondition, Resource, Time).
+A FRAMFunction describes what a function does, not the function itself.
+
+BFO grounding: information content entity (IAO_0000030) — a FRAMFunction
+is a description of a function, not the process instance.
+
+Dual subclassed with prov:Entity following the Phase 1 pattern: function
+descriptions have provenance (who specified them, for what analysis, based
+on what evidence).
+
+Coordinate-framework grounding: a FRAMFunction transforms a region of
+coordinate space. Its inputs map to a region of (input dimension) space;
+its outputs map to a region of (output dimension) space. The function's
+variability determines how reliably this transformation stays on the
+specified trajectory."""@en ;
+    skos:definition """A function description with six coupling aspects (Input, Output,
+Control, Precondition, Resource, Time) following the FRAM method."""@en .
+
+
+# -----------------------------------------------------------------------------
+# VariabilityProfile — description of how a function's performance varies
+# -----------------------------------------------------------------------------
+
+ontara-rsn:VariabilityProfile a owl:Class ;
+    rdfs:label "Variability Profile"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """A description of how a FRAMFunction's performance varies. The
+VariabilityProfile captures both internal variability (from within the
+function itself) and external variability (from upstream coupling with
+other functions).
+
+Coordinate-framework grounding: describes the spread of actual trajectories
+around the specified trajectory. High internal variability means the
+function is unreliable in its own execution; high external variability
+means it is sensitive to upstream variation propagation."""@en ;
+    skos:definition """A description of how a FRAMFunction's performance varies, capturing
+internal and external variability sources."""@en .
+
+
+# -----------------------------------------------------------------------------
+# FRAM six coupling aspects — object properties on FRAMFunction
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasFunctionInput a owl:ObjectProperty ;
+    rdfs:label "has function input"@en ;
+    rdfs:domain ontara-rsn:FRAMFunction ;
+    rdfs:range owl:Thing ;
+    rdfs:comment """Links a FRAMFunction to its input — what initiates or is transformed
+by the function. In coordinate-framework terms: the region of coordinate
+space that the function starts from."""@en .
+
+ontara-rsn:hasFunctionOutput a owl:ObjectProperty ;
+    rdfs:label "has function output"@en ;
+    rdfs:domain ontara-rsn:FRAMFunction ;
+    rdfs:range owl:Thing ;
+    rdfs:comment """Links a FRAMFunction to its output — what the function produces or
+transforms its input into. In coordinate-framework terms: the region of
+coordinate space that the function moves toward."""@en .
+
+ontara-rsn:hasFunctionControl a owl:ObjectProperty ;
+    rdfs:label "has function control"@en ;
+    rdfs:domain ontara-rsn:FRAMFunction ;
+    rdfs:range owl:Thing ;
+    rdfs:comment """Links a FRAMFunction to its control — conditions or constraints that
+regulate how the function is executed. Controls correspond to SafetyConstraints
+and governance obligations that bound the function's trajectory."""@en .
+
+ontara-rsn:hasFunctionPrecondition a owl:ObjectProperty ;
+    rdfs:label "has function precondition"@en ;
+    rdfs:domain ontara-rsn:FRAMFunction ;
+    rdfs:range owl:Thing ;
+    rdfs:comment """Links a FRAMFunction to its precondition — what must be true before
+the function can execute. Preconditions define the entry conditions for
+the function's coordinate-space transformation."""@en .
+
+ontara-rsn:hasFunctionResource a owl:ObjectProperty ;
+    rdfs:label "has function resource"@en ;
+    rdfs:domain ontara-rsn:FRAMFunction ;
+    rdfs:range owl:Thing ;
+    rdfs:comment """Links a FRAMFunction to its resource — what is consumed or used
+(but not transformed) during function execution. Resources constrain
+when and how often the function can execute."""@en .
+
+ontara-rsn:hasFunctionTime a owl:ObjectProperty ;
+    rdfs:label "has function time"@en ;
+    rdfs:domain ontara-rsn:FRAMFunction ;
+    rdfs:range owl:Thing ;
+    rdfs:comment """Links a FRAMFunction to its time aspect — temporal constraints on
+when and for how long the function executes. In coordinate-framework
+terms: the time axis is always present as a dimension; this property
+makes the temporal bounds of a function explicit."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasVariabilityProfile — links FRAMFunction to its variability description
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasVariabilityProfile a owl:ObjectProperty ,
+                                    owl:FunctionalProperty ;
+    rdfs:label "has variability profile"@en ;
+    rdfs:domain ontara-rsn:FRAMFunction ;
+    rdfs:range ontara-rsn:VariabilityProfile ;
+    rdfs:comment """Links a FRAMFunction to its VariabilityProfile. Functional — each
+function has exactly one variability profile (though the profile may
+describe multiple variability sources). The variability profile is the
+primary input for FRAM resonance analysis."""@en .
+
+
+# -----------------------------------------------------------------------------
+# coupledWith — symmetric coupling between FRAM functions
+# -----------------------------------------------------------------------------
+
+ontara-rsn:coupledWith a owl:ObjectProperty ,
+                          owl:SymmetricProperty ;
+    rdfs:label "coupled with"@en ;
+    rdfs:domain ontara-rsn:FRAMFunction ;
+    rdfs:range ontara-rsn:FRAMFunction ;
+    rdfs:comment """Symmetric coupling between FRAMFunctions. If function A is coupled
+with function B, then B is coupled with A. Coupling is the mechanism by
+which variability propagates — a variable output from one function becomes
+a variable input to another.
+
+Coordinate-framework grounding: coupling propagates trajectory deviations
+across function boundaries. FRAM resonance occurs when multiple coupled
+functions simultaneously have high variability, amplifying deviations."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasInternalVariability — describes variability from within the function
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasInternalVariability a owl:DatatypeProperty ;
+    rdfs:label "has internal variability"@en ;
+    rdfs:domain ontara-rsn:VariabilityProfile ;
+    rdfs:range xsd:string ;
+    rdfs:comment """Describes the internal variability of a FRAMFunction — variation
+arising from within the function itself (e.g. skill variation, equipment
+drift, cognitive load). Free-text for now; structured variability
+scales are a candidate for future elaboration."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasExternalVariability — describes variability from upstream coupling
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasExternalVariability a owl:DatatypeProperty ;
+    rdfs:label "has external variability"@en ;
+    rdfs:domain ontara-rsn:VariabilityProfile ;
+    rdfs:range xsd:string ;
+    rdfs:comment """Describes the external variability of a FRAMFunction — variation
+propagated from upstream coupled functions. A function with low internal
+variability can still have high effective variability if its inputs are
+highly variable."""@en .
+
+
+# =============================================================================
+# SECTION 15: Safety–Governance Alignment (Phase 3 Step 3.3)
+# =============================================================================
+#
+# The safety architecture (STAMP/STPA) and the governance architecture
+# (deontic directives, obligations, prohibitions) are structurally aligned
+# via the HardConstraint hierarchy:
+#
+#   SafetyConstraint ⊆ HardConstraint  (Section 13)
+#   Obligation ⊆ HardConstraint        (Section 9)
+#   Prohibition ⊆ HardConstraint       (Section 9)
+#
+# This section adds two properties that make the alignment operational:
+# hasSafetyEvidence reuses the SEPIO evidence architecture for safety
+# constraint satisfaction; monitoredBy links a constraint to its control loop.
+#
+# No new classes or axioms are needed — the structural alignment is already
+# established through the HardConstraint hierarchy.
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# hasSafetyEvidence — links safety constraint to evidence of satisfaction
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasSafetyEvidence a owl:ObjectProperty ;
+    rdfs:label "has safety evidence"@en ;
+    rdfs:domain ontara-rsn:SafetyConstraint ;
+    rdfs:range ontara-rsn:Claim ;
+    rdfs:comment """Links a SafetyConstraint to a Claim that provides evidence of its
+satisfaction or violation. This reuses the SEPIO evidence architecture
+(Sections 5 and 6) for safety compliance: a safety constraint is satisfied
+when there is a Claim (backed by EvidenceLines and EvidenceItems) that
+the controlled process is within the safe NormativeRegion.
+
+This is the structural connection between the STAMP/STPA safety layer
+and the governance evidence layer — safety compliance IS an evidenced
+claim."""@en .
+
+
+# -----------------------------------------------------------------------------
+# monitoredBy — links safety constraint to its enforcing control loop
+# -----------------------------------------------------------------------------
+
+ontara-rsn:monitoredBy a owl:ObjectProperty ;
+    rdfs:label "monitored by"@en ;
+    rdfs:domain ontara-rsn:SafetyConstraint ;
+    rdfs:range ontara-rsn:ControlLoop ;
+    rdfs:comment """Links a SafetyConstraint to the ControlLoop that monitors and
+enforces it. This is the operational connection between the constraint
+(the rule that must hold) and the mechanism (the loop that detects
+violations and issues ControlActions to correct them).
+
+A SafetyConstraint may be monitored by multiple ControlLoops operating
+at different levels of the hierarchy."""@en .
+
+
+# =============================================================================
+# End of Phase 3 Steps 3.1, 3.2, and 3.3
+# =============================================================================
+#
+# Phase 3 additions:
+#   Step 3.1 (Section 13): SafetyConstraint, ControlStructure, ControlLoop,
+#             ControlAction, UnsafeControlAction, UnsafeControlActionType
+#   Step 3.2 (Section 14): FRAMFunction, VariabilityProfile
+#   (No new classes from Step 3.3 — alignment via properties only)
+#
+# Named individuals: +4 (NotProvided, ProvidedWhenNotNeeded, WrongTiming, WrongDuration)
+# Object properties: +16 (6 STAMP + 8 FRAM + 2 alignment)
+# Datatype properties: +3 (1 hazard + 2 variability)
+#
+# Updated totals:
+#   Class count: 42 (34 Phase 2 + 8 Phase 3)
+#     Phase 3: SafetyConstraint, ControlStructure, ControlLoop, ControlAction,
+#              UnsafeControlAction, UnsafeControlActionType, FRAMFunction,
+#              VariabilityProfile
+#   Named individuals: 15 (11 Phase 2 + 4 Phase 3)
+#     Phase 3: NotProvided, ProvidedWhenNotNeeded, WrongTiming, WrongDuration
+#   Object properties: 40 (24 Phase 2 + 16 Phase 3)
+#     Step 3.1: hasController, hasControlledProcess, enforces,
+#               hasUnsafeActionType, hasControlLoop, hierarchicallyControls
+#     Step 3.2: hasFunctionInput, hasFunctionOutput, hasFunctionControl,
+#               hasFunctionPrecondition, hasFunctionResource, hasFunctionTime,
+#               hasVariabilityProfile, coupledWith
+#     Step 3.3: hasSafetyEvidence, monitoredBy
+#   Datatype properties: 10 (7 Phase 2 + 3 Phase 3)
+#     Step 3.1: hasHazardDescription
+#     Step 3.2: hasInternalVariability, hasExternalVariability
 #
 # =============================================================================

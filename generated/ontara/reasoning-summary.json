@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-06T19:09:25.536199",
+  "generatedAt": "2026-04-06T23:26:58.837108",
   "generator": "reason_kg.py",
   "reasoner": "HermiT (via Robot)",
   "consistent": true,
@@ -74,7 +74,7 @@
     {
       "name": "Ontara Reasoning Vocabulary (hand-authored, Session 150)",
       "file": "ontara-reasoning.ttl",
-      "sizeBytes": 95059,
+      "sizeBytes": 124016,
       "present": true
     }
   ],
