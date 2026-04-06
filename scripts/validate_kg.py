@@ -818,6 +818,185 @@ ORDER BY ?label
         "expect_exactly": 8,
         "display_vars": ["prop", "label", "domain", "range"],
     },
+    # --- Group 11: Reasoning (Session 152) ---
+    {
+        "id": "Q36",
+        "group": "Reasoning",
+        "name": "All reasoning classes with labels",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT DISTINCT ?class ?label WHERE {
+  ?class a owl:Class ;
+         rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?class), STR(ontara-rsn:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 26,
+        "display_vars": ["class", "label"],
+    },
+    {
+        "id": "Q37",
+        "group": "Reasoning",
+        "name": "Reasoning object properties with domain and range",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?prop ?label ?domain ?range WHERE {
+  ?prop a owl:ObjectProperty ;
+        rdfs:label ?label .
+  OPTIONAL { ?prop rdfs:domain ?domain }
+  OPTIONAL { ?prop rdfs:range ?range }
+  FILTER(STRSTARTS(STR(?prop), STR(ontara-rsn:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 15,
+        "display_vars": ["prop", "label", "domain", "range"],
+    },
+    {
+        "id": "Q38",
+        "group": "Reasoning",
+        "name": "PROV-O dual subclassing (BFO + PROV-O parents)",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?class ?label ?provParent WHERE {
+  ?class rdfs:subClassOf ?provParent ;
+         rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?class), STR(ontara-rsn:)))
+  FILTER(STRSTARTS(STR(?provParent), STR(prov:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 4,
+        "display_vars": ["class", "label", "provParent"],
+    },
+    {
+        "id": "Q39",
+        "group": "Reasoning",
+        "name": "Evidence architecture property chain",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?prop ?label ?domain ?range WHERE {
+  VALUES ?prop {
+    ontara-rsn:supportedBy
+    ontara-rsn:hasEvidence
+    ontara-rsn:hasConfidence
+    ontara-rsn:hasInterpretiveFrame
+  }
+  ?prop rdfs:label ?label ;
+        rdfs:domain ?domain ;
+        rdfs:range ?range .
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 4,
+        "display_vars": ["prop", "label", "domain", "range"],
+    },
+    {
+        "id": "Q40",
+        "group": "Reasoning",
+        "name": "Constraint subtypes (Hard, Soft, Graded)",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?class ?label WHERE {
+  ?class rdfs:subClassOf ontara-rsn:Constraint ;
+         rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?class), STR(ontara-rsn:)))
+  FILTER(?class != ontara-rsn:Constraint)
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 3,
+        "display_vars": ["class", "label"],
+    },
+    {
+        "id": "Q41",
+        "group": "Reasoning",
+        "name": "Structured probabilistic component subtypes",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT DISTINCT ?class ?label WHERE {
+  ?class rdfs:subClassOf+ ontara-rsn:StructuredProbabilisticComponent ;
+         rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?class), STR(ontara-rsn:)))
+  FILTER(?class != ontara-rsn:StructuredProbabilisticComponent)
+}
+ORDER BY ?label
+""",
+        "sparql_fallback": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT DISTINCT ?class ?label WHERE {
+  {
+    ?class rdfs:subClassOf ontara-rsn:StructuredProbabilisticComponent .
+  } UNION {
+    ?class rdfs:subClassOf ?mid .
+    ?mid rdfs:subClassOf ontara-rsn:StructuredProbabilisticComponent .
+  }
+  ?class rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?class), STR(ontara-rsn:)))
+  FILTER(?class != ontara-rsn:StructuredProbabilisticComponent)
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 4,
+        "display_vars": ["class", "label"],
+        "soft": True,
+    },
+    {
+        "id": "Q42",
+        "group": "Reasoning",
+        "name": "Governance alignment (Obligation/Prohibition as HardConstraint)",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+PREFIX ontara-gov: <https://ontara.dev/ontology/governance/>
+
+SELECT ?class ?label WHERE {
+  VALUES ?class { ontara-gov:Obligation ontara-gov:Prohibition }
+  ?class rdfs:subClassOf ontara-rsn:HardConstraint ;
+         rdfs:label ?label .
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 2,
+        "display_vars": ["class", "label"],
+    },
+    {
+        "id": "Q43",
+        "group": "Reasoning",
+        "name": "InterpretiveFrame named individuals",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?ind ?label WHERE {
+  ?ind a owl:NamedIndividual ,
+         ontara-rsn:InterpretiveFrame ;
+       rdfs:label ?label .
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 3,
+        "display_vars": ["ind", "label"],
+    },
 ]
 
 
