@@ -835,13 +835,13 @@ SELECT DISTINCT ?class ?label WHERE {
 }
 ORDER BY ?label
 """,
-        "expect_exactly": 26,
+        "expect_exactly": 34,
         "display_vars": ["class", "label"],
     },
     {
         "id": "Q37",
         "group": "Reasoning",
-        "name": "Reasoning object properties with domain and range",
+        "name": "Reasoning object properties with domain and range (Phase 1+2)",
         "sparql": """
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -856,7 +856,7 @@ SELECT ?prop ?label ?domain ?range WHERE {
 }
 ORDER BY ?label
 """,
-        "expect_exactly": 15,
+        "expect_exactly": 24,
         "display_vars": ["prop", "label", "domain", "range"],
     },
     {
@@ -996,6 +996,142 @@ ORDER BY ?label
 """,
         "expect_exactly": 3,
         "display_vars": ["ind", "label"],
+    },
+    {
+        "id": "Q44",
+        "group": "Reasoning",
+        "name": "Heuristic subclass hierarchy (6 families)",
+        "sparql": """
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?class ?label WHERE {
+  ?class rdfs:subClassOf ontara-rsn:Heuristic ;
+         rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?class), STR(ontara-rsn:)))
+  FILTER(?class != ontara-rsn:Heuristic)
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 6,
+        "display_vars": ["class", "label"],
+    },
+    {
+        "id": "Q45",
+        "group": "Reasoning",
+        "name": "HeuristicPack class with hasMember property",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?class ?prop ?domain ?range WHERE {
+  ontara-rsn:HeuristicPack a owl:Class ;
+                            rdfs:label ?class .
+  ontara-rsn:hasMember a owl:ObjectProperty ;
+                       rdfs:label ?prop ;
+                       rdfs:domain ?domain ;
+                       rdfs:range ?range .
+}
+""",
+        "expect_exactly": 1,
+        "display_vars": ["class", "prop", "domain", "range"],
+    },
+    {
+        "id": "Q46",
+        "group": "Reasoning",
+        "name": "DecisionMode named individuals (4 Cynefin domains)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?ind ?label WHERE {
+  ?ind a owl:NamedIndividual ,
+         ontara-rsn:DecisionMode ;
+       rdfs:label ?label .
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 4,
+        "display_vars": ["ind", "label"],
+    },
+    {
+        "id": "Q47",
+        "group": "Reasoning",
+        "name": "activatesComponent property declaration",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?prop ?label ?domain ?range WHERE {
+  ontara-rsn:activatesComponent a owl:ObjectProperty ;
+                                 rdfs:label ?label ;
+                                 rdfs:domain ?domain ;
+                                 rdfs:range ?range .
+  BIND(ontara-rsn:activatesComponent AS ?prop)
+}
+""",
+        "expect_exactly": 1,
+        "display_vars": ["prop", "label", "domain", "range"],
+    },
+    {
+        "id": "Q48",
+        "group": "Reasoning",
+        "name": "CombinationAlgebra named individuals (4 algebras)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?ind ?label WHERE {
+  ?ind a owl:NamedIndividual ,
+         ontara-rsn:CombinationAlgebra ;
+       rdfs:label ?label .
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 4,
+        "display_vars": ["ind", "label"],
+    },
+    {
+        "id": "Q49",
+        "group": "Reasoning",
+        "name": "hasCombinationAlgebra is functional property",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?prop ?label WHERE {
+  ontara-rsn:hasCombinationAlgebra a owl:ObjectProperty ,
+                                     owl:FunctionalProperty ;
+                                   rdfs:label ?label .
+  BIND(ontara-rsn:hasCombinationAlgebra AS ?prop)
+}
+""",
+        "expect_exactly": 1,
+        "display_vars": ["prop", "label"],
+    },
+    {
+        "id": "Q50",
+        "group": "Reasoning",
+        "name": "composedWith is symmetric property",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+
+SELECT ?prop ?label WHERE {
+  ontara-rsn:composedWith a owl:ObjectProperty ,
+                            owl:SymmetricProperty ;
+                          rdfs:label ?label .
+  BIND(ontara-rsn:composedWith AS ?prop)
+}
+""",
+        "expect_exactly": 1,
+        "display_vars": ["prop", "label"],
     },
 ]
 

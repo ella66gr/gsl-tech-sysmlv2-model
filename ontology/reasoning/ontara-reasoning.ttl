@@ -1,5 +1,6 @@
 @prefix bfo: <http://purl.obolibrary.org/obo/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ontara-dom: <https://ontara.dev/ontology/domain/> .
 @prefix ontara-rsn: <https://ontara.dev/ontology/reasoning/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
@@ -32,7 +33,7 @@ Phase 1 Step 1.2 (Session 151): Core reasoning classes — ReasoningContext,
   Graded), KnowledgeSource, Heuristic, ReasoningComponent. Properties:
   hasContext, hasGoal, hasConstraint, producedDecision, hasDecisionMode,
   hasObstacle, hasMeasure, hasPlan, hasKnowledgeSource, plus domain/range."""@en ;
-    owl:versionInfo "Session 151 — Phase 1 Steps 1.2–1.4, 1.7: Core reasoning classes, evidence architecture, structured probabilistic types, governance alignment"@en .
+    owl:versionInfo "Session 155 — Phase 2: Heuristic packs (6 subtypes + HeuristicPack), decision mode routing (4 Cynefin individuals), constraint satisfaction structures (CombinationAlgebra with 4 algebras)"@en .
 
 
 # =============================================================================
@@ -1388,4 +1389,565 @@ Examples: '95% CI: 9.2%-15.8%', 'Prediction interval: 3-18 months'."""@en .
 #   Step 1.5: Cross-domain validation
 #   Step 1.6: SPARQL validation suite extension
 #   Step 1.7: Integration with governance vocabulary
+# =============================================================================
+
+
+# =============================================================================
+# SECTION 10: Heuristic Pack Architecture (Phase 2 Step 2.1)
+# =============================================================================
+#
+# Six Heuristic subclasses covering the primary heuristic families used in
+# clinical and service reasoning. Each is grounded in the coordinate framework
+# (Session 147) and carries a natural-language description of its ordering
+# or selection logic.
+#
+# A HeuristicPack is a named, versionable collection of heuristics applicable
+# to a domain, service line, or regulatory context.
+#
+# New properties: hasMember, applicableToDomain, applicableToContext,
+# overrides, hasAuthorityBasis, hasOrderingLogic.
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# GoalOrderingHeuristic — task sequencing by value
+# -----------------------------------------------------------------------------
+
+ontara-rsn:GoalOrderingHeuristic a owl:Class ;
+    rdfs:label "Goal Ordering Heuristic"@en ;
+    rdfs:subClassOf ontara-rsn:Heuristic ;
+    rdfs:comment """A heuristic for sequencing goals and tasks. Prioritises prerequisite,
+high-risk, irreversible, or high-information-gain tasks first.
+
+Coordinate-framework grounding: prioritise movement along axes with
+the highest goal-region proximity gradient — move fastest toward the
+region boundaries that matter most."""@en ;
+    skos:definition """A heuristic that determines goal and task sequencing, prioritising
+prerequisite, high-risk, or irreversible actions first."""@en .
+
+
+# -----------------------------------------------------------------------------
+# ResourceHeuristic — scarce-resource preservation
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ResourceHeuristic a owl:Class ;
+    rdfs:label "Resource Heuristic"@en ;
+    rdfs:subClassOf ontara-rsn:Heuristic ;
+    rdfs:comment """A heuristic for resource-allocation decisions. Prefers scarce-resource
+preservation, continuity-preserving allocations, and local-capacity balancing.
+
+Coordinate-framework grounding: minimise rate of change in resource-axis
+dimensions — smooth allocation trajectories preserve capacity."""@en ;
+    skos:definition """A heuristic that guides resource allocation, preferring
+scarce-resource preservation and continuity."""@en .
+
+
+# -----------------------------------------------------------------------------
+# RiskHeuristic — escalation on dangerous combinations
+# -----------------------------------------------------------------------------
+
+ontara-rsn:RiskHeuristic a owl:Class ;
+    rdfs:label "Risk Heuristic"@en ;
+    rdfs:subClassOf ontara-rsn:Heuristic ;
+    rdfs:comment """A heuristic for risk recognition and escalation. Activates on
+red-flag combinations, uncertainty plus severity, and vulnerable-population
+markers.
+
+Coordinate-framework grounding: increase monitoring density near
+NormativeRegion boundaries — proximity to a constraint boundary
+warrants heightened attention."""@en ;
+    skos:definition """A heuristic that triggers risk escalation on dangerous
+combinations of uncertainty, severity, and vulnerability."""@en .
+
+
+# -----------------------------------------------------------------------------
+# DiagnosticHeuristic — hypothesis generation and pruning
+# -----------------------------------------------------------------------------
+
+ontara-rsn:DiagnosticHeuristic a owl:Class ;
+    rdfs:label "Diagnostic Heuristic"@en ;
+    rdfs:subClassOf ontara-rsn:Heuristic ;
+    rdfs:comment """A heuristic for diagnostic reasoning. Generates hypotheses broadly
+then prunes using discriminating evidence.
+
+Coordinate-framework grounding: maximise information gain per reasoning
+step — choose tests and observations that most efficiently reduce
+uncertainty about the entity's position in the coordinate space."""@en ;
+    skos:definition """A heuristic for diagnostic reasoning that generates hypotheses
+broadly and prunes by discriminating evidence."""@en .
+
+
+# -----------------------------------------------------------------------------
+# CoordinationHeuristic — team and handoff management
+# -----------------------------------------------------------------------------
+
+ontara-rsn:CoordinationHeuristic a owl:Class ;
+    rdfs:label "Coordination Heuristic"@en ;
+    rdfs:subClassOf ontara-rsn:Heuristic ;
+    rdfs:comment """A heuristic for care coordination and team management. Minimises
+handoff count, maximises accountability continuity, and prefers known
+competent teams.
+
+Coordinate-framework grounding: minimise discontinuity in agent-assignment
+dimensions — smooth agent transitions preserve contextual knowledge."""@en ;
+    skos:definition """A heuristic for coordination that minimises handoffs and maximises
+accountability continuity."""@en .
+
+
+# -----------------------------------------------------------------------------
+# GovernanceHeuristic — escalation under uncertainty or novelty
+# -----------------------------------------------------------------------------
+
+ontara-rsn:GovernanceHeuristic a owl:Class ;
+    rdfs:label "Governance Heuristic"@en ;
+    rdfs:subClassOf ontara-rsn:Heuristic ;
+    rdfs:comment """A heuristic for governance-aware escalation. Requires human review
+when confidence is low, novelty is high, explanation is weak, or
+downstream risk is material.
+
+Coordinate-framework grounding: escalate when the entity's position is
+near the FormalisationFrontier or a NormativeRegion boundary — these
+are the situations where heuristic defaults are least reliable."""@en ;
+    skos:definition """A heuristic that triggers governance review under conditions of
+low confidence, high novelty, or material downstream risk."""@en .
+
+
+# -----------------------------------------------------------------------------
+# HeuristicPack — named, versionable collection of heuristics
+# -----------------------------------------------------------------------------
+
+ontara-rsn:HeuristicPack a owl:Class ;
+    rdfs:label "Heuristic Pack"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """A named, versionable collection of heuristics applicable to a domain,
+service line, or regulatory context. A HeuristicPack bundles the heuristics
+that apply to a particular operational situation — selecting the right pack
+is the first step in heuristic reasoning.
+
+BFO grounding: information content entity (IAO_0000030) — a HeuristicPack
+is a specification of which heuristics apply and how they are configured
+for a particular operational context."""@en ;
+    skos:definition """A named, versionable collection of heuristics applicable to a
+domain, service line, or regulatory context."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasMember — links HeuristicPack to its constituent heuristics
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasMember a owl:ObjectProperty ;
+    rdfs:label "has member"@en ;
+    rdfs:domain ontara-rsn:HeuristicPack ;
+    rdfs:range ontara-rsn:Heuristic ;
+    rdfs:comment """Links a HeuristicPack to its constituent heuristics. A pack contains
+one or more heuristics that collectively cover the reasoning situation
+for which the pack is designed."""@en .
+
+
+# -----------------------------------------------------------------------------
+# applicableToDomain — links heuristic or pack to a DomainIdentity
+# -----------------------------------------------------------------------------
+
+ontara-rsn:applicableToDomain a owl:ObjectProperty ;
+    rdfs:label "applicable to domain"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range ontara-dom:DomainIdentity ;
+    rdfs:comment """Links a Heuristic or HeuristicPack to the DomainIdentity it applies to.
+Both individual heuristics and entire packs can declare domain applicability.
+Domain-specific heuristics override or supplement the default set for that
+operational context."""@en .
+
+
+# -----------------------------------------------------------------------------
+# applicableToContext — links heuristic to activating reasoning contexts
+# -----------------------------------------------------------------------------
+
+ontara-rsn:applicableToContext a owl:ObjectProperty ;
+    rdfs:label "applicable to context"@en ;
+    rdfs:domain ontara-rsn:Heuristic ;
+    rdfs:range ontara-rsn:ReasoningContext ;
+    rdfs:comment """Links a Heuristic to the ReasoningContext types that activate it.
+A heuristic is applicable to a context when the context's properties
+(goal type, decision mode, domain) match the heuristic's activation
+criteria."""@en .
+
+
+# -----------------------------------------------------------------------------
+# overrides — links a heuristic to the one it overrides
+# -----------------------------------------------------------------------------
+
+ontara-rsn:overrides a owl:ObjectProperty ;
+    rdfs:label "overrides"@en ;
+    rdfs:domain ontara-rsn:Heuristic ;
+    rdfs:range ontara-rsn:Heuristic ;
+    rdfs:comment """Links a Heuristic to the Heuristic it overrides. Used when a domain-
+or context-specific heuristic replaces a more general default.
+
+Override events are recorded via PROV-O: prov:wasGeneratedBy on the
+overriding heuristic links to the ReasoningActivity that decided the
+override, preserving full provenance of which heuristic applied and
+why it was chosen over the default."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasAuthorityBasis — links a heuristic to its justifying knowledge source
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasAuthorityBasis a owl:ObjectProperty ;
+    rdfs:label "has authority basis"@en ;
+    rdfs:domain ontara-rsn:Heuristic ;
+    rdfs:range ontara-rsn:KnowledgeSource ;
+    rdfs:comment """Links a Heuristic to the KnowledgeSource that justifies its use.
+A heuristic is not an arbitrary rule — it is grounded in evidence,
+clinical guidelines, domain expertise, or regulatory requirements.
+This property makes that grounding explicit and auditable."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasOrderingLogic — natural-language description of the heuristic's logic
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasOrderingLogic a owl:DatatypeProperty ;
+    rdfs:label "has ordering logic"@en ;
+    rdfs:domain ontara-rsn:Heuristic ;
+    rdfs:range xsd:string ;
+    rdfs:comment """Describes the ordering or selection logic of the Heuristic in natural
+language. This is the human-readable rationale for why this heuristic
+applies and how it ranks or selects among options. Required for
+interpretability and governance audit."""@en .
+
+
+# =============================================================================
+# SECTION 11: Decision Mode Routing (Phase 2 Step 2.2)
+# =============================================================================
+#
+# Four named individuals of DecisionMode, mapping the Cynefin framework
+# (Snowden & Boone) to the Ontara coordinate framework. Each mode corresponds
+# to a region of the coordinate space defined by the entity's proximity to
+# ClassificationRegion boundaries and the FormalisationFrontier.
+#
+# Two new properties: activatesComponent (routing mechanism) and
+# transitionsTo (mode evolution).
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# ClearMode — deterministic rules and checklists
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ClearMode a owl:NamedIndividual ,
+                       ontara-rsn:DecisionMode ;
+    rdfs:label "Clear Mode"@en ;
+    rdfs:comment """Deterministic rules, checklists, eligibility logic. Activates Tier 1
+reasoning components. Appropriate when the situation is well-characterised
+by existing rules and the correct response is known.
+
+Coordinate-framework grounding: the entity's position is within a
+well-mapped ClassificationRegion where deterministic paths exist.
+Standard operating procedures fully specify the response."""@en .
+
+
+# -----------------------------------------------------------------------------
+# ComplicatedMode — expert analysis and model-based trade-off
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ComplicatedMode a owl:NamedIndividual ,
+                              ontara-rsn:DecisionMode ;
+    rdfs:label "Complicated Mode"@en ;
+    rdfs:comment """Expert analysis, model-based trade-off, optimisation, simulation.
+Activates Tier 1 + Tier 2 reasoning, possibly with structured probabilistic
+support. The right answer exists but requires expertise to find.
+
+Coordinate-framework grounding: the ClassificationRegion requires analysis
+but admits tractable solutions. The entity's position can be precisely
+located with sufficient expertise and modelling effort."""@en .
+
+
+# -----------------------------------------------------------------------------
+# ComplexMode — probe-sense-respond and hypothesis portfolios
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ComplexMode a owl:NamedIndividual ,
+                          ontara-rsn:DecisionMode ;
+    rdfs:label "Complex Mode"@en ;
+    rdfs:comment """Probe-sense-respond, hypothesis portfolios, adaptive monitoring,
+learning loops. Activates exploratory reasoning with Tier 1 safety
+constraints as hard guards.
+
+Coordinate-framework grounding: the entity's position is near or beyond
+the FormalisationFrontier. Tractable solutions do not exist — the
+system must probe the space, observe consequences, and adapt."""@en .
+
+
+# -----------------------------------------------------------------------------
+# ChaoticMode — emergency stabilisation and hard constraint enforcement
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ChaoticMode a owl:NamedIndividual ,
+                          ontara-rsn:DecisionMode ;
+    rdfs:label "Chaotic Mode"@en ;
+    rdfs:comment """Emergency stabilisation, hard safety constraints, rapid escalation.
+Activates only hard constraint enforcement and escalation. Act first,
+sense second — the priority is stopping harm, not optimal decision-making.
+
+Coordinate-framework grounding: the entity's position has crossed a
+NormativeRegion boundary or is in crisis. Standard reasoning cannot
+operate — immediate stabilisation is required before analysis resumes."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Mode transition assertions (transitionsTo)
+# -----------------------------------------------------------------------------
+
+ontara-rsn:ClearMode ontara-rsn:transitionsTo ontara-rsn:ComplicatedMode ;
+    rdfs:comment "When standard rules cannot resolve the situation and expert analysis is required."@en .
+
+ontara-rsn:ComplicatedMode ontara-rsn:transitionsTo ontara-rsn:ComplexMode ;
+    rdfs:comment "When analysis reveals the situation has no tractable solution and requires exploratory sensemaking."@en .
+
+ontara-rsn:ChaoticMode ontara-rsn:transitionsTo ontara-rsn:ClearMode ;
+    rdfs:comment "When crisis is stabilised and deterministic rules can resume normal operation."@en .
+
+ontara-rsn:ComplexMode ontara-rsn:transitionsTo ontara-rsn:ComplicatedMode ;
+    rdfs:comment "When exploratory probing has sufficiently characterised the situation for analytical approaches."@en .
+
+
+# -----------------------------------------------------------------------------
+# activatesComponent — links decision mode to component types it activates
+# -----------------------------------------------------------------------------
+
+ontara-rsn:activatesComponent a owl:ObjectProperty ;
+    rdfs:label "activates component"@en ;
+    rdfs:domain ontara-rsn:DecisionMode ;
+    rdfs:range ontara-rsn:ReasoningComponent ;
+    rdfs:comment """Links a DecisionMode to the ReasoningComponent types it activates.
+This is the routing mechanism: given a context's decision mode, the
+system knows which components to engage. The routing is not exclusive
+— modes may activate overlapping sets of components, with higher
+modes activating all components of lower modes plus additional ones."""@en .
+
+
+# -----------------------------------------------------------------------------
+# transitionsTo — links one decision mode to another it may become
+# -----------------------------------------------------------------------------
+
+ontara-rsn:transitionsTo a owl:ObjectProperty ;
+    rdfs:label "transitions to"@en ;
+    rdfs:domain ontara-rsn:DecisionMode ;
+    rdfs:range ontara-rsn:DecisionMode ;
+    rdfs:comment """Links one DecisionMode to another that the context may transition to.
+A mode transition is a ReasoningActivity — the recognition that the
+problem character has changed. Transitions may be triggered by new
+evidence, escalation conditions, or stabilisation events."""@en .
+
+
+# =============================================================================
+# SECTION 12: Constraint Satisfaction Structures (Phase 2 Step 2.3)
+# =============================================================================
+#
+# The algebraic structure governing how constraint values combine.
+# Four named algebras cover the combination semantics for SoftConstraints
+# (cost/preference semirings) and GradedRules (fuzzy logic, PSL).
+#
+# Parallels InterpretiveFrame (Section 5), which governs confidence value
+# combination. CombinationAlgebra governs constraint value combination.
+#
+# New properties: hasCombinationAlgebra (functional), hasIdentityElement,
+# composedWith (symmetric), hasPriority, hasTruthValueRange.
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# CombinationAlgebra — algebraic structure for combining constraint values
+# -----------------------------------------------------------------------------
+
+ontara-rsn:CombinationAlgebra a owl:Class ;
+    rdfs:label "Combination Algebra"@en ;
+    rdfs:subClassOf bfo:IAO_0000030 ;
+    rdfs:comment """The algebraic structure governing how constraint values combine. A
+CombinationAlgebra specifies the combination operator (how values aggregate)
+and the selection operator (how the best option is chosen).
+
+BFO grounding: information content entity (IAO_0000030) — a specification
+of combination semantics.
+
+Parallels InterpretiveFrame (Section 5): InterpretiveFrame governs how
+confidence values are interpreted and combined; CombinationAlgebra governs
+how constraint values are combined to evaluate constraint satisfaction."""@en ;
+    skos:definition """The algebraic structure governing how constraint values combine,
+specifying combination and selection operators."""@en .
+
+
+# -----------------------------------------------------------------------------
+# MinPlusSemiring — cost semiring for SoftConstraints
+# -----------------------------------------------------------------------------
+
+ontara-rsn:MinPlusSemiring a owl:NamedIndividual ,
+                              ontara-rsn:CombinationAlgebra ;
+    rdfs:label "Min-Plus Semiring"@en ;
+    rdfs:comment """Cost semiring: combine via addition (total cost), select via minimum
+(cheapest option). Standard algebra for SoftConstraint cost surfaces.
+
+Formal structure: (ℝ⁺ ∪ {∞}, min, +, ∞, 0). The identity for addition
+is 0 (zero cost); the identity for selection (min) is ∞ (no option is
+worse than having no option at all)."""@en ;
+    ontara-rsn:hasIdentityElement "0"^^xsd:string .
+
+
+# -----------------------------------------------------------------------------
+# MaxTimesSemiring — preference semiring for SoftConstraints
+# -----------------------------------------------------------------------------
+
+ontara-rsn:MaxTimesSemiring a owl:NamedIndividual ,
+                               ontara-rsn:CombinationAlgebra ;
+    rdfs:label "Max-Times Semiring"@en ;
+    rdfs:comment """Preference semiring: combine via multiplication (joint preference),
+select via maximum (most preferred option). Alternative algebra for
+SoftConstraint preference surfaces.
+
+Formal structure: ([0,1], max, ×, 0, 1). The identity for multiplication
+is 1 (full preference); the identity for selection (max) is 0 (no option
+is less preferred than having no option at all)."""@en ;
+    ontara-rsn:hasIdentityElement "1"^^xsd:string .
+
+
+# -----------------------------------------------------------------------------
+# FuzzyMinMax — fuzzy logic operators for GradedRules
+# -----------------------------------------------------------------------------
+
+ontara-rsn:FuzzyMinMax a owl:NamedIndividual ,
+                          ontara-rsn:CombinationAlgebra ;
+    rdfs:label "Fuzzy Min-Max"@en ;
+    rdfs:comment """Fuzzy logic combination: combine via min (conjunction) or max
+(disjunction). Standard fuzzy operators for GradedRule truth-value surfaces.
+
+Formal structure: ([0,1], max, min, 0, 1). Min corresponds to AND,
+max corresponds to OR. The identity for min-conjunction is 1 (fully
+true, so min with 1 leaves the other operand unchanged)."""@en ;
+    ontara-rsn:hasIdentityElement "1 (for min-conjunction)"^^xsd:string .
+
+
+# -----------------------------------------------------------------------------
+# PSLConvexOptimisation — Probabilistic Soft Logic for GradedRule composition
+# -----------------------------------------------------------------------------
+
+ontara-rsn:PSLConvexOptimisation a owl:NamedIndividual ,
+                                    ontara-rsn:CombinationAlgebra ;
+    rdfs:label "PSL Convex Optimisation"@en ;
+    rdfs:comment """Probabilistic Soft Logic combination: graded rules combine via convex
+optimisation to find the most probable truth-value assignment. Standard
+algebra for GradedRule composition across multiple interacting rules.
+
+PSL relaxes logical rules to continuous truth values in [0,1] and finds
+the most probable assignment by solving a convex optimisation problem.
+There is no scalar identity element in the traditional sense — the
+optimisation is over the joint assignment space."""@en ;
+    ontara-rsn:hasIdentityElement "N/A (no scalar identity — convex optimisation over joint assignment)"^^xsd:string .
+
+
+# -----------------------------------------------------------------------------
+# hasCombinationAlgebra — links a Constraint to its combination algebra
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasCombinationAlgebra a owl:ObjectProperty ,
+                                    owl:FunctionalProperty ;
+    rdfs:label "has combination algebra"@en ;
+    rdfs:domain ontara-rsn:Constraint ;
+    rdfs:range ontara-rsn:CombinationAlgebra ;
+    rdfs:comment """Links a Constraint to its CombinationAlgebra. Functional — each
+constraint has exactly one combination algebra. This determines how
+the constraint's values aggregate and how the best-satisfying option
+is selected when multiple options are available."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasIdentityElement — the identity element of a CombinationAlgebra
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasIdentityElement a owl:DatatypeProperty ;
+    rdfs:label "has identity element"@en ;
+    rdfs:domain ontara-rsn:CombinationAlgebra ;
+    rdfs:range xsd:string ;
+    rdfs:comment """The identity element of the CombinationAlgebra. String type to
+accommodate "not applicable" for algebras such as PSLConvexOptimisation
+where no scalar identity exists. For semirings, this is the identity
+of the combination operator (addition or multiplication)."""@en .
+
+
+# -----------------------------------------------------------------------------
+# composedWith — two constraints interact and should be evaluated together
+# -----------------------------------------------------------------------------
+
+ontara-rsn:composedWith a owl:ObjectProperty ,
+                           owl:SymmetricProperty ;
+    rdfs:label "composed with"@en ;
+    rdfs:domain ontara-rsn:Constraint ;
+    rdfs:range ontara-rsn:Constraint ;
+    rdfs:comment """Expresses that two Constraints interact and should be evaluated
+together. Symmetric — if A is composedWith B, then B is composedWith A.
+Composition may be necessary when constraints share variables, conflict,
+or must be satisfied jointly for a decision to be valid."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasPriority — relative priority for constraint relaxation
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasPriority a owl:DatatypeProperty ;
+    rdfs:label "has priority"@en ;
+    rdfs:domain ontara-rsn:Constraint ;
+    rdfs:range xsd:integer ;
+    rdfs:comment """Relative priority for constraint relaxation ordering. Higher integer
+values take priority over lower values. When constraints conflict, lower-
+priority constraints are relaxed first. HardConstraints should carry
+higher priorities than SoftConstraints; governance obligations (aligned
+as HardConstraints) should carry the highest priorities."""@en .
+
+
+# -----------------------------------------------------------------------------
+# hasTruthValueRange — documents the truth-value range for GradedRules
+# -----------------------------------------------------------------------------
+
+ontara-rsn:hasTruthValueRange a owl:DatatypeProperty ;
+    rdfs:label "has truth value range"@en ;
+    rdfs:domain ontara-rsn:GradedRule ;
+    rdfs:range xsd:string ;
+    rdfs:comment """Documents the truth-value range of a GradedRule. Typically "[0,1]"
+for standard fuzzy logic and PSL, but may differ for other graded
+logics. String type to accommodate non-standard ranges.
+
+Used by the reasoning runtime to validate that GradedRule outputs
+are within the declared range before they are used in combination."""@en .
+
+
+# =============================================================================
+# End of Phase 2 Steps 2.1, 2.2, and 2.3
+# =============================================================================
+#
+# Class count: 34 (26 Phase 1 + 8 Phase 2)
+#   Phase 2 additions:
+#     Step 2.1: GoalOrderingHeuristic, ResourceHeuristic, RiskHeuristic,
+#               DiagnosticHeuristic, CoordinationHeuristic, GovernanceHeuristic,
+#               HeuristicPack
+#     Step 2.3: CombinationAlgebra
+#
+# Named individuals: 11 (3 Phase 1 + 4 Step 2.2 + 4 Step 2.3)
+#   Phase 1: ProbabilityFrame, FuzzyMembershipFrame, PreferenceWeightFrame
+#   Step 2.2: ClearMode, ComplicatedMode, ComplexMode, ChaoticMode
+#   Step 2.3: MinPlusSemiring, MaxTimesSemiring, FuzzyMinMax, PSLConvexOptimisation
+#
+# Object property count: 21 (15 Phase 1 + 6 Phase 2)
+#   Step 2.1: hasMember, applicableToDomain, applicableToContext,
+#             overrides, hasAuthorityBasis
+#   Step 2.2: activatesComponent, transitionsTo
+#
+# Datatype property count: 7 (4 Phase 1 + 3 Phase 2)
+#   Step 2.1: hasOrderingLogic
+#   Step 2.3: hasIdentityElement, hasPriority, hasTruthValueRange
+#   (Note: hasIdentityElement is declared as both datatype property and
+#    used in named individual assertions — confirm it is a DatatypeProperty)
+#
 # =============================================================================
