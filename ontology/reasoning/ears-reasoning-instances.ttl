@@ -1,0 +1,1492 @@
+@prefix bfo: <http://purl.obolibrary.org/obo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ears-rsn: <https://ontara.dev/data/ears/reasoning/> .
+@prefix ontara-dom: <https://ontara.dev/ontology/domain/> .
+@prefix ontara-gov: <https://ontara.dev/ontology/governance/> .
+@prefix ontara-rsn: <https://ontara.dev/ontology/reasoning/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+# =============================================================================
+# Ontology declaration
+# =============================================================================
+
+<https://ontara.dev/data/ears/reasoning/> a owl:Ontology ;
+    rdfs:label "Ears Reasoning Instances"@en ;
+    dcterms:created "2026-04-07"^^xsd:date ;
+    owl:imports ontara-rsn: ;
+    rdfs:comment """OWL named individuals exercising the Ontara reasoning vocabulary
+(ontara-rsn:) with concrete clinical content from the Ears (Community
+Ear Care) domain. First domain-specific reasoning instance population.
+
+Created Session 166, following the Ears vertical connection map (Session
+162) §4.1–4.7 and the coverage map (Session 165) §8.1 specification.
+Tests the coverage map's central claim that type-level vocabulary
+coverage translates to instance-level fitness (WP-1).
+
+Five clinical reasoning exercises:
+  1. Pre-appointment triage (§4.1) — Simple mode, protocol-driven
+  2. Contraindication check (§4.2) — Complicated mode, three-way
+     constraint hierarchy (HardConstraint + GradedRule)
+  3. Procedure selection (§4.3) — Complicated mode, HeuristicPack
+  4. Post-procedure assessment (§4.4) — Simple/Complicated mode
+  5. Capacity assessment (§4.5) — Complicated mode, reasoning–governance
+     intersection (MCA framework)
+
+Plus STAMP/STPA safety control structure instance (§4.6) — the
+irrigation safety system as a concrete ControlStructure.
+
+IRI namespace: https://ontara.dev/data/ears/reasoning/ (data namespace,
+per IRI scheme convention). All individuals use the ears-rsn: prefix."""@en ;
+    owl:versionInfo "Session 166 — initial reasoning instance population"@en .
+
+
+# =============================================================================
+# SECTION 1: Shared Knowledge Sources and Agents
+# =============================================================================
+#
+# Knowledge sources and agents referenced across multiple reasoning exercises.
+# Defined once here and referenced by individual exercises below.
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# Reasoning Agents
+# -----------------------------------------------------------------------------
+
+ears-rsn:agent-helen a owl:NamedIndividual ,
+                       ontara-rsn:ReasoningAgent ;
+    rdfs:label "Helen Kemp (Ears Lead Clinician)"@en ;
+    rdfs:comment """Lead clinician, registered manager, and owner of the Ears service.
+RGN, PgCert Ear Care, 15 years NHS experience. Performs all clinical
+reasoning exercises. Microsuction competency formally assessed by
+Mr Oluwo (ENT consultant). The primary ReasoningAgent for all
+Complicated-mode clinical decisions."""@en .
+
+ears-rsn:agent-ade a owl:NamedIndividual ,
+                     ontara-rsn:ReasoningAgent ;
+    rdfs:label "Adenike Okafor (Ears Ear Care Practitioner)"@en ;
+    rdfs:comment """Ear care practitioner. RGN, Ear Care Certificate. 50 observed
+procedures signed off by Helen (Jan 2025). Performs clinical reasoning
+exercises under Helen's governance framework. Restricted to irrigation
+and straightforward microsuction — complex cases escalated to Helen."""@en .
+
+ears-rsn:agent-del a owl:NamedIndividual ,
+                     ontara-rsn:ReasoningAgent ;
+    rdfs:label "Derek Finch (Ears Receptionist)"@en ;
+    rdfs:comment """Receptionist and administrator. Non-clinician. Performs the triage
+decision (§4.1) using a scripted screening protocol — the protocol IS
+the reasoning structure, delegated from clinical judgement to protocol
+execution. DecisionMode: Simple (Cynefin)."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Knowledge Sources
+# -----------------------------------------------------------------------------
+
+ears-rsn:ks-nice-earwax a owl:NamedIndividual ,
+                          ontara-rsn:KnowledgeSource ;
+    rdfs:label "NICE CKS Earwax Guidance"@en ;
+    rdfs:comment """NICE Clinical Knowledge Summary for earwax management. The primary
+evidence-based clinical guideline governing the Ears service. Specifies
+contraindications for irrigation, referral thresholds, and clinical
+management pathways. Authority basis for clinical protocols and the
+contraindication checklist."""@en .
+
+ears-rsn:ks-helen-protocols a owl:NamedIndividual ,
+                              ontara-rsn:KnowledgeSource ;
+    rdfs:label "Helen's Clinical Protocols"@en ;
+    rdfs:comment """The 17 clinical policies and SOPs maintained by Helen, reviewed
+annually, co-signed by Dr Mehta. These translate NICE guidance and
+professional standards into operational procedures for the Ears
+service. They are the proximate knowledge source for day-to-day
+clinical reasoning — the bridge between national guidelines and
+local practice."""@en .
+
+ears-rsn:ks-screening-script a owl:NamedIndividual ,
+                               ontara-rsn:KnowledgeSource ;
+    rdfs:label "Pre-Appointment Screening Script"@en ;
+    rdfs:comment """Scripted screening questions approved by Helen for use by Del
+(non-clinician) at the point of telephone or online contact. The
+script encodes red-flag criteria as binary questions, delegating
+clinical triage to protocol execution. Derived from NICE CKS
+guidance and Helen's clinical protocols."""@en .
+
+ears-rsn:ks-mca-2005 a owl:NamedIndividual ,
+                        ontara-rsn:KnowledgeSource ;
+    rdfs:label "Mental Capacity Act 2005 and Code of Practice"@en ;
+    rdfs:comment """The statutory framework governing capacity assessment for adults
+in England and Wales. Provides the two-stage test (impairment of
+mind/brain → functional assessment of understanding, retention,
+use/weighing, communication) and five statutory principles. The
+authoritative knowledge source for capacity assessment reasoning."""@en .
+
+ears-rsn:ks-oluwo-training a owl:NamedIndividual ,
+                              ontara-rsn:KnowledgeSource ;
+    rdfs:label "Mr Oluwo Microsuction Training"@en ;
+    rdfs:comment """Helen's microsuction competency training from Mr Oluwo, ENT
+consultant. Provides the clinical heuristics for procedure selection
+and complex case management that go beyond guideline-based
+knowledge — the practical expertise layer."""@en .
+
+
+# =============================================================================
+# SECTION 2: Exercise 1 — Pre-Appointment Triage (§4.1)
+# =============================================================================
+#
+# Domain context: Del asks scripted screening questions at first contact.
+# Red flags prevent booking. Decision: book / decline and advise GP /
+# seek clinician advice.
+#
+# DecisionMode: Simple (Cynefin) — clear cause-and-effect, protocol-driven.
+# This is the simplest reasoning exercise: a checklist with binary outcomes
+# operated by a non-clinician. The protocol IS the reasoning structure.
+#
+# Watchpoint relevance: WP-1 (do HardConstraint class constraints fit
+# specific clinical red flags?)
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# Triage Reasoning Context
+# -----------------------------------------------------------------------------
+
+ears-rsn:triage-context a owl:NamedIndividual ,
+                          ontara-rsn:ReasoningContext ;
+    rdfs:label "Pre-Appointment Triage Context"@en ;
+    ontara-rsn:hasDecisionMode ontara-rsn:ClearMode ;
+    ontara-rsn:hasGoal ears-rsn:triage-goal ;
+    ontara-rsn:hasConstraint ears-rsn:triage-hc-active-infection ,
+                             ears-rsn:triage-hc-recent-surgery ,
+                             ears-rsn:triage-hc-unexplained-bleeding ,
+                             ears-rsn:triage-hc-acute-vertigo ,
+                             ears-rsn:triage-hc-under-16 ;
+    ontara-rsn:hasKnowledgeSource ears-rsn:ks-screening-script ;
+    rdfs:comment """The reasoning context for pre-appointment telephone screening.
+DecisionMode: Clear — the triage follows a scripted checklist with
+binary outcomes. The screening is performed by Del (non-clinician),
+meaning the decision is delegated to protocol rather than clinical
+judgement. The protocol IS the reasoning structure.
+
+This is the simplest Ears reasoning exercise — it validates the
+basic ReasoningContext + HardConstraint + DecisionPlan pattern
+before testing harder cases."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Triage Goal
+# -----------------------------------------------------------------------------
+
+ears-rsn:triage-goal a owl:NamedIndividual ,
+                       ontara-rsn:Goal ;
+    rdfs:label "Determine patient suitability for booking"@en ;
+    ontara-rsn:hasMeasure ears-rsn:triage-measure-red-flag-count ;
+    rdfs:comment """The triage goal: determine whether the patient is suitable for
+an Ears appointment. In coordinate-framework terms, this is a
+binary classification — the patient is either within the 'bookable'
+GoalRegion (no red flags) or outside it (one or more red flags).
+There is no gradient — any single red flag is sufficient to exclude."""@en .
+
+ears-rsn:triage-measure-red-flag-count a owl:NamedIndividual ,
+                                         ontara-rsn:Measure ;
+    rdfs:label "Red flag count"@en ;
+    rdfs:comment """The measure for triage suitability: count of red flags identified
+during screening. The threshold is binary — zero red flags means
+bookable; any non-zero count means not bookable. This is a projection
+onto a single axis (red flag presence) with a sharp boundary at 1."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Triage HardConstraints (Red Flags)
+# -----------------------------------------------------------------------------
+
+ears-rsn:triage-hc-active-infection a owl:NamedIndividual ,
+                                      ontara-rsn:HardConstraint ;
+    rdfs:label "Red flag: active ear infection"@en ;
+    ontara-rsn:hasPriority 100 ;
+    rdfs:comment """Active ear infection (pain, discharge, fever) is an absolute
+contraindication to any ear procedure. Violation of this constraint
+produces an immediate 'do not book — advise GP' outcome. The
+constraint boundary is binary: infection present → outside bookable
+region."""@en .
+
+ears-rsn:triage-hc-recent-surgery a owl:NamedIndividual ,
+                                    ontara-rsn:HardConstraint ;
+    rdfs:label "Red flag: recent ear surgery"@en ;
+    ontara-rsn:hasPriority 100 ;
+    rdfs:comment """Recent ear surgery (within the last 12 months, or as advised by
+ENT) precludes booking without clinician review. The patient may
+still be suitable for microsuction under clinical supervision, but
+the triage protocol cannot make this determination — it requires
+clinician input."""@en .
+
+ears-rsn:triage-hc-unexplained-bleeding a owl:NamedIndividual ,
+                                          ontara-rsn:HardConstraint ;
+    rdfs:label "Red flag: unexplained ear bleeding"@en ;
+    ontara-rsn:hasPriority 100 ;
+    rdfs:comment """Unexplained bleeding from the ear canal is a red flag requiring
+GP assessment before any ear procedure. May indicate TM perforation,
+trauma, or pathology requiring investigation."""@en .
+
+ears-rsn:triage-hc-acute-vertigo a owl:NamedIndividual ,
+                                   ontara-rsn:HardConstraint ;
+    rdfs:label "Red flag: acute vertigo"@en ;
+    ontara-rsn:hasPriority 100 ;
+    rdfs:comment """Acute onset vertigo requires medical assessment to exclude
+serious causes (labyrinthitis, vestibular neuritis, central causes)
+before ear procedures are considered. The screening question is:
+'Are you currently experiencing dizziness or a spinning sensation?'"""@en .
+
+ears-rsn:triage-hc-under-16 a owl:NamedIndividual ,
+                               ontara-rsn:HardConstraint ;
+    rdfs:label "Red flag: patient under 16"@en ;
+    ontara-rsn:hasPriority 100 ;
+    rdfs:comment """The Ears service scope excludes patients under 16. This is a
+service boundary constraint (CQC registration scope), not a clinical
+contraindication. Paediatric earwax management requires different
+equipment, competencies, and consent processes."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Triage Decision Plan
+# -----------------------------------------------------------------------------
+
+ears-rsn:triage-plan a owl:NamedIndividual ,
+                       ontara-rsn:Plan ;
+    rdfs:label "Triage screening protocol"@en ;
+    rdfs:comment """The triage decision plan: apply the red flag checklist sequentially.
+If any HardConstraint is violated (any red flag present), the outcome
+is 'do not book' with appropriate advice (advise GP for clinical red
+flags, explain service scope for under-16). If no HardConstraints are
+violated, book the appointment and advise olive oil preparation.
+
+The plan is linear and deterministic — no branching beyond the binary
+red-flag check at each step. This is appropriate for ClearMode: the
+protocol fully specifies the response."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Triage Reasoning Activity (exemplar episode)
+# -----------------------------------------------------------------------------
+
+ears-rsn:triage-activity-exemplar a owl:NamedIndividual ,
+                                    ontara-rsn:ReasoningActivity ;
+    rdfs:label "Triage screening episode (exemplar)"@en ;
+    ontara-rsn:hasContext ears-rsn:triage-context ;
+    ontara-rsn:producedDecision ears-rsn:triage-decision-book ;
+    prov:wasAssociatedWith ears-rsn:agent-del ;
+    prov:used ears-rsn:ks-screening-script ;
+    rdfs:comment """An exemplar triage screening episode. Del applies the screening
+script to a patient who presents with no red flags. The activity
+consults the screening script (prov:used), is performed by Del
+(prov:wasAssociatedWith), and produces a 'book appointment' decision.
+
+This is an exemplar — not a record of a specific patient encounter.
+It demonstrates the instance-level structure that a real screening
+episode would populate."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Triage Decision and Claim
+# -----------------------------------------------------------------------------
+
+ears-rsn:triage-decision-book a owl:NamedIndividual ,
+                                ontara-rsn:Decision ;
+    rdfs:label "Decision: book appointment"@en ;
+    ontara-rsn:hasPlan ears-rsn:triage-plan ;
+    prov:wasGeneratedBy ears-rsn:triage-activity-exemplar ;
+    prov:wasAttributedTo ears-rsn:agent-del ;
+    rdfs:comment """The decision to book the appointment. Produced when the triage
+screening identifies no red flags. The decision references the triage
+plan (the protocol that was followed) and carries PROV-O provenance:
+generated by the triage activity, attributed to Del."""@en .
+
+ears-rsn:triage-claim-suitable a owl:NamedIndividual ,
+                                 ontara-rsn:Claim ;
+    rdfs:label "Claim: patient suitable for booking"@en ;
+    ontara-rsn:supportedBy ears-rsn:triage-evidence-no-red-flags ;
+    ontara-rsn:hasConfidence ears-rsn:triage-confidence-suitable ;
+    prov:wasGeneratedBy ears-rsn:triage-activity-exemplar ;
+    rdfs:comment """The claim that the patient is suitable for booking. Supported
+by the evidence line 'no red flags identified' and carrying high
+confidence (protocol was followed completely)."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Triage Evidence Structure (SEPIO pattern)
+# -----------------------------------------------------------------------------
+
+ears-rsn:triage-evidence-no-red-flags a owl:NamedIndividual ,
+                                        ontara-rsn:EvidenceLine ;
+    rdfs:label "Evidence: no red flags on screening"@en ;
+    ontara-rsn:hasEvidence ears-rsn:triage-ei-no-infection ,
+                           ears-rsn:triage-ei-no-surgery ,
+                           ears-rsn:triage-ei-no-bleeding ,
+                           ears-rsn:triage-ei-no-vertigo ,
+                           ears-rsn:triage-ei-age-confirmed ;
+    rdfs:comment """The evidence line supporting the 'suitable for booking' claim.
+Composed of five evidence items — one per red flag question, each
+confirming the absence of that red flag. The evidence line is coherent:
+all five items together constitute a complete screening."""@en .
+
+ears-rsn:triage-ei-no-infection a owl:NamedIndividual ,
+                                  ontara-rsn:EvidenceItem ;
+    rdfs:label "No active ear infection reported"@en ;
+    rdfs:comment "Patient denies ear pain, discharge, or fever."@en .
+
+ears-rsn:triage-ei-no-surgery a owl:NamedIndividual ,
+                                ontara-rsn:EvidenceItem ;
+    rdfs:label "No recent ear surgery reported"@en ;
+    rdfs:comment "Patient denies ear surgery within the last 12 months."@en .
+
+ears-rsn:triage-ei-no-bleeding a owl:NamedIndividual ,
+                                 ontara-rsn:EvidenceItem ;
+    rdfs:label "No unexplained ear bleeding reported"@en ;
+    rdfs:comment "Patient denies unexplained bleeding from the ear."@en .
+
+ears-rsn:triage-ei-no-vertigo a owl:NamedIndividual ,
+                                ontara-rsn:EvidenceItem ;
+    rdfs:label "No acute vertigo reported"@en ;
+    rdfs:comment "Patient denies current dizziness or spinning sensation."@en .
+
+ears-rsn:triage-ei-age-confirmed a owl:NamedIndividual ,
+                                   ontara-rsn:EvidenceItem ;
+    rdfs:label "Patient age 16 or over confirmed"@en ;
+    rdfs:comment "Patient confirms they are 16 years of age or older."@en .
+
+ears-rsn:triage-confidence-suitable a owl:NamedIndividual ,
+                                      ontara-rsn:ConfidenceAssessment ;
+    rdfs:label "Triage confidence: high"@en ;
+    ontara-rsn:hasInterpretiveFrame ontara-rsn:ProbabilityFrame ;
+    ontara-rsn:hasConfidenceValue "0.95"^^xsd:decimal ;
+    rdfs:comment """High confidence in the 'suitable for booking' claim. The 0.95
+(rather than 1.0) reflects that telephone screening relies on patient
+self-report — the patient may not recognise or disclose a red flag
+condition. The residual 0.05 uncertainty is addressed by the in-clinic
+assessment (Exercise 2), which repeats the relevant checks with
+clinical examination."""@en .
+
+
+# =============================================================================
+# SECTION 3: Exercise 2 — Contraindication Check (§4.2)
+# =============================================================================
+#
+# Domain context: Clinician applies the contraindication checklist in-clinic.
+# Absolute contraindications (HardConstraints) preclude irrigation entirely.
+# Relative contraindications (GradedRules) require clinical judgement.
+#
+# DecisionMode: Complicated — requires clinical expertise but the logic is
+# analysable. This is the critical three-way constraint test.
+#
+# Watchpoint relevance: WP-1 (do specific clinical contraindications fit
+# HardConstraint/GradedRule class constraints?), WP-2 (cross-vocabulary
+# BMM→reasoning relations)
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# Contraindication Reasoning Context
+# -----------------------------------------------------------------------------
+
+ears-rsn:contraindication-context a owl:NamedIndividual ,
+                                    ontara-rsn:ReasoningContext ;
+    rdfs:label "In-Clinic Contraindication Assessment Context"@en ;
+    ontara-rsn:hasDecisionMode ontara-rsn:ComplicatedMode ;
+    ontara-rsn:hasGoal ears-rsn:contraindication-goal ;
+    ontara-rsn:hasConstraint ears-rsn:ci-hc-known-perforation ,
+                             ears-rsn:ci-hc-grommets ,
+                             ears-rsn:ci-hc-middle-ear-surgery ,
+                             ears-rsn:ci-hc-only-hearing-ear ,
+                             ears-rsn:ci-hc-acute-otitis-externa ,
+                             ears-rsn:ci-hc-unilateral-hearing-loss ,
+                             ears-rsn:ci-hc-cleft-palate ,
+                             ears-rsn:ci-gr-anticoagulant ,
+                             ears-rsn:ci-gr-previous-adverse ,
+                             ears-rsn:ci-gr-severe-tinnitus ,
+                             ears-rsn:ci-gr-unable-to-cooperate ;
+    ontara-rsn:hasKnowledgeSource ears-rsn:ks-nice-earwax ,
+                                  ears-rsn:ks-helen-protocols ;
+    rdfs:comment """The reasoning context for in-clinic contraindication assessment.
+DecisionMode: Complicated — the clinician must evaluate clinical history
+and otoscopic findings against a structured checklist, applying expert
+judgement for relative (graded) contraindications.
+
+This is the critical test of the three-way constraint hierarchy
+(S146-D8/S147-D3): 7 absolute contraindications as HardConstraints
+(NormativeRegion boundaries) and 4 relative contraindications as
+GradedRules (truth-value surfaces). The distinction maps precisely
+to the clinical reality: absolute contraindications are binary
+(present → do not irrigate); relative contraindications shift the
+balance toward alternative procedures without absolutely precluding
+irrigation."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Contraindication Goal
+# -----------------------------------------------------------------------------
+
+ears-rsn:contraindication-goal a owl:NamedIndividual ,
+                                 ontara-rsn:Goal ;
+    rdfs:label "Determine safety of irrigation for this patient"@en ;
+    ontara-rsn:hasMeasure ears-rsn:ci-measure-irrigation-safety ;
+    rdfs:comment """The contraindication assessment goal: determine whether irrigation
+is safe for this specific patient. In coordinate-framework terms, the
+patient's clinical profile defines a position in the contraindication
+space; the goal is to determine whether that position is within the
+'safe for irrigation' region (no absolute contraindications, acceptable
+graded rule profile) or outside it."""@en .
+
+ears-rsn:ci-measure-irrigation-safety a owl:NamedIndividual ,
+                                        ontara-rsn:Measure ;
+    rdfs:label "Irrigation safety assessment"@en ;
+    rdfs:comment """A composite measure: (1) binary check — are any absolute
+contraindications present? If yes, irrigation is unsafe regardless of
+other factors. (2) graded assessment — what is the combined weight of
+relative contraindications? This is a two-stage evaluation: hard
+boundary check first, then graded assessment only if the hard
+boundary is not violated."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Absolute Contraindications (HardConstraints)
+# -----------------------------------------------------------------------------
+
+ears-rsn:ci-hc-known-perforation a owl:NamedIndividual ,
+                                   ontara-rsn:HardConstraint ;
+    rdfs:label "Absolute contraindication: known or suspected TM perforation"@en ;
+    ontara-rsn:hasPriority 100 ;
+    ontara-rsn:hasHazardDescription "Irrigation of a perforated tympanic membrane risks introducing water and bacteria into the middle ear, causing otitis media, cholesteatoma progression, or permanent hearing damage."^^xsd:string ;
+    rdfs:comment """The most clinically significant contraindication. Known or suspected
+perforation of the tympanic membrane absolutely precludes irrigation.
+This includes: documented previous perforation, grommets (current or
+historical), inability to visualise the TM due to wax (suspected
+perforation cannot be excluded). In coordinate-framework terms, this
+is a NormativeRegion boundary — crossing it (irrigating despite
+perforation) is a safety failure, not merely a suboptimal choice.
+
+This constraint is simultaneously a SafetyConstraint (patient harm)
+and a governance Obligation (CQC Regulation 12, NICE CKS compliance).
+The structural identity — not analogy — validates the HardConstraint
+hierarchy design."""@en .
+
+ears-rsn:ci-hc-grommets a owl:NamedIndividual ,
+                           ontara-rsn:HardConstraint ;
+    rdfs:label "Absolute contraindication: grommets (current or historical)"@en ;
+    ontara-rsn:hasPriority 100 ;
+    ontara-rsn:hasHazardDescription "Grommets create a communication between the external and middle ear. Irrigation risks middle ear contamination."^^xsd:string ;
+    rdfs:comment """Grommets (tympanostomy tubes) — whether currently in situ or
+historically placed — are an absolute contraindication to irrigation.
+Historical grommets may have left a residual perforation not visible
+on routine otoscopy."""@en .
+
+ears-rsn:ci-hc-middle-ear-surgery a owl:NamedIndividual ,
+                                    ontara-rsn:HardConstraint ;
+    rdfs:label "Absolute contraindication: previous middle ear surgery"@en ;
+    ontara-rsn:hasPriority 100 ;
+    ontara-rsn:hasHazardDescription "Previous middle ear surgery (mastoidectomy, tympanoplasty, ossiculoplasty) may have altered canal anatomy or TM integrity."^^xsd:string ;
+    rdfs:comment """Previous middle ear surgery — mastoidectomy, tympanoplasty,
+ossiculoplasty, or stapes surgery — is an absolute contraindication.
+The surgical history may have altered ear canal anatomy or tympanic
+membrane integrity in ways not visible on standard otoscopy."""@en .
+
+ears-rsn:ci-hc-only-hearing-ear a owl:NamedIndividual ,
+                                  ontara-rsn:HardConstraint ;
+    rdfs:label "Absolute contraindication: only hearing ear"@en ;
+    ontara-rsn:hasPriority 100 ;
+    ontara-rsn:hasHazardDescription "Irrigation of the only hearing ear carries an unacceptable risk: any complication (TM damage, sensorineural loss from caloric effect) could render the patient completely deaf."^^xsd:string ;
+    rdfs:comment """If the ear to be irrigated is the patient's only hearing ear
+(the contralateral ear is deaf or severely impaired), irrigation
+is absolutely contraindicated. The risk-benefit calculus is
+fundamentally altered: the potential consequence of any complication
+is total hearing loss. Microsuction under experienced-operator
+conditions is the only acceptable alternative."""@en .
+
+ears-rsn:ci-hc-acute-otitis-externa a owl:NamedIndividual ,
+                                      ontara-rsn:HardConstraint ;
+    rdfs:label "Absolute contraindication: acute otitis externa"@en ;
+    ontara-rsn:hasPriority 100 ;
+    ontara-rsn:hasHazardDescription "Irrigation during active external ear canal infection risks exacerbating the infection and causing severe pain."^^xsd:string ;
+    rdfs:comment """Active otitis externa (swimmer's ear) — inflammation or infection
+of the external ear canal — is an absolute contraindication to any ear
+procedure. The canal is swollen, painful, and vulnerable. Treatment
+of the infection must precede any wax management."""@en .
+
+ears-rsn:ci-hc-unilateral-hearing-loss a owl:NamedIndividual ,
+                                         ontara-rsn:HardConstraint ;
+    rdfs:label "Absolute contraindication: unexplained unilateral hearing loss"@en ;
+    ontara-rsn:hasPriority 100 ;
+    ontara-rsn:hasHazardDescription "Unexplained unilateral hearing loss may indicate retrocochlear pathology (e.g. acoustic neuroma) requiring urgent investigation."^^xsd:string ;
+    rdfs:comment """Unexplained sudden or progressive unilateral hearing loss is a
+red flag requiring urgent medical assessment. This is not primarily
+a contraindication to irrigation (the procedure itself is not the
+risk) but a clinical finding that must be investigated before
+attributing symptoms to earwax. The patient may need urgent ENT
+referral rather than wax removal."""@en .
+
+ears-rsn:ci-hc-cleft-palate a owl:NamedIndividual ,
+                               ontara-rsn:HardConstraint ;
+    rdfs:label "Absolute contraindication: cleft palate (repaired or unrepaired)"@en ;
+    ontara-rsn:hasPriority 100 ;
+    ontara-rsn:hasHazardDescription "Cleft palate patients have an elevated risk of middle ear pathology and eustachian tube dysfunction. Irrigation carries increased risk of complications."^^xsd:string ;
+    rdfs:comment """Cleft palate — whether repaired or unrepaired — is an absolute
+contraindication to irrigation due to the associated elevated risk of
+middle ear disease, eustachian tube dysfunction, and potential
+TM abnormalities. These patients should be managed in specialist
+ENT settings."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Relative Contraindications (GradedRules)
+# -----------------------------------------------------------------------------
+
+ears-rsn:ci-gr-anticoagulant a owl:NamedIndividual ,
+                               ontara-rsn:GradedRule ;
+    ontara-rsn:hasCombinationAlgebra ontara-rsn:FuzzyMinMax ;
+    ontara-rsn:hasTruthValueRange "[0,1]"^^xsd:string ;
+    ontara-rsn:hasPriority 60 ;
+    rdfs:label "Relative contraindication: anticoagulant therapy"@en ;
+    rdfs:comment """Anticoagulant therapy (warfarin, DOACs, antiplatelet agents)
+increases bleeding risk during irrigation. This is a GradedRule, not
+a HardConstraint: the degree of concern depends on the specific
+medication, dose, and INR stability. Well-controlled warfarin with
+stable INR carries lower risk than recently-started DOACs. The
+clinical judgement is: does the bleeding risk shift the balance
+toward microsuction (lower bleeding risk) sufficiently to change
+the procedure choice?
+
+This is the first concrete test of the GradedRule class with real
+clinical content. The graded nature maps precisely: anticoagulation
+is not binary (on/off) — it is a spectrum of bleeding risk that
+varies with medication, dose, duration, and monitoring status. The
+truth value represents the degree to which anticoagulation status
+argues against irrigation."""@en .
+
+ears-rsn:ci-gr-previous-adverse a owl:NamedIndividual ,
+                                  ontara-rsn:GradedRule ;
+    ontara-rsn:hasCombinationAlgebra ontara-rsn:FuzzyMinMax ;
+    ontara-rsn:hasTruthValueRange "[0,1]"^^xsd:string ;
+    ontara-rsn:hasPriority 50 ;
+    rdfs:label "Relative contraindication: previous adverse reaction to irrigation"@en ;
+    rdfs:comment """Previous adverse reaction to ear irrigation (pain, vertigo, nausea,
+fainting) is a graded contraindication. The severity and nature of
+the previous reaction determines the degree of concern: a mild
+vasovagal episode carries less weight than a severe caloric reaction.
+Patient anxiety about the procedure (informed by the previous
+experience) is also a factor — an anxious patient may not cooperate
+well, increasing procedural risk."""@en .
+
+ears-rsn:ci-gr-severe-tinnitus a owl:NamedIndividual ,
+                                 ontara-rsn:GradedRule ;
+    ontara-rsn:hasCombinationAlgebra ontara-rsn:FuzzyMinMax ;
+    ontara-rsn:hasTruthValueRange "[0,1]"^^xsd:string ;
+    ontara-rsn:hasPriority 40 ;
+    rdfs:label "Relative contraindication: severe tinnitus"@en ;
+    rdfs:comment """Severe or distressing tinnitus shifts the balance toward
+microsuction. Irrigation generates noise and pressure changes in
+the ear canal that may temporarily exacerbate tinnitus. The graded
+nature: mild intermittent tinnitus carries minimal additional risk;
+severe constant tinnitus with significant psychological impact
+carries higher risk of post-procedural distress."""@en .
+
+ears-rsn:ci-gr-unable-to-cooperate a owl:NamedIndividual ,
+                                     ontara-rsn:GradedRule ;
+    ontara-rsn:hasCombinationAlgebra ontara-rsn:FuzzyMinMax ;
+    ontara-rsn:hasTruthValueRange "[0,1]"^^xsd:string ;
+    ontara-rsn:hasPriority 70 ;
+    rdfs:label "Relative contraindication: patient unable to cooperate"@en ;
+    rdfs:comment """Patient inability to sit still, follow instructions, or tolerate
+the procedure. This is a graded assessment: mildly anxious but able
+to cooperate with reassurance (low concern) versus unable to remain
+still due to cognitive impairment, severe anxiety, or involuntary
+movement (high concern). Higher priority than other graded rules
+because cooperation directly affects procedural safety — an
+uncooperative patient risks injury from the irrigation nozzle or
+suction tip."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Contraindication Decision Plan
+# -----------------------------------------------------------------------------
+
+ears-rsn:contraindication-plan a owl:NamedIndividual ,
+                                 ontara-rsn:Plan ;
+    rdfs:label "Contraindication assessment protocol"@en ;
+    rdfs:comment """Two-stage decision plan for the contraindication assessment:
+
+Stage 1 (hard boundary check): Evaluate each of the 7 absolute
+contraindications. If ANY absolute contraindication is present,
+irrigation is contraindicated — proceed directly to microsuction
+assessment or referral. No graded assessment is needed.
+
+Stage 2 (graded assessment — only if Stage 1 passes): Evaluate
+relative contraindications. Combine the GradedRule truth values
+using FuzzyMinMax conjunction (min). If the combined truth value
+exceeds a clinical threshold (clinician judgement, not a fixed
+number), the balance shifts toward microsuction. The clinician
+retains the final decision — the graded assessment informs but
+does not determine.
+
+This two-stage structure validates the architectural decision to
+separate HardConstraints (boundaries) from GradedRules (surfaces):
+the hard check is computationally prior and can short-circuit the
+graded assessment entirely."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Contraindication Reasoning Activity (exemplar)
+# -----------------------------------------------------------------------------
+
+ears-rsn:contraindication-activity-exemplar a owl:NamedIndividual ,
+                                              ontara-rsn:ReasoningActivity ;
+    rdfs:label "Contraindication assessment episode (exemplar)"@en ;
+    ontara-rsn:hasContext ears-rsn:contraindication-context ;
+    ontara-rsn:producedDecision ears-rsn:contraindication-decision-safe ;
+    prov:wasAssociatedWith ears-rsn:agent-helen ;
+    prov:used ears-rsn:ks-nice-earwax ,
+              ears-rsn:ks-helen-protocols ;
+    rdfs:comment """An exemplar contraindication assessment episode. Helen evaluates
+a patient with no absolute contraindications and one relative
+contraindication (anticoagulant therapy — well-controlled warfarin).
+The graded assessment produces a low-to-moderate concern level that
+does not shift the balance away from irrigation. Decision: irrigation
+is safe for this patient, with standard precautions."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Contraindication Decision, Claim, and Evidence
+# -----------------------------------------------------------------------------
+
+ears-rsn:contraindication-decision-safe a owl:NamedIndividual ,
+                                          ontara-rsn:Decision ;
+    rdfs:label "Decision: irrigation is safe for this patient"@en ;
+    ontara-rsn:hasPlan ears-rsn:contraindication-plan ;
+    prov:wasGeneratedBy ears-rsn:contraindication-activity-exemplar ;
+    prov:wasAttributedTo ears-rsn:agent-helen ;
+    rdfs:comment """The decision that irrigation is safe. Produced after: (1) Stage 1
+confirms no absolute contraindications, (2) Stage 2 identifies one
+graded contraindication (anticoagulant therapy) at a level that does
+not shift the procedure choice. The decision carries full PROV-O
+provenance: who decided, based on what, and when."""@en .
+
+ears-rsn:contraindication-claim-safe a owl:NamedIndividual ,
+                                       ontara-rsn:Claim ;
+    rdfs:label "Claim: irrigation is safe for this patient"@en ;
+    ontara-rsn:supportedBy ears-rsn:ci-evidence-no-absolute ,
+                            ears-rsn:ci-evidence-graded-acceptable ;
+    ontara-rsn:hasConfidence ears-rsn:ci-confidence-safe ;
+    prov:wasGeneratedBy ears-rsn:contraindication-activity-exemplar ;
+    rdfs:comment """The claim that irrigation is safe. Supported by two evidence lines:
+(1) no absolute contraindications identified, (2) graded assessment
+shows acceptable risk level. This two-evidence-line structure mirrors
+the two-stage decision plan."""@en .
+
+ears-rsn:ci-evidence-no-absolute a owl:NamedIndividual ,
+                                   ontara-rsn:EvidenceLine ;
+    rdfs:label "Evidence: no absolute contraindications"@en ;
+    ontara-rsn:hasEvidence ears-rsn:ci-ei-no-perforation ,
+                           ears-rsn:ci-ei-no-grommets ,
+                           ears-rsn:ci-ei-no-surgery ,
+                           ears-rsn:ci-ei-not-only-ear ,
+                           ears-rsn:ci-ei-no-otitis-externa ,
+                           ears-rsn:ci-ei-no-unilateral-loss ,
+                           ears-rsn:ci-ei-no-cleft-palate ;
+    rdfs:comment """Evidence line: all 7 absolute contraindications assessed and
+absent. Each evidence item corresponds to one HardConstraint check
+— the evidence structure mirrors the constraint structure."""@en .
+
+ears-rsn:ci-ei-no-perforation a owl:NamedIndividual ,
+                                ontara-rsn:EvidenceItem ;
+    rdfs:label "No known or suspected TM perforation"@en ;
+    rdfs:comment "Clinical history and otoscopy confirm intact tympanic membrane."@en .
+
+ears-rsn:ci-ei-no-grommets a owl:NamedIndividual ,
+                              ontara-rsn:EvidenceItem ;
+    rdfs:label "No grommets (current or historical)"@en ;
+    rdfs:comment "Patient denies any history of grommet insertion."@en .
+
+ears-rsn:ci-ei-no-surgery a owl:NamedIndividual ,
+                             ontara-rsn:EvidenceItem ;
+    rdfs:label "No previous middle ear surgery"@en ;
+    rdfs:comment "Patient denies any ear surgery."@en .
+
+ears-rsn:ci-ei-not-only-ear a owl:NamedIndividual ,
+                               ontara-rsn:EvidenceItem ;
+    rdfs:label "Not the only hearing ear"@en ;
+    rdfs:comment "Patient confirms hearing in contralateral ear."@en .
+
+ears-rsn:ci-ei-no-otitis-externa a owl:NamedIndividual ,
+                                   ontara-rsn:EvidenceItem ;
+    rdfs:label "No acute otitis externa"@en ;
+    rdfs:comment "Otoscopy shows no canal inflammation or infection."@en .
+
+ears-rsn:ci-ei-no-unilateral-loss a owl:NamedIndividual ,
+                                    ontara-rsn:EvidenceItem ;
+    rdfs:label "No unexplained unilateral hearing loss"@en ;
+    rdfs:comment "Patient reports bilateral hearing difficulty consistent with wax impaction."@en .
+
+ears-rsn:ci-ei-no-cleft-palate a owl:NamedIndividual ,
+                                  ontara-rsn:EvidenceItem ;
+    rdfs:label "No cleft palate history"@en ;
+    rdfs:comment "Patient denies cleft palate (repaired or unrepaired)."@en .
+
+ears-rsn:ci-evidence-graded-acceptable a owl:NamedIndividual ,
+                                         ontara-rsn:EvidenceLine ;
+    rdfs:label "Evidence: graded contraindication level acceptable"@en ;
+    ontara-rsn:hasEvidence ears-rsn:ci-ei-anticoagulant-low-risk ;
+    rdfs:comment """Evidence line for the graded assessment: one relative contraindication
+identified (anticoagulant therapy) but at a level that does not shift
+the procedure choice. Well-controlled warfarin with stable INR — the
+clinical judgement is that the additional bleeding risk is manageable
+with standard irrigation precautions."""@en .
+
+ears-rsn:ci-ei-anticoagulant-low-risk a owl:NamedIndividual ,
+                                        ontara-rsn:EvidenceItem ;
+    rdfs:label "Anticoagulant therapy: well-controlled warfarin, stable INR"@en ;
+    rdfs:comment """Patient is on warfarin for atrial fibrillation. Last INR 2.3
+(therapeutic range 2.0–3.0), stable for >6 months. The bleeding risk
+is slightly elevated but well within acceptable parameters for
+irrigation. The graded truth value for this item: approximately 0.3
+(low-moderate concern)."""@en .
+
+ears-rsn:ci-confidence-safe a owl:NamedIndividual ,
+                              ontara-rsn:ConfidenceAssessment ;
+    rdfs:label "Contraindication confidence: high (safe for irrigation)"@en ;
+    ontara-rsn:hasInterpretiveFrame ontara-rsn:ProbabilityFrame ;
+    ontara-rsn:hasConfidenceValue "0.92"^^xsd:decimal ;
+    rdfs:comment """High confidence in the irrigation safety claim. Based on: complete
+otoscopic examination (TM visualised and intact), thorough clinical
+history, and single well-controlled relative contraindication. The
+0.08 residual uncertainty reflects the inherent limitation that clinical
+history depends on patient recall and reporting accuracy."""@en .
+
+
+# =============================================================================
+# SECTION 4: Exercise 3 — Procedure Selection (§4.3)
+# =============================================================================
+#
+# Domain context: Based on history, otoscopy, and contraindication check, the
+# clinician selects: irrigation, microsuction, combined, manual removal, or
+# refer.
+#
+# DecisionMode: Complicated — multiple inputs, expert analysis, bounded
+# decision space. Exercises HeuristicPack and DiagnosticHeuristic.
+#
+# Watchpoint relevance: WP-1 (does HeuristicPack family typing capture
+# clinical heuristics?), WP-4 (pattern stability under instantiation)
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# Procedure Selection Reasoning Context
+# -----------------------------------------------------------------------------
+
+ears-rsn:procedure-selection-context a owl:NamedIndividual ,
+                                       ontara-rsn:ReasoningContext ;
+    rdfs:label "Procedure Selection Context"@en ;
+    ontara-rsn:hasDecisionMode ontara-rsn:ComplicatedMode ;
+    ontara-rsn:hasGoal ears-rsn:procedure-goal ;
+    ontara-rsn:hasObstacle ears-rsn:procedure-obstacle-wax-type ,
+                           ears-rsn:procedure-obstacle-anxiety ;
+    ontara-rsn:hasConstraint ears-rsn:ci-hc-known-perforation ;
+    ontara-rsn:hasKnowledgeSource ears-rsn:ks-nice-earwax ,
+                                  ears-rsn:ks-helen-protocols ,
+                                  ears-rsn:ks-oluwo-training ;
+    rdfs:comment """The reasoning context for procedure selection. This follows and
+depends on the contraindication assessment (Exercise 2) — it is only
+reached if the contraindication check did not preclude all procedures.
+
+DecisionMode: Complicated — the clinician draws on multiple inputs
+(wax characteristics from otoscopy, patient factors, equipment
+availability, contraindication profile) and applies clinical heuristics
+to select the appropriate procedure. The decision space is bounded
+(5 options) but the selection logic is expert-driven."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Procedure Selection Goal, Obstacles, and Measures
+# -----------------------------------------------------------------------------
+
+ears-rsn:procedure-goal a owl:NamedIndividual ,
+                          ontara-rsn:Goal ;
+    rdfs:label "Remove earwax safely and effectively"@en ;
+    ontara-rsn:hasMeasure ears-rsn:procedure-measure-clearance ,
+                          ears-rsn:procedure-measure-safety ,
+                          ears-rsn:procedure-measure-comfort ;
+    rdfs:comment """The procedure selection goal: achieve safe and effective wax
+removal. This is a multi-dimensional GoalRegion — the clinician
+must balance effectiveness (clearance rate), safety (complication
+avoidance), and patient comfort. The three measures project onto
+different axes of this GoalRegion."""@en .
+
+ears-rsn:procedure-measure-clearance a owl:NamedIndividual ,
+                                       ontara-rsn:Measure ;
+    rdfs:label "Expected clearance rate"@en ;
+    rdfs:comment "Projection onto the effectiveness axis: likelihood of complete wax removal."@en .
+
+ears-rsn:procedure-measure-safety a owl:NamedIndividual ,
+                                    ontara-rsn:Measure ;
+    rdfs:label "Procedural safety level"@en ;
+    rdfs:comment "Projection onto the safety axis: expected complication risk."@en .
+
+ears-rsn:procedure-measure-comfort a owl:NamedIndividual ,
+                                     ontara-rsn:Measure ;
+    rdfs:label "Patient comfort"@en ;
+    rdfs:comment "Projection onto the comfort axis: expected patient experience."@en .
+
+ears-rsn:procedure-obstacle-wax-type a owl:NamedIndividual ,
+                                       ontara-rsn:Obstacle ;
+    rdfs:label "Wax characteristics constrain procedure choice"@en ;
+    rdfs:comment """The type, consistency, and position of the earwax constrains
+which procedures are effective. Hard, impacted wax close to the TM
+is poorly suited to irrigation (risk of pushing wax against TM);
+soft, shallow wax is well-suited. This obstacle is a discovered
+condition from otoscopy, not a declared rule."""@en .
+
+ears-rsn:procedure-obstacle-anxiety a owl:NamedIndividual ,
+                                      ontara-rsn:Obstacle ;
+    rdfs:label "Patient anxiety level"@en ;
+    rdfs:comment """Patient anxiety about the procedure affects both cooperation
+(safety) and experience (comfort). Highly anxious patients may not
+tolerate the noise of microsuction or the sensation of irrigation.
+Anxiety is an obstacle because it is a discovered condition of the
+patient, not a declared clinical rule."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Procedure Selection Heuristic Pack
+# -----------------------------------------------------------------------------
+
+ears-rsn:procedure-heuristic-pack a owl:NamedIndividual ,
+                                    ontara-rsn:HeuristicPack ;
+    rdfs:label "Ears Procedure Selection Heuristic Pack"@en ;
+    ontara-rsn:hasMember ears-rsn:heuristic-hard-wax-microsuction ,
+                         ears-rsn:heuristic-anxious-patient ,
+                         ears-rsn:heuristic-deep-impaction ,
+                         ears-rsn:heuristic-bilateral-mixed ;
+    ontara-rsn:applicableToDomain ontara-dom:ears ;
+    rdfs:comment """The heuristic pack for Ears procedure selection. Contains four
+clinical heuristics that guide the clinician's procedure choice.
+These are practical rules of thumb from Helen's clinical experience
+and Mr Oluwo's ENT training — the expertise layer that goes beyond
+guideline-based decision logic.
+
+WP-4 observation: this pack is a concrete instantiation of the
+HeuristicPack concept. The pattern holds its shape — each heuristic
+maps to a specific DiagnosticHeuristic or RiskHeuristic subtype and
+carries meaningful ordering logic. The pack structure (collection of
+heuristics applicable to a domain context) works as designed."""@en .
+
+ears-rsn:heuristic-hard-wax-microsuction a owl:NamedIndividual ,
+                                           ontara-rsn:DiagnosticHeuristic ;
+    rdfs:label "Hard wax → prefer microsuction"@en ;
+    ontara-rsn:hasOrderingLogic "Hard, dry, or deeply impacted wax is poorly responsive to irrigation. Microsuction provides direct visualisation and controlled removal. Prefer microsuction when otoscopy shows hard or adherent wax."^^xsd:string ;
+    ontara-rsn:hasAuthorityBasis ears-rsn:ks-oluwo-training ;
+    rdfs:comment """A diagnostic heuristic for wax characterisation → procedure
+mapping. The ordering logic captures clinical expertise: hard wax
+responds poorly to water pressure but can be removed under direct
+vision with suction. This is the most frequently applied procedure
+selection heuristic."""@en .
+
+ears-rsn:heuristic-anxious-patient a owl:NamedIndividual ,
+                                     ontara-rsn:CoordinationHeuristic ;
+    rdfs:label "Anxious patient → extra explanation, consider microsuction"@en ;
+    ontara-rsn:hasOrderingLogic "Anxious patients benefit from extra explanation time. Microsuction provides the clinician with continuous visual control, allowing more confident management of an uncooperative patient. However, microsuction is noisier — assess whether noise or sensation is the primary anxiety trigger."^^xsd:string ;
+    ontara-rsn:hasAuthorityBasis ears-rsn:ks-helen-protocols ;
+    rdfs:comment """A coordination heuristic for managing patient anxiety during
+procedure selection. Typed as CoordinationHeuristic (not Diagnostic)
+because the primary concern is managing the clinician-patient
+interaction, not diagnosing the condition. The heuristic includes
+a nuance: microsuction is sometimes preferred for anxious patients
+because the clinician has continuous visual control, but the noise
+of microsuction may itself be anxiety-provoking."""@en .
+
+ears-rsn:heuristic-deep-impaction a owl:NamedIndividual ,
+                                    ontara-rsn:RiskHeuristic ;
+    rdfs:label "Deep impaction against TM → experienced operator only"@en ;
+    ontara-rsn:hasOrderingLogic "Wax deeply impacted against the tympanic membrane requires an experienced operator with microsuction. Risk of TM contact or caloric stimulation is elevated. Escalate to Helen if Ade encounters this presentation."^^xsd:string ;
+    ontara-rsn:hasAuthorityBasis ears-rsn:ks-oluwo-training ;
+    rdfs:comment """A risk heuristic that triggers escalation for complex
+presentations. When wax is deeply impacted against the TM, the
+proximity to the tympanic membrane elevates the risk of contact
+injury or caloric stimulation. This maps to the RiskHeuristic
+pattern: dangerous combination (deep impaction + TM proximity) →
+escalation (experienced operator)."""@en .
+
+ears-rsn:heuristic-bilateral-mixed a owl:NamedIndividual ,
+                                     ontara-rsn:DiagnosticHeuristic ;
+    rdfs:label "Bilateral different indications → combined approach"@en ;
+    ontara-rsn:hasOrderingLogic "When both ears require treatment but with different wax characteristics (e.g. soft wax left, hard wax right), a combined approach (irrigation one ear, microsuction the other) optimises the procedure for each ear rather than applying a single technique bilaterally."^^xsd:string ;
+    ontara-rsn:hasAuthorityBasis ears-rsn:ks-helen-protocols ;
+    rdfs:comment """A diagnostic heuristic for bilateral cases. Recognises that the
+optimal procedure may differ between ears in the same patient.
+The combined service option (Service C, £70) reflects this clinical
+reality at the business model level."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Procedure Selection Decision Plan
+# -----------------------------------------------------------------------------
+
+ears-rsn:procedure-selection-plan a owl:NamedIndividual ,
+                                    ontara-rsn:Plan ;
+    rdfs:label "Procedure selection plan"@en ;
+    rdfs:comment """The procedure selection plan:
+
+1. Evaluate contraindication profile (from Exercise 2 output)
+2. Characterise wax: type (hard/soft/mixed), consistency,
+   impaction depth, position relative to TM
+3. Assess patient factors: anxiety, cooperation, hearing status
+4. Apply heuristic pack: match wax characteristics and patient
+   factors to the diagnostic and risk heuristics
+5. Select procedure: irrigation / microsuction / combined /
+   manual removal / refer (if beyond scope)
+
+The plan is structured but not algorithmic — step 4 (heuristic
+application) requires clinical judgement. This distinguishes
+Complicated from Clear mode: the plan guides the reasoning but
+does not determine the outcome."""@en .
+
+
+# =============================================================================
+# SECTION 5: Exercise 4 — Post-Procedure Assessment (§4.4)
+# =============================================================================
+#
+# Domain context: Clinician confirms clearance status, assesses outcome,
+# determines disposition.
+#
+# DecisionMode: Simple for straightforward cases (complete clearance →
+# discharge), Complicated for incomplete cases.
+#
+# Watchpoint relevance: WP-3 (do Partial assessments prove workable?)
+#
+# =============================================================================
+
+
+ears-rsn:outcome-context a owl:NamedIndividual ,
+                           ontara-rsn:ReasoningContext ;
+    rdfs:label "Post-Procedure Outcome Assessment Context"@en ;
+    ontara-rsn:hasDecisionMode ontara-rsn:ClearMode ;
+    ontara-rsn:hasGoal ears-rsn:outcome-goal ;
+    ontara-rsn:hasKnowledgeSource ears-rsn:ks-helen-protocols ;
+    rdfs:comment """The reasoning context for post-procedure outcome assessment.
+DecisionMode defaults to Clear for the majority of cases: complete
+clearance → standard aftercare → discharge. The mode transitions to
+Complicated if the outcome is partial clearance or if an unexpected
+finding is identified during post-procedure otoscopy.
+
+This is the simplest clinical reasoning exercise after triage —
+the decision tree has few branches and the outcomes are well-defined.
+It exercises the DecisionMode transition pattern: Clear → Complicated
+when standard pathways cannot resolve the situation."""@en .
+
+ears-rsn:outcome-goal a owl:NamedIndividual ,
+                        ontara-rsn:Goal ;
+    rdfs:label "Confirm clearance and determine patient disposition"@en ;
+    ontara-rsn:hasMeasure ears-rsn:outcome-measure-clearance ;
+    rdfs:comment """Post-procedure goal: confirm the degree of wax clearance and
+determine the appropriate patient disposition (discharge with
+aftercare advice, book follow-up, or refer)."""@en .
+
+ears-rsn:outcome-measure-clearance a owl:NamedIndividual ,
+                                     ontara-rsn:Measure ;
+    rdfs:label "Clearance status"@en ;
+    rdfs:comment """Post-procedure clearance assessment: complete (canal clear, TM
+visualised and normal), partial (residual wax present, TM may or
+may not be visualised), or unable to remove (wax resistant to
+procedure, or procedure abandoned due to patient distress or
+safety concern)."""@en .
+
+ears-rsn:outcome-plan a owl:NamedIndividual ,
+                        ontara-rsn:Plan ;
+    rdfs:label "Post-procedure disposition plan"@en ;
+    rdfs:comment """Post-procedure disposition plan:
+
+Complete clearance → aftercare advice (written leaflet + verbal
+safety netting) → discharge. Document in clinical record.
+
+Partial clearance → assess: is further removal likely to succeed?
+If yes → book free follow-up within 14 days. If unlikely → refer
+to GP for consideration of ENT referral.
+
+Unable to remove → refer to GP. Document reason (wax resistant,
+procedure abandoned, finding beyond scope).
+
+Adverse event → incident reporting pathway. If moderate or greater
+harm → duty of candour pathway (CQC Reg 20).
+
+Unexpected finding on post-procedure otoscopy (e.g. TM abnormality
+now visible with wax removed) → GP letter. If urgent → telephone
+GP and consider same-day ENT referral."""@en .
+
+
+# =============================================================================
+# SECTION 6: Exercise 5 — Capacity Assessment (§4.5)
+# =============================================================================
+#
+# Domain context: For care home residents, Helen assesses capacity to consent
+# at every visit. MCA two-stage test applies if capacity is in doubt.
+#
+# DecisionMode: Complicated — structured legal framework (MCA) applied with
+# clinical judgement.
+#
+# This is the most architecturally significant exercise because it sits at
+# the intersection of reasoning and governance.
+#
+# Watchpoint relevance: WP-1 (does MCA two-stage test fit
+# ReasoningContext/DecisionPlan?), WP-2 (governance→reasoning cross-vocabulary)
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# Capacity Assessment Reasoning Context
+# -----------------------------------------------------------------------------
+
+ears-rsn:capacity-context a owl:NamedIndividual ,
+                            ontara-rsn:ReasoningContext ;
+    rdfs:label "Mental Capacity Assessment Context (MCA)"@en ;
+    ontara-rsn:hasDecisionMode ontara-rsn:ComplicatedMode ;
+    ontara-rsn:hasGoal ears-rsn:capacity-goal ;
+    ontara-rsn:hasConstraint ears-rsn:capacity-hc-assume-capacity ,
+                             ears-rsn:capacity-hc-unwise-decision ;
+    ontara-rsn:hasKnowledgeSource ears-rsn:ks-mca-2005 ,
+                                  ears-rsn:ks-helen-protocols ;
+    rdfs:comment """The reasoning context for mental capacity assessment. This exercise
+is architecturally significant because it sits at the intersection of
+the reasoning vocabulary (the capacity assessment IS a reasoning
+structure — it produces a clinical determination) and the governance
+vocabulary (the MCA REQUIRES the assessment to be performed and
+documented — it is a governance obligation).
+
+DecisionMode: Complicated — the MCA two-stage test provides a
+structured legal framework, but applying it to a specific patient
+requires clinical judgement (Is the impairment sufficient to affect
+decision-making? Can the patient understand the information relevant
+to THIS specific decision?).
+
+The capacity assessment is mandatory for every care home resident
+at every domiciliary visit — this is a stronger activation condition
+than the clinic pathway, where capacity assessment is triggered only
+when capacity is in doubt. This exercises the 'mandatory versus
+triggered reasoning' pattern identified in §4.7.4 of the vertical
+connection map.
+
+WP-2 observation: the cross-vocabulary relation here (governance
+Obligation → reasoning ReasoningContext) is clean and natural. The
+obligation REQUIRES the reasoning exercise; the reasoning exercise
+PRODUCES the evidence that satisfies the obligation. The relation
+is expressible with existing PROV-O properties: the ReasoningActivity
+prov:wasInfluencedBy the Obligation (or more precisely, the obligation
+defines when the ReasoningActivity must occur). No ad hoc bridging
+is needed — this is a genuine validation of the governance–reasoning
+alignment."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Capacity Goal and Measures
+# -----------------------------------------------------------------------------
+
+ears-rsn:capacity-goal a owl:NamedIndividual ,
+                         ontara-rsn:Goal ;
+    rdfs:label "Determine whether patient has capacity to consent to this procedure"@en ;
+    ontara-rsn:hasMeasure ears-rsn:capacity-measure-stage1 ,
+                          ears-rsn:capacity-measure-stage2 ;
+    rdfs:comment """The capacity assessment goal: determine whether this specific
+patient has capacity to consent to this specific procedure at this
+specific time. Capacity is decision-specific and time-specific —
+a patient may have capacity for one decision but not another, and
+capacity may fluctuate."""@en .
+
+ears-rsn:capacity-measure-stage1 a owl:NamedIndividual ,
+                                   ontara-rsn:Measure ;
+    rdfs:label "MCA Stage 1: impairment of mind or brain"@en ;
+    rdfs:comment """MCA Stage 1 diagnostic test: does the patient have an impairment
+of, or a disturbance in the functioning of, the mind or brain? This
+is a threshold question — if the answer is no, the assessment stops
+and capacity is presumed. If yes, proceed to Stage 2 functional
+assessment."""@en .
+
+ears-rsn:capacity-measure-stage2 a owl:NamedIndividual ,
+                                   ontara-rsn:Measure ;
+    rdfs:label "MCA Stage 2: functional assessment (understand, retain, use, communicate)"@en ;
+    rdfs:comment """MCA Stage 2 functional test: can the patient (a) understand the
+information relevant to the decision, (b) retain that information
+long enough to make the decision, (c) use or weigh that information
+as part of the decision-making process, and (d) communicate the
+decision? All four elements must be satisfied. Failure on any single
+element means the patient lacks capacity for this decision."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Capacity HardConstraints (MCA Statutory Principles)
+# -----------------------------------------------------------------------------
+
+ears-rsn:capacity-hc-assume-capacity a owl:NamedIndividual ,
+                                       ontara-rsn:HardConstraint ;
+    rdfs:label "MCA Principle 1: capacity must be assumed unless established otherwise"@en ;
+    ontara-rsn:hasPriority 100 ;
+    rdfs:comment """The first MCA statutory principle operates as a HardConstraint
+on the reasoning process itself — not on the clinical outcome but on
+the reasoning method. The clinician MUST start from the assumption
+that the patient has capacity. The burden of proof lies on the
+assessor to demonstrate lack of capacity, not on the patient to
+demonstrate its presence.
+
+This is a meta-constraint: it constrains how the reasoning is
+conducted, not what conclusion is reached. In coordinate-framework
+terms, it defines a NormativeRegion boundary around the reasoning
+methodology — violating the presumption of capacity (e.g. by
+assuming a dementia patient lacks capacity without assessment) is
+a governance violation regardless of whether the clinical conclusion
+happens to be correct.
+
+WP-1 observation: this HardConstraint fits the class definition
+well but exercises it in a way the type-level assessment could not
+have predicted — it is a constraint on the REASONING PROCESS, not
+on the clinical domain. The HardConstraint class is general enough
+to accommodate this: it defines a boundary that cannot be violated,
+and the presumption of capacity is exactly such a boundary. The
+class works at instance level."""@en .
+
+ears-rsn:capacity-hc-unwise-decision a owl:NamedIndividual ,
+                                       ontara-rsn:HardConstraint ;
+    rdfs:label "MCA Principle 3: unwise decision does not equal lack of capacity"@en ;
+    ontara-rsn:hasPriority 100 ;
+    rdfs:comment """The third MCA statutory principle: a person must not be treated as
+lacking capacity merely because they make a decision that others
+consider unwise. This is a second meta-constraint on the reasoning
+process: the clinician cannot infer lack of capacity from the content
+of the patient's decision.
+
+If a care home resident with mild dementia refuses ear treatment
+despite obvious wax impaction, that refusal cannot itself be evidence
+of incapacity. The clinician must assess capacity through the two-stage
+test, not from the decision's apparent wisdom.
+
+This HardConstraint guards against a specific reasoning error:
+conflating disagreement with the patient's decision (a judgement about
+the decision's content) with a determination about the patient's
+capacity (a judgement about the decision-making process). The constraint
+ensures the reasoning stays on the correct axis."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Capacity Decision Plan
+# -----------------------------------------------------------------------------
+
+ears-rsn:capacity-plan a owl:NamedIndividual ,
+                         ontara-rsn:Plan ;
+    rdfs:label "MCA capacity assessment plan"@en ;
+    rdfs:comment """The MCA two-stage capacity assessment plan:
+
+Step 0 (governance activation): Is a capacity assessment required?
+For care home residents: ALWAYS (mandatory at every visit). For clinic
+patients: only when capacity is in doubt (triggered assessment).
+
+Step 1 (MCA Stage 1 — diagnostic): Does the patient have an impairment
+of, or disturbance in the functioning of, the mind or brain? If NO →
+capacity is presumed → proceed to standard consent. If YES → proceed
+to Stage 2.
+
+Step 2 (MCA Stage 2 — functional): Can the patient: (a) understand
+relevant information? (b) retain it? (c) use/weigh it? (d) communicate
+the decision? If ALL FOUR satisfied → patient has capacity → proceed
+to standard consent. If ANY element fails → patient lacks capacity →
+best-interest decision process.
+
+Step 3 (if capacity lacking): Best-interest decision process. Consult
+LPA holder if one exists. Involve care home manager. Document the
+best-interest determination. Proceed only if the procedure is in the
+patient's best interests.
+
+Step 4 (documentation): Record the assessment, its outcome, and the
+basis for the determination. This is both a clinical record and
+governance evidence (CQC compliance, MCA compliance).
+
+WP-1 observation: the MCA two-stage test maps well to the
+ReasoningContext → Plan → Decision structure. The two stages
+(diagnostic and functional) map naturally to two sequential steps
+in the Plan. The four functional elements map to four Measures
+within Stage 2. The binary outcomes at each stage map to Decision
+points. The structure holds at instance level — no semantic friction
+encountered."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Capacity Reasoning Activity (exemplar)
+# -----------------------------------------------------------------------------
+
+ears-rsn:capacity-activity-exemplar a owl:NamedIndividual ,
+                                      ontara-rsn:ReasoningActivity ;
+    rdfs:label "Capacity assessment episode (exemplar — care home resident)"@en ;
+    ontara-rsn:hasContext ears-rsn:capacity-context ;
+    ontara-rsn:producedDecision ears-rsn:capacity-decision-has-capacity ;
+    prov:wasAssociatedWith ears-rsn:agent-helen ;
+    prov:used ears-rsn:ks-mca-2005 ,
+              ears-rsn:ks-helen-protocols ;
+    rdfs:comment """An exemplar capacity assessment for a care home resident with
+mild cognitive impairment. Helen conducts the MCA two-stage test:
+Stage 1 identifies a cognitive impairment (mild dementia), triggering
+Stage 2. Stage 2 functional assessment confirms the resident can
+understand, retain, use, and communicate the relevant information
+about the proposed ear wax removal procedure. Decision: the resident
+has capacity to consent."""@en .
+
+
+# -----------------------------------------------------------------------------
+# Capacity Decision, Claim, and Evidence
+# -----------------------------------------------------------------------------
+
+ears-rsn:capacity-decision-has-capacity a owl:NamedIndividual ,
+                                          ontara-rsn:Decision ;
+    rdfs:label "Decision: patient has capacity to consent"@en ;
+    ontara-rsn:hasPlan ears-rsn:capacity-plan ;
+    prov:wasGeneratedBy ears-rsn:capacity-activity-exemplar ;
+    prov:wasAttributedTo ears-rsn:agent-helen ;
+    rdfs:comment """The decision that the care home resident has capacity to consent.
+Produced after the MCA two-stage test: Stage 1 positive (impairment
+identified — mild dementia), Stage 2 passed (all four functional
+elements satisfied for this specific decision). The decision is
+specific to this procedure at this time — it does not generalise to
+other decisions or future encounters."""@en .
+
+ears-rsn:capacity-claim-has-capacity a owl:NamedIndividual ,
+                                       ontara-rsn:Claim ;
+    rdfs:label "Claim: patient has capacity to consent to ear wax removal"@en ;
+    ontara-rsn:supportedBy ears-rsn:capacity-evidence-stage2-pass ;
+    ontara-rsn:hasConfidence ears-rsn:capacity-confidence ;
+    prov:wasGeneratedBy ears-rsn:capacity-activity-exemplar ;
+    rdfs:comment """The claim that the patient has capacity. Supported by the Stage 2
+functional assessment evidence. The claim is decision-specific and
+time-specific — it does not assert general capacity, only capacity
+for this particular decision at this particular time."""@en .
+
+ears-rsn:capacity-evidence-stage2-pass a owl:NamedIndividual ,
+                                         ontara-rsn:EvidenceLine ;
+    rdfs:label "Evidence: Stage 2 functional assessment passed"@en ;
+    ontara-rsn:hasEvidence ears-rsn:capacity-ei-understands ,
+                           ears-rsn:capacity-ei-retains ,
+                           ears-rsn:capacity-ei-uses ,
+                           ears-rsn:capacity-ei-communicates ;
+    rdfs:comment """Evidence line for the capacity determination: all four functional
+elements of the MCA Stage 2 test are satisfied. Each evidence item
+records the specific assessment for that element."""@en .
+
+ears-rsn:capacity-ei-understands a owl:NamedIndividual ,
+                                   ontara-rsn:EvidenceItem ;
+    rdfs:label "Patient understands relevant information"@en ;
+    rdfs:comment """The resident was able to understand: what the procedure involves
+(looking in the ear and removing wax with a small suction device),
+why it is being proposed (hearing difficulty due to wax build-up),
+what the alternatives are (leave it, try olive oil, see GP), and
+what happens if nothing is done (continued hearing difficulty).
+Assessed through conversation — Helen explained in simple terms
+and asked the resident to repeat back in their own words."""@en .
+
+ears-rsn:capacity-ei-retains a owl:NamedIndividual ,
+                                ontara-rsn:EvidenceItem ;
+    rdfs:label "Patient retains information long enough"@en ;
+    rdfs:comment """The resident retained the relevant information throughout the
+consultation — approximately 10 minutes. When asked again before
+the consent form, the resident could recall what was being proposed
+and why. Retention need not be indefinite — it must only last long
+enough for the decision to be made."""@en .
+
+ears-rsn:capacity-ei-uses a owl:NamedIndividual ,
+                             ontara-rsn:EvidenceItem ;
+    rdfs:label "Patient uses or weighs information"@en ;
+    rdfs:comment """The resident weighed the information: expressed concern about
+discomfort but said the hearing difficulty was 'really bothering me'
+and that they wanted to 'try it and see.' This demonstrates active
+weighing — the resident considered the procedure's risks against its
+benefits and made a reasoned choice, not merely acquiescing."""@en .
+
+ears-rsn:capacity-ei-communicates a owl:NamedIndividual ,
+                                    ontara-rsn:EvidenceItem ;
+    rdfs:label "Patient communicates decision"@en ;
+    rdfs:comment """The resident verbally communicated consent: 'Yes, I'd like you
+to go ahead please.' The decision was consistent across the
+consultation — the resident did not waver or give contradictory
+responses. Communication was clear and unambiguous."""@en .
+
+ears-rsn:capacity-confidence a owl:NamedIndividual ,
+                               ontara-rsn:ConfidenceAssessment ;
+    rdfs:label "Capacity confidence: high"@en ;
+    ontara-rsn:hasInterpretiveFrame ontara-rsn:ProbabilityFrame ;
+    ontara-rsn:hasConfidenceValue "0.90"^^xsd:decimal ;
+    rdfs:comment """High confidence in the capacity determination. The 0.10 residual
+uncertainty reflects: (a) mild cognitive impairment introduces
+inherent uncertainty about the robustness of the functional assessment,
+(b) capacity is assessed through conversation, which depends on the
+assessor's skill in explaining and the patient's willingness to
+engage, and (c) capacity can fluctuate — the assessment is valid for
+this moment but may not hold at a future visit."""@en .
+
+
+# =============================================================================
+# SECTION 7: STAMP/STPA Safety Instance — Irrigation Safety System (§4.6)
+# =============================================================================
+#
+# The irrigation procedure as a concrete ControlStructure with the canonical
+# UnsafeControlAction: "irrigating a perforated eardrum" (ProvidedWhenNotNeeded
+# — action taken when contraindicated).
+#
+# =============================================================================
+
+
+ears-rsn:irrigation-control-structure a owl:NamedIndividual ,
+                                        ontara-rsn:ControlStructure ;
+    rdfs:label "Ears Irrigation Safety Control Structure"@en ;
+    ontara-rsn:hasControlLoop ears-rsn:irrigation-control-loop ;
+    rdfs:comment """The safety control structure for the Ears irrigation procedure.
+The clinician is the controller, the irrigation process is the
+controlled process, the patient's ear canal and tympanic membrane
+are the controlled entities, and otoscopic examination provides
+the sensory feedback loop."""@en .
+
+ears-rsn:irrigation-control-loop a owl:NamedIndividual ,
+                                   ontara-rsn:ControlLoop ;
+    rdfs:label "Irrigation procedure control loop"@en ;
+    ontara-rsn:hasController ears-rsn:agent-helen ;
+    ontara-rsn:hasControlledProcess ears-rsn:irrigation-process ;
+    rdfs:comment """The primary control loop for irrigation: clinician (controller)
+→ ProPulse device (actuator) → water pulse delivery (controlled
+process) → patient response and otoscopic check (sensor) → clinician
+(feedback). The loop operates at two timescales: within each irrigation
+pulse (immediate feedback — patient response) and between pulses
+(otoscopic re-examination of canal and TM)."""@en .
+
+ears-rsn:irrigation-process a owl:NamedIndividual ;
+    rdfs:label "Irrigation water pulse delivery"@en ;
+    rdfs:comment """The controlled process: delivery of warm water pulses to the
+ear canal via the ProPulse irrigation system. Temperature: 37°C ± 1°C.
+Maximum: three irrigation cycles per ear. The process generates both
+the therapeutic effect (wax mobilisation) and the potential hazards
+(TM pressure, caloric stimulation, infection risk if TM perforated)."""@en .
+
+ears-rsn:sc-never-irrigate-perforation a owl:NamedIndividual ,
+                                         ontara-rsn:SafetyConstraint ;
+    rdfs:label "Safety constraint: never irrigate a perforated eardrum"@en ;
+    ontara-rsn:hasPriority 100 ;
+    ontara-rsn:hasHazardDescription "Irrigation of a perforated tympanic membrane introduces water and bacteria into the middle ear, risking otitis media, cholesteatoma progression, ossicular damage, and permanent hearing loss."^^xsd:string ;
+    ontara-rsn:monitoredBy ears-rsn:irrigation-control-loop ;
+    rdfs:comment """The canonical Ears safety constraint. This is the SAME entity as
+the HardConstraint ci-hc-known-perforation in the contraindication
+check (Exercise 2) — the safety constraint and the clinical
+contraindication are structurally identical. The SafetyConstraint
+subclass adds the safety-specific properties (hazard description,
+monitoring by control loop) while inheriting the HardConstraint
+semantics (NormativeRegion boundary that must never be crossed).
+
+This structural identity — not analogy — validates the design
+decision to make SafetyConstraint a subclass of HardConstraint."""@en .
+
+ears-rsn:uca-irrigate-perforated a owl:NamedIndividual ,
+                                   ontara-rsn:UnsafeControlAction ;
+    rdfs:label "UCA: irrigating a perforated eardrum"@en ;
+    ontara-rsn:hasUnsafeActionType ontara-rsn:ProvidedWhenNotNeeded ;
+    ontara-rsn:enforces ears-rsn:sc-never-irrigate-perforation ;
+    ontara-rsn:hasHazardDescription "Providing irrigation (the control action) when contraindicated (perforation present) — the action should not have been taken."^^xsd:string ;
+    rdfs:comment """The textbook STPA example for Ears: irrigating a perforated eardrum
+is an UnsafeControlAction of type ProvidedWhenNotNeeded. The controller
+(clinician) provided a control action (irrigation) when it should not
+have been provided (contraindication present). In coordinate-framework
+terms: the controller moved the entity's trajectory across a
+NormativeRegion boundary when the entity was already within safe bounds
+(the patient was safe BEFORE the irrigation was performed).
+
+This maps precisely to the STPA type taxonomy. The control structure
+should have prevented this through the contraindication check
+(Exercise 2) — the UCA represents a failure of that check."""@en .
+
+ears-rsn:sc-temperature-control a owl:NamedIndividual ,
+                                  ontara-rsn:SafetyConstraint ;
+    rdfs:label "Safety constraint: irrigation water temperature 37°C ± 1°C"@en ;
+    ontara-rsn:hasPriority 90 ;
+    ontara-rsn:hasHazardDescription "Water temperature outside 36–38°C range risks caloric stimulation (cold water causes vertigo and nausea) or thermal injury (hot water causes tissue damage)."^^xsd:string ;
+    ontara-rsn:monitoredBy ears-rsn:irrigation-control-loop ;
+    rdfs:comment """A numerical safety constraint with a bounded region: 37°C ± 1°C.
+In coordinate-framework terms, this is a bounded NormativeRegion on
+the temperature axis with a precise numerical tolerance. This is the
+first concrete instantiation of a safety constraint with a scalar
+field — the constraint is not binary (temperature is a continuous
+variable) but the boundary IS sharp (outside 36–38°C is a violation
+regardless of how close to the boundary)."""@en .
+
+ears-rsn:sc-max-three-cycles a owl:NamedIndividual ,
+                               ontara-rsn:SafetyConstraint ;
+    rdfs:label "Safety constraint: maximum three irrigation cycles per ear"@en ;
+    ontara-rsn:hasPriority 80 ;
+    ontara-rsn:hasHazardDescription "Exceeding three irrigation cycles risks caloric stimulation, canal trauma from repeated water pressure, and patient distress."^^xsd:string ;
+    ontara-rsn:monitoredBy ears-rsn:irrigation-control-loop ;
+    rdfs:comment """A discrete numerical safety constraint: maximum three irrigation
+cycles per ear per appointment. This is a WrongDuration guard —
+applying the control action for too long (too many cycles) is an
+UnsafeControlAction."""@en .
+
+
+# =============================================================================
+# End of Ears Reasoning Instances — Session 166
+# =============================================================================
+#
+# Individual count summary:
+#   Agents: 3 (Helen, Ade, Del)
+#   Knowledge sources: 6
+#   Exercise 1 (Triage): 17 individuals
+#     1 ReasoningContext, 1 Goal, 1 Measure, 5 HardConstraints,
+#     1 Plan, 1 ReasoningActivity, 1 Decision, 1 Claim,
+#     1 EvidenceLine, 5 EvidenceItems, 1 ConfidenceAssessment
+#   Exercise 2 (Contraindication): 20 individuals
+#     1 ReasoningContext, 1 Goal, 1 Measure, 7 HardConstraints,
+#     4 GradedRules, 1 Plan, 1 ReasoningActivity, 1 Decision,
+#     1 Claim, 2 EvidenceLines, 8 EvidenceItems, 1 ConfidenceAssessment
+#   Exercise 3 (Procedure Selection): 12 individuals
+#     1 ReasoningContext, 1 Goal, 3 Measures, 2 Obstacles,
+#     1 HeuristicPack, 4 Heuristics, 1 Plan
+#   Exercise 4 (Outcome): 4 individuals
+#     1 ReasoningContext, 1 Goal, 1 Measure, 1 Plan
+#   Exercise 5 (Capacity): 14 individuals
+#     1 ReasoningContext, 1 Goal, 2 Measures, 2 HardConstraints,
+#     1 Plan, 1 ReasoningActivity, 1 Decision, 1 Claim,
+#     1 EvidenceLine, 4 EvidenceItems, 1 ConfidenceAssessment
+#   Exercise 6 (STAMP/STPA): 7 individuals
+#     1 ControlStructure, 1 ControlLoop, 1 process individual,
+#     3 SafetyConstraints, 1 UnsafeControlAction
+#
+#   Total: ~83 named individuals exercising 25 of the 42 reasoning classes
+#
+# Classes exercised:
+#   ReasoningActivity, ReasoningAgent, ReasoningContext, Goal, Obstacle,
+#   Measure, Decision, Plan, Claim, HardConstraint, GradedRule,
+#   KnowledgeSource, HeuristicPack, DiagnosticHeuristic, RiskHeuristic,
+#   CoordinationHeuristic, EvidenceLine, EvidenceItem, ConfidenceAssessment,
+#   SafetyConstraint, ControlStructure, ControlLoop, ControlAction,
+#   UnsafeControlAction, UnsafeControlActionType
+#   (Plus 3 existing named individuals referenced: ClearMode, ComplicatedMode,
+#    ProvidedWhenNotNeeded, ProbabilityFrame, FuzzyMinMax)
+#
+# Classes NOT exercised (17 of 42):
+#   ReasoningComponent, SoftConstraint, Heuristic (abstract — subtypes used),
+#   DecisionMode (class — individuals used), InterpretiveFrame (class —
+#   individuals used), CombinationAlgebra (class — individuals used),
+#   StructuredProbabilisticComponent, BayesianUpdater, RiskCalculator,
+#   PrognosticModel, PredictiveAnalytics, GoalOrderingHeuristic,
+#   ResourceHeuristic, GovernanceHeuristic, FRAMFunction, VariabilityProfile,
+#   UnsafeControlActionType (class — individuals used)
+#
+# Of these 17, 7 are abstract parent classes (correctly not instantiated),
+# 4 are structured probabilistic types (not relevant to Ears — no validated
+# risk calculators or prognostic models in community ear care), and 6 are
+# heuristic subtypes or FRAM structures that the Ears domain exercises less
+# directly. This is expected — not every domain exercises every class.
+#
+# =============================================================================
