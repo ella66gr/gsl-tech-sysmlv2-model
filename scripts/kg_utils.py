@@ -41,6 +41,7 @@ IRI_PREFIXES = {
     "https://ontara.dev/ontology/governance/axioms#": "ontara-gov-ax:",
     "https://ontara.dev/ontology/governance/": "ontara-gov:",
     "https://ontara.dev/ontology/reasoning/": "ontara-rsn:",
+    "https://ontara.dev/data/ears/reasoning/": "ears-rsn:",
     "https://ontara.dev/ontology/domain/axioms#": "ontara-dom-ax:",
     "https://ontara.dev/ontology/domain/": "ontara-dom:",
     "http://www.w3.org/ns/prov#": "prov:",

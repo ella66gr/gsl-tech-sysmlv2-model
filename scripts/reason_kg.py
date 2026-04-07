@@ -105,6 +105,11 @@ ONTOLOGY_FILES = [
         "name": "Ontara Reasoning Vocabulary (hand-authored, Session 150)",
         "required": False,
     },
+    {
+        "file": REPO_ROOT / "ontology" / "reasoning" / "ears-reasoning-instances.ttl",
+        "name": "Ears Reasoning Instances (hand-authored, Session 166)",
+        "required": False,
+    },
 ]
 
 # Violation test: a Turtle snippet that makes ValueProposition a subclass
@@ -656,7 +661,7 @@ def reason_ontology(verbose=False, output_path=None):
         print(f"  Inferred ontology will be saved to: {output_path}")
 
     print("\n--- Running HermiT reasoner ---")
-    success, stdout, stderr = run_robot(args, verbose=verbose, timeout=600)
+    success, stdout, stderr = run_robot(args, verbose=verbose, timeout=1200)
 
     combined_output = (stdout + "\n" + stderr).strip()
 

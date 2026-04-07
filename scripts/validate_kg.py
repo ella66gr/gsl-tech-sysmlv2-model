@@ -112,6 +112,12 @@ PIPELINE_FILES = [
         "graph": "https://ontara.dev/graph/domain",
         "content_type": "text/turtle",
     },
+    {
+        "path": "ontology/reasoning/ears-reasoning-instances.ttl",
+        "name": "Ears Reasoning Instances (hand-authored, Session 166)",
+        "graph": "https://ontara.dev/graph/domain",
+        "content_type": "text/turtle",
+    },
 ]
 
 # ---------------------------------------------------------------
@@ -1333,6 +1339,233 @@ SELECT ?prop ?label ?domain ?range WHERE {
         "expect_exactly": 1,
         "display_vars": ["prop", "label", "domain", "range"],
     },
+    # --- Ears Reasoning Instances (Session 168, W-015 completion) ---
+    {
+        "id": "Q57",
+        "group": "Ears Instances",
+        "name": "Ears ReasoningAgent individuals (3)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+PREFIX ears-rsn: <https://ontara.dev/data/ears/reasoning/>
+
+SELECT ?agent ?label WHERE {
+  ?agent a owl:NamedIndividual ,
+           ontara-rsn:ReasoningAgent ;
+         rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?agent), STR(ears-rsn:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 3,
+        "display_vars": ["agent", "label"],
+    },
+    {
+        "id": "Q58",
+        "group": "Ears Instances",
+        "name": "Ears KnowledgeSource individuals (6)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+PREFIX ears-rsn: <https://ontara.dev/data/ears/reasoning/>
+
+SELECT ?ks ?label WHERE {
+  ?ks a owl:NamedIndividual ,
+        ontara-rsn:KnowledgeSource ;
+      rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?ks), STR(ears-rsn:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 9,
+        "display_vars": ["ks", "label"],
+    },
+    {
+        "id": "Q59",
+        "group": "Ears Instances",
+        "name": "Ears HardConstraint individuals (triage + contraindication + capacity + SafetyConstraints inferred = 17)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+PREFIX ears-rsn: <https://ontara.dev/data/ears/reasoning/>
+
+SELECT ?hc ?label WHERE {
+  ?hc a owl:NamedIndividual ,
+        ontara-rsn:HardConstraint ;
+      rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?hc), STR(ears-rsn:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 17,
+        "display_vars": ["hc", "label"],
+    },
+    {
+        "id": "Q60",
+        "group": "Ears Instances",
+        "name": "Ears GradedRule individuals (4)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+PREFIX ears-rsn: <https://ontara.dev/data/ears/reasoning/>
+
+SELECT ?gr ?label WHERE {
+  ?gr a owl:NamedIndividual ,
+        ontara-rsn:GradedRule ;
+      rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?gr), STR(ears-rsn:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 4,
+        "display_vars": ["gr", "label"],
+    },
+    {
+        "id": "Q61",
+        "group": "Ears Instances",
+        "name": "Ears ReasoningActivity individuals with PROV-O provenance (3)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX ears-rsn: <https://ontara.dev/data/ears/reasoning/>
+
+SELECT ?activity ?label ?agent WHERE {
+  ?activity a owl:NamedIndividual ,
+              ontara-rsn:ReasoningActivity ;
+            rdfs:label ?label ;
+            prov:wasAssociatedWith ?agent .
+  FILTER(STRSTARTS(STR(?activity), STR(ears-rsn:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 3,
+        "display_vars": ["activity", "label", "agent"],
+    },
+    {
+        "id": "Q62",
+        "group": "Ears Instances",
+        "name": "Ears EvidenceLine individuals with at least one EvidenceItem",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+PREFIX ears-rsn: <https://ontara.dev/data/ears/reasoning/>
+
+SELECT ?el ?label (COUNT(?ei) AS ?itemCount) WHERE {
+  ?el a owl:NamedIndividual ,
+        ontara-rsn:EvidenceLine ;
+      rdfs:label ?label ;
+      ontara-rsn:hasEvidence ?ei .
+  FILTER(STRSTARTS(STR(?el), STR(ears-rsn:)))
+}
+GROUP BY ?el ?label
+ORDER BY ?label
+""",
+        "expect_exactly": 4,
+        "display_vars": ["el", "label", "itemCount"],
+    },
+    {
+        "id": "Q63",
+        "group": "Ears Instances",
+        "name": "Ears STAMP/STPA instances (ControlStructure + SafetyConstraint + UCA)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+PREFIX ears-rsn: <https://ontara.dev/data/ears/reasoning/>
+
+SELECT ?ind ?label ?type WHERE {
+  ?ind a owl:NamedIndividual ;
+       rdfs:label ?label .
+  FILTER(STRSTARTS(STR(?ind), STR(ears-rsn:)))
+  {
+    ?ind a ontara-rsn:ControlStructure .
+    BIND("ControlStructure" AS ?type)
+  } UNION {
+    ?ind a ontara-rsn:SafetyConstraint .
+    BIND("SafetyConstraint" AS ?type)
+  } UNION {
+    ?ind a ontara-rsn:UnsafeControlAction .
+    BIND("UnsafeControlAction" AS ?type)
+  } UNION {
+    ?ind a ontara-rsn:ControlLoop .
+    BIND("ControlLoop" AS ?type)
+  }
+}
+ORDER BY ?type ?label
+""",
+        "expect_exactly": 7,
+        "display_vars": ["ind", "label", "type"],
+    },
+    {
+        "id": "Q64",
+        "group": "Ears Instances",
+        "name": "Ears HeuristicPack with members (1 pack, 4 heuristics)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+PREFIX ears-rsn: <https://ontara.dev/data/ears/reasoning/>
+
+SELECT ?pack ?packLabel ?member ?memberLabel WHERE {
+  ?pack a owl:NamedIndividual ,
+          ontara-rsn:HeuristicPack ;
+        rdfs:label ?packLabel ;
+        ontara-rsn:hasMember ?member .
+  ?member rdfs:label ?memberLabel .
+  FILTER(STRSTARTS(STR(?pack), STR(ears-rsn:)))
+}
+ORDER BY ?memberLabel
+""",
+        "expect_exactly": 4,
+        "display_vars": ["pack", "packLabel", "member", "memberLabel"],
+    },
+    {
+        "id": "Q65",
+        "group": "Ears Instances",
+        "name": "Ears ConfidenceAssessment individuals with interpretive frames (3)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ontara-rsn: <https://ontara.dev/ontology/reasoning/>
+PREFIX ears-rsn: <https://ontara.dev/data/ears/reasoning/>
+
+SELECT ?ca ?label ?frame ?value WHERE {
+  ?ca a owl:NamedIndividual ,
+        ontara-rsn:ConfidenceAssessment ;
+      rdfs:label ?label ;
+      ontara-rsn:hasInterpretiveFrame ?frame ;
+      ontara-rsn:hasConfidenceValue ?value .
+  FILTER(STRSTARTS(STR(?ca), STR(ears-rsn:)))
+}
+ORDER BY ?label
+""",
+        "expect_exactly": 3,
+        "display_vars": ["ca", "label", "frame", "value"],
+    },
+    {
+        "id": "Q66",
+        "group": "Ears Instances",
+        "name": "Total Ears named individual count (at least 80)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX ears-rsn: <https://ontara.dev/data/ears/reasoning/>
+
+SELECT DISTINCT ?ind WHERE {
+  ?ind a owl:NamedIndividual .
+  FILTER(STRSTARTS(STR(?ind), STR(ears-rsn:)))
+}
+ORDER BY ?ind
+""",
+        "expect_at_least": 80,
+        "display_vars": ["ind"],
+    },
 ]
 
 
@@ -1432,6 +1665,7 @@ def load_pipeline_output():
         "https://ontara.dev/ontology/domain/",
         "https://ontara.dev/ontology/reasoning/",
         "https://ontara.dev/data/governance/",
+        "https://ontara.dev/data/ears/reasoning/",
         "http://www.w3.org/ns/prov#",
     ]
 

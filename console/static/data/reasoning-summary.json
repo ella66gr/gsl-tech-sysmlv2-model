@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-07T00:32:03.194176",
+  "generatedAt": "2026-04-07T20:13:02.713808",
   "generator": "reason_kg.py",
   "reasoner": "HermiT (via Robot)",
   "consistent": true,
@@ -75,6 +75,12 @@
       "name": "Ontara Reasoning Vocabulary (hand-authored, Session 150)",
       "file": "ontara-reasoning.ttl",
       "sizeBytes": 124016,
+      "present": true
+    },
+    {
+      "name": "Ears Reasoning Instances (hand-authored, Session 166)",
+      "file": "ears-reasoning-instances.ttl",
+      "sizeBytes": 81339,
       "present": true
     }
   ],
@@ -193,14 +199,14 @@
     }
   ],
   "stats": {
-    "ontologyFileCount": 12,
+    "ontologyFileCount": 13,
     "objectPropertyCount": 14,
     "reifiedWeightCount": 96,
     "domainClassCount": 109,
     "axiomFilePresent": true,
     "namedIndividualCount": 15,
     "datatypePropertyCount": 11,
-    "sparqlQueryCount": 66
+    "sparqlQueryCount": 77
   },
   "violationTest": {
     "ran": false,
@@ -1047,7 +1053,7 @@
       {
         "iri": "ontara-rsn:hasHazardDescription",
         "label": "has hazard description",
-        "domain": "nbee5ae3cebc344a895cc9812b29031c0b1",
+        "domain": "n88fc351687f44ddc87f889a766e79bcdb1",
         "range": "string",
         "comment": "A natural-language description of the hazard associated with a\nSafetyConstraint or UnsafeControlAction. For SafetyConstraint: describes\nwhat harm results from violating the constraint. For UnsafeControlAction:\ndescribes the hazard the unsafe action caused or could cause."
       },
