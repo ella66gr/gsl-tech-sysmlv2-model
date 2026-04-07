@@ -75,7 +75,8 @@ gsl-sysml-model/
 │   ├── domain/                     Hand-authored domain identity vocabulary
 │   │   └── ontara-domain.ttl       2 classes, 6 enum classes, 8+8 properties, 8 individuals
 │   ├── reasoning/                  Hand-authored reasoning metamodel vocabulary
-│   │   └── ontara-reasoning.ttl    42 classes, 15 named individuals, 40 object + 10 datatype properties
+│   │   ├── ontara-reasoning.ttl    42 classes, 15 named individuals, 40 object + 10 datatype properties
+│   │   └── ears-reasoning-instances.ttl  ~83 Ears clinical domain reasoning instances
 │   ├── imports/                    External ontologies (BFO 2020, CCO, IAO, PROV-O core subset)
 │   ├── config/                     Mapping config (mapping-rules.yaml, cco-iri-lookup.json)
 │   └── catalog-v001.xml            Robot IRI resolution catalogue
@@ -108,19 +109,19 @@ gsl-sysml-model/
 | Knowledge base | Obsidian (separate vault, not in this repo) |
 | Development | macOS, VS Code |
 
-## Current State (Session 161, April 2026)
+## Current State (Session 171, April 2026)
 
-- **Stage 7 — Reasoning Metamodel** (Sessions 148–158) formally closed Session 159. All five phases (0–4) complete, 33/35 success criteria met (2 explicitly deferred pending instance data). `ontara-reasoning.ttl`: 42 OWL classes covering reasoning contexts, goals/obstacles/measures, decisions/plans, three-way constraint hierarchy with CombinationAlgebra, knowledge sources/heuristics (6 typed families with HeuristicPack), decision mode routing (4 Cynefin-mapped modes), SEPIO evidence architecture, structured probabilistic reasoning types, STAMP/STPA safety control structures, and FRAM-ready slots. 15 named individuals, 40 object properties, 10 datatype properties. 7 PROV-O dual-subclassed classes. 2 cross-module governance alignment axioms. 12-file ontology stack. 56-query SPARQL validation suite (11 groups, all passing). HermiT CONSISTENT. Console: Reasoning Vocabulary Explorer (42 classes in 7 colour-coded modules, 15 individuals, 50 properties, 32 cross-module axioms) + extended KG Status (8 stat cards, module summary).
+- **Ears clinical domain intake complete** (Sessions 160–168). Clinical Domain Intake Framework methodology (S160) applied to Ears (Community Ear Care) — five artefacts: domain description, vertical connection map, coverage map (86.2% Full across 65 proforma fields), ~83 reasoning instance individuals (`ears-reasoning-instances.ttl`), design note. 25/42 reasoning classes exercised with clinical content. Vocabulary assessed as adequate at Ears-level complexity. HermiT CONSISTENT on 13-file ontology stack. SPARQL suite extended to 66 queries in 12 groups (10 new Ears Instance queries). Observation and Watchpoint Register established (12 items).
+- **Stage 7 — Reasoning Metamodel** (Sessions 148–158) formally closed Session 159. All five phases (0–4) complete, 33/35 success criteria met (2 explicitly deferred pending instance data). `ontara-reasoning.ttl`: 42 OWL classes covering reasoning contexts, goals/obstacles/measures, decisions/plans, three-way constraint hierarchy with CombinationAlgebra, knowledge sources/heuristics (6 typed families with HeuristicPack), decision mode routing (4 Cynefin-mapped modes), SEPIO evidence architecture, structured probabilistic reasoning types, STAMP/STPA safety control structures, and FRAM-ready slots. 15 named individuals, 40 object properties, 10 datatype properties. 7 PROV-O dual-subclassed classes. 2 cross-module governance alignment axioms. Console: Reasoning Vocabulary Explorer (42 classes in 7 colour-coded modules, 15 individuals, 50 properties, 32 cross-module axioms) + extended KG Status (8 stat cards, module summary).
 - **PROV-O imported** (Session 150). `prov-core.ttl` — W3C PROV-O core subset (3 Starting Point classes, 9 object properties, 3 datatype properties, 73 triples). Dual subclassing pattern: reasoning classes inherit from both BFO and PROV-O parents.
-- **Foundations papers refreshed** (Session 154) — Architecture Principles to v4, Platform Modelling Strategy to v4, Service Business Meta Modelling to v3. All incorporate 58 sessions of changes.
-- **Clinical Domain Intake Framework** established (Session 160) — structured methodology for domain characterisation, ingestion, and platform vocabulary fitness validation. Feature taxonomy, proforma intake schema, coverage map concept. Ears (Community Ear Care) intake beginning.
-- **Stage 5 — Knowledge Graph Implementation** Phases 1–3 formally closed. Three layers of automated QA: SPARQL validation (56 queries, 11 groups), OWL 2 DL reasoning (HermiT), round-trip diff (288 semantic units).
+- **Foundations papers refreshed** — Architecture Principles to v4.1, Platform Modelling Strategy to v4.1, Service Business Meta Modelling to v3.1 (Session 170, light touch-up from v4/v4/v3 at Session 154).
+- **Stage 5 — Knowledge Graph Implementation** Phases 1–3 formally closed. Three layers of automated QA: SPARQL validation (66 queries, 12 groups), OWL 2 DL reasoning (HermiT), round-trip diff (288 semantic units). 13-file ontology stack.
 - **Domain Identity and Governance Convergence** (Stage 6, Sessions 141–144) — Block A complete. Dual-stack domain identity: `DomainIdentity` (BMM) + `DomainConfiguration` (SMM) in SysML, `ontara-domain.ttl` in OWL. A13 (multi-tenancy) promoted to binding T1.
 - **Governance workstream** — vocabulary tier implemented and validated. Deontic governance architecture (Session 121), OWL class design (Session 125), governance ontology Turtle implemented (Session 126): `ontara-governance.ttl` in separate `ontara-gov:` namespace. MVP CQC Regulation 12 test individuals validated. Governance–reasoning alignment: Obligation and Prohibition declared as HardConstraint subclasses (Session 151).
 - **Console navigation context** (Sessions 132–134): global NavigationStore with semantic breadcrumb trail, page state capture/restore, journey export. Six routes migrated.
 - **BMM structurally complete** at General level — 36 elements (including DomainIdentity + DomainConfiguration), 96 weighted relationships, full comprehension metadata (34/34 @UserFacing, @PurposiveDescription, @Comprehension, @BfoType).
 - **Console** has 13 views including an interactive 3D weighted relationship graph, a spatial visual architecture map, and an Ontology view with BFO hierarchy, Reasoning Vocabulary Explorer, and KG Status panel.
-- **Four demonstrator domains** validated (Cafe, Suds, Paws, plus cross-domain reasoning validation), with Ears (community ear care) as the fifth domain — intake in progress.
+- **Five demonstrator domains** validated: Cafe, Suds, Paws (cross-domain reasoning validation), plus Ears (community ear care) — analytical intake complete (Sessions 161–168).
 
 ## Key Commands
 
@@ -146,10 +147,10 @@ python scripts/reason_kg.py --save-summary
 # Run reasoner with deliberate misclassification test
 python scripts/reason_kg.py --test-violation
 
-# Validate knowledge graph (56-query SPARQL suite; requires GraphDB)
+# Validate knowledge graph (66-query SPARQL suite; requires GraphDB)
 python scripts/validate_kg.py
 
-# Reload full 12-file ontology stack into GraphDB and validate
+# Reload full 13-file ontology stack into GraphDB and validate
 python scripts/validate_kg.py --load
 
 # Round-trip diff (compare pipeline output against GraphDB)
@@ -158,9 +159,9 @@ python scripts/diff_kg.py
 
 ## Companion Knowledge Base
 
-The Obsidian vault (not in this repo) contains ~212 registered design concepts across 16 sections (A–P), 33 discussion papers, ~131 session reports (Sessions 28–160), and the full governance structure. The vault is under separate git version control.
+The Obsidian vault (not in this repo) contains ~212 registered design concepts across 16 sections (A–P), 34 discussion papers, ~141 session reports (Sessions 28–168), 29 emergent ideas log entries, and the full governance structure including an Observation and Watchpoint Register (12 items). The vault is under separate git version control.
 
-Key documents: Strategic Reference, Master Concept Register, Development Workflow Guide, Architecture Principles (v4), SysML Modelling Strategy (v4), Service Business Meta Modelling (v3).
+Key documents: Strategic Reference, Master Concept Register, Development Workflow Guide, Architecture Principles (v4.1), SysML Modelling Strategy (v4.1), Service Business Meta Modelling (v3.1).
 
 ## Development Methodology
 
@@ -170,8 +171,8 @@ Three governing principles:
 2. **Co-evolution of model and tooling** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
 3. **Non-constraining architecture** — decisions should not foreclose future development paths.
 
-Development is conducted through a structured session programme (currently Session 161) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
+Development is conducted through a structured session programme (currently Session 171) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
 
 ---
 
-*README last updated: Session 161, 7 April 2026.*
+*README last updated: Session 171, 7 April 2026.*
