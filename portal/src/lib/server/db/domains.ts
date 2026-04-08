@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import db from './index.js';
 import type { Domain, DomainRow, DomainWithRole } from '$lib/types.js';
+import { initializeDomainContext } from './context.js';
 
 function mapDomain(row: DomainRow): Domain {
     return {
@@ -26,6 +27,7 @@ export function createDomain(
         INSERT INTO domains (id, name, slug, description, business_type)
         VALUES (?, ?, ?, ?, ?)
     `).run(id, name, slug, description, businessType);
+    initializeDomainContext(id);
     return mapDomain(db.prepare('SELECT * FROM domains WHERE id = ?').get(id) as DomainRow);
 }
 

@@ -3,6 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { getDomainBySlug } from '$lib/server/db/domains';
 import {
     getInstanceById,
+    getInstancesForDomain,
     updateOperationalState,
     updateInstallationState,
     recordTransition,
@@ -19,7 +20,8 @@ export const load: PageServerLoad = async ({ params, parent }) => {
     const instance = getInstanceById(params.moduleId);
     if (!instance || instance.domainId !== domain.id) throw redirect(303, `/domains/${domain.slug}`);
     const transitions = getTransitionsForInstance(instance.id);
-    return { instance, transitions };
+    const allModules = getInstancesForDomain(domain.id);
+    return { instance, transitions, allModules };
 };
 
 export const actions: Actions = {
@@ -35,9 +37,28 @@ export const actions: Actions = {
         const data = await request.formData();
         const targetState = data.get('targetState') as OperationalState;
         const note = (data.get('note') as string) || undefined;
+        const confirmed = data.get('confirmed') === 'true';
 
         const result = validateOperationalTransition(instance.operationalState, targetState);
         if (!result.valid) return fail(400, { error: result.reason });
+
+        // Check for impact on connected modules
+        if (!confirmed) {
+            const allModules = getInstancesForDomain(domain.id);
+            const { assessLifecycleImpact } = await import('$lib/modules/impact.js');
+            const impact = assessLifecycleImpact(instance, targetState, allModules);
+            if (impact.hasImpact) {
+                return {
+                    confirmNeeded: true,
+                    targetState,
+                    affectedModules: impact.affectedModules.map(a => ({
+                        name: a.module.displayName || a.module.definition.name,
+                        sharedConcerns: a.sharedConcerns,
+                        currentState: a.currentState
+                    }))
+                };
+            }
+        }
 
         const fromState = instance.operationalState;
         updateOperationalState(instance.id, targetState);

@@ -71,3 +71,12 @@ CREATE TABLE IF NOT EXISTS module_state_transitions (
     note TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+CREATE TABLE IF NOT EXISTS domain_context (
+    id TEXT PRIMARY KEY,
+    domain_id TEXT NOT NULL REFERENCES domains(id),
+    concern TEXT NOT NULL,
+    context_values TEXT NOT NULL DEFAULT '{}',
+    updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+    UNIQUE(domain_id, concern)
+);

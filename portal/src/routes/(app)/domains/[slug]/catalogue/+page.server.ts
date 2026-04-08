@@ -2,6 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { getDomainBySlug } from '$lib/server/db/domains';
 import { getAllDefinitions, getInstancesForDomain, installModule, recordTransition } from '$lib/server/db/modules';
+import { getContextForDomain } from '$lib/server/db/context';
 
 export const load: PageServerLoad = async ({ parent }) => {
     const { domain } = await parent();
@@ -10,7 +11,8 @@ export const load: PageServerLoad = async ({ parent }) => {
     const installedDefinitionIds = instances
         .filter(i => i.installationState === 'installed')
         .map(i => i.definitionId);
-    return { definitions, installedDefinitionIds };
+    const contexts = getContextForDomain(domain.id);
+    return { definitions, installedDefinitionIds, instances, contexts };
 };
 
 export const actions: Actions = {

@@ -21,6 +21,7 @@ export const actions: Actions = {
         const data = await request.formData();
         const moduleId = data.get('moduleId') as string;
         const targetState = data.get('targetState') as OperationalState;
+        const confirmed = data.get('confirmed') === 'true';
 
         const modules = getInstancesForDomain(domain.id);
         const instance = modules.find(m => m.id === moduleId);
@@ -28,6 +29,25 @@ export const actions: Actions = {
 
         const result = validateOperationalTransition(instance.operationalState, targetState);
         if (!result.valid) return fail(400, { error: result.reason });
+
+        // Check for impact on connected modules
+        if (!confirmed) {
+            const { assessLifecycleImpact } = await import('$lib/modules/impact.js');
+            const impact = assessLifecycleImpact(instance, targetState, modules);
+            if (impact.hasImpact) {
+                return {
+                    confirmNeeded: true,
+                    moduleId,
+                    moduleName: instance.displayName || instance.definition.name,
+                    targetState,
+                    affectedModules: impact.affectedModules.map(a => ({
+                        name: a.module.displayName || a.module.definition.name,
+                        sharedConcerns: a.sharedConcerns,
+                        currentState: a.currentState
+                    }))
+                };
+            }
+        }
 
         const fromState = instance.operationalState;
         updateOperationalState(instance.id, targetState);

@@ -6,10 +6,24 @@
         GridPlusOutline, UsersOutline as UsersIcon, CalendarMonthOutline as CalIcon
     } from 'flowbite-svelte-icons';
     import { getOperationalStateDisplay, getPrimaryAction } from '$lib/modules/lifecycle.js';
-    import type { PageData } from './$types';
-    import type { ModuleInstanceWithDefinition } from '$lib/types';
+    import { getConcernCoverage } from '$lib/modules/connections.js';
+    import { CONCERN_META } from '$lib/context/schemas.js';
+    import { enhance } from '$app/forms';
+    import type { PageData, ActionData } from './$types';
+    import type { ModuleInstanceWithDefinition, ConcernCoverage } from '$lib/types';
 
-    let { data }: { data: PageData } = $props();
+    let { data, form }: { data: PageData; form: ActionData } = $props();
+
+    let concernCoverage = $derived(getConcernCoverage(data.modules));
+
+    const coverageAccent: Record<string, string> = {
+        ServiceConcept: 'bg-teal-500',
+        ActivityModel: 'bg-cyan-500',
+        ResourcePlanning: 'bg-emerald-500',
+        FinancialPlanning: 'bg-amber-500',
+        GovernanceMapping: 'bg-rose-400',
+        StakeholderModel: 'bg-violet-400'
+    };
 
     const iconMap: Record<string, any> = {
         TagOutline, UsersOutline, CalendarMonthOutline, UserSettingsOutline,
@@ -55,6 +69,37 @@
             <p class="mt-3 text-secondary-600 dark:text-secondary-400 max-w-2xl">{data.domain.description}</p>
         {/if}
     </div>
+
+    <!-- BMM Concern Coverage Bar -->
+    {#if data.modules.length > 0}
+        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-5 mb-6">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500">Business Concern Coverage</h2>
+                <a href="/domains/{data.domain.slug}/context" class="text-xs text-primary-600 dark:text-primary-400 hover:underline">Edit context →</a>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+                {#each concernCoverage as cov}
+                    <a
+                        href={cov.covered ? `/domains/${data.domain.slug}/context#${cov.concern}` : `/domains/${data.domain.slug}/catalogue`}
+                        class="group flex flex-col items-center p-3 rounded-xl border transition-colors {cov.covered
+                            ? 'border-secondary-200 dark:border-secondary-700 hover:border-primary-300 dark:hover:border-primary-600'
+                            : 'border-dashed border-secondary-300 dark:border-secondary-600 hover:border-primary-400 dark:hover:border-primary-500 bg-secondary-50 dark:bg-secondary-900/20'
+                        }"
+                    >
+                        <div class="w-3 h-3 rounded-full mb-2 {cov.covered ? coverageAccent[cov.concern] : 'bg-secondary-200 dark:bg-secondary-700'}"></div>
+                        <span class="text-xs font-medium text-center leading-tight {cov.covered ? 'text-secondary-700 dark:text-secondary-300' : 'text-secondary-400 dark:text-secondary-500'}">
+                            {cov.label}
+                        </span>
+                        {#if cov.covered}
+                            <span class="text-xs text-secondary-400 mt-0.5">{cov.modules.length}</span>
+                        {:else}
+                            <span class="text-xs text-secondary-300 dark:text-secondary-600 mt-0.5 group-hover:text-primary-400">+</span>
+                        {/if}
+                    </a>
+                {/each}
+            </div>
+        </div>
+    {/if}
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Main content -->
@@ -110,7 +155,7 @@
                                 <p class="text-xs text-secondary-500 dark:text-secondary-400 truncate">{mod.definition.description}</p>
                             </a>
                             <div class="px-4 pb-3 flex items-center justify-between border-t border-secondary-100 dark:border-secondary-700 pt-3">
-                                <form method="POST" action="?/transition">
+                                <form method="POST" action="?/transition" use:enhance>
                                     <input type="hidden" name="moduleId" value={mod.id} />
                                     <input type="hidden" name="targetState" value={primaryAction.targetState} />
                                     <button type="submit" class={primaryActionButtonClass(primaryAction.style)}>
@@ -125,7 +170,7 @@
             {/if}
         </div>
 
-        <!-- Info sidebar -->
+        <!-- Sidebar -->
         <div class="space-y-4">
             <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-5">
                 <h3 class="text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500 mb-4">Domain Info</h3>
@@ -171,6 +216,7 @@
             <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-5">
                 <h3 class="text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500 mb-3">Quick Links</h3>
                 <div class="space-y-1">
+                    <a href="/domains/{data.domain.slug}/context" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Domain context →</a>
                     <a href="/domains/{data.domain.slug}/catalogue" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Module catalogue →</a>
                     <a href="/domains/{data.domain.slug}/settings" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Domain settings →</a>
                     <a href="/domains" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">All domains →</a>
@@ -179,3 +225,54 @@
         </div>
     </div>
 </div>
+
+<!-- Impact warning modal -->
+{#if form?.confirmNeeded}
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black/40 z-40"></div>
+
+    <!-- Modal -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 shadow-xl max-w-md w-full">
+            <div class="p-5">
+                <div class="flex items-start gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.07 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold text-secondary-900 dark:text-secondary-100">Impact Warning</h2>
+                        <p class="text-sm text-secondary-500 dark:text-secondary-400 mt-1">
+                            Changing <strong>{form.moduleName}</strong> to <strong>{form.targetState}</strong> may affect connected modules.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-2 mb-5">
+                    {#each form.affectedModules as aff}
+                        <div class="flex items-center justify-between p-3 rounded-lg bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800">
+                            <span class="text-sm font-medium text-secondary-800 dark:text-secondary-200">{aff.name}</span>
+                            <div class="flex items-center gap-2">
+                                <Badge color="yellow" class="text-xs capitalize">{aff.currentState}</Badge>
+                                <div class="flex gap-1">
+                                    {#each aff.sharedConcerns as c}
+                                        <span class="text-xs px-1.5 py-0.5 rounded bg-yellow-100 dark:bg-yellow-800 text-yellow-700 dark:text-yellow-300">{c}</span>
+                                    {/each}
+                                </div>
+                            </div>
+                        </div>
+                    {/each}
+                </div>
+
+                <div class="flex gap-3 pt-3 border-t border-secondary-100 dark:border-secondary-700">
+                    <form method="POST" action="?/transition" use:enhance class="flex-1">
+                        <input type="hidden" name="moduleId" value={form.moduleId} />
+                        <input type="hidden" name="targetState" value={form.targetState} />
+                        <input type="hidden" name="confirmed" value="true" />
+                        <Button type="submit" color="yellow" class="w-full">Proceed Anyway</Button>
+                    </form>
+                    <Button href="/domains/{data.domain.slug}" color="alternative">Cancel</Button>
+                </div>
+            </div>
+        </div>
+    </div>
+{/if}

@@ -110,3 +110,53 @@ export interface ModuleStateTransition {
     note: string | null;
     createdAt: string;
 }
+
+// ── Domain context types ─────────────────────────────────────────────
+
+export type BmmConcern = 'ServiceConcept' | 'ActivityModel' | 'ResourcePlanning'
+    | 'FinancialPlanning' | 'GovernanceMapping' | 'StakeholderModel';
+
+export const BMM_CONCERNS: BmmConcern[] = [
+    'ServiceConcept', 'ActivityModel', 'ResourcePlanning',
+    'FinancialPlanning', 'GovernanceMapping', 'StakeholderModel'
+];
+
+export interface DomainContext {
+    id: string;
+    domainId: string;
+    concern: BmmConcern;
+    contextValues: Record<string, unknown>;
+    updatedAt: string;
+}
+
+export interface DomainContextRow {
+    id: string;
+    domain_id: string;
+    concern: string;
+    context_values: string;
+    updated_at: string;
+}
+
+// ── Module connection types ──────────────────────────────────────────
+
+export interface ModuleConnection {
+    module: ModuleInstanceWithDefinition;
+    sharedConcerns: string[];
+}
+
+export interface ConcernCoverage {
+    concern: BmmConcern;
+    label: string;
+    description: string;
+    modules: ModuleInstanceWithDefinition[];
+    covered: boolean;
+}
+
+export interface LifecycleImpact {
+    hasImpact: boolean;
+    affectedModules: {
+        module: ModuleInstanceWithDefinition;
+        sharedConcerns: string[];
+        currentState: string;
+    }[];
+}

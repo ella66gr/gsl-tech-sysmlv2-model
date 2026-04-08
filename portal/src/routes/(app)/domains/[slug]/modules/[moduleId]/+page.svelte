@@ -6,9 +6,13 @@
         CogOutline, TrashBinOutline, CalendarMonthOutline as CalendarOutline
     } from 'flowbite-svelte-icons';
     import { getOperationalStateDisplay, getAvailableActions } from '$lib/modules/lifecycle.js';
-    import type { PageData } from './$types';
+    import { findConnectedModules } from '$lib/modules/connections.js';
+    import { enhance } from '$app/forms';
+    import type { PageData, ActionData } from './$types';
 
-    let { data }: { data: PageData } = $props();
+    let { data, form }: { data: PageData; form: ActionData } = $props();
+
+    const connections = $derived(findConnectedModules(data.instance, data.allModules));
 
     const iconMap: Record<string, any> = {
         TagOutline, UsersOutline, CalendarMonthOutline, UserSettingsOutline,
@@ -85,7 +89,7 @@
         <h2 class="text-sm font-semibold text-secondary-700 dark:text-secondary-300 mb-3">Lifecycle Actions</h2>
         <div class="flex flex-wrap gap-2">
             {#each actions as action}
-                <form method="POST" action="?/transition">
+                <form method="POST" action="?/transition" use:enhance>
                     <input type="hidden" name="targetState" value={action.targetState} />
                     <button
                         type="submit"
@@ -106,8 +110,58 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Main: config summary + history -->
+        <!-- Main: connections + config summary + history -->
         <div class="lg:col-span-2 space-y-6">
+            <!-- Connections -->
+            <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-5">
+                <h2 class="font-semibold text-secondary-900 dark:text-secondary-100 mb-3">Connections</h2>
+                {#if connections.length > 0}
+                    <p class="text-sm text-secondary-500 dark:text-secondary-400 mb-4">
+                        This module shares BMM concerns with {connections.length} other module{connections.length !== 1 ? 's' : ''}.
+                    </p>
+                    <div class="space-y-3">
+                        {#each connections as conn}
+                            {@const connState = getOperationalStateDisplay(conn.module.operationalState)}
+                            <a
+                                href="/domains/{data.domain.slug}/modules/{conn.module.id}"
+                                class="flex items-center justify-between p-3 rounded-xl bg-secondary-50 dark:bg-secondary-900/30 border border-secondary-100 dark:border-secondary-700 hover:border-primary-300 dark:hover:border-primary-600 transition-colors"
+                            >
+                                <div class="flex items-center gap-2.5">
+                                    <span class="w-2 h-2 rounded-full {connState.dotClass} flex-shrink-0"></span>
+                                    <span class="text-sm font-medium text-secondary-800 dark:text-secondary-200">
+                                        {conn.module.displayName || conn.module.definition.name}
+                                    </span>
+                                </div>
+                                <div class="flex gap-1">
+                                    {#each conn.sharedConcerns as concern}
+                                        <span class="text-xs px-2 py-0.5 rounded-full bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300">{concern}</span>
+                                    {/each}
+                                </div>
+                            </a>
+                        {/each}
+                    </div>
+                {:else}
+                    <p class="text-sm text-secondary-400">
+                        This module operates independently — it does not share BMM concerns with other installed modules.
+                    </p>
+                {/if}
+
+                <!-- Domain context link -->
+                <div class="mt-4 pt-3 border-t border-secondary-100 dark:border-secondary-700">
+                    <p class="text-xs text-secondary-400 mb-2">Draws from domain context:</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        {#each data.instance.definition.bmmConcerns as concern}
+                            <a
+                                href="/domains/{data.domain.slug}/context#{concern}"
+                                class="text-xs px-2.5 py-1 rounded-lg bg-secondary-100 dark:bg-secondary-700 text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
+                            >
+                                {concern} →
+                            </a>
+                        {/each}
+                    </div>
+                </div>
+            </div>
+
             <!-- Config summary -->
             {#if Object.keys(data.instance.configValues).length > 0}
                 <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-5">
@@ -221,3 +275,36 @@
         </div>
     </div>
 </div>
+
+<!-- Impact warning modal -->
+{#if form?.confirmNeeded}
+    <div class="fixed inset-0 bg-black/40 z-40"></div>
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 shadow-xl max-w-md w-full p-5">
+            <h2 class="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-2">Impact Warning</h2>
+            <p class="text-sm text-secondary-500 dark:text-secondary-400 mb-4">
+                This action may affect connected modules that share BMM concerns.
+            </p>
+            <div class="space-y-2 mb-5">
+                {#each form.affectedModules as aff}
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800">
+                        <span class="text-sm font-medium text-secondary-800 dark:text-secondary-200">{aff.name}</span>
+                        <div class="flex gap-1">
+                            {#each aff.sharedConcerns as c}
+                                <span class="text-xs px-1.5 py-0.5 rounded bg-yellow-100 dark:bg-yellow-800 text-yellow-700 dark:text-yellow-300">{c}</span>
+                            {/each}
+                        </div>
+                    </div>
+                {/each}
+            </div>
+            <div class="flex gap-3">
+                <form method="POST" action="?/transition" use:enhance class="flex-1">
+                    <input type="hidden" name="targetState" value={form.targetState} />
+                    <input type="hidden" name="confirmed" value="true" />
+                    <Button type="submit" color="yellow" class="w-full">Proceed Anyway</Button>
+                </form>
+                <Button href="/domains/{data.domain.slug}/modules/{data.instance.id}" color="alternative">Cancel</Button>
+            </div>
+        </div>
+    </div>
+{/if}
