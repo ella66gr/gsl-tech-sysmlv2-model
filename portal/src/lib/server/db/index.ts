@@ -21,4 +21,8 @@ db.pragma('foreign_keys = ON');
 const schema = readFileSync(join(__dirname, 'schema.sql'), 'utf-8');
 db.exec(schema);
 
+// Seed catalogue data (idempotent — INSERT OR IGNORE)
+import { seedModuleDefinitions } from './seed.js';
+seedModuleDefinitions(db);
+
 export default db;

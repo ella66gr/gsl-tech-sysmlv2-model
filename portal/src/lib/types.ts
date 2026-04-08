@@ -53,3 +53,60 @@ export interface DomainMembership {
 }
 
 export type DomainWithRole = Domain & { role: string };
+
+// ── Module types ────────────────────────────────────────────────────
+
+export type ModuleCategory = 'business' | 'analytical' | 'generative';
+export type InstallationState = 'installed' | 'trashed';
+export type OperationalState = 'draft' | 'active' | 'paused' | 'stopped';
+
+export interface ConfigFieldDefinition {
+    key: string;
+    type: 'text' | 'number' | 'boolean' | 'select';
+    label: string;
+    description: string;
+    defaultValue: string | number | boolean;
+    required: boolean;
+    options?: { value: string; label: string }[];
+}
+
+export interface ModuleDefinition {
+    id: string;
+    name: string;
+    slug: string;
+    description: string;
+    category: ModuleCategory;
+    icon: string;
+    bmmConcerns: string[];
+    configSchema: ConfigFieldDefinition[];
+    dependencies: string[] | null;
+    sortOrder: number;
+}
+
+export interface ModuleInstance {
+    id: string;
+    domainId: string;
+    definitionId: string;
+    displayName: string;
+    installationState: InstallationState;
+    operationalState: OperationalState;
+    configValues: Record<string, unknown>;
+    installedBy: string;
+    installedAt: string;
+    updatedAt: string;
+}
+
+export interface ModuleInstanceWithDefinition extends ModuleInstance {
+    definition: ModuleDefinition;
+}
+
+export interface ModuleStateTransition {
+    id: string;
+    moduleInstanceId: string;
+    lifecycleType: 'installation' | 'operational';
+    fromState: string;
+    toState: string;
+    triggeredBy: string;
+    note: string | null;
+    createdAt: string;
+}

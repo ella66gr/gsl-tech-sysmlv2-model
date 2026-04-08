@@ -1,9 +1,16 @@
 <script lang="ts">
     import { Alert, Badge, Button, Helper, Input, Label, Textarea } from 'flowbite-svelte';
+    import { TrashBinOutline } from 'flowbite-svelte-icons';
     import type { PageData, ActionData } from './$types';
 
     let { data, form }: { data: PageData; form: ActionData } = $props();
     const f = $derived(form as any);
+
+    let confirmDeleteId = $state<string | null>(null);
+
+    function formatDateTime(iso: string) {
+        return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
 
     function roleColor(role: string): 'purple' | 'blue' | 'gray' {
         if (role === 'super_admin') return 'purple';
@@ -104,4 +111,61 @@
             {/each}
         </div>
     </div>
+
+    <!-- Trashed modules -->
+    {#if data.trashedModules.length > 0}
+        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-6">
+            <div class="flex items-center gap-2 mb-5">
+                <h2 class="font-semibold text-secondary-900 dark:text-secondary-100">Trashed Modules</h2>
+                <Badge color="red">{data.trashedModules.length}</Badge>
+            </div>
+
+            {#if f?.restoreSuccess}
+                <Alert color="green" class="mb-4">Module restored successfully.</Alert>
+            {/if}
+            {#if f?.deleteSuccess}
+                <Alert color="green" class="mb-4">Module permanently deleted.</Alert>
+            {/if}
+            {#if f?.trashError}
+                <Alert color="red" class="mb-4">{f.trashError}</Alert>
+            {/if}
+
+            <div class="divide-y divide-secondary-100 dark:divide-secondary-700">
+                {#each data.trashedModules as mod}
+                    <div class="py-4">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-secondary-900 dark:text-secondary-100">{mod.displayName || mod.definition.name}</p>
+                                <p class="text-xs text-secondary-400 mt-0.5">{mod.definition.name} · Trashed {formatDateTime(mod.updatedAt)}</p>
+                            </div>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                <form method="POST" action="?/restore">
+                                    <input type="hidden" name="moduleId" value={mod.id} />
+                                    <button type="submit" class="text-xs px-3 py-1.5 rounded-lg bg-secondary-100 dark:bg-secondary-700 hover:bg-secondary-200 dark:hover:bg-secondary-600 text-secondary-700 dark:text-secondary-300 transition-colors">
+                                        Restore
+                                    </button>
+                                </form>
+                                {#if confirmDeleteId === mod.id}
+                                    <div class="flex items-center gap-1.5">
+                                        <form method="POST" action="?/permanentDelete">
+                                            <input type="hidden" name="moduleId" value={mod.id} />
+                                            <button type="submit" class="text-xs px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white transition-colors">Confirm delete</button>
+                                        </form>
+                                        <button onclick={() => (confirmDeleteId = null)} class="text-xs text-secondary-400 hover:text-secondary-600 px-2">Cancel</button>
+                                    </div>
+                                {:else}
+                                    <button
+                                        onclick={() => (confirmDeleteId = mod.id)}
+                                        class="text-xs px-3 py-1.5 rounded-lg border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                                    >
+                                        Delete permanently
+                                    </button>
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
+                {/each}
+            </div>
+        </div>
+    {/if}
 </div>

@@ -6,6 +6,7 @@ The user-facing Ontara platform shell — Phase 1 prototype.
 
 ```bash
 pnpm install
+pnpm rebuild better-sqlite3  # required on first install — compiles the native SQLite binary
 pnpm dev
 ```
 

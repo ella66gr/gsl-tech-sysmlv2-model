@@ -14,6 +14,7 @@
     import {
         ChevronDownOutline,
         GridOutline,
+        GridPlusOutline,
         CogOutline,
         UserOutline,
         ArrowRightToBracketOutline,
@@ -191,12 +192,13 @@
     <div class="flex flex-1 overflow-hidden">
         <!-- Sidebar (only when on a domain route) -->
         {#if currentDomain}
-            <aside class="w-52 flex-shrink-0 bg-white dark:bg-secondary-800 border-r border-secondary-200 dark:border-secondary-700 flex flex-col">
+            <aside class="w-52 flex-shrink-0 bg-white dark:bg-secondary-800 border-r border-secondary-200 dark:border-secondary-700 flex flex-col overflow-y-auto">
                 <div class="px-4 py-4 border-b border-secondary-100 dark:border-secondary-700">
                     <p class="text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500 mb-1">Domain</p>
                     <p class="text-sm font-semibold text-secondary-800 dark:text-secondary-200 truncate">{currentDomain.name}</p>
                 </div>
                 <nav class="flex-1 px-3 py-4 space-y-1">
+                    <!-- Dashboard -->
                     <a
                         href="/domains/{currentSlug}"
                         class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {$page.url.pathname === `/domains/${currentSlug}` ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-medium' : 'text-secondary-600 dark:text-secondary-400 hover:bg-secondary-50 dark:hover:bg-secondary-700'}"
@@ -204,6 +206,39 @@
                         <GridOutline class="w-4 h-4" />
                         Dashboard
                     </a>
+
+                    <!-- Modules section -->
+                    {#if data.sidebarModules.length > 0}
+                        <div class="pt-3 pb-1">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500 px-3 mb-1">Modules</p>
+                        </div>
+                        {#each data.sidebarModules.slice(0, 8) as mod}
+                            <a
+                                href="/domains/{currentSlug}/modules/{mod.id}"
+                                class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm transition-colors {$page.url.pathname === `/domains/${currentSlug}/modules/${mod.id}` ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-medium' : 'text-secondary-600 dark:text-secondary-400 hover:bg-secondary-50 dark:hover:bg-secondary-700'}"
+                            >
+                                <span class="w-2 h-2 rounded-full flex-shrink-0 {mod.operationalState === 'active' ? 'bg-green-500' : mod.operationalState === 'paused' ? 'bg-orange-400' : mod.operationalState === 'stopped' ? 'bg-red-400' : 'bg-yellow-400'}"></span>
+                                <span class="truncate">{mod.displayName}</span>
+                            </a>
+                        {/each}
+                        {#if data.sidebarModules.length > 8}
+                            <a href="/domains/{currentSlug}" class="flex items-center gap-3 px-3 py-1.5 rounded-lg text-xs text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                                +{data.sidebarModules.length - 8} more →
+                            </a>
+                        {/if}
+                        <div class="pt-1"></div>
+                    {/if}
+
+                    <!-- Catalogue -->
+                    <a
+                        href="/domains/{currentSlug}/catalogue"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {$page.url.pathname.startsWith(`/domains/${currentSlug}/catalogue`) ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-medium' : 'text-secondary-600 dark:text-secondary-400 hover:bg-secondary-50 dark:hover:bg-secondary-700'}"
+                    >
+                        <GridPlusOutline class="w-4 h-4" />
+                        Catalogue
+                    </a>
+
+                    <!-- Settings -->
                     <a
                         href="/domains/{currentSlug}/settings"
                         class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {$page.url.pathname.startsWith(`/domains/${currentSlug}/settings`) ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-medium' : 'text-secondary-600 dark:text-secondary-400 hover:bg-secondary-50 dark:hover:bg-secondary-700'}"
