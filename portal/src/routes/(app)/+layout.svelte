@@ -1,5 +1,6 @@
 <script lang="ts">
     import { page } from '$app/stores';
+    import { browser } from '$app/environment';
     import {
         Avatar,
         Dropdown,
@@ -27,19 +28,22 @@
 
     let { data, children }: { data: LayoutData; children: any } = $props();
 
-    let darkMode = $state(
-        typeof localStorage !== 'undefined'
-            ? localStorage.getItem('darkMode') !== 'false'
-            : true
-    );
+    let darkMode = $state(true);
+
+    // Read localStorage only on the client (SSR has no localStorage)
+    $effect(() => {
+        if (browser) {
+            darkMode = localStorage.getItem('darkMode') !== 'false';
+        }
+    });
 
     $effect(() => {
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-        if (typeof localStorage !== 'undefined') {
+        if (browser) {
+            if (darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
             localStorage.setItem('darkMode', String(darkMode));
         }
     });

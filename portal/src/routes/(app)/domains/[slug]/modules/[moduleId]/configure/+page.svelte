@@ -4,7 +4,7 @@
         TagOutline, UsersOutline, CalendarMonthOutline, UserSettingsOutline,
         ChartOutline, ShieldCheckOutline, ChartMixedOutline
     } from 'flowbite-svelte-icons';
-    import { getOperationalStateDisplay } from '$lib/server/modules/lifecycle.js';
+    import { getOperationalStateDisplay } from '$lib/modules/lifecycle.js';
     import type { PageData } from './$types';
     import type { ConfigFieldDefinition } from '$lib/types';
 

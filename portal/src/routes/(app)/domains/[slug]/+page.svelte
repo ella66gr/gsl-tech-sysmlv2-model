@@ -5,7 +5,7 @@
         ChartOutline, ShieldCheckOutline, ChartMixedOutline,
         GridPlusOutline, UsersOutline as UsersIcon, CalendarMonthOutline as CalIcon
     } from 'flowbite-svelte-icons';
-    import { getOperationalStateDisplay, getPrimaryAction } from '$lib/server/modules/lifecycle.js';
+    import { getOperationalStateDisplay, getPrimaryAction } from '$lib/modules/lifecycle.js';
     import type { PageData } from './$types';
     import type { ModuleInstanceWithDefinition } from '$lib/types';
 

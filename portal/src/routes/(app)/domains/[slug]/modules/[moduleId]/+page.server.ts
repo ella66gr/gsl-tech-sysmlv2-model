@@ -11,7 +11,7 @@ import {
 import {
     validateOperationalTransition,
     getPreTrashStop
-} from '$lib/server/modules/lifecycle';
+} from '$lib/modules/lifecycle';
 import type { OperationalState } from '$lib/types';
 
 export const load: PageServerLoad = async ({ params, parent }) => {

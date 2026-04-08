@@ -3,7 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { getMembersOfDomain } from '$lib/server/db/memberships';
 import { getInstancesForDomain, updateOperationalState, recordTransition } from '$lib/server/db/modules';
 import { getDomainBySlug } from '$lib/server/db/domains';
-import { validateOperationalTransition } from '$lib/server/modules/lifecycle';
+import { validateOperationalTransition } from '$lib/modules/lifecycle';
 import type { OperationalState } from '$lib/types';
 
 export const load: PageServerLoad = async ({ parent }) => {

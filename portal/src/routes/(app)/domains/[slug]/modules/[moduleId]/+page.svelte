@@ -5,7 +5,7 @@
         ChartOutline, ShieldCheckOutline, ChartMixedOutline,
         CogOutline, TrashBinOutline, CalendarMonthOutline as CalendarOutline
     } from 'flowbite-svelte-icons';
-    import { getOperationalStateDisplay, getAvailableActions } from '$lib/server/modules/lifecycle.js';
+    import { getOperationalStateDisplay, getAvailableActions } from '$lib/modules/lifecycle.js';
     import type { PageData } from './$types';
 
     let { data }: { data: PageData } = $props();
