@@ -20,6 +20,9 @@ dist/
 .claude/settings.local.json
 CLAUDE.local.md
 
+# Portal SQLite database
+portal/data/
+
 # pnpm
 pnpm-lock.yaml
 

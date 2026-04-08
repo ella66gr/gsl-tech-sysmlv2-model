@@ -1,0 +1,41 @@
+{
+	"name": "portal",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^7.0.1",
+		"@sveltejs/kit": "^2.57.0",
+		"@sveltejs/vite-plugin-svelte": "^7.0.0",
+		"@tailwindcss/vite": "^4.2.2",
+		"@types/bcryptjs": "^3.0.0",
+		"@types/better-sqlite3": "^7.6.13",
+		"@types/uuid": "^11.0.0",
+		"svelte": "^5.55.2",
+		"svelte-check": "^4.4.6",
+		"tailwindcss": "^4.2.2",
+		"typescript": "^6.0.2",
+		"vite": "^8.0.7"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"better-sqlite3"
+		]
+	},
+	"dependencies": {
+		"bcryptjs": "^3.0.3",
+		"better-sqlite3": "^12.8.0",
+		"flowbite": "^4.0.1",
+		"flowbite-svelte": "^1.33.1",
+		"flowbite-svelte-icons": "^3.1.0",
+		"uuid": "^13.0.0"
+	}
+}
