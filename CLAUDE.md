@@ -22,6 +22,7 @@ exercises/
   suds-demonstrator/       # Laundry BMM instance
   paws-demonstrator/       # Dog grooming BMM instance
 console/                   # Ontara Console (SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4)
+portal/                    # Ontara Portal (SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4 + SQLite)
 scripts/                   # Python generators, shared modules, and shell tools
   archive/                 # Archived superseded generators (with provenance)
   reason_kg.py             # OWL 2 DL reasoning via Robot + HermiT
@@ -73,11 +74,23 @@ spikes/                    # Experimental code
 
 ## Tech Stack
 
-- **Console:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4. Package manager: pnpm. **Navigation infrastructure (Session 133):** `NavigationStore` in `$lib/stores/navigation.svelte.ts` with `NavigationProvider`, `NavLink`, and `Breadcrumb` components. Glossary and Ontology routes migrated. Other routes can opt in incrementally — see `$lib/types/navigation.ts` for the `PageStateContract` interface.
+- **Console:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4. Package manager: pnpm. Dev port: 5173. **Navigation infrastructure (Session 133):** `NavigationStore` in `$lib/stores/navigation.svelte.ts` with `NavigationProvider`, `NavLink`, and `Breadcrumb` components. Glossary and Ontology routes migrated. Other routes can opt in incrementally — see `$lib/types/navigation.ts` for the `PageStateContract` interface.
+- **Portal:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4 + SQLite (better-sqlite3) + bcryptjs. Package manager: pnpm. Dev port: 5174. Warm teal theme distinct from console's cool slate. Phase 1 (Session 175): user auth, domain CRUD, multi-domain switching, empty dashboard shell. Database: `portal/data/portal.db` (auto-created, gitignored). Routes: `(app)/` group for authenticated pages, auth pages at root level.
 - **Coffee Shop Demonstrator:** SvelteKit + Temporal (workflow engine) + EHRbase (CDR) + PostgreSQL. pnpm workspace monorepo with packages: web, temporal, shared.
 - **Generators:** Python 3. No virtual env required. Introspection generator uses standard library only. OWL pipeline generator requires `rdflib` and `PyYAML` (`pip3 install rdflib PyYAML`).
 - **Knowledge graph:** GraphDB Free 10.x (local Java app, port 7200). Robot (wraps HermiT reasoner, `tools/robot.jar`) for full OWL 2 DL consistency checking. Protégé 5.6+ for ontology debugging. BFO 2020 + CCO 2.0 + IAO + PROV-O (core subset) as imported ontologies. Reasoning runtime ~20 minutes with 13-file stack.
 - **Model editing:** Syside Modeler (VS Code extension for SysML v2). Claude cannot run Syside — only Ella can verify SysML parses.
+
+## Portal Commands
+
+```bash
+# From repo root
+cd portal
+pnpm dev              # Start portal dev server (http://localhost:5174)
+pnpm build            # Production build
+```
+
+The portal uses SQLite via better-sqlite3. The database (`portal/data/portal.db`) is created automatically on first run and is gitignored. No external database server required.
 
 ## Console Commands
 
