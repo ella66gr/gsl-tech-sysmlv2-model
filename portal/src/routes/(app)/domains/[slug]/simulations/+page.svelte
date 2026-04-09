@@ -188,11 +188,11 @@
 
                     <!-- Target module names for completed runs -->
                     {#if run.status === 'completed' && run.eventCount > 0}
+                        {@const targetNames = run.targetModuleIds.map(tid => {
+                            const mod = data.modules.find(m => m.id === tid);
+                            return mod ? (mod.displayName || mod.definition.name) : tid.slice(0, 8);
+                        })}
                         <div class="mt-3 pt-3 border-t border-secondary-100 dark:border-secondary-700">
-                            {@const targetNames = run.targetModuleIds.map(tid => {
-                                const mod = data.modules.find(m => m.id === tid);
-                                return mod ? (mod.displayName || mod.definition.name) : tid.slice(0, 8);
-                            })}
                             <div class="text-xs">
                                 <span class="text-secondary-400">Targets:</span>
                                 <span class="text-secondary-700 dark:text-secondary-300 ml-1">{targetNames.join(', ')}</span>

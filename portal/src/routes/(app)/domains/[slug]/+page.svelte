@@ -43,6 +43,7 @@
     let businessCount    = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.definition.category === 'business').length);
     let generativeCount  = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.definition.category === 'generative').length);
     let analyticalCount  = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.definition.category === 'analytical').length);
+    let totalSimEvents   = $derived((data.runs ?? []).reduce((sum: number, r: any) => sum + r.eventCount, 0));
 
     function primaryActionButtonClass(style: string): string {
         switch (style) {
@@ -263,10 +264,9 @@
                             <span class="text-sm text-secondary-500 dark:text-secondary-400">Completed runs</span>
                             <span class="text-sm font-medium text-secondary-900 dark:text-secondary-100">{data.runs.length}</span>
                         </div>
-                        {@const totalEvents = data.runs.reduce((sum, r) => sum + r.eventCount, 0)}
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-secondary-500 dark:text-secondary-400">Total events</span>
-                            <span class="text-sm font-medium text-secondary-900 dark:text-secondary-100">{totalEvents.toLocaleString()}</span>
+                            <span class="text-sm font-medium text-secondary-900 dark:text-secondary-100">{totalSimEvents.toLocaleString()}</span>
                         </div>
                     </div>
                 {/if}
