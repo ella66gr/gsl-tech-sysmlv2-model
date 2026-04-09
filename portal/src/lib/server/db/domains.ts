@@ -73,3 +73,13 @@ export function isSlugAvailable(slug: string): boolean {
     const row = db.prepare('SELECT id FROM domains WHERE slug = ?').get(slug);
     return !row;
 }
+
+export function updateSimulationFidelity(
+    domainId: string,
+    fidelity: SimulationFidelity
+): Domain {
+    db.prepare(`
+        UPDATE domains SET simulation_fidelity = ?, updated_at = datetime('now') WHERE id = ?
+    `).run(fidelity, domainId);
+    return mapDomain(db.prepare('SELECT * FROM domains WHERE id = ?').get(domainId) as DomainRow);
+}

@@ -66,7 +66,12 @@
                     <p class="text-secondary-500 dark:text-secondary-400 mt-0.5">{data.domain.businessType}</p>
                 {/if}
             </div>
-            <Badge color="yellow" class="capitalize text-sm px-3 py-1">{data.domain.status}</Badge>
+            <div class="flex items-center gap-2">
+                <Badge color="yellow" class="capitalize text-sm px-3 py-1">{data.domain.status}</Badge>
+                <Badge color="dark" class="text-xs px-2 py-0.5">
+                    {data.domain.simulationFidelity === 'realistic' ? '⚡ Realistic' : '○ Simplified'}
+                </Badge>
+            </div>
         </div>
         {#if data.domain.description}
             <p class="mt-3 text-secondary-600 dark:text-secondary-400 max-w-2xl">{data.domain.description}</p>

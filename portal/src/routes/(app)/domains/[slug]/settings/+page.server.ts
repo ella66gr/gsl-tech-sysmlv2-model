@@ -59,6 +59,26 @@ export const actions: Actions = {
         return { restoreSuccess: true };
     },
 
+    updateFidelity: async ({ request, params, locals }) => {
+        const domain = getDomainBySlug(params.slug);
+        if (!domain) return fail(404, { errors: { form: 'Domain not found.' } });
+
+        const membership = getMembership(locals.user!.id, domain.id);
+        if (!membership || membership.role !== 'super_admin') {
+            return fail(403, { errors: { form: 'Only the domain owner can change simulation settings.' } });
+        }
+
+        const data = await request.formData();
+        const fidelity = data.get('fidelity') as string;
+        if (fidelity !== 'simplified' && fidelity !== 'realistic') {
+            return fail(400, { errors: { form: 'Invalid fidelity value.' } });
+        }
+
+        const { updateSimulationFidelity } = await import('$lib/server/db/domains.js');
+        updateSimulationFidelity(domain.id, fidelity);
+        return { fidelitySuccess: true };
+    },
+
     permanentDelete: async ({ request, params }) => {
         const domain = getDomainBySlug(params.slug);
         if (!domain) return fail(404, { trashError: 'Domain not found.' });

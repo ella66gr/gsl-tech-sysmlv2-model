@@ -93,6 +93,57 @@
         </form>
     </div>
 
+    <!-- Simulation settings -->
+    <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-6 mb-6">
+        <h2 class="font-semibold text-secondary-900 dark:text-secondary-100 mb-2">Simulation Settings</h2>
+        <p class="text-sm text-secondary-500 dark:text-secondary-400 mb-5">
+            Controls the environment for all simulation runs in this domain.
+        </p>
+
+        {#if f?.fidelitySuccess}
+            <Alert color="green" class="mb-4">Simulation fidelity updated.</Alert>
+        {/if}
+
+        <form method="POST" action="?/updateFidelity" class="space-y-4">
+            <div>
+                <Label class="mb-2 text-secondary-700 dark:text-secondary-300">Simulation fidelity</Label>
+                <div class="flex flex-col gap-3">
+                    <label class="flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors {data.domain.simulationFidelity === 'simplified' ? 'border-primary-300 dark:border-primary-600 bg-primary-50/50 dark:bg-primary-900/20' : 'border-secondary-200 dark:border-secondary-700 hover:border-secondary-300 dark:hover:border-secondary-600'}">
+                        <input
+                            type="radio"
+                            name="fidelity"
+                            value="simplified"
+                            checked={data.domain.simulationFidelity === 'simplified'}
+                            disabled={!data.isSuperAdmin}
+                            class="mt-0.5 text-primary-600"
+                        />
+                        <div>
+                            <p class="text-sm font-medium text-secondary-900 dark:text-secondary-100">Simplified</p>
+                            <p class="text-xs text-secondary-500 dark:text-secondary-400 mt-0.5">Flat distributions, uniform behaviour. Good for initial exploration.</p>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors {data.domain.simulationFidelity === 'realistic' ? 'border-primary-300 dark:border-primary-600 bg-primary-50/50 dark:bg-primary-900/20' : 'border-secondary-200 dark:border-secondary-700 hover:border-secondary-300 dark:hover:border-secondary-600'}">
+                        <input
+                            type="radio"
+                            name="fidelity"
+                            value="realistic"
+                            checked={data.domain.simulationFidelity === 'realistic'}
+                            disabled={!data.isSuperAdmin}
+                            class="mt-0.5 text-primary-600"
+                        />
+                        <div>
+                            <p class="text-sm font-medium text-secondary-900 dark:text-secondary-100">Realistic</p>
+                            <p class="text-xs text-secondary-500 dark:text-secondary-400 mt-0.5">Peak hours, variance, correlated events. More representative behaviour.</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            {#if data.isSuperAdmin}
+                <Button type="submit" color="primary" size="sm">Update Fidelity</Button>
+            {/if}
+        </form>
+    </div>
+
     <!-- Members -->
     <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-6">
         <h2 class="font-semibold text-secondary-900 dark:text-secondary-100 mb-5">Members ({data.members.length})</h2>
