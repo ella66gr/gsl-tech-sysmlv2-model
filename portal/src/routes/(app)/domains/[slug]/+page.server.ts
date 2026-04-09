@@ -5,6 +5,7 @@ import { getInstancesForDomain, updateOperationalState, recordTransition } from 
 import { getDomainBySlug } from '$lib/server/db/domains';
 import { validateOperationalTransition } from '$lib/modules/lifecycle';
 import { getRunsForDomain } from '$lib/server/simulation/index.js';
+import { assessDomain } from '$lib/server/governance/index.js';
 import type { OperationalState } from '$lib/types';
 
 export const load: PageServerLoad = async ({ parent }) => {
@@ -13,7 +14,18 @@ export const load: PageServerLoad = async ({ parent }) => {
     const modules = getInstancesForDomain(domain.id);
     const allRuns = getRunsForDomain(domain.id);
     const runs = allRuns.filter(r => r.status === 'completed');
-    return { members, modules, runs };
+
+    // Governance summary for dashboard indicators
+    const assessments = assessDomain(modules, domain);
+    const governanceSummary = new Map<string, { overallPass: boolean; hardFailing: number }>();
+    for (const a of assessments) {
+        governanceSummary.set(a.moduleInstanceId, {
+            overallPass: a.overallPass,
+            hardFailing: a.hardCount - a.hardSatisfied
+        });
+    }
+
+    return { members, modules, runs, governanceSummary: Object.fromEntries(governanceSummary) };
 };
 
 export const actions: Actions = {

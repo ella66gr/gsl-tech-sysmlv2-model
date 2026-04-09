@@ -2,6 +2,7 @@ import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { getRunsForDomain, startSimulationRun } from '$lib/server/simulation/index.js';
 import { getInstancesForDomain } from '$lib/server/db/modules.js';
+import { getDomainBySlug } from '$lib/server/db/domains.js';
 
 export const load: PageServerLoad = async ({ parent }) => {
     const { domain } = await parent();
@@ -16,8 +17,9 @@ export const load: PageServerLoad = async ({ parent }) => {
 };
 
 export const actions: Actions = {
-    createRun: async ({ request, parent, locals }) => {
-        const { domain } = await parent();
+    createRun: async ({ request, params, locals }) => {
+        const domain = getDomainBySlug(params.slug);
+        if (!domain) return fail(404, { error: 'Domain not found.' });
         const data = await request.formData();
 
         const name = (data.get('name') as string)?.trim();

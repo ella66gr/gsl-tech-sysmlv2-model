@@ -125,6 +125,32 @@ export const actions: Actions = {
         throw redirect(303, `/domains/${domain.slug}/modules/${newInstance.id}`);
     },
 
+    demote: async ({ params, locals }) => {
+        const domain = getDomainBySlug(params.slug);
+        if (!domain) return fail(404, { error: 'Domain not found.' });
+
+        const instance = getInstanceById(params.moduleId);
+        if (!instance || instance.domainId !== domain.id) {
+            return fail(404, { error: 'Module not found.' });
+        }
+
+        if (instance.epistemicCharacter !== 'production') {
+            return fail(400, { error: 'Only production modules can be demoted.' });
+        }
+
+        updateEpistemicCharacter(instance.id, 'hypothesis');
+        recordTransition(
+            instance.id,
+            'epistemic',
+            'production',
+            'hypothesis',
+            locals.user!.id,
+            'Demoted from production'
+        );
+
+        return { demoteSuccess: true };
+    },
+
     setEpistemic: async ({ request, params }) => {
         const domain = getDomainBySlug(params.slug);
         if (!domain) return fail(404, { error: 'Domain not found.' });

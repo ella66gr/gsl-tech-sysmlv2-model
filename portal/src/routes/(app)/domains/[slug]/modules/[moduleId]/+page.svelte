@@ -4,7 +4,8 @@
         TagOutline, UsersOutline, CalendarMonthOutline, UserSettingsOutline,
         ChartOutline, ShieldCheckOutline, ChartMixedOutline,
         CogOutline, TrashBinOutline, CalendarMonthOutline as CalendarOutline,
-        ArrowsRepeatOutline, AdjustmentsHorizontalOutline, FileCopyOutline
+        ArrowsRepeatOutline, AdjustmentsHorizontalOutline, FileCopyOutline,
+        ArrowUpOutline
     } from 'flowbite-svelte-icons';
     import { getOperationalStateDisplay, getAvailableActions } from '$lib/modules/lifecycle.js';
     import { findConnectedModules } from '$lib/modules/connections.js';
@@ -29,8 +30,15 @@
     const epistemicDisplay = $derived(getEpistemicDisplay(data.instance.epistemicCharacter));
     const epistemicEditable = $derived(canEditEpistemic(data.instance.operationalState));
 
+    const canShowPromote = $derived(
+        data.instance.operationalState === 'active' &&
+        data.instance.epistemicCharacter !== 'production'
+    );
+    const canDemote = $derived(data.instance.epistemicCharacter === 'production');
+
     let showDuplicateModal = $state(false);
     let variantName = $state('');
+    let showDemoteModal = $state(false);
 
     function actionButtonClass(style: string): string {
         switch (style) {
@@ -118,6 +126,23 @@
                 <CogOutline class="w-4 h-4" />
                 Configure
             </a>
+            {#if canShowPromote}
+                <a
+                    href="/domains/{data.domain.slug}/modules/{data.instance.id}/promote"
+                    class="px-4 py-2 rounded-lg text-sm font-medium bg-teal-600 hover:bg-teal-700 text-white transition-colors flex items-center gap-1.5"
+                >
+                    <ArrowUpOutline class="w-4 h-4" />
+                    Promote to Production →
+                </a>
+            {/if}
+            {#if canDemote}
+                <button
+                    onclick={() => (showDemoteModal = true)}
+                    class="px-4 py-2 rounded-lg text-sm font-medium bg-secondary-100 dark:bg-secondary-700 hover:bg-secondary-200 dark:hover:bg-secondary-600 text-secondary-700 dark:text-secondary-300 transition-colors"
+                >
+                    Demote to Hypothesis
+                </button>
+            {/if}
         </div>
     </div>
 
@@ -454,6 +479,25 @@
         </div>
     </div>
 </div>
+
+<!-- Demote confirmation modal -->
+{#if showDemoteModal}
+    <div class="fixed inset-0 bg-black/40 z-40"></div>
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 shadow-xl max-w-md w-full p-6">
+            <h2 class="text-lg font-semibold text-secondary-900 dark:text-secondary-100 mb-2">Demote to Hypothesis?</h2>
+            <p class="text-sm text-secondary-500 dark:text-secondary-400 mb-6">
+                This module will be reclassified as a <strong>hypothesis</strong>. It will no longer represent real business activity. You can re-promote at any time.
+            </p>
+            <div class="flex gap-3">
+                <form method="POST" action="?/demote" use:enhance class="flex-1" onsubmit={() => (showDemoteModal = false)}>
+                    <Button type="submit" color="yellow" class="w-full">Demote to Hypothesis</Button>
+                </form>
+                <Button color="alternative" onclick={() => (showDemoteModal = false)}>Cancel</Button>
+            </div>
+        </div>
+    </div>
+{/if}
 
 <!-- Impact warning modal -->
 {#if form?.confirmNeeded}

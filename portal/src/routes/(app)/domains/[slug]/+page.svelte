@@ -135,6 +135,20 @@
                     </div>
                 </div>
             {:else}
+                <!-- Governance alert banner -->
+                {#if data.domain.governanceLevel !== 'exploratory'}
+                    {@const productionFailing = data.modules.filter((m: ModuleInstanceWithDefinition) => m.epistemicCharacter === 'production' && data.governanceSummary[m.id] && !data.governanceSummary[m.id].overallPass)}
+                    {#if productionFailing.length > 0}
+                        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 flex items-center gap-3">
+                            <ShieldCheckOutline class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
+                            <p class="text-sm text-red-800 dark:text-red-200">
+                                <strong>{productionFailing.length}</strong> production module{productionFailing.length !== 1 ? 's have' : ' has'} governance constraint violations.
+                                <a href="/domains/{data.domain.slug}/governance" class="underline hover:no-underline ml-1">View governance →</a>
+                            </p>
+                        </div>
+                    {/if}
+                {/if}
+
                 <!-- Summary bar -->
                 <div class="flex items-center justify-between">
                     <p class="text-sm text-secondary-500 dark:text-secondary-400">
@@ -173,6 +187,14 @@
                                             {/if}
                                         </div>
                                     </div>
+                                    {#if data.domain.governanceLevel !== 'exploratory'}
+                                        {@const govStatus = data.governanceSummary[mod.id]}
+                                        {#if govStatus && !govStatus.overallPass}
+                                            <span class="w-2.5 h-2.5 rounded-full bg-red-500 flex-shrink-0" title="{govStatus.hardFailing} hard constraint{govStatus.hardFailing !== 1 ? 's' : ''} failing"></span>
+                                        {:else if govStatus}
+                                            <span class="w-2.5 h-2.5 rounded-full bg-green-500 flex-shrink-0" title="All hard constraints met"></span>
+                                        {/if}
+                                    {/if}
                                     <Badge color={stateDisplay.badgeColor} class="text-xs">{stateDisplay.label}</Badge>
                                 </div>
                                 <p class="text-xs text-secondary-500 dark:text-secondary-400 truncate">{mod.definition.description}</p>
@@ -246,6 +268,7 @@
                     <a href="/domains/{data.domain.slug}/context" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Domain context →</a>
                     <a href="/domains/{data.domain.slug}/catalogue" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Module catalogue →</a>
                     <a href="/domains/{data.domain.slug}/simulations" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Simulations →</a>
+                    <a href="/domains/{data.domain.slug}/governance" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Governance →</a>
                     <a href="/domains/{data.domain.slug}/settings" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Domain settings →</a>
                     <a href="/domains" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">All domains →</a>
                 </div>
