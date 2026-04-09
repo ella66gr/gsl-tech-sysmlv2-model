@@ -15,6 +15,7 @@ import {
     validateOperationalTransition,
     getPreTrashStop
 } from '$lib/modules/lifecycle';
+import { getComparisonResults } from '$lib/server/simulation/metrics.js';
 import type { OperationalState, EpistemicCharacter } from '$lib/types';
 
 export const load: PageServerLoad = async ({ params, parent }) => {
@@ -23,7 +24,20 @@ export const load: PageServerLoad = async ({ params, parent }) => {
     if (!instance || instance.domainId !== domain.id) throw redirect(303, `/domains/${domain.slug}`);
     const transitions = getTransitionsForInstance(instance.id);
     const allModules = getInstancesForDomain(domain.id);
-    return { instance, transitions, allModules };
+
+    // Load comparison data for analytical modules with a comparison set
+    let comparison = null;
+    if (instance.definition.category === 'analytical') {
+        const comparisonIdsRaw = instance.configValues?.comparisonModuleIds as string | undefined;
+        if (comparisonIdsRaw && comparisonIdsRaw.trim()) {
+            const comparisonIds = comparisonIdsRaw.split(',').map(s => s.trim()).filter(Boolean);
+            if (comparisonIds.length > 0) {
+                comparison = getComparisonResults(comparisonIds, domain.id);
+            }
+        }
+    }
+
+    return { instance, transitions, allModules, comparison };
 };
 
 export const actions: Actions = {

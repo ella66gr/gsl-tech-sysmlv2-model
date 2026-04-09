@@ -9,6 +9,7 @@
     import { getOperationalStateDisplay, getAvailableActions } from '$lib/modules/lifecycle.js';
     import { findConnectedModules } from '$lib/modules/connections.js';
     import { getEpistemicDisplay, canEditEpistemic } from '$lib/modules/epistemic.js';
+    import { healthScoreBgColor, formatCurrency, formatNumber } from '$lib/modules/metrics.js';
     import { enhance } from '$app/forms';
     import type { PageData, ActionData } from './$types';
 
@@ -123,6 +124,111 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Main: connections + config summary + history -->
         <div class="lg:col-span-2 space-y-6">
+            <!-- Comparison view (analytical modules with comparison data) -->
+            {#if data.instance.definition.category === 'analytical' && data.comparison}
+                <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h2 class="font-semibold text-secondary-900 dark:text-secondary-100">Comparison Results</h2>
+                            <p class="text-xs text-secondary-400 mt-0.5">
+                                From run: <span class="font-medium">{data.comparison.runName}</span>
+                                · {data.comparison.durationDays} day{data.comparison.durationDays !== 1 ? 's' : ''} simulated
+                                · {data.comparison.fidelity === 'realistic' ? '⚡ Realistic' : '○ Simplified'}
+                            </p>
+                        </div>
+                        <a href="/domains/{data.domain.slug}/simulations" class="text-xs text-primary-600 dark:text-primary-400 hover:underline">All runs →</a>
+                    </div>
+
+                    {#if data.comparison.metrics.length === 0}
+                        <p class="text-sm text-secondary-400">No comparison data available. Run a simulation first.</p>
+                    {:else}
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-secondary-200 dark:border-secondary-700">
+                                        <th class="text-left py-2 pr-4 text-xs font-semibold uppercase tracking-wider text-secondary-400">Metric</th>
+                                        {#each data.comparison.metrics as m}
+                                            <th class="text-right py-2 px-3 text-xs font-semibold uppercase tracking-wider text-secondary-400 min-w-[120px]">{m.targetModuleName}</th>
+                                        {/each}
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-secondary-100 dark:divide-secondary-700">
+                                    <tr>
+                                        <td class="py-2.5 pr-4 text-secondary-600 dark:text-secondary-400">Health Score</td>
+                                        {#each data.comparison.metrics as m}
+                                            <td class="py-2.5 px-3 text-right">
+                                                <span class="inline-block px-2.5 py-1 rounded-lg text-sm font-bold {healthScoreBgColor(m.healthScore)}">{m.healthScore}</span>
+                                            </td>
+                                        {/each}
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 pr-4 text-secondary-600 dark:text-secondary-400">Total Events</td>
+                                        {#each data.comparison.metrics as m}
+                                            <td class="py-2.5 px-3 text-right font-medium text-secondary-800 dark:text-secondary-200">{formatNumber(m.totalEvents)}</td>
+                                        {/each}
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 pr-4 text-secondary-600 dark:text-secondary-400">Customer Arrivals</td>
+                                        {#each data.comparison.metrics as m}
+                                            <td class="py-2.5 px-3 text-right text-secondary-700 dark:text-secondary-300">{formatNumber(m.customerArrivals)}</td>
+                                        {/each}
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 pr-4 text-secondary-600 dark:text-secondary-400">Transactions</td>
+                                        {#each data.comparison.metrics as m}
+                                            <td class="py-2.5 px-3 text-right text-secondary-700 dark:text-secondary-300">{formatNumber(m.transactions)}</td>
+                                        {/each}
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 pr-4 text-secondary-600 dark:text-secondary-400">Transaction Total</td>
+                                        {#each data.comparison.metrics as m}
+                                            <td class="py-2.5 px-3 text-right font-medium text-secondary-800 dark:text-secondary-200">{formatCurrency(m.transactionTotal)}</td>
+                                        {/each}
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 pr-4 text-secondary-600 dark:text-secondary-400">Avg Transaction</td>
+                                        {#each data.comparison.metrics as m}
+                                            <td class="py-2.5 px-3 text-right text-secondary-700 dark:text-secondary-300">{formatCurrency(m.avgTransactionValue)}</td>
+                                        {/each}
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 pr-4 text-secondary-600 dark:text-secondary-400">Issues Raised</td>
+                                        {#each data.comparison.metrics as m}
+                                            <td class="py-2.5 px-3 text-right text-secondary-700 dark:text-secondary-300">{formatNumber(m.issuesRaised)}</td>
+                                        {/each}
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 pr-4 text-secondary-600 dark:text-secondary-400">Issue Rate / day</td>
+                                        {#each data.comparison.metrics as m}
+                                            <td class="py-2.5 px-3 text-right text-secondary-700 dark:text-secondary-300">{m.issueRate}</td>
+                                        {/each}
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2.5 pr-4 text-secondary-600 dark:text-secondary-400">Resource Requests</td>
+                                        {#each data.comparison.metrics as m}
+                                            <td class="py-2.5 px-3 text-right text-secondary-700 dark:text-secondary-300">{formatNumber(m.resourceRequests)}</td>
+                                        {/each}
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    {/if}
+                </div>
+            {:else if data.instance.definition.category === 'analytical' && !data.comparison}
+                <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-5">
+                    <h2 class="font-semibold text-secondary-900 dark:text-secondary-100 mb-2">Comparison Results</h2>
+                    <p class="text-sm text-secondary-500 dark:text-secondary-400">
+                        {#if !data.instance.configValues?.comparisonModuleIds}
+                            No comparison modules configured.
+                            <a href="/domains/{data.domain.slug}/modules/{data.instance.id}/configure" class="text-primary-600 dark:text-primary-400 hover:underline">Configure comparison set →</a>
+                        {:else}
+                            No completed simulation runs found.
+                            <a href="/domains/{data.domain.slug}/simulations" class="text-primary-600 dark:text-primary-400 hover:underline">Run a simulation →</a>
+                        {/if}
+                    </p>
+                </div>
+            {/if}
+
             <!-- Connections -->
             <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-5">
                 <h2 class="font-semibold text-secondary-900 dark:text-secondary-100 mb-3">Connections</h2>

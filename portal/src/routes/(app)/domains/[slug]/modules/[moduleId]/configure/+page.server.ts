@@ -1,13 +1,15 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { getDomainBySlug } from '$lib/server/db/domains';
-import { getInstanceById, updateConfig } from '$lib/server/db/modules';
+import { getInstanceById, updateConfig, getInstancesForDomain } from '$lib/server/db/modules';
 
 export const load: PageServerLoad = async ({ params, parent }) => {
     const { domain } = await parent();
     const instance = getInstanceById(params.moduleId);
     if (!instance || instance.domainId !== domain.id) throw redirect(303, `/domains/${domain.slug}`);
-    return { instance };
+    const allModules = getInstancesForDomain(domain.id);
+    const businessModules = allModules.filter(m => m.definition.category === 'business' && m.id !== instance.id);
+    return { instance, businessModules };
 };
 
 export const actions: Actions = {

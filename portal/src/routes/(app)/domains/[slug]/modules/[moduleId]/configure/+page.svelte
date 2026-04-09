@@ -22,6 +22,26 @@
         const stored = data.instance.configValues[field.key];
         return stored !== undefined ? stored as string | number | boolean : field.defaultValue;
     }
+
+    // Parse the existing comparison module IDs for the picker
+    let selectedComparisonIds = $state<Set<string>>(new Set(
+        ((data.instance.configValues?.comparisonModuleIds as string) ?? '')
+            .split(',')
+            .map(s => s.trim())
+            .filter(Boolean)
+    ));
+
+    function toggleComparison(id: string) {
+        const next = new Set(selectedComparisonIds);
+        if (next.has(id)) {
+            next.delete(id);
+        } else {
+            next.add(id);
+        }
+        selectedComparisonIds = next;
+    }
+
+    let comparisonIdsString = $derived(Array.from(selectedComparisonIds).join(','));
 </script>
 
 <svelte:head>
@@ -60,7 +80,28 @@
                             <Label for={field.key} class="mb-1.5 text-secondary-700 dark:text-secondary-300">
                                 {field.label}{field.required ? ' *' : ''}
                             </Label>
-                            {#if field.type === 'text'}
+                            {#if field.key === 'comparisonModuleIds' && data.businessModules.length > 0}
+                                <!-- Module picker for comparison set -->
+                                <input type="hidden" name={field.key} value={comparisonIdsString} />
+                                <div class="space-y-2 max-h-56 overflow-y-auto p-3 rounded-xl border border-secondary-200 dark:border-secondary-700 bg-secondary-50 dark:bg-secondary-900/30">
+                                    {#each data.businessModules as bm}
+                                        {@const isSelected = selectedComparisonIds.has(bm.id)}
+                                        <label class="flex items-center gap-2.5 py-1.5 cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={isSelected}
+                                                onchange={() => toggleComparison(bm.id)}
+                                                class="rounded border-secondary-300 dark:border-secondary-600 text-primary-600 focus:ring-primary-500"
+                                            />
+                                            <span class="text-sm text-secondary-700 dark:text-secondary-300">{bm.displayName || bm.definition.name}</span>
+                                            <Badge color={bm.epistemicCharacter === 'hypothesis' ? 'purple' : bm.epistemicCharacter === 'projection' ? 'blue' : 'teal'} class="text-xs ml-auto">{bm.epistemicCharacter}</Badge>
+                                        </label>
+                                    {/each}
+                                </div>
+                                <p class="text-xs text-secondary-400 mt-1">
+                                    {selectedComparisonIds.size} module{selectedComparisonIds.size !== 1 ? 's' : ''} selected for comparison.
+                                </p>
+                            {:else if field.type === 'text'}
                                 <Input
                                     id={field.key}
                                     name={field.key}
