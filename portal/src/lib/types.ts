@@ -28,6 +28,7 @@ export interface Domain {
     slug: string;
     description: string | null;
     businessType: string | null;
+    simulationFidelity: SimulationFidelity;
     status: 'setup' | 'active' | 'suspended' | 'archived';
     createdAt: string;
     updatedAt: string;
@@ -39,6 +40,7 @@ export interface DomainRow {
     slug: string;
     description: string | null;
     business_type: string | null;
+    simulation_fidelity: string;
     status: string;
     created_at: string;
     updated_at: string;
@@ -59,6 +61,10 @@ export type DomainWithRole = Domain & { role: string };
 export type ModuleCategory = 'business' | 'analytical' | 'generative';
 export type InstallationState = 'installed' | 'trashed';
 export type OperationalState = 'draft' | 'active' | 'paused' | 'stopped';
+export type EpistemicCharacter = 'production' | 'hypothesis' | 'projection';
+export type SimulationFidelity = 'simplified' | 'realistic';
+export type SimulationRunStatus = 'pending' | 'running' | 'completed' | 'cancelled';
+export type SimulationEventType = 'customer_arrival' | 'transaction' | 'issue_raised' | 'resource_request';
 
 export interface ConfigFieldDefinition {
     key: string;
@@ -90,6 +96,7 @@ export interface ModuleInstance {
     displayName: string;
     installationState: InstallationState;
     operationalState: OperationalState;
+    epistemicCharacter: EpistemicCharacter;
     configValues: Record<string, unknown>;
     installedBy: string;
     installedAt: string;
@@ -159,4 +166,55 @@ export interface LifecycleImpact {
         sharedConcerns: string[];
         currentState: string;
     }[];
+}
+
+// ── Simulation types ────────────────────────────────────────────────
+
+export interface SimulationRun {
+    id: string;
+    domainId: string;
+    name: string;
+    status: SimulationRunStatus;
+    fidelity: SimulationFidelity;
+    generatorModuleId: string;
+    targetModuleIds: string[];
+    config: Record<string, unknown>;
+    eventCount: number;
+    startedAt: string | null;
+    completedAt: string | null;
+    createdBy: string;
+    createdAt: string;
+}
+
+export interface SimulationEvent {
+    id: string;
+    runId: string;
+    domainId: string;
+    eventType: SimulationEventType;
+    sourceModuleId: string;
+    targetModuleId: string;
+    payload: Record<string, unknown>;
+    simulatedAt: string;
+    createdAt: string;
+}
+
+export interface RunMetrics {
+    targetModuleId: string;
+    targetModuleName: string;
+    totalEvents: number;
+    customerArrivals: number;
+    transactions: number;
+    transactionTotal: number;
+    avgTransactionValue: number;
+    issuesRaised: number;
+    issueRate: number;
+    resourceRequests: number;
+    healthScore: number;
+}
+
+export interface ComparisonResult {
+    modules: RunMetrics[];
+    runName: string;
+    runId: string;
+    fidelity: SimulationFidelity;
 }

@@ -131,6 +131,54 @@ const definitions: SeedDefinition[] = [
         ]),
         dependencies: null,
         sort_order: 7
+    },
+    {
+        id: '08-customer-traffic-generator',
+        name: 'Customer Traffic Generator',
+        slug: 'customer-traffic-generator',
+        description: 'Generates synthetic customer traffic and transactions for simulation runs. Configure arrival rates, transaction values, and distribution patterns.',
+        category: 'generative',
+        icon: 'ArrowsRepeatOutline',
+        bmm_concerns: JSON.stringify(['Cross-cutting']),
+        config_schema: JSON.stringify([
+            { key: 'arrivalRate', type: 'number', label: 'Arrival rate (per simulated hour)', description: 'Average number of customer arrivals per simulated hour.', defaultValue: 10, required: true },
+            { key: 'avgTransactionValue', type: 'number', label: 'Average transaction value', description: 'Mean transaction value in the domain currency.', defaultValue: 50, required: true },
+            { key: 'transactionVariance', type: 'number', label: 'Transaction variance (0–1)', description: 'How much transaction values vary. 0 = uniform, 1 = high variance.', defaultValue: 0.3, required: true },
+            { key: 'peakHoursEnabled', type: 'boolean', label: 'Enable peak hours', description: 'Whether to simulate higher traffic during peak periods (10:00–14:00).', defaultValue: false, required: false }
+        ]),
+        dependencies: null,
+        sort_order: 8
+    },
+    {
+        id: '09-scenario-driver',
+        name: 'Scenario Driver',
+        slug: 'scenario-driver',
+        description: 'Generates operational scenarios — issues, resource pressures, and incidents — to stress-test your business configuration.',
+        category: 'generative',
+        icon: 'AdjustmentsHorizontalOutline',
+        bmm_concerns: JSON.stringify(['Cross-cutting']),
+        config_schema: JSON.stringify([
+            { key: 'issueFrequency', type: 'number', label: 'Issues per simulated day', description: 'Average number of operational issues generated per simulated day.', defaultValue: 2, required: true },
+            { key: 'severityDistribution', type: 'select', label: 'Severity distribution', description: 'How issue severity is distributed.', defaultValue: 'balanced', required: true, options: [{ value: 'mostly-low', label: 'Mostly low severity' }, { value: 'balanced', label: 'Balanced' }, { value: 'mostly-high', label: 'Mostly high severity' }] },
+            { key: 'resourcePressure', type: 'select', label: 'Resource pressure level', description: 'Level of resource pressure to simulate.', defaultValue: 'normal', required: true, options: [{ value: 'low', label: 'Low' }, { value: 'normal', label: 'Normal' }, { value: 'high', label: 'High' }] }
+        ]),
+        dependencies: null,
+        sort_order: 9
+    },
+    {
+        id: '10-comparative-dashboard',
+        name: 'Comparative Dashboard',
+        slug: 'comparative-dashboard',
+        description: 'Compares metrics across sibling business module variants side by side. Shows event volumes, financial performance, issue rates, and health scores.',
+        category: 'analytical',
+        icon: 'ChartMixedOutline',
+        bmm_concerns: JSON.stringify(['Cross-cutting']),
+        config_schema: JSON.stringify([
+            { key: 'comparisonModuleIds', type: 'text', label: 'Comparison module IDs', description: 'Comma-separated IDs of module instances to compare. Will become a picker in a later phase.', defaultValue: '', required: false },
+            { key: 'metricsToShow', type: 'select', label: 'Metrics to display', description: 'Which categories of metrics to show in the comparison.', defaultValue: 'all', required: true, options: [{ value: 'all', label: 'All metrics' }, { value: 'financial', label: 'Financial only' }, { value: 'operational', label: 'Operational only' }] }
+        ]),
+        dependencies: null,
+        sort_order: 10
     }
 ];
 

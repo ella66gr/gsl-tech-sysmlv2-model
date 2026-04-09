@@ -70,5 +70,8 @@ export const COMPOSITION_HINTS: Record<string, string> = {
     '04-team-resources': 'Tracks your team, premises, and equipment. Scheduling & Workflow can use this to match capacity with demand.',
     '05-financial-tracking': 'Tracks income, expenses, and invoicing. Uses your domain\'s operating currency and VAT status from the Financial Planning context.',
     '06-compliance-governance': 'Maps regulatory obligations and compliance requirements. Uses your domain\'s jurisdiction and regulatory bodies from the Governance Mapping context.',
-    '07-business-overview': 'A cross-cutting analytical view that aggregates data from all installed modules. More useful once several business modules are active.'
+    '07-business-overview': 'A cross-cutting analytical view that aggregates data from all installed modules. More useful once several business modules are active.',
+    '08-customer-traffic-generator': 'Generates synthetic customer traffic for simulation runs. Install this to create simulation scenarios — it produces customer arrivals and transactions that business modules can be tested against.',
+    '09-scenario-driver': 'Generates operational scenarios — issues and resource pressures — for simulation runs. Pair with the Customer Traffic Generator for comprehensive business simulations.',
+    '10-comparative-dashboard': 'Compares metrics across sibling module variants. Most useful after duplicating business modules as hypothesis variants and running simulations against them.'
 };

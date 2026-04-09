@@ -3,7 +3,8 @@
     import {
         TagOutline, UsersOutline, CalendarMonthOutline, UserSettingsOutline,
         ChartOutline, ShieldCheckOutline, ChartMixedOutline,
-        GridPlusOutline, UsersOutline as UsersIcon, CalendarMonthOutline as CalIcon
+        GridPlusOutline, UsersOutline as UsersIcon, CalendarMonthOutline as CalIcon,
+        ArrowsRepeatOutline, AdjustmentsHorizontalOutline
     } from 'flowbite-svelte-icons';
     import { getOperationalStateDisplay, getPrimaryAction } from '$lib/modules/lifecycle.js';
     import { getConcernCoverage } from '$lib/modules/connections.js';
@@ -27,7 +28,8 @@
 
     const iconMap: Record<string, any> = {
         TagOutline, UsersOutline, CalendarMonthOutline, UserSettingsOutline,
-        ChartOutline, ShieldCheckOutline, ChartMixedOutline
+        ChartOutline, ShieldCheckOutline, ChartMixedOutline,
+        ArrowsRepeatOutline, AdjustmentsHorizontalOutline
     };
 
     function formatDate(iso: string) {

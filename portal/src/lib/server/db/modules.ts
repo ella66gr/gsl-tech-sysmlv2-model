@@ -7,6 +7,7 @@ import type {
     ModuleStateTransition,
     OperationalState,
     InstallationState,
+    EpistemicCharacter,
     ConfigFieldDefinition
 } from '$lib/types.js';
 
@@ -32,6 +33,7 @@ interface InstanceRow {
     display_name: string;
     installation_state: string;
     operational_state: string;
+    epistemic_character: string;
     config_values: string;
     installed_by: string;
     installed_at: string;
@@ -74,6 +76,7 @@ function mapInstance(row: InstanceRow): ModuleInstance {
         displayName: row.display_name,
         installationState: row.installation_state as InstallationState,
         operationalState: row.operational_state as OperationalState,
+        epistemicCharacter: (row.epistemic_character || 'production') as EpistemicCharacter,
         configValues: JSON.parse(row.config_values) as Record<string, unknown>,
         installedBy: row.installed_by,
         installedAt: row.installed_at,

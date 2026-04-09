@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import db from './index.js';
-import type { Domain, DomainRow, DomainWithRole } from '$lib/types.js';
+import type { Domain, DomainRow, DomainWithRole, SimulationFidelity } from '$lib/types.js';
 import { initializeDomainContext } from './context.js';
 
 function mapDomain(row: DomainRow): Domain {
@@ -10,6 +10,7 @@ function mapDomain(row: DomainRow): Domain {
         slug: row.slug,
         description: row.description,
         businessType: row.business_type,
+        simulationFidelity: (row.simulation_fidelity || 'simplified') as SimulationFidelity,
         status: row.status as Domain['status'],
         createdAt: row.created_at,
         updatedAt: row.updated_at

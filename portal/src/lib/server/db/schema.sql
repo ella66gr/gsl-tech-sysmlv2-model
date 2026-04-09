@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS domains (
     description TEXT,
     business_type TEXT,
     status TEXT NOT NULL DEFAULT 'setup',
+    simulation_fidelity TEXT NOT NULL DEFAULT 'simplified',
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -55,6 +56,7 @@ CREATE TABLE IF NOT EXISTS module_instances (
     display_name TEXT NOT NULL,
     installation_state TEXT NOT NULL DEFAULT 'installed',
     operational_state TEXT NOT NULL DEFAULT 'draft',
+    epistemic_character TEXT NOT NULL DEFAULT 'production',
     config_values TEXT NOT NULL DEFAULT '{}',
     installed_by TEXT NOT NULL REFERENCES users(id),
     installed_at TEXT NOT NULL DEFAULT (datetime('now')),
@@ -80,3 +82,36 @@ CREATE TABLE IF NOT EXISTS domain_context (
     updated_at TEXT NOT NULL DEFAULT (datetime('now')),
     UNIQUE(domain_id, concern)
 );
+
+-- Phase 4: Simulation and comparison
+
+CREATE TABLE IF NOT EXISTS simulation_runs (
+    id TEXT PRIMARY KEY,
+    domain_id TEXT NOT NULL REFERENCES domains(id),
+    name TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending',
+    fidelity TEXT NOT NULL,
+    generator_module_id TEXT NOT NULL REFERENCES module_instances(id),
+    target_module_ids TEXT NOT NULL,
+    config TEXT NOT NULL DEFAULT '{}',
+    event_count INTEGER NOT NULL DEFAULT 0,
+    started_at TEXT,
+    completed_at TEXT,
+    created_by TEXT NOT NULL REFERENCES users(id),
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS simulation_events (
+    id TEXT PRIMARY KEY,
+    run_id TEXT NOT NULL REFERENCES simulation_runs(id),
+    domain_id TEXT NOT NULL REFERENCES domains(id),
+    event_type TEXT NOT NULL,
+    source_module_id TEXT NOT NULL,
+    target_module_id TEXT NOT NULL,
+    payload TEXT NOT NULL DEFAULT '{}',
+    simulated_at TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_sim_events_run ON simulation_events(run_id);
+CREATE INDEX IF NOT EXISTS idx_sim_events_target ON simulation_events(target_module_id, run_id);

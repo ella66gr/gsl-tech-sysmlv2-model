@@ -3,7 +3,7 @@
     import {
         TagOutline, UsersOutline, CalendarMonthOutline, UserSettingsOutline,
         ChartOutline, ShieldCheckOutline, ChartMixedOutline, CheckCircleOutline,
-        CloseOutline
+        CloseOutline, ArrowsRepeatOutline, AdjustmentsHorizontalOutline
     } from 'flowbite-svelte-icons';
     import { getCompositionPreview, COMPOSITION_HINTS } from '$lib/modules/composition.js';
     import type { PageData } from './$types';
@@ -13,10 +13,11 @@
 
     const iconMap: Record<string, any> = {
         TagOutline, UsersOutline, CalendarMonthOutline, UserSettingsOutline,
-        ChartOutline, ShieldCheckOutline, ChartMixedOutline
+        ChartOutline, ShieldCheckOutline, ChartMixedOutline,
+        ArrowsRepeatOutline, AdjustmentsHorizontalOutline
     };
 
-    let activeFilter = $state<'all' | 'business' | 'analytical'>('all');
+    let activeFilter = $state<'all' | 'business' | 'analytical' | 'generative'>('all');
 
     let filtered = $derived(
         activeFilter === 'all'
@@ -26,9 +27,10 @@
 
     const installedSet = $derived(new Set(data.installedDefinitionIds));
 
-    function categoryColor(cat: string): 'teal' | 'blue' | 'gray' {
+    function categoryColor(cat: string): 'teal' | 'blue' | 'purple' | 'gray' {
         if (cat === 'business') return 'teal';
         if (cat === 'analytical') return 'blue';
+        if (cat === 'generative') return 'purple';
         return 'gray';
     }
 
@@ -65,7 +67,7 @@
 
     <!-- Filter pills -->
     <div class="flex gap-2 mb-6">
-        {#each [['all', 'All'], ['business', 'Business'], ['analytical', 'Analytical']] as [val, label]}
+        {#each [['all', 'All'], ['business', 'Business'], ['analytical', 'Analytical'], ['generative', 'Generative']] as [val, label]}
             <button
                 onclick={() => (activeFilter = val as any)}
                 class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors {activeFilter === val
