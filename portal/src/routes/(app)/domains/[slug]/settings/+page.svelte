@@ -144,6 +144,71 @@
         </form>
     </div>
 
+    <!-- Governance settings -->
+    <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-6 mb-6">
+        <h2 class="font-semibold text-secondary-900 dark:text-secondary-100 mb-2">Governance Settings</h2>
+        <p class="text-sm text-secondary-500 dark:text-secondary-400 mb-5">
+            Controls how governance constraints are applied to modules in this domain.
+        </p>
+
+        {#if f?.governanceLevelSuccess}
+            <Alert color="green" class="mb-4">Governance level updated.</Alert>
+        {/if}
+
+        <form method="POST" action="?/updateGovernanceLevel" class="space-y-4">
+            <div>
+                <Label class="mb-2 text-secondary-700 dark:text-secondary-300">Governance level</Label>
+                <div class="flex flex-col gap-3">
+                    <label class="flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors {data.domain.governanceLevel === 'exploratory' ? 'border-primary-300 dark:border-primary-600 bg-primary-50/50 dark:bg-primary-900/20' : 'border-secondary-200 dark:border-secondary-700 hover:border-secondary-300 dark:hover:border-secondary-600'}">
+                        <input
+                            type="radio"
+                            name="governanceLevel"
+                            value="exploratory"
+                            checked={data.domain.governanceLevel === 'exploratory'}
+                            disabled={!data.isSuperAdmin}
+                            class="mt-0.5 text-primary-600"
+                        />
+                        <div>
+                            <p class="text-sm font-medium text-secondary-900 dark:text-secondary-100">Exploratory</p>
+                            <p class="text-xs text-secondary-500 dark:text-secondary-400 mt-0.5">Constraints are visible on the governance page but have no effect. Modules can be freely activated and configured.</p>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors {data.domain.governanceLevel === 'advisory' ? 'border-primary-300 dark:border-primary-600 bg-primary-50/50 dark:bg-primary-900/20' : 'border-secondary-200 dark:border-secondary-700 hover:border-secondary-300 dark:hover:border-secondary-600'}">
+                        <input
+                            type="radio"
+                            name="governanceLevel"
+                            value="advisory"
+                            checked={data.domain.governanceLevel === 'advisory'}
+                            disabled={!data.isSuperAdmin}
+                            class="mt-0.5 text-primary-600"
+                        />
+                        <div>
+                            <p class="text-sm font-medium text-secondary-900 dark:text-secondary-100">Advisory</p>
+                            <p class="text-xs text-secondary-500 dark:text-secondary-400 mt-0.5">Constraints are evaluated and warnings are shown on the dashboard and before lifecycle transitions, but do not block actions.</p>
+                        </div>
+                    </label>
+                    <label class="flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors {data.domain.governanceLevel === 'enforced' ? 'border-primary-300 dark:border-primary-600 bg-primary-50/50 dark:bg-primary-900/20' : 'border-secondary-200 dark:border-secondary-700 hover:border-secondary-300 dark:hover:border-secondary-600'}">
+                        <input
+                            type="radio"
+                            name="governanceLevel"
+                            value="enforced"
+                            checked={data.domain.governanceLevel === 'enforced'}
+                            disabled={!data.isSuperAdmin}
+                            class="mt-0.5 text-primary-600"
+                        />
+                        <div>
+                            <p class="text-sm font-medium text-secondary-900 dark:text-secondary-100">Enforced</p>
+                            <p class="text-xs text-secondary-500 dark:text-secondary-400 mt-0.5">Hard constraints must be satisfied before modules can be activated or promoted to production. Violations are shown as errors.</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            {#if data.isSuperAdmin}
+                <Button type="submit" color="primary" size="sm">Update Governance Level</Button>
+            {/if}
+        </form>
+    </div>
+
     <!-- Members -->
     <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-6">
         <h2 class="font-semibold text-secondary-900 dark:text-secondary-100 mb-5">Members ({data.members.length})</h2>

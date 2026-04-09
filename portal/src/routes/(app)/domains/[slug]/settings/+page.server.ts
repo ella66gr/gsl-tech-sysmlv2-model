@@ -79,6 +79,26 @@ export const actions: Actions = {
         return { fidelitySuccess: true };
     },
 
+    updateGovernanceLevel: async ({ request, params, locals }) => {
+        const domain = getDomainBySlug(params.slug);
+        if (!domain) return fail(404, { errors: { form: 'Domain not found.' } });
+
+        const membership = getMembership(locals.user!.id, domain.id);
+        if (!membership || membership.role !== 'super_admin') {
+            return fail(403, { errors: { form: 'Only the domain owner can change governance settings.' } });
+        }
+
+        const data = await request.formData();
+        const level = data.get('governanceLevel') as string;
+        if (level !== 'exploratory' && level !== 'advisory' && level !== 'enforced') {
+            return fail(400, { errors: { form: 'Invalid governance level.' } });
+        }
+
+        const { updateGovernanceLevel } = await import('$lib/server/db/domains.js');
+        updateGovernanceLevel(domain.id, level);
+        return { governanceLevelSuccess: true };
+    },
+
     permanentDelete: async ({ request, params }) => {
         const domain = getDomainBySlug(params.slug);
         if (!domain) return fail(404, { trashError: 'Domain not found.' });

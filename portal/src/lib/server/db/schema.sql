@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS domains (
     business_type TEXT,
     status TEXT NOT NULL DEFAULT 'setup',
     simulation_fidelity TEXT NOT NULL DEFAULT 'simplified',
+    governance_level TEXT NOT NULL DEFAULT 'exploratory',
     created_at TEXT NOT NULL DEFAULT (datetime('now')),
     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
@@ -44,6 +45,7 @@ CREATE TABLE IF NOT EXISTS module_definitions (
     icon TEXT NOT NULL,
     bmm_concerns TEXT NOT NULL,
     config_schema TEXT NOT NULL,
+    governance_constraints TEXT NOT NULL DEFAULT '[]',
     dependencies TEXT,
     sort_order INTEGER NOT NULL DEFAULT 0,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))

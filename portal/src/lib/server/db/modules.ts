@@ -8,7 +8,8 @@ import type {
     OperationalState,
     InstallationState,
     EpistemicCharacter,
-    ConfigFieldDefinition
+    ConfigFieldDefinition,
+    GovernanceConstraint
 } from '$lib/types.js';
 
 // ── Row types ────────────────────────────────────────────────────────
@@ -22,6 +23,7 @@ interface DefinitionRow {
     icon: string;
     bmm_concerns: string;
     config_schema: string;
+    governance_constraints: string;
     dependencies: string | null;
     sort_order: number;
 }
@@ -63,6 +65,7 @@ function mapDefinition(row: DefinitionRow): ModuleDefinition {
         icon: row.icon,
         bmmConcerns: JSON.parse(row.bmm_concerns) as string[],
         configSchema: JSON.parse(row.config_schema) as ConfigFieldDefinition[],
+        governanceConstraints: JSON.parse(row.governance_constraints || '[]') as GovernanceConstraint[],
         dependencies: row.dependencies ? JSON.parse(row.dependencies) as string[] : null,
         sortOrder: row.sort_order
     };
@@ -118,12 +121,12 @@ export function getDefinitionById(id: string): ModuleDefinition | null {
 
 export function getInstancesForDomain(domainId: string, includeTrash = false): ModuleInstanceWithDefinition[] {
     const query = includeTrash
-        ? 'SELECT mi.*, md.name as def_name, md.slug as def_slug, md.description as def_desc, md.category as def_cat, md.icon as def_icon, md.bmm_concerns as def_bmm, md.config_schema as def_schema, md.dependencies as def_deps, md.sort_order as def_sort FROM module_instances mi JOIN module_definitions md ON mi.definition_id = md.id WHERE mi.domain_id = ? ORDER BY mi.installed_at ASC'
-        : "SELECT mi.*, md.name as def_name, md.slug as def_slug, md.description as def_desc, md.category as def_cat, md.icon as def_icon, md.bmm_concerns as def_bmm, md.config_schema as def_schema, md.dependencies as def_deps, md.sort_order as def_sort FROM module_instances mi JOIN module_definitions md ON mi.definition_id = md.id WHERE mi.domain_id = ? AND mi.installation_state != 'trashed' ORDER BY mi.installed_at ASC";
+        ? 'SELECT mi.*, md.name as def_name, md.slug as def_slug, md.description as def_desc, md.category as def_cat, md.icon as def_icon, md.bmm_concerns as def_bmm, md.config_schema as def_schema, md.governance_constraints as def_gc, md.dependencies as def_deps, md.sort_order as def_sort FROM module_instances mi JOIN module_definitions md ON mi.definition_id = md.id WHERE mi.domain_id = ? ORDER BY mi.installed_at ASC'
+        : "SELECT mi.*, md.name as def_name, md.slug as def_slug, md.description as def_desc, md.category as def_cat, md.icon as def_icon, md.bmm_concerns as def_bmm, md.config_schema as def_schema, md.governance_constraints as def_gc, md.dependencies as def_deps, md.sort_order as def_sort FROM module_instances mi JOIN module_definitions md ON mi.definition_id = md.id WHERE mi.domain_id = ? AND mi.installation_state != 'trashed' ORDER BY mi.installed_at ASC";
 
     const rows = db.prepare(query).all(domainId) as (InstanceRow & {
         def_name: string; def_slug: string; def_desc: string; def_cat: string;
-        def_icon: string; def_bmm: string; def_schema: string; def_deps: string | null; def_sort: number;
+        def_icon: string; def_bmm: string; def_schema: string; def_gc: string; def_deps: string | null; def_sort: number;
     })[];
 
     return rows.map(row => ({
@@ -137,6 +140,7 @@ export function getInstancesForDomain(domainId: string, includeTrash = false): M
             icon: row.def_icon,
             bmm_concerns: row.def_bmm,
             config_schema: row.def_schema,
+            governance_constraints: row.def_gc,
             dependencies: row.def_deps,
             sort_order: row.def_sort
         })
@@ -147,13 +151,13 @@ export function getInstanceById(id: string): ModuleInstanceWithDefinition | null
     const row = db.prepare(`
         SELECT mi.*, md.name as def_name, md.slug as def_slug, md.description as def_desc, md.category as def_cat,
                md.icon as def_icon, md.bmm_concerns as def_bmm, md.config_schema as def_schema,
-               md.dependencies as def_deps, md.sort_order as def_sort
+               md.governance_constraints as def_gc, md.dependencies as def_deps, md.sort_order as def_sort
         FROM module_instances mi
         JOIN module_definitions md ON mi.definition_id = md.id
         WHERE mi.id = ?
     `).get(id) as (InstanceRow & {
         def_name: string; def_slug: string; def_desc: string; def_cat: string;
-        def_icon: string; def_bmm: string; def_schema: string; def_deps: string | null; def_sort: number;
+        def_icon: string; def_bmm: string; def_schema: string; def_gc: string; def_deps: string | null; def_sort: number;
     }) | undefined;
 
     if (!row) return null;
@@ -169,6 +173,7 @@ export function getInstanceById(id: string): ModuleInstanceWithDefinition | null
             icon: row.def_icon,
             bmm_concerns: row.def_bmm,
             config_schema: row.def_schema,
+            governance_constraints: row.def_gc,
             dependencies: row.def_deps,
             sort_order: row.def_sort
         })

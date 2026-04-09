@@ -10,6 +10,7 @@ interface SeedDefinition {
     icon: string;
     bmm_concerns: string;
     config_schema: string;
+    governance_constraints: string;
     dependencies: string | null;
     sort_order: number;
 }
@@ -29,6 +30,11 @@ const definitions: SeedDefinition[] = [
             { key: 'pricingModel', type: 'select', label: 'Pricing model', description: 'How you charge for services.', defaultValue: 'Fixed', required: true, options: [{ value: 'Fixed', label: 'Fixed price' }, { value: 'Hourly', label: 'Hourly rate' }, { value: 'Tiered', label: 'Tiered pricing' }, { value: 'Custom', label: 'Custom / quoted' }] },
             { key: 'description', type: 'text', label: 'Service description', description: 'A brief description of your service offering.', defaultValue: '', required: false }
         ]),
+        governance_constraints: JSON.stringify([
+            { id: 'gc-so-01', level: 'hard', description: 'Service description must be provided before activation.', concern: 'ServiceConcept', evaluator: 'serviceDescriptionRequired' },
+            { id: 'gc-so-02', level: 'soft', description: 'Pricing model should be explicitly selected (not left at default).', concern: 'ServiceConcept', evaluator: 'pricingModelExplicit' },
+            { id: 'gc-so-03', level: 'graded', description: 'Service name should be descriptive (more than 3 characters).', concern: 'ServiceConcept', evaluator: 'serviceNameDescriptive' }
+        ]),
         dependencies: null,
         sort_order: 1
     },
@@ -44,6 +50,10 @@ const definitions: SeedDefinition[] = [
             { key: 'registrationType', type: 'select', label: 'Customer registration', description: 'How customers are registered with your service.', defaultValue: 'Both', required: true, options: [{ value: 'Walk-in', label: 'Walk-in only' }, { value: 'Registered', label: 'Registered accounts' }, { value: 'Both', label: 'Both' }] },
             { key: 'communicationPreference', type: 'select', label: 'Communication channel', description: 'Primary channel for customer communication.', defaultValue: 'Email', required: true, options: [{ value: 'Email', label: 'Email' }, { value: 'SMS', label: 'SMS' }, { value: 'Both', label: 'Both' }, { value: 'None', label: 'None' }] },
             { key: 'retentionPolicy', type: 'text', label: 'Retention policy', description: 'Describe how you manage customer data retention.', defaultValue: '', required: false }
+        ]),
+        governance_constraints: JSON.stringify([
+            { id: 'gc-cm-01', level: 'hard', description: 'Customer registration type must be configured.', concern: 'StakeholderModel', evaluator: 'registrationTypeConfigured' },
+            { id: 'gc-cm-02', level: 'soft', description: 'Retention policy recommended for registered customers.', concern: 'StakeholderModel', evaluator: 'retentionPolicyRecommended' }
         ]),
         dependencies: null,
         sort_order: 2
@@ -62,6 +72,11 @@ const definitions: SeedDefinition[] = [
             { key: 'operatingHours', type: 'text', label: 'Operating hours', description: 'Describe your typical operating hours, e.g. "Mon–Fri 9–5".', defaultValue: '', required: false },
             { key: 'allowOverbooking', type: 'boolean', label: 'Allow overbooking', description: 'Whether the system can accept more bookings than strict capacity allows.', defaultValue: false, required: false }
         ]),
+        governance_constraints: JSON.stringify([
+            { id: 'gc-sw-01', level: 'hard', description: 'Operating hours must be specified.', concern: 'ActivityModel', evaluator: 'operatingHoursRequired' },
+            { id: 'gc-sw-02', level: 'soft', description: 'Slot length should be at least 15 minutes for appointment-based scheduling.', concern: 'ActivityModel', evaluator: 'slotLengthReasonable' },
+            { id: 'gc-sw-03', level: 'graded', description: 'Overbooking should be disabled unless scheduling mode is queue-based.', concern: 'ActivityModel', evaluator: 'overbookingAppropriate' }
+        ]),
         dependencies: null,
         sort_order: 3
     },
@@ -78,6 +93,10 @@ const definitions: SeedDefinition[] = [
             { key: 'premisesType', type: 'select', label: 'Premises type', description: 'Where service is delivered from.', defaultValue: 'Fixed', required: true, options: [{ value: 'Fixed', label: 'Fixed premises' }, { value: 'Mobile', label: 'Mobile / on-site' }, { value: 'Home-based', label: 'Home-based' }, { value: 'Shared', label: 'Shared / co-working' }] },
             { key: 'keyEquipment', type: 'text', label: 'Key equipment', description: 'List the main equipment or tools your team uses.', defaultValue: '', required: false },
             { key: 'skillTracking', type: 'boolean', label: 'Track skills per team member', description: 'Whether individual team member skills are tracked for scheduling.', defaultValue: false, required: false }
+        ]),
+        governance_constraints: JSON.stringify([
+            { id: 'gc-tr-01', level: 'hard', description: 'Team size must be at least 1.', concern: 'ResourcePlanning', evaluator: 'teamSizeMinimum' },
+            { id: 'gc-tr-02', level: 'soft', description: 'Skill tracking recommended for teams larger than 5.', concern: 'ResourcePlanning', evaluator: 'skillTrackingRecommended' }
         ]),
         dependencies: null,
         sort_order: 4
@@ -96,6 +115,11 @@ const definitions: SeedDefinition[] = [
             { key: 'invoicingFrequency', type: 'select', label: 'Invoicing frequency', description: 'How often invoices are issued.', defaultValue: 'Per-service', required: true, options: [{ value: 'Per-service', label: 'Per service' }, { value: 'Weekly', label: 'Weekly' }, { value: 'Monthly', label: 'Monthly' }] },
             { key: 'paymentMethods', type: 'text', label: 'Payment methods accepted', description: 'e.g. Card, bank transfer, cash.', defaultValue: '', required: false }
         ]),
+        governance_constraints: JSON.stringify([
+            { id: 'gc-ft-01', level: 'hard', description: 'VAT registration must be confirmed for UK businesses with turnover above threshold.', concern: 'FinancialPlanning', evaluator: 'vatRegistrationRequired' },
+            { id: 'gc-ft-02', level: 'soft', description: 'Payment methods should be documented.', concern: 'FinancialPlanning', evaluator: 'paymentMethodsDocumented' },
+            { id: 'gc-ft-03', level: 'graded', description: 'Invoicing frequency should match service type (per-service for appointments, periodic for subscriptions).', concern: 'FinancialPlanning', evaluator: 'invoicingFrequencyAppropriate' }
+        ]),
         dependencies: null,
         sort_order: 5
     },
@@ -113,6 +137,11 @@ const definitions: SeedDefinition[] = [
             { key: 'auditFrequency', type: 'select', label: 'Audit frequency', description: 'How often compliance is audited.', defaultValue: 'Annual', required: true, options: [{ value: 'Annual', label: 'Annual' }, { value: 'Quarterly', label: 'Quarterly' }, { value: 'Monthly', label: 'Monthly' }, { value: 'Continuous', label: 'Continuous monitoring' }] },
             { key: 'dataProtectionOfficer', type: 'boolean', label: 'Data Protection Officer appointed', description: 'Whether a DPO has been appointed (required for some regulated sectors).', defaultValue: false, required: false }
         ]),
+        governance_constraints: JSON.stringify([
+            { id: 'gc-cg-01', level: 'hard', description: 'Regulatory body must be specified for sector-regulated businesses.', concern: 'GovernanceMapping', evaluator: 'regulatoryBodyRequired' },
+            { id: 'gc-cg-02', level: 'hard', description: 'Data Protection Officer must be appointed for sector-regulated businesses.', concern: 'GovernanceMapping', evaluator: 'dpoRequired' },
+            { id: 'gc-cg-03', level: 'soft', description: 'Audit frequency should be quarterly or more for sector-regulated businesses.', concern: 'GovernanceMapping', evaluator: 'auditFrequencyAppropriate' }
+        ]),
         dependencies: null,
         sort_order: 6
     },
@@ -128,6 +157,9 @@ const definitions: SeedDefinition[] = [
             { key: 'refreshInterval', type: 'select', label: 'Refresh interval', description: 'How frequently the overview data is updated.', defaultValue: 'Daily', required: true, options: [{ value: 'Real-time', label: 'Real-time' }, { value: 'Hourly', label: 'Hourly' }, { value: 'Daily', label: 'Daily' }] },
             { key: 'metricsScope', type: 'select', label: 'Metrics scope', description: 'Which modules contribute to the overview.', defaultValue: 'All modules', required: true, options: [{ value: 'All modules', label: 'All installed modules' }, { value: 'Selected modules', label: 'Selected modules only' }] },
             { key: 'comparisonMode', type: 'boolean', label: 'Enable comparison mode', description: 'Show period-over-period comparisons in the overview.', defaultValue: false, required: false }
+        ]),
+        governance_constraints: JSON.stringify([
+            { id: 'gc-bo-01', level: 'graded', description: 'Comparison mode should be enabled when multiple module variants exist.', concern: 'Cross-cutting', evaluator: 'comparisonModeAppropriate' }
         ]),
         dependencies: null,
         sort_order: 7
@@ -146,6 +178,9 @@ const definitions: SeedDefinition[] = [
             { key: 'transactionVariance', type: 'number', label: 'Transaction variance (0–1)', description: 'How much transaction values vary. 0 = uniform, 1 = high variance.', defaultValue: 0.3, required: true },
             { key: 'peakHoursEnabled', type: 'boolean', label: 'Enable peak hours', description: 'Whether to simulate higher traffic during peak periods (10:00–14:00).', defaultValue: false, required: false }
         ]),
+        governance_constraints: JSON.stringify([
+            { id: 'gc-ctg-01', level: 'graded', description: 'Arrival rate above 50 per hour may produce unrealistic results.', concern: 'Cross-cutting', evaluator: 'arrivalRateReasonable' }
+        ]),
         dependencies: null,
         sort_order: 8
     },
@@ -162,6 +197,9 @@ const definitions: SeedDefinition[] = [
             { key: 'severityDistribution', type: 'select', label: 'Severity distribution', description: 'How issue severity is distributed.', defaultValue: 'balanced', required: true, options: [{ value: 'mostly-low', label: 'Mostly low severity' }, { value: 'balanced', label: 'Balanced' }, { value: 'mostly-high', label: 'Mostly high severity' }] },
             { key: 'resourcePressure', type: 'select', label: 'Resource pressure level', description: 'Level of resource pressure to simulate.', defaultValue: 'normal', required: true, options: [{ value: 'low', label: 'Low' }, { value: 'normal', label: 'Normal' }, { value: 'high', label: 'High' }] }
         ]),
+        governance_constraints: JSON.stringify([
+            { id: 'gc-sd-01', level: 'graded', description: 'High severity distribution combined with high resource pressure may overwhelm simulation metrics.', concern: 'Cross-cutting', evaluator: 'scenarioIntensityReasonable' }
+        ]),
         dependencies: null,
         sort_order: 9
     },
@@ -177,6 +215,9 @@ const definitions: SeedDefinition[] = [
             { key: 'comparisonModuleIds', type: 'text', label: 'Comparison module IDs', description: 'Comma-separated IDs of module instances to compare. Will become a picker in a later phase.', defaultValue: '', required: false },
             { key: 'metricsToShow', type: 'select', label: 'Metrics to display', description: 'Which categories of metrics to show in the comparison.', defaultValue: 'all', required: true, options: [{ value: 'all', label: 'All metrics' }, { value: 'financial', label: 'Financial only' }, { value: 'operational', label: 'Operational only' }] }
         ]),
+        governance_constraints: JSON.stringify([
+            { id: 'gc-cd-01', level: 'soft', description: 'Comparison module IDs should be configured for meaningful analysis.', concern: 'Cross-cutting', evaluator: 'comparisonModulesConfigured' }
+        ]),
         dependencies: null,
         sort_order: 10
     }
@@ -185,13 +226,13 @@ const definitions: SeedDefinition[] = [
 export function seedModuleDefinitions(db: Database): void {
     const insert = db.prepare(`
         INSERT OR IGNORE INTO module_definitions
-            (id, name, slug, description, category, icon, bmm_concerns, config_schema, dependencies, sort_order)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (id, name, slug, description, category, icon, bmm_concerns, config_schema, governance_constraints, dependencies, sort_order)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const insertMany = db.transaction((defs: SeedDefinition[]) => {
         for (const def of defs) {
-            insert.run(def.id, def.name, def.slug, def.description, def.category, def.icon, def.bmm_concerns, def.config_schema, def.dependencies, def.sort_order);
+            insert.run(def.id, def.name, def.slug, def.description, def.category, def.icon, def.bmm_concerns, def.config_schema, def.governance_constraints, def.dependencies, def.sort_order);
         }
     });
 

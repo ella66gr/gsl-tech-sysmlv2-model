@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import db from './index.js';
-import type { Domain, DomainRow, DomainWithRole, SimulationFidelity } from '$lib/types.js';
+import type { Domain, DomainRow, DomainWithRole, SimulationFidelity, GovernanceLevel } from '$lib/types.js';
 import { initializeDomainContext } from './context.js';
 
 function mapDomain(row: DomainRow): Domain {
@@ -11,6 +11,7 @@ function mapDomain(row: DomainRow): Domain {
         description: row.description,
         businessType: row.business_type,
         simulationFidelity: (row.simulation_fidelity || 'simplified') as SimulationFidelity,
+        governanceLevel: (row.governance_level || 'exploratory') as GovernanceLevel,
         status: row.status as Domain['status'],
         createdAt: row.created_at,
         updatedAt: row.updated_at
@@ -81,5 +82,15 @@ export function updateSimulationFidelity(
     db.prepare(`
         UPDATE domains SET simulation_fidelity = ?, updated_at = datetime('now') WHERE id = ?
     `).run(fidelity, domainId);
+    return mapDomain(db.prepare('SELECT * FROM domains WHERE id = ?').get(domainId) as DomainRow);
+}
+
+export function updateGovernanceLevel(
+    domainId: string,
+    level: GovernanceLevel
+): Domain {
+    db.prepare(`
+        UPDATE domains SET governance_level = ?, updated_at = datetime('now') WHERE id = ?
+    `).run(level, domainId);
     return mapDomain(db.prepare('SELECT * FROM domains WHERE id = ?').get(domainId) as DomainRow);
 }

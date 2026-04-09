@@ -29,6 +29,7 @@ export interface Domain {
     description: string | null;
     businessType: string | null;
     simulationFidelity: SimulationFidelity;
+    governanceLevel: GovernanceLevel;
     status: 'setup' | 'active' | 'suspended' | 'archived';
     createdAt: string;
     updatedAt: string;
@@ -41,6 +42,7 @@ export interface DomainRow {
     description: string | null;
     business_type: string | null;
     simulation_fidelity: string;
+    governance_level: string;
     status: string;
     created_at: string;
     updated_at: string;
@@ -85,6 +87,7 @@ export interface ModuleDefinition {
     icon: string;
     bmmConcerns: string[];
     configSchema: ConfigFieldDefinition[];
+    governanceConstraints: GovernanceConstraint[];
     dependencies: string[] | null;
     sortOrder: number;
 }
@@ -110,7 +113,7 @@ export interface ModuleInstanceWithDefinition extends ModuleInstance {
 export interface ModuleStateTransition {
     id: string;
     moduleInstanceId: string;
-    lifecycleType: 'installation' | 'operational';
+    lifecycleType: 'installation' | 'operational' | 'epistemic';
     fromState: string;
     toState: string;
     triggeredBy: string;
@@ -217,4 +220,36 @@ export interface ComparisonResult {
     runName: string;
     runId: string;
     fidelity: SimulationFidelity;
+}
+
+// ── Governance types ────────────────────────────────────────────────
+
+export type GovernanceLevel = 'exploratory' | 'advisory' | 'enforced';
+export type ConstraintLevel = 'hard' | 'soft' | 'graded';
+
+export interface GovernanceConstraint {
+    id: string;
+    level: ConstraintLevel;
+    description: string;
+    concern: BmmConcern | 'Cross-cutting';
+    evaluator: string; // key into the evaluator registry
+}
+
+export interface ConstraintResult {
+    constraint: GovernanceConstraint;
+    satisfied: boolean;
+    explanation: string;
+}
+
+export interface GovernanceAssessment {
+    moduleInstanceId: string;
+    moduleName: string;
+    results: ConstraintResult[];
+    hardCount: number;
+    hardSatisfied: number;
+    softCount: number;
+    softSatisfied: number;
+    gradedCount: number;
+    gradedSatisfied: number;
+    overallPass: boolean; // true if all hard constraints satisfied
 }
