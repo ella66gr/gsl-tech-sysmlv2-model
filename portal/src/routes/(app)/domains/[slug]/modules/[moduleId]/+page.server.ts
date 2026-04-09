@@ -7,13 +7,15 @@ import {
     updateOperationalState,
     updateInstallationState,
     recordTransition,
-    getTransitionsForInstance
+    getTransitionsForInstance,
+    duplicateInstance,
+    updateEpistemicCharacter
 } from '$lib/server/db/modules';
 import {
     validateOperationalTransition,
     getPreTrashStop
 } from '$lib/modules/lifecycle';
-import type { OperationalState } from '$lib/types';
+import type { OperationalState, EpistemicCharacter } from '$lib/types';
 
 export const load: PageServerLoad = async ({ params, parent }) => {
     const { domain } = await parent();
@@ -86,5 +88,49 @@ export const actions: Actions = {
         recordTransition(instance.id, 'installation', 'installed', 'trashed', locals.user!.id);
 
         throw redirect(303, `/domains/${domain.slug}`);
+    },
+
+    duplicate: async ({ request, params, locals }) => {
+        const domain = getDomainBySlug(params.slug);
+        if (!domain) return fail(404, { error: 'Domain not found.' });
+
+        const instance = getInstanceById(params.moduleId);
+        if (!instance || instance.domainId !== domain.id) {
+            return fail(404, { error: 'Module not found.' });
+        }
+
+        const data = await request.formData();
+        const variantName = (data.get('variantName') as string)?.trim();
+        if (!variantName) return fail(400, { error: 'Variant name is required.' });
+
+        const newInstance = duplicateInstance(instance.id, locals.user!.id, variantName);
+
+        // Record the duplication as a transition on the new instance
+        recordTransition(newInstance.id, 'installation', 'available', 'installed', locals.user!.id, `Duplicated from ${instance.displayName || instance.definition.name}`);
+
+        throw redirect(303, `/domains/${domain.slug}/modules/${newInstance.id}`);
+    },
+
+    setEpistemic: async ({ request, params }) => {
+        const domain = getDomainBySlug(params.slug);
+        if (!domain) return fail(404, { error: 'Domain not found.' });
+
+        const instance = getInstanceById(params.moduleId);
+        if (!instance || instance.domainId !== domain.id) {
+            return fail(404, { error: 'Module not found.' });
+        }
+
+        if (instance.operationalState !== 'draft') {
+            return fail(400, { error: 'Epistemic character can only be changed in draft state.' });
+        }
+
+        const data = await request.formData();
+        const character = data.get('epistemicCharacter') as EpistemicCharacter;
+        if (!['production', 'hypothesis', 'projection'].includes(character)) {
+            return fail(400, { error: 'Invalid epistemic character.' });
+        }
+
+        updateEpistemicCharacter(instance.id, character);
+        return {};
     }
 };

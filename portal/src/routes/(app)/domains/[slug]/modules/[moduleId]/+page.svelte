@@ -3,10 +3,12 @@
     import {
         TagOutline, UsersOutline, CalendarMonthOutline, UserSettingsOutline,
         ChartOutline, ShieldCheckOutline, ChartMixedOutline,
-        CogOutline, TrashBinOutline, CalendarMonthOutline as CalendarOutline
+        CogOutline, TrashBinOutline, CalendarMonthOutline as CalendarOutline,
+        ArrowsRepeatOutline, AdjustmentsHorizontalOutline, FileCopyOutline
     } from 'flowbite-svelte-icons';
     import { getOperationalStateDisplay, getAvailableActions } from '$lib/modules/lifecycle.js';
     import { findConnectedModules } from '$lib/modules/connections.js';
+    import { getEpistemicDisplay, canEditEpistemic } from '$lib/modules/epistemic.js';
     import { enhance } from '$app/forms';
     import type { PageData, ActionData } from './$types';
 
@@ -16,12 +18,18 @@
 
     const iconMap: Record<string, any> = {
         TagOutline, UsersOutline, CalendarMonthOutline, UserSettingsOutline,
-        ChartOutline, ShieldCheckOutline, ChartMixedOutline
+        ChartOutline, ShieldCheckOutline, ChartMixedOutline,
+        ArrowsRepeatOutline, AdjustmentsHorizontalOutline
     };
 
     const Icon = $derived(iconMap[data.instance.definition.icon]);
     const stateDisplay = $derived(getOperationalStateDisplay(data.instance.operationalState));
     const actions = $derived(getAvailableActions(data.instance.operationalState));
+    const epistemicDisplay = $derived(getEpistemicDisplay(data.instance.epistemicCharacter));
+    const epistemicEditable = $derived(canEditEpistemic(data.instance.operationalState));
+
+    let showDuplicateModal = $state(false);
+    let variantName = $state('');
 
     function actionButtonClass(style: string): string {
         switch (style) {
@@ -80,7 +88,10 @@
                     <p class="text-sm text-secondary-500 dark:text-secondary-400">{data.instance.definition.name}</p>
                 </div>
             </div>
-            <Badge color={stateDisplay.badgeColor} class="text-sm px-3 py-1">{stateDisplay.label}</Badge>
+            <div class="flex items-center gap-2">
+                <Badge color={epistemicDisplay.badgeColor} class="text-xs">{epistemicDisplay.label}</Badge>
+                <Badge color={stateDisplay.badgeColor} class="text-sm px-3 py-1">{stateDisplay.label}</Badge>
+            </div>
         </div>
     </div>
 
@@ -229,7 +240,7 @@
                     </div>
                     <div>
                         <p class="text-xs text-secondary-400 mb-1">Category</p>
-                        <Badge color={data.instance.definition.category === 'business' ? 'teal' : 'blue'} class="capitalize text-xs">{data.instance.definition.category}</Badge>
+                        <Badge color={data.instance.definition.category === 'business' ? 'teal' : data.instance.definition.category === 'generative' ? 'purple' : 'blue'} class="capitalize text-xs">{data.instance.definition.category}</Badge>
                     </div>
                     <div>
                         <p class="text-xs text-secondary-400 mb-1.5">BMM Concerns</p>
@@ -243,8 +254,70 @@
                         <p class="text-xs text-secondary-400 mb-1">Installed</p>
                         <p class="text-sm text-secondary-600 dark:text-secondary-400">{formatDateTime(data.instance.installedAt)}</p>
                     </div>
+                    <div>
+                        <p class="text-xs text-secondary-400 mb-1.5">Epistemic Character</p>
+                        {#if epistemicEditable}
+                            <form method="POST" action="?/setEpistemic" use:enhance>
+                                <div class="flex gap-1">
+                                    {#each ['production', 'hypothesis', 'projection'] as char}
+                                        <button
+                                            type="submit"
+                                            name="epistemicCharacter"
+                                            value={char}
+                                            class="text-xs px-2 py-1 rounded-lg capitalize transition-colors {data.instance.epistemicCharacter === char
+                                                ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 font-medium'
+                                                : 'bg-secondary-100 dark:bg-secondary-700 text-secondary-500 dark:text-secondary-400 hover:bg-secondary-200 dark:hover:bg-secondary-600'}"
+                                        >
+                                            {char}
+                                        </button>
+                                    {/each}
+                                </div>
+                            </form>
+                            <p class="text-xs text-secondary-400 mt-1">Editable in draft state</p>
+                        {:else}
+                            <Badge color={epistemicDisplay.badgeColor} class="text-xs">{epistemicDisplay.label}</Badge>
+                            <p class="text-xs text-secondary-400 mt-1">Locked — reset to draft to change</p>
+                        {/if}
+                    </div>
                 </div>
             </div>
+
+            <!-- Duplicate as variant -->
+            {#if data.instance.definition.category === 'business'}
+                <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-5">
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500 mb-3">Experiment</h3>
+                    {#if !showDuplicateModal}
+                        <button
+                            onclick={() => {
+                                variantName = (data.instance.displayName || data.instance.definition.name) + ' — Variant';
+                                showDuplicateModal = true;
+                            }}
+                            class="flex items-center gap-2 text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
+                        >
+                            <FileCopyOutline class="w-4 h-4" />
+                            Duplicate as hypothesis variant
+                        </button>
+                        <p class="text-xs text-secondary-400 mt-1.5">Creates a copy with the same configuration, marked as a hypothesis for comparison.</p>
+                    {:else}
+                        <form method="POST" action="?/duplicate" class="space-y-3">
+                            <div>
+                                <label for="variantName" class="text-xs text-secondary-500 dark:text-secondary-400">Variant name</label>
+                                <input
+                                    type="text"
+                                    id="variantName"
+                                    name="variantName"
+                                    bind:value={variantName}
+                                    class="mt-1 block w-full rounded-lg border border-secondary-300 dark:border-secondary-600 bg-white dark:bg-secondary-900 text-sm text-secondary-900 dark:text-secondary-100 px-3 py-2 focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+                                />
+                            </div>
+                            <div class="flex gap-2">
+                                <button type="submit" class="px-3 py-1.5 rounded-lg text-sm bg-purple-600 hover:bg-purple-700 text-white transition-colors">Create variant</button>
+                                <button type="button" onclick={() => (showDuplicateModal = false)} class="px-3 py-1.5 rounded-lg text-sm bg-secondary-100 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 hover:bg-secondary-200 dark:hover:bg-secondary-600 transition-colors">Cancel</button>
+                            </div>
+                        </form>
+                    {/if}
+                </div>
+            {/if}
 
             <!-- Danger zone -->
             <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-red-200 dark:border-red-900/50 p-5">

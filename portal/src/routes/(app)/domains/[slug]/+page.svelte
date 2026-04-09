@@ -9,6 +9,7 @@
     import { getOperationalStateDisplay, getPrimaryAction } from '$lib/modules/lifecycle.js';
     import { getConcernCoverage } from '$lib/modules/connections.js';
     import { CONCERN_META } from '$lib/context/schemas.js';
+    import { getEpistemicDisplay } from '$lib/modules/epistemic.js';
     import { enhance } from '$app/forms';
     import type { PageData, ActionData } from './$types';
     import type { ModuleInstanceWithDefinition, ConcernCoverage } from '$lib/types';
@@ -141,7 +142,8 @@
                         {@const Icon = iconMap[mod.definition.icon]}
                         {@const stateDisplay = getOperationalStateDisplay(mod.operationalState)}
                         {@const primaryAction = getPrimaryAction(mod.operationalState)}
-                        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 border-l-4 {stateDisplay.borderClass} overflow-hidden hover:shadow-sm transition-shadow">
+                        {@const epDisplay = getEpistemicDisplay(mod.epistemicCharacter)}
+                        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 border-l-4 {stateDisplay.borderClass} overflow-hidden hover:shadow-sm transition-shadow {epDisplay.bgTint}">
                             <a href="/domains/{data.domain.slug}/modules/{mod.id}" class="block p-4">
                                 <div class="flex items-start justify-between mb-2">
                                     <div class="flex items-center gap-2.5">
@@ -150,7 +152,12 @@
                                                 <Icon class="w-4 h-4 text-primary-600 dark:text-primary-400" />
                                             {/if}
                                         </div>
-                                        <span class="font-medium text-secondary-900 dark:text-secondary-100 text-sm">{mod.displayName || mod.definition.name}</span>
+                                        <div>
+                                            <span class="font-medium text-secondary-900 dark:text-secondary-100 text-sm">{mod.displayName || mod.definition.name}</span>
+                                            {#if mod.epistemicCharacter !== 'production'}
+                                                <Badge color={epDisplay.badgeColor} class="text-xs ml-1.5">{epDisplay.label}</Badge>
+                                            {/if}
+                                        </div>
                                     </div>
                                     <Badge color={stateDisplay.badgeColor} class="text-xs">{stateDisplay.label}</Badge>
                                 </div>

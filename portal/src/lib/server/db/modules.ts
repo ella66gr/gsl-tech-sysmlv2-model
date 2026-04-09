@@ -237,3 +237,31 @@ export function getTransitionsForInstance(instanceId: string): ModuleStateTransi
     `).all(instanceId) as TransitionRow[];
     return rows.map(mapTransition);
 }
+
+export function duplicateInstance(
+    instanceId: string,
+    userId: string,
+    variantName: string
+): ModuleInstance {
+    const original = db.prepare('SELECT * FROM module_instances WHERE id = ?').get(instanceId) as InstanceRow | undefined;
+    if (!original) throw new Error(`Instance ${instanceId} not found`);
+
+    const id = uuidv4();
+    db.prepare(`
+        INSERT INTO module_instances
+            (id, domain_id, definition_id, display_name, installation_state, operational_state, epistemic_character, config_values, installed_by)
+        VALUES (?, ?, ?, ?, 'installed', 'draft', 'hypothesis', ?, ?)
+    `).run(id, original.domain_id, original.definition_id, variantName, original.config_values, userId);
+
+    return mapInstance(db.prepare('SELECT * FROM module_instances WHERE id = ?').get(id) as InstanceRow);
+}
+
+export function updateEpistemicCharacter(
+    instanceId: string,
+    character: EpistemicCharacter
+): ModuleInstance {
+    db.prepare(`
+        UPDATE module_instances SET epistemic_character = ?, updated_at = datetime('now') WHERE id = ?
+    `).run(character, instanceId);
+    return mapInstance(db.prepare('SELECT * FROM module_instances WHERE id = ?').get(instanceId) as InstanceRow);
+}
