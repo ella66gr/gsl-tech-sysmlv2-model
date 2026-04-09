@@ -4,8 +4,6 @@
 
 **Ontara** is a service system development, delivery, and execution platform, particularly strong in supporting regulated care service delivery. A model serves as the single source of truth for what a service business is, how it works, what rules govern it, and how the technology platform supports it. The model *generates* the running system rather than merely documenting it, and *comprehends itself* — it can explain what it contains and why.
 
-**GenderSense Limited (GSL)**, a private gender-affirming healthcare service, is the primary motivating use case and first production tenant. Ontara is the platform; GSL is one tenant of that platform.
-
 ## Architecture
 
 Ontara maintains two distinct meta models connected by explicit horizontal mappings:
