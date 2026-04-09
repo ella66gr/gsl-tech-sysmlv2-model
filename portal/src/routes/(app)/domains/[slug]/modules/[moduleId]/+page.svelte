@@ -499,6 +499,40 @@
     </div>
 {/if}
 
+<!-- Governance warning modal (advisory level) -->
+{#if form?.governanceWarning}
+    <div class="fixed inset-0 bg-black/40 z-40"></div>
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 shadow-xl max-w-md w-full">
+            <div class="p-5">
+                <div class="flex items-start gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.07 16.5c-.77.833.192 2.5 1.732 2.5z" /></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold text-secondary-900 dark:text-secondary-100">Governance Warning</h2>
+                        <p class="text-sm text-secondary-500 dark:text-secondary-400 mt-1">
+                            {form.hardFailing} hard constraint{form.hardFailing !== 1 ? 's' : ''} not satisfied.
+                        </p>
+                        <p class="text-xs text-secondary-400 dark:text-secondary-500 mt-2">
+                            Governance level is Advisory — activation allowed, but constraints should be addressed.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-3 border-t border-secondary-100 dark:border-secondary-700">
+                    <form method="POST" action="?/transition" use:enhance class="flex-1">
+                        <input type="hidden" name="targetState" value={form.targetState} />
+                        <input type="hidden" name="confirmed" value="true" />
+                        <Button type="submit" color="yellow" class="w-full">Activate Anyway</Button>
+                    </form>
+                    <Button href="/domains/{data.domain.slug}/modules/{data.instance.id}" color="alternative">Cancel</Button>
+                </div>
+            </div>
+        </div>
+    </div>
+{/if}
+
 <!-- Impact warning modal -->
 {#if form?.confirmNeeded}
     <div class="fixed inset-0 bg-black/40 z-40"></div>

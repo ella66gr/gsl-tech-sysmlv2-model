@@ -45,6 +45,14 @@
     let analyticalCount  = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.definition.category === 'analytical').length);
     let totalSimEvents   = $derived((data.runs ?? []).reduce((sum: number, r: any) => sum + r.eventCount, 0));
 
+    let productionCount  = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.epistemicCharacter === 'production').length);
+    let showProductionOnly = $state(false);
+    let filteredModules  = $derived(
+        showProductionOnly
+            ? data.modules.filter((m: ModuleInstanceWithDefinition) => m.epistemicCharacter === 'production')
+            : data.modules
+    );
+
     function primaryActionButtonClass(style: string): string {
         switch (style) {
             case 'primary':   return 'bg-primary-600 hover:bg-primary-700 text-white text-xs px-3 py-1.5 rounded-lg transition-colors';
@@ -72,9 +80,9 @@
             </div>
             <div class="flex items-center gap-2">
                 <Badge color="yellow" class="capitalize text-sm px-3 py-1">{data.domain.status}</Badge>
-                <Badge color="dark" class="text-xs px-2 py-0.5">
+                <span class="text-xs px-2 py-0.5 rounded bg-secondary-100 dark:bg-secondary-700 text-secondary-800 dark:text-secondary-200">
                     {data.domain.simulationFidelity === 'realistic' ? '⚡ Realistic' : '○ Simplified'}
-                </Badge>
+                </span>
             </div>
         </div>
         {#if data.domain.description}
@@ -149,26 +157,50 @@
                     {/if}
                 {/if}
 
+                {#if (form as any)?.governanceBlocked}
+                    <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 flex items-center gap-3">
+                        <ShieldCheckOutline class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
+                        <p class="text-sm text-red-800 dark:text-red-200">
+                            <strong>Activation blocked:</strong> {form?.error}
+                            <a href="/domains/{data.domain.slug}/governance" class="underline hover:no-underline ml-1">View governance →</a>
+                        </p>
+                    </div>
+                {/if}
+
                 <!-- Summary bar -->
                 <div class="flex items-center justify-between">
                     <p class="text-sm text-secondary-500 dark:text-secondary-400">
                         <span class="font-medium text-secondary-800 dark:text-secondary-200">{data.modules.length}</span> module{data.modules.length !== 1 ? 's' : ''}
                         {#if activeCount > 0}· <span class="text-green-600 dark:text-green-400 font-medium">{activeCount} active</span>{/if}
                         {#if draftCount > 0}· <span class="text-yellow-600 dark:text-yellow-400 font-medium">{draftCount} draft</span>{/if}
+                        {#if productionCount > 0}· <span class="text-teal-600 dark:text-teal-400 font-medium">{productionCount} production</span>{/if}
                         {#if generativeCount > 0}· <span class="text-purple-600 dark:text-purple-400">{generativeCount} generative</span>{/if}
                         {#if analyticalCount > 0}· <span class="text-blue-600 dark:text-blue-400">{analyticalCount} analytical</span>{/if}
                     </p>
-                    <Button href="/domains/{data.domain.slug}/catalogue" color="alternative" size="xs">Browse Catalogue</Button>
+                    <div class="flex items-center gap-2">
+                        {#if productionCount > 0}
+                            <button
+                                onclick={() => showProductionOnly = !showProductionOnly}
+                                class="text-xs px-3 py-1.5 rounded-lg border transition-colors {showProductionOnly
+                                    ? 'bg-teal-50 dark:bg-teal-900/30 border-teal-300 dark:border-teal-700 text-teal-700 dark:text-teal-300'
+                                    : 'bg-white dark:bg-secondary-800 border-secondary-200 dark:border-secondary-700 text-secondary-500 dark:text-secondary-400 hover:border-secondary-300 dark:hover:border-secondary-600'
+                                }"
+                            >
+                                Production only
+                            </button>
+                        {/if}
+                        <Button href="/domains/{data.domain.slug}/catalogue" color="alternative" size="xs">Browse Catalogue</Button>
+                    </div>
                 </div>
 
                 <!-- Module grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {#each data.modules as mod}
+                    {#each filteredModules as mod}
                         {@const Icon = iconMap[mod.definition.icon]}
                         {@const stateDisplay = getOperationalStateDisplay(mod.operationalState)}
                         {@const primaryAction = getPrimaryAction(mod.operationalState)}
                         {@const epDisplay = getEpistemicDisplay(mod.epistemicCharacter)}
-                        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 border-l-4 {stateDisplay.borderClass} overflow-hidden hover:shadow-sm transition-shadow {epDisplay.bgTint}">
+                        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 border-l-4 {mod.epistemicCharacter === 'production' ? 'border-l-teal-500' : stateDisplay.borderClass} overflow-hidden hover:shadow-sm transition-shadow {epDisplay.bgTint}">
                             <a href="/domains/{data.domain.slug}/modules/{mod.id}" class="block p-4">
                                 <div class="flex items-start justify-between mb-2">
                                     <div class="flex items-center gap-2.5">
@@ -179,7 +211,9 @@
                                         </div>
                                         <div>
                                             <span class="font-medium text-secondary-900 dark:text-secondary-100 text-sm">{mod.displayName || mod.definition.name}</span>
-                                            {#if mod.epistemicCharacter !== 'production'}
+                                            {#if mod.epistemicCharacter === 'production'}
+                                                <span class="text-xs ml-1.5 px-2 py-0.5 rounded bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-200 font-semibold uppercase tracking-wider">Production</span>
+                                            {:else}
                                                 <Badge color={epDisplay.badgeColor} class="text-xs ml-1.5">{epDisplay.label}</Badge>
                                             {/if}
                                             {#if mod.definition.category !== 'business'}
@@ -211,6 +245,11 @@
                             </div>
                         </div>
                     {/each}
+                    {#if filteredModules.length === 0 && showProductionOnly}
+                        <div class="sm:col-span-2 text-center py-8">
+                            <p class="text-sm text-secondary-400 dark:text-secondary-500">No production modules. Promote modules via the governance page.</p>
+                        </div>
+                    {/if}
                 </div>
             {/if}
         </div>
@@ -341,6 +380,44 @@
                         <input type="hidden" name="targetState" value={form.targetState} />
                         <input type="hidden" name="confirmed" value="true" />
                         <Button type="submit" color="yellow" class="w-full">Proceed Anyway</Button>
+                    </form>
+                    <Button href="/domains/{data.domain.slug}" color="alternative">Cancel</Button>
+                </div>
+            </div>
+        </div>
+    </div>
+{/if}
+
+<!-- Governance warning modal (advisory level) -->
+{#if form?.governanceWarning}
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black/40 z-40"></div>
+
+    <!-- Modal -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 shadow-xl max-w-md w-full">
+            <div class="p-5">
+                <div class="flex items-start gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+                        <ShieldCheckOutline class="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold text-secondary-900 dark:text-secondary-100">Governance Warning</h2>
+                        <p class="text-sm text-secondary-500 dark:text-secondary-400 mt-1">
+                            {form.hardFailing} hard constraint{form.hardFailing !== 1 ? 's' : ''} not satisfied on <strong>{form.moduleName}</strong>.
+                        </p>
+                        <p class="text-xs text-secondary-400 dark:text-secondary-500 mt-2">
+                            Governance level is Advisory — you can proceed, but consider addressing the constraints.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-3 border-t border-secondary-100 dark:border-secondary-700">
+                    <form method="POST" action="?/transition" use:enhance class="flex-1">
+                        <input type="hidden" name="moduleId" value={form.moduleId} />
+                        <input type="hidden" name="targetState" value={form.targetState} />
+                        <input type="hidden" name="confirmed" value="true" />
+                        <Button type="submit" color="yellow" class="w-full">Activate Anyway</Button>
                     </form>
                     <Button href="/domains/{data.domain.slug}" color="alternative">Cancel</Button>
                 </div>

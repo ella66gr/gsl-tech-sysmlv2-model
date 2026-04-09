@@ -105,7 +105,56 @@
         </div>
     </div>
 
-    <!-- Module assessments -->
+    <!-- Production modules section -->
+    {#if data.assessments.some(a => {
+        const m = data.modules.find(mod => mod.id === a.moduleInstanceId);
+        return m && m.epistemicCharacter === 'production';
+    })}
+        <div class="mb-6">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500 mb-3">Production Modules</h2>
+            <div class="space-y-4">
+                {#each data.assessments.filter(a => {
+                    const m = data.modules.find(mod => mod.id === a.moduleInstanceId);
+                    return m && m.epistemicCharacter === 'production';
+                }) as assessment}
+                    {@const moduleInstance = data.modules.find(m => m.id === assessment.moduleInstanceId)}
+                    <div class="bg-white dark:bg-secondary-800 rounded-2xl border-2 border-teal-200 dark:border-teal-800 overflow-hidden">
+                        <div class="px-5 py-4 border-b border-teal-100 dark:border-teal-800 flex items-center justify-between bg-teal-50/50 dark:bg-teal-900/20">
+                            <div class="flex items-center gap-3">
+                                <span class="font-medium text-secondary-900 dark:text-secondary-100">{assessment.moduleName}</span>
+                                <span class="text-xs px-2 py-0.5 rounded bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-200 font-semibold uppercase tracking-wider">Production</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                {#if assessment.overallPass}
+                                    <Badge color="green" class="text-xs">All hard constraints met</Badge>
+                                {:else}
+                                    <Badge color="red" class="text-xs">{assessment.hardCount - assessment.hardSatisfied} hard failing</Badge>
+                                {/if}
+                            </div>
+                        </div>
+                        <div class="divide-y divide-secondary-100 dark:divide-secondary-700">
+                            {#each assessment.results as result}
+                                {@const icon = constraintIcon(result, data.domain.governanceLevel)}
+                                <div class="px-5 py-3 flex items-start gap-3">
+                                    <span class="text-lg font-bold mt-0.5 w-5 text-center {icon.color}">{icon.symbol}</span>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-center gap-2 mb-0.5">
+                                            <span class="text-sm text-secondary-800 dark:text-secondary-200">{result.constraint.description}</span>
+                                            <Badge color={levelBadgeColor(result.constraint.level)} class="text-xs">{result.constraint.level}</Badge>
+                                        </div>
+                                        <p class="text-xs text-secondary-500 dark:text-secondary-400">{result.explanation}</p>
+                                    </div>
+                                </div>
+                            {/each}
+                        </div>
+                    </div>
+                {/each}
+            </div>
+        </div>
+    {/if}
+
+    <!-- All module assessments -->
+    <h2 class="text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500 mb-3">All Modules</h2>
     {#if data.assessments.length === 0}
         <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-8 text-center">
             <p class="text-secondary-400 dark:text-secondary-500">No installed modules to assess.</p>

@@ -15,8 +15,8 @@ export function getEpistemicDisplay(character: EpistemicCharacter): EpistemicDis
                 label: 'Production',
                 badgeColor: 'teal',
                 dotClass: 'bg-teal-500',
-                borderAccent: 'border-l-teal-400',
-                bgTint: ''
+                borderAccent: 'border-l-teal-500',
+                bgTint: 'bg-teal-50/30 dark:bg-teal-900/10'
             };
         case 'hypothesis':
             return {

@@ -15,6 +15,7 @@ import {
     validateOperationalTransition,
     getPreTrashStop
 } from '$lib/modules/lifecycle';
+import { checkActivationGovernance } from '$lib/server/governance/index.js';
 import { getComparisonResults } from '$lib/server/simulation/metrics.js';
 import type { OperationalState, EpistemicCharacter } from '$lib/types';
 
@@ -57,6 +58,24 @@ export const actions: Actions = {
 
         const result = validateOperationalTransition(instance.operationalState, targetState);
         if (!result.valid) return fail(400, { error: result.reason });
+
+        // Governance guard for draft → active
+        if (targetState === 'active' && instance.operationalState === 'draft') {
+            const allModules = getInstancesForDomain(domain.id);
+            const guard = checkActivationGovernance(instance, domain, allModules);
+            if (!guard.allowed) {
+                return fail(400, { error: guard.explanation });
+            }
+            if (guard.warning && !confirmed) {
+                return {
+                    governanceWarning: true,
+                    targetState,
+                    explanation: guard.explanation,
+                    hardFailing: guard.hardFailing,
+                    hardTotal: guard.hardTotal
+                };
+            }
+        }
 
         // Check for impact on connected modules
         if (!confirmed) {

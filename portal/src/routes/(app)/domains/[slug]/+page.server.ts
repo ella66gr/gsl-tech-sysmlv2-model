@@ -5,7 +5,7 @@ import { getInstancesForDomain, updateOperationalState, recordTransition } from 
 import { getDomainBySlug } from '$lib/server/db/domains';
 import { validateOperationalTransition } from '$lib/modules/lifecycle';
 import { getRunsForDomain } from '$lib/server/simulation/index.js';
-import { assessDomain } from '$lib/server/governance/index.js';
+import { assessDomain, checkActivationGovernance } from '$lib/server/governance/index.js';
 import type { OperationalState } from '$lib/types';
 
 export const load: PageServerLoad = async ({ parent }) => {
@@ -44,6 +44,30 @@ export const actions: Actions = {
 
         const result = validateOperationalTransition(instance.operationalState, targetState);
         if (!result.valid) return fail(400, { error: result.reason });
+
+        // Governance guard for draft → active
+        if (targetState === 'active' && instance.operationalState === 'draft') {
+            const guard = checkActivationGovernance(instance, domain, modules);
+            if (!guard.allowed) {
+                return fail(400, {
+                    error: guard.explanation,
+                    governanceBlocked: true,
+                    hardFailing: guard.hardFailing,
+                    slug: domain.slug
+                });
+            }
+            if (guard.warning && !confirmed) {
+                return {
+                    governanceWarning: true,
+                    moduleId,
+                    moduleName: instance.displayName || instance.definition.name,
+                    targetState,
+                    explanation: guard.explanation,
+                    hardFailing: guard.hardFailing,
+                    hardTotal: guard.hardTotal
+                };
+            }
+        }
 
         // Check for impact on connected modules
         if (!confirmed) {
