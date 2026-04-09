@@ -38,8 +38,11 @@
     }
 
     // Summary counts
-    let activeCount = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.operationalState === 'active').length);
-    let draftCount  = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.operationalState === 'draft').length);
+    let activeCount      = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.operationalState === 'active').length);
+    let draftCount       = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.operationalState === 'draft').length);
+    let businessCount    = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.definition.category === 'business').length);
+    let generativeCount  = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.definition.category === 'generative').length);
+    let analyticalCount  = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.definition.category === 'analytical').length);
 
     function primaryActionButtonClass(style: string): string {
         switch (style) {
@@ -135,8 +138,10 @@
                 <div class="flex items-center justify-between">
                     <p class="text-sm text-secondary-500 dark:text-secondary-400">
                         <span class="font-medium text-secondary-800 dark:text-secondary-200">{data.modules.length}</span> module{data.modules.length !== 1 ? 's' : ''}
-                        {#if activeCount > 0}·  <span class="text-green-600 dark:text-green-400 font-medium">{activeCount} active</span>{/if}
-                        {#if draftCount > 0}·  <span class="text-yellow-600 dark:text-yellow-400 font-medium">{draftCount} draft</span>{/if}
+                        {#if activeCount > 0}· <span class="text-green-600 dark:text-green-400 font-medium">{activeCount} active</span>{/if}
+                        {#if draftCount > 0}· <span class="text-yellow-600 dark:text-yellow-400 font-medium">{draftCount} draft</span>{/if}
+                        {#if generativeCount > 0}· <span class="text-purple-600 dark:text-purple-400">{generativeCount} generative</span>{/if}
+                        {#if analyticalCount > 0}· <span class="text-blue-600 dark:text-blue-400">{analyticalCount} analytical</span>{/if}
                     </p>
                     <Button href="/domains/{data.domain.slug}/catalogue" color="alternative" size="xs">Browse Catalogue</Button>
                 </div>
@@ -152,15 +157,18 @@
                             <a href="/domains/{data.domain.slug}/modules/{mod.id}" class="block p-4">
                                 <div class="flex items-start justify-between mb-2">
                                     <div class="flex items-center gap-2.5">
-                                        <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
+                                        <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 {mod.definition.category === 'generative' ? 'bg-purple-100 dark:bg-purple-900/30' : mod.definition.category === 'analytical' ? 'bg-blue-100 dark:bg-blue-900/30' : 'bg-primary-100 dark:bg-primary-900/30'}">
                                             {#if Icon}
-                                                <Icon class="w-4 h-4 text-primary-600 dark:text-primary-400" />
+                                                <Icon class="w-4 h-4 {mod.definition.category === 'generative' ? 'text-purple-600 dark:text-purple-400' : mod.definition.category === 'analytical' ? 'text-blue-600 dark:text-blue-400' : 'text-primary-600 dark:text-primary-400'}" />
                                             {/if}
                                         </div>
                                         <div>
                                             <span class="font-medium text-secondary-900 dark:text-secondary-100 text-sm">{mod.displayName || mod.definition.name}</span>
                                             {#if mod.epistemicCharacter !== 'production'}
                                                 <Badge color={epDisplay.badgeColor} class="text-xs ml-1.5">{epDisplay.label}</Badge>
+                                            {/if}
+                                            {#if mod.definition.category !== 'business'}
+                                                <Badge color={mod.definition.category === 'generative' ? 'purple' : 'blue'} class="text-xs ml-1">{mod.definition.category}</Badge>
                                             {/if}
                                         </div>
                                     </div>
@@ -210,6 +218,10 @@
                             Modules
                         </dt>
                         <dd class="text-sm font-medium text-secondary-900 dark:text-secondary-100">{data.modules.length}</dd>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <dt class="text-sm text-secondary-500 dark:text-secondary-400">Sim. fidelity</dt>
+                        <dd class="text-sm font-medium text-secondary-700 dark:text-secondary-300">{data.domain.simulationFidelity === 'realistic' ? '⚡ Realistic' : '○ Simplified'}</dd>
                     </div>
                     <div>
                         <dt class="text-sm text-secondary-500 dark:text-secondary-400 flex items-center gap-1.5 mb-1">
