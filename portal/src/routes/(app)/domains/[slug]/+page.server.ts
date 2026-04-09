@@ -4,13 +4,16 @@ import { getMembersOfDomain } from '$lib/server/db/memberships';
 import { getInstancesForDomain, updateOperationalState, recordTransition } from '$lib/server/db/modules';
 import { getDomainBySlug } from '$lib/server/db/domains';
 import { validateOperationalTransition } from '$lib/modules/lifecycle';
+import { getRunsForDomain } from '$lib/server/simulation/index.js';
 import type { OperationalState } from '$lib/types';
 
 export const load: PageServerLoad = async ({ parent }) => {
     const { domain } = await parent();
     const members = getMembersOfDomain(domain.id);
     const modules = getInstancesForDomain(domain.id);
-    return { members, modules };
+    const allRuns = getRunsForDomain(domain.id);
+    const runs = allRuns.filter(r => r.status === 'completed');
+    return { members, modules, runs };
 };
 
 export const actions: Actions = {

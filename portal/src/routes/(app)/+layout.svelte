@@ -21,7 +21,8 @@
         ArrowRightToBracketOutline,
         SunOutline,
         MoonOutline,
-        PlusOutline
+        PlusOutline,
+        PlayOutline
     } from 'flowbite-svelte-icons';
     import type { LayoutData } from './$types';
     import type { DomainWithRole } from '$lib/types';
@@ -240,6 +241,15 @@
                     >
                         <GridPlusOutline class="w-4 h-4" />
                         Catalogue
+                    </a>
+
+                    <!-- Simulations -->
+                    <a
+                        href="/domains/{currentSlug}/simulations"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors {$page.url.pathname.startsWith(`/domains/${currentSlug}/simulations`) ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-medium' : 'text-secondary-600 dark:text-secondary-400 hover:bg-secondary-50 dark:hover:bg-secondary-700'}"
+                    >
+                        <PlayOutline class="w-4 h-4" />
+                        Simulations
                     </a>
 
                     <!-- Settings -->

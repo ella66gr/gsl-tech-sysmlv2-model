@@ -4,7 +4,7 @@
         TagOutline, UsersOutline, CalendarMonthOutline, UserSettingsOutline,
         ChartOutline, ShieldCheckOutline, ChartMixedOutline,
         GridPlusOutline, UsersOutline as UsersIcon, CalendarMonthOutline as CalIcon,
-        ArrowsRepeatOutline, AdjustmentsHorizontalOutline
+        ArrowsRepeatOutline, AdjustmentsHorizontalOutline, PlayOutline
     } from 'flowbite-svelte-icons';
     import { getOperationalStateDisplay, getPrimaryAction } from '$lib/modules/lifecycle.js';
     import { getConcernCoverage } from '$lib/modules/connections.js';
@@ -232,9 +232,32 @@
                 <div class="space-y-1">
                     <a href="/domains/{data.domain.slug}/context" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Domain context →</a>
                     <a href="/domains/{data.domain.slug}/catalogue" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Module catalogue →</a>
+                    <a href="/domains/{data.domain.slug}/simulations" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Simulations →</a>
                     <a href="/domains/{data.domain.slug}/settings" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">Domain settings →</a>
                     <a href="/domains" class="block text-sm text-secondary-600 dark:text-secondary-400 hover:text-primary-600 dark:hover:text-primary-400 py-1 transition-colors">All domains →</a>
                 </div>
+            </div>
+
+            <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500">Simulations</h3>
+                    <a href="/domains/{data.domain.slug}/simulations" class="text-xs text-primary-600 dark:text-primary-400 hover:underline">View all →</a>
+                </div>
+                {#if data.runs.length === 0}
+                    <p class="text-sm text-secondary-400">No completed runs yet.</p>
+                {:else}
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-secondary-500 dark:text-secondary-400">Completed runs</span>
+                            <span class="text-sm font-medium text-secondary-900 dark:text-secondary-100">{data.runs.length}</span>
+                        </div>
+                        {@const totalEvents = data.runs.reduce((sum, r) => sum + r.eventCount, 0)}
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-secondary-500 dark:text-secondary-400">Total events</span>
+                            <span class="text-sm font-medium text-secondary-900 dark:text-secondary-100">{totalEvents.toLocaleString()}</span>
+                        </div>
+                    </div>
+                {/if}
             </div>
         </div>
     </div>
