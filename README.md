@@ -59,6 +59,17 @@ gsl-sysml-model/
 │   │   └── lib/                    Shared stores (NavigationStore), components (NavLink,
 │   │                               Breadcrumb, NavigationProvider), types
 │   └── static/data/                model-introspection.json (console data source)
+├── portal/                         Ontara Portal (SvelteKit + Svelte 5 + SQLite)
+│   ├── src/
+│   │   ├── routes/(app)/domains/   Domain dashboard, context, catalogue, simulations
+│   │   └── lib/
+│   │       ├── server/db/           SQLite schema, seed data, domain/module/context queries
+│   │       ├── server/modules/      Server-side module operations
+│   │       ├── server/simulation/   Batch event generation, metrics, simulation runs
+│   │       ├── modules/             Shared logic: lifecycle, composition, epistemic, impact, metrics
+│   │       ├── context/             Svelte 5 reactive stores (auth, domain)
+│   │       └── types.ts             All portal type definitions
+│   └── data/                       portal.db (SQLite, auto-created, gitignored)
 ├── generated/                      Generated artefacts (DO NOT EDIT)
 │   ├── ontara/                     model-introspection.json
 │   ├── ontology/                   OWL/Turtle output (ontara-bmm.ttl, etc.)
@@ -101,14 +112,16 @@ gsl-sysml-model/
 | Ontology authoring | Protégé 5.6+ |
 | OWL reasoning | Robot 1.9.8 (wrapping HermiT) |
 | Console | SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4 |
+| Portal | SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4 + SQLite (better-sqlite3) |
 | 3D relationship graph | 3d-force-graph + Three.js r183 + three-spritetext |
 | Generation pipeline | Python (7 generators + OWL pipeline reading .sysml, producing JSON/TS/Mermaid/Turtle) |
 | Coffee Shop app | SvelteKit + Temporal + XState v5 + EHRbase CDR + PostgreSQL |
 | Knowledge base | Obsidian (separate vault, not in this repo) |
 | Development | macOS, VS Code |
 
-## Current State (Session 171, April 2026)
+## Current State (Session 182, April 2026)
 
+- **Stage 8 — Ontara Portal** (Sessions 174–182). A separate user-facing portal application (`portal/`) organised around a state-driven operator experience with composable module architecture. Phase 1 (S175): user auth, domain CRUD, multi-domain switching, empty dashboard. Phase 2 (S176): 10 module definitions (6 business + 2 generative + 2 analytical), schema-driven configuration, two intersecting lifecycle state machines (installation + operational), dashboard as state landscape. Phase 3 (S178): domain context model structured by 6 BMM concerns, module wiring via shared concern overlap, composition guidance with lifecycle impact warnings. Phase 4 (S179–181): domain-level fidelity settings, batch event generation (2 generator types), simulation runs, Comparative Dashboard with side-by-side metrics and health scores, category-aware dashboard visual integration. Phase 5 (Governance and Promotion) planned (S182).
 - **Ears clinical domain intake complete** (Sessions 160–168). Clinical Domain Intake Framework methodology (S160) applied to Ears (Community Ear Care) — five artefacts: domain description, vertical connection map, coverage map (86.2% Full across 65 proforma fields), ~83 reasoning instance individuals (`ears-reasoning-instances.ttl`), design note. 25/42 reasoning classes exercised with clinical content. Vocabulary assessed as adequate at Ears-level complexity. HermiT CONSISTENT on 13-file ontology stack. SPARQL suite extended to 66 queries in 12 groups (10 new Ears Instance queries). Observation and Watchpoint Register established (12 items).
 - **Stage 7 — Reasoning Metamodel** (Sessions 148–158) formally closed Session 159. All five phases (0–4) complete, 33/35 success criteria met (2 explicitly deferred pending instance data). `ontara-reasoning.ttl`: 42 OWL classes covering reasoning contexts, goals/obstacles/measures, decisions/plans, three-way constraint hierarchy with CombinationAlgebra, knowledge sources/heuristics (6 typed families with HeuristicPack), decision mode routing (4 Cynefin-mapped modes), SEPIO evidence architecture, structured probabilistic reasoning types, STAMP/STPA safety control structures, and FRAM-ready slots. 15 named individuals, 40 object properties, 10 datatype properties. 7 PROV-O dual-subclassed classes. 2 cross-module governance alignment axioms. Console: Reasoning Vocabulary Explorer (42 classes in 7 colour-coded modules, 15 individuals, 50 properties, 32 cross-module axioms) + extended KG Status (8 stat cards, module summary).
 - **PROV-O imported** (Session 150). `prov-core.ttl` — W3C PROV-O core subset (3 Starting Point classes, 9 object properties, 3 datatype properties, 73 triples). Dual subclassing pattern: reasoning classes inherit from both BFO and PROV-O parents.
@@ -120,6 +133,7 @@ gsl-sysml-model/
 - **BMM structurally complete** at General level — 36 elements (including DomainIdentity + DomainConfiguration), 96 weighted relationships, full comprehension metadata (34/34 @UserFacing, @PurposiveDescription, @Comprehension, @BfoType).
 - **Console** has 13 views including an interactive 3D weighted relationship graph, a spatial visual architecture map, and an Ontology view with BFO hierarchy, Reasoning Vocabulary Explorer, and KG Status panel.
 - **Five demonstrator domains** validated: Cafe, Suds, Paws (cross-domain reasoning validation), plus Ears (community ear care) — analytical intake complete (Sessions 161–168).
+- **Sixth systematic documentation review** completed (Session 172). Modelling Paradigm Reference created (Session 173) — new standing reference document cataloguing 11 modelling paradigms. Downstream concept note check convention established.
 
 ## Key Commands
 
@@ -135,6 +149,12 @@ cd console && pnpm dev
 
 # Build the console
 cd console && pnpm build
+
+# Run the portal (dev mode — auto-creates SQLite DB)
+cd portal && pnpm dev
+
+# Build the portal
+cd portal && pnpm build
 
 # Run OWL 2 DL reasoner (requires Robot JAR in tools/; does NOT require GraphDB)
 python scripts/reason_kg.py
@@ -157,9 +177,9 @@ python scripts/diff_kg.py
 
 ## Companion Knowledge Base
 
-The Obsidian vault (not in this repo) contains ~212 registered design concepts across 16 sections (A–P), 34 discussion papers, ~141 session reports (Sessions 28–168), 29 emergent ideas log entries, and the full governance structure including an Observation and Watchpoint Register (12 items). The vault is under separate git version control.
+The Obsidian vault (not in this repo) contains ~212 registered design concepts across 16 sections (A–P), 35 discussion papers, ~152 session reports (Sessions 28–182), 29 emergent ideas log entries, and the full governance structure including an Observation and Watchpoint Register (25 items). The vault is under separate git version control.
 
-Key documents: Strategic Reference, Master Concept Register, Development Workflow Guide, Architecture Principles (v4.1), SysML Modelling Strategy (v4.1), Service Business Meta Modelling (v3.1).
+Key documents: Strategic Reference, Master Concept Register, Development Workflow Guide, Architecture Principles (v4.1), SysML Modelling Strategy (v4.1), Service Business Meta Modelling (v3.1), Modelling Paradigm Reference.
 
 ## Development Methodology
 
@@ -169,8 +189,8 @@ Three governing principles:
 2. **Co-evolution of model and tooling** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
 3. **Non-constraining architecture** — decisions should not foreclose future development paths.
 
-Development is conducted through a structured session programme (currently Session 171) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
+Development is conducted through a structured session programme (currently Session 182) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
 
 ---
 
-*README last updated: Session 171, 7 April 2026.*
+*README last updated: Session 182, 9 April 2026.*
