@@ -10,7 +10,7 @@ Interact with the GenderSense Obsidian vault using the official Obsidian CLI (v1
 
 **Vault name:** GenderSense
 **Vault path:** `/Users/ellagreen/Obsidian/GenderSense`
-**Key content root:** `02 ONTARA ARCHITECTURE & MODELLING/`
+**Key content root:** `02 ONTARA/`
 
 ## Important: vault parameter
 
@@ -35,13 +35,13 @@ Parameters use `key=value` format. Quote values with spaces. Flags are bare word
 ### Read a vault document
 
 ```bash
-obsidian vault=GenderSense read file="02 ONTARA ARCHITECTURE & MODELLING/Ontara Platform Development/Ontara Reference & Guides/ontara-workflow-emergent-ideas-log.md"
+obsidian vault=GenderSense read file="02 ONTARA/01 —— START HERE ——/ontara-workflow-emergent-ideas-log.md"
 ```
 
 ### Create a new document
 
 ```bash
-obsidian vault=GenderSense create name="02 ONTARA ARCHITECTURE & MODELLING/Ontara Platform Development/Ontara Session Reports, Prep & Handover/Sessions 61-70/session-63-preparation-note.md" content="# Session 63 Preparation Note\n\n..." silent
+obsidian vault=GenderSense create name="02 ONTARA/02 Ontara Development/Ontara Session Reports & Preparation/Sessions 000-100/Sessions 61-70/session-63-preparation-note.md" content="# Session 63 Preparation Note\n\n..." silent
 ```
 
 Use `silent` flag to prevent the note from opening in the Obsidian GUI.
@@ -55,7 +55,7 @@ obsidian vault=GenderSense create name="path/to/note" template="TemplateName"
 ### Append to a document
 
 ```bash
-obsidian vault=GenderSense append file="02 ONTARA ARCHITECTURE & MODELLING/Ontara Platform Development/Ontara Reference & Guides/ontara-workflow-emergent-ideas-log.md" content="\n\n### E012 — New idea title\n\n..."
+obsidian vault=GenderSense append file="02 ONTARA/01 —— START HERE ——/ontara-workflow-emergent-ideas-log.md" content="\n\n### E012 — New idea title\n\n..."
 ```
 
 ### Prepend to a document (after frontmatter)
@@ -218,7 +218,7 @@ The CLI has no native folder rename/move command. Use `eval` with `app.fileManag
 ### Rename a single folder
 
 ```bash
-obsidian vault=GenderSense eval code="(async () => { const f = app.vault.getAbstractFileByPath('02 ONTARA ARCHITECTURE & MODELLING/Ontara - START HERE'); if (f) { await app.fileManager.renameFile(f, '02 ONTARA ARCHITECTURE & MODELLING/01 Ontara - START HERE'); return 'done'; } return 'not found'; })()"
+obsidian vault=GenderSense eval code="(async () => { const f = app.vault.getAbstractFileByPath('02 ONTARA/Ontara - START HERE'); if (f) { await app.fileManager.renameFile(f, '02 ONTARA/01 —— START HERE ——'); return 'done'; } return 'not found'; })()"
 ```
 
 ### Important notes on eval
@@ -247,16 +247,19 @@ obsidian vault=GenderSense eval code="(async () => { const f = app.vault.getAbst
 
 | What | Path from vault root |
 |---|---|
-| Reference & Guides | `02 ONTARA ARCHITECTURE & MODELLING/02 Ontara Platform Development/Ontara Reference & Guides/` |
-| Session Reports (61-70) | `02 ONTARA ARCHITECTURE & MODELLING/02 Ontara Platform Development/Ontara Session Reports, Prep & Handover/Sessions 61-70/` |
-| Plans (Stage 4) | `02 ONTARA ARCHITECTURE & MODELLING/02 Ontara Platform Development/Ontara Plans/Stage 4/` |
-| Emergent Ideas Log | `02 ONTARA ARCHITECTURE & MODELLING/02 Ontara Platform Development/Ontara Reference & Guides/ontara-workflow-emergent-ideas-log.md` |
-| Master Register | `02 ONTARA ARCHITECTURE & MODELLING/02 Ontara Platform Development/Ontara Reference & Guides/ontara-ref-master-register-design-concepts-tiered-2026-03-20.md` |
-| Concept Graph | `02 ONTARA ARCHITECTURE & MODELLING/03 Ontara Concept Graph/` |
-| Foundations | `02 ONTARA ARCHITECTURE & MODELLING/04 Ontara Foundations/` |
-| Discussion Papers | `02 ONTARA ARCHITECTURE & MODELLING/05 Ontara Exploratory & Discussion Papers/` |
-| Demonstrators | `02 ONTARA ARCHITECTURE & MODELLING/06 Ontara Demonstrators/` |
-| CLI Reference | `02 ONTARA ARCHITECTURE & MODELLING/02 Ontara Platform Development/Ontara Reference & Guides/ontara-ref-obsidian-cli-command-reference.md` |
+| START HERE | `02 ONTARA/01 —— START HERE ——/` |
+| Reference & Guides | `02 ONTARA/02 Ontara Development/Ontara Reference & Guides/` (split into `ontara - guides/` and `ontara - reference/`) |
+| Session Reports (current decade, 61-70) | `02 ONTARA/02 Ontara Development/Ontara Session Reports & Preparation/Sessions 000-100/Sessions 61-70/` |
+| Session Reports (organised by century/decade) | `02 ONTARA/02 Ontara Development/Ontara Session Reports & Preparation/Sessions {000-100,101-200,201-300}/Sessions NN-MM/` |
+| Plans (Stage 4) | `02 ONTARA/02 Ontara Development/Ontara Plans/Stage 4/` (Stages 1–8 available) |
+| Emergent Ideas Log | `02 ONTARA/01 —— START HERE ——/ontara-workflow-emergent-ideas-log.md` |
+| Master Register | `02 ONTARA/01 —— START HERE ——/ontara-ref-master-register.md` |
+| Concept Graph | `02 ONTARA/03 Ontara Concept Graph/` (concepts, patterns, principles, domains, templates, deferred) |
+| Architecture | `02 ONTARA/04 Ontara Architecture/` |
+| Demonstrators | `02 ONTARA/05 Ontara Demonstrators/` (Cafe, Ears, Paws, Suds) |
+| Research & Background Notes | `02 ONTARA/06 Ontara Research & Background Notes/` |
+| History & Archive | `02 ONTARA/07 Ontara History & Archive/` |
+| CLI Reference | `02 ONTARA/02 Ontara Development/Ontara Reference & Guides/ontara - reference/ontara-ref-obsidian-cli-command-reference.md` |
 
 ---
 

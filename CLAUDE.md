@@ -321,6 +321,9 @@ This goes through Obsidian's API so wikilinks are updated. Allow 1 second betwee
 ## Working With Ella
 
 - Ella leads all design and architectural decisions. Ask before making non-trivial changes.
-- The Obsidian vault at `/Users/ellagreen/Obsidian/GenderSense/` is the primary working environment for documents and planning. Claude Code can access the vault via the Obsidian CLI (`/vault` skill). Claude Chat accesses it via MCP filesystem tools.
+- The Obsidian vault at `/Users/ellagreen/Obsidian/GenderSense/` is the primary working environment for documents and planning.
+- Claude Code should use the Obsidian CLI (`/vault` skill) for any vault operation that might change file paths or structure (create, move/rename, delete notes or  folders), so Obsidian keeps wikilinks and indexing correct.
+- Claude Code may use filesystem MCP tools (e.g. `filesystem_multi`) for  **read-only operations and in‑place content edits** in the vault (listing,  reading files, updating text) but **must not** rename, move, or delete vault  files via filesystem MCP.
+- Claude Chat can continue to access the vault via MCP filesystem tools when  working outside Claude Code.
 - Do not overwrite files Ella may have edited without checking first.
 - "Shall I go ahead?" is a genuine question, not rhetorical.
