@@ -119,9 +119,11 @@ gsl-sysml-model/
 | Knowledge base | Obsidian (separate vault, not in this repo) |
 | Development | macOS, VS Code |
 
-## Current State (Session 182, April 2026)
+## Current State (Session 194, April 2026)
 
-- **Stage 8 — Ontara Portal** (Sessions 174–182). A separate user-facing portal application (`portal/`) organised around a state-driven operator experience with composable module architecture. Phase 1 (S175): user auth, domain CRUD, multi-domain switching, empty dashboard. Phase 2 (S176): 10 module definitions (6 business + 2 generative + 2 analytical), schema-driven configuration, two intersecting lifecycle state machines (installation + operational), dashboard as state landscape. Phase 3 (S178): domain context model structured by 6 BMM concerns, module wiring via shared concern overlap, composition guidance with lifecycle impact warnings. Phase 4 (S179–181): domain-level fidelity settings, batch event generation (2 generator types), simulation runs, Comparative Dashboard with side-by-side metrics and health scores, category-aware dashboard visual integration. Phase 5 (Governance and Promotion) planned (S182).
+- **Post-Stage-8 direction established** (Sessions 192–193). Discussion paper — *Connecting the Stacks: Toward a Live, Model-Grounded System* — captures the strategic direction for Stage 9: connecting the currently isolated islands (SysML model, console, portal, execution layer, customer-facing UI) into a coherent, model-grounded system. Eight design decisions (S192-D1 through D8) and seven open questions (Q1–Q7) define the Stage 9 agenda. Key clarifications: (a) SMM runtime state and BMM runtime state are architecturally distinct and require separate stores and update paths; (b) the horizontal mappings at runtime are the rules that keep both sides synchronised; (c) the portal's module catalogue must be derived from the SysML model rather than hand-seeded (S192-D7). The concrete proving ground is the existing coffee shop demonstrator.
+- **Concept graph note content currency complete** (Sessions 189–191, W-039/W-040). All ~97 concept graph notes reviewed and updated. W-039: six principle notes rewritten to current quality standard (A1, A2, A3, A4, A7, A8). W-040: 9 new notes created (B11, B12, B25, B30–B32, B34–B35, H1), 27 notes rewritten; concept count 60→70. All four concept graph templates updated.
+- **Stage 8 — Ontara Portal formally closed** (Sessions 175–185, W-037). 11 sessions, within the 19–31 session estimate. Phase 1 (S175): user auth, domain CRUD, multi-domain switching, empty dashboard. Phase 2 (S176): 10-module catalogue (6 business + 2 generative + 2 analytical), schema-driven configuration, two intersecting lifecycle state machines (installation + operational), dashboard as state landscape. Phase 3 (S178): domain context model structured by 6 BMM concerns, module wiring via shared concern overlap, composition guidance with lifecycle impact warnings. Phase 4 (S179–181): epistemic dimension (production/hypothesis/projection as settable property), batch event generation (2 generator types, simplified/realistic fidelity), simulation runs, Comparative Dashboard with side-by-side metrics and health scores. Phase 5 (S182–185): progressive governance (exploratory/advisory/enforced), 20 typed constraints (8 hard, 6 soft, 6 graded), promotion path with 5-prerequisite wizard, demotion, production visual treatment, lifecycle governance guards. All 10 Phase 5 success criteria met.
 - **Ears clinical domain intake complete** (Sessions 160–168). Clinical Domain Intake Framework methodology (S160) applied to Ears (Community Ear Care) — five artefacts: domain description, vertical connection map, coverage map (86.2% Full across 65 proforma fields), ~83 reasoning instance individuals (`ears-reasoning-instances.ttl`), design note. 25/42 reasoning classes exercised with clinical content. Vocabulary assessed as adequate at Ears-level complexity. HermiT CONSISTENT on 13-file ontology stack. SPARQL suite extended to 66 queries in 12 groups (10 new Ears Instance queries). Observation and Watchpoint Register established (12 items).
 - **Stage 7 — Reasoning Metamodel** (Sessions 148–158) formally closed Session 159. All five phases (0–4) complete, 33/35 success criteria met (2 explicitly deferred pending instance data). `ontara-reasoning.ttl`: 42 OWL classes covering reasoning contexts, goals/obstacles/measures, decisions/plans, three-way constraint hierarchy with CombinationAlgebra, knowledge sources/heuristics (6 typed families with HeuristicPack), decision mode routing (4 Cynefin-mapped modes), SEPIO evidence architecture, structured probabilistic reasoning types, STAMP/STPA safety control structures, and FRAM-ready slots. 15 named individuals, 40 object properties, 10 datatype properties. 7 PROV-O dual-subclassed classes. 2 cross-module governance alignment axioms. Console: Reasoning Vocabulary Explorer (42 classes in 7 colour-coded modules, 15 individuals, 50 properties, 32 cross-module axioms) + extended KG Status (8 stat cards, module summary).
 - **PROV-O imported** (Session 150). `prov-core.ttl` — W3C PROV-O core subset (3 Starting Point classes, 9 object properties, 3 datatype properties, 73 triples). Dual subclassing pattern: reasoning classes inherit from both BFO and PROV-O parents.
@@ -134,6 +136,7 @@ gsl-sysml-model/
 - **Console** has 13 views including an interactive 3D weighted relationship graph, a spatial visual architecture map, and an Ontology view with BFO hierarchy, Reasoning Vocabulary Explorer, and KG Status panel.
 - **Five demonstrator domains** validated: Cafe, Suds, Paws (cross-domain reasoning validation), plus Ears (community ear care) — analytical intake complete (Sessions 161–168).
 - **Sixth systematic documentation review** completed (Session 172). Modelling Paradigm Reference created (Session 173) — new standing reference document cataloguing 11 modelling paradigms. Downstream concept note check convention established.
+- **Vision and Architecture Reference refreshed to v11** (Session 187). Full rewrite incorporating all of Stage 8 (Phases 1–5, Sessions 170–186). New §4 (The Ontara Portal, §4.1–4.10). 18 sessions incorporated.
 
 ## Key Commands
 
@@ -177,7 +180,7 @@ python scripts/diff_kg.py
 
 ## Companion Knowledge Base
 
-The Obsidian vault (not in this repo) contains ~212 registered design concepts across 16 sections (A–P), 35 discussion papers, ~152 session reports (Sessions 28–182), 29 emergent ideas log entries, and the full governance structure including an Observation and Watchpoint Register (25 items). The vault is under separate git version control.
+The Obsidian vault (not in this repo) contains ~212 registered design concepts across 16 sections (A–P), 37 discussion papers, ~166 session reports (Sessions 28–193), 30 emergent ideas log entries, and the full governance structure including an Observation and Watchpoint Register (35 items). The vault is under separate git version control.
 
 Key documents: Strategic Reference, Master Concept Register, Development Workflow Guide, Architecture Principles (v4.1), SysML Modelling Strategy (v4.1), Service Business Meta Modelling (v3.1), Modelling Paradigm Reference.
 
@@ -189,8 +192,8 @@ Three governing principles:
 2. **Co-evolution of model and tooling** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
 3. **Non-constraining architecture** — decisions should not foreclose future development paths.
 
-Development is conducted through a structured session programme (currently Session 182) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
+Development is conducted through a structured session programme (currently Session 194) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
 
 ---
 
-*README last updated: Session 182, 9 April 2026.*
+*README last updated: Session 194, 11 April 2026.*
