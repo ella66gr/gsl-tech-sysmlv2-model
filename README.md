@@ -6,12 +6,14 @@
 
 ## Architecture
 
-Ontara maintains an architecture with two distinct 'stacks' broadly modelling both the business (service) itself, and the systems of the business,  connected by explicit horizontal mappings:
+Ontara maintains an architecture with two distinct 'stacks' modelling both the business (service) itself and the systems of the business, connected by explicit horizontal mappings. The architecture operates across four levels:
 
-- **Business Model (BM) and Meta Model(s) (BMM)** — what a service business *is*. 34 elements across six concerns (ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel).
-- **System Model (SM) and Meta Model(s) (SMM)** — how a business system *works*. ArchitecturalSection (section instances describing the dual-stack architecture), plus the reasoning metamodel as a cross-cutting SMM extension.
+1. **Metamodels** — the templates defining what a model can contain. The **Business Meta Model (BMM)** defines what a service business model can contain: 34 elements across six concerns (ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel). The **System Meta Model (SMM)** defines what a service system model can contain: components, workflows, bindings, pattern instantiations, governance hooks, plus the reasoning metamodel as a cross-cutting SMM extension. Metamodels are static and have no runtime state of their own.
+2. **Configured models** — a specific tenant's instantiation of the metamodel templates. The cafe Business Model (BM) and System Model (SM); the Paws BM and SM; the Suds BM and SM; eventually the GSL BM and SM. Configured models change only when the architect or tenant admin edits configuration.
+3. **Runtime instances** — the individuated, time-stamped entities that come into existence as a configured business runs: orders, workflow executions, governance evaluations, simulation runs. These are held in the Business Runtime (BR) and System Runtime (BS) substrate.
+4. **Realising components** — the external systems and infrastructure that bindings connect to: Temporal clusters, EHRbase CDR, PostgreSQL, payment processors. Their internal state is observed via binding pipelines and projected into BR/BS.
 
-The **dual-stack architecture** (Session 73) pairs these as two parallel vertical stacks with horizontal mappings at each tier. The knowledge graph (OWL 2 DL in GraphDB) serves as the eventual canonical store, with SysML v2 as an engineering projection. BFO 2020 is the mandatory upper ontology; PROV-O provides provenance tracking at the platform level.
+The **dual-stack architecture** (Session 73) pairs the BM/SM stacks as two parallel vertical structures with horizontal mappings at each tier. The knowledge graph (OWL 2 DL in GraphDB) serves as the eventual canonical store, with SysML v2 as an engineering projection. BFO 2020 is the mandatory upper ontology; PROV-O provides provenance tracking at the platform level.
 
 ## Repository Structure
 
@@ -119,9 +121,9 @@ gsl-sysml-model/
 | Knowledge base | Obsidian (separate vault, not in this repo) |
 | Development | macOS, VS Code |
 
-## Current State (Session 194, April 2026)
+## Current State (Session 201, April 2026)
 
-- **Post-Stage-8 direction established** (Sessions 192–193). Discussion paper — *Connecting the Stacks: Toward a Live, Model-Grounded System* — captures the strategic direction for Stage 9: connecting the currently isolated islands (SysML model, console, portal, execution layer, customer-facing UI) into a coherent, model-grounded system. Eight design decisions (S192-D1 through D8) and seven open questions (Q1–Q7) define the Stage 9 agenda. Key clarifications: (a) SMM runtime state and BMM runtime state are architecturally distinct and require separate stores and update paths; (b) the horizontal mappings at runtime are the rules that keep both sides synchronised; (c) the portal's module catalogue must be derived from the SysML model rather than hand-seeded (S192-D7). The concrete proving ground is the existing coffee shop demonstrator.
+- **Stage 9 architectural foundation complete** (Sessions 192–200). Three foundation papers establish the architectural basis for Stage 9. *Connecting the Stacks* (S192–193) defines eight design decisions and seven open questions for connecting the isolated islands — SysML model, console, portal, execution layer, customer-facing UI — into a coherent, model-grounded system. Key clarifications: (a) the Business Runtime (BR) and System Runtime (BS) are the substrate holding runtime instances of configured-model elements — distinct from the configured models themselves and from the metamodels (BMM/SMM); (b) the horizontal mappings at runtime are the rules that keep BR and BS synchronised; (c) the portal's module catalogue must be derived from the SysML model rather than hand-seeded (S192-D7). *BS Substrate and Bindings* (S197) establishes BR, BS, and bindings as first-class architectural elements. *Surface Families: Headless Composition Across the Sophistication Gradient* (S199) establishes the seven-user-band framing, a headless five-layer architecture (with an experience-API / BFF layer as a Stage 9 addition), and a state placement discipline. *The Architect-Analyst Workspace* (S198, revised S200) locates the architect-analyst surface correctly within the gradient as user band 6. The concrete proving ground is the existing coffee shop demonstrator.
 - **Concept graph note content currency complete** (Sessions 189–191, W-039/W-040). All ~97 concept graph notes reviewed and updated. W-039: six principle notes rewritten to current quality standard (A1, A2, A3, A4, A7, A8). W-040: 9 new notes created (B11, B12, B25, B30–B32, B34–B35, H1), 27 notes rewritten; concept count 60→70. All four concept graph templates updated.
 - **Stage 8 — Ontara Portal formally closed** (Sessions 175–185, W-037). 11 sessions, within the 19–31 session estimate. Phase 1 (S175): user auth, domain CRUD, multi-domain switching, empty dashboard. Phase 2 (S176): 10-module catalogue (6 business + 2 generative + 2 analytical), schema-driven configuration, two intersecting lifecycle state machines (installation + operational), dashboard as state landscape. Phase 3 (S178): domain context model structured by 6 BMM concerns, module wiring via shared concern overlap, composition guidance with lifecycle impact warnings. Phase 4 (S179–181): epistemic dimension (production/hypothesis/projection as settable property), batch event generation (2 generator types, simplified/realistic fidelity), simulation runs, Comparative Dashboard with side-by-side metrics and health scores. Phase 5 (S182–185): progressive governance (exploratory/advisory/enforced), 20 typed constraints (8 hard, 6 soft, 6 graded), promotion path with 5-prerequisite wizard, demotion, production visual treatment, lifecycle governance guards. All 10 Phase 5 success criteria met.
 - **Ears clinical domain intake complete** (Sessions 160–168). Clinical Domain Intake Framework methodology (S160) applied to Ears (Community Ear Care) — five artefacts: domain description, vertical connection map, coverage map (86.2% Full across 65 proforma fields), ~83 reasoning instance individuals (`ears-reasoning-instances.ttl`), design note. 25/42 reasoning classes exercised with clinical content. Vocabulary assessed as adequate at Ears-level complexity. HermiT CONSISTENT on 13-file ontology stack. SPARQL suite extended to 66 queries in 12 groups (10 new Ears Instance queries). Observation and Watchpoint Register established (12 items).
@@ -180,9 +182,9 @@ python scripts/diff_kg.py
 
 ## Companion Knowledge Base
 
-The Obsidian vault (not in this repo) contains ~212 registered design concepts across 16 sections (A–P), 37 discussion papers, ~166 session reports (Sessions 28–193), 30 emergent ideas log entries, and the full governance structure including an Observation and Watchpoint Register (35 items). The vault is under separate git version control.
+The Obsidian vault (not in this repo) contains ~212 registered design concepts across 16 sections (A–P), 40 discussion papers, ~200 session reports (Sessions 28–200), 30 emergent ideas log entries, and the full governance structure including an Observation and Watchpoint Register (65 items). The vault is under separate git version control.
 
-Key documents: Strategic Reference, Master Concept Register, Development Workflow Guide, Architecture Principles (v4.1), SysML Modelling Strategy (v4.1), Service Business Meta Modelling (v3.1), Modelling Paradigm Reference.
+Key documents: Strategic Reference, Vision and Architecture Reference (v12), Master Concept Register, Development Workflow Guide, Architecture Principles (v4.1), SysML Modelling Strategy (v4.1), Service Business Meta Modelling (v3.1), Modelling Paradigm Reference.
 
 ## Development Methodology
 
@@ -192,8 +194,8 @@ Three governing principles:
 2. **Co-evolution of model and tooling** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
 3. **Non-constraining architecture** — decisions should not foreclose future development paths.
 
-Development is conducted through a structured session programme (currently Session 194) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
+Development is conducted through a structured session programme (currently Session 201) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
 
 ---
 
-*README last updated: Session 194, 11 April 2026.*
+*README last updated: Session 201, 13 April 2026.*
