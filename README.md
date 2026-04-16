@@ -121,19 +121,18 @@ gsl-sysml-model/
 | Knowledge base | Obsidian (separate vault, not in this repo) |
 | Development | macOS, VS Code |
 
-## Current State (Session 213, April 2026)
+## Current State (Session 226, April 2026)
 
-- **Architecture Principles refreshed to v5** (Sessions 210–211, W-049 in progress). Full conceptual rewrite under the strengthened A4. The stratified two-side architecture establishes six strata, two sides, ten compositional loci. Key promotions: B22 (KG-canonical) to binding, A12 (Coordinate Framework) to binding Tier 1. BS → SR rename committed throughout. Five-principle unification hypothesis Test 1 passed. Platform Modelling Strategy v5 and SBMM v4 remain to draft.
-- **Stage 9 architectural foundation complete** (Sessions 192–200). Four foundation papers establish the architectural basis for Stage 9. *Connecting the Stacks* (S192–193) defines eight design decisions and seven open questions. Key clarification: the Business Runtime (BR) and System Runtime (SR) are the substrate holding runtime instances of configured-model elements — distinct from the configured models and from the metamodels. *BS Substrate and Bindings* (S197) establishes BR, SR, and bindings as first-class elements. *Surface Families* (S199) establishes the seven-user-band framing, headless five-layer architecture, and state placement discipline. *The Architect-Analyst Workspace* (S198, revised S200) locates the architect-analyst surface as user band 6.
-- **Concept graph note content currency complete** (Sessions 189–191, W-039/W-040). Concept count 60→70. Architecture Principles v5 source drift scan completed S213 (24-note sample, 11 in-session fixes). Minor-drift cleanup (W-054) and completion scan (W-055) tracked.
-- **Stage 8 — Ontara Portal formally closed** (Sessions 175–185, W-037). 11 sessions. Five phases: auth + domain CRUD (S175); 10-module catalogue, two lifecycle state machines (S176); domain context model (S178); simulation + Comparative Dashboard (S179–181); progressive governance with 20 typed constraints, promotion/demotion path, lifecycle governance guards (S182–185). All 10 Phase 5 success criteria met.
+- **All three foundations papers complete** (W-049 closed). Architecture Principles v5 (Sessions 210–211): strengthened A4 (stratified two-side architecture, six strata, two sides, ten loci), KG-canonical binding (B22), coordinate framework binding (A12), BS → SR rename, SRS/PRS strata named, five-principle unification hypothesis Test 1 passed. Platform Modelling Strategy v5 (S216): KG-canonical inversion formalised (OWL 2 DL canonical; SysML v2 engineering projection). SBMM v4 (S218): General/Tailored sub-structuring with four-criterion framework and 50-element audit; Tests 2 and 3 of unification hypothesis passed.
+- **Eighth systematic documentation review complete** (Sessions 224–225, W-061). F1–F65 findings across Tier 1 reference documents, Tier 2 foundations papers, and Tier 3 concept-graph sweep. Reference corpus now fully characterised; fix batch (W-068/W-069) in execution at S226.
+- **Stage 9 architectural foundation complete** (Sessions 192–200). Four foundation papers establish the basis for Stage 9. *Connecting the Stacks* (S192–193) defines eight design decisions and seven open questions. *BS Substrate and Bindings* (S197) establishes BR, SR, and bindings as first-class elements. *Surface Families* (S199) establishes the seven-user-band framing, headless five-layer architecture, and state placement discipline. *The Architect-Analyst Workspace* (S198, revised S200) locates the architect-analyst surface at user band 6.
+- **Stage 8 — Ontara Portal formally closed** (Sessions 175–185, W-037). Auth, domain management, 10-module catalogue, two lifecycle state machines, progressive governance with 20 typed constraints (8 hard, 6 soft, 6 graded), promotion/demotion, simulation with comparative analytics, production visual treatment.
 - **Ears clinical domain intake complete** (Sessions 160–168). Coverage map (86.2% Full), ~83 reasoning instance individuals, HermiT CONSISTENT on 13-file stack, SPARQL suite 66 queries.
 - **Stage 7 — Reasoning Metamodel** (Sessions 148–158) formally closed S159. `ontara-reasoning.ttl`: 42 OWL classes, 15 named individuals, 40 object + 10 datatype properties. Three-way constraint hierarchy, decision mode routing, SEPIO evidence architecture.
-- **Foundations papers:** Architecture Principles v5 (S211), Platform Modelling Strategy v4.1, Service Business Meta Modelling v3.1.
-- **Stage 5 — Knowledge Graph Implementation** Phases 1–3 formally closed. SPARQL validation (66 queries), HermiT reasoning, round-trip diff (288 semantic units). 13-file ontology stack.
-- **Domain Identity and Governance Convergence** (Stage 6) — Block A complete. `ontara-domain.ttl` in OWL. A13 (multi-tenancy) binding T1. Governance: `ontara-governance.ttl`, CQC Regulation 12 validated.
-- **Console** has 13 views: 3D weighted relationship graph, visual architecture map, Reasoning Vocabulary Explorer, KG Status panel. BMM structurally complete — 36 elements, 96 weighted relationships.
-- **Vision and Architecture Reference refreshed to v12** (Session 201).
+- **Foundations papers:** Architecture Principles v5 (S211), Platform Modelling Strategy v5 (S216), Service Business Meta Modelling v4 (S218).
+- **Ontology stack:** 13-file stack, HermiT CONSISTENT. SPARQL validation suite: 66 queries in 12 groups. Round-trip diff: 288 semantic units.
+- **Console** has 13 views including 3D weighted relationship graph, visual architecture map, and Reasoning Vocabulary Explorer. BMM structurally complete — 34 core elements, 96 weighted relationships.
+- **Vision and Architecture Reference** at v12 (Session 201). Refresh to v13 pending (W-059) once reference corpus fixes are applied.
 
 ## Key Commands
 
@@ -177,9 +176,9 @@ python scripts/diff_kg.py
 
 ## Companion Knowledge Base
 
-The Obsidian vault (not in this repo) contains ~212 registered design concepts across 16 sections (A–P), ~42 discussion papers, ~213 session reports (Sessions 28–213), 30 emergent ideas log entries, and the full governance structure including an Observation and Watchpoint Register (91+ items). The vault is under separate git version control.
+The Obsidian vault (not in this repo) contains ~232 registered design concepts across 16 sections (A–P), 42 discussion papers, ~225 session reports (Sessions 28–S225), 37 live EIL entries (E001–E037), and the full governance structure including an Observation and Watchpoint Register (~110 items). The vault is under separate git version control.
 
-Key documents: Strategic Reference, Vision and Architecture Reference (v12), Master Concept Register, Development Workflow Guide, Architecture Principles (v5), SysML Modelling Strategy (v4.1), Service Business Meta Modelling (v3.1), Modelling Paradigm Reference.
+Key documents: Strategic Reference, Vision and Architecture Reference (v12), Master Concept Register, Development Workflow Guide, Architecture Principles (v5), Platform Modelling Strategy (v5), Service Business Meta Modelling (v4), Modelling Paradigm Reference.
 
 ## Development Methodology
 
@@ -189,8 +188,8 @@ Three governing principles:
 2. **Co-evolution of model and tooling** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
 3. **Non-constraining architecture** — decisions should not foreclose future development paths.
 
-Development is conducted through a structured session programme (currently Session 214) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
+Development is conducted through a structured session programme (currently Session 226) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
 
 ---
 
-*README last updated: Session 214, 15 April 2026.*
+*README last updated: Session 226, 16 April 2026.*
