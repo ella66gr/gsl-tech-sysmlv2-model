@@ -6,14 +6,20 @@
 
 ## Architecture
 
-Ontara maintains an architecture with two distinct 'stacks' modelling both the business (service) itself and the systems of the business, connected by explicit horizontal mappings. The architecture operates across four levels:
+Ontara is organised by two orthogonal commitments: **eight ontological strata** running vertically, and **two sides** (business and system) running through the strata where they are divided — together forming the **stratified two-side architecture**.
 
-1. **Metamodels** — the templates defining what a model can contain. The **Business Meta Model (BMM)** defines what a service business model can contain: 34 elements across six concerns (ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel). The **System Meta Model (SMM)** defines what a service system model can contain: components, workflows, bindings, pattern instantiations, governance hooks, plus the reasoning metamodel as a cross-cutting SMM extension. Metamodels are static and have no runtime state of their own.
-2. **Configured models** — a specific tenant's instantiation of the metamodel templates. The cafe Business Model (BM) and System Model (SM); the Paws BM and SM; the Suds BM and SM; eventually the GSL BM and SM. Configured models change only when the architect or tenant admin edits configuration.
-3. **Runtime instances** — the individuated, time-stamped entities that come into existence as a configured business runs: orders, workflow executions, governance evaluations, simulation runs. These are held in the Business Runtime (BR) and System Runtime (SR) substrate.
-4. **Realising components** — the external systems and infrastructure that bindings connect to: Temporal clusters, EHRbase CDR, PostgreSQL, payment processors. Their internal state is observed via binding pipelines and projected into BR/BS.
+| # | Stratum | Role |
+|---|---|---|
+| 1 | **Foundation** | Upper and mid-level ontologies: BFO 2020, CCO, IAO, PROV-O. Shared. OWL 2 DL only. |
+| 2 | **Domain Ontologies** | Business Domain Ontologies (BDO) and System Ontological Categories (SOC) — domain-specific specialisations of BFO. |
+| 3 | **Metamodel** | BMM (34 elements, 6 concerns) on the business side; SMM (components, workflows, reasoning metamodel) on the system side. |
+| 4 | **Configured Model** | Tenant-specific instantiations: Domain Business Model (DBM) and Domain System Model (DSM). |
+| 5 | **State Representation (SRS)** | All runtime instance content: DBR (versioned continuant trajectories, business side) and DSR (event-sourced occurrent log, system side). Persisted as KG triples with epistemic tagging. |
+| 6 | **Reasoning** | Reflection and Simulation Module (RSM) — reads across strata, writes derived content back to DBM/DSM with epistemic tag, authors Scenario Specification Records (SSRs). |
+| 7 | **Binding Layer (BRL)** | Seven binding classes (ESB, APB, WRB, HMB, IGB, SGB, MRB) — sole authoritative write path to DBR and DSR. Applies canonical-edge contract, constraint gating, identity reconciliation, and provenance discipline. |
+| 8 | **Platform Realisation (PRS)** | Running infrastructure: GraphDB (KGR), EHRbase CDR, Ontara Customer Portal (OCP), Ontara Developer Console (ODC), Terminology & Information Carriers (TIC), SysML v2 tooling, Ontara Simulation Runner (OSR), Temporal Workflow Engine (TWE). |
 
-The **dual-stack architecture** (Session 73) pairs the BM/SM stacks as two parallel vertical structures with horizontal mappings at each tier. The knowledge graph (OWL 2 DL in GraphDB) serves as the eventual canonical store, with SysML v2 as an engineering projection. BFO 2020 is the mandatory upper ontology; PROV-O provides provenance tracking at the platform level.
+The **Formalism Governance Zone (FGZ)** governs the dual-formalism discipline — OWL 2 DL canonical, SysML v2 engineering projection — across strata 2 through 4. The knowledge graph (OWL 2 DL in GraphDB) is the canonical store; SysML v2 is the engineering projection. BFO 2020 is the mandatory upper ontology; PROV-O provides provenance tracking.
 
 ## Repository Structure
 
@@ -98,6 +104,7 @@ gsl-sysml-model/
 ├── libraries/                      Shared SysML metadata definitions
 ├── concept-graph/                  Concept graph source
 ├── tools/                          External tool binaries (robot.jar, etc.)
+├── instruction-sets/               Disposable Code instruction sets (ephemeral; not committed)
 ├── spikes/                         Experimental spikes
 ├── CLAUDE.md                       Claude Code project context
 └── .claude/skills/                 Claude Code skills
@@ -121,18 +128,17 @@ gsl-sysml-model/
 | Knowledge base | Obsidian (separate vault, not in this repo) |
 | Development | macOS, VS Code |
 
-## Current State (Session 226, April 2026)
+## Current State (Session 242, April 2026)
 
-- **All three foundations papers complete** (W-049 closed). Architecture Principles v5 (Sessions 210–211): strengthened A4 (stratified two-side architecture, six strata, two sides, ten loci), KG-canonical binding (B22), coordinate framework binding (A12), BS → SR rename, SRS/PRS strata named, five-principle unification hypothesis Test 1 passed. Platform Modelling Strategy v5 (S216): KG-canonical inversion formalised (OWL 2 DL canonical; SysML v2 engineering projection). SBMM v4 (S218): General/Tailored sub-structuring with four-criterion framework and 50-element audit; Tests 2 and 3 of unification hypothesis passed.
-- **Eighth systematic documentation review complete** (Sessions 224–225, W-061). F1–F65 findings across Tier 1 reference documents, Tier 2 foundations papers, and Tier 3 concept-graph sweep. Reference corpus now fully characterised; fix batch (W-068/W-069) in execution at S226.
-- **Stage 9 architectural foundation complete** (Sessions 192–200). Four foundation papers establish the basis for Stage 9. *Connecting the Stacks* (S192–193) defines eight design decisions and seven open questions. *BS Substrate and Bindings* (S197) establishes BR, SR, and bindings as first-class elements. *Surface Families* (S199) establishes the seven-user-band framing, headless five-layer architecture, and state placement discipline. *The Architect-Analyst Workspace* (S198, revised S200) locates the architect-analyst surface at user band 6.
-- **Stage 8 — Ontara Portal formally closed** (Sessions 175–185, W-037). Auth, domain management, 10-module catalogue, two lifecycle state machines, progressive governance with 20 typed constraints (8 hard, 6 soft, 6 graded), promotion/demotion, simulation with comparative analytics, production visual treatment.
+- **Eight-stratum architecture confirmed** (Sessions 232–236, v3.0.0 diagram). The architecture extended from six to eight strata: Reasoning (stratum 6), Binding Realisation Layer / BRL (stratum 7), Platform Realisation / PRS (stratum 8). The Formalism Boundary Layer (FBL) renamed to Formalism Governance Zone (FGZ). All seven BRL binding classes specified (ESB, APB, WRB, HMB, IGB, SGB, MRB). Terminology propagation into foundations papers in progress (W-082).
+- **Contraction and landing phase active from S241.** V1 acceptance specification produced (S241). Stratum and tenant landing registers established (S241). Workflow Guide updated to v4 (S241) with contraction discipline, corpus sweep obligation, and governance word-limit discipline. Governance sweep in progress (S242).
+- **Foundations papers fully complete** (W-049 closed). Architecture Principles v5.1 (S231): strengthened A4 (stratified two-side architecture), KG-canonical binding (B22), coordinate framework binding (A12), SRS/PRS strata named, §5.6a absorbing modelling-strategy content. Platform Modelling Strategy v5 dissolved (S231) — content absorbed into AP v5.1. SBMM v4 (S218): General/Tailored sub-structuring. Five-principle unification hypothesis Tests 1–3 passed.
+- **Stage 9 architectural foundation complete** (Sessions 192–236). Six foundation papers establish the basis for Stage 9: *Connecting the Stacks* (S192–193); *BS Substrate and Bindings* (S197, establishing DBR/DSR); *The Architect-Analyst Workspace* (S198/S200); *Surface Families* (S199, seven-user-band framing and headless five-layer architecture); *BRL and Experience-API* (S234); *BRL Binding Class Specifications* workshop (S236).
+- **Stage 8 — Ontara Portal formally closed** (Sessions 175–185). Auth, domain management, 10-module catalogue, two lifecycle state machines, progressive governance with 20 typed constraints (8 hard, 6 soft, 6 graded), promotion/demotion, simulation with comparative analytics, production visual treatment. Stage 9 portal reframing pending (substrate replacement SQLite → KG-resident DBR/DSR).
 - **Ears clinical domain intake complete** (Sessions 160–168). Coverage map (86.2% Full), ~83 reasoning instance individuals, HermiT CONSISTENT on 13-file stack, SPARQL suite 66 queries.
-- **Stage 7 — Reasoning Metamodel** (Sessions 148–158) formally closed S159. `ontara-reasoning.ttl`: 42 OWL classes, 15 named individuals, 40 object + 10 datatype properties. Three-way constraint hierarchy, decision mode routing, SEPIO evidence architecture.
-- **Foundations papers:** Architecture Principles v5 (S211), Platform Modelling Strategy v5 (S216), Service Business Meta Modelling v4 (S218).
 - **Ontology stack:** 13-file stack, HermiT CONSISTENT. SPARQL validation suite: 66 queries in 12 groups. Round-trip diff: 288 semantic units.
 - **Console** has 13 views including 3D weighted relationship graph, visual architecture map, and Reasoning Vocabulary Explorer. BMM structurally complete — 34 core elements, 96 weighted relationships.
-- **Vision and Architecture Reference** at v12 (Session 201). Refresh to v13 pending (W-059) once reference corpus fixes are applied.
+- **Vision and Architecture Reference** at v13 (Session 228). Full rewrite scoped for S243.
 
 ## Key Commands
 
@@ -176,9 +182,9 @@ python scripts/diff_kg.py
 
 ## Companion Knowledge Base
 
-The Obsidian vault (not in this repo) contains ~232 registered design concepts across 16 sections (A–P), 42 discussion papers, ~225 session reports (Sessions 28–S225), 37 live EIL entries (E001–E037), and the full governance structure including an Observation and Watchpoint Register (~110 items). The vault is under separate git version control.
+The Obsidian vault (not in this repo) contains ~232 registered design concepts across 16 sections (A–P), 42 discussion papers, ~242 session reports (Sessions 28–S241), 31 active EIL entries, and the full governance structure including an Observation and Watchpoint Register (~115 items). The vault is under separate git version control.
 
-Key documents: Strategic Reference, Vision and Architecture Reference (v12), Master Concept Register, Development Workflow Guide, Architecture Principles (v5), Platform Modelling Strategy (v5), Service Business Meta Modelling (v4), Modelling Paradigm Reference.
+Key documents: Strategic Reference, Vision and Architecture Reference (v13, full rewrite S243), Master Concept Register, Development Workflow Guide (v4), Architecture Principles (v5.1), Service Business Meta Modelling (v4), V1 Acceptance Specification, Stratum Landing Register, Tenant Landing Register.
 
 ## Development Methodology
 
@@ -188,8 +194,8 @@ Three governing principles:
 2. **Co-evolution of model and tooling** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
 3. **Non-constraining architecture** — decisions should not foreclose future development paths.
 
-Development is conducted through a structured session programme (currently Session 226) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks).
+Development is conducted through a structured session programme (currently Session 242) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks). From Session 241 the project is in a contraction and landing phase, with all new work tested against v1 acceptance criteria.
 
 ---
 
-*README last updated: Session 226, 16 April 2026.*
+*README last updated: Session 242, 21 April 2026.*
