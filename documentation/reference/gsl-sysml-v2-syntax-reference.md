@@ -1,7 +1,7 @@
 # SysML v2 Syntax Reference — Syside Modeler
 
-> **Version:** 3.19 — 5 April 2026
-> **Previous version:** v3.18 (22 March 2026). Full version history in `documentation/reference/syntax-versions/`
+> **Version:** 3.20 — 22 April 2026
+> **Previous version:** v3.19 (5 April 2026). Full version history in `documentation/reference/syntax-versions/`
 > **Purpose:** Concise reference for writing `.sysml` files against Syside Modeler.
 > Consult before writing new SysML code. Update as new patterns are verified.
 >
@@ -12,7 +12,9 @@
 > - `gsl-validated-architectural-patterns.md` — integration patterns, generation pipelines, design rationale
 > - `gsl-guide-repo-conventions.md` — file structure, generators, git practices, `gsl` toolkit
 >
-> **What's new in v3.19:** Session 143 — (1) Multi-valued `attribute :>>` with tuple syntax verified: `attribute :>> field = (EnumType::a, EnumType::b)` works for both `[1..*]` and `[0..*]` multiplicities. Extends v3.13 `ref :>>` tuple finding. See §2. (2) `individual` confirmed as a Syside-rejected enum literal (parse error, not in KerML reserved list). Use `registeredIndividual` or other compound name. See §10. (3) New safe enum literals confirmed (97 total): `registeredIndividual`. See §3.
+> **What's new in v3.20:** Ontara Session 255 — (1) **Nested `:>>` redefinition inside contained part usages verified.** An outer part usage may redefine its inherited attributes with `:>>` AND contain further part usages that themselves redefine their own inherited members with `:>>`. All three test patterns pass (simple nesting, multiple inner sibling parts, inner multi-valued tuple redefinition). Retires the v3.15+ "Not yet tested" entry. See §2. (2) **`shape` is a shadowed standard-library name.** Using `shape` as an attribute name on a `part def` triggers `namespace-distinguishability` — `part def` inherits through `Parts::Part` → `Items::Item` which has its own `shape` member. Use `valueShape` or similar compound names. See §10.
+>
+> **v3.19:** Session 143 — (1) Multi-valued `attribute :>>` with tuple syntax verified: `attribute :>> field = (EnumType::a, EnumType::b)` works for both `[1..*]` and `[0..*]` multiplicities. Extends v3.13 `ref :>>` tuple finding. See §2. (2) `individual` confirmed as a Syside-rejected enum literal (parse error, not in KerML reserved list). Use `registeredIndividual` or other compound name. See §10. (3) New safe enum literals confirmed (97 total): `registeredIndividual`. See §3.
 >
 > **v3.17:** Session 51 — Multiple annotations of the same metaclass on one element verified (Stage 3 Phase 3, Step 4 syntax test). Two, three, and six same-metaclass annotations all parse cleanly. Mixed same-metaclass + different-metaclass also works. Overturns v3.14 finding (which was specific to `@CatalogueTag`, not a general restriction). Enum-typed attribute (`RelationshipStrength`) on `metadata def` confirmed. See §8.
 >
@@ -659,6 +661,7 @@ Basic `use case def` with `doc` verified (v3.1). Advanced patterns (`include use
 | `default` | KerML reserved | Attribute names (v3.10 — identified from KerML 1.0 §8.2.2.6, not tested) |
 | `system` | KerML reserved | Enum literals (v3.12 — Session 29). Silent parse failure: Foundation package becomes unresolvable, cascading reference-errors. No error at the literal itself. Use `automated` or compound names. |
 | `individual` | Syside contextual keyword (not in KerML reserved list) | Enum literals (v3.19 — Session 143). Parse error: `Unexpected 'individual'`. Use `registeredIndividual` or other compound name. |
+| `shape` | Shadowed by `Items::Item::shape` via standard library inheritance | Attribute names on `part def` (v3.20 — Ontara Session 255). Silently inherited through `part def` → `Parts::Part` → `Items::Item`; using `shape` as an attribute triggers `namespace-distinguishability`. Use `valueShape` or similar compound names. |
 
 ### Confirmed safe as attribute names
 
@@ -831,7 +834,7 @@ view renderedView {
 - [ ] Syside CLI `viz` command for headless diagram export
 - [ ] Generator: `gen_temporal_workflow.py` emitting `tryTransition()` from `@StateTransitionTrigger`
 - [ ] Generator: `Promise.all()` from SysML `fork`/`join`
-- [ ] Nested `:>>` redefinition inside contained parts inside part usages
+- [x] Nested `:>>` redefinition inside contained parts inside part usages — **verified v3.20** (Ontara Session 255). See `model/syntax-tests/test-nested-redefinition.sysml`.
 - [ ] `ref` to a `requirement def` as a type (e.g. `ref regulatoryReq : ConsentBeforeTreatment`) — deferred from Phase 7
 - [x] `ref :>> fieldName = (peerPartA, peerPartB);` — tuple redefinition between peer part usages — **verified v3.13** (Session 31)
 
@@ -841,6 +844,7 @@ view renderedView {
 
 | Version | Date | Key additions |
 |---|---|---|
+| 3.20 | 22 Apr 2026 | **Ontara Session 255 — Nested `:>>` redefinition inside contained part usages verified.** An outer part usage with `:>>` on inherited attributes can contain further part usages with their own `:>>` redefinitions. All three test patterns pass (test file: `model/syntax-tests/test-nested-redefinition.sysml`). `shape` added as shadowed attribute name — `part def` inherits `shape` through `Parts::Part` → `Items::Item`. |
 | 3.19 | 5 Apr 2026 | **Session 143 — Multi-valued attribute :>> tuple syntax verified, `individual` reserved.** `attribute :>> field = (EnumType::a, EnumType::b)` works for `[1..*]` and `[0..*]` multiplicities (extends v3.13 ref :>> finding). `individual` rejected as enum literal by Syside (not in KerML list); use `registeredIndividual`. 1 new safe enum literal (97 total). |
 | 3.17 | 21 Mar 2026 | **Session 51 — Multiple same-metaclass annotations verified (Stage 3 Phase 3, Step 4).** Two, three, and six annotations of the same `metadata def` on one `part def` all parse. Mixed same + different metaclass also works. Overturns v3.14 `@CatalogueTag`-specific finding. Enum-typed attribute (`RelationshipStrength`) on metadata def confirmed. Four new safe enum literals (96 total): `strong`, `moderate`, `weak`, `contextual`. |
 | 3.16 | 20 Mar 2026 | **Session 49 — `ref` inside `metadata def` verified (Stage 3 Phase 3, Step 1 syntax spike).** All six test patterns pass: singular ref, multi-valued ref, ref to part def / metadata def / enum def, mixed attributes + refs, and annotation application. See §8. |

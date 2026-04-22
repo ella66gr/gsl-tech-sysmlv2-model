@@ -800,3 +800,256 @@ package PawsGovernance {
         attribute :>> referenceNotes = "Duty of person responsible for animal to ensure welfare. Five welfare needs. Applies to any person responsible for an animal, including during commercial grooming services.";
     }
 }
+
+// =========================================================================
+// PAWS DEMONSTRATOR — Canonical Runtime Types (Multi-Axis Status)
+// =========================================================================
+//
+// Session 255 — First tenant declaration of W-094 (multi-axis status
+// primitive). Source specification: ontara-model-multi-axis-status-
+// primitive-2026-04-22 (S253). Canonical worked example — Paws Booking
+// with five axes (four tenant-declared + platform-inherited epistemic).
+//
+// Stratum-and-side locus: Configured-Model stratum, business side
+// (tenant's DBM — Domain Business Model for Paws). Per the strengthened
+// A4 (tenant configured-model content).
+//
+// Scope of this package:
+//   - Booking: first canonical runtime type for Paws, specialising
+//     CanonicalRuntime::CanonicalRuntimeType. Declares four tenant axes
+//     (lifecycle, confirmation, payment, cancellation). Inherits the
+//     platform-provided epistemicAxis.
+//
+// Out of scope for this session:
+//   - Pet canonical type (S253 §8.2 — platform epistemic axis only at v1).
+//   - Cross-axis consequence rules (S253 §6) — cancellation-policy
+//     evaluator architecture resolved, implementation deferred.
+//   - Further Paws canonical types (Appointment, PaymentRecord, etc.).
+//   - Tenant BMM-concern-structured content beyond axis declarations.
+//
+// Per S253 §8.1 — five-axis Booking is the driving worked example
+// for W-094 first implementation.
+//
+// =========================================================================
+
+package PawsCanonicalRuntime {
+    private import ScalarValues::*;
+    private import CanonicalRuntime::*;
+
+    doc /* Canonical runtime types for the Paws tenant. At v1, the
+         * Booking type is the worked example for multi-axis status.
+         *
+         * Stratum-and-side locus: Configured-Model stratum, business
+         * side. Tenant configured-model content — not metamodel
+         * vocabulary. The StatusAxis part def and its supporting types
+         * live in CanonicalRuntime (BMM General, Metamodel stratum).
+         *
+         * Five-axis Booking per S253 §8.1: lifecycle, confirmation,
+         * payment, cancellation, epistemic (inherited from
+         * CanonicalRuntimeType).
+         *
+         * Cross-axis rules (cancellation → payment refund, lifecycle →
+         * payment on-check-in hold, confirmation preconditions on
+         * lifecycle) are specified in S253 §6 but not yet implemented
+         * in this first implementation pass. */
+
+    // =====================================================================
+    // BOOKING — Five-axis canonical runtime type (S253 §8.1)
+    // =====================================================================
+
+    part def Booking :> CanonicalRuntimeType {
+        doc /* Paws Booking canonical runtime type.
+             *
+             * A Booking represents a scheduled grooming appointment —
+             * its existence begins when the owner books (online or
+             * walk-in) and ends when the engagement closes post-
+             * grooming. The runtime instance carries a five-axis
+             * status tuple at all times:
+             *
+             * - lifecycle (ordered): scheduled → checked-in →
+             *     in-progress → ready → collected → closed
+             * - confirmation (unordered): the confirmation dialogue
+             *     between customer and tenant
+             * - payment (unordered): deposit, final payment, and
+             *     refund states
+             * - cancellation (unordered): active / cancelled-by-owner
+             *     / cancelled-by-tenant / no-show
+             * - epistemic (platform-inherited): real / inferred /
+             *     expected / predicted / hypothetical / simulated /
+             *     retrospectively-recorded
+             *
+             * Source: S253 §8.1. Configured-model content (tenant's
+             * DBM). */
+
+        // -- lifecycle axis (ordered enumeration) -------------------
+
+        part lifecycleAxis : StatusAxis {
+            :>> axisName = "lifecycle";
+            :>> axisDescription = "The lifecycle stage of the booking from scheduling through to closure of the engagement.";
+            :>> axisScope = AxisScope::tenantDeclared;
+            :>> axisAuthority = (AxisAuthority::operatorSide, AxisAuthority::systemSide);
+            :>> defaultValue = "scheduled";
+
+            part :>> valueSpace : ValueSpace {
+                :>> valueShape = ValueSpaceShape::orderedEnum;
+                :>> enumValues = ("scheduled", "checkedIn", "inProgress",
+                                  "ready", "collected", "closed");
+            }
+
+            part scheduledToCheckedIn : AxisTransition {
+                :>> fromValue = "scheduled";
+                :>> toValue = "checkedIn";
+                :>> transitionLabel = "owner arrives and drops off dog";
+                :>> requiredAuthority = (AxisAuthority::operatorSide);
+            }
+
+            part checkedInToInProgress : AxisTransition {
+                :>> fromValue = "checkedIn";
+                :>> toValue = "inProgress";
+                :>> transitionLabel = "grooming begins";
+                :>> requiredAuthority = (AxisAuthority::operatorSide);
+            }
+
+            part inProgressToReady : AxisTransition {
+                :>> fromValue = "inProgress";
+                :>> toValue = "ready";
+                :>> transitionLabel = "grooming complete, awaiting collection";
+                :>> requiredAuthority = (AxisAuthority::operatorSide);
+            }
+
+            part readyToCollected : AxisTransition {
+                :>> fromValue = "ready";
+                :>> toValue = "collected";
+                :>> transitionLabel = "owner collects dog";
+                :>> requiredAuthority = (AxisAuthority::operatorSide);
+            }
+
+            part collectedToClosed : AxisTransition {
+                :>> fromValue = "collected";
+                :>> toValue = "closed";
+                :>> transitionLabel = "engagement closed, final payment settled";
+                :>> requiredAuthority = (AxisAuthority::systemSide);
+            }
+        }
+
+        // -- confirmation axis (unordered enumeration) --------------
+
+        part confirmationAxis : StatusAxis {
+            :>> axisName = "confirmation";
+            :>> axisDescription = "The state of the confirmation dialogue with the customer — whether the booking has been reconfirmed ahead of the appointment.";
+            :>> axisScope = AxisScope::tenantDeclared;
+            :>> axisAuthority = (AxisAuthority::customerSide, AxisAuthority::systemSide);
+            :>> defaultValue = "unconfirmed";
+
+            part :>> valueSpace : ValueSpace {
+                :>> valueShape = ValueSpaceShape::unorderedEnum;
+                :>> enumValues = ("unconfirmed", "awaitingReply",
+                                  "confirmed", "confirmationLapsed");
+            }
+
+            part unconfirmedToAwaitingReply : AxisTransition {
+                :>> fromValue = "unconfirmed";
+                :>> toValue = "awaitingReply";
+                :>> transitionLabel = "confirmation request sent to customer";
+                :>> requiredAuthority = (AxisAuthority::systemSide);
+            }
+
+            part awaitingReplyToConfirmed : AxisTransition {
+                :>> fromValue = "awaitingReply";
+                :>> toValue = "confirmed";
+                :>> transitionLabel = "customer confirms booking";
+                :>> requiredAuthority = (AxisAuthority::customerSide);
+            }
+
+            part awaitingReplyToLapsed : AxisTransition {
+                :>> fromValue = "awaitingReply";
+                :>> toValue = "confirmationLapsed";
+                :>> transitionLabel = "confirmation window passed without reply";
+                :>> requiredAuthority = (AxisAuthority::systemSide);
+            }
+        }
+
+        // -- payment axis (unordered enumeration) -------------------
+
+        part paymentAxis : StatusAxis {
+            :>> axisName = "payment";
+            :>> axisDescription = "The state of payment for this booking — deposit, final settlement, and refund conditions.";
+            :>> axisScope = AxisScope::tenantDeclared;
+            :>> axisAuthority = (AxisAuthority::systemSide);
+            :>> defaultValue = "unpaid";
+
+            part :>> valueSpace : ValueSpace {
+                :>> valueShape = ValueSpaceShape::unorderedEnum;
+                :>> enumValues = ("unpaid", "preAuthHeld", "depositHeld",
+                                  "fullyPrepaid", "paidInFull",
+                                  "partiallyRefunded", "fullyRefunded");
+            }
+
+            part unpaidToDepositHeld : AxisTransition {
+                :>> fromValue = "unpaid";
+                :>> toValue = "depositHeld";
+                :>> transitionLabel = "deposit charged at booking";
+                :>> requiredAuthority = (AxisAuthority::systemSide);
+            }
+
+            part depositHeldToPaidInFull : AxisTransition {
+                :>> fromValue = "depositHeld";
+                :>> toValue = "paidInFull";
+                :>> transitionLabel = "final payment taken at collection";
+                :>> requiredAuthority = (AxisAuthority::systemSide);
+            }
+
+            part depositHeldToPartiallyRefunded : AxisTransition {
+                :>> fromValue = "depositHeld";
+                :>> toValue = "partiallyRefunded";
+                :>> transitionLabel = "partial refund issued (late cancellation)";
+                :>> requiredAuthority = (AxisAuthority::systemSide);
+            }
+
+            part depositHeldToFullyRefunded : AxisTransition {
+                :>> fromValue = "depositHeld";
+                :>> toValue = "fullyRefunded";
+                :>> transitionLabel = "full refund issued (early cancellation)";
+                :>> requiredAuthority = (AxisAuthority::systemSide);
+            }
+        }
+
+        // -- cancellation axis (unordered enumeration) --------------
+
+        part cancellationAxis : StatusAxis {
+            :>> axisName = "cancellation";
+            :>> axisDescription = "Whether this booking has been cancelled, and if so by which party; or no-show recorded.";
+            :>> axisScope = AxisScope::tenantDeclared;
+            :>> axisAuthority = (AxisAuthority::customerSide, AxisAuthority::operatorSide);
+            :>> defaultValue = "active";
+
+            part :>> valueSpace : ValueSpace {
+                :>> valueShape = ValueSpaceShape::unorderedEnum;
+                :>> enumValues = ("active", "cancelledByOwner",
+                                  "cancelledByTenant", "noShow");
+            }
+
+            part activeToCancelledByOwner : AxisTransition {
+                :>> fromValue = "active";
+                :>> toValue = "cancelledByOwner";
+                :>> transitionLabel = "owner cancels the booking";
+                :>> requiredAuthority = (AxisAuthority::customerSide);
+            }
+
+            part activeToCancelledByTenant : AxisTransition {
+                :>> fromValue = "active";
+                :>> toValue = "cancelledByTenant";
+                :>> transitionLabel = "tenant cancels the booking";
+                :>> requiredAuthority = (AxisAuthority::operatorSide);
+            }
+
+            part activeToNoShow : AxisTransition {
+                :>> fromValue = "active";
+                :>> toValue = "noShow";
+                :>> transitionLabel = "appointment time passed without customer arrival";
+                :>> requiredAuthority = (AxisAuthority::operatorSide);
+            }
+        }
+    }
+}
+
