@@ -2188,6 +2188,16 @@ package BusinessModel {
             surfaceRelatedConcepts = true;
             surfaceAttributes = true;
         }
+        @WeightedRelationship {
+            target = "GovernanceRequirement";
+            strength = RelationshipStrength::strong;
+            rationale = "An evidence record exists to demonstrate compliance with a governance requirement — the requirement defines what evidence must be produced. A change to the requirement (its compliance description, its evidence specification, its frequency expectations) requires reassessing the evidence records that demonstrate it.";
+        }
+        @WeightedRelationship {
+            target = "ActivityType";
+            strength = RelationshipStrength::moderate;
+            rationale = "Evidence records are produced by activities — typically governance-category activities such as inspections, reviews, or assessments. A change to the evidence specification (format, retention, frequency) may require reassessing which activities produce it, but activities exist independently of any single evidence specification.";
+        }
         part def AuditEvidenceRecord {
             doc /* A record or document that provides evidence of
                  * compliance with a governance requirement. The
