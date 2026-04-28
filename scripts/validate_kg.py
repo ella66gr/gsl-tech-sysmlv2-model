@@ -773,22 +773,22 @@ ORDER BY ?label
     {
         "id": "Q31",
         "group": "Domain-Identity",
-        "name": "Domain identity individuals by regulatory tier",
+        "name": "Domain identity individuals by regulatory shape",
         "sparql": """
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX ontara-domain: <https://ontara.dev/ontology/domain/>
 PREFIX ontara-domain-ax: <https://ontara.dev/ontology/domain/axioms#>
 
-SELECT ?identity ?label ?tier ?tierLabel WHERE {
+SELECT ?identity ?label ?shape ?shapeLabel WHERE {
   ?identity a ontara-domain:DomainIdentity ;
             rdfs:label ?label ;
-            ontara-domain-ax:hasRegulatoryTier ?tier .
-  ?tier rdfs:label ?tierLabel .
+            ontara-domain-ax:hasRegulatoryShape ?shape .
+  ?shape rdfs:label ?shapeLabel .
 }
-ORDER BY ?tierLabel ?label
+ORDER BY ?shapeLabel ?label
 """,
         "expect_exactly": 4,
-        "display_vars": ["label", "tierLabel"],
+        "display_vars": ["label", "shapeLabel"],
     },
     {
         "id": "Q32",
@@ -802,7 +802,7 @@ PREFIX ontara-domain-ax: <https://ontara.dev/ontology/domain/axioms#>
 SELECT ?identity ?identityLabel ?activity ?activityLabel WHERE {
   ?identity a ontara-domain:DomainIdentity ;
             rdfs:label ?identityLabel ;
-            ontara-domain-ax:hasRegulatoryTier ontara-domain:sectorRegulated ;
+            ontara-domain-ax:hasRegulatoryShape ontara-domain:sectorRegulated ;
             ontara-domain-ax:hasRegulatedActivity ?activity .
   ?activity rdfs:label ?activityLabel .
 }
@@ -820,20 +820,20 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX ontara-domain: <https://ontara.dev/ontology/domain/>
 PREFIX ontara-domain-ax: <https://ontara.dev/ontology/domain/axioms#>
 
-SELECT ?identityLabel ?configLabel ?canonicalKey ?tier WHERE {
+SELECT ?identityLabel ?configLabel ?canonicalKey ?shape WHERE {
   ?identity a ontara-domain:DomainIdentity ;
             rdfs:label ?identityLabel ;
             ontara-domain-ax:hasConfiguration ?config ;
-            ontara-domain-ax:hasRegulatoryTier ?tierInd .
+            ontara-domain-ax:hasRegulatoryShape ?shapeInd .
   ?config a ontara-domain:DomainConfiguration ;
           rdfs:label ?configLabel ;
           ontara-domain-ax:canonicalKey ?canonicalKey .
-  ?tierInd rdfs:label ?tier .
+  ?shapeInd rdfs:label ?shape .
 }
 ORDER BY ?canonicalKey
 """,
         "expect_exactly": 4,
-        "display_vars": ["identityLabel", "configLabel", "canonicalKey", "tier"],
+        "display_vars": ["identityLabel", "configLabel", "canonicalKey", "shape"],
     },
     {
         "id": "Q34",
@@ -855,7 +855,7 @@ SELECT ?class ?label (COUNT(?member) AS ?memberCount) WHERE {
 GROUP BY ?class ?label
 ORDER BY ?label
 """,
-        "expect_exactly": 6,
+        "expect_exactly": 7,
         "display_vars": ["label", "memberCount"],
     },
     {
@@ -876,7 +876,7 @@ SELECT ?prop ?label ?domain ?range WHERE {
 }
 ORDER BY ?label
 """,
-        "expect_exactly": 8,
+        "expect_exactly": 9,
         "display_vars": ["prop", "label", "domain", "range"],
     },
     # --- Group 11: Reasoning (Session 152) ---

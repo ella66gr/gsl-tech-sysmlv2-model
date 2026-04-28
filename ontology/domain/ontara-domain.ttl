@@ -20,8 +20,12 @@ ontara-domain: a owl:Ontology ;
 platform. Two classes (DomainIdentity / DomainConfiguration) representing the
 dual-stack split of domain identity (S142-D1). Grounded in BFO 2020 via IAO:
 DomainIdentity as plan_specification, DomainConfiguration as data_item (S142-D2).
-Designed Session 142 (discussion paper), implemented Session 144."""@en ;
-    owl:versionInfo "Session 144 — initial domain identity vocabulary"@en .
+Designed Session 142 (discussion paper), implemented Session 144. RegulatoryTier
+renamed to RegulatoryShape and rebuilt as a kind-based classification at
+Session 278; ProfessionalBody enum and professionalRegistrations property
+added at Session 278; authorisationRequiredToTrade data property added at
+Session 278."""@en ;
+    owl:versionInfo "Session 278 — RegulatoryShape rebuild and orthogonal supporting attributes"@en .
 
 
 # =============================================================================
@@ -67,42 +71,177 @@ ontara-domain:DomainIdentity rdfs:subClassOf [
 # Enumeration classes
 # =============================================================================
 
-# --- RegulatoryTier ---------------------------------------------------------
+# --- RegulatoryShape (Session 278 — renamed from RegulatoryTier; rebuilt) ----
 
-ontara-domain:RegulatoryTier a owl:Class ;
-    rdfs:label "Regulatory Tier"@en ;
-    rdfs:comment "Four-tier classification of a domain's regulatory environment."@en ;
+ontara-domain:RegulatoryShape a owl:Class ;
+    rdfs:label "Regulatory Shape"@en ;
+    rdfs:comment """Five-value kind-based classification of the principal governance frame
+applicable to a service business. Names what governs the business, not how much.
+Mutually exclusive and exhaustive for the principal regulatory frame; nuance
+carried on orthogonal supporting attributes (authorisationRequiredToTrade,
+professionalRegistrations, regulatedActivities). Renamed from RegulatoryTier
+at Session 278; the previous four-value intensity scale
+(generallyGoverned/lightlyRegulated/partiallyRegulated/sectorRegulated)
+muddled kind and intensity. partiallyRegulated removed; mixed-services
+cases are now expressed by a non-empty regulatedActivities list on a tenant
+whose principal shape is one of the other values. lightlyRegulated has been
+replaced by locallyLicensed for vocabulary precision."""@en ;
     owl:equivalentClass [
         a owl:Class ;
         owl:oneOf (
             ontara-domain:generallyGoverned
-            ontara-domain:lightlyRegulated
-            ontara-domain:partiallyRegulated
+            ontara-domain:locallyLicensed
+            ontara-domain:professionalBodyRegulated
+            ontara-domain:statutoryProfessionRegulated
             ontara-domain:sectorRegulated
         )
     ] .
 
-ontara-domain:generallyGoverned a owl:NamedIndividual, ontara-domain:RegulatoryTier ;
+ontara-domain:generallyGoverned a owl:NamedIndividual, ontara-domain:RegulatoryShape ;
     rdfs:label "Generally Governed"@en ;
-    rdfs:comment "Subject only to general law (consumer protection, employment, H&S). No sector-specific regulatory body."@en .
+    rdfs:comment "Subject only to general business law (consumer, contract, H&S, employment, GDPR). No sector regulator, no licensing regime, no role-binding professional body."@en .
 
-ontara-domain:lightlyRegulated a owl:NamedIndividual, ontara-domain:RegulatoryTier ;
-    rdfs:label "Lightly Regulated"@en ;
-    rdfs:comment "Subject to specific regulations (e.g. COSHH) but no sector-specific regulator with inspection powers."@en .
+ontara-domain:locallyLicensed a owl:NamedIndividual, ontara-domain:RegulatoryShape ;
+    rdfs:label "Locally Licensed"@en ;
+    rdfs:comment "No sector regulator, but provision requires a local-authority licence, environmental permit, or sector-specific statutory duty (animal welfare, COSHH, premises licence) beyond general law."@en .
 
-ontara-domain:partiallyRegulated a owl:NamedIndividual, ontara-domain:RegulatoryTier ;
-    rdfs:label "Partially Regulated"@en ;
-    rdfs:comment "Some activities regulated by a sector body but not all aspects of service delivery."@en .
+ontara-domain:professionalBodyRegulated a owl:NamedIndividual, ontara-domain:RegulatoryShape ;
+    rdfs:label "Professional-Body Regulated"@en ;
+    rdfs:comment "No sector regulator, but practitioners are bound by membership-based professional bodies (BACP, UKCP, ICF, BPS) whose codes of ethics and complaint routes are the principal governance frame."@en .
 
-ontara-domain:sectorRegulated a owl:NamedIndividual, ontara-domain:RegulatoryTier ;
+ontara-domain:statutoryProfessionRegulated a owl:NamedIndividual, ontara-domain:RegulatoryShape ;
+    rdfs:label "Statutory-Profession Regulated"@en ;
+    rdfs:comment "Practitioners hold statutory professional registration (GMC, NMC, HCPC, GPhC) which the regulator can suspend or remove, but the business itself is not within a sector-regulator perimeter."@en .
+
+ontara-domain:sectorRegulated a owl:NamedIndividual, ontara-domain:RegulatoryShape ;
     rdfs:label "Sector Regulated"@en ;
-    rdfs:comment "Fully regulated by a sector-specific body (e.g. CQC) with registration, inspection, and enforcement powers."@en .
+    rdfs:comment "The business itself sits within a sector regulator's perimeter (CQC, FCA, Ofsted, SRA, Ofcom, EA). Authorisation/registration is required to lawfully provide the core service."@en .
 
-ontara-domain:generallyGoverned owl:differentFrom ontara-domain:lightlyRegulated ,
-    ontara-domain:partiallyRegulated , ontara-domain:sectorRegulated .
-ontara-domain:lightlyRegulated owl:differentFrom ontara-domain:partiallyRegulated ,
+ontara-domain:generallyGoverned owl:differentFrom ontara-domain:locallyLicensed ,
+    ontara-domain:professionalBodyRegulated , ontara-domain:statutoryProfessionRegulated ,
     ontara-domain:sectorRegulated .
-ontara-domain:partiallyRegulated owl:differentFrom ontara-domain:sectorRegulated .
+ontara-domain:locallyLicensed owl:differentFrom ontara-domain:professionalBodyRegulated ,
+    ontara-domain:statutoryProfessionRegulated , ontara-domain:sectorRegulated .
+ontara-domain:professionalBodyRegulated owl:differentFrom
+    ontara-domain:statutoryProfessionRegulated , ontara-domain:sectorRegulated .
+ontara-domain:statutoryProfessionRegulated owl:differentFrom ontara-domain:sectorRegulated .
+
+
+# --- ProfessionalBody (Session 278) -----------------------------------------
+
+ontara-domain:ProfessionalBody a owl:Class ;
+    rdfs:label "Professional Body"@en ;
+    rdfs:comment """Closed enum of recognised professional bodies whose registration or membership
+constitutes part of a tenant's regulatory shape. Used on the
+professionalRegistrations multi-valued property of DomainIdentity. Includes
+both statutory bodies (registration that the regulator can suspend or remove,
+with statutory power: GMC, NMC, HCPC, GPhC, GDC, GOsC, GCC, GOC) and
+membership-based bodies (membership of a body whose code of ethics binds the
+member by contract, with complaint routes and possible expulsion but no
+statutory removal of the right to practise: BACP, UKCP, ICF, BPS, BCSH).
+Extension policy: add new values when first encountered by a tenant being
+modelled."""@en ;
+    owl:equivalentClass [
+        a owl:Class ;
+        owl:oneOf (
+            ontara-domain:gmc
+            ontara-domain:nmc
+            ontara-domain:hcpc
+            ontara-domain:gphc
+            ontara-domain:gdc
+            ontara-domain:gosc
+            ontara-domain:gcc
+            ontara-domain:goc
+            ontara-domain:bacp
+            ontara-domain:ukcp
+            ontara-domain:icf
+            ontara-domain:bps
+            ontara-domain:bcsh
+        )
+    ] .
+
+ontara-domain:gmc a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "General Medical Council"@en ;
+    rdfs:comment "Statutory body — registers doctors in the UK; can suspend or remove registration."@en .
+
+ontara-domain:nmc a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "Nursing and Midwifery Council"@en ;
+    rdfs:comment "Statutory body — registers nurses and midwives in the UK."@en .
+
+ontara-domain:hcpc a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "Health and Care Professions Council"@en ;
+    rdfs:comment "Statutory body — registers allied health professions in the UK."@en .
+
+ontara-domain:gphc a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "General Pharmaceutical Council"@en ;
+    rdfs:comment "Statutory body — registers pharmacists and pharmacy technicians in Great Britain."@en .
+
+ontara-domain:gdc a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "General Dental Council"@en ;
+    rdfs:comment "Statutory body — registers dental professionals in the UK."@en .
+
+ontara-domain:gosc a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "General Osteopathic Council"@en ;
+    rdfs:comment "Statutory body — registers osteopaths in the UK."@en .
+
+ontara-domain:gcc a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "General Chiropractic Council"@en ;
+    rdfs:comment "Statutory body — registers chiropractors in the UK."@en .
+
+ontara-domain:goc a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "General Optical Council"@en ;
+    rdfs:comment "Statutory body — registers opticians and dispensing opticians in the UK."@en .
+
+ontara-domain:bacp a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "British Association for Counselling and Psychotherapy"@en ;
+    rdfs:comment "Membership-based body — binds counsellors and psychotherapists by ethics framework and complaint routes."@en .
+
+ontara-domain:ukcp a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "UK Council for Psychotherapy"@en ;
+    rdfs:comment "Membership-based body — binds psychotherapists by ethics framework and complaint routes."@en .
+
+ontara-domain:icf a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "International Coaching Federation"@en ;
+    rdfs:comment "Membership-based body — binds coaches by ethics framework and complaint routes."@en .
+
+ontara-domain:bps a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "British Psychological Society"@en ;
+    rdfs:comment "Membership-based body — binds psychologists by ethics framework and complaint routes."@en .
+
+ontara-domain:bcsh a owl:NamedIndividual, ontara-domain:ProfessionalBody ;
+    rdfs:label "British Council of Self-Hypnosis"@en ;
+    rdfs:comment "Placeholder for analogous membership-based bodies — extend as encountered."@en .
+
+ontara-domain:gmc owl:differentFrom ontara-domain:nmc , ontara-domain:hcpc ,
+    ontara-domain:gphc , ontara-domain:gdc , ontara-domain:gosc , ontara-domain:gcc ,
+    ontara-domain:goc , ontara-domain:bacp , ontara-domain:ukcp , ontara-domain:icf ,
+    ontara-domain:bps , ontara-domain:bcsh .
+ontara-domain:nmc owl:differentFrom ontara-domain:hcpc , ontara-domain:gphc ,
+    ontara-domain:gdc , ontara-domain:gosc , ontara-domain:gcc , ontara-domain:goc ,
+    ontara-domain:bacp , ontara-domain:ukcp , ontara-domain:icf , ontara-domain:bps ,
+    ontara-domain:bcsh .
+ontara-domain:hcpc owl:differentFrom ontara-domain:gphc , ontara-domain:gdc ,
+    ontara-domain:gosc , ontara-domain:gcc , ontara-domain:goc , ontara-domain:bacp ,
+    ontara-domain:ukcp , ontara-domain:icf , ontara-domain:bps , ontara-domain:bcsh .
+ontara-domain:gphc owl:differentFrom ontara-domain:gdc , ontara-domain:gosc ,
+    ontara-domain:gcc , ontara-domain:goc , ontara-domain:bacp , ontara-domain:ukcp ,
+    ontara-domain:icf , ontara-domain:bps , ontara-domain:bcsh .
+ontara-domain:gdc owl:differentFrom ontara-domain:gosc , ontara-domain:gcc ,
+    ontara-domain:goc , ontara-domain:bacp , ontara-domain:ukcp , ontara-domain:icf ,
+    ontara-domain:bps , ontara-domain:bcsh .
+ontara-domain:gosc owl:differentFrom ontara-domain:gcc , ontara-domain:goc ,
+    ontara-domain:bacp , ontara-domain:ukcp , ontara-domain:icf , ontara-domain:bps ,
+    ontara-domain:bcsh .
+ontara-domain:gcc owl:differentFrom ontara-domain:goc , ontara-domain:bacp ,
+    ontara-domain:ukcp , ontara-domain:icf , ontara-domain:bps , ontara-domain:bcsh .
+ontara-domain:goc owl:differentFrom ontara-domain:bacp , ontara-domain:ukcp ,
+    ontara-domain:icf , ontara-domain:bps , ontara-domain:bcsh .
+ontara-domain:bacp owl:differentFrom ontara-domain:ukcp , ontara-domain:icf ,
+    ontara-domain:bps , ontara-domain:bcsh .
+ontara-domain:ukcp owl:differentFrom ontara-domain:icf , ontara-domain:bps ,
+    ontara-domain:bcsh .
+ontara-domain:icf owl:differentFrom ontara-domain:bps , ontara-domain:bcsh .
+ontara-domain:bps owl:differentFrom ontara-domain:bcsh .
 
 
 # --- BmmVocabularyScope -----------------------------------------------------
@@ -411,12 +550,18 @@ ontara-domain-ax:hasIdentity a owl:ObjectProperty ;
 
 # --- DomainIdentity enum-valued properties ----------------------------------
 
-ontara-domain-ax:hasRegulatoryTier a owl:ObjectProperty ;
-    rdfs:label "has regulatory tier"@en ;
+ontara-domain-ax:hasRegulatoryShape a owl:ObjectProperty ;
+    rdfs:label "has regulatory shape"@en ;
     rdfs:domain ontara-domain:DomainIdentity ;
-    rdfs:range ontara-domain:RegulatoryTier ;
-    rdfs:comment "The domain's regulatory tier — determines governance framework relevance."@en ;
+    rdfs:range ontara-domain:RegulatoryShape ;
+    rdfs:comment "The domain's regulatory shape — the principal kind of governance frame that applies. Renamed from hasRegulatoryTier at S278."@en ;
     a owl:FunctionalProperty .
+
+ontara-domain-ax:hasProfessionalRegistration a owl:ObjectProperty ;
+    rdfs:label "has professional registration"@en ;
+    rdfs:domain ontara-domain:DomainIdentity ;
+    rdfs:range ontara-domain:ProfessionalBody ;
+    rdfs:comment "A professional body (statutory or membership-based) whose registration or membership is held by practitioners constituting part of the tenant's regulatory shape. Multi-valued. Added S278."@en .
 
 ontara-domain-ax:hasBmmVocabularyScope a owl:ObjectProperty ;
     rdfs:label "has BMM vocabulary scope"@en ;
@@ -472,6 +617,13 @@ ontara-domain-ax:introducedAtSession a owl:DatatypeProperty ;
     rdfs:comment "The project session number when this domain was first introduced."@en ;
     a owl:FunctionalProperty .
 
+ontara-domain-ax:authorisationRequiredToTrade a owl:DatatypeProperty ;
+    rdfs:label "authorisation required to trade"@en ;
+    rdfs:domain ontara-domain:DomainIdentity ;
+    rdfs:range xsd:boolean ;
+    rdfs:comment "True where the business cannot lawfully offer the core service without prior authorisation, registration, or licence (e.g. CQC registration, FCA authorisation, premises licence). False where obligations are purely ongoing (GDPR, H&S) or fall only on individuals. Added S278."@en ;
+    a owl:FunctionalProperty .
+
 # --- DomainConfiguration data properties -----------------------------------
 
 ontara-domain-ax:canonicalKey a owl:DatatypeProperty ;
@@ -525,11 +677,12 @@ ontara-domain-ax:isActive a owl:DatatypeProperty ;
 
 ontara-domain:cafe-identity a owl:NamedIndividual , ontara-domain:DomainIdentity ;
     rdfs:label "Cafe Domain Identity"@en ;
-    ontara-domain-ax:hasRegulatoryTier ontara-domain:generallyGoverned ;
+    ontara-domain-ax:hasRegulatoryShape ontara-domain:generallyGoverned ;
     ontara-domain-ax:hasBmmVocabularyScope ontara-domain:full ;
     ontara-domain-ax:hasDomainPurpose ontara-domain:referenceValidation ;
     ontara-domain-ax:hasJurisdiction ontara-domain:england ;
     ontara-domain-ax:hasOrganisationalForm ontara-domain:registeredIndividual ;
+    ontara-domain-ax:authorisationRequiredToTrade "false"^^xsd:boolean ;
     ontara-domain-ax:domainDescription "Reference validation domain — original demonstrator. Immediate retail service with walk-in customers and 2-minute fulfilment cycle."^^xsd:string ;
     ontara-domain-ax:introducedAtSession "1"^^xsd:integer ;
     ontara-domain-ax:hasConfiguration ontara-domain:cafe-configuration .
@@ -538,11 +691,12 @@ ontara-domain:cafe-identity a owl:NamedIndividual , ontara-domain:DomainIdentity
 
 ontara-domain:suds-identity a owl:NamedIndividual , ontara-domain:DomainIdentity ;
     rdfs:label "Suds Domain Identity"@en ;
-    ontara-domain-ax:hasRegulatoryTier ontara-domain:lightlyRegulated ;
+    ontara-domain-ax:hasRegulatoryShape ontara-domain:locallyLicensed ;
     ontara-domain-ax:hasBmmVocabularyScope ontara-domain:full ;
     ontara-domain-ax:hasDomainPurpose ontara-domain:crossDomainValidation ;
     ontara-domain-ax:hasJurisdiction ontara-domain:england ;
     ontara-domain-ax:hasOrganisationalForm ontara-domain:registeredIndividual ;
+    ontara-domain-ax:authorisationRequiredToTrade "false"^^xsd:boolean ;
     ontara-domain-ax:domainDescription "Cross-domain validation domain — batch processing laundry service. Weight/type pricing, COSHH governance chain."^^xsd:string ;
     ontara-domain-ax:introducedAtSession "16"^^xsd:integer ;
     ontara-domain-ax:hasConfiguration ontara-domain:suds-configuration .
@@ -551,12 +705,13 @@ ontara-domain:suds-identity a owl:NamedIndividual , ontara-domain:DomainIdentity
 
 ontara-domain:paws-identity a owl:NamedIndividual , ontara-domain:DomainIdentity ;
     rdfs:label "Paws Domain Identity"@en ;
-    ontara-domain-ax:hasRegulatoryTier ontara-domain:lightlyRegulated ;
+    ontara-domain-ax:hasRegulatoryShape ontara-domain:locallyLicensed ;
     ontara-domain-ax:hasBmmVocabularyScope ontara-domain:generalOnly ;
     ontara-domain-ax:hasDomainPurpose ontara-domain:pedagogicalAnchoring ,
         ontara-domain:crossDomainValidation ;
     ontara-domain-ax:hasJurisdiction ontara-domain:england ;
     ontara-domain-ax:hasOrganisationalForm ontara-domain:registeredIndividual ;
+    ontara-domain-ax:authorisationRequiredToTrade "false"^^xsd:boolean ;
     ontara-domain-ax:domainDescription "Pedagogical anchoring and cross-domain validation domain — appointment-based dog grooming. Breed/size surcharges."^^xsd:string ;
     ontara-domain-ax:introducedAtSession "43"^^xsd:integer ;
     ontara-domain-ax:hasConfiguration ontara-domain:paws-configuration .
@@ -565,13 +720,15 @@ ontara-domain:paws-identity a owl:NamedIndividual , ontara-domain:DomainIdentity
 
 ontara-domain:gsl-identity a owl:NamedIndividual , ontara-domain:DomainIdentity ;
     rdfs:label "GSL Domain Identity"@en ;
-    ontara-domain-ax:hasRegulatoryTier ontara-domain:sectorRegulated ;
+    ontara-domain-ax:hasRegulatoryShape ontara-domain:sectorRegulated ;
     ontara-domain-ax:hasBmmVocabularyScope ontara-domain:production ;
     ontara-domain-ax:hasDomainPurpose ontara-domain:productionUse ;
     ontara-domain-ax:hasJurisdiction ontara-domain:england ;
     ontara-domain-ax:hasRegulatedActivity ontara-domain:treatment ,
         ontara-domain:diagnosticAndScreeningProcedures ;
+    ontara-domain-ax:hasProfessionalRegistration ontara-domain:gmc , ontara-domain:nmc ;
     ontara-domain-ax:hasOrganisationalForm ontara-domain:registeredIndividual ;
+    ontara-domain-ax:authorisationRequiredToTrade "true"^^xsd:boolean ;
     ontara-domain-ax:domainDescription "Production domain — GenderSense Limited. Private gender-affirming healthcare service. First production tenant."^^xsd:string ;
     ontara-domain-ax:introducedAtSession "8"^^xsd:integer ;
     ontara-domain-ax:hasConfiguration ontara-domain:gsl-configuration .

@@ -815,24 +815,124 @@ package Foundation {
             attribute characteristics : DataCharacteristic [1..*];
         }
 
-        // -- Domain identity enums (Session 59 design, Session 142 extension) --
+        // -- Domain identity enums (Session 59 design, Session 142 extension,
+        //                            Session 278 RegulatoryShape rebuild) --
         // Three original enums from Session 59 domain identity paper (B15).
         // Three new enums from Session 142 dual-stack extension (S142-D7).
+        // RegulatoryTier renamed to RegulatoryShape and rebuilt from an
+        // intensity scale to a kind-based classification at Session 278.
+        // ProfessionalBody enum added Session 278.
         // All placed in CommonTypes for independent importability by
         // governance, generators, and other subsystems.
 
-        enum def RegulatoryTier {
-            doc /* Four-tier classification of regulatory environment.
-                 * Determines which governance frameworks are relevant
-                 * during governance activation. Ordered from least to
-                 * most regulated.
+        enum def RegulatoryShape {
+            doc /* Five-value kind-based classification of the principal
+                 * governance frame applicable to a service business.
+                 * Names what governs the business, not how much.
+                 * Mutually exclusive and exhaustive for the principal
+                 * regulatory frame; nuance carried on orthogonal
+                 * supporting attributes (authorisationRequiredToTrade,
+                 * professionalRegistrations, regulatedActivities).
+                 *
+                 * generallyGoverned: only general business law (consumer,
+                 *   contract, H&S, employment, GDPR). No sector regulator,
+                 *   no licensing regime, no role-binding professional body.
+                 *   Example: Cafe.
+                 * locallyLicensed: no sector regulator, but provision
+                 *   requires a local-authority licence, environmental
+                 *   permit, or sector-specific statutory duty (animal
+                 *   welfare, COSHH, premises licence) beyond general law.
+                 *   Example: Suds, Paws.
+                 * professionalBodyRegulated: no sector regulator, but
+                 *   practitioners are bound by membership-based
+                 *   professional bodies (BACP, UKCP, ICF, BPS) whose
+                 *   codes of ethics and complaint routes are the principal
+                 *   governance frame. Example: Minds.
+                 * statutoryProfessionRegulated: practitioners hold
+                 *   statutory professional registration (GMC, NMC, HCPC,
+                 *   GPhC) that the regulator can suspend or remove, but
+                 *   the business itself is not within a sector-regulator
+                 *   perimeter. Example: an independent advisory clinic
+                 *   below CQC threshold.
+                 * sectorRegulated: the business itself sits within a
+                 *   sector regulator's perimeter (CQC, FCA, Ofsted, SRA,
+                 *   Ofcom, EA). Authorisation/registration is required
+                 *   to lawfully provide the core service.
+                 *   Example: Ears, GSL.
+                 *
+                 * Renamed from RegulatoryTier and rebuilt at S278:
+                 * the previous four-value intensity scale
+                 * {generallyGoverned, lightlyRegulated, partiallyRegulated,
+                 * sectorRegulated} muddled kind and intensity. The new
+                 * vocabulary captures kind explicitly. partiallyRegulated
+                 * is removed; mixed-services-with-regulated-components
+                 * cases are now expressed by a non-empty regulatedActivities
+                 * list on a tenant whose principal shape is one of the
+                 * other values. lightlyRegulated → locallyLicensed for
+                 * vocabulary precision. moderatelyRegulated — used in
+                 * documentation but never in the SysML enum — is replaced
+                 * by sectorRegulated for the Ears-shaped case.
                  *
                  * Business meta model concept. Domain identity (B15).
-                 * Session 59, confirmed Session 142. */
+                 * Session 59, confirmed Session 142, rebuilt Session 278. */
             generallyGoverned;
-            lightlyRegulated;
-            partiallyRegulated;
+            locallyLicensed;
+            professionalBodyRegulated;
+            statutoryProfessionRegulated;
             sectorRegulated;
+        }
+
+        enum def ProfessionalBody {
+            doc /* Closed enum of recognised professional bodies whose
+                 * registration or membership constitutes part of a
+                 * tenant's regulatory shape. Used on the
+                 * DomainIdentity.professionalRegistrations multi-valued
+                 * attribute. Each entry carries an implicit category
+                 * (statutory or membership-based) — see the value
+                 * descriptions below; surfaced as documentation rather
+                 * than a separate axis enum to keep one queryable list.
+                 *
+                 * Statutory bodies (registration that the regulator can
+                 * suspend or remove, with statutory power):
+                 *   gmc — General Medical Council (doctors, UK).
+                 *   nmc — Nursing and Midwifery Council.
+                 *   hcpc — Health and Care Professions Council.
+                 *   gphc — General Pharmaceutical Council.
+                 *   gdc — General Dental Council.
+                 *   gosc — General Osteopathic Council.
+                 *   gcc — General Chiropractic Council.
+                 *   goc — General Optical Council.
+                 *
+                 * Membership-based bodies (membership of a body whose
+                 * code of ethics binds the member by contract, with
+                 * complaint routes and possible expulsion but no
+                 * statutory removal of the right to practise):
+                 *   bacp — British Association for Counselling and
+                 *     Psychotherapy.
+                 *   ukcp — UK Council for Psychotherapy.
+                 *   icf — International Coaching Federation.
+                 *   bps — British Psychological Society.
+                 *   bcsh — British Council of Self-Hypnosis (placeholder
+                 *     for analogous bodies — extend as encountered).
+                 *
+                 * Extension policy: add new values when first encountered
+                 * by a tenant being modelled. Do not pre-populate.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 278. */
+            gmc;
+            nmc;
+            hcpc;
+            gphc;
+            gdc;
+            gosc;
+            gcc;
+            goc;
+            bacp;
+            ukcp;
+            icf;
+            bps;
+            bcsh;
         }
 
         enum def BmmVocabularyScope {
@@ -973,14 +1073,24 @@ package Foundation {
                  *
                  * BFO grounding: IAO:plan_specification (S142-D2).
                  * Domain identity (B15). Dual-stack (B21).
-                 * Multi-tenancy (A13). Session 142 design, Session 143. */
+                 * Multi-tenancy (A13). Session 142 design, Session 143.
+                 * Session 278: regulatoryTier renamed to regulatoryShape
+                 * (kind-based, not intensity-based); two orthogonal
+                 * supporting attributes added
+                 * (authorisationRequiredToTrade,
+                 * professionalRegistrations). regulatedActivities
+                 * is now also the carrier of the
+                 * mixed-services-with-regulated-components case (the
+                 * old partiallyRegulated tier). */
 
-            attribute regulatoryTier : RegulatoryTier;
+            attribute regulatoryShape : RegulatoryShape;
             attribute bmmVocabularyScope : BmmVocabularyScope;
             attribute domainPurpose : DomainPurpose[1..*];
             attribute jurisdiction : Jurisdiction;
             attribute regulatedActivities : RegulatedActivity[0..*];
+            attribute professionalRegistrations : ProfessionalBody[0..*];
             attribute organisationalForm : OrganisationalForm;
+            attribute authorisationRequiredToTrade : Boolean;
             attribute description : String;
             attribute introducedSession : Integer;
             ref domainConfiguration : DomainConfiguration;
@@ -1021,13 +1131,16 @@ package Foundation {
             doc /* Reference validation domain — the original demonstrator
                  * against which all meta model patterns were first
                  * developed. Immediate retail, walk-in, 2-minute cycle.
-                 * Generally governed (no sector-specific regulation). */
+                 * Generally governed (no sector-specific regulation,
+                 * no licensing regime, no role-binding professional
+                 * body). Subject only to general business law. */
 
-            attribute :>> regulatoryTier = RegulatoryTier::generallyGoverned;
+            attribute :>> regulatoryShape = RegulatoryShape::generallyGoverned;
             attribute :>> bmmVocabularyScope = BmmVocabularyScope::full;
             attribute :>> domainPurpose = DomainPurpose::referenceValidation;
             attribute :>> jurisdiction = Jurisdiction::england;
             attribute :>> organisationalForm = OrganisationalForm::registeredIndividual;
+            attribute :>> authorisationRequiredToTrade = false;
             attribute :>> description = "Reference validation domain — original demonstrator. Immediate retail service with walk-in customers and 2-minute fulfilment cycle.";
             attribute :>> introducedSession = 1;
             ref :>> domainConfiguration = cafeConfiguration;
@@ -1049,13 +1162,16 @@ package Foundation {
             doc /* Cross-domain validation domain — batch processing
                  * laundry service. Validates meta model generality
                  * beyond immediate retail. Weight/type pricing,
-                 * COSHH governance chain. */
+                 * COSHH governance chain. Locally licensed (subject to
+                 * COSHH and other operator-controlled statutory duties
+                 * beyond general business law; no sector regulator). */
 
-            attribute :>> regulatoryTier = RegulatoryTier::lightlyRegulated;
+            attribute :>> regulatoryShape = RegulatoryShape::locallyLicensed;
             attribute :>> bmmVocabularyScope = BmmVocabularyScope::full;
             attribute :>> domainPurpose = DomainPurpose::crossDomainValidation;
             attribute :>> jurisdiction = Jurisdiction::england;
             attribute :>> organisationalForm = OrganisationalForm::registeredIndividual;
+            attribute :>> authorisationRequiredToTrade = false;
             attribute :>> description = "Cross-domain validation domain — batch processing laundry service. Weight/type pricing, COSHH governance chain.";
             attribute :>> introducedSession = 16;
             ref :>> domainConfiguration = sudsConfiguration;
@@ -1078,13 +1194,16 @@ package Foundation {
                  * domain — appointment-based dog grooming service.
                  * Dual purpose (S142-D6): simple enough to introduce
                  * concepts, different enough to validate generalisation.
-                 * Breed/size surcharges. */
+                 * Breed/size surcharges. Locally licensed (Animal
+                 * Welfare Act duties; some local authorities require
+                 * grooming-specific licences). */
 
-            attribute :>> regulatoryTier = RegulatoryTier::lightlyRegulated;
+            attribute :>> regulatoryShape = RegulatoryShape::locallyLicensed;
             attribute :>> bmmVocabularyScope = BmmVocabularyScope::generalOnly;
             attribute :>> domainPurpose = (DomainPurpose::pedagogicalAnchoring, DomainPurpose::crossDomainValidation);
             attribute :>> jurisdiction = Jurisdiction::england;
             attribute :>> organisationalForm = OrganisationalForm::registeredIndividual;
+            attribute :>> authorisationRequiredToTrade = false;
             attribute :>> description = "Pedagogical anchoring and cross-domain validation domain — appointment-based dog grooming. Breed/size surcharges.";
             attribute :>> introducedSession = 43;
             ref :>> domainConfiguration = pawsConfiguration;
@@ -1106,16 +1225,21 @@ package Foundation {
             doc /* Production domain — GenderSense Limited, a private
                  * gender-affirming healthcare service. The primary
                  * motivating use case and first production tenant.
-                 * Sector-regulated (CQC). Under A13, GSL is the most
+                 * Sector-regulated (CQC). Practitioners hold statutory
+                 * professional registrations (GMC, NMC). Authorisation
+                 * required to trade (CQC registration is a precondition
+                 * to lawful provision). Under A13, GSL is the most
                  * important tenant but still a tenant — not structurally
                  * privileged over demonstrator domains. */
 
-            attribute :>> regulatoryTier = RegulatoryTier::sectorRegulated;
+            attribute :>> regulatoryShape = RegulatoryShape::sectorRegulated;
             attribute :>> bmmVocabularyScope = BmmVocabularyScope::production;
             attribute :>> domainPurpose = DomainPurpose::production;
             attribute :>> jurisdiction = Jurisdiction::england;
             attribute :>> regulatedActivities = (RegulatedActivity::treatment, RegulatedActivity::diagnosticAndScreeningProcedures);
+            attribute :>> professionalRegistrations = (ProfessionalBody::gmc, ProfessionalBody::nmc);
             attribute :>> organisationalForm = OrganisationalForm::registeredIndividual;
+            attribute :>> authorisationRequiredToTrade = true;
             attribute :>> description = "Production domain — GenderSense Limited. Private gender-affirming healthcare service. First production tenant.";
             attribute :>> introducedSession = 8;
             ref :>> domainConfiguration = gslConfiguration;
