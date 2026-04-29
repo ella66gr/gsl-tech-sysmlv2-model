@@ -2,30 +2,41 @@
 
 ## What This Is
 
-Ontara is a service system development and delivery platform built on SysML v2. The SysML model is the single source of truth — it generates everything. The primary production use case is GenderSense Limited (GSL), a private gender-affirming healthcare service. The sole developer and architect is Ella Green.
+Ontara is a service system development and delivery platform built on SysML v2 and OWL 2 DL. The SysML model and the OWL ontology stack together are the single source of truth for platform structure — generators produce console data, evaluators, ontology files, and other downstream artefacts. The sole developer and architect is Ella Green.
+
+Ontara is in its **contraction phase** (from S241), driving toward a v1 working prototype. V1 acceptance is defined in the vault at `02 ONTARA/01 Ontara START HERE/ontara-ref-v1-acceptance.md`. The v1 prototype is a locally-hosted platform running concurrent demonstrator tenants — currently Cafe, Paws, Suds, Ears, and Minds — each able to simulate a period of operation, present band-appropriate user surfaces, and answer queries about its performance. **GSL (GenderSense Limited)** is the production target *post-v1*; it is not a v1 demonstrator.
 
 ## Architecture in Brief
 
-- **Two meta models:** Business Meta Model (BMM — what a service business *is*) and Service Meta Model (SMM — how a system *works*). They are distinct and connected by explicit mappings. Note: SMM was previously called BSMM (Business System Meta Model). Renamed Session 92. The SysML section name `bsmm-general-vocabulary` is a structural identifier and stays.
-- **Six layers:** L6 SysML v2 language → L5 BMM → L4 SMM → L3 Business model instances → L2 System model instances → L1 Runtime
-- **Three demonstrator domains:** Cafe (coffee shop, full app), Suds (laundry, BMM only), Paws (dog grooming, BMM only) — used for cross-domain validation
-- **Six BMM concerns:** ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel (Session 81). 34 General elements.
-- **Comprehension architecture:** Every BMM element has @BfoType, @UserFacing, @PurposiveDescription, @Comprehension, and @WeightedRelationship annotations. 34/34 coverage, 96 weighted relationships. @BfoType maps each element to its BFO 2020 category and mid-level ontology parent.
-- **Knowledge graph (Stage 5–7):** Dual-formalism platform — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO + IAO as mid-level, PROV-O core subset as provenance import (Session 150). GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence. Full OWL 2 DL reasoning via HermiT (Robot). Phase 2 complete: disjointness axioms, 14 object properties, existential/cardinality restrictions, 96 reified weighted relationships. Governance ontology module (`ontara-gov:` namespace) hand-authored and validated (Session 126). Domain identity module (`ontara-domain:` namespace) hand-authored (Session 144): 2 classes, 6 enums, 8+8 properties, 8 individuals. Reasoning metamodel module (`ontara-rsn:` namespace) hand-authored Phase 1+2+3 complete (Sessions 150–157): 42 classes, 15 named individuals, 40 object properties, 10 datatype properties, PROV-O dual subclassing for 7 classes, 2 cross-module governance alignment axioms (Obligation/Prohibition → HardConstraint). Phase 2 adds: 6 Heuristic subtypes + HeuristicPack (Step 2.1), 4 Cynefin DecisionMode individuals + activatesComponent/transitionsTo (Step 2.2), CombinationAlgebra class + 4 algebra individuals + constraint satisfaction properties (Step 2.3). Phase 3 adds: STAMP/STPA safety control structures (SafetyConstraint, ControlStructure, ControlLoop, ControlAction, UnsafeControlAction, UnsafeControlActionType + 4 STPA individuals), FRAM-ready function/variability slots (FRAMFunction, VariabilityProfile), safety–governance alignment (hasSafetyEvidence, monitoredBy). 13-file ontology stack. 66-query SPARQL validation suite (12 groups, all PASSED). MVP CQC Regulation 12 test individuals validated. Ears domain clinical reasoning instance population added (Session 166): ~83 named individuals exercising 25/42 reasoning classes across 5 clinical exercises + STAMP/STPA safety. Stage 7 Phase 1+2+3 complete — HermiT CONSISTENT.
+- **Two meta models:** Business Meta Model (BMM — what a service business *is*) and Service Meta Model (SMM — how a system *works*). They are distinct and connected by explicit mappings. Note: SMM was previously called BSMM (Business System Meta Model). Renamed S92. The SysML section name `bsmm-general-vocabulary` is a structural identifier and stays.
+- **Eight strata** (per Architecture Principles v5.3 §3): Foundation → Domain Ontologies → Metamodel → Configured Model → State Representation (SRS) → Substrate Reasoning → Binding Realisation Layer (BRL) → Platform Realisation (PRS). Strengthened A4 (S208–S210) commits the Knowledge Graph as the canonical SRS substrate (B22).
+- **Five v1 demonstrator tenants:** Cafe (coffee shop, full app prior art), Paws (dog grooming), Suds (laundry), Ears (clinical / regulated-care, furthest-progressed clinical demonstrator, W-015), Minds (counselling / professional-body-regulated). Cross-domain validation discipline (J1) requires every BMM concept to validate in at least two demonstrators.
+- **Six BMM concerns:** ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel (sixth concern added S81). 34 BMM General `part def`s.
+- **Comprehension architecture:** Every BMM General `part def` carries `@CatalogueTag`, `@BfoType`, `@UserFacing`, `@PurposiveDescription`, `@Comprehension`, and `@WeightedRelationship` annotations. 34/34 coverage; 96 weighted relationships. Tenant projections (`paws.sysml`, `minds.sysml`, etc.) carry doc blocks only — annotation semantics are inherited via `:>` and `part` instantiation.
+- **Knowledge graph:** Dual-formalism — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO + IAO + PROV-O core subset as mid-level. GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence. Full OWL 2 DL reasoning via HermiT (Robot). Stage 7 Phase 1+2+3 complete — HermiT CONSISTENT. Hand-authored modules: `ontara-governance.ttl`, `ontara-domain.ttl`, `ontara-reasoning.ttl` (42 classes, 15 named individuals, 40 object properties, 10 datatype properties, PROV-O dual subclassing, STAMP/STPA safety structures, FRAM-ready function/variability slots), `ears-reasoning-instances.ttl` (~83 named individuals, S166). 13-file ontology stack. **66-query SPARQL validation suite across 12 groups.** MVP CQC Regulation 12 test individuals validated.
+- **PostgreSQL `ontara` repository** (lives in the vault at `02 ONTARA/db/`): canonical store for concepts, concept relationships, EIL entries, risks, the work tracker (DCR, active work items, OW register). Surfaced through (a) generated markdown exports (`ontara-ref-glossary.md`, etc.) regenerated on every database write, and (b) the **resolver service** at `http://localhost:7300/`. Concept additions and changes flow through database migrations or the resolver admin UI, not through markdown edits.
 
-## Repository Layout
+## Two Repos, Kept Separate
+
+Ontara work spans two git repos. They have different content responsibilities and **vault-resident material is NOT mirrored into the SysML repo**.
+
+- **SysML repo** (`~/Developer/gsl-tech/gsl-sysml-model`, this repo) — SysML model source (`.sysml`), hand-authored OWL modules (`.ttl`), generation scripts, generated artefacts, the SysML syntax reference, demonstrator app code (cafe), the Ontara Console, the Portal, this `CLAUDE.md`, and code-adjacent material (plans, notes Ella places in the repo).
+- **Vault repo** (`/Users/ellagreen/Obsidian/GenderSense`) — foundations papers, reference documents, session reports and preparation notes, discussion papers, concept graph notes, plans, the glossary, the work tracker, the V&A reference, the workflow guide, the EIL, the PostgreSQL `db/` repository, and any other vault material.
+
+Claude does not propose `cp` commands that copy vault documents into the SysML repo and does not propose overwriting `documentation/archive/` with vault content. The historical `documentation/archive/` retains earlier in-repo material; it is not a target for new vault mirroring.
+
+## SysML Repository Layout
 
 ```
-model/                     # Core SysML v2 model (12 .sysml files)
+model/                     # Core SysML v2 model (13 .sysml files)
 exercises/
-  coffeeshop-demonstrator/ # Full running app (SvelteKit + Temporal + EHRbase + PostgreSQL)
-  suds-demonstrator/       # Laundry BMM instance
-  paws-demonstrator/       # Dog grooming BMM instance
+  coffeeshop-demonstrator/ # Cafe demonstrator: full running app (SvelteKit + Temporal + EHRbase + PostgreSQL)
+  suds-demonstrator/       # Suds (laundry) BMM instance
+  paws-demonstrator/       # Paws (dog grooming) BMM instance
 console/                   # Ontara Console (SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4)
 portal/                    # Ontara Portal (SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4 + SQLite)
 scripts/                   # Python generators, shared modules, and shell tools
   archive/                 # Archived superseded generators (with provenance)
-  reason_kg.py             # OWL 2 DL reasoning via Robot + HermiT
 generated/                 # All generated output (DO NOT EDIT manually)
   ontara/model-introspection.json  # Console data source
   ontology/                # Generated OWL/Turtle and mapping IR (5 files)
@@ -34,73 +45,81 @@ ontology/                  # Knowledge graph config and imported ontologies
   config/                  # Mapping rules (YAML), CCO IRI lookup (JSON)
   governance/              # Hand-authored governance ontology (ontara-governance.ttl) + test individuals
   domain/                  # Hand-authored domain identity ontology (ontara-domain.ttl)
-  reasoning/               # Hand-authored reasoning metamodel (ontara-reasoning.ttl)
+  reasoning/               # Hand-authored reasoning metamodel (ontara-reasoning.ttl) + Ears instances
   imports/                 # BFO 2020, CCO, IAO, PROV-O core ontology files
   catalog-v001.xml         # XML catalog for Robot IRI resolution
 tools/                     # External tooling
   robot.jar                # Robot OWL tool (wraps HermiT reasoner)
 documentation/
   reference/               # SysML syntax ref, KerML reserved words
-  archive/                 # Committed snapshots (strategic, plans, session-reports, design)
+  archive/                 # Historical in-repo material (not for new vault mirroring)
 libraries/                 # Shared libraries
 concept-graph/             # Generated concept graph (Mermaid + Obsidian)
 spikes/                    # Experimental code
+.claude/skills/            # Claude Code skills
+CLAUDE.md                  # this file
 ```
 
 ## Key File Paths
 
-- **SysML model files:** `model/*.sysml` (12 files: architectural-structure, business-model, business-scenarios, business-strategy, enterprise, foundation, gendersense, knowledge, operations, pattern-catalogue, platform, service-delivery)
-- **Demonstrator models:** `exercises/coffeeshop-demonstrator/model/`, `exercises/suds-demonstrator/`, `exercises/paws-demonstrator/`
+- **SysML model files:** `model/*.sysml` (13 files: architectural-structure, business-model, business-scenarios, business-strategy, canonical-runtime, enterprise, foundation, gendersense, knowledge, operations, pattern-catalogue, platform, service-delivery)
+- **Tenant projections:** Paws and Minds projections under `exercises/<tenant>-demonstrator/`. Tenant projections specialise BMM General `part def`s and carry **doc blocks only** — annotations are inherited.
 - **Console app:** `console/` (SvelteKit, uses pnpm)
-- **Console data:** `console/static/data/model-introspection.json` (copied from `generated/ontara/`)
+- **Console data:** `console/static/data/model-introspection.json` (sync via `pnpm refresh-data`, defined as `cp ../generated/ontara/model-introspection.json static/data/`)
 - **Introspection generator:** `scripts/gen_model_introspection.py`
-- **OWL pipeline generator:** `scripts/gen_owl_pipeline.py` (Stage 5 — reads SysML, classifies via mapping rules, outputs OWL/Turtle)
-- **Shared SysML parser:** `scripts/sysml_parser.py` (used by introspection and OWL pipeline generators)
-- **Shared KG utilities:** `scripts/kg_utils.py` (GraphDB connection, SPARQL queries, IRI shortening — used by validate_kg.py and diff_kg.py)
+- **OWL pipeline generator:** `scripts/gen_owl_pipeline.py`
+- **Shared SysML parser:** `scripts/sysml_parser.py` (used by introspection and OWL pipeline generators; S104)
+- **Shared KG utilities:** `scripts/kg_utils.py` (GraphDB connection, SPARQL queries, IRI shortening; used by `validate_kg.py` and `diff_kg.py`; S137)
 - **GraphDB setup:** `scripts/setup_graphdb.py`
 - **OWL 2 DL reasoner:** `scripts/reason_kg.py` (HermiT via Robot)
-- **Hand-authored axioms:** `ontology/axioms/ontara-bmm-axioms.ttl` (disjointness, object properties, restrictions)
-- **Hand-authored reasoning vocabulary:** `ontology/reasoning/ontara-reasoning.ttl` (`ontara-rsn:` namespace, Phase 1+2+3 complete — 42 classes, 15 named individuals, 40 object properties, 10 datatype properties, dual BFO+PROV-O subclassing, SEPIO evidence architecture, governance alignment axioms, heuristic packs, Cynefin decision mode routing, combination algebras, STAMP/STPA safety structures, FRAM function/variability slots)
-- **Ears reasoning instances:** `ontology/reasoning/ears-reasoning-instances.ttl` (Ears domain clinical reasoning individuals — ~83 named individuals exercising 25/42 reasoning classes across 5 clinical exercises + STAMP/STPA safety, Session 166)
-- **PROV-O core subset:** `ontology/imports/prov-core.ttl` (W3C PROV-O Starting Point classes and properties)
-- **Robot JAR:** `tools/robot.jar` (OWL tool, wraps HermiT)
-- **XML catalog:** `ontology/catalog-v001.xml` (local IRI resolution for Robot/Protégé)
-- **Other generators:** `scripts/gen_concept_graph.py`, `scripts/gen_package_hierarchy.py`, `scripts/gen_system_manifest.py`, `scripts/gen_constraint_evaluator.py`, `scripts/gen_decision_table_evaluator.py`, `scripts/projection_engine.py`
-- **Mapping rules:** `ontology/config/mapping-rules.yaml` (declarative classification rules for SysML→OWL)
-- **CCO IRI lookup:** `ontology/config/cco-iri-lookup.json` (opaque CCO IRIs resolved from GraphDB)
-- **SysML syntax reference:** `documentation/reference/gsl-sysml-v2-syntax-reference.md`
-- **KerML reserved words:** `documentation/reference/KerML-Reserved-Words.md`
-- **Existing CLI tool:** `scripts/ontara` (shell script for package hierarchy views — renamed from `gsl` Session 65)
+- **Hand-authored axioms:** `ontology/axioms/ontara-bmm-axioms.ttl`
+- **Hand-authored reasoning vocabulary:** `ontology/reasoning/ontara-reasoning.ttl`
+- **Ears reasoning instances:** `ontology/reasoning/ears-reasoning-instances.ttl`
+- **PROV-O core subset:** `ontology/imports/prov-core.ttl`
+- **Robot JAR:** `tools/robot.jar`
+- **XML catalog:** `ontology/catalog-v001.xml`
+- **Other generators:** `scripts/gen_concept_graph.py`, `scripts/gen_package_hierarchy.py`, `scripts/gen_system_manifest.py`, `scripts/gen_constraint_evaluator.py`, `scripts/gen_decision_table_evaluator.py`, `scripts/projection_engine.py`, `scripts/diff_kg.py`, `scripts/validate_kg.py`
+- **Mapping rules:** `ontology/config/mapping-rules.yaml`
+- **CCO IRI lookup:** `ontology/config/cco-iri-lookup.json`
+- **SysML syntax reference:** `documentation/reference/gsl-sysml-v2-syntax-reference.md` (stable filename — versioned snapshots in `documentation/reference/syntax-versions/`)
+- **KerML reserved words:** `documentation/reference/KerML-Reserved-Words.md` (vault canonical copy at `02 ONTARA/02 Ontara DEVELOPMENT/Ontara REFERENCE & GUIDES/ontara-ref-authority-kerml-reserved-words.md`)
+- **`ontara` shell toolkit:** `scripts/ontara` (renamed from `gsl` at S65)
+
+## PostgreSQL `ontara` Database (in the vault)
+
+The `ontara` PostgreSQL database lives on the macOS host (Homebrew Postgres 16). Its repository (schema, migrations, queries, resolver service code, exports) is **inside the vault** at `/Users/ellagreen/Obsidian/GenderSense/02 ONTARA/db/`. From inside the SysML repo, the database is reached via:
+
+- **Direct psql** — `psql -d ontara …` (peer auth, no password). Migrations: `psql -d ontara -f path/to/migration.sql`.
+- **Resolver HTTP service** — `http://localhost:7300/`. Public read views (concepts, EIL, risks, work items, OW register, DCR). Token-protected write surface at `/api/{ct}` and `/admin/{ct}`. Token at `02 ONTARA/db/resolver/.ontara-token`.
+- **Postgres MCP** (when in a Claude Desktop session) — TCP via Docker bridge, used for ad-hoc inspection.
+
+Full reach details and the `pg_hba.conf` setup are in the vault at `02 ONTARA/02 Ontara DEVELOPMENT/Ontara REFERENCE & GUIDES/ontara-ref-guide-db-access.md`. The shell command catalogue (resolver service control, generator commands, console operations) is in the vault at `ontara-ref-guide-shell-commands.md`.
 
 ## Tech Stack
 
-- **Console:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4. Package manager: pnpm. Dev port: 5173. **Navigation infrastructure (Session 133):** `NavigationStore` in `$lib/stores/navigation.svelte.ts` with `NavigationProvider`, `NavLink`, and `Breadcrumb` components. Glossary and Ontology routes migrated. Other routes can opt in incrementally — see `$lib/types/navigation.ts` for the `PageStateContract` interface.
-- **Portal:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4 + SQLite (better-sqlite3) + bcryptjs. Package manager: pnpm. Dev port: 5174. Warm teal theme distinct from console's cool slate. Phase 1 (Session 175): user auth, domain CRUD, multi-domain switching, empty dashboard shell. Phase 2 (Session 176): 7-module catalogue (→ 10 by Phase 4), schema-driven configuration, two intersecting lifecycle state machines (installation + operational), dashboard as state landscape with inline lifecycle actions, sidebar module list with state dots, trash management. Phase 3 (Session 178): domain context model structured by BMM concerns, module wiring via shared concern overlap, composition guidance with lifecycle impact warnings. Phase 4 (Sessions 179–181): domain-level fidelity settings, batch event generation (Customer Traffic Generator + Scenario Driver), simulation runs with simplified/realistic fidelity, Comparative Dashboard analytical module with side-by-side metrics and health scores, category-aware dashboard visual integration. 10 module definitions (6 business + 2 generative + 2 analytical). Database: `portal/data/portal.db` (auto-created, gitignored). Routes: `(app)/` group for authenticated pages, auth pages at root level. Key portal routes include `/domains/[slug]/simulations` (simulation run management), `/domains/[slug]/context` (domain context), `/domains/[slug]/catalogue` (module catalogue). **Important constraints:** (1) Pure logic shared between server and client components must go in `$lib/modules/` (not `$lib/server/`) — SvelteKit enforces `$lib/server/` as server-only (OW-19). (2) Client-only APIs (`localStorage`, `document`) must use `$effect` + `browser` guard from `$app/environment`, not `typeof` checks in `$state()` initialisers (OW-20). (3) Svelte 5 `{@const}` must be a direct child of logic blocks (`{#if}`, `{#each}`, `{#snippet}`), not inside HTML elements — use `$derived` in script block or `{@const}` directly inside logic blocks (OW-25). (4) When changing the SQLite schema, stop the dev server and delete all three files (`portal.db`, `portal.db-shm`, `portal.db-wal`) before restarting (OW-21).
-  - **Portal simulation infrastructure:** `$lib/server/simulation/` contains server-side simulation logic: `generator.ts` (batch event generation with two generator types), `metrics.ts` (comparative metrics computation), `runs.ts` (simulation run management), `index.ts` (exports). `$lib/modules/` contains shared portal logic: `lifecycle.ts`, `composition.ts`, `connections.ts`, `impact.ts`, `epistemic.ts` (epistemic character: production/hypothesis/projection), `metrics.ts` (client-side metric utilities).
-- **Coffee Shop Demonstrator:** SvelteKit + Temporal (workflow engine) + EHRbase (CDR) + PostgreSQL. pnpm workspace monorepo with packages: web, temporal, shared.
-- **Generators:** Python 3. No virtual env required. Introspection generator uses standard library only. OWL pipeline generator requires `rdflib` and `PyYAML` (`pip3 install rdflib PyYAML`).
-- **Knowledge graph:** GraphDB Free 10.x (local Java app, port 7200). Robot (wraps HermiT reasoner, `tools/robot.jar`) for full OWL 2 DL consistency checking. Protégé 5.6+ for ontology debugging. BFO 2020 + CCO 2.0 + IAO + PROV-O (core subset) as imported ontologies. Reasoning runtime ~20 minutes with 13-file stack.
+- **Console:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4. Package manager: pnpm. Dev port: 5173. **Navigation infrastructure (S133):** `NavigationStore` in `$lib/stores/navigation.svelte.ts` with `NavigationProvider`, `NavLink`, `Breadcrumb`. Routes opt in incrementally — see `$lib/types/navigation.ts` for the `PageStateContract`. The console currently has 12 routes: Home, Architecture, Catalogue, Coverage, Domains, Glossary, Governance, Meta-Model, Ontology, Packages, Patterns, Relationships.
+- **Portal:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4 + SQLite (better-sqlite3) + bcryptjs. Package manager: pnpm. Dev port: 5174. Warm teal theme distinct from console's cool slate. 10 module definitions (6 business + 2 generative + 2 analytical). Database `portal/data/portal.db` is auto-created and gitignored. Routes: `(app)/` group for authenticated pages, auth pages at root level. **Portal constraints:** (1) Pure logic shared between server and client must go in `$lib/modules/`, not `$lib/server/` (SvelteKit enforces `$lib/server/` as server-only — OW-19). (2) Client-only APIs (`localStorage`, `document`) must use `$effect` + `browser` guard from `$app/environment` (OW-20). (3) Svelte 5 `{@const}` must be a direct child of logic blocks — use `$derived` in script block or `{@const}` directly inside `{#if}` / `{#each}` / `{#snippet}` (OW-25). (4) When changing the SQLite schema, stop the dev server and delete all three files (`portal.db`, `portal.db-shm`, `portal.db-wal`) before restarting (OW-21).
+- **Cafe Demonstrator** (`exercises/coffeeshop-demonstrator/`): SvelteKit + Temporal (workflow engine) + EHRbase (CDR) + PostgreSQL. pnpm workspace monorepo with packages: web, temporal, shared.
+- **Generators:** Python 3. Standard library for introspection generator. OWL pipeline requires `rdflib` and `PyYAML` (`pip3 install rdflib PyYAML`).
+- **Knowledge graph:** GraphDB Free 10.x (local Java app, port 7200). Robot (wraps HermiT, `tools/robot.jar`) for OWL 2 DL consistency checking. BFO 2020 + CCO 2.0 + IAO + PROV-O (core subset) as imported ontologies. Reasoning runtime ~20 minutes against the 13-file stack.
+- **Resolver / database:** Local Homebrew PostgreSQL 16. The resolver is a FastAPI service auto-started via launchd (LaunchAgent at `~/Library/LaunchAgents/dev.ontara.resolver.plist`).
 - **Model editing:** Syside Modeler (VS Code extension for SysML v2). Claude cannot run Syside — only Ella can verify SysML parses.
-
-## Portal Commands
-
-```bash
-# From repo root
-cd portal
-pnpm dev              # Start portal dev server (http://localhost:5174)
-pnpm build            # Production build
-```
-
-The portal uses SQLite via better-sqlite3. The database (`portal/data/portal.db`) is created automatically on first run and is gitignored. No external database server required.
 
 ## Console Commands
 
 ```bash
-# From repo root
 cd console
-pnpm dev              # Start console dev server (usually http://localhost:5173)
+pnpm dev              # Start console dev server (http://localhost:5173)
 pnpm build            # Production build
-pnpm run refresh-data # Copy generated JSON to console static dir
+pnpm refresh-data     # Copy generated/ontara/model-introspection.json to static/data/
+```
+
+## Portal Commands
+
+```bash
+cd portal
+pnpm dev              # Start portal dev server (http://localhost:5174)
+pnpm build            # Production build
 ```
 
 ## Generator Commands
@@ -110,78 +129,50 @@ pnpm run refresh-data # Copy generated JSON to console static dir
 python3 scripts/gen_model_introspection.py --save --pretty   # Generate console data
 python3 scripts/gen_concept_graph.py                          # Generate concept graph
 python3 scripts/gen_package_hierarchy.py                      # View package hierarchy
-python3 scripts/gen_system_manifest.py --save                 # Generate manifest
-python3 scripts/gen_constraint_evaluator.py --save            # Generate constraint evaluators
-python3 scripts/gen_decision_table_evaluator.py --save        # Generate decision tables
+python3 scripts/gen_system_manifest.py                        # Generate manifest
+python3 scripts/gen_constraint_evaluator.py                   # Generate constraint evaluators
+python3 scripts/gen_decision_table_evaluator.py               # Generate decision tables
 ```
-
-## Infrastructure Dependencies
-
-**GraphDB Free** (localhost:7200) is required by: `validate_kg.py` (SPARQL queries), `diff_kg.py` (round-trip comparison), `setup_graphdb.py`, `gen_owl_pipeline.py --resolve-cco`. It is NOT required by:
-- `reason_kg.py` — uses Robot + HermiT directly on Turtle files; `--save-summary` uses rdflib for property/vocabulary extraction. No GraphDB dependency.
-- `gen_owl_pipeline.py --save` — reads SysML, writes Turtle files. No GraphDB dependency.
-- `gen_model_introspection.py` — reads SysML, writes JSON. No GraphDB dependency.
-- Console dev server — reads static JSON files, not GraphDB.
-
-If a task instruction says "run reason_kg.py --save-summary", do NOT attempt to load GraphDB or run validate_kg.py unless explicitly instructed. These are independent operations.
 
 ## Knowledge Graph Commands
 
 ```bash
-# From repo root
-python3 scripts/gen_owl_pipeline.py --save         # Generate OWL ontology + correspondence + mapping IR
-python3 scripts/gen_owl_pipeline.py --validate      # Compare output to baseline (graph isomorphism)
-python3 scripts/gen_owl_pipeline.py --resolve-cco   # Populate CCO IRI lookup from GraphDB
-python3 scripts/gen_owl_pipeline.py --verify         # Check CCO lookup completeness
-python3 scripts/gen_owl_pipeline.py --ir-only        # Print mapping IR (classification) only
-python3 scripts/gen_owl_pipeline.py --dry-run        # Print Turtle to stdout
-python3 scripts/setup_graphdb.py --verify            # Verify GraphDB repository state
-python3 scripts/validate_kg.py                   # Validate KG against SPARQL test suite (requires GraphDB)
-python3 scripts/validate_kg.py --load             # Reload pipeline output into GraphDB + validate
-python3 scripts/validate_kg.py --load-only        # Reload pipeline output into GraphDB
-python3 scripts/diff_kg.py                        # Round-trip diff: compare generated OWL vs live store
-python3 scripts/diff_kg.py --verbose              # Diff with detailed per-type breakdown
-python3 scripts/diff_kg.py --json-only            # JSON report only, suppress stdout summary
+# OWL pipeline
+python3 scripts/gen_owl_pipeline.py                # Generate OWL ontology + correspondence + mapping IR (writes to generated/ontology/)
 
-# OWL 2 DL Reasoning (requires Java 11+, tools/robot.jar — does NOT require GraphDB)
+# GraphDB setup and validation (require GraphDB running on :7200)
+python3 scripts/setup_graphdb.py                   # Create repo and load ontology stack
+python3 scripts/validate_kg.py                     # Validate against currently-loaded content
+python3 scripts/validate_kg.py --load              # Reload pipeline output, then validate
+python3 scripts/validate_kg.py --load-only         # Reload only (skip validation)
+python3 scripts/validate_kg.py --verbose           # Show all result rows
+python3 scripts/diff_kg.py                         # Round-trip diff: generated OWL vs live store
+python3 scripts/diff_kg.py --verbose
+python3 scripts/diff_kg.py --json-only
+
+# OWL 2 DL Reasoning (requires Java + tools/robot.jar — does NOT require GraphDB)
 python3 scripts/reason_kg.py                       # Reason over full 13-file ontology stack
-python3 scripts/reason_kg.py --verbose             # Show detailed output
 python3 scripts/reason_kg.py --test-violation      # Inject contradiction, confirm reasoner catches it
 python3 scripts/reason_kg.py --save-summary        # Save reasoning-summary.json (uses rdflib, no GraphDB)
-python3 scripts/reason_kg.py --output results      # Save inferred ontology to file
 ```
 
-Generated ontology outputs (in `generated/ontology/`):
-- `ontara-bmm.ttl` — domain ontology (34 OWL classes)
-- `ontara-bmm-properties.ttl` — 14 object properties with domains, ranges, and characteristics
-- `ontara-bmm-weights.ttl` — 96 reified weighted relationship individuals
-- `ontara-correspondence.ttl` — SysML↔OWL mapping records (class + property + weight)
-- `mapping-ir.json` — full classification intermediate representation
+## Infrastructure Dependencies
 
-Generated reports (in `generated/ontara/`):
-- `model-introspection.json` — console data source
-- `reasoning-summary.json` — HermiT reasoning results for console KG Status panel
-- `diff-report.json` — round-trip diff report (generated by `diff_kg.py`)
+**GraphDB Free** (localhost:7200) is required by `validate_kg.py`, `diff_kg.py`, `setup_graphdb.py`. It is NOT required by:
 
-Hand-authored axiom file (in `ontology/axioms/`):
-- `ontara-bmm-axioms.ttl` — disjointness declarations, existential/cardinality restrictions (OWL-authoritative per B29)
+- `reason_kg.py` — Robot + HermiT operate directly on Turtle files; `--save-summary` uses rdflib.
+- `gen_owl_pipeline.py` — reads SysML, writes Turtle. No GraphDB dependency.
+- `gen_model_introspection.py` — reads SysML, writes JSON. No GraphDB dependency.
+- Console / portal dev servers — read static JSON, not GraphDB.
 
-Hand-authored governance ontology (in `ontology/governance/`):
-- `ontara-governance.ttl` — 19 classes, 6 enum classes, 20 object properties, 16 data properties (OWL-authoritative per B29)
-- `cqc-reg12-individuals.ttl` — MVP test individuals for CQC Regulation 12
-- `catalog-v001.xml` — governance module catalog for Robot IRI resolution
+**Resolver service** (localhost:7300) is required for: writes to PostgreSQL-canonical content (concepts, EIL, work tracker, OW register, DCR, risks). Auto-started on login; status checks via `curl http://localhost:7300/health`.
 
-Hand-authored reasoning vocabulary (in `ontology/reasoning/`):
-- `ontara-reasoning.ttl` — reasoning metamodel foundation: 3 dual-subclassed classes (ReasoningActivity, Claim, ReasoningAgent) with BFO + PROV-O alignment (OWL-authoritative per B29, Session 150)
-- `ears-reasoning-instances.ttl` — Ears domain clinical reasoning instances: ~83 named individuals exercising 25/42 reasoning classes (5 clinical exercises + STAMP/STPA safety). First domain-specific reasoning instance population (Session 166)
+If a task instruction says "run reason_kg.py --save-summary", do NOT attempt to load GraphDB or run validate_kg.py unless explicitly instructed. These are independent operations.
 
-PROV-O core subset (in `ontology/imports/`):
-- `prov-core.ttl` — W3C PROV-O Starting Point classes (Entity, Activity, Agent) and core properties (Session 150)
-
-## Coffee Shop Demonstrator Commands
+## Cafe Demonstrator Commands
 
 ```bash
-# From exercises/coffeeshop-demonstrator/
+cd exercises/coffeeshop-demonstrator/
 docker compose -f docker-compose.ehrbase.yml up -d  # Start EHRbase + PostgreSQL
 pnpm dev:temporal                                     # Start Temporal worker
 pnpm dev:web                                          # Start web frontend
@@ -190,49 +181,55 @@ pnpm generate                                         # Regenerate from SysML mo
 
 ## Critical Data Sync Rule
 
-After running `gen_model_introspection.py --save`, always sync to the console:
+After running `gen_model_introspection.py --save`, sync to the console:
+
 ```bash
-cp generated/ontara/model-introspection.json console/static/data/model-introspection.json
+cd console && pnpm refresh-data
 ```
-Or use `cd console && pnpm run refresh-data`.
 
 ## SysML Conventions
 
 - **Always check** `documentation/reference/gsl-sysml-v2-syntax-reference.md` before writing new `.sysml` code. Syside syntax differs from the SysML v2 spec.
-- **Always check** `documentation/reference/KerML-Reserved-Words.md` before choosing names for part defs, attributes, or other identifiers. `subject` is NOT reserved in KerML but IS a SysML v2 contextual keyword.
-- **Doc blocks** on every `part def` must include meta model classification (Business Meta Model or Business System Meta Model).
+- **Always check** `documentation/reference/KerML-Reserved-Words.md` before naming `part def`s, attributes, or other identifiers. `subject` is NOT KerML-reserved but IS a SysML v2 contextual keyword.
+- **Doc blocks** on every `part def` or `metadata def` must include meta model classification: `/* business meta model concept */` or `/* system meta model concept */`. Under the strengthened A4, the doc block records the stratum-and-side locus.
 - **`part def` vs `part`:** A `part def` is a meta model concept (abstract definition). A `part` is an instance (concrete usage). Do not conflate them.
-- **General vs Tailored:** BMM components are classified as General (common to most service businesses) or Tailored (sector-specific).
-- **Metadata annotations:** `@CatalogueTag`, `@BfoType`, `@UserFacing`, `@PurposiveDescription`, `@Comprehension`, `@WeightedRelationship`, `@ArchitecturalLocation` — all in the Foundation metadata library. Canonical ordering: CatalogueTag → BfoType → UserFacing → PurposiveDescription → Comprehension → WeightedRelationship(s).
+- **General vs Tailored:** BMM components are classified as General (common across most service businesses, in `business-model.sysml`) or Tailored (sector-specific, in tenant or domain modules).
+- **Annotation placement (Position A):** All six BMM annotation types (`@CatalogueTag`, `@BfoType`, `@UserFacing`, `@PurposiveDescription`, `@Comprehension`, `@WeightedRelationship`) on a BMM General `part def` are placed **before** the `part def` declaration, in standard order. Inline placement parses but is not used.
+- **Tenant projections carry doc blocks only.** No inline annotations on `part` usages or specialising `part def`s — annotation semantics are inherited via `:>` and instantiation. Putting an annotation on a `part` usage produces a "No Feature named '<attribute>' found" error; putting one on a specialising `part def` produces metaclass-binding ambiguity.
+- **Enum value verification.** Before delivering any SysML referencing `EnumName::value`, verify each value against the actual `enum def` in source. Do not infer from semantics. (Discovered S275.)
+- **Multi-package imports.** Each package needs its own `private import` for every enum/type referenced. `Foundation::CommonTypes` hosts shared enums and must be imported in every using package. (Discovered S275 in multi-package tenant projection.)
 
 ## Development Principles
 
 - **Co-evolution (J2):** Never add model content without tooling to make it legible. Never build tooling without model content to exercise it.
 - **Non-constraining (J3):** Decisions should not foreclose future development paths.
-- **Model generates everything (A3):** SysML is the single source of truth.
-- **Cross-domain validation (J1):** New BMM concepts must validate in at least two demonstrator domains.
+- **Model generates everything (A3):** SysML is the single source of truth for structure; OWL ontology stack is the canonical form for ontological semantics. Generated artefacts are derived, not authoritative.
+- **Cross-domain validation (J1):** New BMM concepts must validate in at least two demonstrators.
+- **Discipline as load-bearing structure (A9):** Workflow practices propagate reliability through the platform. Skipping a step is not saving time — it is introducing structural risk.
+- **Contraction default (S241):** During contraction, the default response to an emergent possibility is capture in the EIL, not divert landing work. New features must be justified against "does this block landing?" not "is this architecturally interesting?"
 
 ## Commit Convention
 
-- **Code should always commit at the end of a task**, with a descriptive commit message, unless there is a specific reason not to (e.g. Ella has asked to review before committing). Do not leave uncommitted changes for Ella to commit manually.
+- **Code commits at the end of a task** with a descriptive commit message, unless Ella has asked to review before committing. Do not leave uncommitted changes for Ella to commit manually.
 - Commit messages reference the session number: `Session NN: description of changes`
-- Repo archive paths: `documentation/archive/strategic/`, `documentation/archive/plans/`, `documentation/archive/session-reports/`, `documentation/archive/design/`
+- The vault repo and the SysML repo are committed independently. Vault material in vault repo, SysML repo material here. Ella drives the vault commit; Claude Code may handle the SysML repo commit.
 
 ## Ontara Toolkit
 
 The `ontara` shell script (`scripts/ontara`) provides quick access to the package hierarchy:
+
 ```bash
 ontara              # Terminal tree view (default)
 ontara save         # Export all formats (Markdown, OPML, HTML, OmniOutliner)
 ontara html         # Export and open interactive mindmap
 ontara oo           # Export and open in OmniOutliner
 ontara diff         # Compare model vs proposal
-ontara files        # List model and generated files
-ontara model        # Open repo in VS Code
+ontara model        # Open model directory in editor
 ontara help         # Show all commands
 ```
 
 Set up alias in `~/.zshrc`:
+
 ```bash
 alias ontara='~/Developer/gsl-tech/gsl-sysml-model/scripts/ontara'
 ```
@@ -243,7 +240,7 @@ The Obsidian CLI (v1.12+, GA) provides terminal control of the running Obsidian 
 
 **Prerequisites:** Obsidian must be running. CLI enabled in Settings → General. The vault parameter must come first.
 
-**Full reference:** See the `/vault` skill (`.claude/skills/vault/SKILL.md`) for complete command reference with all syntax details, and the vault's CLI reference document (`ontara-ref-obsidian-cli-command-reference.md`) for the comprehensive 130+ command catalogue.
+**Full reference:** See the `/vault` skill (`.claude/skills/vault/SKILL.md`) for complete command reference, and the vault's CLI reference document (`ontara-ref-guide-obsidian-cli-commands.md`) for the comprehensive command catalogue.
 
 ### Core commands
 
@@ -264,7 +261,7 @@ obsidian vault=GenderSense move file="old/path.md" to="new/folder/"
 # Delete (moves to trash by default)
 obsidian vault=GenderSense delete file="path/to/file.md"
 
-# Search (full-text, with context, or JSON output)
+# Search
 obsidian vault=GenderSense search query="search term"
 obsidian vault=GenderSense search:context query="search term" limit=10
 obsidian vault=GenderSense search query="search term" format=json
@@ -280,14 +277,14 @@ obsidian vault=GenderSense outline file="path/to/note"
 
 # Links and vault health
 obsidian vault=GenderSense backlinks file="note"
-obsidian vault=GenderSense unresolved    # Broken wikilinks
-obsidian vault=GenderSense orphans       # Notes with no incoming links
+obsidian vault=GenderSense unresolved
+obsidian vault=GenderSense orphans
 
 # Tags
 obsidian vault=GenderSense tags counts sort=count
 obsidian vault=GenderSense tags:rename old=oldtag new=newtag
 
-# Help (always authoritative for installed version)
+# Help
 obsidian help
 obsidian help <command>
 ```
@@ -314,16 +311,15 @@ This goes through Obsidian's API so wikilinks are updated. Allow 1 second betwee
 - Always use `obsidian move` instead of raw `mv` — the CLI preserves wikilinks
 - All vault documents must use `[[filename|display text]]` wikilinks — no plain text vault references
 
-
-
 ---
 
 ## Working With Ella
 
 - Ella leads all design and architectural decisions. Ask before making non-trivial changes.
 - The Obsidian vault at `/Users/ellagreen/Obsidian/GenderSense/` is the primary working environment for documents and planning.
-- Claude Code should use the Obsidian CLI (`/vault` skill) for any vault operation that might change file paths or structure (create, move/rename, delete notes or  folders), so Obsidian keeps wikilinks and indexing correct.
-- Claude Code may use filesystem MCP tools (e.g. `filesystem_multi`) for  **read-only operations and in‑place content edits** in the vault (listing,  reading files, updating text) but **must not** rename, move, or delete vault  files via filesystem MCP.
-- Claude Chat can continue to access the vault via MCP filesystem tools when  working outside Claude Code.
+- Claude Code should use the Obsidian CLI (`/vault` skill) for any vault operation that might change file paths or structure (create, move/rename, delete notes or folders), so Obsidian keeps wikilinks and indexing correct.
+- Claude Code may use filesystem MCP tools for **read-only operations and in-place content edits** in the vault (listing, reading files, updating text) but **must not** rename, move, or delete vault files via filesystem MCP.
+- Claude Chat can continue to access the vault via MCP filesystem tools when working outside Claude Code.
+- Vault-resident material is committed in the vault repo only; do not propose `cp` operations that mirror vault documents into this repo.
 - Do not overwrite files Ella may have edited without checking first.
 - "Shall I go ahead?" is a genuine question, not rhetorical.
