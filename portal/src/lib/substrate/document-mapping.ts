@@ -164,8 +164,10 @@ function nodeToPM(
 
         case 'table': {
             // Phase 1 first cut: tables that arrive with raw PM-shaped content
-            // pass through; tables stored in some other shape get a placeholder
-            // until we refine the table primitive.
+            // pass through; tables stored in {headers, rows} shape are
+            // synthesised on the fly into a Tiptap-compatible PM table so the
+            // editor renders them. Anything else falls through to a
+            // placeholder paragraph.
             const tableContent = node.content as unknown as PMNode | null;
             if (
                 tableContent &&
@@ -178,6 +180,40 @@ function nodeToPM(
                         ...(tableContent.attrs ?? {}),
                         'data-block-id': node.id
                     }
+                };
+            }
+            // {headers, rows} legacy shape — synthesise PM table.
+            const legacy = tableContent as unknown as
+                | { headers?: string[]; rows?: string[][] }
+                | null;
+            if (
+                legacy &&
+                Array.isArray(legacy.headers) &&
+                Array.isArray(legacy.rows)
+            ) {
+                const cell = (text: string, header: boolean): PMNode => {
+                    const cellType = header ? 'tableHeader' : 'tableCell';
+                    if (!text) return { type: cellType, content: [{ type: 'paragraph' }] };
+                    return {
+                        type: cellType,
+                        content: [
+                            {
+                                type: 'paragraph',
+                                content: [{ type: 'text', text }]
+                            }
+                        ]
+                    };
+                };
+                const row = (cells: string[], header: boolean): PMNode => ({
+                    type: 'tableRow',
+                    content: cells.map((c) => cell(c, header))
+                });
+                const tableRows: PMNode[] = [row(legacy.headers, true)];
+                for (const r of legacy.rows) tableRows.push(row(r, false));
+                return {
+                    type: 'table',
+                    attrs: { 'data-block-id': node.id },
+                    content: tableRows
                 };
             }
             return {

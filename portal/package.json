@@ -32,9 +32,12 @@
 	},
 	"dependencies": {
 		"@tiptap/core": "^3.22.5",
+		"@tiptap/extension-bold": "^3.22.5",
+		"@tiptap/extension-code": "^3.22.5",
 		"@tiptap/extension-document": "^3.22.5",
 		"@tiptap/extension-heading": "^3.22.5",
 		"@tiptap/extension-history": "^3.22.5",
+		"@tiptap/extension-italic": "^3.22.5",
 		"@tiptap/extension-paragraph": "^3.22.5",
 		"@tiptap/extension-table": "^3.22.5",
 		"@tiptap/extension-table-cell": "^3.22.5",

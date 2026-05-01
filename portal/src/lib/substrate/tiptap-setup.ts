@@ -27,6 +27,9 @@ import { Table } from '@tiptap/extension-table';
 import { TableRow } from '@tiptap/extension-table-row';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
+import { Bold } from '@tiptap/extension-bold';
+import { Italic } from '@tiptap/extension-italic';
+import { Code } from '@tiptap/extension-code';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { Decoration, DecorationSet } from '@tiptap/pm/view';
@@ -164,6 +167,9 @@ export function createSubstrateEditor(config: SubstrateEditorConfig): Editor {
             TableRow,
             TableHeader,
             TableCell,
+            Bold,
+            Italic,
+            Code,
             Principle,
             BlockIdAttribute,
             UnresolvedRefPlugin
