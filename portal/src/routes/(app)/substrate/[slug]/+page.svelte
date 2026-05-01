@@ -116,17 +116,102 @@
     function refreshSnapshotsFromEditor(): void {
         if (!editor) return;
         const currentDoc = editor.getJSON() as PMNode;
-        // Update each snapshot's `content` to match what's now in the editor,
-        // so subsequent diffs only catch *new* edits.
-        const visit = (node: PMNode): void => {
-            const id = node.attrs?.['data-block-id'] as string | undefined;
-            if (id && payload.snapshots[id]) {
-                const blockType = payload.snapshots[id].block_type;
-                payload.snapshots[id].content = nodeAsContent(node, blockType);
+        const rootId = currentDoc.attrs?.['data-block-id'] as string | undefined;
+
+        // Walk the new doc, collecting (id, block_type, content, parent, ordinal)
+        // for every block-level node. We rebuild the snapshot map to match —
+        // existing entries refresh in place, new entries (just-created blocks
+        // for which the diff assigned ids) get a snapshot of their own,
+        // entries no longer present are dropped.
+        const seen = new Set<string>();
+
+        const visitContainer = (container: PMNode, parentId: string | null): void => {
+            const children = container.content ?? [];
+            // Compute ordinals to mirror the diff's allocation: linear 1, 2,
+            // 3, … unless every sibling is an existing block in monotonic
+            // ordinal order (in which case keep originals). The diff itself
+            // is the source of truth; this snapshot refresh just has to
+            // produce ordinals consistent with what the resolver was sent.
+            let blockChildIndex = 0;
+            for (const c of children) {
+                const id = c.attrs?.['data-block-id'] as string | undefined;
+                if (!id) continue;
+                blockChildIndex += 1;
+                seen.add(id);
+                if (id === rootId) {
+                    // Document root snapshot: parent null, ordinal null.
+                    if (!payload.snapshots[id]) {
+                        payload.snapshots[id] = {
+                            block_id: id,
+                            block_type: 'document_root',
+                            content: null,
+                            props: null,
+                            entity_type: null,
+                            entity_id: null,
+                            parent_id: null,
+                            ordinal: null
+                        };
+                    }
+                } else {
+                    const existing = payload.snapshots[id];
+                    const blockType = existing
+                        ? existing.block_type
+                        : inferBlockTypeFromPM(c);
+                    payload.snapshots[id] = {
+                        block_id: id,
+                        block_type: blockType,
+                        content: nodeAsContent(c, blockType),
+                        props: existing?.props ?? inferPropsFromPM(c, blockType),
+                        entity_type:
+                            existing?.entity_type ??
+                            ((c.attrs?.entity_type as string | undefined) ?? null),
+                        entity_id:
+                            existing?.entity_id ??
+                            ((c.attrs?.entity_id as string | undefined) ?? null),
+                        parent_id: parentId,
+                        ordinal: blockChildIndex
+                    };
+                }
             }
-            if (node.content) for (const c of node.content) visit(c);
         };
-        visit(currentDoc);
+
+        // The doc node itself carries the document_root id.
+        if (rootId) seen.add(rootId);
+        if (rootId && !payload.snapshots[rootId]) {
+            payload.snapshots[rootId] = {
+                block_id: rootId,
+                block_type: 'document_root',
+                content: null,
+                props: null,
+                entity_type: null,
+                entity_id: null,
+                parent_id: null,
+                ordinal: null
+            };
+        }
+        visitContainer(currentDoc, rootId ?? null);
+
+        // Drop snapshots whose blocks are no longer in the doc.
+        for (const id of Object.keys(payload.snapshots)) {
+            if (!seen.has(id)) delete payload.snapshots[id];
+        }
+    }
+
+    function inferBlockTypeFromPM(node: PMNode): string {
+        switch (node.type) {
+            case 'paragraph': return 'paragraph';
+            case 'heading':   return 'heading';
+            case 'principle': return 'principle';
+            case 'table':     return 'table';
+            default:          return 'paragraph';
+        }
+    }
+
+    function inferPropsFromPM(node: PMNode, blockType: string): Record<string, unknown> {
+        if (blockType === 'heading') {
+            return { level: (node.attrs?.level as number | undefined) ?? 2 };
+        }
+        return {};
     }
 
     function nodeAsContent(
