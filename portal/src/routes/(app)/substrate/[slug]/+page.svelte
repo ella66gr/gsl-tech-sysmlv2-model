@@ -451,6 +451,31 @@
         background: rgba(20, 184, 166, 0.35);
     }
 
+    /* Wikilink mark — Obsidian-style vault reference. Distinct
+       styling from external links so it reads as an internal reference
+       rather than something that will leave the page. */
+    :global(.substrate-editor .ProseMirror a.wikilink) {
+        color: #0f766e;
+        text-decoration: none;
+        background: rgba(20, 184, 166, 0.08);
+        border-bottom: 1px dashed rgba(15, 118, 110, 0.45);
+        padding: 0 0.15rem;
+        border-radius: 0.15rem;
+        cursor: pointer;
+    }
+    :global(.substrate-editor .ProseMirror a.wikilink:hover) {
+        background: rgba(20, 184, 166, 0.16);
+        border-bottom-style: solid;
+    }
+    :global(.dark .substrate-editor .ProseMirror a.wikilink) {
+        color: #5eead4;
+        background: rgba(20, 184, 166, 0.14);
+        border-bottom-color: rgba(94, 234, 212, 0.5);
+    }
+    :global(.dark .substrate-editor .ProseMirror a.wikilink:hover) {
+        background: rgba(20, 184, 166, 0.24);
+    }
+
     /* Unresolved-binding decoration — drawn by the ProseMirror plugin in
        tiptap-setup.ts. */
     :global(.substrate-editor .principle-block--unresolved) {

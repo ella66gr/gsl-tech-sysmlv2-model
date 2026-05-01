@@ -17,7 +17,7 @@
  * the host page can refresh it in response to save events.
  */
 
-import { Editor, Extension, type EditorOptions } from '@tiptap/core';
+import { Editor, Extension, Mark, type EditorOptions } from '@tiptap/core';
 import { Document } from '@tiptap/extension-document';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Heading } from '@tiptap/extension-heading';
@@ -58,6 +58,57 @@ const BlockIdAttribute = Extension.create({
                     }
                 }
             }
+        ];
+    }
+});
+
+// ---------- wikilink custom mark ----------
+
+/**
+ * `wikilink` inline mark — Obsidian-style vault reference.
+ *
+ * A wikilink in source markdown is `[[target]]` or `[[target|alias]]`.
+ * In substrate prose it is stored as a text run with this mark attached:
+ *
+ *   { type: 'text', text: <alias>, marks: [
+ *       { type: 'wikilink', attrs: { target: <target>, alias: <alias> } }
+ *   ] }
+ *
+ * Rendered as `<a class="wikilink" data-target="...">alias</a>` so styling
+ * and click-to-navigate behaviour can be added by the host page (the link
+ * itself does not navigate yet — that is a separate work item).
+ *
+ * The alias attr is stored alongside target so a save round-trip through
+ * the editor recovers the original `[[target|alias]]` form even if the
+ * displayed text was edited away from the alias. (For the current pass
+ * the alias attr equals the rendered text on creation.)
+ */
+const Wikilink = Mark.create({
+    name: 'wikilink',
+    inclusive: false,
+    spanning: false,
+    excludes: 'code',
+
+    addAttributes() {
+        return {
+            target: { default: null },
+            alias: { default: null }
+        };
+    },
+
+    parseHTML() {
+        return [{ tag: 'a.wikilink' }];
+    },
+
+    renderHTML({ HTMLAttributes }) {
+        return [
+            'a',
+            mergeAttributes(HTMLAttributes, {
+                class: 'wikilink',
+                href: '#',
+                'data-target': HTMLAttributes.target ?? ''
+            }),
+            0
         ];
     }
 });
@@ -170,6 +221,7 @@ export function createSubstrateEditor(config: SubstrateEditorConfig): Editor {
             Bold,
             Italic,
             Code,
+            Wikilink,
             Principle,
             BlockIdAttribute,
             UnresolvedRefPlugin
