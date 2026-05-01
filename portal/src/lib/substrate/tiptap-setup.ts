@@ -43,7 +43,7 @@ const BlockIdAttribute = Extension.create({
     addGlobalAttributes() {
         return [
             {
-                types: ['heading', 'paragraph', 'principle', 'table'],
+                types: ['doc', 'heading', 'paragraph', 'principle', 'table'],
                 attributes: {
                     'data-block-id': {
                         default: null,

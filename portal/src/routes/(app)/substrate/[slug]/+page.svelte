@@ -1,5 +1,7 @@
 <script lang="ts">
     import { onMount, onDestroy } from 'svelte';
+    import { deserialize } from '$app/forms';
+    import type { ActionResult } from '@sveltejs/kit';
     import type { PageData } from './$types';
     import { Editor } from '@tiptap/core';
     import {
@@ -73,21 +75,20 @@
             formData.set('baseRevision', baseRevision ?? '');
 
             const res = await fetch('?/save', { method: 'POST', body: formData });
-            const data = (await res.json()) as { type: string; data?: string };
+            const action = deserialize(await res.text()) as ActionResult<{
+                ok: boolean;
+                newRevision?: string | null;
+                accepted?: number;
+                error?: string;
+            }>;
 
-            // SvelteKit form action responses are wrapped — type=success carries
-            // the JSON-stringified action result inside `data`.
-            let result: { ok: boolean; newRevision?: string; accepted?: number; error?: string };
-            if (data.type === 'success' && typeof data.data === 'string') {
-                const arr = JSON.parse(data.data) as unknown[];
-                // SvelteKit packs return values as a flat array of refs; the
-                // first element is the action's return value.
-                result = (arr[0] ?? {}) as typeof result;
-            } else if (data.type === 'failure' && typeof data.data === 'string') {
-                const arr = JSON.parse(data.data) as unknown[];
-                result = (arr[0] ?? { ok: false, error: 'Unknown failure' }) as typeof result;
+            let result: { ok: boolean; newRevision?: string | null; accepted?: number; error?: string };
+            if (action.type === 'success' || action.type === 'failure') {
+                result = action.data ?? { ok: false, error: 'Action returned no data' };
+            } else if (action.type === 'error') {
+                result = { ok: false, error: action.error?.message ?? 'Action error' };
             } else {
-                result = { ok: false, error: `Unexpected response shape: ${JSON.stringify(data)}` };
+                result = { ok: false, error: `Unexpected action type: ${action.type}` };
             }
 
             if (result.ok) {
@@ -269,13 +270,12 @@
         const formData = new FormData();
         formData.set('bindings', JSON.stringify(bindings));
         const res = await fetch('?/validateBindings', { method: 'POST', body: formData });
-        const data = (await res.json()) as { type: string; data?: string };
-        if (data.type !== 'success' || typeof data.data !== 'string') return;
-        const arr = JSON.parse(data.data) as unknown[];
-        const result = arr[0] as {
+        const action = deserialize(await res.text()) as ActionResult<{
             ok: boolean;
             results?: { block_id: string; resolves: boolean }[];
-        };
+        }>;
+        if (action.type !== 'success' && action.type !== 'failure') return;
+        const result = action.data;
         if (!result?.ok || !result.results) return;
         const unresolved = result.results
             .filter((r) => !r.resolves)
