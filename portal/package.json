@@ -31,6 +31,17 @@
 		]
 	},
 	"dependencies": {
+		"@tiptap/core": "^3.22.5",
+		"@tiptap/extension-document": "^3.22.5",
+		"@tiptap/extension-heading": "^3.22.5",
+		"@tiptap/extension-history": "^3.22.5",
+		"@tiptap/extension-paragraph": "^3.22.5",
+		"@tiptap/extension-table": "^3.22.5",
+		"@tiptap/extension-table-cell": "^3.22.5",
+		"@tiptap/extension-table-header": "^3.22.5",
+		"@tiptap/extension-table-row": "^3.22.5",
+		"@tiptap/extension-text": "^3.22.5",
+		"@tiptap/pm": "^3.22.5",
 		"bcryptjs": "^3.0.3",
 		"better-sqlite3": "^12.8.0",
 		"flowbite": "^4.0.1",
