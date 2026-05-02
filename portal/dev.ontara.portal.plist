@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>dev.ontara.portal</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/pnpm</string>
+        <string>dev</string>
+        <string>--host</string>
+        <string>127.0.0.1</string>
+        <string>--port</string>
+        <string>5174</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/ellagreen/Developer/gsl-tech/gsl-sysml-model/portal</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/Users/ellagreen/.nvm/versions/node/v25.7.0/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/ellagreen/Library/Logs/ontara-portal.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/ellagreen/Library/Logs/ontara-portal.err.log</string>
+</dict>
+</plist>
