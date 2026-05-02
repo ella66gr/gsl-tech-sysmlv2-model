@@ -23,7 +23,8 @@
         MoonOutline,
         PlusOutline,
         PlayOutline,
-        ShieldCheckOutline
+        ShieldCheckOutline,
+        LayersOutline
     } from 'flowbite-svelte-icons';
     import type { LayoutData } from './$types';
     import type { DomainWithRole } from '$lib/types';
@@ -54,11 +55,20 @@
         darkMode = !darkMode;
     }
 
-    // Determine current domain from URL
-    let currentSlug = $derived($page.params.slug ?? null);
+    // Determine current domain from URL — only when on a /domains/[slug]
+    // route. The slug param is also set on /substrate/[slug] (different
+    // route), so we read URL pathname rather than $page.params.slug to
+    // avoid mis-classifying substrate routes as domain routes.
+    let currentSlug = $derived(
+        $page.url.pathname.startsWith('/domains/')
+            ? $page.url.pathname.split('/')[2] ?? null
+            : null
+    );
     let currentDomain = $derived(
         currentSlug ? data.domains.find((d: DomainWithRole) => d.slug === currentSlug) ?? null : null
     );
+
+    let onSubstrateRoute = $derived($page.url.pathname.startsWith('/substrate'));
 
     let userInitials = $derived(
         data.user.displayName
@@ -70,6 +80,7 @@
     );
 
     let domainDropdownOpen = $state(false);
+    let platformDropdownOpen = $state(false);
     let userDropdownOpen = $state(false);
     let sidebarHidden = $state(false);
 </script>
@@ -129,6 +140,36 @@
                             Create new domain
                         </a>
                     </div>
+                </div>
+            {/if}
+        </div>
+
+        <!-- Platform menu — platform-level surfaces (peer to the domain switcher). -->
+        <div class="relative">
+            <button
+                onclick={() => (platformDropdownOpen = !platformDropdownOpen)}
+                class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors {onSubstrateRoute ? 'text-primary-700 dark:text-primary-300 bg-primary-50 dark:bg-primary-900/20' : 'text-secondary-700 dark:text-secondary-300 hover:bg-secondary-100 dark:hover:bg-secondary-700'}"
+            >
+                <span class="font-medium">Platform</span>
+                <ChevronDownOutline class="w-4 h-4 text-secondary-400" />
+            </button>
+
+            {#if platformDropdownOpen}
+                <div
+                    class="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-xl shadow-lg z-50 py-1"
+                    role="menu"
+                >
+                    <a
+                        href="/substrate"
+                        class="flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-secondary-50 dark:hover:bg-secondary-700 transition-colors {onSubstrateRoute ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300' : 'text-secondary-700 dark:text-secondary-300'}"
+                        onclick={() => (platformDropdownOpen = false)}
+                    >
+                        <LayersOutline class="w-4 h-4" />
+                        <div class="flex flex-col">
+                            <span class="font-medium">Substrate</span>
+                            <span class="text-xs text-secondary-500 dark:text-secondary-400">Block-composable knowledge documents</span>
+                        </div>
+                    </a>
                 </div>
             {/if}
         </div>
@@ -282,11 +323,11 @@
 </div>
 
 <!-- Click-outside dismissal -->
-{#if domainDropdownOpen || userDropdownOpen}
+{#if domainDropdownOpen || platformDropdownOpen || userDropdownOpen}
     <!-- svelte-ignore a11y_click_events_have_key_events -->
     <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
         class="fixed inset-0 z-40"
-        onclick={() => { domainDropdownOpen = false; userDropdownOpen = false; }}
+        onclick={() => { domainDropdownOpen = false; platformDropdownOpen = false; userDropdownOpen = false; }}
     ></div>
 {/if}
