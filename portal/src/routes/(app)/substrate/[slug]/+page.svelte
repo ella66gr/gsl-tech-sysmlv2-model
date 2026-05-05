@@ -84,7 +84,8 @@
 
             let result: { ok: boolean; newRevision?: string | null; accepted?: number; error?: string };
             if (action.type === 'success' || action.type === 'failure') {
-                result = action.data ?? { ok: false, error: 'Action returned no data' };
+                result = (action.data as { ok: boolean; newRevision?: string | null; accepted?: number; error?: string } | undefined)
+                    ?? { ok: false, error: 'Action returned no data' };
             } else if (action.type === 'error') {
                 result = { ok: false, error: action.error?.message ?? 'Action error' };
             } else {
@@ -296,7 +297,7 @@
         if (action.type !== 'success' && action.type !== 'failure') return;
         const result = action.data;
         if (!result?.ok || !result.results) return;
-        const unresolved = result.results
+        const unresolved = (result.results as { block_id: string; resolves: boolean }[])
             .filter((r) => !r.resolves)
             .map((r) => r.block_id);
         unresolvedCount = unresolved.length;

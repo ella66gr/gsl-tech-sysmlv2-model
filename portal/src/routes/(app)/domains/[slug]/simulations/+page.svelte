@@ -175,7 +175,7 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <Badge color={statusColor(run.status)} class="text-xs capitalize">{run.status}</Badge>
-                            <Badge color="dark" class="text-xs">{fidelityLabel(run.fidelity)}</Badge>
+                            <Badge color="gray" class="text-xs">{fidelityLabel(run.fidelity)}</Badge>
                         </div>
                     </div>
                     <div class="flex items-center gap-4 text-sm text-secondary-600 dark:text-secondary-400">

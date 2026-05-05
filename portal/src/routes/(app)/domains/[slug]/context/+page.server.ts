@@ -2,6 +2,7 @@ import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { getContextForDomain, upsertContext } from '$lib/server/db/context';
 import { getInstancesForDomain } from '$lib/server/db/modules';
+import { getDomainBySlug } from '$lib/server/db/domains';
 import type { BmmConcern } from '$lib/types';
 import { CONCERN_META } from '$lib/context/schemas';
 
@@ -13,8 +14,11 @@ export const load: PageServerLoad = async ({ parent }) => {
 };
 
 export const actions: Actions = {
-    updateContext: async ({ request, parent }) => {
-        const { domain } = await parent();
+    updateContext: async ({ request, params }) => {
+        const domain = getDomainBySlug(params.slug);
+        if (!domain) {
+            return fail(404, { error: 'Domain not found.' });
+        }
         const data = await request.formData();
         const concern = data.get('concern') as BmmConcern;
 
