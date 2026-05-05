@@ -464,6 +464,35 @@
         background: #292524;
     }
 
+    /* Code block — fenced code (W-P / S351, language attr lifted to
+       props.language). Tinted background to mark it as code-shaped
+       content distinct from prose. Monospace, no inline mark expansion,
+       horizontal scroll on overflow. Light + dark variants. */
+    :global(.substrate-editor .ProseMirror pre) {
+        margin: 1rem 0;
+        padding: 0.85rem 1rem;
+        background: #f5f5f4;
+        border: 1px solid #e7e5e4;
+        border-radius: 0.4rem;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        color: #1c1917;
+        overflow-x: auto;
+        white-space: pre;
+    }
+    :global(.dark .substrate-editor .ProseMirror pre) {
+        background: #1c1917;
+        border-color: #44403c;
+        color: #f5f5f4;
+    }
+    :global(.substrate-editor .ProseMirror pre code) {
+        background: transparent;
+        padding: 0;
+        font-size: inherit;
+        color: inherit;
+    }
+
     /* Selection visibility in dark mode — ProseMirror's default selection
        gets lost on a dark background. */
     :global(.dark .substrate-editor .ProseMirror ::selection) {
