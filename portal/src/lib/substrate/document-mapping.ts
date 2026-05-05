@@ -23,6 +23,10 @@
  *   paragraph     → paragraph
  *   table         → table / tableRow / tableCell  (Tiptap built-ins)
  *   principle     → principle    (custom node defined in tiptap-setup.ts)
+ *   code          → codeBlock    (Tiptap extension-code-block;
+ *                                  language attr from props.language;
+ *                                  inner text from props.text — props-
+ *                                  lifted shape, content jsonb empty)
  *
  * Unrecognised block types are rendered as paragraphs containing a
  * placeholder text node, so the editor never blows up on a registry
@@ -71,7 +75,8 @@ export type MutationOp =
         entity_type?: string | null; entity_id?: string | null }
     | { op: 'insertChild'; parent_id: string; child_id: string; ordinal: number }
     | { op: 'patchBlockContent'; block_id: string;
-        content: Record<string, unknown> }
+        content?: Record<string, unknown>;
+        props?: Record<string, unknown> }
     | { op: 'removeEdge'; from_block_id: string; to_block_id: string;
         edge_type: string }
     | { op: 'moveBlock'; block_id: string; new_parent_id: string;
@@ -159,6 +164,25 @@ function nodeToPM(
                     entity_id: node.entity_id
                 },
                 content: inline.length ? inline : [{ type: 'text', text: '' }]
+            };
+        }
+
+        case 'code': {
+            // Props-lifted shape: props.language + props.text.
+            // PM `codeBlock` represents the language as an attr and the
+            // verbatim text as a single inline `text` child. Empty text
+            // is mapped to no children (Tiptap rejects empty text
+            // nodes — OW-S342-1 precedent).
+            const language =
+                (node.props?.language as string | undefined) ?? null;
+            const text = (node.props?.text as string | undefined) ?? '';
+            return {
+                type: 'codeBlock',
+                attrs: {
+                    'data-block-id': node.id,
+                    language
+                },
+                content: text ? [{ type: 'text', text }] : []
             };
         }
 
@@ -366,20 +390,48 @@ export function diffToMutations(
         newOps.push({ node: n, assigned_id: newId });
     }
 
-    // 2. patchBlockContent for kept blocks whose content has changed.
+    // 2. patchBlockContent for kept blocks whose stored content or props
+    //    have changed.
+    //
+    //    For most block types `content` is the editable surface and `props`
+    //    is structural (heading level, etc.). For `code` blocks, props
+    //    carries the user-editable language and verbatim text (atomic,
+    //    props-lifted shape — content stays empty), so a code-block edit
+    //    surfaces purely as a props change. The diff therefore checks
+    //    both content and props and emits whichever (or both) have
+    //    changed.
+    //
+    //    Props comparison is only enabled for block types whose
+    //    `inferBlockProps` produces a complete prop shape from the PM
+    //    node (currently `heading` and `code`). For other types the
+    //    inferer returns `{}` and we must NOT treat that as a request
+    //    to clear the snapshot's props — paragraph / principle / table
+    //    blocks may carry props the editor doesn't surface (e.g.
+    //    principle.props.principle_id).
+    const PROPS_DIFFABLE_TYPES = new Set(['heading', 'code']);
     for (const n of newNodes) {
         if (n.existingId === null) continue;
         const snap = snapshots[n.existingId];
         if (!snap) continue;
         const newContent = nodeToBlockContent(n.pmNode, snap.block_type);
-        if (newContent === null) continue;
-        if (!contentEqual(snap.content, newContent)) {
-            ops.push({
-                op: 'patchBlockContent',
-                block_id: n.existingId,
-                content: newContent
-            });
+        const contentChanged =
+            newContent !== null && !contentEqual(snap.content, newContent);
+        let propsChanged = false;
+        let newProps: Record<string, unknown> | null = null;
+        if (PROPS_DIFFABLE_TYPES.has(snap.block_type)) {
+            newProps = inferBlockProps(n.pmNode, snap.block_type);
+            propsChanged = !contentEqual(snap.props, newProps);
         }
+        if (!contentChanged && !propsChanged) continue;
+        const patch: {
+            op: 'patchBlockContent';
+            block_id: string;
+            content?: Record<string, unknown>;
+            props?: Record<string, unknown>;
+        } = { op: 'patchBlockContent', block_id: n.existingId };
+        if (contentChanged && newContent !== null) patch.content = newContent;
+        if (propsChanged && newProps !== null) patch.props = newProps;
+        ops.push(patch);
     }
 
     // 3. insertChild for new blocks (now with assigned ids).
@@ -484,6 +536,8 @@ function inferBlockType(node: PMNode): string | null {
             return 'principle';
         case 'table':
             return 'table';
+        case 'codeBlock':
+            return 'code';
         default:
             return null;
     }
@@ -493,6 +547,17 @@ function inferBlockProps(node: PMNode, blockType: string): Record<string, unknow
     if (blockType === 'heading') {
         const level = (node.attrs?.level as number | undefined) ?? 2;
         return { level };
+    }
+    if (blockType === 'code') {
+        // Lift language attr + concatenated inline text into props.
+        // The `code` block is atomic and content-empty in the database;
+        // language and text both live in props.
+        const language = (node.attrs?.language as string | null | undefined) ?? '';
+        const text = (node.content ?? [])
+            .filter((c) => c.type === 'text')
+            .map((c) => (typeof c.text === 'string' ? c.text : ''))
+            .join('');
+        return { language: language ?? '', text };
     }
     return {};
 }
@@ -562,6 +627,10 @@ function nodeToBlockContent(
         case 'table':
             // Round-trip the whole table node minus our annotations.
             return stripBlockIdAttrsDeep(pmNode) as unknown as Record<string, unknown>;
+        case 'code':
+            // Atomic, props-lifted: text + language live in props
+            // (handled by inferBlockProps); content jsonb stays empty.
+            return {};
         default:
             return null;
     }

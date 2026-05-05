@@ -9,6 +9,8 @@
  *   paragraph     → paragraph  (built-in)
  *   table         → table      (extension-table family)
  *   principle     → principle  (custom node, defined here)
+ *   code          → codeBlock  (extension-code-block; W-137 / S351;
+ *                                language attr from props.language)
  *
  * The unresolved-reference decoration is a ProseMirror plugin that
  * reads each `principle` node's `entity_type`/`entity_id` attrs and
@@ -30,6 +32,7 @@ import { TableHeader } from '@tiptap/extension-table-header';
 import { Bold } from '@tiptap/extension-bold';
 import { Italic } from '@tiptap/extension-italic';
 import { Code } from '@tiptap/extension-code';
+import { CodeBlock } from '@tiptap/extension-code-block';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { Decoration, DecorationSet } from '@tiptap/pm/view';
@@ -38,15 +41,15 @@ import { Decoration, DecorationSet } from '@tiptap/pm/view';
 
 /**
  * Adds a `data-block-id` global attribute to every block-level node.
- * This means heading, paragraph, principle, table all carry their
- * substrate block_id into and out of the editor.
+ * This means heading, paragraph, principle, table, codeBlock all carry
+ * their substrate block_id into and out of the editor.
  */
 const BlockIdAttribute = Extension.create({
     name: 'blockIdAttribute',
     addGlobalAttributes() {
         return [
             {
-                types: ['doc', 'heading', 'paragraph', 'principle', 'table'],
+                types: ['doc', 'heading', 'paragraph', 'principle', 'table', 'codeBlock'],
                 attributes: {
                     'data-block-id': {
                         default: null,
@@ -221,6 +224,7 @@ export function createSubstrateEditor(config: SubstrateEditorConfig): Editor {
             Bold,
             Italic,
             Code,
+            CodeBlock,
             Wikilink,
             Principle,
             BlockIdAttribute,

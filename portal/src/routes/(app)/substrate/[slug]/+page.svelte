@@ -204,6 +204,7 @@
             case 'heading':   return 'heading';
             case 'principle': return 'principle';
             case 'table':     return 'table';
+            case 'codeBlock': return 'code';
             default:          return 'paragraph';
         }
     }
@@ -211,6 +212,18 @@
     function inferPropsFromPM(node: PMNode, blockType: string): Record<string, unknown> {
         if (blockType === 'heading') {
             return { level: (node.attrs?.level as number | undefined) ?? 2 };
+        }
+        if (blockType === 'code') {
+            // Mirror document-mapping.ts inferBlockProps — language attr
+            // plus concatenated inline text from PM children, lifted into
+            // props. The database content jsonb stays empty for code
+            // blocks (atomic, props-lifted shape).
+            const language = (node.attrs?.language as string | null | undefined) ?? '';
+            const text = (node.content ?? [])
+                .filter((c) => c.type === 'text')
+                .map((c) => (typeof c.text === 'string' ? c.text : ''))
+                .join('');
+            return { language: language ?? '', text };
         }
         return {};
     }
@@ -229,6 +242,12 @@
         }
         if (blockType === 'table') {
             return stripBlockIdAttrsOne(pmNode) as unknown as Record<string, unknown>;
+        }
+        if (blockType === 'code') {
+            // Atomic, props-lifted — content jsonb is empty for code
+            // blocks (text and language live in props, captured by
+            // inferPropsFromPM).
+            return {};
         }
         return null;
     }
