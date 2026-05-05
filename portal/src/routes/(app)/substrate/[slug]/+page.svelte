@@ -316,48 +316,61 @@
     <title>{data.document.title} — Substrate Editor</title>
 </svelte:head>
 
-<div class="px-6 py-6 max-w-4xl mx-auto">
-    <header class="mb-4 flex items-baseline gap-3 flex-wrap">
-        <a href="/substrate" class="text-xs text-secondary-500 dark:text-secondary-400 hover:text-primary-600">
-            ← Substrate
-        </a>
-        <h1 class="text-xl font-semibold text-secondary-900 dark:text-secondary-100">
-            {data.document.title}
-        </h1>
-        <code class="text-xs text-secondary-500 dark:text-secondary-400">{data.document.slug}</code>
-    </header>
+<!-- Sticky route header. The scroll container is <main> in the (app)
+     layout (flex-1 overflow-auto), so position:sticky with top-0 here
+     pins the strip to the top of the scrolling region. Full-bleed
+     background so content scrolling past doesn't bleed through on
+     either side; max-w-4xl content centred inside, matching the
+     editor's constraint. z-20 sits above the editor and below the
+     navbar dropdowns (z-50) and click-outside layer (z-40). -->
+<div
+    class="sticky top-0 z-20 bg-secondary-50/95 dark:bg-secondary-900/95 backdrop-blur border-b border-secondary-200 dark:border-secondary-700"
+>
+    <div class="max-w-4xl mx-auto px-6 pt-4 pb-3">
+        <header class="mb-2 flex items-baseline gap-3 flex-wrap">
+            <a href="/substrate" class="text-xs text-secondary-500 dark:text-secondary-400 hover:text-primary-600">
+                ← Substrate
+            </a>
+            <h1 class="text-xl font-semibold text-secondary-900 dark:text-secondary-100">
+                {data.document.title}
+            </h1>
+            <code class="text-xs text-secondary-500 dark:text-secondary-400">{data.document.slug}</code>
+        </header>
 
-    <div class="flex items-center gap-3 mb-3 text-xs">
-        {#if dirty && !saving}
-            <span class="text-amber-600 dark:text-amber-400">● Unsaved changes</span>
-        {:else if saving}
-            <span class="text-secondary-500 dark:text-secondary-400">Saving…</span>
-        {:else}
-            <span class="text-secondary-400 dark:text-secondary-500">Saved</span>
-        {/if}
+        <div class="flex items-center gap-3 text-xs">
+            {#if dirty && !saving}
+                <span class="text-amber-600 dark:text-amber-400">● Unsaved changes</span>
+            {:else if saving}
+                <span class="text-secondary-500 dark:text-secondary-400">Saving…</span>
+            {:else}
+                <span class="text-secondary-400 dark:text-secondary-500">Saved</span>
+            {/if}
 
-        {#if saveStatus.kind === 'ok' && saveStatus.message}
-            <span class="text-green-600 dark:text-green-400">{saveStatus.message}</span>
-        {:else if saveStatus.kind === 'error'}
-            <span class="text-red-600 dark:text-red-400">{saveStatus.message}</span>
-        {/if}
+            {#if saveStatus.kind === 'ok' && saveStatus.message}
+                <span class="text-green-600 dark:text-green-400">{saveStatus.message}</span>
+            {:else if saveStatus.kind === 'error'}
+                <span class="text-red-600 dark:text-red-400">{saveStatus.message}</span>
+            {/if}
 
-        {#if unresolvedCount > 0}
-            <span class="text-amber-600 dark:text-amber-400 ml-auto">
-                {unresolvedCount} unresolved binding{unresolvedCount === 1 ? '' : 's'}
-            </span>
-        {/if}
+            {#if unresolvedCount > 0}
+                <span class="text-amber-600 dark:text-amber-400 ml-auto">
+                    {unresolvedCount} unresolved binding{unresolvedCount === 1 ? '' : 's'}
+                </span>
+            {/if}
 
-        <button
-            type="button"
-            onclick={saveNow}
-            disabled={!dirty || saving}
-            class="ml-auto px-3 py-1 text-xs rounded border border-secondary-200 dark:border-secondary-700 text-secondary-700 dark:text-secondary-300 hover:bg-secondary-100 dark:hover:bg-secondary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-            Save now
-        </button>
+            <button
+                type="button"
+                onclick={saveNow}
+                disabled={!dirty || saving}
+                class="ml-auto px-3 py-1 text-xs rounded border border-secondary-200 dark:border-secondary-700 text-secondary-700 dark:text-secondary-300 hover:bg-secondary-100 dark:hover:bg-secondary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+                Save now
+            </button>
+        </div>
     </div>
+</div>
 
+<div class="px-6 py-6 max-w-4xl mx-auto">
     <div
         bind:this={editorContainer}
         class="substrate-editor bg-white dark:bg-secondary-800 border border-secondary-200 dark:border-secondary-700 rounded-lg p-6 max-w-none min-h-[24rem] text-secondary-900 dark:text-secondary-100"
@@ -491,6 +504,26 @@
         padding: 0;
         font-size: inherit;
         color: inherit;
+    }
+
+    /* Inline code mark — backticked spans inside prose. Scoped with
+       :not(pre) > code so the rule does not leak into fenced code
+       blocks (where the surrounding pre styling owns presentation).
+       Lightly tinted teal to read as code-shaped without competing
+       with wikilinks. Light + dark variants. */
+    :global(.substrate-editor .ProseMirror :not(pre) > code) {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.88em;
+        padding: 0.05em 0.3em;
+        border-radius: 0.25rem;
+        background: rgba(20, 184, 166, 0.09);
+        color: #0f766e;
+        border: 1px solid rgba(20, 184, 166, 0.18);
+    }
+    :global(.dark .substrate-editor .ProseMirror :not(pre) > code) {
+        background: rgba(20, 184, 166, 0.16);
+        color: #5eead4;
+        border-color: rgba(94, 234, 212, 0.22);
     }
 
     /* Selection visibility in dark mode — ProseMirror's default selection

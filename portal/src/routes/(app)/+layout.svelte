@@ -85,7 +85,7 @@
     let sidebarHidden = $state(false);
 </script>
 
-<div class="min-h-screen flex flex-col bg-secondary-50 dark:bg-secondary-900">
+<div class="h-screen flex flex-col bg-secondary-50 dark:bg-secondary-900">
     <!-- Top navbar -->
     <nav class="bg-white dark:bg-secondary-800 border-b border-secondary-200 dark:border-secondary-700 h-14 flex items-center px-4 gap-4 flex-shrink-0">
         <!-- Branding -->
