@@ -14,14 +14,15 @@ Ontara is in its **contraction phase** (from S241), driving toward a v1 working 
 - **Six BMM concerns:** ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel (sixth concern added S81). 34 BMM General `part def`s.
 - **Comprehension architecture:** Every BMM General `part def` carries `@CatalogueTag`, `@BfoType`, `@UserFacing`, `@PurposiveDescription`, `@Comprehension`, and `@WeightedRelationship` annotations. 34/34 coverage; 96 weighted relationships. Tenant projections (`paws.sysml`, `minds.sysml`, etc.) carry doc blocks only — annotation semantics are inherited via `:>` and `part` instantiation.
 - **Knowledge graph:** Dual-formalism — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO + IAO + PROV-O core subset as mid-level. GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence. Full OWL 2 DL reasoning via HermiT (Robot). Stage 7 Phase 1+2+3 complete — HermiT CONSISTENT. Hand-authored modules: `ontara-governance.ttl`, `ontara-domain.ttl`, `ontara-reasoning.ttl` (42 classes, 15 named individuals, 40 object properties, 10 datatype properties, PROV-O dual subclassing, STAMP/STPA safety structures, FRAM-ready function/variability slots), `ears-reasoning-instances.ttl` (~83 named individuals, S166). 13-file ontology stack. **66-query SPARQL validation suite across 12 groups.** MVP CQC Regulation 12 test individuals validated.
-- **PostgreSQL `ontara` repository** (lives in the vault at `02 ONTARA/db/`): canonical store for concepts, concept relationships, EIL entries, risks, the work tracker (DCR, active work items, OW register). Surfaced through (a) generated markdown exports (`ontara-ref-glossary.md`, etc.) regenerated on every database write, and (b) the **resolver service** at `http://localhost:7300/`. Concept additions and changes flow through database migrations or the resolver admin UI, not through markdown edits.
+- **PostgreSQL `ontara` repository** (lives in the vault at `02 ONTARA/db/`): canonical store for concepts, concept relationships, EIL entries, risks, the work tracker (DCR, active work items, OW register), strata, tenants, BMM elements, modelling paradigms, tech stack, and substrate-canonical document content. Surfaced through (a) generated markdown exports (`ontara-ref-glossary.md`, etc.) regenerated on every database write, (b) the **resolver service** at `http://localhost:7300/`, and (c) **substrate documents** rendered from the substrate block tables. Concept additions and changes flow through database migrations or the resolver admin UI, not through markdown edits.
+- **Substrate-canonical documents** (from S290+): a growing class of vault references (architecture papers, BMM main + vocabulary, the V&A reference, and the new Architecture & Principles family) are stored as ProseMirror block trees in the substrate tables (`block`, `block_edge`, `document`, `revision`) and rendered to vault markdown via the resolver. The vault `.md` is the rendered surface; the database is the source of truth. Editing the rendered markdown by hand is a category error; edits flow through the substrate editor (Portal) or build scripts (one-off authoring).
 
 ## Two Repos, Kept Separate
 
 Ontara work spans two git repos. They have different content responsibilities and **vault-resident material is NOT mirrored into the SysML repo**.
 
 - **SysML repo** (`~/Developer/gsl-tech/gsl-sysml-model`, this repo) — SysML model source (`.sysml`), hand-authored OWL modules (`.ttl`), generation scripts, generated artefacts, the SysML syntax reference, demonstrator app code (cafe), the Ontara Console, the Portal, this `CLAUDE.md`, and code-adjacent material (plans, notes Ella places in the repo).
-- **Vault repo** (`/Users/ellagreen/Obsidian/GenderSense`) — foundations papers, reference documents, session reports and preparation notes, discussion papers, concept graph notes, plans, the glossary, the work tracker, the V&A reference, the workflow guide, the EIL, the PostgreSQL `db/` repository, and any other vault material.
+- **Vault repo** (`/Users/ellagreen/Obsidian/GenderSense`) — foundations papers, reference documents, session reports and preparation notes, discussion papers, concept graph notes, plans, the glossary, the work tracker, the V&A reference, the workflow guide, the EIL, the PostgreSQL `db/` repository (schema, migrations, queries, resolver service code, exports, build scripts), and any other vault material.
 
 Claude does not propose `cp` commands that copy vault documents into the SysML repo and does not propose overwriting `documentation/archive/` with vault content. The historical `documentation/archive/` retains earlier in-repo material; it is not a target for new vault mirroring.
 
@@ -87,13 +88,103 @@ CLAUDE.md                  # this file
 
 ## PostgreSQL `ontara` Database (in the vault)
 
-The `ontara` PostgreSQL database lives on the macOS host (Homebrew Postgres 16). Its repository (schema, migrations, queries, resolver service code, exports) is **inside the vault** at `/Users/ellagreen/Obsidian/GenderSense/02 ONTARA/db/`. From inside the SysML repo, the database is reached via:
+The `ontara` PostgreSQL database lives on the macOS host (Homebrew Postgres 16). Its repository (schema, migrations, queries, resolver service code, exports, scratch build scripts) is **inside the vault** at `/Users/ellagreen/Obsidian/GenderSense/02 ONTARA/db/`. From inside the SysML repo, the database is reached via:
 
 - **Direct psql** — `psql -d ontara …` (peer auth, no password). Migrations: `psql -d ontara -f path/to/migration.sql`.
 - **Resolver HTTP service** — `http://localhost:7300/`. Public read views (concepts, EIL, risks, work items, OW register, DCR). Token-protected write surface at `/api/{ct}` and `/admin/{ct}`. Token at `02 ONTARA/db/resolver/.ontara-token`.
 - **Postgres MCP** (when in a Claude Desktop session) — TCP via Docker bridge, used for ad-hoc inspection.
 
 Full reach details and the `pg_hba.conf` setup are in the vault at `02 ONTARA/02 Ontara DEVELOPMENT/Ontara REFERENCE & GUIDES/ontara-ref-guide-db-access.md`. The shell command catalogue (resolver service control, generator commands, console operations) is in the vault at `ontara-ref-guide-shell-commands.md`.
+
+## Substrate, Resolver, and Exporter
+
+This section covers the present-day write architecture for vault content backed by the database. Added S359 (was missing from earlier CLAUDE.md). The vault at `02 ONTARA/db/` is laid out as:
+
+```
+db/
+  exports/         # marker-bound exporters — Python modules that regenerate
+                   # marker sections in vault markdown from PostgreSQL rows
+  migrations/      # numbered SQL migration files (NNN_description.sql)
+  queries/         # standing read queries for inspection and tooling
+  resolver/        # FastAPI resolver service (substrate, write, admin, API)
+  scratch/         # build scripts (build_sNNN_*.py) for one-off content authoring
+  schema/          # canonical schema reference
+  .ontara-session  # canonical session pointer (single integer)
+  .ontara-token    # resolver auth token (gitignored)
+```
+
+### Resolver service
+
+- FastAPI service at `http://localhost:7300/`. Auto-started via launchd (`~/Library/LaunchAgents/dev.ontara.resolver.plist`).
+- Liveness: `curl http://localhost:7300/healthz` returns `{"status":"ok"}`. The `/health` endpoint is the HTML admin landing page.
+- Restart: `launchctl kickstart -k gui/501/dev.ontara.resolver`.
+- Auth: `X-Ontara-Token: <token>` header for write APIs; cookie auth for the admin UI (set once via `/admin/login`).
+- Surfaces:
+  - `/admin/{ct}` — HTML admin UI for marker-bound content types (concepts, EIL, work items, OW register, DCR, risks, etc.).
+  - `/api/{ct}` — JSON API for the same content types (GET / POST / PATCH / DELETE).
+  - `/v1/documents/{id}/mutations` — substrate write API (createBlock, insertChild, addEdge, removeEdge, patchBlockContent, moveBlock).
+  - `/v1/documents/{id}/render?target=vault&path=...` — substrate render to vault markdown. The `path` query param is the canonical vault-relative path (NOT `vault_path`).
+- Specs live in `db/resolver/specs/`. Each marker-bound content type has a `*_spec.py` (work_items_spec.py, dcr_spec.py, etc.). Specs declare columns, validation rules, regenerate hooks, and pre-create hooks (e.g. W-code allocation).
+
+### Marker-bound writes
+
+Vault markdown documents host content canonically held in PostgreSQL via marker pairs:
+
+```markdown
+<!-- ontara:begin {marker-id} -->
+... content regenerated from DB on every write ...
+<!-- ontara:end {marker-id} -->
+```
+
+Content between markers is **overwritten on regen** and must not be edited by hand. Edits flow through:
+
+- The resolver admin UI at `http://localhost:7300/admin/{ct}` (form-based).
+- The JSON API at `http://localhost:7300/api/{ct}` (programmatic).
+- Direct SQL (rare; bypasses regen and leaves markdown stale).
+
+After any DB row write through the spec-driven engine, the spec's `regenerate_hook` is called automatically; the marker section in the host document is rewritten. **Direct SQL writes do not trigger regen** and so leave the markdown out of sync until the next manual regen call.
+
+### Exporters
+
+Modules under `db/exports/` regenerate marker sections from DB rows. Each exporter exposes:
+
+- A `regenerate_<scope>(output=None, dry_run=False)` function with a `tuple[int, int]` return.
+- An aggregate `regenerate_<topic>_section()` that calls the family's exporters in order.
+- Markdown rendering helpers via `db/exports/common.py` (`format_markdown_table`, `replace_marked_section`, `bump_frontmatter`, `find_section_marker_file`, `current_session`).
+
+The `db/exports/strata.py` module is the canonical example, regenerating six markers across five host documents (V&A, Stratified Architecture, BMM, V1 acceptance, stratum landing register, tenant landing register). The `regenerate_strata_section()` aggregate is wired as the regen hook for `strata` rows.
+
+### Substrate documents
+
+Substrate-canonical documents are stored as ProseMirror block trees in:
+
+- `block` — individual blocks (heading, paragraph, table, principle, etc.) with `props`, `content`, optional `entity_type` + `entity_id` bindings.
+- `block_edge` — edges between blocks: `contains` (parent → child, ordered by ordinal), `transcludes`, `cites`, `mentions`, `instance_of`.
+- `document` — document identity (slug, title, root_block_id, current_revision_id).
+- `document_block` — flat membership table reconciled from `contains` reachability (W-126).
+- `revision` — revision history per document.
+
+Build scripts (`db/scratch/build_sNNN_*.py`) author substrate documents programmatically. The standard shape is:
+
+1. Define block helpers (`P()`, `H()`, `TABLE()`, `PRINCIPLE()` etc.).
+2. Build a `BLOCKS` list with content, entity bindings, and structure.
+3. Validate PM schema (text node shape, mark types, no nested paragraphs).
+4. Reset existing document if any (NULL `current_revision_id` BEFORE deleting revisions — FK constraint).
+5. Create document + root block via direct SQL.
+6. POST mutations to `/v1/documents/{id}/mutations` to create blocks and contains-edges.
+7. Render via `/v1/documents/{slug}/render?target=return` for verification.
+8. Render via `/v1/documents/{slug}/render?target=vault&path=...` for placement.
+
+The S359 W-139 Stage 2 build script (`build_s359_w139_stage2.py`) is the current canonical reference for build script shape.
+
+### Critical rules
+
+- **Substrate writes go through the resolver, not direct SQL.** The resolver carries reconciliation logic (W-126, W-127) that direct SQL skips.
+- **Marker-bound writes go through the resolver.** Direct SQL on `work_items`, `dcr_rows`, `concepts`, etc. bypasses regen.
+- **`reset_document()` order:** NULL `current_revision_id` BEFORE deleting revisions (FK constraint on `document_current_revision_fk`). FK violation if revisions are deleted first.
+- **Adjacent same-mark inline runs in a paragraph** (e.g. two `code` runs back-to-back) trigger a `<!--/-->` separator from the renderer (W-S346). Merge them into a single run with the combined text.
+- **Render `target='vault'`** requires the `path` query param (not `vault_path`). The legacy `_substrate-rendered/` staging directory is retired.
+- **Work-item codes are allocated server-side** from the `w_item_sequence` counter via the `work_items_spec` pre-create hook. Omit the `code` field on POST; the resolver fills it. Never reuse codes from deleted items.
 
 ## Tech Stack
 
@@ -102,7 +193,8 @@ Full reach details and the `pg_hba.conf` setup are in the vault at `02 ONTARA/02
 - **Cafe Demonstrator** (`exercises/coffeeshop-demonstrator/`): SvelteKit + Temporal (workflow engine) + EHRbase (CDR) + PostgreSQL. pnpm workspace monorepo with packages: web, temporal, shared.
 - **Generators:** Python 3. Standard library for introspection generator. OWL pipeline requires `rdflib` and `PyYAML` (`pip3 install rdflib PyYAML`).
 - **Knowledge graph:** GraphDB Free 10.x (local Java app, port 7200). Robot (wraps HermiT, `tools/robot.jar`) for OWL 2 DL consistency checking. BFO 2020 + CCO 2.0 + IAO + PROV-O (core subset) as imported ontologies. Reasoning runtime ~20 minutes against the 13-file stack.
-- **Resolver / database:** Local Homebrew PostgreSQL 16. The resolver is a FastAPI service auto-started via launchd (LaunchAgent at `~/Library/LaunchAgents/dev.ontara.resolver.plist`).
+- **Resolver / database:** Local Homebrew PostgreSQL 16. The resolver is a FastAPI service auto-started via launchd (LaunchAgent at `~/Library/LaunchAgents/dev.ontara.resolver.plist`). Substrate write engine, marker-bound spec engine, and admin UI all in `db/resolver/`.
+- **Substrate editor:** Portal hosts the substrate editor at `http://localhost:5174/substrate/{slug}` (TipTap + ProseMirror). Used for in-browser editing of substrate-canonical documents.
 - **Model editing:** Syside Modeler (VS Code extension for SysML v2). Claude cannot run Syside — only Ella can verify SysML parses.
 
 ## Console Commands
@@ -122,6 +214,23 @@ pnpm dev              # Start portal dev server (http://localhost:5174)
 pnpm build            # Production build
 ```
 
+## Resolver Commands
+
+```bash
+# Liveness
+curl http://localhost:7300/healthz                      # JSON {"status":"ok"}
+curl -I http://localhost:7300/                          # HTML admin landing
+
+# Restart (after editing resolver code or specs)
+launchctl kickstart -k gui/501/dev.ontara.resolver
+
+# Tail logs
+tail -f /tmp/ontara-resolver.log
+
+# Token (for X-Ontara-Token header)
+cat "/Users/ellagreen/Obsidian/GenderSense/02 ONTARA/db/resolver/.ontara-token"
+```
+
 ## Generator Commands
 
 ```bash
@@ -132,6 +241,22 @@ python3 scripts/gen_package_hierarchy.py                      # View package hie
 python3 scripts/gen_system_manifest.py                        # Generate manifest
 python3 scripts/gen_constraint_evaluator.py                   # Generate constraint evaluators
 python3 scripts/gen_decision_table_evaluator.py               # Generate decision tables
+```
+
+## Marker Regen Commands
+
+```bash
+# From the vault (where db/ lives)
+cd "/Users/ellagreen/Obsidian/GenderSense/02 ONTARA"
+
+# Single exporter, dry-run (preview to stdout)
+python3 -c "import sys; sys.path.insert(0, 'db'); from exports.strata import regenerate_arch_strata; regenerate_arch_strata(dry_run=True)"
+
+# Single exporter, live (writes to vault file)
+python3 -c "import sys; sys.path.insert(0, 'db'); from exports.strata import regenerate_arch_strata; regenerate_arch_strata()"
+
+# All exporters in a family
+python3 -c "import sys; sys.path.insert(0, 'db'); from exports.strata import regenerate_strata_section; regenerate_strata_section()"
 ```
 
 ## Knowledge Graph Commands
@@ -165,7 +290,7 @@ python3 scripts/reason_kg.py --save-summary        # Save reasoning-summary.json
 - `gen_model_introspection.py` — reads SysML, writes JSON. No GraphDB dependency.
 - Console / portal dev servers — read static JSON, not GraphDB.
 
-**Resolver service** (localhost:7300) is required for: writes to PostgreSQL-canonical content (concepts, EIL, work tracker, OW register, DCR, risks). Auto-started on login; status checks via `curl http://localhost:7300/health`.
+**Resolver service** (localhost:7300) is required for: writes to PostgreSQL-canonical content (concepts, EIL, work tracker, OW register, DCR, risks), substrate document mutations, and marker regeneration. Auto-started on login; status checks via `curl http://localhost:7300/healthz`.
 
 If a task instruction says "run reason_kg.py --save-summary", do NOT attempt to load GraphDB or run validate_kg.py unless explicitly instructed. These are independent operations.
 
@@ -323,3 +448,7 @@ This goes through Obsidian's API so wikilinks are updated. Allow 1 second betwee
 - Vault-resident material is committed in the vault repo only; do not propose `cp` operations that mirror vault documents into this repo.
 - Do not overwrite files Ella may have edited without checking first.
 - "Shall I go ahead?" is a genuine question, not rhetorical.
+
+---
+
+*CLAUDE.md updated S359 (substrate / resolver / exporter section added; resolver commands added; marker regen commands added; substrate-canonical document class noted in Architecture in Brief). Tooling guide reference: vault `02 ONTARA/02 Ontara DEVELOPMENT/Ontara REFERENCE & GUIDES/ontara-ref-guide-using-claude-tools.md` v2 (S359). DCR threshold 20 sessions.*
