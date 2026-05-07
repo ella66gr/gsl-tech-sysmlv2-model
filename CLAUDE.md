@@ -123,7 +123,8 @@ db/
   - `/admin/{ct}` — HTML admin UI for marker-bound content types (concepts, EIL, work items, OW register, DCR, risks, etc.).
   - `/api/{ct}` — JSON API for the same content types (GET / POST / PATCH / DELETE).
   - `/v1/documents/{id}/mutations` — substrate write API (createBlock, insertChild, addEdge, removeEdge, patchBlockContent, moveBlock).
-  - `/v1/documents/{id}/render?target=vault&path=...` — substrate render to vault markdown. The `path` query param is the canonical vault-relative path (NOT `vault_path`).
+  - `/v1/documents/{id}/render?target=vault[&path=...]` — substrate render to vault markdown. When `path=` is omitted, the renderer resolves `document.wikilink_target` against a cached walk of the vault tree (W-148 / S366); new build scripts should omit `path=`. When `path=` is supplied, it wins (preserves existing build scripts).
+  - `/v1/audit/document-paths` — walks every `document` row and returns `{resolved, stale, ambiguous}` lists for batch path-health checks (W-148).
 - Specs live in `db/resolver/specs/`. Each marker-bound content type has a `*_spec.py` (work_items_spec.py, dcr_spec.py, etc.). Specs declare columns, validation rules, regenerate hooks, and pre-create hooks (e.g. W-code allocation).
 
 ### Marker-bound writes
@@ -183,7 +184,7 @@ The S359 W-139 Stage 2 build script (`build_s359_w139_stage2.py`) is the current
 - **Marker-bound writes go through the resolver.** Direct SQL on `work_items`, `dcr_rows`, `concepts`, etc. bypasses regen.
 - **`reset_document()` order:** NULL `current_revision_id` BEFORE deleting revisions (FK constraint on `document_current_revision_fk`). FK violation if revisions are deleted first.
 - **Adjacent same-mark inline runs in a paragraph** (e.g. two `code` runs back-to-back) trigger a `<!--/-->` separator from the renderer (W-S346). Merge them into a single run with the combined text.
-- **Render `target='vault'`** requires the `path` query param (not `vault_path`). The legacy `_substrate-rendered/` staging directory is retired.
+- **Render `target='vault'`** resolves the output path either from the `path=` query param or from `document.wikilink_target` (W-148 / S366). New build scripts omit `path=`; the renderer walks the vault tree once (cached) and matches the basename. If the file is renamed in Obsidian, update `wikilink_target` via the admin form at `/document/{slug}`. The legacy `_substrate-rendered/` staging directory is retired.
 - **Work-item codes are allocated server-side** from the `w_item_sequence` counter via the `work_items_spec` pre-create hook. Omit the `code` field on POST; the resolver fills it. Never reuse codes from deleted items.
 
 ## Tech Stack

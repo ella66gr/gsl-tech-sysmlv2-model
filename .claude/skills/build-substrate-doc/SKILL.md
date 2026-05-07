@@ -14,7 +14,7 @@ Authors a one-off Python build script that creates a substrate-canonical vault d
 4. Creating the document + root block via direct SQL.
 5. POSTing mutations to `/v1/documents/{id}/mutations` (createBlock + insertChild ops).
 6. Verifying via `target=return` render (0 warnings expected).
-7. Placing via `target=vault&path=...` render (the param is `path`, not `vault_path`).
+7. Placing via `target=vault` render. New scripts omit `path=` — the renderer resolves `document.wikilink_target` against the vault tree (W-148 / S366). Legacy scripts that pass `path=` continue to work (explicit path wins).
 
 The build script lives in the vault at `02 ONTARA/db/scratch/build_sNNN_<work-item>.py`. It is a one-off authoring script — kept for provenance, not run again after placement.
 
@@ -81,13 +81,13 @@ Example: `/build-substrate-doc ontara-ref-arch-stratified-architecture`
 
 6. **Show Ella the rendered markdown** before vault placement. Pause for review.
 
-7. **Place via vault render.** The render endpoint param is `path`, not `vault_path`:
+7. **Place via vault render.** New scripts omit `path=` — the renderer resolves `document.wikilink_target` against the vault tree (W-148 / S366):
    ```bash
    TOKEN=$(cat "/Users/ellagreen/Obsidian/GenderSense/02 ONTARA/db/resolver/.ontara-token")
-   curl -sS -X POST "http://localhost:7300/v1/documents/<slug>/render?target=vault&path=<vault-relative-path>" \
+   curl -sS -X POST "http://localhost:7300/v1/documents/<slug>/render?target=vault" \
      -H "X-Ontara-Token: $TOKEN" | python3 -m json.tool
    ```
-   Expected: `{"target": "vault", "path": "<absolute path>", "bytes": <n>, "warnings": []}`.
+   Expected: `{"target": "vault", "path": "<absolute path>", "bytes": <n>, "warnings": []}`. If the response is HTTP 400 with "wikilink_target … does not resolve in the vault", the file has been renamed in Obsidian — update the document's `wikilink_target` via the admin form at `/document/<slug>` (Edit panel). Passing `path=<vault-relative-path>` still works and overrides the wikilink lookup.
 
 8. **Record provenance** in the session report and the work tracker. Note the doc UUID, the revision UUID, byte count, marker pass-through status, any warnings.
 
@@ -95,7 +95,7 @@ Example: `/build-substrate-doc ontara-ref-arch-stratified-architecture`
 
 - **`reset_document()` order:** NULL `current_revision_id` BEFORE deleting revisions. FK constraint on `document_current_revision_fk` will violate otherwise.
 - **Adjacent same-mark inline runs** (e.g. two `code()` calls back-to-back) trigger a `<!--/-->` separator from the renderer (W-S346). Merge them into a single run with combined text.
-- **Render `target='vault'`** requires the `path` query param. The legacy `_substrate-rendered/` staging directory is retired.
+- **Render `target='vault'`** resolves the output location either from the `path=` query param or from `document.wikilink_target` (W-148 / S366). The legacy `_substrate-rendered/` staging directory is retired.
 - **Allowed marks:** `bold`, `italic`, `code`, `wikilink`. No others.
 - **PM-schema text-node rule:** every text node has a non-empty string `text`. Empty `text=""` poisons the Tiptap editor mount (OW-S342-1).
 - **Build scripts are not run twice.** After placement, the script is provenance only. If a fix is needed, edit the substrate via the editor or a new patch script.
