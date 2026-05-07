@@ -30,6 +30,7 @@
  *   important     → important    (W-134, S365; callout custom node)
  *   note          → note         (W-134, S365; callout custom node)
  *   warning       → warning      (W-134, S365; callout custom node)
+ *   marker_section → marker_section (W-147, S367; atomic read-only badge)
  *
  * Unrecognised block types are rendered as paragraphs containing a
  * placeholder text node, so the editor never blows up on a registry
@@ -192,6 +193,22 @@ function nodeToPM(
                 // their visible text in props.title and have empty content; they
                 // must round-trip through the editor with no body children.
                 content: inline.length ? inline : []
+            };
+        }
+
+        case 'marker_section': {
+            // Atomic block — no body content. All identity lives in props.
+            // (W-147 / S367)
+            const props = (node.props ?? {}) as Record<string, unknown>;
+            return {
+                type: 'marker_section',
+                attrs: {
+                    'data-block-id': node.id,
+                    marker_id: (props.marker_id as string | null | undefined) ?? null,
+                    kind_label: (props.kind_label as string | null | undefined) ?? null,
+                    admin_path: (props.admin_path as string | null | undefined) ?? null,
+                    admin_label: (props.admin_label as string | null | undefined) ?? null
+                }
             };
         }
 
@@ -436,7 +453,7 @@ export function diffToMutations(
     //    to clear the snapshot's props — paragraph / principle / table
     //    blocks may carry props the editor doesn't surface (e.g.
     //    principle.props.principle_id).
-    const PROPS_DIFFABLE_TYPES = new Set(['heading', 'code', 'important', 'note', 'warning']);
+    const PROPS_DIFFABLE_TYPES = new Set(['heading', 'code', 'important', 'note', 'warning', 'marker_section']);
     for (const n of newNodes) {
         if (n.existingId === null) continue;
         const snap = snapshots[n.existingId];
@@ -568,6 +585,8 @@ function inferBlockType(node: PMNode): string | null {
             return 'note';
         case 'warning':
             return 'warning';
+        case 'marker_section':
+            return 'marker_section';
         case 'table':
             return 'table';
         case 'codeBlock':
@@ -596,6 +615,19 @@ function inferBlockProps(node: PMNode, blockType: string): Record<string, unknow
     if (blockType === 'important' || blockType === 'note' || blockType === 'warning') {
         const title = (node.attrs?.title as string | null | undefined) ?? null;
         return title ? { title } : {};
+    }
+    if (blockType === 'marker_section') {
+        // All identity is in props; round-trip from PM attrs to substrate.
+        const props: Record<string, unknown> = {};
+        const markerId = node.attrs?.marker_id as string | null | undefined;
+        const kindLabel = node.attrs?.kind_label as string | null | undefined;
+        const adminPath = node.attrs?.admin_path as string | null | undefined;
+        const adminLabel = node.attrs?.admin_label as string | null | undefined;
+        if (markerId) props.marker_id = markerId;
+        if (kindLabel) props.kind_label = kindLabel;
+        if (adminPath) props.admin_path = adminPath;
+        if (adminLabel) props.admin_label = adminLabel;
+        return props;
     }
     return {};
 }
@@ -675,6 +707,10 @@ function nodeToBlockContent(
         case 'code':
             // Atomic, props-lifted: text + language live in props
             // (handled by inferBlockProps); content jsonb stays empty.
+            return {};
+        case 'marker_section':
+            // Atomic; all identity in props (handled by inferBlockProps);
+            // content jsonb stays empty (W-147 / S367).
             return {};
         default:
             return null;

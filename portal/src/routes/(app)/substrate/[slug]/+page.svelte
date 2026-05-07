@@ -22,6 +22,11 @@
     let payload: EditorPayload = $state.raw(composeToEditor(data.tree));
     let dirty = $state(false);
     let saving = $state(false);
+    let rendering = $state(false);
+    let renderStatus = $state<{ kind: 'idle' | 'ok' | 'error'; message: string }>({
+        kind: 'idle',
+        message: ''
+    });
     let saveStatus = $state<{ kind: 'idle' | 'ok' | 'error'; message: string }>({
         kind: 'idle',
         message: ''
@@ -52,6 +57,7 @@
     function handleEdit(): void {
         dirty = true;
         saveStatus = { kind: 'idle', message: '' };
+        renderStatus = { kind: 'idle', message: '' };
         if (saveTimer) clearTimeout(saveTimer);
         saveTimer = setTimeout(save, SAVE_DEBOUNCE_MS);
     }
@@ -201,15 +207,16 @@
 
     function inferBlockTypeFromPM(node: PMNode): string {
         switch (node.type) {
-            case 'paragraph': return 'paragraph';
-            case 'heading':   return 'heading';
-            case 'principle': return 'principle';
-            case 'important': return 'important';
-            case 'note':      return 'note';
-            case 'warning':   return 'warning';
-            case 'table':     return 'table';
-            case 'codeBlock': return 'code';
-            default:          return 'paragraph';
+            case 'paragraph':      return 'paragraph';
+            case 'heading':        return 'heading';
+            case 'principle':      return 'principle';
+            case 'important':      return 'important';
+            case 'note':           return 'note';
+            case 'warning':        return 'warning';
+            case 'marker_section': return 'marker_section';
+            case 'table':          return 'table';
+            case 'codeBlock':      return 'code';
+            default:               return 'paragraph';
         }
     }
 
@@ -232,6 +239,19 @@
         if (blockType === 'important' || blockType === 'note' || blockType === 'warning') {
             const title = (node.attrs?.title as string | null | undefined) ?? null;
             return title ? { title } : {};
+        }
+        if (blockType === 'marker_section') {
+            // All identity in props; mirror document-mapping.ts.
+            const props: Record<string, unknown> = {};
+            const markerId = node.attrs?.marker_id as string | null | undefined;
+            const kindLabel = node.attrs?.kind_label as string | null | undefined;
+            const adminPath = node.attrs?.admin_path as string | null | undefined;
+            const adminLabel = node.attrs?.admin_label as string | null | undefined;
+            if (markerId) props.marker_id = markerId;
+            if (kindLabel) props.kind_label = kindLabel;
+            if (adminPath) props.admin_path = adminPath;
+            if (adminLabel) props.admin_label = adminLabel;
+            return props;
         }
         return {};
     }
@@ -260,6 +280,11 @@
             // Atomic, props-lifted — content jsonb is empty for code
             // blocks (text and language live in props, captured by
             // inferPropsFromPM).
+            return {};
+        }
+        if (blockType === 'marker_section') {
+            // Atomic; all identity in props (handled by inferPropsFromPM);
+            // content jsonb stays empty (W-147 / S367).
             return {};
         }
         return null;
@@ -323,6 +348,55 @@
         }
         await save();
     }
+
+    async function renderNow(): Promise<void> {
+        if (rendering) return;
+        // If dirty, save first.
+        if (dirty) {
+            await saveNow();
+            // saveNow leaves saveStatus populated; bail if it failed.
+            if (saveStatus.kind === 'error') return;
+        }
+        rendering = true;
+        renderStatus = { kind: 'idle', message: '' };
+        try {
+            const res = await fetch('?/render', { method: 'POST', body: new FormData() });
+            const action = deserialize(await res.text()) as ActionResult<{
+                ok: boolean;
+                path?: string | null;
+                bytes?: number;
+                warnings?: string[];
+                error?: string;
+            }>;
+            let result: {
+                ok: boolean;
+                path?: string | null;
+                bytes?: number;
+                error?: string;
+            };
+            if (action.type === 'success' || action.type === 'failure') {
+                result = (action.data as typeof result | undefined)
+                    ?? { ok: false, error: 'Action returned no data' };
+            } else if (action.type === 'error') {
+                result = { ok: false, error: action.error?.message ?? 'Action error' };
+            } else {
+                result = { ok: false, error: `Unexpected action type: ${action.type}` };
+            }
+            if (result.ok) {
+                const basename = result.path ? result.path.split('/').pop() : '(unknown)';
+                renderStatus = { kind: 'ok', message: `Rendered to ${basename}` };
+            } else {
+                renderStatus = { kind: 'error', message: result.error ?? 'Unknown error' };
+            }
+        } catch (e) {
+            renderStatus = {
+                kind: 'error',
+                message: e instanceof Error ? e.message : String(e)
+            };
+        } finally {
+            rendering = false;
+        }
+    }
 </script>
 
 <svelte:head>
@@ -365,20 +439,36 @@
                 <span class="text-red-600 dark:text-red-400">{saveStatus.message}</span>
             {/if}
 
+            {#if renderStatus.kind === 'ok' && renderStatus.message}
+                <span class="text-primary-600 dark:text-primary-400">{renderStatus.message}</span>
+            {:else if renderStatus.kind === 'error'}
+                <span class="text-red-600 dark:text-red-400">{renderStatus.message}</span>
+            {/if}
+
             {#if unresolvedCount > 0}
-                <span class="text-amber-600 dark:text-amber-400 ml-auto">
+                <span class="text-amber-600 dark:text-amber-400">
                     {unresolvedCount} unresolved binding{unresolvedCount === 1 ? '' : 's'}
                 </span>
             {/if}
 
-            <button
-                type="button"
-                onclick={saveNow}
-                disabled={!dirty || saving}
-                class="ml-auto px-3 py-1 text-xs rounded border border-secondary-200 dark:border-secondary-700 text-secondary-700 dark:text-secondary-300 hover:bg-secondary-100 dark:hover:bg-secondary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-                Save now
-            </button>
+            <div class="flex items-center gap-2 ml-auto">
+                <button
+                    type="button"
+                    onclick={saveNow}
+                    disabled={!dirty || saving}
+                    class="px-3 py-1 text-xs rounded border border-secondary-200 dark:border-secondary-700 text-secondary-700 dark:text-secondary-300 hover:bg-secondary-100 dark:hover:bg-secondary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                    Save now
+                </button>
+                <button
+                    type="button"
+                    onclick={renderNow}
+                    disabled={rendering || saving}
+                    class="px-3 py-1 text-xs rounded border border-primary-300 dark:border-primary-700 text-primary-700 dark:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                    {rendering ? 'Rendering…' : 'Render to vault'}
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -532,6 +622,45 @@
         border-left-color: #fcd34d;
     }
     :global(.dark .substrate-editor .callout-warning .callout-header) { color: #fcd34d; }
+
+    /* Marker-section block (W-147 / S367) — atomic read-only badge for
+       marker-bound regen-region preambles. The block carries marker_id,
+       kind_label, admin_path in attrs; the body between the begin/end
+       markers in the rendered file is owned by the regen pipeline. The
+       editor displays it as a single block, not five paragraphs. */
+    :global(.substrate-editor .marker-section-block) {
+        margin: 1rem 0;
+        padding: 0.65rem 0.85rem;
+        border: 1px dashed #94a3b8;
+        background: rgba(148, 163, 184, 0.05);
+        border-radius: 0.4rem;
+        color: #44403c;
+        font-size: 0.85rem;
+        cursor: default;
+        user-select: none;
+    }
+    :global(.dark .substrate-editor .marker-section-block) {
+        border-color: #64748b;
+        background: rgba(100, 116, 139, 0.10);
+        color: #d6d3d1;
+    }
+    :global(.substrate-editor .marker-section-header) {
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 0.2rem;
+    }
+    :global(.dark .substrate-editor .marker-section-header) { color: #cbd5e1; }
+    :global(.substrate-editor .marker-section-icon) {
+        margin-right: 0.4rem;
+        color: #64748b;
+    }
+    :global(.dark .substrate-editor .marker-section-icon) { color: #94a3b8; }
+    :global(.substrate-editor .marker-section-body) {
+        font-size: 0.78rem;
+        color: #64748b;
+        font-family: var(--font-mono, ui-monospace, monospace);
+    }
+    :global(.dark .substrate-editor .marker-section-body) { color: #94a3b8; }
 
     /* Table block — basic styling so the structure is visible. */
     :global(.substrate-editor .ProseMirror table) {

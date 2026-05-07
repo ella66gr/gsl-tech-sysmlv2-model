@@ -4,16 +4,17 @@
  * Builds an editor instance configured with the substrate block types
  * mapped onto Tiptap nodes:
  *
- *   document_root → doc        (built-in)
- *   heading       → heading    (built-in)
- *   paragraph     → paragraph  (built-in)
- *   table         → table      (extension-table family)
- *   principle     → principle  (custom node, defined here)
- *   code          → codeBlock  (extension-code-block; W-137 / S351;
- *                                language attr from props.language)
- *   important     → important  (custom callout node; W-134 / S365)
- *   note          → note       (custom callout node; W-134 / S365)
- *   warning       → warning    (custom callout node; W-134 / S365)
+ *   document_root  → doc            (built-in)
+ *   heading        → heading        (built-in)
+ *   paragraph      → paragraph      (built-in)
+ *   table          → table          (extension-table family)
+ *   principle      → principle      (custom node, defined here)
+ *   code           → codeBlock      (extension-code-block; W-137 / S351;
+ *                                    language attr from props.language)
+ *   important      → important      (custom callout node; W-134 / S365)
+ *   note           → note           (custom callout node; W-134 / S365)
+ *   warning        → warning        (custom callout node; W-134 / S365)
+ *   marker_section → marker_section (atomic read-only badge; W-147 / S367)
  *
  * The unresolved-reference decoration is a ProseMirror plugin that
  * reads each `principle` node's `entity_type`/`entity_id` attrs and
@@ -52,7 +53,7 @@ const BlockIdAttribute = Extension.create({
     addGlobalAttributes() {
         return [
             {
-                types: ['doc', 'heading', 'paragraph', 'principle', 'important', 'note', 'warning', 'table', 'codeBlock'],
+                types: ['doc', 'heading', 'paragraph', 'principle', 'important', 'note', 'warning', 'marker_section', 'table', 'codeBlock'],
                 attributes: {
                     'data-block-id': {
                         default: null,
@@ -206,6 +207,65 @@ const Important = makeCalloutNode('important');
 const Note = makeCalloutNode('note');
 const Warning = makeCalloutNode('warning');
 
+// ---------- marker_section custom node (W-147, S367) ----------
+
+/**
+ * `marker_section` block — substrate-side authoring shape for marker-
+ * bound regen-region preambles. Atomic, no editable content; the body
+ * between the begin/end markers in the rendered file is owned by the
+ * regen pipeline (`replace_marked_section`).
+ *
+ * Rendered as a small read-only badge showing the marker_id, kind
+ * label, and a link to the admin path. Authors see one block where
+ * the legacy paragraph sequence was 4–5 separate blocks.
+ *
+ * Editing the props is not done in-place — that's a migration or
+ * resolver-admin operation. The block can be deleted from the editor
+ * (Backspace at start of next block, or selection-delete) like any
+ * other block.
+ */
+const MarkerSection = Node.create({
+    name: 'marker_section',
+    group: 'block',
+    atom: true,
+    selectable: true,
+    draggable: false,
+
+    addAttributes() {
+        return {
+            marker_id: { default: null },
+            kind_label: { default: null },
+            admin_path: { default: null },
+            admin_label: { default: null }
+        };
+    },
+
+    parseHTML() {
+        return [{ tag: 'aside.marker-section-block' }];
+    },
+
+    renderHTML({ HTMLAttributes }) {
+        const markerId = (HTMLAttributes.marker_id as string | null) ?? '(no marker_id)';
+        const kindLabel = (HTMLAttributes.kind_label as string | null) ?? '';
+        const adminPath = (HTMLAttributes.admin_path as string | null) ?? '';
+        const adminLabel =
+            (HTMLAttributes.admin_label as string | null) ??
+            'View / edit in the database';
+        const kindSuffix = kindLabel ? ` — ${kindLabel}` : '';
+        return [
+            'aside',
+            mergeAttributes(HTMLAttributes, { class: 'marker-section-block', contenteditable: 'false' }),
+            ['div', { class: 'marker-section-header' },
+                ['span', { class: 'marker-section-icon' }, '⁂'],  // ※
+                ['span', { class: 'marker-section-label' }, `Marker region: ${markerId}${kindSuffix}`]
+            ],
+            ['div', { class: 'marker-section-body' },
+                ['span', { class: 'marker-section-admin' }, `${adminLabel} → ${adminPath}`]
+            ]
+        ];
+    }
+});
+
 // ---------- unresolved-reference decoration ----------
 
 const unresolvedRefKey = new PluginKey('substrate-unresolved-refs');
@@ -281,6 +341,7 @@ export function createSubstrateEditor(config: SubstrateEditorConfig): Editor {
             Important,
             Note,
             Warning,
+            MarkerSection,
             BlockIdAttribute,
             UnresolvedRefPlugin
         ],

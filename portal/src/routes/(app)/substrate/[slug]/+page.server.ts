@@ -4,6 +4,7 @@ import {
     getComposed,
     applyMutations,
     validateBinding,
+    renderToVault,
     ResolverError,
     type MutationOp
 } from '$lib/server/substrate/resolver-client';
@@ -58,6 +59,26 @@ export const actions = {
                 ok: true,
                 newRevision: res.newRevision,
                 accepted: res.acceptedOperations
+            };
+        } catch (e) {
+            const message =
+                e instanceof ResolverError
+                    ? `Resolver ${e.status}: ${typeof e.detail === 'string' ? e.detail : JSON.stringify(e.detail)}`
+                    : e instanceof Error
+                      ? e.message
+                      : String(e);
+            return { ok: false, error: message };
+        }
+    },
+
+    render: async ({ params }) => {
+        try {
+            const res = await renderToVault(params.slug);
+            return {
+                ok: true,
+                path: res.path,
+                bytes: res.bytes,
+                warnings: res.warnings
             };
         } catch (e) {
             const message =

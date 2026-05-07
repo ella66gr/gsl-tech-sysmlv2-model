@@ -179,6 +179,32 @@ export async function applyMutations(
     );
 }
 
+// ---------- Render to vault ----------
+
+export interface RenderResponse {
+    slug: string;
+    title: string;
+    target: 'vault' | 'temp' | 'return';
+    path: string | null;
+    bytes: number;
+    markdown: string | null;
+    warnings: string[];
+}
+
+/**
+ * Render a substrate document to its vault path.
+ *
+ * No body — slug-as-identity (W-149) means the renderer resolves the
+ * vault location server-side by matching `document.slug` against
+ * frontmatter `slug:` fields in the live vault tree.
+ */
+export async function renderToVault(idOrSlug: string): Promise<RenderResponse> {
+    return call<RenderResponse>(
+        `/v1/documents/${encodeURIComponent(idOrSlug)}/render`,
+        { method: 'POST', query: { target: 'vault' } }
+    );
+}
+
 // ---------- Binding validation ----------
 
 export interface BindingValidationResponse {
