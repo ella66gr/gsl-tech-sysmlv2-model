@@ -158,7 +158,7 @@ The `db/exports/strata.py` module is the canonical example, regenerating six mar
 
 Substrate-canonical documents are stored as ProseMirror block trees in:
 
-- `block` — individual blocks (heading, paragraph, table, principle, etc.) with `props`, `content`, optional `entity_type` + `entity_id` bindings.
+- `block` — individual blocks. Block types: `heading`, `paragraph`, `table`, `principle` (entity-bound; renders as `> [!principle] {label}` callout), `code` (props-lifted: language + text in props), `important` / `note` / `warning` (W-134 / S365 — typographic prose-only callouts, no entity binding; render as `> [!important]` / `> [!note]` / `> [!warning]`), and `document_root` (carries frontmatter in props). All have `props`, `content`, and optional `entity_type` + `entity_id` bindings (only `principle` and entity-binding paragraphs use the latter).
 - `block_edge` — edges between blocks: `contains` (parent → child, ordered by ordinal), `transcludes`, `cites`, `mentions`, `instance_of`.
 - `document` — document identity (slug, title, root_block_id, current_revision_id).
 - `document_block` — flat membership table reconciled from `contains` reachability (W-126).

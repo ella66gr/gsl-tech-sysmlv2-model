@@ -204,6 +204,9 @@
             case 'paragraph': return 'paragraph';
             case 'heading':   return 'heading';
             case 'principle': return 'principle';
+            case 'important': return 'important';
+            case 'note':      return 'note';
+            case 'warning':   return 'warning';
             case 'table':     return 'table';
             case 'codeBlock': return 'code';
             default:          return 'paragraph';
@@ -226,6 +229,10 @@
                 .join('');
             return { language: language ?? '', text };
         }
+        if (blockType === 'important' || blockType === 'note' || blockType === 'warning') {
+            const title = (node.attrs?.title as string | null | undefined) ?? null;
+            return title ? { title } : {};
+        }
         return {};
     }
 
@@ -235,9 +242,14 @@
     ): Record<string, unknown> | null {
         // Mirror the shape produced by diffToMutations so equality holds on
         // the next pass. We deliberately strip our private attrs.
-        if (blockType === 'heading' || blockType === 'paragraph' || blockType === 'principle') {
+        if (blockType === 'heading' || blockType === 'paragraph' || blockType === 'principle'
+            || blockType === 'important' || blockType === 'note' || blockType === 'warning') {
+            const isPrincipleLike = blockType === 'principle'
+                || blockType === 'important'
+                || blockType === 'note'
+                || blockType === 'warning';
             return {
-                type: blockType === 'principle' ? 'paragraph' : blockType,
+                type: isPrincipleLike ? 'paragraph' : blockType,
                 content: stripBlockIdAttrsDeep(pmNode.content ?? [])
             };
         }
@@ -382,8 +394,9 @@
     /* Editor surface — explicit styling rather than Tailwind's `prose`
        plugin, because ProseMirror's contenteditable subtree doesn't always
        inherit prose classes reliably and we want predictable dark-mode
-       behaviour. The four block types we render (heading / paragraph /
-       principle / table) cover the whole stylesheet. */
+       behaviour. The block types we render (heading / paragraph /
+       principle / table / code / important / note / warning) cover the
+       whole stylesheet. */
     :global(.substrate-editor .ProseMirror) {
         outline: none;
         min-height: 20rem;
@@ -453,6 +466,72 @@
     :global(.substrate-editor .principle-body p) {
         margin: 0.2rem 0;
     }
+
+    /* Callout blocks — Obsidian-style [!important] / [!note] / [!warning].
+       Prose-only; no entity binding header text. Shared base + per-kind
+       accent colour on the left border and label. Light + dark variants. */
+
+    :global(.substrate-editor .callout-block) {
+        margin: 1rem 0;
+        padding: 0.85rem 1rem 0.85rem 1.05rem;
+        border-left: 3px solid #94a3b8;       /* slate, neutral default */
+        background: rgba(148, 163, 184, 0.06);
+        border-radius: 0 0.4rem 0.4rem 0;
+        color: #1c1917;
+    }
+    :global(.dark .substrate-editor .callout-block) {
+        background: rgba(148, 163, 184, 0.10);
+        border-left-color: #cbd5e1;
+        color: #f5f5f4;
+    }
+
+    :global(.substrate-editor .callout-header) {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 600;
+        margin-bottom: 0.35rem;
+    }
+
+    :global(.substrate-editor .callout-body p) {
+        margin: 0.2rem 0;
+    }
+
+    /* Per-kind accent colours — chosen to read alongside the principle
+       block's teal without clashing. */
+
+    :global(.substrate-editor .callout-important) {
+        border-left-color: #ef4444;             /* red */
+        background: rgba(239, 68, 68, 0.06);
+    }
+    :global(.substrate-editor .callout-important .callout-header) { color: #b91c1c; }
+    :global(.dark .substrate-editor .callout-important) {
+        background: rgba(239, 68, 68, 0.12);
+        border-left-color: #fca5a5;
+    }
+    :global(.dark .substrate-editor .callout-important .callout-header) { color: #fca5a5; }
+
+    :global(.substrate-editor .callout-note) {
+        border-left-color: #3b82f6;             /* blue */
+        background: rgba(59, 130, 246, 0.06);
+    }
+    :global(.substrate-editor .callout-note .callout-header) { color: #1d4ed8; }
+    :global(.dark .substrate-editor .callout-note) {
+        background: rgba(59, 130, 246, 0.12);
+        border-left-color: #93c5fd;
+    }
+    :global(.dark .substrate-editor .callout-note .callout-header) { color: #93c5fd; }
+
+    :global(.substrate-editor .callout-warning) {
+        border-left-color: #f59e0b;             /* amber */
+        background: rgba(245, 158, 11, 0.06);
+    }
+    :global(.substrate-editor .callout-warning .callout-header) { color: #b45309; }
+    :global(.dark .substrate-editor .callout-warning) {
+        background: rgba(245, 158, 11, 0.14);
+        border-left-color: #fcd34d;
+    }
+    :global(.dark .substrate-editor .callout-warning .callout-header) { color: #fcd34d; }
 
     /* Table block — basic styling so the structure is visible. */
     :global(.substrate-editor .ProseMirror table) {

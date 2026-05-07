@@ -1,7 +1,7 @@
 /**
  * Tiptap editor setup for the substrate editor.
  *
- * Builds an editor instance configured with the five substrate block types
+ * Builds an editor instance configured with the substrate block types
  * mapped onto Tiptap nodes:
  *
  *   document_root → doc        (built-in)
@@ -11,6 +11,9 @@
  *   principle     → principle  (custom node, defined here)
  *   code          → codeBlock  (extension-code-block; W-137 / S351;
  *                                language attr from props.language)
+ *   important     → important  (custom callout node; W-134 / S365)
+ *   note          → note       (custom callout node; W-134 / S365)
+ *   warning       → warning    (custom callout node; W-134 / S365)
  *
  * The unresolved-reference decoration is a ProseMirror plugin that
  * reads each `principle` node's `entity_type`/`entity_id` attrs and
@@ -49,7 +52,7 @@ const BlockIdAttribute = Extension.create({
     addGlobalAttributes() {
         return [
             {
-                types: ['doc', 'heading', 'paragraph', 'principle', 'table', 'codeBlock'],
+                types: ['doc', 'heading', 'paragraph', 'principle', 'important', 'note', 'warning', 'table', 'codeBlock'],
                 attributes: {
                     'data-block-id': {
                         default: null,
@@ -144,16 +147,64 @@ const Principle = Node.create({
     },
 
     renderHTML({ HTMLAttributes }) {
+        const label = (HTMLAttributes.entity_id as string | null | undefined) ?? 'principle';
         return [
             'aside',
             mergeAttributes(HTMLAttributes, { class: 'principle-block' }),
             ['div', { class: 'principle-binding', contenteditable: 'false' },
-                ['span', { class: 'principle-binding-label' }, 'principle']
+                ['span', { class: 'principle-binding-label' }, label]
             ],
             ['div', { class: 'principle-body' }, 0]
         ];
     }
 });
+
+// ---------- callout custom nodes (W-134, S365) ----------
+
+/**
+ * Build a Tiptap node for an Obsidian-style non-principle callout
+ * (`important`, `note`, `warning`). Prose-only, no entity binding.
+ *
+ * Renders as `<aside class="callout-block callout-{kind}">` with a header
+ * strip showing the kind label. Body is paragraph-shaped inline content.
+ */
+function makeCalloutNode(kind: 'important' | 'note' | 'warning'): Node {
+    return Node.create({
+        name: kind,
+        group: 'block',
+        content: 'inline*',
+        defining: true,
+
+        addAttributes() {
+            return {
+                title: { default: null }
+            };
+        },
+
+        parseHTML() {
+            return [{ tag: `aside.callout-block.callout-${kind}` }];
+        },
+
+        renderHTML({ HTMLAttributes }) {
+            const title = (HTMLAttributes.title as string | null | undefined) ?? '';
+            const labelText = title ? `${kind.toUpperCase()} — ${title}` : kind.toUpperCase();
+            return [
+                'aside',
+                mergeAttributes(HTMLAttributes, {
+                    class: `callout-block callout-${kind}`
+                }),
+                ['div', { class: 'callout-header', contenteditable: 'false' },
+                    ['span', { class: 'callout-label' }, labelText]
+                ],
+                ['div', { class: 'callout-body' }, 0]
+            ];
+        }
+    });
+}
+
+const Important = makeCalloutNode('important');
+const Note = makeCalloutNode('note');
+const Warning = makeCalloutNode('warning');
 
 // ---------- unresolved-reference decoration ----------
 
@@ -227,6 +278,9 @@ export function createSubstrateEditor(config: SubstrateEditorConfig): Editor {
             CodeBlock,
             Wikilink,
             Principle,
+            Important,
+            Note,
+            Warning,
             BlockIdAttribute,
             UnresolvedRefPlugin
         ],

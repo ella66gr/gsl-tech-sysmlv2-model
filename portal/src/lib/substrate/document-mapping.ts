@@ -27,6 +27,9 @@
  *                                  language attr from props.language;
  *                                  inner text from props.text — props-
  *                                  lifted shape, content jsonb empty)
+ *   important     → important    (W-134, S365; callout custom node)
+ *   note          → note         (W-134, S365; callout custom node)
+ *   warning       → warning      (W-134, S365; callout custom node)
  *
  * Unrecognised block types are rendered as paragraphs containing a
  * placeholder text node, so the editor never blows up on a registry
@@ -163,7 +166,32 @@ function nodeToPM(
                     entity_type: node.entity_type,
                     entity_id: node.entity_id
                 },
-                content: inline.length ? inline : [{ type: 'text', text: '' }]
+                // Empty content → no children (Tiptap rejects empty text nodes —
+                // OW-S342-1 precedent). Principle blocks have always had non-empty
+                // content in practice, but the same defensive fix as the callout
+                // case forecloses the latent bug if a content-empty principle is
+                // ever authored.
+                content: inline.length ? inline : []
+            };
+        }
+
+        case 'important':
+        case 'note':
+        case 'warning': {
+            const inline = extractInline(node.content);
+            const title = (node.props?.title as string | null | undefined) ?? null;
+            return {
+                type: node.block_type,
+                attrs: {
+                    'data-block-id': node.id,
+                    title
+                },
+                // Empty content → no children (Tiptap rejects empty text nodes —
+                // OW-S342-1 precedent, also followed by the `code` case below).
+                // The migrated marker-preamble blocks (W-134 close-out) carry
+                // their visible text in props.title and have empty content; they
+                // must round-trip through the editor with no body children.
+                content: inline.length ? inline : []
             };
         }
 
@@ -408,7 +436,7 @@ export function diffToMutations(
     //    to clear the snapshot's props — paragraph / principle / table
     //    blocks may carry props the editor doesn't surface (e.g.
     //    principle.props.principle_id).
-    const PROPS_DIFFABLE_TYPES = new Set(['heading', 'code']);
+    const PROPS_DIFFABLE_TYPES = new Set(['heading', 'code', 'important', 'note', 'warning']);
     for (const n of newNodes) {
         if (n.existingId === null) continue;
         const snap = snapshots[n.existingId];
@@ -534,6 +562,12 @@ function inferBlockType(node: PMNode): string | null {
             return 'heading';
         case 'principle':
             return 'principle';
+        case 'important':
+            return 'important';
+        case 'note':
+            return 'note';
+        case 'warning':
+            return 'warning';
         case 'table':
             return 'table';
         case 'codeBlock':
@@ -558,6 +592,10 @@ function inferBlockProps(node: PMNode, blockType: string): Record<string, unknow
             .map((c) => (typeof c.text === 'string' ? c.text : ''))
             .join('');
         return { language: language ?? '', text };
+    }
+    if (blockType === 'important' || blockType === 'note' || blockType === 'warning') {
+        const title = (node.attrs?.title as string | null | undefined) ?? null;
+        return title ? { title } : {};
     }
     return {};
 }
@@ -620,6 +658,13 @@ function nodeToBlockContent(
                 content: stripBlockIdAttrs(pmNode.content ?? [])
             };
         case 'principle':
+            return {
+                type: 'paragraph',
+                content: stripBlockIdAttrs(pmNode.content ?? [])
+            };
+        case 'important':
+        case 'note':
+        case 'warning':
             return {
                 type: 'paragraph',
                 content: stripBlockIdAttrs(pmNode.content ?? [])
