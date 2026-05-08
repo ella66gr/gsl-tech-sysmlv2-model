@@ -88,7 +88,7 @@ CLAUDE.md                  # this file
 
 ## PostgreSQL `ontara` Database (in the vault)
 
-The `ontara` PostgreSQL database lives on the macOS host (Homebrew Postgres 16). Its repository (schema, migrations, queries, resolver service code, exports, scratch build scripts) is **inside the vault** at `/Users/ellagreen/Obsidian/GenderSense/02 ONTARA/db/`. From inside the SysML repo, the database is reached via:
+The `ontara` PostgreSQL database lives on the macOS host (Homebrew Postgres 16). Its repository (schema, migrations, queries, resolver service code, exports including build-scripts) is **inside the vault** at `/Users/ellagreen/Obsidian/GenderSense/02 ONTARA/db/`. From inside the SysML repo, the database is reached via:
 
 - **Direct psql** — `psql -d ontara …` (peer auth, no password). Migrations: `psql -d ontara -f path/to/migration.sql`.
 - **Resolver HTTP service** — `http://localhost:7300/`. Public read views (concepts, EIL, risks, work items, OW register, DCR). Token-protected write surface at `/api/{ct}` and `/admin/{ct}`. Token at `02 ONTARA/db/resolver/.ontara-token`.
@@ -102,13 +102,14 @@ This section covers the present-day write architecture for vault content backed 
 
 ```
 db/
-  exports/         # marker-bound exporters — Python modules that regenerate
-                   # marker sections in vault markdown from PostgreSQL rows
-  migrations/      # numbered SQL migration files (NNN_description.sql)
-  queries/         # standing read queries for inspection and tooling
-  resolver/        # FastAPI resolver service (substrate, write, admin, API)
-  scratch/         # build scripts (build_sNNN_*.py) for one-off content authoring
-  schema/          # canonical schema reference
+  exports/                # marker-bound exporters — Python modules that regenerate
+                          # marker sections in vault markdown from PostgreSQL rows
+    build-scripts/        # substrate-doc build scripts (build_sNNN_*.py); kept as
+                          # provenance / audit trail
+  migrations/             # numbered SQL migration files (NNN_description.sql)
+  queries/                # standing read queries for inspection and tooling
+  resolver/               # FastAPI resolver service (substrate, write, admin, API)
+  schema/                 # canonical schema reference
   .ontara-session  # canonical session pointer (single integer)
   .ontara-token    # resolver auth token (gitignored)
 ```
@@ -165,7 +166,7 @@ Substrate-canonical documents are stored as ProseMirror block trees in:
 - `document_block` — flat membership table reconciled from `contains` reachability (W-126).
 - `revision` — revision history per document.
 
-Build scripts (`db/scratch/build_sNNN_*.py`) author substrate documents programmatically. The standard shape is:
+Build scripts (`db/exports/build-scripts/build_sNNN_*.py`) author substrate documents programmatically. The standard shape is:
 
 1. Define block helpers (`P()`, `H()`, `TABLE()`, `PRINCIPLE()` etc.).
 2. Build a `BLOCKS` list with content, entity bindings, and structure.
