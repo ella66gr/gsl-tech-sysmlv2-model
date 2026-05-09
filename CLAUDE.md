@@ -14,7 +14,7 @@ Ontara is in its **contraction phase** (from S241), driving toward a v1 working 
 - **Six BMM concerns:** ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel (sixth concern added S81). 34 BMM General `part def`s.
 - **Comprehension architecture:** Every BMM General `part def` carries `@CatalogueTag`, `@BfoType`, `@UserFacing`, `@PurposiveDescription`, `@Comprehension`, and `@WeightedRelationship` annotations. 34/34 coverage; 96 weighted relationships. Tenant projections (`paws.sysml`, `minds.sysml`, etc.) carry doc blocks only — annotation semantics are inherited via `:>` and `part` instantiation.
 - **Knowledge graph:** Dual-formalism — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO + IAO + PROV-O core subset as mid-level. GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence. Full OWL 2 DL reasoning via HermiT (Robot). Stage 7 Phase 1+2+3 complete — HermiT CONSISTENT. Hand-authored modules: `ontara-governance.ttl`, `ontara-domain.ttl`, `ontara-reasoning.ttl` (42 classes, 15 named individuals, 40 object properties, 10 datatype properties, PROV-O dual subclassing, STAMP/STPA safety structures, FRAM-ready function/variability slots), `ears-reasoning-instances.ttl` (~83 named individuals, S166). 13-file ontology stack. **66-query SPARQL validation suite across 12 groups.** MVP CQC Regulation 12 test individuals validated.
-- **PostgreSQL `ontara` repository** (lives in the vault at `02 ONTARA/db/`): canonical store for concepts, concept relationships, EIL entries, risks, the work tracker (DCR, active work items, OW register), strata, tenants, BMM elements, modelling paradigms, tech stack, and substrate-canonical document content. Surfaced through (a) generated markdown exports (`ontara-ref-glossary.md`, etc.) regenerated on every database write, (b) the **resolver service** at `http://localhost:7300/`, and (c) **substrate documents** rendered from the substrate block tables. Concept additions and changes flow through database migrations or the resolver admin UI, not through markdown edits.
+- **PostgreSQL `ontara` repository** (lives in the vault at `02 ONTARA/db/`): canonical store for concepts, concept relationships, EIL entries, risks, the work tracker (DCR, active work items, OW register), strata, tenants, BMM elements, modelling paradigms, tech stack, and substrate-canonical document content. Surfaced through (a) generated markdown exports (`ontara-ref-glossary.md`, etc.) regenerated on every database write, (b) the **resolver service** at `http://localhost:7310/`, and (c) **substrate documents** rendered from the substrate block tables. Concept additions and changes flow through database migrations or the resolver admin UI, not through markdown edits.
 - **Substrate-canonical documents** (from S290+): a growing class of vault references (architecture papers, BMM main + vocabulary, the V&A reference, and the new Architecture & Principles family) are stored as ProseMirror block trees in the substrate tables (`block`, `block_edge`, `document`, `revision`) and rendered to vault markdown via the resolver. The vault `.md` is the rendered surface; the database is the source of truth. Editing the rendered markdown by hand is a category error; edits flow through the substrate editor (Portal) or build scripts (one-off authoring).
 
 ## Two Repos, Kept Separate
@@ -91,7 +91,7 @@ CLAUDE.md                  # this file
 The `ontara` PostgreSQL database lives on the macOS host (Homebrew Postgres 16). Its repository (schema, migrations, queries, resolver service code, exports including build-scripts) is **inside the vault** at `/Users/ellagreen/Obsidian/GenderSense/02 ONTARA/db/`. From inside the SysML repo, the database is reached via:
 
 - **Direct psql** — `psql -d ontara …` (peer auth, no password). Migrations: `psql -d ontara -f path/to/migration.sql`.
-- **Resolver HTTP service** — `http://localhost:7300/`. Public read views (concepts, EIL, risks, work items, OW register, DCR). Token-protected write surface at `/api/{ct}` and `/admin/{ct}`. Token at `02 ONTARA/db/resolver/.ontara-token`.
+- **Resolver HTTP service** — `http://localhost:7310/`. Public read views (concepts, EIL, risks, work items, OW register, DCR). Token-protected write surface at `/api/{ct}` and `/admin/{ct}`. Token at `02 ONTARA/db/resolver/.ontara-token`.
 - **Postgres MCP** (when in a Claude Desktop session) — TCP via Docker bridge, used for ad-hoc inspection.
 
 Full reach details and the `pg_hba.conf` setup are in the vault at `02 ONTARA/02 Ontara DEVELOPMENT/Ontara REFERENCE & GUIDES/ontara-ref-guide-db-access.md`. The shell command catalogue (resolver service control, generator commands, console operations) is in the vault at `ontara-ref-guide-shell-commands.md`.
@@ -116,8 +116,8 @@ db/
 
 ### Resolver service
 
-- FastAPI service at `http://localhost:7300/`. Auto-started via launchd (`~/Library/LaunchAgents/dev.ontara.resolver.plist`).
-- Liveness: `curl http://localhost:7300/healthz` returns `{"status":"ok"}`. The `/health` endpoint is the HTML admin landing page.
+- FastAPI service at `http://localhost:7310/`. Auto-started via launchd (`~/Library/LaunchAgents/dev.ontara.resolver.plist`).
+- Liveness: `curl http://localhost:7310/healthz` returns `{"status":"ok"}`. The `/health` endpoint is the HTML admin landing page.
 - Restart: `launchctl kickstart -k gui/501/dev.ontara.resolver`.
 - Auth: `X-Ontara-Token: <token>` header for write APIs; cookie auth for the admin UI (set once via `/admin/login`).
 - Surfaces:
@@ -140,8 +140,8 @@ Vault markdown documents host content canonically held in PostgreSQL via marker 
 
 Content between markers is **overwritten on regen** and must not be edited by hand. Edits flow through:
 
-- The resolver admin UI at `http://localhost:7300/admin/{ct}` (form-based).
-- The JSON API at `http://localhost:7300/api/{ct}` (programmatic).
+- The resolver admin UI at `http://localhost:7310/admin/{ct}` (form-based).
+- The JSON API at `http://localhost:7310/api/{ct}` (programmatic).
 - Direct SQL (rare; bypasses regen and leaves markdown stale).
 
 After any DB row write through the spec-driven engine, the spec's `regenerate_hook` is called automatically; the marker section in the host document is rewritten. **Direct SQL writes do not trigger regen** and so leave the markdown out of sync until the next manual regen call.
@@ -221,8 +221,8 @@ pnpm build            # Production build
 
 ```bash
 # Liveness
-curl http://localhost:7300/healthz                      # JSON {"status":"ok"}
-curl -I http://localhost:7300/                          # HTML admin landing
+curl http://localhost:7310/healthz                      # JSON {"status":"ok"}
+curl -I http://localhost:7310/                          # HTML admin landing
 
 # Restart (after editing resolver code or specs)
 launchctl kickstart -k gui/501/dev.ontara.resolver
@@ -293,7 +293,7 @@ python3 scripts/reason_kg.py --save-summary        # Save reasoning-summary.json
 - `gen_model_introspection.py` — reads SysML, writes JSON. No GraphDB dependency.
 - Console / portal dev servers — read static JSON, not GraphDB.
 
-**Resolver service** (localhost:7300) is required for: writes to PostgreSQL-canonical content (concepts, EIL, work tracker, OW register, DCR, risks), substrate document mutations, and marker regeneration. Auto-started on login; status checks via `curl http://localhost:7300/healthz`.
+**Resolver service** (localhost:7310) is required for: writes to PostgreSQL-canonical content (concepts, EIL, work tracker, OW register, DCR, risks), substrate document mutations, and marker regeneration. Auto-started on login; status checks via `curl http://localhost:7310/healthz`.
 
 If a task instruction says "run reason_kg.py --save-summary", do NOT attempt to load GraphDB or run validate_kg.py unless explicitly instructed. These are independent operations.
 

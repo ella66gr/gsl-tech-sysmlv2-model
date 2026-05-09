@@ -225,9 +225,9 @@ Three governing methodology principles (J-codes, Tier-1 binding):
 2. **Co-evolution of model and tooling (J2)** — no modelling without the tool that makes it legible; no tool without model content that exercises it.
 3. **Non-constraining architecture (J3)** — decisions should not foreclose future development paths.
 
-Development is conducted through a structured session programme (currently Session 379) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks). From Session 241 the project is in a contraction and landing phase: the default response to any emergent possibility is capture in the Emergent Ideas Log, not diversion of landing work, with all new work tested against v1 acceptance criteria.
+Development is conducted through a structured session programme (currently Session 380) using Claude Chat (architecture, planning, governance), Claude Code (implementation), and Claude Cowork (cross-application tasks). From Session 241 the project is in a contraction and landing phase: the default response to any emergent possibility is capture in the Emergent Ideas Log, not diversion of landing work, with all new work tested against v1 acceptance criteria.
 
-## Current State (Session 379, May 2026)
+## Current State (Session 380, May 2026)
 
 ### Platform and architecture
 
@@ -255,4 +255,4 @@ V1 acceptance: a locally-hosted platform running five concurrent tenant services
 
 ---
 
-*README last updated: Session 379, 9 May 2026.*
+*README last updated: Session 380, 9 May 2026.*
