@@ -3,8 +3,9 @@
 OWL 2 DL Reasoning via Robot
 ==============================
 
-Runs the HermiT reasoner (via Robot) against the full Ontara ontology
-stack and reports consistency, unsatisfiable classes, and inferred axioms.
+Runs an OWL reasoner (HermiT or ELK, via Robot) against the full Ontara
+ontology stack and reports consistency, unsatisfiable classes, and
+inferred axioms.
 
 Part of Stage 5 Phase 2 — Steps 4 and 6.
 
@@ -15,13 +16,16 @@ Prerequisites:
   - Pipeline has been run: python3 scripts/gen_owl_pipeline.py --save
 
 Usage:
-    python3 scripts/reason_kg.py                # Reason over full stack
-    python3 scripts/reason_kg.py --verbose      # Show detailed output
-    python3 scripts/reason_kg.py --test-violation  # Inject contradiction, confirm reasoner catches it
-    python3 scripts/reason_kg.py --output results  # Save inferred ontology to file
+    python3 scripts/reason_kg.py                       # Reason over full stack (HermiT, default)
+    python3 scripts/reason_kg.py --reasoner hermit     # Explicitly HermiT (release-gate)
+    python3 scripts/reason_kg.py --reasoner elk        # ELK (fast daily classifier, EL profile)
+    python3 scripts/reason_kg.py --verbose             # Show detailed output
+    python3 scripts/reason_kg.py --test-violation      # Inject contradiction, confirm reasoner catches it
+    python3 scripts/reason_kg.py --output results.ttl  # Save inferred ontology to file
 
 Source: Stage 5 Phase 2 — Step 4 (Session 115)
 Design decision: S111-D5 — Robot + HermiT
+C1 (2026-05-10): ELK added as daily classifier; HermiT remains release-gate.
 """
 
 import argparse
@@ -619,15 +623,33 @@ def count_sparql_queries():
 # Core reasoning
 # ---------------------------------------------------------------
 
-def reason_ontology(verbose=False, output_path=None):
-    """Merge all ontology files and run HermiT reasoning.
+def reasoner_label(reasoner):
+    """Display label for a reasoner choice (case-preserving for the user-facing log)."""
+    return {"hermit": "HermiT", "elk": "ELK"}.get(reasoner, reasoner)
+
+
+def robot_reasoner_arg(reasoner):
+    """Map our --reasoner choice to the value Robot expects on its `--reasoner` flag.
+
+    Robot accepts either case for both, but we use the canonical casing seen in
+    Robot's own docs: `hermit` (lower) for HermiT, `ELK` (upper) for ELK.
+    """
+    return {"hermit": "hermit", "elk": "ELK"}[reasoner]
+
+
+def reason_ontology(verbose=False, output_path=None, reasoner="hermit"):
+    """Merge all ontology files and run reasoning.
+
+    `reasoner` is one of {"hermit", "elk"}. HermiT is the release-gate reasoner
+    (~9 min, full OWL 2 DL). ELK is the daily classifier (~2 s, EL profile —
+    will silently ignore axioms outside EL).
 
     Returns (consistent, unsatisfiable_classes, summary_text).
     """
     print("\n--- Merging ontology files ---")
 
     # Build the merge + reason command chain.
-    # Robot supports chaining: merge --input A --input B reason --reasoner hermit
+    # Robot supports chaining: merge --input A --input B reason --reasoner <r>
     args = ["merge"]
 
     # Use XML catalog for local IRI resolution (avoids network fetch)
@@ -647,10 +669,10 @@ def reason_ontology(verbose=False, output_path=None):
     # Collapse imports so Robot doesn't try to fetch remote IRIs
     args.extend(["--collapse-import-closure", "true"])
 
-    # Chain into reason with HermiT
+    # Chain into reason with the chosen reasoner
     args.extend([
         "reason",
-        "--reasoner", "hermit",
+        "--reasoner", robot_reasoner_arg(reasoner),
         "--annotate-inferred-axioms", "true",
         "--exclude-tautologies", "structural",
     ])
@@ -660,13 +682,13 @@ def reason_ontology(verbose=False, output_path=None):
         args.extend(["--output", str(output_path)])
         print(f"  Inferred ontology will be saved to: {output_path}")
 
-    print("\n--- Running HermiT reasoner ---")
+    print(f"\n--- Running {reasoner_label(reasoner)} reasoner ---")
     success, stdout, stderr = run_robot(args, verbose=verbose, timeout=1200)
 
     combined_output = (stdout + "\n" + stderr).strip()
 
     if success:
-        print("  CONSISTENT — HermiT found no contradictions.")
+        print(f"  CONSISTENT — {reasoner_label(reasoner)} found no contradictions.")
         return True, [], combined_output
     else:
         # Parse stderr for unsatisfiable classes
@@ -695,18 +717,22 @@ def reason_ontology(verbose=False, output_path=None):
         return False, unsatisfiable, combined_output
 
 
-def test_violation(verbose=False):
+def test_violation(verbose=False, reasoner="hermit"):
     """Inject a deliberate contradiction and verify the reasoner catches it.
 
     Creates a temporary Turtle file that makes ValueProposition a subclass
     of ActivityModelElement (contradicts the disjointness axiom), merges it
-    with the full stack, and confirms HermiT reports inconsistency.
+    with the full stack, and confirms the chosen reasoner reports inconsistency.
+
+    Note: ELK is EL-profile and silently ignores DisjointClasses axioms — a
+    violation that contradicts a DisjointClasses statement will NOT be caught
+    by ELK. The release-gate violation test must be run under HermiT.
 
     Returns True if the reasoner correctly caught the violation.
     """
     print("\n=== VIOLATION TEST ===")
     print("  Injecting: ValueProposition rdfs:subClassOf ActivityModelElement")
-    print("  Expected: HermiT should report inconsistency (disjoint groups)")
+    print(f"  Expected: {reasoner_label(reasoner)} should report inconsistency (disjoint groups)")
 
     # Write the violation to a temp file
     with tempfile.NamedTemporaryFile(
@@ -734,10 +760,10 @@ def test_violation(verbose=False):
 
         args.extend([
             "reason",
-            "--reasoner", "hermit",
+            "--reasoner", robot_reasoner_arg(reasoner),
         ])
 
-        print("\n  Running HermiT with deliberate contradiction...")
+        print(f"\n  Running {reasoner_label(reasoner)} with deliberate contradiction...")
         success, stdout, stderr = run_robot(args, verbose=verbose, timeout=600)
 
         combined = (stdout + "\n" + stderr).strip()
@@ -763,11 +789,11 @@ def test_violation(verbose=False):
 # Reporting
 # ---------------------------------------------------------------
 
-def print_summary(consistent, unsatisfiable, test_result=None):
+def print_summary(consistent, unsatisfiable, test_result=None, reasoner="hermit"):
     """Print a final summary."""
     print("\n=== REASONING SUMMARY ===")
     print(f"  Ontology stack: {len(ONTOLOGY_FILES)} files")
-    print(f"  Reasoner:       HermiT (via Robot)")
+    print(f"  Reasoner:       {reasoner_label(reasoner)} (via Robot)")
 
     if consistent:
         print(f"  Consistency:    PASS")
@@ -811,9 +837,19 @@ def main():
         "--save-summary", action="store_true",
         help="Save a reasoning summary JSON to generated/ontara/reasoning-summary.json",
     )
+    parser.add_argument(
+        "--reasoner", type=str, choices=["hermit", "elk"], default="hermit",
+        help=(
+            "Which OWL reasoner to invoke via Robot. "
+            "'hermit' (default) — full OWL 2 DL, ~9 min, release-gate. "
+            "'elk' — EL profile only, ~2 s, daily classifier. "
+            "ELK silently ignores axioms outside EL (e.g. DisjointClasses); "
+            "use HermiT for any release-gate or disjointness check."
+        ),
+    )
     args = parser.parse_args()
 
-    print("Ontara OWL 2 DL Reasoning (Robot + HermiT)")
+    print(f"Ontara OWL 2 DL Reasoning (Robot + {reasoner_label(args.reasoner)})")
     print(f"Repo root: {REPO_ROOT}")
     print()
 
@@ -832,15 +868,16 @@ def main():
     consistent, unsatisfiable, summary = reason_ontology(
         verbose=args.verbose,
         output_path=args.output,
+        reasoner=args.reasoner,
     )
 
     # Violation test (optional)
     test_result = None
     if args.test_violation:
-        test_result = test_violation(verbose=args.verbose)
+        test_result = test_violation(verbose=args.verbose, reasoner=args.reasoner)
 
     # Summary
-    overall = print_summary(consistent, unsatisfiable, test_result)
+    overall = print_summary(consistent, unsatisfiable, test_result, reasoner=args.reasoner)
 
     if args.save_summary:
         object_props = extract_object_properties()
@@ -852,7 +889,7 @@ def main():
         summary = {
             "generatedAt": datetime.now().isoformat(),
             "generator": "reason_kg.py",
-            "reasoner": "HermiT (via Robot)",
+            "reasoner": f"{reasoner_label(args.reasoner)} (via Robot)",
             "consistent": consistent,
             "unsatisfiableClasses": unsatisfiable,
             "ontologyStack": [
