@@ -1,0 +1,110 @@
+@prefix : <https://ontara.dev/ontology/joins/shapes#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ontara-igf: <https://ontara.dev/ontology/igf/#> .
+@prefix ontara-joins-ax: <https://ontara.dev/ontology/joins/axioms#> .
+@prefix ontara-joins-sh: <https://ontara.dev/ontology/joins/shapes#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@base <https://ontara.dev/ontology/joins/shapes> .
+
+
+# =============================================================================
+# Shape graph — Ontara cross-layer join shapes
+# =============================================================================
+#
+# SHACL shapes that validate cross-layer joins declared in
+# `joins/ontara-joins-axioms.ttl`. Closed-world data validation lives here;
+# open-world inference lives in the OWL axioms file alongside.
+#
+# W-161 occupant: NoOrphanApplicableControlShape — the "no orphan applicable
+# controls" rule, dormant pending the activating PR (Decision 3, signed off
+# 2026-05-11).
+#
+# Convention established here for the joins zone:
+#   - All shapes annotated `sh:deactivated true` until their activating PR.
+#   - The activating PR is the contractual moment Mira will record in the
+#     decision register: a named PR identifier, date, and the controls
+#     flipping from "valid because shape is dormant" to "valid because join
+#     is populated".
+#   - `sh:deactivated true` chosen over the unloaded-shapes-graph option
+#     because it is intrinsic to the shape (visible in the repo, parsed by
+#     SHACL processors, but inactive). Build-configuration choices about
+#     which graphs are loaded can drift; the per-shape annotation cannot.
+# =============================================================================
+
+<https://ontara.dev/ontology/joins/shapes> rdf:type owl:Ontology ;
+    rdfs:label "Ontara Cross-Layer Join Shapes"@en ;
+    dcterms:created "2026-05-12"^^xsd:date ;
+    rdfs:comment """SHACL shape library for cross-layer joins between Ontara zones. Contains
+the validation rules that check at instance-load time whether the joins
+declared in `joins/ontara-joins-axioms.ttl` are populated as required.
+Shapes are author-and-park: each shape carries `sh:deactivated true`
+until its activating PR lands."""@en ;
+    owl:versionInfo "Session note (Cyril, 2026-05-12) — W-161 lands NoOrphanApplicableControlShape dormant. Activating PR will flip sh:deactivated to false the day Mira's first RegulatoryRequirement batch lands."@en .
+
+
+# =============================================================================
+# NoOrphanApplicableControlShape (W-161, dormant)
+# =============================================================================
+#
+# Rule: a control catalogue entry in `Applicable` state must carry at least
+# one `satisfies` link to a regulatory requirement. An applicable control
+# without a `satisfies` link is an integrity violation.
+#
+# Status: DORMANT (`sh:deactivated true`). During the interim, volume-authoring
+# of `Applicable`-state controls with empty (but syntactically present)
+# `satisfies` slots is sanctioned per Cyril's §3 coordination note of
+# 2026-05-11.
+#
+# IRI placeholders: `igf:ControlCatalogueEntry` and `igf:Applicable` are
+# placeholder identifiers from Saskia's IGF zone, which has not yet landed
+# in the canonical OWL store. The activating PR confirms the final IRIs
+# (Saskia ratifies; Cyril and Saskia adjust the shape if the names differ),
+# imports the IGF zone into the validation closure, and flips this shape
+# from `sh:deactivated true` to `sh:deactivated false` (or removes the
+# annotation entirely).
+#
+# Activating PR checklist (for the moment it lands):
+#   1. Confirm `igf:ControlCatalogueEntry` IRI matches Saskia's authored
+#      class IRI; rename if drifted.
+#   2. Confirm the `Applicable` state IRI; rename if Saskia's state-vocabulary
+#      uses a different scheme (e.g. `igf:hasLifecycleState` rather than
+#      `igf:hasState`, or a different individual IRI for the state itself).
+#   3. Confirm `req:RegulatoryRequirement` is now authored (Mira's M1
+#      resolved) and has at least one populated instance.
+#   4. Add `rdfs:domain igf:ControlCatalogueEntry` to `joins-ax:satisfies`
+#      (and `rdfs:range` to `joins-ax:satisfiedBy`) in the same PR if not
+#      already done — the join's domain pinning has been deferred to the
+#      moment the IGF zone lands.
+#   5. Flip `sh:deactivated false` (or delete the annotation).
+#   6. Re-run SHACL validation against the canonical store; expect any
+#      controls authored during the interim with empty `satisfies` slots
+#      to surface as the named clean-diff Cyril described in §3.
+# =============================================================================
+
+ontara-joins-sh:NoOrphanApplicableControlShape a sh:NodeShape ;
+    rdfs:label "No Orphan Applicable Control Shape"@en ;
+    rdfs:comment """SHACL shape enforcing W-161: a control catalogue entry in `Applicable`
+state must carry at least one `satisfies` link to a regulatory requirement.
+Dormant per W-161 Decision 3 until the activating PR; flip live the day
+Mira's first RegulatoryRequirement batch lands."""@en ;
+    sh:deactivated true ;
+    sh:targetClass ontara-igf:ControlCatalogueEntry ;
+    sh:property [
+        sh:path ontara-joins-ax:satisfies ;
+        sh:minCount 1 ;
+        sh:message "An Applicable-state control must satisfy at least one regulatory requirement (W-161). Found a control catalogue entry in Applicable state with no satisfies link."@en ;
+        sh:severity sh:Violation
+    ] ;
+    sh:and (
+        # Restrict the shape's effect to controls in `Applicable` state.
+        # The qualified subshape uses sh:hasValue against the Applicable
+        # state individual; the activating PR confirms the exact IRI.
+        [
+            sh:path ontara-igf:hasState ;
+            sh:hasValue ontara-igf:Applicable
+        ]
+    ) .

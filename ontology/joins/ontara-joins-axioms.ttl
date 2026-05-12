@@ -1,0 +1,103 @@
+@prefix : <https://ontara.dev/ontology/joins/axioms#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ontara-joins-ax: <https://ontara.dev/ontology/joins/axioms#> .
+@prefix ontara-req: <https://ontara.dev/ontology/req/#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@base <https://ontara.dev/ontology/joins/axioms> .
+
+
+# =============================================================================
+# Ontology declaration
+# =============================================================================
+#
+# Cross-layer joins — declaration locus for object properties that bind
+# vocabularies owned by different zones together. Neither side owns the
+# join; both sides import it.
+#
+# W-161 — Ella signed off three decisions on 2026-05-11 (relayed via Arlo):
+#   1. Declaration locus — shared `joins/axioms#` namespace, owned by
+#      neither side, imported by both controls and requirements.
+#   2. RegulatoryRequirement IRI — `https://ontara.dev/ontology/req/#RegulatoryRequirement`
+#      (zone-slug `req`; class itself authors when Mira's M1 hold resolves).
+#   3. SHACL "no orphan applicable controls" rule — author dormant now,
+#      flip live in one PR the day the first RegulatoryRequirement batch
+#      lands. Realised in `joins/ontara-joins-shapes.ttl`, alongside.
+#
+# Joining discipline:
+#   - The property declarations live here.
+#   - Domain pinning is deliberately omitted until the IGF controls
+#     vocabulary lands (Saskia's zone). When `igf:ControlCatalogueEntry`
+#     is authored, a follow-on PR narrows the domain via an axiom that
+#     imports both `joins/axioms#` and the IGF zone. Leaving the domain
+#     open at the join site is the correct discipline — it avoids
+#     committing the join to a class IRI before the owning zone has
+#     authored it.
+#   - The range is pinned to the agreed `req:RegulatoryRequirement` IRI
+#     per Ella's Decision 2. The class itself is authored by Mira when
+#     M1 resolves; until then the IRI resolves to an undeclared class.
+#     This is OWL-legal — an `rdfs:range` may reference an IRI before
+#     the class is declared. Reasoners treat such references as
+#     `owl:Thing` until the class declaration imports.
+# =============================================================================
+
+<https://ontara.dev/ontology/joins/axioms> rdf:type owl:Ontology ;
+    rdfs:label "Ontara Cross-Layer Join Axioms"@en ;
+    dcterms:created "2026-05-12"^^xsd:date ;
+    rdfs:comment """Hand-authored OWL 2 DL axioms for cross-layer joins between Ontara zones.
+Neither-side-owned declaration locus for object properties that bind classes
+across vocabulary zones (e.g. IGF controls satisfying governance requirements).
+W-161 occupant: the `satisfies` / `satisfiedBy` pair binding control
+catalogue entries to regulatory requirements."""@en ;
+    owl:versionInfo "Session note (Cyril, 2026-05-12) — W-161 lands satisfies/satisfiedBy as the first occupants of joins/axioms#. Domain left open pending IGF zone landing; range pinned to req:RegulatoryRequirement per Ella's decision of 2026-05-11."@en .
+
+
+# =============================================================================
+# Object properties — W-161 satisfies / satisfiedBy
+# =============================================================================
+
+:satisfies a owl:ObjectProperty ;
+    rdfs:label "satisfies"@en ;
+    rdfs:range ontara-req:RegulatoryRequirement ;
+    owl:inverseOf :satisfiedBy ;
+    rdfs:comment """Binds a control catalogue entry to a regulatory requirement that the
+control discharges. Many-to-many: one control can satisfy many requirements;
+one requirement can be satisfied by many controls. Not functional, not
+inverse-functional.
+
+Domain deliberately unpinned at this declaration site — the IGF controls
+zone (Saskia) has not yet landed in the canonical store. When
+`igf:ControlCatalogueEntry` (or the eventual class name) is authored, a
+follow-on PR pins the domain via an axiom in the importing zone. Leaving
+the domain open here keeps the join's two ends authored by their respective
+owners.
+
+Range pinned to `req:RegulatoryRequirement` per Ella's W-161 decision of
+2026-05-11. The class itself authors when Mira's M1 hold resolves.
+
+Inverse `satisfiedBy` declared in the same file so the join is a single
+shared artefact — drift-resistant by construction."""@en ;
+    skos:definition """The binding relation by which a control catalogue entry, when activated
+on a tenant, discharges one or more named regulatory requirements. The
+W-161 join — declared in the shared `joins/axioms#` namespace neither
+the controls catalogue nor the requirements baseline owns alone."""@en .
+
+
+:satisfiedBy a owl:ObjectProperty ;
+    rdfs:label "satisfied by"@en ;
+    rdfs:domain ontara-req:RegulatoryRequirement ;
+    owl:inverseOf :satisfies ;
+    rdfs:comment """Inverse of `satisfies`. Binds a regulatory requirement to the control
+catalogue entries that discharge it. Authored at the same declaration
+site as `satisfies` (W-161 Decision 1) so the two ends do not drift.
+
+Domain pinned to `req:RegulatoryRequirement` for symmetry with the
+forward direction's range; the class itself authors when Mira's M1 hold
+resolves. Range deliberately unpinned, mirroring the forward direction
+— narrowed by follow-on PR when the IGF controls zone lands."""@en ;
+    skos:definition """The inverse binding by which a regulatory requirement is discharged
+by one or more control catalogue entries activated on a tenant. The
+reasoner-derivable inverse of the W-161 `satisfies` join."""@en .

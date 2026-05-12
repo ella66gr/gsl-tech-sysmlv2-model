@@ -33,4 +33,17 @@
     <uri name="https://ontara.dev/ontology/reasoning/"
          uri="reasoning/ontara-reasoning.ttl"/>
 
+    <!-- Ontara Cross-Layer Join Axioms (hand-authored, OWL-authoritative, W-161 / 2026-05-12)
+         Shared declaration locus for cross-layer object properties (currently the
+         satisfies / satisfiedBy pair binding controls to regulatory requirements).
+         Owned by neither side; imported by both controls and requirements. -->
+    <uri name="https://ontara.dev/ontology/joins/axioms"
+         uri="joins/ontara-joins-axioms.ttl"/>
+
+    <!-- Ontara Cross-Layer Join Shapes (hand-authored SHACL, W-161 / 2026-05-12)
+         SHACL validation rules for the cross-layer joins. Shapes are author-and-park:
+         each shape carries sh:deactivated true until its activating PR lands. -->
+    <uri name="https://ontara.dev/ontology/joins/shapes"
+         uri="joins/ontara-joins-shapes.ttl"/>
+
 </catalog>

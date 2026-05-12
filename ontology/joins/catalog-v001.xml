@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- OWL API XML Catalog for the joins zone.
+     Maps the joins/axioms and joins/shapes ontology IRIs to local files
+     so that Robot, Protégé, and other OWL/SHACL tools can resolve them
+     without network access.
+
+     W-161 (2026-05-12): satisfies / satisfiedBy declared in joins-axioms;
+     NoOrphanApplicableControlShape declared dormant in joins-shapes. -->
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <uri name="https://ontara.dev/ontology/joins/axioms"
+         uri="ontara-joins-axioms.ttl"/>
+    <uri name="https://ontara.dev/ontology/joins/shapes"
+         uri="ontara-joins-shapes.ttl"/>
+</catalog>
