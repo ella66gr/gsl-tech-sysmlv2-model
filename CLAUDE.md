@@ -454,4 +454,4 @@ This goes through Obsidian's API so wikilinks are updated. Allow 1 second betwee
 
 ---
 
-*CLAUDE.md updated S359 (substrate / resolver / exporter section added; resolver commands added; marker regen commands added; substrate-canonical document class noted in Architecture in Brief). Tooling guide reference: vault `02 ONTARA/02 Ontara DEVELOPMENT/Ontara REFERENCE & GUIDES/ontara-ref-guide-using-claude-tools.md` v2 (S359). DCR threshold 20 sessions.*
+*CLAUDE.md updated S359 (substrate / resolver / exporter section added; resolver commands added; marker regen commands added; substrate-canonical document class noted in Architecture in Brief). Tooling guide reference: vault `02 ONTARA/02 Ontara DEVELOPMENT/Ontara REFERENCE & GUIDES/ontara-ref-guide-using-claude-tools.md` v2 (S359). DCR threshold 20 sessions. S431 housekeeping pass: resolver port and eight-strata terminology verified correct; no content changes required.*
