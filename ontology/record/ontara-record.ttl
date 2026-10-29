@@ -90,6 +90,7 @@ ontara-rec:RealityMode a owl:Class ;
 ontara-rec:RealMode a owl:NamedIndividual , ontara-rec:RealityMode ;
     rdfs:label "real"@en ;
     skos:definition """A real record is written in a context declared as live service. It is the platform's most faithful representation of one or more events causally and independently verifiably connected to the outside world: an observation, an operator's action such as a keypress, a conclusion drawn or a forecast made. The platform sets the label from the declared context and never accepts it from a writer."""@en ;
+    skos:editorialNote "Display label: \"Live Service\". Ella's decision, S514 (ADR-011 §8 item 5; OP-125): \"Simulation (vs 'Live Service' i.e. using context, not record type)\". The display label names the declared context, not the record type. rdfs:label stays \"real\"."@en ;
     rdfs:comment """Ella's definition (S513), quoted from ADR-011 §3. Independent verifiability attaches to the connection: who acted, when, and through what. It does not attach to the truth of the content. A record about a simulation (that a run took place, who ran it, who viewed its results) is real."""@en ;
     rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
 
@@ -97,7 +98,7 @@ ontara-rec:SimulatedMode a owl:NamedIndividual , ontara-rec:RealityMode ;
     rdfs:label "simulated"@en ;
     skos:definition """A simulated record is written in a context declared as simulation, training or a hypothesis copy. Its inputs may come from real people and devices, and its content may be partly or wholly real data. It is held to the same standard of faithful, tamper-evident provenance as a real record. Any real data keeps every protection it would otherwise have. Mode never exempts content from data-protection controls: simulated content derived from real people's data is still personal data."""@en ;
     rdfs:comment """Ella's definition (S513), quoted from ADR-011 §3, followed by Saskia's C8 sentence (S511): mode is not a data-protection switch (UK GDPR Art 4(1)). The records written inside a simulation are simulated; a record about the simulation is real."""@en ;
-    skos:editorialNote "Display label pending Ella's decision (ADR-011 §8 item 5; OP-125, S514). Proposed by Cyril: \"not live\". Alternative: \"non-real\" (Ella's example). Until decided, rdfs:label stays \"simulated\"."@en ;
+    skos:editorialNote "Display label: \"Simulation\". Ella's decision, S514 (ADR-011 §8 item 5; OP-125): \"Simulation (vs 'Live Service' i.e. using context, not record type)\". The display label names the declared context, not the record type. rdfs:label stays \"simulated\"."@en ;
     rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
 
 
