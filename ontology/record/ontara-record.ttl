@@ -1,0 +1,276 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix ontara-rec: <https://ontara.dev/ontology/record/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+# =============================================================================
+# Ontara Platform Record Module
+# =============================================================================
+#
+# Governing decision: ADR-011 (The Platform Record Module), OP-125.
+# Authored:  Cyril, Session 514 (canon pass, Step 1), 2026-10-29.
+#
+# Placement: shared content at the Metamodel layer (PML, layer 3), written in
+# OWL only, outside the Formalism Governance Zone (FGZ). It has no SysML form.
+# The namespace names no layer, so a later move costs no identifiers.
+#
+# Rules for this module (ADR-011 §4.3):
+#   1. No property takes a domain. A domain on a shared property makes the
+#      reasoner misclassify whatever uses it (Cyril, S513 tests T2 and T3).
+#   2. No business-side or system-side record subclasses.
+#   3. Never placed under CanonicalRuntimeType (17 unsatisfiable classes in the
+#      S513 test when it was).
+#   4. OWL 2 EL with its imports (T2). Closure, cardinality ("exactly one mode")
+#      and every consistency rule are SHACL, owed to the edge contract
+#      (Plan B S0.6, H-0087). No shape lives in this file.
+#   5. Change by addition or deprecation only (T4): owl:deprecated true with
+#      obo:IAO_0100001 (term replaced by). Never redefine a term in place.
+#
+# Not in this version, deliberately:
+#   - the link from a record to its declared context (H-0087 decides it);
+#   - the record of the context declaration itself (who declared, when);
+#   - EvidenceRecord under PlatformRecord (only once H-0087 says an evidence
+#     record is its own record node; ADR-011 §4.3);
+#   - a direct link from a reissue to its exception (the path
+#     reissues / ^quarantines already answers it).
+#
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# Ontology declaration
+# -----------------------------------------------------------------------------
+
+<https://ontara.dev/ontology/record/> a owl:Ontology ;
+    owl:versionIRI <https://ontara.dev/ontology/record/2026-10-29/ontara-record.ttl> ;
+    owl:imports <http://www.w3.org/ns/prov#core> ,
+                <https://ontara.dev/ontology/record/imports/iao-extract> ;
+    rdfs:label "Ontara Platform Record Module"@en ;
+    dcterms:created "2026-10-29" ;
+    rdfs:comment """The platform's vocabulary for its own records of writes: the platform record class, the mode, method and run-purpose codes, the effective-time property, the declared-context classes, and the quarantines and reissues links of the mode-fault route. Governed by ADR-011. Shared content at the Metamodel layer (PML), OWL only, outside the FGZ. Grounded in BFO 2020 through a MIREOT extract of IAO, and aligned with W3C PROV-O by dual subclassing (S147-D4)."""@en ;
+    owl:versionInfo "2026-10-29 — Session 514, OP-125 canon pass Step 1: first version (ADR-011)."@en .
+
+
+# =============================================================================
+# SECTION 1: The platform record
+# =============================================================================
+
+ontara-rec:PlatformRecord a owl:Class ;
+    rdfs:label "Platform Record"@en ;
+    rdfs:subClassOf obo:IAO_0000030 ,
+                    prov:Entity ;
+    skos:definition """The platform's record of a single write: the information content entity the platform writes each time it records an event in the Domain System Runtime (DSR) or a change in the Domain Business Representation (DBR). It carries the write's mode and method and its two times: the effective time (ontara-rec:hasEffectiveTime) and the recorded time (prov:generatedAtTime, set by the write path). A platform record is not a domain record. A business record such as BMM's ActivityRecord is business content with its own history; each change to it is itself recorded by a platform record."""@en ;
+    rdfs:comment """The label sits on the platform's record of a write, not on the thing recorded (ADR-011 §4.1, decision 1). An order is not real or simulated; the records of its creation and its changes are.
+
+BFO grounding: information content entity (IAO_0000030), a generically dependent continuant. Not under IAO data item (IAO_0000027), whose definition ("intended to be a truthful statement") does not fit simulated or predicted records. Not under document (IAO_0000310).
+PROV-O alignment: Entity, as ontara-rsn:Claim.
+
+Never a subclass of CanonicalRuntimeType. No business-side or system-side subclasses: the business/system split is already given by named graph and by what is recorded."""@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+
+# =============================================================================
+# SECTION 2: Mode (decision 2, decision 12)
+# =============================================================================
+
+ontara-rec:RealityMode a owl:Class ;
+    rdfs:label "Reality Mode"@en ;
+    skos:altLabel "mode"@en ;
+    rdfs:subClassOf obo:IAO_0000030 ;
+    skos:definition """A code saying whether a platform record belongs to the real world or to a simulation. It has two values, real and simulated. Mode comes only from the declared context the record was written in; the platform sets it and no writer can supply it (ADR-011 §2, decision 4)."""@en ;
+    rdfs:comment "Closed value set {RealMode, SimulatedMode}. Closure and exactly-one are SHACL (sh:in, sh:minCount, sh:maxCount), owed to the edge contract (H-0087). Hypothetical folds into simulated (decision 12)."@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:RealMode a owl:NamedIndividual , ontara-rec:RealityMode ;
+    rdfs:label "real"@en ;
+    skos:definition """A real record is written in a context declared as live service. It is the platform's most faithful representation of one or more events causally and independently verifiably connected to the outside world: an observation, an operator's action such as a keypress, a conclusion drawn or a forecast made. The platform sets the label from the declared context and never accepts it from a writer."""@en ;
+    rdfs:comment """Ella's definition (S513), quoted from ADR-011 §3. Independent verifiability attaches to the connection: who acted, when, and through what. It does not attach to the truth of the content. A record about a simulation (that a run took place, who ran it, who viewed its results) is real."""@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:SimulatedMode a owl:NamedIndividual , ontara-rec:RealityMode ;
+    rdfs:label "simulated"@en ;
+    skos:definition """A simulated record is written in a context declared as simulation, training or a hypothesis copy. Its inputs may come from real people and devices, and its content may be partly or wholly real data. It is held to the same standard of faithful, tamper-evident provenance as a real record. Any real data keeps every protection it would otherwise have. Mode never exempts content from data-protection controls: simulated content derived from real people's data is still personal data."""@en ;
+    rdfs:comment """Ella's definition (S513), quoted from ADR-011 §3, followed by Saskia's C8 sentence (S511): mode is not a data-protection switch (UK GDPR Art 4(1)). The records written inside a simulation are simulated; a record about the simulation is real."""@en ;
+    skos:editorialNote "Display label pending Ella's decision (ADR-011 §8 item 5; OP-125, S514). Proposed by Cyril: \"not live\". Alternative: \"non-real\" (Ella's example). Until decided, rdfs:label stays \"simulated\"."@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+
+# =============================================================================
+# SECTION 3: Method (decisions 2, 8, 13, 16)
+# =============================================================================
+
+ontara-rec:ProvenanceMethod a owl:Class ;
+    rdfs:label "Provenance Method"@en ;
+    skos:altLabel "method"@en ;
+    rdfs:subClassOf obo:IAO_0000030 ;
+    skos:definition """A code saying how the content of a platform record was produced: observed directly, inferred, or predicted. The write path sets it, by fixed rules for each binding class and for each declared derivation-rule kind (ADR-011 §4.5, decision 13). The component that runs a rule never chooses it, and no writer can supply it."""@en ;
+    rdfs:comment "Closed value set {DirectMethod, InferredMethod, PredictedMethod}, ordered by strength direct > inferred > predicted for the weakest-input rule. The order is applied by the write path, not stated in OWL. Confidence is carried beside the method, not within it. Closure and exactly-one are SHACL, owed to the edge contract (H-0087)."@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:DirectMethod a owl:NamedIndividual , ontara-rec:ProvenanceMethod ;
+    rdfs:label "direct"@en ;
+    skos:definition """The record's content was captured at source, without judgement or forecast: an observation, an operator's action, or a fact about records that always gives the same answer from the same records. A record that restates facts from its inputs is direct only when all of its inputs are direct. Direct does not mean verified: a value captured directly may be unverified, and verification is a separate fact (for example an identity-proofing event). Direct is not the Article 20 test: whether a data subject provided the data is a question of source agent and derivation (prov:wasDerivedFrom), not of this label."""@en ;
+    rdfs:comment "Saskia's two disclaimers (S511 Step 4 §2.2) are part of the definition. Consent, the aware event, attestations, access decisions, reviews and residual-risk acceptances are always direct (IGF method rules C5 to C7); the Inference Generated Binding (IGB) never writes direct."@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:InferredMethod a owl:NamedIndividual , ontara-rec:ProvenanceMethod ;
+    rdfs:label "inferred"@en ;
+    skos:definition """The record's content was worked out from other information by a step that involves judgement. A record that restates facts from its inputs is inferred when its weakest input is inferred."""@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:PredictedMethod a owl:NamedIndividual , ontara-rec:ProvenanceMethod ;
+    rdfs:label "predicted"@en ;
+    skos:definition """The record's content asserts an uncertain outcome in the world that has not yet occurred. A composite prediction is predicted as a whole; which of its parts are the system's configured responses and which are assumptions about others is carried in its content. A record that restates facts from its inputs is predicted when its weakest input is predicted."""@en ;
+    rdfs:comment "A present forward-pointing commitment (a schedule, a duty with a deadline) is not a prediction: it is restated, and takes the weakest method of its inputs (decision 13). A configured-model rule is not a record and carries no method."@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+
+# =============================================================================
+# SECTION 4: Run purpose (decision 6)
+# =============================================================================
+
+ontara-rec:RunPurpose a owl:Class ;
+    rdfs:label "Run Purpose"@en ;
+    rdfs:subClassOf obo:IAO_0000030 ;
+    skos:definition """A code saying what a simulation run is for. It is carried by the simulation run, not by each record."""@en ;
+    rdfs:comment "Value set {ProjectedPurpose, CounterfactualPurpose}. A third value (for example validation, for Stage 2 replays) may be added later as an addition under T4. The other L8 characters are not labels: current and historical are selections by the two times; goal is a type; hypothetical is mode."@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:ProjectedPurpose a owl:NamedIndividual , ontara-rec:RunPurpose ;
+    rdfs:label "projected"@en ;
+    skos:definition """The simulation run explores what may happen from a starting state, forward in time."""@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:CounterfactualPurpose a owl:NamedIndividual , ontara-rec:RunPurpose ;
+    rdfs:label "counterfactual"@en ;
+    skos:definition """The simulation run explores what would have happened otherwise, for example by re-running a past live period with altered inputs."""@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+
+# =============================================================================
+# SECTION 5: Declared contexts (ADR-011 §3; decisions 4, 12, 16)
+# =============================================================================
+#
+# The contexts are processes: the platform's operations within which records
+# are written. Dual subclassing BFO process + prov:Activity, as
+# ontara-rsn:ReasoningActivity. Not called bare "Context": ontara-rsn:
+# ReasoningContext is a generically dependent continuant.
+
+ontara-rec:DeclaredContext a owl:Class ;
+    rdfs:label "Declared Context"@en ;
+    rdfs:subClassOf obo:BFO_0000015 ,
+                    prov:Activity ;
+    skos:definition """Every record is written within a context that has been declared as one of these: a live service; a simulation; a training exercise; a hypothesis copy. The declaration itself is recorded and can be produced as evidence: who made it (or that a default applied), and when. The platform records the declared context. It does not judge whether the declaration is honest. A doubted declaration takes the mode-fault route."""@en ;
+    rdfs:comment """Ella's definition (S513), quoted from ADR-011 §3. Modelled as the platform operation within which records are written; mode is read from its declared kind. That every declared context is exactly one of the four kinds is a closed-world rule (SHACL); covering it in OWL would need a union, outside OWL 2 EL. How a record links to its context is decided by the edge contract (H-0087)."""@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:LiveServiceOperation a owl:Class ;
+    rdfs:label "Live Service Operation"@en ;
+    skos:altLabel "live service"@en ;
+    rdfs:subClassOf ontara-rec:DeclaredContext ;
+    skos:definition """A declared context in which a tenant's service operates in the real world. Records written in it are real."""@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:SimulationRun a owl:Class ;
+    rdfs:label "Simulation Run"@en ;
+    skos:altLabel "simulation"@en ;
+    rdfs:subClassOf ontara-rec:DeclaredContext ;
+    skos:definition """A declared context in which the platform runs a simulation. Records written in it are simulated. It carries a run purpose."""@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:TrainingExercise a owl:Class ;
+    rdfs:label "Training Exercise"@en ;
+    rdfs:subClassOf ontara-rec:DeclaredContext ;
+    skos:definition """A declared context in which people are trained on the platform. Records written in it are simulated. That a training exercise took place, who ran it and who took part are recorded by real records."""@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:HypothesisInstantiation a owl:Class ;
+    rdfs:label "Hypothesis Instantiation"@en ;
+    skos:altLabel "hypothesis copy"@en ;
+    rdfs:subClassOf ontara-rec:DeclaredContext ;
+    skos:definition """A declared context in which a copy of a module instance is operated as a hypothesis, apart from live service. Records written in it are simulated."""@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "Competency question: can one context be both live service and a simulation, training exercise or hypothesis copy? No; otherwise mode would not be decidable from the declared context."@en ;
+    owl:members ( ontara-rec:LiveServiceOperation
+                  ontara-rec:SimulationRun
+                  ontara-rec:TrainingExercise
+                  ontara-rec:HypothesisInstantiation ) .
+
+[] a owl:AllDisjointClasses ;
+    rdfs:comment "A record is not a code, and a mode is not a method or a run purpose. Makes a swapped code (for example hasRealityMode DirectMethod) an inconsistency the reasoner reports."@en ;
+    owl:members ( ontara-rec:PlatformRecord
+                  ontara-rec:RealityMode
+                  ontara-rec:ProvenanceMethod
+                  ontara-rec:RunPurpose ) .
+
+
+# =============================================================================
+# SECTION 6: Properties — no domain on any of them (ADR-011 §4.3)
+# =============================================================================
+
+ontara-rec:hasRealityMode a owl:ObjectProperty ;
+    rdfs:label "has reality mode"@en ;
+    rdfs:range ontara-rec:RealityMode ;
+    skos:definition "Relates a platform record to its mode, real or simulated."@en ;
+    rdfs:comment "No domain axiom, by rule. Which classes must carry exactly one mode is a SHACL target, owed to the edge contract (H-0087)."@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:hasProvenanceMethod a owl:ObjectProperty ;
+    rdfs:label "has provenance method"@en ;
+    rdfs:range ontara-rec:ProvenanceMethod ;
+    skos:definition "Relates a platform record to its method: direct, inferred or predicted."@en ;
+    rdfs:comment "No domain axiom, by rule."@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:hasRunPurpose a owl:ObjectProperty ;
+    rdfs:label "has run purpose"@en ;
+    rdfs:range ontara-rec:RunPurpose ;
+    skos:definition "Relates a simulation run to its purpose: projected or counterfactual."@en ;
+    rdfs:comment "No domain axiom, by rule. A domain of PlatformRecord would make every run a record and the build inconsistent (S513 test T3)."@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:hasEffectiveTime a owl:DatatypeProperty ;
+    rdfs:label "has effective time"@en ;
+    rdfs:range xsd:dateTimeStamp ;
+    skos:definition """The time at which the thing the record describes happened, or took effect, in the world the record describes. It pairs with the recorded time, prov:generatedAtTime, at which the platform wrote the record. Whether a record is current, past or late is derived from the two times, not labelled."""@en ;
+    rdfs:comment """Every DSR event and every DBR change carries both times (ADR-011 §4.4, decision 5); that is a SHACL rule. No domain, by rule: ADR-002's igf:hasEffectiveTimestamp with domain EvidenceRecord made a DBR change record an evidence record (S513 test T2). The IGF per-type times become sub-properties of this property. A reissue keeps its original's effective time. Range xsd:dateTimeStamp (time zone required) keeps the property in OWL 2 EL; xsd:date is not an EL datatype."""@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+
+# =============================================================================
+# SECTION 7: The mode-fault route (decision 15)
+# =============================================================================
+#
+# Only the platform's remediation path writes these links; no writer can
+# supply either (enforced on the write path, not in OWL). The ordinary
+# correction route (correctionOf, within one context) is unchanged.
+
+ontara-rec:quarantines a owl:ObjectProperty ;
+    rdfs:label "quarantines"@en ;
+    rdfs:range ontara-rec:PlatformRecord ;
+    skos:definition """Relates a governance exception record to a platform record whose mode is in doubt. A quarantined record is left out of every view that filters by mode, and out of all evidence and compliance queries. Audit queries still show it, with the exception attached."""@en ;
+    rdfs:comment "No domain, by rule: the subject is an IGF ExceptionRecord (category control-failure, Saskia's to define), and naming it here would make this module import the IGF type module, against ADR-009's direction. A process with a lifecycle (an anchor and its events, ADR-010) is quarantined as a whole."@en ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+ontara-rec:reissues a owl:ObjectProperty ;
+    rdfs:label "reissues"@en ;
+    rdfs:range ontara-rec:PlatformRecord ;
+    skos:definition """Relates a platform record to the quarantined platform record it reissues in the context a named person determined. The reissue keeps the original's effective time and gets a new recorded time, so its lateness is visible."""@en ;
+    rdfs:comment """No domain, by rule. The exception that explains the reissue is reached by the path reissues / ^quarantines, so no third link is declared.
+
+Deliberately not a sub-property of prov:wasRevisionOf or prov:wasDerivedFrom. A simulated original reissued as real would otherwise be inferred to be derived from a simulated record, which the adoption rule (decision 14) governs through prov:wasDerivedFrom. A reissue is a correction of context, not an adoption."""@en ;
+    rdfs:seeAlso prov:wasRevisionOf ;
+    rdfs:isDefinedBy <https://ontara.dev/ontology/record/> .
+
+
+# =============================================================================
+# End of Ontara Platform Record Module
+# =============================================================================

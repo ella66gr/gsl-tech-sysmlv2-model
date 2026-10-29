@@ -79,6 +79,16 @@ prov:wasDerivedFrom a owl:ObjectProperty ;
     rdfs:domain prov:Entity ;
     rdfs:range prov:Entity .
 
+prov:wasRevisionOf a owl:ObjectProperty ;
+    rdfs:label "wasRevisionOf"@en ;
+    rdfs:comment "A revision is a derivation for which the resulting entity is a revised version of some original. The implication here is that the resulting entity contains substantial content from the original. Revision is a particular case of derivation."@en ;
+    rdfs:subPropertyOf prov:wasDerivedFrom ;
+    rdfs:domain prov:Entity ;
+    rdfs:range prov:Entity .
+    # Added Session 514 (OP-125, ADR-011; canon pass Step 1). PROV-O Starting
+    # Point term (§3.1). Needed for igf:correctionOf (ADR-010). The platform
+    # record module's ontara-rec:reissues is deliberately NOT under it.
+
 prov:wasAttributedTo a owl:ObjectProperty ;
     rdfs:label "wasAttributedTo"@en ;
     rdfs:comment "Attribution is the ascribing of an entity to an agent."@en ;

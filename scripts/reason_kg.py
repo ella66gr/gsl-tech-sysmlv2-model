@@ -70,6 +70,13 @@ ONTOLOGY_FILES = [
         "required": False,
     },
     {
+        # Shared content at PML, OWL only (ADR-011, OP-125, Session 514).
+        # Its owl:imports (prov#core, the IAO MIREOT extract) resolve via the catalog.
+        "file": REPO_ROOT / "ontology" / "record" / "ontara-record.ttl",
+        "name": "Ontara Platform Record Module (hand-authored, Session 514)",
+        "required": False,
+    },
+    {
         "file": REPO_ROOT / "generated" / "ontology" / "ontara-bmm.ttl",
         "name": "Ontara BMM (pipeline-generated)",
         "required": True,
@@ -569,6 +576,7 @@ def count_domain_classes():
         "https://ontara.dev/ontology/governance/",
         "https://ontara.dev/ontology/domain/",
         "https://ontara.dev/ontology/reasoning/",
+        "https://ontara.dev/ontology/record/",
     ]
 
     domain_files = [
@@ -576,6 +584,7 @@ def count_domain_classes():
         REPO_ROOT / "ontology" / "governance" / "ontara-governance.ttl",
         REPO_ROOT / "ontology" / "domain" / "ontara-domain.ttl",
         REPO_ROOT / "ontology" / "reasoning" / "ontara-reasoning.ttl",
+        REPO_ROOT / "ontology" / "record" / "ontara-record.ttl",
     ]
 
     all_classes = set()

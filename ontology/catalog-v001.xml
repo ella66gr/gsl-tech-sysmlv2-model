@@ -33,6 +33,21 @@
     <uri name="https://ontara.dev/ontology/reasoning/"
          uri="reasoning/ontara-reasoning.ttl"/>
 
+    <!-- Ontara Platform Record Module (hand-authored, OWL only, Session 514, OP-125 / ADR-011)
+         Shared content at PML, outside the FGZ. Namespace names no layer.
+         Versioned: owl:versionIRI https://ontara.dev/ontology/record/2026-10-29/ontara-record.ttl -->
+    <uri name="https://ontara.dev/ontology/record/"
+         uri="record/ontara-record.ttl"/>
+    <uri name="https://ontara.dev/ontology/record/2026-10-29/ontara-record.ttl"
+         uri="record/ontara-record.ttl"/>
+
+    <!-- MIREOT extract of IAO for the platform record module (ROBOT 1.9.8, Session 514).
+         Keeps the BFO continuant/occurrent disjointness. Used for the module's EL check (T2). -->
+    <uri name="https://ontara.dev/ontology/record/imports/iao-extract"
+         uri="record/imports/iao-extract.owl"/>
+    <uri name="https://ontara.dev/ontology/record/imports/2026-10-29/iao-extract.owl"
+         uri="record/imports/iao-extract.owl"/>
+
     <!-- Ontara Cross-Layer Join Axioms (hand-authored, OWL-authoritative, W-161 / 2026-05-12)
          Shared declaration locus for cross-layer object properties (currently the
          satisfies / satisfiedBy pair binding controls to regulatory requirements).

@@ -89,6 +89,13 @@ PIPELINE_FILES = [
         "content_type": "text/turtle",
     },
     {
+        # Shared content at PML, OWL only (ADR-011, OP-125, Session 514).
+        "path": "ontology/record/ontara-record.ttl",
+        "name": "Ontara Platform Record Module (hand-authored, Session 514)",
+        "graph": "https://ontara.dev/graph/domain",
+        "content_type": "text/turtle",
+    },
+    {
         "path": "ontology/governance/ontara-governance.ttl",
         "name": "Ontara Governance Vocabulary (hand-authored, Session 126)",
         "graph": "https://ontara.dev/graph/domain",
