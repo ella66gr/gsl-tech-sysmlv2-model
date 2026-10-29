@@ -20,7 +20,7 @@
 
 package ArchitecturalStructure {
     private import ScalarValues::*;
-    private import Foundation::MetadataLibrary::*;
+    private import ProjectionMetadata::*;
     private import Foundation::CommonTypes::*;
 
     doc /* Architectural sections of the dual-stack architecture (B27).
@@ -465,7 +465,7 @@ package ArchitecturalStructure {
     }
     @ArchitecturalLocation {
         representationalModalitySummary = "Mixed — consumes OWL 2 DL, SysML v2, runtime state, and clinical terminologies. Produces natural-language explanations and OWL 2 DL assertions. Internal processing formalism is an open design question.";
-        persistenceSummary = "Derived knowledge persists in the knowledge graph as coordinate space snapshots — named graphs tagged with epistemic status (current, historical, goal, hypothetical, projected). Transient working state does not persist.";
+        persistenceSummary = "Derived knowledge persists in the knowledge graph as coordinate space snapshots — named graphs selected by the record's mode (real or simulated), its two times, and its type; simulation runs carry a run purpose (ADR-011, S514). Transient working state does not persist.";
         interfacesSummary = "Reads from: knowledge graph, instance layers, operational simulation, rules and constraints, terminology. Writes to: operator (guidance) and knowledge graph (derived knowledge). Cross-cutting — not positioned in either stack.";
         domainIllustrationSummary = "For Paws: answers questions like groomer utilisation trends, what-if for adding Teeth Cleaning, revenue vs goal gap analysis with valence, shampoo consumption anomaly detection, and April revenue projection.";
     }

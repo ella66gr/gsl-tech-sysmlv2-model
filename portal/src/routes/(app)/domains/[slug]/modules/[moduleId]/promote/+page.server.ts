@@ -4,7 +4,7 @@ import { getDomainBySlug } from '$lib/server/db/domains.js';
 import {
     getInstanceById,
     getInstancesForDomain,
-    updateEpistemicCharacter,
+    updateRealityContext,
     recordTransition
 } from '$lib/server/db/modules.js';
 import { evaluatePromotionReadiness } from '$lib/server/governance/index.js';
@@ -45,13 +45,13 @@ export const actions: Actions = {
         }
 
         // Execute promotion
-        const fromCharacter = instance.epistemicCharacter;
-        updateEpistemicCharacter(instance.id, 'production');
+        const fromCharacter = instance.realityContext;
+        updateRealityContext(instance.id, 'real');
         recordTransition(
             instance.id,
-            'epistemic',
+            'reality_context',
             fromCharacter,
-            'production',
+            'real',
             locals.user!.id,
             'Promoted to production'
         );

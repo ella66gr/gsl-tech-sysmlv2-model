@@ -18,14 +18,23 @@
 // side (BMM General). Per the strengthened A4 (business metamodel concept).
 //
 // Scope of this file:
-//   - CanonicalRuntimeType: base part def for every canonical runtime type,
-//     carrying the platform-provided epistemic axis (S253 §4.5).
+//   - CanonicalRuntimeType: base part def for every canonical runtime type.
+//     It declares the status axes its instances carry; it carries no
+//     built-in axis (the epistemic axis was retired at S514, ADR-011).
 //   - StatusAxis: BMM General part def naming a single dimension of status
 //     on a canonical runtime type (S253 §3).
 //   - Supporting types: ValueSpace, AxisTransition, AxisAuthority, AxisScope,
-//     EpistemicModality, ValueSpaceShape.
-//   - Epistemic axis declaration and its four platform-defined transitions
-//     (S253 §5.4; simulatedModality has no outbound transitions).
+//     ValueSpaceShape.
+//
+// Session 514 — OP-125 canon pass, Step 2 (ADR-011, decision 1). The
+//   epistemic axis is retired: `enum def EpistemicModality`, the
+//   `epistemicAxis` part usage and its four AxisTransitions are deleted,
+//   and `AxisScope::platformBuiltIn` is removed because no built-in axis
+//   remains. Whether a record is real or simulated (mode), and how it was
+//   produced (method), are carried by the platform's record of the write,
+//   in the platform record module (OWL, `ontara-rec:`), not by the entity.
+//   CanonicalRuntimeType is re-anchored at bfo:entity (BFO_0000001), with
+//   the @BfoType annotation kept (Ella, S514; Cyril's reason below).
 //
 // Out of scope for this session:
 //   - E6 generator extension for axis-aware semantics (S253 §6).
@@ -59,7 +68,7 @@
 
 package CanonicalRuntime {
     private import ScalarValues::*;
-    private import Foundation::MetadataLibrary::*;
+    private import ProjectionMetadata::*;
 
     doc /* BMM General canonical-runtime vocabulary. Defines
          * CanonicalRuntimeType (the base for every type whose runtime
@@ -67,6 +76,12 @@ package CanonicalRuntime {
          * dimension of status on a canonical runtime type), and the
          * supporting vocabulary (ValueSpace, AxisTransition,
          * AxisAuthority, AxisScope, ValueSpaceShape).
+         *
+         * No axis is built in. Every StatusAxis is tenant-declared on a
+         * specific canonical type. Mode (real or simulated) and method
+         * (direct, inferred or predicted) are labels on the platform's
+         * record of each write, from the platform record module at PML
+         * (ADR-011, S514); they are not an axis on the entity.
          *
          * Stratum-and-side locus: Metamodel stratum, business side.
          * These are business meta model concepts — structural vocabulary
@@ -80,19 +95,17 @@ package CanonicalRuntime {
          * implementation landing of W-094. */
 
     // =====================================================================
-    // ENUMS — Axis scope, authority classes, epistemic modality values,
-    // value space shapes
+    // ENUMS — Axis scope, authority classes, value space shapes
     // =====================================================================
 
     enum def AxisScope {
-        doc /* Distinguishes platform-provided built-in axes from
-             * tenant-declared axes.
+        doc /* The scope of an axis declaration.
              *
-             * platformBuiltIn: the epistemic axis; present on every
-             *   canonical runtime instance without tenant declaration.
              * tenantDeclared: the axis is declared by a specific tenant
-             *   on a specific canonical type. */
-        platformBuiltIn;
+             *   on a specific canonical type. This is the only scope.
+             *   `platformBuiltIn` was removed at S514 (ADR-011): no
+             *   built-in axis remains, and a future one would be
+             *   re-added by decision, not by default. */
         tenantDeclared;
     }
 
@@ -115,7 +128,7 @@ package CanonicalRuntime {
              * - inferenceSide: IGB writes under declared assumptions.
              * - syntheticSide: SGB writes during a simulation run.
              * - platformSide: platform machinery writes at the
-             *     substrate seam (epistemic axis primarily). */
+             *     substrate seam. */
         operatorSide;
         customerSide;
         systemSide;
@@ -124,32 +137,6 @@ package CanonicalRuntime {
         platformSide;
     }
 
-    enum def EpistemicModality {
-        doc /* The B17 value space. Under S253 §4.5, the epistemic axis
-             * is a platform-provided built-in axis on every canonical
-             * runtime instance inherited from CanonicalRuntimeType.
-             *
-             * B17 retains its normative role for the epistemic axis
-             * specifically; B72 generalises the axis-wise pattern that
-             * B17 exemplifies.
-             *
-             * Values:
-             * - actualModality: real occurrence, primary authority.
-             * - inferredModality: derived under declared assumptions.
-             * - expectedModality: anticipated but not yet occurred.
-             * - predictedModality: projected by a reasoner or model.
-             * - hypotheticalModality: counterfactual or scenario-only.
-             * - simulatedModality: produced by a simulation run (SGB).
-             * - retrospectivelyRecorded: authority-post-hoc insert for
-             *     an earlier time. */
-        actualModality;
-        inferredModality;
-        expectedModality;
-        predictedModality;
-        hypotheticalModality;
-        simulatedModality;
-        retrospectivelyRecorded;
-    }
 
     enum def ValueSpaceShape {
         doc /* The three shapes a StatusAxis value space may take.
@@ -294,7 +281,7 @@ package CanonicalRuntime {
         shortDescription = "A single named dimension of status on a canonical runtime type — its values, transitions, default, authority, and scope.";
     }
     @PurposiveDescription {
-        description = "A single named dimension of status that a canonical runtime instance carries. A canonical runtime type can declare several status axes — for example a booking might have a lifecycle axis, a confirmation axis, a payment axis, a cancellation axis, and the platform-provided epistemic axis. Each axis advances independently, with its own value space, permitted transitions, default value, and authority. The system tracks each axis as a separate triple in the substrate, so axes can be queried and reasoned over individually.";
+        description = "A single named dimension of status that a canonical runtime instance carries. A canonical runtime type can declare several status axes — for example a booking might have a lifecycle axis, a confirmation axis, a payment axis, a cancellation axis. Each axis advances independently, with its own value space, permitted transitions, default value, and authority. The system tracks each axis as a separate triple in the substrate, so axes can be queried and reasoned over individually.";
     }
     @Comprehension {
         surfaceEnumValues = false;
@@ -354,17 +341,30 @@ package CanonicalRuntime {
         bmmConcern = "CanonicalRuntime";
         classification = "General";
     }
+    // Anchor re-set S514 (OP-125 Step 2, Ella's decision, Cyril's reason):
+    // bfo:entity (BFO_0000001). CanonicalRuntimeType defines a shape — the
+    // status axes a runtime type carries — whose concrete types have
+    // different BFO kinds (an event is a process, a booking is an
+    // information content entity, an order may be a material entity).
+    // The former IndependentContinuant anchor contradicted them: HermiT
+    // found the process-anchored and information-anchored subtypes
+    // unsatisfiable; under Entity all were satisfiable. The annotation is
+    // kept so AC-08 (grounding mandatory) stays literally satisfied.
+    // midLevelClass is empty on purpose: resolve_parent_iri in
+    // gen_owl_pipeline.py reads it first and looks it up only in the IAO
+    // and CCO tables, so a BFO value there would come out unresolved; left
+    // empty, the generator falls back to bfoClass and resolves BFO_0000001.
     @BfoType {
-        bfoClass = "IndependentContinuant";
-        midLevelClass = "BFO:IndependentContinuant";
-        mappingNotes = "CanonicalRuntimeType is the structural parent for types whose runtime instances live in DBR (business-side continuant trajectories) or DSR (system-side occurrent log). The BFO classification of a concrete canonical type is carried by its own @BfoType annotation; this parent establishes only the platform-level shape.";
+        bfoClass = "Entity";
+        midLevelClass = "";
+        mappingNotes = "CanonicalRuntimeType is the structural parent for types whose runtime instances live in DBR (business-side continuant trajectories) or DSR (system-side occurrent log). Anchored at BFO entity (S514, ADR-011): it defines a shape, not a kind of thing, and its concrete types have different BFO kinds. The BFO classification of a concrete canonical type is carried by its own @BfoType annotation; this parent establishes only the platform-level shape.";
     }
     @UserFacing {
         friendlyName = "Canonical Runtime Type";
         shortDescription = "The base type for every canonical runtime type — the things whose runtime instances live in DBR or DSR.";
     }
     @PurposiveDescription {
-        description = "The structural parent for every canonical runtime type — the things whose runtime instances are persisted in the substrate as model-grounded content. A booking, a clinical encounter, a laundry batch, an order: each is a canonical runtime type, and each runtime instance carries a tuple of status axes describing where it is along each independent dimension of progress. The platform-provided epistemic axis is inherited by every canonical runtime type, distinguishing real, inferred, expected, predicted, hypothetical, simulated, and retrospectively recorded content.";
+        description = "The structural parent for every canonical runtime type — the things whose runtime instances are persisted in the substrate as model-grounded content. A booking, a clinical encounter, a laundry batch, an order: each is a canonical runtime type, and each runtime instance carries a tuple of status axes describing where it is along each independent dimension of progress. No axis is built in: every axis is declared by the tenant on the canonical type. Whether a record of an instance is real or simulated, and whether it was direct, inferred or predicted, is carried by the platform's record of the write (the platform record module, ADR-011), not by the instance.";
     }
     @Comprehension {
         surfaceEnumValues = false;
@@ -383,69 +383,26 @@ package CanonicalRuntime {
              * continuant trajectories) or DSR (system-side occurrent
              * log).
              *
-             * Carries the platform-provided epistemic axis as an
-             * inherited part usage (S253 §4.5). Tenant-declared axes
-             * are added by the specialising canonical type.
+             * Carries no built-in axis. Tenant-declared axes are added
+             * by the specialising canonical type. (The platform-provided
+             * epistemic axis of S253 §4.5 was retired at S514, ADR-011
+             * decision 1: the label sits on the platform's record of a
+             * write, not on the thing recorded.)
              *
              * Under B69 (indistinguishability), real and simulated
              * activity produce structurally identical SRS content
-             * modulo the epistemicAxis value. The SGB writes
-             * simulatedModality; the HMB writes actualModality;
-             * everything else in the axis tuple is identical in shape
-             * and handling.
+             * modulo mode. Mode is set by the platform from the declared
+             * context the record was written in; it is never supplied by
+             * a writer or by a binding class. Everything in the axis
+             * tuple is identical in shape and handling.
              *
-             * Types that declare no additional axes are still
-             * first-class (S253 §4.6) — they get the epistemic axis
-             * uniformly and degrade gracefully (substrate queries
-             * return the single axis; comprehension shows only
-             * epistemic; no axis-gated transitions).
+             * Types that declare no axes are still first-class
+             * (S253 §4.6) and degrade gracefully: substrate queries
+             * return an empty axis tuple; comprehension shows the
+             * record's mode and method beside it; no axis-gated
+             * transitions.
              *
              * Business meta model concept. */
 
-        part epistemicAxis : StatusAxis {
-            :>> axisName = "epistemic";
-            :>> axisDescription = "The epistemic modality of this canonical runtime instance. Built-in; present on every canonical runtime type. Distinguishes real, inferred, expected, predicted, hypothetical, simulated, and retrospectively-recorded content.";
-            :>> axisScope = AxisScope::platformBuiltIn;
-            :>> axisAuthority = (AxisAuthority::platformSide);
-            :>> defaultValue = "actualModality";
-
-            part :>> valueSpace : ValueSpace {
-                :>> valueShape = ValueSpaceShape::unorderedEnum;
-                :>> enumValues = ("actualModality", "inferredModality", "expectedModality",
-                                  "predictedModality", "hypotheticalModality",
-                                  "simulatedModality", "retrospectivelyRecorded");
-            }
-
-            // Platform-defined transitions (S253 §5.4). Four transitions;
-            // simulatedModality has no outbound transitions — a simulated
-            // instance never becomes actual.
-            part expectedToActual : AxisTransition {
-                :>> fromValue = "expectedModality";
-                :>> toValue = "actualModality";
-                :>> transitionLabel = "expected occurrence realised";
-                :>> requiredAuthority = (AxisAuthority::platformSide);
-            }
-
-            part predictedToActual : AxisTransition {
-                :>> fromValue = "predictedModality";
-                :>> toValue = "actualModality";
-                :>> transitionLabel = "prediction confirmed by observation";
-                :>> requiredAuthority = (AxisAuthority::platformSide);
-            }
-
-            part hypotheticalToActual : AxisTransition {
-                :>> fromValue = "hypotheticalModality";
-                :>> toValue = "actualModality";
-                :>> transitionLabel = "hypothetical materialised to canonical history";
-                :>> requiredAuthority = (AxisAuthority::platformSide);
-            }
-
-            part actualToRetrospective : AxisTransition {
-                :>> fromValue = "actualModality";
-                :>> toValue = "retrospectivelyRecorded";
-                :>> transitionLabel = "authority-post-hoc observation inserted";
-                :>> requiredAuthority = (AxisAuthority::platformSide);
-            }
-        }
     }
 }

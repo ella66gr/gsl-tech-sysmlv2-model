@@ -58,7 +58,9 @@ CREATE TABLE IF NOT EXISTS module_instances (
     display_name TEXT NOT NULL,
     installation_state TEXT NOT NULL DEFAULT 'installed',
     operational_state TEXT NOT NULL DEFAULT 'draft',
-    epistemic_character TEXT NOT NULL DEFAULT 'production',
+    -- ADR-011 §4.2 (S514): real | hypothesis | simulation. Renamed from
+    -- epistemic_character; live databases are migrated in db/index.ts.
+    reality_context TEXT NOT NULL DEFAULT 'real',
     config_values TEXT NOT NULL DEFAULT '{}',
     installed_by TEXT NOT NULL REFERENCES users(id),
     installed_at TEXT NOT NULL DEFAULT (datetime('now')),

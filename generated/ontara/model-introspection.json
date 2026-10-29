@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-07T23:18:19.406726",
+  "generatedAt": "2026-10-29T23:31:54.217356",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 523
+      "elementCount": 533
     },
     "cafe": {
       "label": "Cafe",
@@ -20,16 +20,16 @@
     "paws": {
       "label": "Paws",
       "description": "Dog grooming demonstrator \u2014 appointment-based service validation",
-      "elementCount": 60
+      "elementCount": 80
     }
   },
   "summary": {
-    "totalElements": 775,
+    "totalElements": 805,
     "byKind": {
-      "enum_def": 63,
+      "enum_def": 67,
       "metadata_def": 17,
-      "part_def": 128,
-      "part": 519,
+      "part_def": 133,
+      "part": 540,
       "requirement_def": 15,
       "requirement": 7,
       "constraint_def": 14,
@@ -37,23 +37,24 @@
       "satisfy": 2
     },
     "byLayer": {
-      "smm": 249,
-      "unknown": 52,
-      "bmm": 206,
+      "smm": 217,
+      "unknown": 109,
+      "bmm": 211,
       "domain": 268
     },
     "byDomain": {
-      "core": 523,
+      "core": 533,
       "cafe": 125,
       "suds": 67,
-      "paws": 60
+      "paws": 80
     },
-    "bfoTypeCoverage": 34
+    "bfoTypeCoverage": 38
   },
   "facets": {
     "bmmConcern": {
       "values": [
         "ActivityModel",
+        "CanonicalRuntime",
         "FinancialModel",
         "Governance",
         "ResourceCapability",
@@ -66,25 +67,26 @@
         "ResourceCapability": 7,
         "FinancialModel": 5,
         "Governance": 2,
-        "StakeholderModel": 6
+        "StakeholderModel": 6,
+        "CanonicalRuntime": 4
       },
-      "total": 34
+      "total": 38
     },
     "classification": {
       "values": [
         "General"
       ],
       "counts": {
-        "General": 34
+        "General": 38
       },
-      "total": 34
+      "total": 38
     }
   },
   "comprehension": {
-    "catalogueTaggedCount": 34,
-    "userFacingCount": 34,
-    "purposiveDescriptionCount": 34,
-    "comprehensionAnnotationCount": 34,
+    "catalogueTaggedCount": 38,
+    "userFacingCount": 38,
+    "purposiveDescriptionCount": 38,
+    "comprehensionAnnotationCount": 38,
     "coveragePercent": 100.0,
     "purposiveCoveragePercent": 100.0,
     "missingUserFacing": [],
@@ -3250,7 +3252,18 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
-      "weightedRelationships": [],
+      "weightedRelationships": [
+        {
+          "target": "GovernanceRequirement",
+          "strength": "strong",
+          "rationale": "An evidence record exists to demonstrate compliance with a governance requirement \u2014 the requirement defines what evidence must be produced. A change to the requirement (its compliance description, its evidence specification, its frequency expectations) requires reassessing the evidence records that demonstrate it."
+        },
+        {
+          "target": "ActivityType",
+          "strength": "moderate",
+          "rationale": "Evidence records are produced by activities \u2014 typically governance-category activities such as inspections, reviews, or assessments. A change to the evidence specification (format, retention, frequency) may require reassessing which activities produce it, but activities exist independently of any single evidence specification."
+        }
+      ],
       "bfoType": {
         "bfoClass": "GenericallyDependentContinuant",
         "midLevelClass": "IAO:InformationContentEntity",
@@ -4383,30 +4396,263 @@
         ]
       }
     },
-    "Address": {
-      "name": "Address",
-      "layer": "smm",
-      "package": "CommonTypes",
-      "doc": "A postal address.",
-      "catalogueTag": {},
-      "userFacing": {},
-      "purposiveDescription": {},
-      "comprehension": {},
-      "weightedRelationships": [],
-      "bfoType": {},
-      "domains": {}
+    "ValueSpace": {
+      "name": "ValueSpace",
+      "layer": "bmm",
+      "package": "CanonicalRuntime",
+      "doc": "The permitted values for a StatusAxis, plus the shape\n(ordered / unordered / structured) that determines how\nthe values relate to one another.\nFor enumeration shapes, the `enumValues` multi-valued\natt",
+      "catalogueTag": {
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Value Space",
+        "shortDescription": "The permitted values for a status axis, plus the shape (ordered, unordered, or structured) that determines how the values relate."
+      },
+      "purposiveDescription": {
+        "description": "The permitted values for a single status axis, and how those values relate to one another. For ordered axes (like a lifecycle), the values progress in a sequence. For unordered axes (like a cancellation reason), the values are a set with no implicit order. The system uses the value space to decide which transitions are permitted and how to display the axis to readers."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "StatusAxis",
+          "strength": "strong",
+          "rationale": "Every ValueSpace exists to describe a StatusAxis. A change to the value space (its shape, its permitted values) requires reassessing the axis it belongs to \u2014 the axis's permitted transitions and authority interpretation may need adjustment."
+        },
+        {
+          "target": "AxisTransition",
+          "strength": "strong",
+          "rationale": "Permitted transitions reference values from the value space. A change to the value space (e.g. removing a value, adding a value, changing the shape from unordered to ordered) directly affects which transitions are well-formed."
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A ValueSpace specifies the permitted values and ordering shape of a single status axis. Information content \u2014 a specification depending on the StatusAxis it describes; not the values themselves but the description of what values are permitted."
+      },
+      "domains": {
+        "core": [
+          {
+            "name": "valueSpace",
+            "package": "CanonicalRuntime"
+          }
+        ]
+      }
     },
-    "ContactDetails": {
-      "name": "ContactDetails",
-      "layer": "smm",
-      "package": "CommonTypes",
-      "doc": "Contact information for a person or organisation.",
-      "catalogueTag": {},
-      "userFacing": {},
-      "purposiveDescription": {},
-      "comprehension": {},
-      "weightedRelationships": [],
-      "bfoType": {},
+    "AxisTransition": {
+      "name": "AxisTransition",
+      "layer": "bmm",
+      "package": "CanonicalRuntime",
+      "doc": "A permitted value-to-value transition on a single axis.\nDeclared transitions are exhaustive for the axis \u2014 any\n(fromValue, toValue) pair not represented by an\nAxisTransition in the permitted set is a ",
+      "catalogueTag": {
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Axis Transition",
+        "shortDescription": "A permitted value-to-value transition on a status axis, with the authority required to perform it."
+      },
+      "purposiveDescription": {
+        "description": "A permitted move from one value to another on a single status axis. Declared transitions are exhaustive \u2014 any value-to-value pair not represented by an axis transition is a prohibited transition, and the system rejects attempts to make it. Each transition records what authority is required to perform it (which binding class), so the canonical-edge contract can enforce the rule uniformly."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "StatusAxis",
+          "strength": "strong",
+          "rationale": "Every AxisTransition is declared on a specific StatusAxis. A change to a transition (its endpoints, its required authority) requires reassessing the axis whose transition rules it defines \u2014 the axis's runtime behaviour changes when its transitions change."
+        },
+        {
+          "target": "ValueSpace",
+          "strength": "strong",
+          "rationale": "A transition's from-value and to-value must be drawn from the axis's value space. A change to the transition (especially endpoint changes) requires reassessing the value space \u2014 and conversely a change to the value space may invalidate existing transitions."
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An AxisTransition specifies a permitted from-value to-value pair on a single axis, with the authority required to write it. Information content \u2014 a rule, not the act of transitioning. The transitioning itself, when it occurs, is a Process."
+      },
+      "domains": {
+        "core": [
+          {
+            "name": "permittedTransitions",
+            "package": "CanonicalRuntime"
+          }
+        ],
+        "paws": [
+          {
+            "name": "scheduledToCheckedIn",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "checkedInToInProgress",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "inProgressToReady",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "readyToCollected",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "collectedToClosed",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "unconfirmedToAwaitingReply",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "awaitingReplyToConfirmed",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "awaitingReplyToLapsed",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "unpaidToDepositHeld",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "depositHeldToPaidInFull",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "depositHeldToPartiallyRefunded",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "depositHeldToFullyRefunded",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "activeToCancelledByOwner",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "activeToCancelledByTenant",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "activeToNoShow",
+            "package": "PawsCanonicalRuntime"
+          }
+        ]
+      }
+    },
+    "StatusAxis": {
+      "name": "StatusAxis",
+      "layer": "bmm",
+      "package": "CanonicalRuntime",
+      "doc": "B71 \u2014 StatusAxis as a BMM General part def.\nA StatusAxis instance declares WHAT A SINGLE DIMENSION\nOF STATUS LOOKS LIKE: its value space, its permitted\ntransitions, its default, its authority, its sco",
+      "catalogueTag": {
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Status Axis",
+        "shortDescription": "A single named dimension of status on a canonical runtime type \u2014 its values, transitions, default, authority, and scope."
+      },
+      "purposiveDescription": {
+        "description": "A single named dimension of status that a canonical runtime instance carries. A canonical runtime type can declare several status axes \u2014 for example a booking might have a lifecycle axis, a confirmation axis, a payment axis, a cancellation axis. Each axis advances independently, with its own value space, permitted transitions, default value, and authority. The system tracks each axis as a separate triple in the substrate, so axes can be queried and reasoned over individually."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "CanonicalRuntimeType",
+          "strength": "strong",
+          "rationale": "A StatusAxis is declared on a CanonicalRuntimeType \u2014 it has no independent existence. A change to an axis (its value space, its transitions, its authority) requires reassessing the canonical type whose runtime instances carry it."
+        },
+        {
+          "target": "ValueSpace",
+          "strength": "strong",
+          "rationale": "Every StatusAxis has a ValueSpace. A change to the axis (its meaning, its purpose) typically requires reassessing the value space that defines its permitted values."
+        },
+        {
+          "target": "AxisTransition",
+          "strength": "strong",
+          "rationale": "A StatusAxis declares its set of permitted AxisTransitions. A change to the axis (especially to its value space or authority) requires reassessing the transitions \u2014 they may need to be added, removed, or have their required authority adjusted."
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A StatusAxis is a structural information artefact specifying a dimension of runtime status; it is generically dependent on the canonical runtime type that declares it."
+      },
+      "domains": {
+        "paws": [
+          {
+            "name": "lifecycleAxis",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "confirmationAxis",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "paymentAxis",
+            "package": "PawsCanonicalRuntime"
+          },
+          {
+            "name": "cancellationAxis",
+            "package": "PawsCanonicalRuntime"
+          }
+        ]
+      }
+    },
+    "CanonicalRuntimeType": {
+      "name": "CanonicalRuntimeType",
+      "layer": "bmm",
+      "package": "CanonicalRuntime",
+      "doc": "Base part def for every canonical runtime type \u2014 types\nwhose runtime instances live in DBR (business-side\ncontinuant trajectories) or DSR (system-side occurrent\nlog).\nCarries no built-in axis. Tenant-",
+      "catalogueTag": {
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Canonical Runtime Type",
+        "shortDescription": "The base type for every canonical runtime type \u2014 the things whose runtime instances live in DBR or DSR."
+      },
+      "purposiveDescription": {
+        "description": "The structural parent for every canonical runtime type \u2014 the things whose runtime instances are persisted in the substrate as model-grounded content. A booking, a clinical encounter, a laundry batch, an order: each is a canonical runtime type, and each runtime instance carries a tuple of status axes describing where it is along each independent dimension of progress. No axis is built in: every axis is declared by the tenant on the canonical type. Whether a record of an instance is real or simulated, and whether it was direct, inferred or predicted, is carried by the platform's record of the write (the platform record module, ADR-011), not by the instance."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "StatusAxis",
+          "strength": "strong",
+          "rationale": "A CanonicalRuntimeType declares the set of StatusAxes its runtime instances carry. A change to the canonical type's structural definition (especially to its declared axes) directly affects every instance \u2014 runtime tuple shape, substrate triple structure, and comprehension all flow from the axis declarations."
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "Entity",
+        "midLevelClass": "",
+        "mappingNotes": "CanonicalRuntimeType is the structural parent for types whose runtime instances live in DBR (business-side continuant trajectories) or DSR (system-side occurrent log). Anchored at BFO entity (S514, ADR-011): it defines a shape, not a kind of thing, and its concrete types have different BFO kinds. The BFO classification of a concrete canonical type is carried by its own @BfoType annotation; this parent establishes only the platform-level shape."
+      },
       "domains": {}
     },
     "PersistencePolicy": {
@@ -8000,7 +8246,9 @@
       "relatedConcepts": [
         {
           "name": "GovernanceRequirement",
-          "friendlyName": "Governance Requirement"
+          "friendlyName": "Governance Requirement",
+          "strength": "strong",
+          "rationale": "An evidence record exists to demonstrate compliance with a governance requirement \u2014 the requirement defines what evidence must be produced. A change to the requirement (its compliance description, its evidence specification, its frequency expectations) requires reassessing the evidence records that demonstrate it."
         }
       ],
       "attributes": [
@@ -8595,6 +8843,211 @@
           "type": "ServiceOffering"
         }
       ]
+    },
+    "ValueSpace": {
+      "flags": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "domainInstantiations": {
+        "core": {
+          "count": 1,
+          "instances": [
+            "valueSpace"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "AxisTransition",
+          "friendlyName": "Axis Transition",
+          "strength": "strong",
+          "rationale": "Permitted transitions reference values from the value space. A change to the value space (e.g. removing a value, adding a value, changing the shape from unordered to ordered) directly affects which transitions are well-formed."
+        },
+        {
+          "name": "StatusAxis",
+          "friendlyName": "Status Axis",
+          "strength": "strong",
+          "rationale": "Every ValueSpace exists to describe a StatusAxis. A change to the value space (its shape, its permitted values) requires reassessing the axis it belongs to \u2014 the axis's permitted transitions and authority interpretation may need adjustment."
+        },
+        {
+          "name": "CanonicalRuntimeType",
+          "friendlyName": "Canonical Runtime Type"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "valueShape",
+          "type": "ValueSpaceShape"
+        },
+        {
+          "name": "enumValues",
+          "type": "String[0..*]"
+        },
+        {
+          "name": "structuredSpec",
+          "type": "String"
+        }
+      ]
+    },
+    "AxisTransition": {
+      "flags": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "domainInstantiations": {
+        "core": {
+          "count": 1,
+          "instances": [
+            "permittedTransitions"
+          ]
+        },
+        "paws": {
+          "count": 15,
+          "instances": [
+            "scheduledToCheckedIn",
+            "checkedInToInProgress",
+            "inProgressToReady",
+            "readyToCollected",
+            "collectedToClosed",
+            "unconfirmedToAwaitingReply",
+            "awaitingReplyToConfirmed",
+            "awaitingReplyToLapsed",
+            "unpaidToDepositHeld",
+            "depositHeldToPaidInFull",
+            "depositHeldToPartiallyRefunded",
+            "depositHeldToFullyRefunded",
+            "activeToCancelledByOwner",
+            "activeToCancelledByTenant",
+            "activeToNoShow"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "ValueSpace",
+          "friendlyName": "Value Space",
+          "strength": "strong",
+          "rationale": "A transition's from-value and to-value must be drawn from the axis's value space. A change to the transition (especially endpoint changes) requires reassessing the value space \u2014 and conversely a change to the value space may invalidate existing transitions."
+        },
+        {
+          "name": "StatusAxis",
+          "friendlyName": "Status Axis",
+          "strength": "strong",
+          "rationale": "Every AxisTransition is declared on a specific StatusAxis. A change to a transition (its endpoints, its required authority) requires reassessing the axis whose transition rules it defines \u2014 the axis's runtime behaviour changes when its transitions change."
+        },
+        {
+          "name": "CanonicalRuntimeType",
+          "friendlyName": "Canonical Runtime Type"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "fromValue",
+          "type": "String"
+        },
+        {
+          "name": "toValue",
+          "type": "String"
+        },
+        {
+          "name": "transitionLabel",
+          "type": "String"
+        },
+        {
+          "name": "requiredAuthority",
+          "type": "AxisAuthority[0..*]"
+        }
+      ]
+    },
+    "StatusAxis": {
+      "flags": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "domainInstantiations": {
+        "paws": {
+          "count": 4,
+          "instances": [
+            "lifecycleAxis",
+            "confirmationAxis",
+            "paymentAxis",
+            "cancellationAxis"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "ValueSpace",
+          "friendlyName": "Value Space",
+          "strength": "strong",
+          "rationale": "Every StatusAxis has a ValueSpace. A change to the axis (its meaning, its purpose) typically requires reassessing the value space that defines its permitted values."
+        },
+        {
+          "name": "AxisTransition",
+          "friendlyName": "Axis Transition",
+          "strength": "strong",
+          "rationale": "A StatusAxis declares its set of permitted AxisTransitions. A change to the axis (especially to its value space or authority) requires reassessing the transitions \u2014 they may need to be added, removed, or have their required authority adjusted."
+        },
+        {
+          "name": "CanonicalRuntimeType",
+          "friendlyName": "Canonical Runtime Type",
+          "strength": "strong",
+          "rationale": "A StatusAxis is declared on a CanonicalRuntimeType \u2014 it has no independent existence. A change to an axis (its value space, its transitions, its authority) requires reassessing the canonical type whose runtime instances carry it."
+        }
+      ],
+      "attributes": [
+        {
+          "name": "axisName",
+          "type": "String"
+        },
+        {
+          "name": "axisDescription",
+          "type": "String"
+        },
+        {
+          "name": "axisScope",
+          "type": "AxisScope"
+        },
+        {
+          "name": "axisAuthority",
+          "type": "AxisAuthority[1..*]"
+        },
+        {
+          "name": "defaultValue",
+          "type": "String"
+        }
+      ]
+    },
+    "CanonicalRuntimeType": {
+      "flags": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "relatedConcepts": [
+        {
+          "name": "StatusAxis",
+          "friendlyName": "Status Axis",
+          "strength": "strong",
+          "rationale": "A CanonicalRuntimeType declares the set of StatusAxes its runtime instances carry. A change to the canonical type's structural definition (especially to its declared axes) directly affects every instance \u2014 runtime tuple shape, substrate triple structure, and comprehension all flow from the axis declarations."
+        },
+        {
+          "name": "ValueSpace",
+          "friendlyName": "Value Space"
+        },
+        {
+          "name": "AxisTransition",
+          "friendlyName": "Axis Transition"
+        }
+      ]
     }
   },
   "weightedRelationshipGraph": {
@@ -8646,6 +9099,22 @@
         "classification": "General",
         "package": "GovernanceMapping",
         "shortDescription": "A record that demonstrates compliance with a governance requirement \u2014 the proof that obligations are met."
+      },
+      {
+        "id": "AxisTransition",
+        "friendlyName": "Axis Transition",
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General",
+        "package": "CanonicalRuntime",
+        "shortDescription": "A permitted value-to-value transition on a status axis, with the authority required to perform it."
+      },
+      {
+        "id": "CanonicalRuntimeType",
+        "friendlyName": "Canonical Runtime Type",
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General",
+        "package": "CanonicalRuntime",
+        "shortDescription": "The base type for every canonical runtime type \u2014 the things whose runtime instances live in DBR or DSR."
       },
       {
         "id": "Capability",
@@ -8856,6 +9325,14 @@
         "shortDescription": "A typed, ongoing, structured relationship between the business and an external entity."
       },
       {
+        "id": "StatusAxis",
+        "friendlyName": "Status Axis",
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General",
+        "package": "CanonicalRuntime",
+        "shortDescription": "A single named dimension of status on a canonical runtime type \u2014 its values, transitions, default, authority, and scope."
+      },
+      {
         "id": "UnitEconomics",
         "friendlyName": "Unit Economics",
         "bmmConcern": "FinancialModel",
@@ -8870,6 +9347,14 @@
         "classification": "General",
         "package": "ServiceConcept",
         "shortDescription": "A promise of value to a customer segment \u2014 what they get and why it matters."
+      },
+      {
+        "id": "ValueSpace",
+        "friendlyName": "Value Space",
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General",
+        "package": "CanonicalRuntime",
+        "shortDescription": "The permitted values for a status axis, plus the shape (ordered, unordered, or structured) that determines how the values relate."
       }
     ],
     "edges": [
@@ -9354,6 +9839,18 @@
         "rationale": "A change to a governance requirement may require reviewing the relationship through which it is enforced, but the relationship exists independently of any single requirement (H1, H5)."
       },
       {
+        "source": "AuditEvidenceRecord",
+        "target": "GovernanceRequirement",
+        "strength": "strong",
+        "rationale": "An evidence record exists to demonstrate compliance with a governance requirement \u2014 the requirement defines what evidence must be produced. A change to the requirement (its compliance description, its evidence specification, its frequency expectations) requires reassessing the evidence records that demonstrate it."
+      },
+      {
+        "source": "AuditEvidenceRecord",
+        "target": "ActivityType",
+        "strength": "moderate",
+        "rationale": "Evidence records are produced by activities \u2014 typically governance-category activities such as inspections, reviews, or assessments. A change to the evidence specification (format, retention, frequency) may require reassessing which activities produce it, but activities exist independently of any single evidence specification."
+      },
+      {
         "source": "StakeholderRelationship",
         "target": "GovernanceRequirement",
         "strength": "strong",
@@ -9448,15 +9945,63 @@
         "target": "Channel",
         "strength": "moderate",
         "rationale": "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4)."
+      },
+      {
+        "source": "ValueSpace",
+        "target": "StatusAxis",
+        "strength": "strong",
+        "rationale": "Every ValueSpace exists to describe a StatusAxis. A change to the value space (its shape, its permitted values) requires reassessing the axis it belongs to \u2014 the axis's permitted transitions and authority interpretation may need adjustment."
+      },
+      {
+        "source": "ValueSpace",
+        "target": "AxisTransition",
+        "strength": "strong",
+        "rationale": "Permitted transitions reference values from the value space. A change to the value space (e.g. removing a value, adding a value, changing the shape from unordered to ordered) directly affects which transitions are well-formed."
+      },
+      {
+        "source": "AxisTransition",
+        "target": "StatusAxis",
+        "strength": "strong",
+        "rationale": "Every AxisTransition is declared on a specific StatusAxis. A change to a transition (its endpoints, its required authority) requires reassessing the axis whose transition rules it defines \u2014 the axis's runtime behaviour changes when its transitions change."
+      },
+      {
+        "source": "AxisTransition",
+        "target": "ValueSpace",
+        "strength": "strong",
+        "rationale": "A transition's from-value and to-value must be drawn from the axis's value space. A change to the transition (especially endpoint changes) requires reassessing the value space \u2014 and conversely a change to the value space may invalidate existing transitions."
+      },
+      {
+        "source": "StatusAxis",
+        "target": "CanonicalRuntimeType",
+        "strength": "strong",
+        "rationale": "A StatusAxis is declared on a CanonicalRuntimeType \u2014 it has no independent existence. A change to an axis (its value space, its transitions, its authority) requires reassessing the canonical type whose runtime instances carry it."
+      },
+      {
+        "source": "StatusAxis",
+        "target": "ValueSpace",
+        "strength": "strong",
+        "rationale": "Every StatusAxis has a ValueSpace. A change to the axis (its meaning, its purpose) typically requires reassessing the value space that defines its permitted values."
+      },
+      {
+        "source": "StatusAxis",
+        "target": "AxisTransition",
+        "strength": "strong",
+        "rationale": "A StatusAxis declares its set of permitted AxisTransitions. A change to the axis (especially to its value space or authority) requires reassessing the transitions \u2014 they may need to be added, removed, or have their required authority adjusted."
+      },
+      {
+        "source": "CanonicalRuntimeType",
+        "target": "StatusAxis",
+        "strength": "strong",
+        "rationale": "A CanonicalRuntimeType declares the set of StatusAxes its runtime instances carry. A change to the canonical type's structural definition (especially to its declared axes) directly affects every instance \u2014 runtime tuple shape, substrate triple structure, and comprehension all flow from the axis declarations."
       }
     ],
     "stats": {
-      "nodeCount": 34,
-      "edgeCount": 96,
-      "strongCount": 32,
-      "moderateCount": 62,
+      "nodeCount": 38,
+      "edgeCount": 106,
+      "strongCount": 41,
+      "moderateCount": 63,
       "weakCount": 2,
-      "bidirectionalPairCount": 28
+      "bidirectionalPairCount": 33
     }
   },
   "architecturalSections": [
@@ -9659,7 +10204,7 @@
       "friendlyName": "Reflective Simulation",
       "shortDescription": "A cross-cutting meta-knowledge capability reading from all architectural layers, producing guidance and insight for the operator.",
       "representationalModalitySummary": "Mixed \u2014 consumes OWL 2 DL, SysML v2, runtime state, and clinical terminologies. Produces natural-language explanations and OWL 2 DL assertions. Internal processing formalism is an open design question.",
-      "persistenceSummary": "Derived knowledge persists in the knowledge graph as coordinate space snapshots \u2014 named graphs tagged with epistemic status (current, historical, goal, hypothetical, projected). Transient working state does not persist.",
+      "persistenceSummary": "Derived knowledge persists in the knowledge graph as coordinate space snapshots \u2014 named graphs selected by the record's mode (real or simulated), its two times, and its type; simulation runs carry a run purpose (ADR-011, S514). Transient working state does not persist.",
       "interfacesSummary": "Reads from: knowledge graph, instance layers, operational simulation, rules and constraints, terminology. Writes to: operator (guidance) and knowledge graph (derived knowledge). Cross-cutting \u2014 not positioned in either stack.",
       "domainIllustrationSummary": "For Paws: answers questions like groomer utilisation trends, what-if for adding Teeth Cleaning, revenue vs goal gap analysis with valence, shampoo consumption anomaly detection, and April revenue projection.",
       "docKey": "reflective-simulation"
@@ -9857,6 +10402,13 @@
                       "bmmConcern": "Governance"
                     },
                     {
+                      "name": "AxisTransition",
+                      "tier": "bmm",
+                      "package": "CanonicalRuntime",
+                      "friendlyName": "Axis Transition",
+                      "bmmConcern": "CanonicalRuntime"
+                    },
+                    {
                       "name": "CapacityModel",
                       "tier": "bmm",
                       "package": "ResourcePlanning",
@@ -9913,11 +10465,25 @@
                       "bmmConcern": "ResourceCapability"
                     },
                     {
+                      "name": "StatusAxis",
+                      "tier": "bmm",
+                      "package": "CanonicalRuntime",
+                      "friendlyName": "Status Axis",
+                      "bmmConcern": "CanonicalRuntime"
+                    },
+                    {
                       "name": "UnitEconomics",
                       "tier": "bmm",
                       "package": "FinancialPlanning",
                       "friendlyName": "Unit Economics",
                       "bmmConcern": "FinancialModel"
+                    },
+                    {
+                      "name": "ValueSpace",
+                      "tier": "bmm",
+                      "package": "CanonicalRuntime",
+                      "friendlyName": "Value Space",
+                      "bmmConcern": "CanonicalRuntime"
                     }
                   ]
                 },
@@ -10147,7 +10713,7 @@
       ]
     },
     "stats": {
-      "bmmElementCount": 34,
+      "bmmElementCount": 38,
       "bfoClassesUsed": [
         "GenericallyDependentContinuant",
         "Role",
@@ -10163,6 +10729,7 @@
         "IAO:PlanSpecification"
       ],
       "unmappedMidLevel": [
+        "CanonicalRuntimeType",
         "CommunityRelationship",
         "ServiceParticipant",
         "ServiceSubject",
@@ -10174,11 +10741,12 @@
     "domains": [
       {
         "identity": {
-          "regulatoryTier": "generallyGoverned",
+          "regulatoryShape": "generallyGoverned",
           "bmmVocabularyScope": "full",
           "domainPurpose": "referenceValidation",
           "jurisdiction": "england",
           "organisationalForm": "registeredIndividual",
+          "authorisationRequiredToTrade": false,
           "description": "Reference validation domain \u2014 original demonstrator. Immediate retail service with walk-in customers and 2-minute fulfilment cycle.",
           "introducedSession": 1,
           "domainConfiguration": "cafeConfiguration",
@@ -10197,11 +10765,12 @@
       },
       {
         "identity": {
-          "regulatoryTier": "lightlyRegulated",
+          "regulatoryShape": "locallyLicensed",
           "bmmVocabularyScope": "full",
           "domainPurpose": "crossDomainValidation",
           "jurisdiction": "england",
           "organisationalForm": "registeredIndividual",
+          "authorisationRequiredToTrade": false,
           "description": "Cross-domain validation domain \u2014 batch processing laundry service. Weight/type pricing, COSHH governance chain.",
           "introducedSession": 16,
           "domainConfiguration": "sudsConfiguration",
@@ -10220,7 +10789,7 @@
       },
       {
         "identity": {
-          "regulatoryTier": "lightlyRegulated",
+          "regulatoryShape": "locallyLicensed",
           "bmmVocabularyScope": "generalOnly",
           "domainPurpose": [
             "pedagogicalAnchoring",
@@ -10228,6 +10797,7 @@
           ],
           "jurisdiction": "england",
           "organisationalForm": "registeredIndividual",
+          "authorisationRequiredToTrade": false,
           "description": "Pedagogical anchoring and cross-domain validation domain \u2014 appointment-based dog grooming. Breed/size surcharges.",
           "introducedSession": 43,
           "domainConfiguration": "pawsConfiguration",
@@ -10246,7 +10816,7 @@
       },
       {
         "identity": {
-          "regulatoryTier": "sectorRegulated",
+          "regulatoryShape": "sectorRegulated",
           "bmmVocabularyScope": "production",
           "domainPurpose": "production",
           "jurisdiction": "england",
@@ -10254,7 +10824,12 @@
             "treatment",
             "diagnosticAndScreeningProcedures"
           ],
+          "professionalRegistrations": [
+            "gmc",
+            "nmc"
+          ],
           "organisationalForm": "registeredIndividual",
+          "authorisationRequiredToTrade": true,
           "description": "Production domain \u2014 GenderSense Limited. Private gender-affirming healthcare service. First production tenant.",
           "introducedSession": 8,
           "domainConfiguration": "gslConfiguration",
@@ -11437,7 +12012,7 @@
           "name": "ArchitecturalLocation",
           "attrs": {
             "representationalModalitySummary": "Mixed \u2014 consumes OWL 2 DL, SysML v2, runtime state, and clinical terminologies. Produces natural-language explanations and OWL 2 DL assertions. Internal processing formalism is an open design question.",
-            "persistenceSummary": "Derived knowledge persists in the knowledge graph as coordinate space snapshots \u2014 named graphs tagged with epistemic status (current, historical, goal, hypothetical, projected). Transient working state does not persist.",
+            "persistenceSummary": "Derived knowledge persists in the knowledge graph as coordinate space snapshots \u2014 named graphs selected by the record's mode (real or simulated), its two times, and its type; simulation runs carry a run purpose (ADR-011, S514). Transient working state does not persist.",
             "interfacesSummary": "Reads from: knowledge graph, instance layers, operational simulation, rules and constraints, terminology. Writes to: operator (guidance) and knowledge graph (derived knowledge). Cross-cutting \u2014 not positioned in either stack.",
             "domainIllustrationSummary": "For Paws: answers questions like groomer utilisation trends, what-if for adding Teeth Cleaning, revenue vs goal gap analysis with valence, shampoo consumption anomaly detection, and April revenue projection."
           }
@@ -12124,7 +12699,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 104,
+      "lineNumber": 105,
       "attributes": [
         {
           "name": "segmentName",
@@ -12263,7 +12838,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 150,
+      "lineNumber": 151,
       "attributes": [
         {
           "name": "propositionName",
@@ -12402,7 +12977,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 220,
+      "lineNumber": 221,
       "attributes": [
         {
           "name": "offeringName",
@@ -12611,7 +13186,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 266,
+      "lineNumber": 267,
       "attributes": [
         {
           "name": "channelName",
@@ -12742,7 +13317,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 307,
+      "lineNumber": 308,
       "attributes": [
         {
           "name": "claimName",
@@ -12863,7 +13438,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 368,
+      "lineNumber": 369,
       "attributes": [
         {
           "name": "subjectName",
@@ -13028,7 +13603,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 442,
+      "lineNumber": 443,
       "attributes": [
         {
           "name": "participantName",
@@ -13180,7 +13755,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 522,
+      "lineNumber": 523,
       "attributes": [
         {
           "name": "entryName",
@@ -13329,7 +13904,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 571,
+      "lineNumber": 572,
       "attributes": [
         {
           "name": "referenceType",
@@ -13437,7 +14012,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 595,
+      "lineNumber": 596,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -13475,7 +14050,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 606,
+      "lineNumber": 607,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -13513,7 +14088,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 619,
+      "lineNumber": 620,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -13546,7 +14121,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 627,
+      "lineNumber": 628,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -13579,7 +14154,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 635,
+      "lineNumber": 636,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -13612,7 +14187,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 645,
+      "lineNumber": 646,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -13655,7 +14230,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 657,
+      "lineNumber": 658,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -13698,7 +14273,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 669,
+      "lineNumber": 670,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -13741,7 +14316,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 683,
+      "lineNumber": 684,
       "specialises": "Channel",
       "attributes": [
         {
@@ -13784,7 +14359,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 692,
+      "lineNumber": 693,
       "specialises": "Channel",
       "attributes": [
         {
@@ -13827,7 +14402,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 703,
+      "lineNumber": 704,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -13860,7 +14435,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 710,
+      "lineNumber": 711,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -13893,7 +14468,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 719,
+      "lineNumber": 720,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -13936,7 +14511,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 732,
+      "lineNumber": 733,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -13979,7 +14554,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 744,
+      "lineNumber": 745,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -14022,7 +14597,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 756,
+      "lineNumber": 757,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -14065,7 +14640,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 772,
+      "lineNumber": 773,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -14098,7 +14673,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 813,
+      "lineNumber": 814,
       "attributes": [
         {
           "name": "serviceDelivery;"
@@ -14125,7 +14700,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 825,
+      "lineNumber": 826,
       "attributes": [
         {
           "name": "envelope;"
@@ -14146,7 +14721,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 884,
+      "lineNumber": 885,
       "attributes": [
         {
           "name": "activityTypeName",
@@ -14324,7 +14899,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 919,
+      "lineNumber": 920,
       "attributes": [
         {
           "name": "activityType",
@@ -14437,7 +15012,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 960,
+      "lineNumber": 961,
       "attributes": [
         {
           "name": "budgetPeriod",
@@ -14563,7 +15138,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1000,
+      "lineNumber": 1001,
       "attributes": [
         {
           "name": "businessArea",
@@ -14684,7 +15259,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1043,
+      "lineNumber": 1044,
       "attributes": [
         {
           "name": "activityType",
@@ -14818,7 +15393,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1128,
+      "lineNumber": 1129,
       "attributes": [
         {
           "name": "resourceTypeName",
@@ -14996,7 +15571,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1169,
+      "lineNumber": 1170,
       "attributes": [
         {
           "name": "instanceName",
@@ -15127,7 +15702,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1221,
+      "lineNumber": 1222,
       "attributes": [
         {
           "name": "capabilityName",
@@ -15281,7 +15856,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1269,
+      "lineNumber": 1270,
       "attributes": [
         {
           "name": "resourceConfiguration",
@@ -15407,7 +15982,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1315,
+      "lineNumber": 1316,
       "attributes": [
         {
           "name": "constraintName",
@@ -15533,7 +16108,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1363,
+      "lineNumber": 1364,
       "attributes": [
         {
           "name": "catalogueEntry",
@@ -15651,7 +16226,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1390,
+      "lineNumber": 1391,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -15689,7 +16264,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1401,
+      "lineNumber": 1402,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -15727,7 +16302,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1409,
+      "lineNumber": 1410,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -15765,7 +16340,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1419,
+      "lineNumber": 1420,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -15803,7 +16378,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1427,
+      "lineNumber": 1428,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -15841,7 +16416,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1435,
+      "lineNumber": 1436,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -15879,7 +16454,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1445,
+      "lineNumber": 1446,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -15917,7 +16492,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1456,
+      "lineNumber": 1457,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -15955,7 +16530,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1467,
+      "lineNumber": 1468,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -15993,7 +16568,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1476,
+      "lineNumber": 1477,
       "specialises": "Capability",
       "attributes": [
         {
@@ -16026,7 +16601,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1486,
+      "lineNumber": 1487,
       "specialises": "Capability",
       "attributes": [
         {
@@ -16059,7 +16634,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1493,
+      "lineNumber": 1494,
       "specialises": "Capability",
       "attributes": [
         {
@@ -16092,7 +16667,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1500,
+      "lineNumber": 1501,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -16130,7 +16705,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1510,
+      "lineNumber": 1511,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -16163,7 +16738,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1518,
+      "lineNumber": 1519,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -16196,7 +16771,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1531,
+      "lineNumber": 1532,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -16234,7 +16809,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1541,
+      "lineNumber": 1542,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -16272,7 +16847,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1551,
+      "lineNumber": 1552,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -16310,7 +16885,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1560,
+      "lineNumber": 1561,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -16348,7 +16923,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1569,
+      "lineNumber": 1570,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -16386,7 +16961,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1580,
+      "lineNumber": 1581,
       "specialises": "Capability",
       "attributes": [
         {
@@ -16419,7 +16994,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1587,
+      "lineNumber": 1588,
       "specialises": "Capability",
       "attributes": [
         {
@@ -16452,7 +17027,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1594,
+      "lineNumber": 1595,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -16490,7 +17065,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1643,
+      "lineNumber": 1644,
       "attributes": [
         {
           "name": "strategicObjective",
@@ -16589,7 +17164,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1651,
+      "lineNumber": 1652,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -16600,7 +17175,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1657,
+      "lineNumber": 1658,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -16611,7 +17186,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1664,
+      "lineNumber": 1665,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -16622,7 +17197,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1671,
+      "lineNumber": 1672,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -16633,7 +17208,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1702,
+      "lineNumber": 1703,
       "attributes": [
         {
           "name": "perEpisode"
@@ -16660,7 +17235,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1745,
+      "lineNumber": 1746,
       "attributes": [
         {
           "name": "streamName",
@@ -16799,7 +17374,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1793,
+      "lineNumber": 1794,
       "attributes": [
         {
           "name": "driverName",
@@ -16952,7 +17527,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1831,
+      "lineNumber": 1832,
       "attributes": [
         {
           "name": "offering",
@@ -17078,7 +17653,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1874,
+      "lineNumber": 1875,
       "attributes": [
         {
           "name": "pricingModelName",
@@ -17217,7 +17792,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1912,
+      "lineNumber": 1913,
       "attributes": [
         {
           "name": "projectionName",
@@ -17348,7 +17923,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1926,
+      "lineNumber": 1927,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -17381,7 +17956,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1934,
+      "lineNumber": 1935,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -17414,7 +17989,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1942,
+      "lineNumber": 1943,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -17447,7 +18022,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1950,
+      "lineNumber": 1951,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -17480,7 +18055,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1958,
+      "lineNumber": 1959,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -17513,7 +18088,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1966,
+      "lineNumber": 1967,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -17546,7 +18121,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1974,
+      "lineNumber": 1975,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -17579,7 +18154,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1982,
+      "lineNumber": 1983,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -17612,7 +18187,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1989,
+      "lineNumber": 1990,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -17645,7 +18220,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1997,
+      "lineNumber": 1998,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -17678,7 +18253,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2005,
+      "lineNumber": 2006,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -17716,7 +18291,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2013,
+      "lineNumber": 2014,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -17754,7 +18329,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2024,
+      "lineNumber": 2025,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -17787,7 +18362,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2036,
+      "lineNumber": 2037,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -17820,7 +18395,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2044,
+      "lineNumber": 2045,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -17853,7 +18428,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2052,
+      "lineNumber": 2053,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -17891,7 +18466,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2063,
+      "lineNumber": 2064,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -17924,7 +18499,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2076,
+      "lineNumber": 2077,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -17962,7 +18537,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2151,
+      "lineNumber": 2152,
       "attributes": [
         {
           "name": "requirementId",
@@ -18101,7 +18676,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2191,
+      "lineNumber": 2202,
       "attributes": [
         {
           "name": "evidenceType",
@@ -18146,6 +18721,18 @@
         "surfaceRelatedConcepts": true,
         "surfaceAttributes": true
       },
+      "weightedRelationships": [
+        {
+          "target": "GovernanceRequirement",
+          "strength": "strong",
+          "rationale": "An evidence record exists to demonstrate compliance with a governance requirement \u2014 the requirement defines what evidence must be produced. A change to the requirement (its compliance description, its evidence specification, its frequency expectations) requires reassessing the evidence records that demonstrate it."
+        },
+        {
+          "target": "ActivityType",
+          "strength": "moderate",
+          "rationale": "Evidence records are produced by activities \u2014 typically governance-category activities such as inspections, reviews, or assessments. A change to the evidence specification (format, retention, frequency) may require reassessing which activities produce it, but activities exist independently of any single evidence specification."
+        }
+      ],
       "annotations": [
         {
           "name": "CatalogueTag",
@@ -18183,6 +18770,22 @@
             "surfaceRelatedConcepts": true,
             "surfaceAttributes": true
           }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "GovernanceRequirement",
+            "strength": "strong",
+            "rationale": "An evidence record exists to demonstrate compliance with a governance requirement \u2014 the requirement defines what evidence must be produced. A change to the requirement (its compliance description, its evidence specification, its frequency expectations) requires reassessing the evidence records that demonstrate it."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ActivityType",
+            "strength": "moderate",
+            "rationale": "Evidence records are produced by activities \u2014 typically governance-category activities such as inspections, reviews, or assessments. A change to the evidence specification (format, retention, frequency) may require reassessing which activities produce it, but activities exist independently of any single evidence specification."
+          }
         }
       ],
       "bfoType": {
@@ -18199,7 +18802,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2283,
+      "lineNumber": 2294,
       "attributes": [
         {
           "name": "stakeholderName",
@@ -18364,7 +18967,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2341,
+      "lineNumber": 2352,
       "attributes": [
         {
           "name": "arrangementName",
@@ -18518,7 +19121,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2393,
+      "lineNumber": 2404,
       "attributes": [
         {
           "name": "pathwayName",
@@ -18659,7 +19262,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2444,
+      "lineNumber": 2455,
       "attributes": [
         {
           "name": "dependencyName",
@@ -18813,7 +19416,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2500,
+      "lineNumber": 2511,
       "attributes": [
         {
           "name": "communityName",
@@ -18944,7 +19547,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2549,
+      "lineNumber": 2560,
       "attributes": [
         {
           "name": "participationName",
@@ -19099,7 +19702,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2573,
+      "lineNumber": 2584,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -19157,7 +19760,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2588,
+      "lineNumber": 2599,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -19215,7 +19818,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2602,
+      "lineNumber": 2613,
       "specialises": "CooperativeArrangement",
       "attributes": [
         {
@@ -19268,7 +19871,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2616,
+      "lineNumber": 2627,
       "specialises": "ReferralPathway",
       "attributes": [
         {
@@ -19321,7 +19924,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2630,
+      "lineNumber": 2641,
       "specialises": "ReferralPathway",
       "attributes": [
         {
@@ -19374,7 +19977,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2643,
+      "lineNumber": 2654,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -19427,7 +20030,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2657,
+      "lineNumber": 2668,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -19480,7 +20083,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2670,
+      "lineNumber": 2681,
       "specialises": "CommunityRelationship",
       "attributes": [
         {
@@ -19523,7 +20126,7 @@
       "sourceFile": "model/business-model.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 2682,
+      "lineNumber": 2693,
       "specialises": "ParticipationModel",
       "attributes": [
         {
@@ -23870,6 +24473,556 @@
       ]
     },
     {
+      "kind": "enum_def",
+      "name": "AxisScope",
+      "parentPackage": "CanonicalRuntime",
+      "doc": "The scope of an axis declaration.\ntenantDeclared: the axis is declared by a specific tenant\n  on a specific canonical type. This is the only scope.\n  `platformBuiltIn` was removed at S514 (ADR-011): no\n  built-in axis remains, and a future one would be\n  re-added by decision, not by default.",
+      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 101,
+      "attributes": [
+        {
+          "name": "tenantDeclared"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "AxisAuthority",
+      "parentPackage": "CanonicalRuntime",
+      "doc": "Declares which party or component may write to an axis.\nMirrors the binding-class vocabulary at B60 (BRL).\nA write through the wrong binding class is a constraint\nviolation; the canonical-edge contract (B61) enforces\nthe declaration uniformly. Multi-valued attributes of\nthis type are used where more",
+      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 112,
+      "attributes": [
+        {
+          "name": "operatorSide"
+        },
+        {
+          "name": "customerSide"
+        },
+        {
+          "name": "systemSide"
+        },
+        {
+          "name": "inferenceSide"
+        },
+        {
+          "name": "syntheticSide"
+        },
+        {
+          "name": "platformSide"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "ValueSpaceShape",
+      "parentPackage": "CanonicalRuntime",
+      "doc": "The three shapes a StatusAxis value space may take.\nSelected when the axis is declared (S253 \u00a73.2).\n- unorderedEnum: a set of named values with no implicit\n    ordering. Cancellation axis is a typical case.\n- orderedEnum: a totally-ordered sequence. Lifecycle axes\n    use this. Admits unordered bran",
+      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 141,
+      "attributes": [
+        {
+          "name": "unorderedEnum"
+        },
+        {
+          "name": "orderedEnum"
+        },
+        {
+          "name": "structuredValue"
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "ValueSpace",
+      "parentPackage": "CanonicalRuntime",
+      "doc": "The permitted values for a StatusAxis, plus the shape\n(ordered / unordered / structured) that determines how\nthe values relate to one another.\nFor enumeration shapes, the `enumValues` multi-valued\nattribute holds the permitted value strings. For the\nstructured shape, a tenant-authored spec describes",
+      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 194,
+      "attributes": [
+        {
+          "name": "valueShape",
+          "type": "ValueSpaceShape",
+          "isRedefinition": false
+        },
+        {
+          "name": "enumValues",
+          "type": "String[0..*]",
+          "isRedefinition": false
+        },
+        {
+          "name": "structuredSpec",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Value Space",
+        "shortDescription": "The permitted values for a status axis, plus the shape (ordered, unordered, or structured) that determines how the values relate."
+      },
+      "purposiveDescription": {
+        "description": "The permitted values for a single status axis, and how those values relate to one another. For ordered axes (like a lifecycle), the values progress in a sequence. For unordered axes (like a cancellation reason), the values are a set with no implicit order. The system uses the value space to decide which transitions are permitted and how to display the axis to readers."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "StatusAxis",
+          "strength": "strong",
+          "rationale": "Every ValueSpace exists to describe a StatusAxis. A change to the value space (its shape, its permitted values) requires reassessing the axis it belongs to \u2014 the axis's permitted transitions and authority interpretation may need adjustment."
+        },
+        {
+          "target": "AxisTransition",
+          "strength": "strong",
+          "rationale": "Permitted transitions reference values from the value space. A change to the value space (e.g. removing a value, adding a value, changing the shape from unordered to ordered) directly affects which transitions are well-formed."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "CanonicalRuntime",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A ValueSpace specifies the permitted values and ordering shape of a single status axis. Information content \u2014 a specification depending on the StatusAxis it describes; not the values themselves but the description of what values are permitted."
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Value Space",
+            "shortDescription": "The permitted values for a status axis, plus the shape (ordered, unordered, or structured) that determines how the values relate."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The permitted values for a single status axis, and how those values relate to one another. For ordered axes (like a lifecycle), the values progress in a sequence. For unordered axes (like a cancellation reason), the values are a set with no implicit order. The system uses the value space to decide which transitions are permitted and how to display the axis to readers."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": false,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "StatusAxis",
+            "strength": "strong",
+            "rationale": "Every ValueSpace exists to describe a StatusAxis. A change to the value space (its shape, its permitted values) requires reassessing the axis it belongs to \u2014 the axis's permitted transitions and authority interpretation may need adjustment."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "AxisTransition",
+            "strength": "strong",
+            "rationale": "Permitted transitions reference values from the value space. A change to the value space (e.g. removing a value, adding a value, changing the shape from unordered to ordered) directly affects which transitions are well-formed."
+          }
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A ValueSpace specifies the permitted values and ordering shape of a single status axis. Information content \u2014 a specification depending on the StatusAxis it describes; not the values themselves but the description of what values are permitted."
+      }
+    },
+    {
+      "kind": "part_def",
+      "name": "AxisTransition",
+      "parentPackage": "CanonicalRuntime",
+      "doc": "A permitted value-to-value transition on a single axis.\nDeclared transitions are exhaustive for the axis \u2014 any\n(fromValue, toValue) pair not represented by an\nAxisTransition in the permitted set is a prohibited\ntransition. Attempts at prohibited transitions are\nrejected at write time by the canonica",
+      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 245,
+      "attributes": [
+        {
+          "name": "fromValue",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "toValue",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "transitionLabel",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "requiredAuthority",
+          "type": "AxisAuthority[0..*]",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Axis Transition",
+        "shortDescription": "A permitted value-to-value transition on a status axis, with the authority required to perform it."
+      },
+      "purposiveDescription": {
+        "description": "A permitted move from one value to another on a single status axis. Declared transitions are exhaustive \u2014 any value-to-value pair not represented by an axis transition is a prohibited transition, and the system rejects attempts to make it. Each transition records what authority is required to perform it (which binding class), so the canonical-edge contract can enforce the rule uniformly."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "StatusAxis",
+          "strength": "strong",
+          "rationale": "Every AxisTransition is declared on a specific StatusAxis. A change to a transition (its endpoints, its required authority) requires reassessing the axis whose transition rules it defines \u2014 the axis's runtime behaviour changes when its transitions change."
+        },
+        {
+          "target": "ValueSpace",
+          "strength": "strong",
+          "rationale": "A transition's from-value and to-value must be drawn from the axis's value space. A change to the transition (especially endpoint changes) requires reassessing the value space \u2014 and conversely a change to the value space may invalidate existing transitions."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "CanonicalRuntime",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "An AxisTransition specifies a permitted from-value to-value pair on a single axis, with the authority required to write it. Information content \u2014 a rule, not the act of transitioning. The transitioning itself, when it occurs, is a Process."
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Axis Transition",
+            "shortDescription": "A permitted value-to-value transition on a status axis, with the authority required to perform it."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A permitted move from one value to another on a single status axis. Declared transitions are exhaustive \u2014 any value-to-value pair not represented by an axis transition is a prohibited transition, and the system rejects attempts to make it. Each transition records what authority is required to perform it (which binding class), so the canonical-edge contract can enforce the rule uniformly."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": false,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "StatusAxis",
+            "strength": "strong",
+            "rationale": "Every AxisTransition is declared on a specific StatusAxis. A change to a transition (its endpoints, its required authority) requires reassessing the axis whose transition rules it defines \u2014 the axis's runtime behaviour changes when its transitions change."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ValueSpace",
+            "strength": "strong",
+            "rationale": "A transition's from-value and to-value must be drawn from the axis's value space. A change to the transition (especially endpoint changes) requires reassessing the value space \u2014 and conversely a change to the value space may invalidate existing transitions."
+          }
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An AxisTransition specifies a permitted from-value to-value pair on a single axis, with the authority required to write it. Information content \u2014 a rule, not the act of transitioning. The transitioning itself, when it occurs, is a Process."
+      }
+    },
+    {
+      "kind": "part_def",
+      "name": "StatusAxis",
+      "parentPackage": "CanonicalRuntime",
+      "doc": "B71 \u2014 StatusAxis as a BMM General part def.\nA StatusAxis instance declares WHAT A SINGLE DIMENSION\nOF STATUS LOOKS LIKE: its value space, its permitted\ntransitions, its default, its authority, its scope.\nA canonical runtime type declares N StatusAxis part\nusages (one per dimension of status it carri",
+      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 307,
+      "attributes": [
+        {
+          "name": "axisName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "axisDescription",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "axisScope",
+          "type": "AxisScope",
+          "isRedefinition": false
+        },
+        {
+          "name": "axisAuthority",
+          "type": "AxisAuthority[1..*]",
+          "isRedefinition": false
+        },
+        {
+          "name": "defaultValue",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Status Axis",
+        "shortDescription": "A single named dimension of status on a canonical runtime type \u2014 its values, transitions, default, authority, and scope."
+      },
+      "purposiveDescription": {
+        "description": "A single named dimension of status that a canonical runtime instance carries. A canonical runtime type can declare several status axes \u2014 for example a booking might have a lifecycle axis, a confirmation axis, a payment axis, a cancellation axis. Each axis advances independently, with its own value space, permitted transitions, default value, and authority. The system tracks each axis as a separate triple in the substrate, so axes can be queried and reasoned over individually."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "CanonicalRuntimeType",
+          "strength": "strong",
+          "rationale": "A StatusAxis is declared on a CanonicalRuntimeType \u2014 it has no independent existence. A change to an axis (its value space, its transitions, its authority) requires reassessing the canonical type whose runtime instances carry it."
+        },
+        {
+          "target": "ValueSpace",
+          "strength": "strong",
+          "rationale": "Every StatusAxis has a ValueSpace. A change to the axis (its meaning, its purpose) typically requires reassessing the value space that defines its permitted values."
+        },
+        {
+          "target": "AxisTransition",
+          "strength": "strong",
+          "rationale": "A StatusAxis declares its set of permitted AxisTransitions. A change to the axis (especially to its value space or authority) requires reassessing the transitions \u2014 they may need to be added, removed, or have their required authority adjusted."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "CanonicalRuntime",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "A StatusAxis is a structural information artefact specifying a dimension of runtime status; it is generically dependent on the canonical runtime type that declares it."
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Status Axis",
+            "shortDescription": "A single named dimension of status on a canonical runtime type \u2014 its values, transitions, default, authority, and scope."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A single named dimension of status that a canonical runtime instance carries. A canonical runtime type can declare several status axes \u2014 for example a booking might have a lifecycle axis, a confirmation axis, a payment axis, a cancellation axis. Each axis advances independently, with its own value space, permitted transitions, default value, and authority. The system tracks each axis as a separate triple in the substrate, so axes can be queried and reasoned over individually."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": false,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "CanonicalRuntimeType",
+            "strength": "strong",
+            "rationale": "A StatusAxis is declared on a CanonicalRuntimeType \u2014 it has no independent existence. A change to an axis (its value space, its transitions, its authority) requires reassessing the canonical type whose runtime instances carry it."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "ValueSpace",
+            "strength": "strong",
+            "rationale": "Every StatusAxis has a ValueSpace. A change to the axis (its meaning, its purpose) typically requires reassessing the value space that defines its permitted values."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "AxisTransition",
+            "strength": "strong",
+            "rationale": "A StatusAxis declares its set of permitted AxisTransitions. A change to the axis (especially to its value space or authority) requires reassessing the transitions \u2014 they may need to be added, removed, or have their required authority adjusted."
+          }
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "A StatusAxis is a structural information artefact specifying a dimension of runtime status; it is generically dependent on the canonical runtime type that declares it."
+      }
+    },
+    {
+      "kind": "part",
+      "name": "valueSpace",
+      "parentPackage": "CanonicalRuntime",
+      "doc": "",
+      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 332,
+      "specialises": "ValueSpace"
+    },
+    {
+      "kind": "part",
+      "name": "permittedTransitions",
+      "parentPackage": "CanonicalRuntime",
+      "doc": "",
+      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "unknown",
+      "lineNumber": 333,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part_def",
+      "name": "CanonicalRuntimeType",
+      "parentPackage": "CanonicalRuntime",
+      "doc": "Base part def for every canonical runtime type \u2014 types\nwhose runtime instances live in DBR (business-side\ncontinuant trajectories) or DSR (system-side occurrent\nlog).\nCarries no built-in axis. Tenant-declared axes are added\nby the specialising canonical type. (The platform-provided\nepistemic axis of",
+      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 380,
+      "catalogueTag": {
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Canonical Runtime Type",
+        "shortDescription": "The base type for every canonical runtime type \u2014 the things whose runtime instances live in DBR or DSR."
+      },
+      "purposiveDescription": {
+        "description": "The structural parent for every canonical runtime type \u2014 the things whose runtime instances are persisted in the substrate as model-grounded content. A booking, a clinical encounter, a laundry batch, an order: each is a canonical runtime type, and each runtime instance carries a tuple of status axes describing where it is along each independent dimension of progress. No axis is built in: every axis is declared by the tenant on the canonical type. Whether a record of an instance is real or simulated, and whether it was direct, inferred or predicted, is carried by the platform's record of the write (the platform record module, ADR-011), not by the instance."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "StatusAxis",
+          "strength": "strong",
+          "rationale": "A CanonicalRuntimeType declares the set of StatusAxes its runtime instances carry. A change to the canonical type's structural definition (especially to its declared axes) directly affects every instance \u2014 runtime tuple shape, substrate triple structure, and comprehension all flow from the axis declarations."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "CanonicalRuntime",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "Entity",
+            "midLevelClass": "",
+            "mappingNotes": "CanonicalRuntimeType is the structural parent for types whose runtime instances live in DBR (business-side continuant trajectories) or DSR (system-side occurrent log). Anchored at BFO entity (S514, ADR-011): it defines a shape, not a kind of thing, and its concrete types have different BFO kinds. The BFO classification of a concrete canonical type is carried by its own @BfoType annotation; this parent establishes only the platform-level shape."
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Canonical Runtime Type",
+            "shortDescription": "The base type for every canonical runtime type \u2014 the things whose runtime instances live in DBR or DSR."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "The structural parent for every canonical runtime type \u2014 the things whose runtime instances are persisted in the substrate as model-grounded content. A booking, a clinical encounter, a laundry batch, an order: each is a canonical runtime type, and each runtime instance carries a tuple of status axes describing where it is along each independent dimension of progress. No axis is built in: every axis is declared by the tenant on the canonical type. Whether a record of an instance is real or simulated, and whether it was direct, inferred or predicted, is carried by the platform's record of the write (the platform record module, ADR-011), not by the instance."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": false,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "StatusAxis",
+            "strength": "strong",
+            "rationale": "A CanonicalRuntimeType declares the set of StatusAxes its runtime instances carry. A change to the canonical type's structural definition (especially to its declared axes) directly affects every instance \u2014 runtime tuple shape, substrate triple structure, and comprehension all flow from the axis declarations."
+          }
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "Entity",
+        "midLevelClass": "",
+        "mappingNotes": "CanonicalRuntimeType is the structural parent for types whose runtime instances live in DBR (business-side continuant trajectories) or DSR (system-side occurrent log). Anchored at BFO entity (S514, ADR-011): it defines a shape, not a kind of thing, and its concrete types have different BFO kinds. The BFO classification of a concrete canonical type is carried by its own @BfoType annotation; this parent establishes only the platform-level shape."
+      }
+    },
+    {
       "kind": "part_def",
       "name": "Role",
       "parentPackage": "Organisation",
@@ -24122,8 +25275,8 @@
       "doc": "Marks a pathway step as requiring clinical review\nbefore proceeding. Generates a human-task wait point\nin the orchestration layer.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 48,
+      "metaModelLayer": "unknown",
+      "lineNumber": 76,
       "attributes": [
         {
           "name": "reviewerRole",
@@ -24144,8 +25297,8 @@
       "doc": "Marks a pathway step as requiring patient consent\nbefore proceeding.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 56,
+      "metaModelLayer": "unknown",
+      "lineNumber": 84,
       "attributes": [
         {
           "name": "consentType",
@@ -24161,8 +25314,8 @@
       "doc": "Marks a step that must produce a governance audit\nrecord.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 62,
+      "metaModelLayer": "unknown",
+      "lineNumber": 90,
       "attributes": [
         {
           "name": "auditCategory",
@@ -24178,8 +25331,8 @@
       "doc": "Marks an element as containing or referencing a\ndeterministic logic rule for Tier 1 evaluation.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 68,
+      "metaModelLayer": "unknown",
+      "lineNumber": 96,
       "attributes": [
         {
           "name": "ruleName",
@@ -24195,8 +25348,8 @@
       "doc": "Marks an element as containing or referencing a\nDMN-style decision table for Tier 2 evaluation.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 74,
+      "metaModelLayer": "unknown",
+      "lineNumber": 102,
       "attributes": [
         {
           "name": "tableName",
@@ -24212,8 +25365,8 @@
       "doc": "Marks a constraint as safety-critical: must be\nevaluated and must not be overridden.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 80,
+      "metaModelLayer": "unknown",
+      "lineNumber": 108,
       "attributes": [
         {
           "name": "constraintName",
@@ -24234,8 +25387,8 @@
       "doc": "Maps a SysML part def to an openEHR archetype.\nProvides traceability between the structural model\nand the CDR archetype layer. The archetypeId is the\nfull openEHR archetype identifier (e.g.\n\"openEHR-EHR-OBSERVATION.order_record.v0\").\nThe rmClass identifies the Reference Model entry\nclass (OBSERVATIO",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 89,
+      "metaModelLayer": "unknown",
+      "lineNumber": 117,
       "attributes": [
         {
           "name": "archetypeId",
@@ -24256,8 +25409,8 @@
       "doc": "Maps a SysML element to an openEHR archetype data\nelement (at-code).\nThe nodeId is the at-code within the archetype\n(e.g. \"at0005\"). The rmType is the openEHR data\ntype (e.g. \"DV_CODED_TEXT\", \"DV_TEXT\",\n\"DV_DATE_TIME\", \"DV_QUANTITY\").\nLIMITATION (verified 8 March 2026): Syside does NOT\naccept @ anno",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 112,
+      "metaModelLayer": "unknown",
+      "lineNumber": 140,
       "attributes": [
         {
           "name": "nodeId",
@@ -24278,182 +25431,11 @@
       "doc": "Maps a SysML part def to an openEHR template\n(OPT / operational template).\nTemplates compose archetypes into use-case-specific\ndata sets. Each template corresponds to a composition\ntype committed to the CDR. The templateId matches\nthe template_id used in EHRbase API calls.\nApplied to part defs that ",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 136,
+      "metaModelLayer": "unknown",
+      "lineNumber": 164,
       "attributes": [
         {
           "name": "templateId",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "metadata_def",
-      "name": "CatalogueTag",
-      "parentPackage": "MetadataLibrary",
-      "doc": "Catalogue classification metadata for dynamic\ngrouping and filtering. Applied to any element\nthat should appear in the Component Catalogue.\nEach attribute represents a classification\ndimension. New dimensions are added as new\nattributes when needed.\nbmmConcern: which BMM concern this element belongs",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 158,
-      "attributes": [
-        {
-          "name": "bmmConcern",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "classification",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "metadata_def",
-      "name": "UserFacing",
-      "parentPackage": "MetadataLibrary",
-      "doc": "Human-readable metadata for the comprehension layer.\nApplied to any element that should be comprehensible\nto non-specialist users of the Ontara Console.\nfriendlyName: a short, lay-language name\n  (e.g. \"Pricing Model\" for PricingModel).\nshortDescription: a brief explanation (1-2 sentences)\n  in plai",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 186,
-      "attributes": [
-        {
-          "name": "friendlyName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "shortDescription",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "metadata_def",
-      "name": "PurposiveDescription",
-      "parentPackage": "MetadataLibrary",
-      "doc": "Authored purposive description for the comprehension\nlayer. Explains what this element means for a service\nbusiness and what the system does with it \u2014 the\n\"why should I care?\" and \"what happens when I define\none of these?\" explanation.\nRegister 1 (authored comprehension content). Distinct\nfrom @User",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 206,
-      "attributes": [
-        {
-          "name": "description",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "metadata_def",
-      "name": "Comprehension",
-      "parentPackage": "MetadataLibrary",
-      "doc": "Comprehension traversal schema. Declares which\ncategories of dynamically assembled content the\ncomprehension engine should surface for this\nelement.\nThe annotation is a recipe \u2014 it declares what to\nshow, not what to say. The generator reads these\nflags and discovers structural facts from the live\nmo",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 228,
-      "attributes": [
-        {
-          "name": "surfaceEnumValues",
-          "type": "Boolean",
-          "isRedefinition": false
-        },
-        {
-          "name": "surfaceDomainInstantiations",
-          "type": "Boolean",
-          "isRedefinition": false
-        },
-        {
-          "name": "surfaceRelatedConcepts",
-          "type": "Boolean",
-          "isRedefinition": false
-        },
-        {
-          "name": "surfaceAttributes",
-          "type": "Boolean",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "RelationshipStrength",
-      "parentPackage": "MetadataLibrary",
-      "doc": "Ordinal classification of interaction effect strength\nbetween related elements. Starting point for the\nweighted relationship model (B14).\nDesigned for hybrid evolution: ordinal now, numeric\nweights later, structural derivation baseline with\nhuman overrides (J12 \u2014 experimentation before\nconvention).\n",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 272,
-      "attributes": [
-        {
-          "name": "strong"
-        },
-        {
-          "name": "moderate"
-        },
-        {
-          "name": "weak"
-        },
-        {
-          "name": "contextual"
-        }
-      ]
-    },
-    {
-      "kind": "metadata_def",
-      "name": "WeightedRelationship",
-      "parentPackage": "MetadataLibrary",
-      "doc": "Declares a weighted relationship from the annotated\nelement to a named target element. Each annotation\ndeclares one relationship. Multiple annotations of\nthis metaclass may be applied to a single element\n(verified v3.17, Session 51).\ntarget: name of the related element (String for now;\n  migration t",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 291,
-      "attributes": [
-        {
-          "name": "target",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "strength",
-          "type": "RelationshipStrength",
-          "isRedefinition": false
-        },
-        {
-          "name": "rationale",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "metadata_def",
-      "name": "BfoType",
-      "parentPackage": "MetadataLibrary",
-      "doc": "BFO ontological grounding annotation. Declares the\nBFO 2020 category and mid-level ontology parent for\na BMM or SMM element.\nThis annotation is the input to Stage 2 of the\nOWL mapping pipeline \u2014 the classification step that\ndetermines how each SysML element projects into the\nknowledge graph's domain",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 325,
-      "attributes": [
-        {
-          "name": "bfoClass",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "midLevelClass",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "mappingNotes",
           "type": "String",
           "isRedefinition": false
         }
@@ -24467,7 +25449,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 373,
+      "lineNumber": 190,
       "attributes": [
         {
           "name": "patientAgent"
@@ -24491,7 +25473,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 396,
+      "lineNumber": 213,
       "attributes": [
         {
           "name": "agencyType",
@@ -24517,8 +25499,8 @@
       "doc": "Gender identity as recorded for clinical purposes.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 431,
+      "metaModelLayer": "unknown",
+      "lineNumber": 248,
       "attributes": [
         {
           "name": "male"
@@ -24544,8 +25526,8 @@
       "doc": "Preferred method of contact.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 440,
+      "metaModelLayer": "unknown",
+      "lineNumber": 257,
       "attributes": [
         {
           "name": "email"
@@ -24571,8 +25553,8 @@
       "doc": "Type of clinical appointment.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 449,
+      "metaModelLayer": "unknown",
+      "lineNumber": 266,
       "attributes": [
         {
           "name": "faceToFace"
@@ -24595,8 +25577,8 @@
       "doc": "Direction of a referral or referral pathway.\nExtended Session 81: bidirectional added for\nreferral pathways where both directions operate\n(e.g. GP refers to GSL, GSL refers back to GP).",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 457,
+      "metaModelLayer": "unknown",
+      "lineNumber": 274,
       "attributes": [
         {
           "name": "inbound"
@@ -24617,7 +25599,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 469,
+      "lineNumber": 286,
       "attributes": [
         {
           "name": "regulatory"
@@ -24647,7 +25629,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 485,
+      "lineNumber": 302,
       "attributes": [
         {
           "name": "essential"
@@ -24667,8 +25649,8 @@
       "doc": "Status of a consent record.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 497,
+      "metaModelLayer": "unknown",
+      "lineNumber": 314,
       "attributes": [
         {
           "name": "given"
@@ -24691,8 +25673,8 @@
       "doc": "A postal address.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 505,
+      "metaModelLayer": "unknown",
+      "lineNumber": 322,
       "attributes": [
         {
           "name": "line1",
@@ -24728,8 +25710,8 @@
       "doc": "Contact information for a person or organisation.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 514,
+      "metaModelLayer": "unknown",
+      "lineNumber": 331,
       "attributes": [
         {
           "name": "email",
@@ -24755,8 +25737,8 @@
       "doc": "Result of evaluating a constraint, rule, or goal.\nThree-valued: pass (condition met), fail (condition\nnot met), indeterminate (insufficient data).",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 524,
+      "metaModelLayer": "unknown",
+      "lineNumber": 341,
       "attributes": [
         {
           "name": "pass"
@@ -24776,8 +25758,8 @@
       "doc": "Severity classification for deficits, constraints,\nand audit findings.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 533,
+      "metaModelLayer": "unknown",
+      "lineNumber": 350,
       "attributes": [
         {
           "name": "critical"
@@ -24797,8 +25779,8 @@
       "doc": "Scope at which an evaluation or assessment is\nperformed.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 541,
+      "metaModelLayer": "unknown",
+      "lineNumber": 358,
       "attributes": [
         {
           "name": "patient"
@@ -24824,8 +25806,8 @@
       "doc": "Authoritative data source for input derivation.\nSource-agnostic: same InputDerivation structure\nworks regardless of where data comes from.\nPhase 6B: added accounting for financial actuals\nfrom Xero via Operations::Finance.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 551,
+      "metaModelLayer": "unknown",
+      "lineNumber": 368,
       "attributes": [
         {
           "name": "cdr;"
@@ -24851,8 +25833,8 @@
       "doc": "Domain classification for a deficit.\nPhase 6B: added financial for deficits arising\nfrom financial variance (revenue shortfall, cost\noverrun, margin below forecast). Distinct from\noperational (process state) because financial\ndeficits are about the money flowing through\nprocesses, not the processes ",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 565,
+      "metaModelLayer": "unknown",
+      "lineNumber": 382,
       "attributes": [
         {
           "name": "clinical"
@@ -24878,8 +25860,8 @@
       "doc": "How a deficit can be addressed. Defines the boundary\nbetween deterministic system action and advisory\noutput.\nautomatic: pathway model defines next step, system\n  can trigger it.\nrecommended: specific action identified but requires\n  human decision.\nadvisory: deficit is systemic or compound, system\n",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 581,
+      "metaModelLayer": "unknown",
+      "lineNumber": 398,
       "attributes": [
         {
           "name": "automatic"
@@ -24899,8 +25881,8 @@
       "doc": "Health status of an infrastructure service.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 596,
+      "metaModelLayer": "unknown",
+      "lineNumber": 413,
       "attributes": [
         {
           "name": "healthy"
@@ -24920,8 +25902,8 @@
       "doc": "Categorised hormone level from blood test results.\nUsed in decision tables for regimen selection and\nstability assessment.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 605,
+      "metaModelLayer": "unknown",
+      "lineNumber": 422,
       "attributes": [
         {
           "name": "low"
@@ -24944,8 +25926,8 @@
       "doc": "Patient's preference for hormone therapy type.\nCaptures the direction of therapy as expressed\nby the patient during assessment.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 615,
+      "metaModelLayer": "unknown",
+      "lineNumber": 432,
       "attributes": [
         {
           "name": "oestrogen"
@@ -24965,8 +25947,8 @@
       "doc": "Categorised contraindication status for prescribing\ndecisions. Simplification of the full clinical\nassessment into categories that drive protocol\nselection.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 624,
+      "metaModelLayer": "unknown",
+      "lineNumber": 441,
       "attributes": [
         {
           "name": "noContraindication"
@@ -24992,8 +25974,8 @@
       "doc": "Hormone therapy medications in the prescribing\nprotocol. Each entry represents a specific\npharmaceutical product.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 636,
+      "metaModelLayer": "unknown",
+      "lineNumber": 453,
       "attributes": [
         {
           "name": "estradiolValerate"
@@ -25022,8 +26004,8 @@
       "doc": "Route of medication administration.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 648,
+      "metaModelLayer": "unknown",
+      "lineNumber": 465,
       "attributes": [
         {
           "name": "oral"
@@ -25046,8 +26028,8 @@
       "doc": "Categorised starting dose level. Maps to specific\ndose values per medication in the prescribing\nprotocol. The dose category determines the actual\ndose based on medication-specific tables.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 656,
+      "metaModelLayer": "unknown",
+      "lineNumber": 473,
       "attributes": [
         {
           "name": "low"
@@ -25070,8 +26052,8 @@
       "doc": "Patient-reported satisfaction with treatment\nprogress. Captured during monitoring consultations.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 667,
+      "metaModelLayer": "unknown",
+      "lineNumber": 484,
       "attributes": [
         {
           "name": "satisfied"
@@ -25091,8 +26073,8 @@
       "doc": "Clinical classification of regimen stability.\nOutput of the stabilityAssessment decision table.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 675,
+      "metaModelLayer": "unknown",
+      "lineNumber": 492,
       "attributes": [
         {
           "name": "stable"
@@ -25115,8 +26097,8 @@
       "doc": "Recommended monitoring action based on stability\nassessment. Output of the stabilityAssessment\ndecision table.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 684,
+      "metaModelLayer": "unknown",
+      "lineNumber": 501,
       "attributes": [
         {
           "name": "continueCurrentRegimen"
@@ -25137,115 +26119,13 @@
     },
     {
       "kind": "enum_def",
-      "name": "OutcomeCategory",
-      "parentPackage": "CommonTypes",
-      "doc": "Category of a clinical outcome measure.\nDetermines which outcomes are collected at\neach measurement point and how they are\nreported.",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 697,
-      "attributes": [
-        {
-          "name": "clinical"
-        },
-        {
-          "name": "adherence"
-        },
-        {
-          "name": "safety"
-        },
-        {
-          "name": "patientReported"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "OutcomeStatus",
-      "parentPackage": "CommonTypes",
-      "doc": "Status of an individual outcome measurement\nagainst its defined target.\npending: measurement due but not yet taken\nmeasured: data collected, not yet evaluated\ntargetMet: evaluated and within target\ntargetNotMet: evaluated and outside target\nindeterminate: data insufficient for evaluation",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 708,
-      "attributes": [
-        {
-          "name": "pending"
-        },
-        {
-          "name": "measured"
-        },
-        {
-          "name": "targetMet"
-        },
-        {
-          "name": "targetNotMet"
-        },
-        {
-          "name": "indeterminate"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "MeasurementFrequency",
-      "parentPackage": "CommonTypes",
-      "doc": "How often an outcome is measured. Determines\nwhich measurement points include this outcome.",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 723,
-      "attributes": [
-        {
-          "name": "baseline"
-        },
-        {
-          "name": "threeMonthly"
-        },
-        {
-          "name": "sixMonthly"
-        },
-        {
-          "name": "annually"
-        },
-        {
-          "name": "adHoc"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "ComparisonOperator",
-      "parentPackage": "CommonTypes",
-      "doc": "How a target value is compared against an actual\nmeasurement. Used in OutcomeDefinition to specify\nthe target condition.\nwithin: actual falls within a range (uses\n  targetValue and targetUpperBound)\ngreaterThan: actual exceeds a threshold\nlessThan: actual is below a threshold\nequalTo: actual matches",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 733,
-      "attributes": [
-        {
-          "name": "within"
-        },
-        {
-          "name": "greaterThan"
-        },
-        {
-          "name": "lessThan"
-        },
-        {
-          "name": "equalTo"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
       "name": "PersistenceLayer",
       "parentPackage": "CommonTypes",
       "doc": "The persistence technology layer where a domain\nconcept is stored. Each layer has distinct\ncharacteristics:\n- clinicalDataRepository: archetype-validated,\n  terminology-bound, versioned (openEHR)\n- businessDatabase: relational CRUD, transactional\n  integrity (PostgreSQL)\n- processEngine: durable exe",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 756,
+      "lineNumber": 521,
       "attributes": [
         {
           "name": "clinicalDataRepository"
@@ -25269,7 +26149,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 776,
+      "lineNumber": 541,
       "attributes": [
         {
           "name": "clinicalSignificance"
@@ -25314,7 +26194,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 796,
+      "lineNumber": 561,
       "attributes": [
         {
           "name": "domainConcept",
@@ -25340,25 +26220,79 @@
     },
     {
       "kind": "enum_def",
-      "name": "RegulatoryTier",
+      "name": "RegulatoryShape",
       "parentPackage": "CommonTypes",
-      "doc": "Four-tier classification of regulatory environment.\nDetermines which governance frameworks are relevant\nduring governance activation. Ordered from least to\nmost regulated.\nBusiness meta model concept. Domain identity (B15).\nSession 59, confirmed Session 142.",
+      "doc": "Five-value kind-based classification of the principal\ngovernance frame applicable to a service business.\nNames what governs the business, not how much.\nMutually exclusive and exhaustive for the principal\nregulatory frame; nuance carried on orthogonal\nsupporting attributes (authorisationRequiredToTra",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 824,
+      "lineNumber": 593,
       "attributes": [
         {
           "name": "generallyGoverned"
         },
         {
-          "name": "lightlyRegulated"
+          "name": "locallyLicensed"
         },
         {
-          "name": "partiallyRegulated"
+          "name": "professionalBodyRegulated"
+        },
+        {
+          "name": "statutoryProfessionRegulated"
         },
         {
           "name": "sectorRegulated"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "ProfessionalBody",
+      "parentPackage": "CommonTypes",
+      "doc": "Closed enum of recognised professional bodies whose\nregistration or membership constitutes part of a\ntenant's regulatory shape. Used on the\nDomainIdentity.professionalRegistrations multi-valued\nattribute. Each entry carries an implicit category\n(statutory or membership-based) \u2014 see the value\ndescrip",
+      "sourceFile": "model/foundation.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 650,
+      "attributes": [
+        {
+          "name": "gmc"
+        },
+        {
+          "name": "nmc"
+        },
+        {
+          "name": "hcpc"
+        },
+        {
+          "name": "gphc"
+        },
+        {
+          "name": "gdc"
+        },
+        {
+          "name": "gosc"
+        },
+        {
+          "name": "gcc"
+        },
+        {
+          "name": "goc"
+        },
+        {
+          "name": "bacp"
+        },
+        {
+          "name": "ukcp"
+        },
+        {
+          "name": "icf"
+        },
+        {
+          "name": "bps"
+        },
+        {
+          "name": "bcsh"
         }
       ]
     },
@@ -25370,7 +26304,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 838,
+      "lineNumber": 703,
       "attributes": [
         {
           "name": "generalOnly"
@@ -25391,7 +26325,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 853,
+      "lineNumber": 718,
       "attributes": [
         {
           "name": "referenceValidation"
@@ -25415,7 +26349,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 875,
+      "lineNumber": 740,
       "attributes": [
         {
           "name": "england"
@@ -25442,7 +26376,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 891,
+      "lineNumber": 756,
       "attributes": [
         {
           "name": "personalCare"
@@ -25493,7 +26427,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 917,
+      "lineNumber": 782,
       "attributes": [
         {
           "name": "registeredIndividual"
@@ -25517,11 +26451,11 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 960,
+      "lineNumber": 825,
       "attributes": [
         {
-          "name": "regulatoryTier",
-          "type": "RegulatoryTier",
+          "name": "regulatoryShape",
+          "type": "RegulatoryShape",
           "isRedefinition": false
         },
         {
@@ -25545,8 +26479,18 @@
           "isRedefinition": false
         },
         {
+          "name": "professionalRegistrations",
+          "type": "ProfessionalBody[0..*]",
+          "isRedefinition": false
+        },
+        {
           "name": "organisationalForm",
           "type": "OrganisationalForm",
+          "isRedefinition": false
+        },
+        {
+          "name": "authorisationRequiredToTrade",
+          "type": "Boolean",
           "isRedefinition": false
         },
         {
@@ -25574,7 +26518,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 989,
+      "lineNumber": 864,
       "attributes": [
         {
           "name": "canonicalKey",
@@ -25617,16 +26561,16 @@
       "kind": "part",
       "name": "cafeIdentity",
       "parentPackage": "DomainRegistry",
-      "doc": "Reference validation domain \u2014 the original demonstrator\nagainst which all meta model patterns were first\ndeveloped. Immediate retail, walk-in, 2-minute cycle.\nGenerally governed (no sector-specific regulation).",
+      "doc": "Reference validation domain \u2014 the original demonstrator\nagainst which all meta model patterns were first\ndeveloped. Immediate retail, walk-in, 2-minute cycle.\nGenerally governed (no sector-specific regulation,\nno licensing regime, no role-binding professional\nbody). Subject only to general business ",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 1020,
+      "lineNumber": 895,
       "specialises": "DomainIdentity",
       "attributes": [
         {
-          "name": "regulatoryTier",
-          "value": "RegulatoryTier::generallyGoverned",
+          "name": "regulatoryShape",
+          "value": "RegulatoryShape::generallyGoverned",
           "isRedefinition": true
         },
         {
@@ -25650,6 +26594,11 @@
           "isRedefinition": true
         },
         {
+          "name": "authorisationRequiredToTrade",
+          "value": "false",
+          "isRedefinition": true
+        },
+        {
           "name": "description",
           "value": "Reference validation domain \u2014 original demonstrator. Immediate retail service with walk-in customers and 2-minute fulfilment cycle.",
           "isRedefinition": true
@@ -25669,7 +26618,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 1036,
+      "lineNumber": 914,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -25708,16 +26657,16 @@
       "kind": "part",
       "name": "sudsIdentity",
       "parentPackage": "DomainRegistry",
-      "doc": "Cross-domain validation domain \u2014 batch processing\nlaundry service. Validates meta model generality\nbeyond immediate retail. Weight/type pricing,\nCOSHH governance chain.",
+      "doc": "Cross-domain validation domain \u2014 batch processing\nlaundry service. Validates meta model generality\nbeyond immediate retail. Weight/type pricing,\nCOSHH governance chain. Locally licensed (subject to\nCOSHH and other operator-controlled statutory duties\nbeyond general business law; no sector regulator)",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 1048,
+      "lineNumber": 926,
       "specialises": "DomainIdentity",
       "attributes": [
         {
-          "name": "regulatoryTier",
-          "value": "RegulatoryTier::lightlyRegulated",
+          "name": "regulatoryShape",
+          "value": "RegulatoryShape::locallyLicensed",
           "isRedefinition": true
         },
         {
@@ -25741,6 +26690,11 @@
           "isRedefinition": true
         },
         {
+          "name": "authorisationRequiredToTrade",
+          "value": "false",
+          "isRedefinition": true
+        },
+        {
           "name": "description",
           "value": "Cross-domain validation domain \u2014 batch processing laundry service. Weight/type pricing, COSHH governance chain.",
           "isRedefinition": true
@@ -25760,7 +26714,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 1064,
+      "lineNumber": 945,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -25799,16 +26753,16 @@
       "kind": "part",
       "name": "pawsIdentity",
       "parentPackage": "DomainRegistry",
-      "doc": "Pedagogical anchoring and cross-domain validation\ndomain \u2014 appointment-based dog grooming service.\nDual purpose (S142-D6): simple enough to introduce\nconcepts, different enough to validate generalisation.\nBreed/size surcharges.",
+      "doc": "Pedagogical anchoring and cross-domain validation\ndomain \u2014 appointment-based dog grooming service.\nDual purpose (S142-D6): simple enough to introduce\nconcepts, different enough to validate generalisation.\nBreed/size surcharges. Locally licensed (Animal\nWelfare Act duties; some local authorities requ",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 1076,
+      "lineNumber": 957,
       "specialises": "DomainIdentity",
       "attributes": [
         {
-          "name": "regulatoryTier",
-          "value": "RegulatoryTier::lightlyRegulated",
+          "name": "regulatoryShape",
+          "value": "RegulatoryShape::locallyLicensed",
           "isRedefinition": true
         },
         {
@@ -25832,6 +26786,11 @@
           "isRedefinition": true
         },
         {
+          "name": "authorisationRequiredToTrade",
+          "value": "false",
+          "isRedefinition": true
+        },
+        {
           "name": "description",
           "value": "Pedagogical anchoring and cross-domain validation domain \u2014 appointment-based dog grooming. Breed/size surcharges.",
           "isRedefinition": true
@@ -25851,7 +26810,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 1093,
+      "lineNumber": 977,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -25890,16 +26849,16 @@
       "kind": "part",
       "name": "gslIdentity",
       "parentPackage": "DomainRegistry",
-      "doc": "Production domain \u2014 GenderSense Limited, a private\ngender-affirming healthcare service. The primary\nmotivating use case and first production tenant.\nSector-regulated (CQC). Under A13, GSL is the most\nimportant tenant but still a tenant \u2014 not structurally\nprivileged over demonstrator domains.",
+      "doc": "Production domain \u2014 GenderSense Limited, a private\ngender-affirming healthcare service. The primary\nmotivating use case and first production tenant.\nSector-regulated (CQC). Practitioners hold statutory\nprofessional registrations (GMC, NMC). Authorisation\nrequired to trade (CQC registration is a prec",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 1105,
+      "lineNumber": 989,
       "specialises": "DomainIdentity",
       "attributes": [
         {
-          "name": "regulatoryTier",
-          "value": "RegulatoryTier::sectorRegulated",
+          "name": "regulatoryShape",
+          "value": "RegulatoryShape::sectorRegulated",
           "isRedefinition": true
         },
         {
@@ -25923,8 +26882,18 @@
           "isRedefinition": true
         },
         {
+          "name": "professionalRegistrations",
+          "value": "(ProfessionalBody::gmc, ProfessionalBody::nmc)",
+          "isRedefinition": true
+        },
+        {
           "name": "organisationalForm",
           "value": "OrganisationalForm::registeredIndividual",
+          "isRedefinition": true
+        },
+        {
+          "name": "authorisationRequiredToTrade",
+          "value": "true",
           "isRedefinition": true
         },
         {
@@ -25947,7 +26916,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 1124,
+      "lineNumber": 1013,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -28961,6 +29930,108 @@
       ]
     },
     {
+      "kind": "enum_def",
+      "name": "OutcomeCategory",
+      "parentPackage": "OutcomeFramework",
+      "doc": "Category of a clinical outcome measure.\nDetermines which outcomes are collected at\neach measurement point and how they are\nreported.",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 1819,
+      "attributes": [
+        {
+          "name": "clinical"
+        },
+        {
+          "name": "adherence"
+        },
+        {
+          "name": "safety"
+        },
+        {
+          "name": "patientReported"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "OutcomeStatus",
+      "parentPackage": "OutcomeFramework",
+      "doc": "Status of an individual outcome measurement\nagainst its defined target.\npending: measurement due but not yet taken\nmeasured: data collected, not yet evaluated\ntargetMet: evaluated and within target\ntargetNotMet: evaluated and outside target\nindeterminate: data insufficient for evaluation",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 1830,
+      "attributes": [
+        {
+          "name": "pending"
+        },
+        {
+          "name": "measured"
+        },
+        {
+          "name": "targetMet"
+        },
+        {
+          "name": "targetNotMet"
+        },
+        {
+          "name": "indeterminate"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "MeasurementFrequency",
+      "parentPackage": "OutcomeFramework",
+      "doc": "How often an outcome is measured. Determines\nwhich measurement points include this outcome.",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 1845,
+      "attributes": [
+        {
+          "name": "baseline"
+        },
+        {
+          "name": "threeMonthly"
+        },
+        {
+          "name": "sixMonthly"
+        },
+        {
+          "name": "annually"
+        },
+        {
+          "name": "adHoc"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "ComparisonOperator",
+      "parentPackage": "OutcomeFramework",
+      "doc": "How a target value is compared against an actual\nmeasurement. Used in OutcomeDefinition to specify\nthe target condition.\nwithin: actual falls within a range (uses\n  targetValue and targetUpperBound)\ngreaterThan: actual exceeds a threshold\nlessThan: actual is below a threshold\nequalTo: actual matches",
+      "sourceFile": "model/knowledge.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 1855,
+      "attributes": [
+        {
+          "name": "within"
+        },
+        {
+          "name": "greaterThan"
+        },
+        {
+          "name": "lessThan"
+        },
+        {
+          "name": "equalTo"
+        }
+      ]
+    },
+    {
       "kind": "part_def",
       "name": "OutcomeDefinition",
       "parentPackage": "OutcomeFramework",
@@ -28968,7 +30039,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1816,
+      "lineNumber": 1874,
       "attributes": [
         {
           "name": "outcomeName",
@@ -29030,7 +30101,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1847,
+      "lineNumber": 1905,
       "attributes": [
         {
           "name": "pointName",
@@ -29067,7 +30138,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1865,
+      "lineNumber": 1923,
       "attributes": [
         {
           "name": "scheduleName",
@@ -29094,7 +30165,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1878,
+      "lineNumber": 1936,
       "specialises": "MeasurementPoint"
     },
     {
@@ -29105,7 +30176,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1881,
+      "lineNumber": 1939,
       "attributes": [
         {
           "name": "outcomeRef",
@@ -29157,7 +30228,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1916,
+      "lineNumber": 1974,
       "attributes": [
         {
           "name": "feedbackId",
@@ -29214,7 +30285,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1950,
+      "lineNumber": 2008,
       "specialises": "OutcomeDefinition",
       "attributes": [
         {
@@ -29277,7 +30348,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1970,
+      "lineNumber": 2028,
       "specialises": "OutcomeDefinition",
       "attributes": [
         {
@@ -29340,7 +30411,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1989,
+      "lineNumber": 2047,
       "specialises": "OutcomeDefinition",
       "attributes": [
         {
@@ -29403,7 +30474,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2008,
+      "lineNumber": 2066,
       "specialises": "OutcomeDefinition",
       "attributes": [
         {
@@ -29466,7 +30537,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2028,
+      "lineNumber": 2086,
       "specialises": "OutcomeDefinition",
       "attributes": [
         {
@@ -29529,7 +30600,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2047,
+      "lineNumber": 2105,
       "specialises": "OutcomeDefinition",
       "attributes": [
         {
@@ -29592,7 +30663,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2064,
+      "lineNumber": 2122,
       "specialises": "OutcomeDefinition",
       "attributes": [
         {
@@ -29655,7 +30726,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2082,
+      "lineNumber": 2140,
       "specialises": "OutcomeDefinition",
       "attributes": [
         {
@@ -29718,7 +30789,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2100,
+      "lineNumber": 2158,
       "specialises": "OutcomeDefinition",
       "attributes": [
         {
@@ -29781,7 +30852,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2116,
+      "lineNumber": 2174,
       "specialises": "OutcomeDefinition",
       "attributes": [
         {
@@ -29844,7 +30915,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2137,
+      "lineNumber": 2195,
       "specialises": "MeasurementPoint",
       "attributes": [
         {
@@ -29882,7 +30953,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2146,
+      "lineNumber": 2204,
       "specialises": "MeasurementPoint",
       "attributes": [
         {
@@ -29920,7 +30991,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2156,
+      "lineNumber": 2214,
       "specialises": "MeasurementPoint",
       "attributes": [
         {
@@ -29958,7 +31029,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2167,
+      "lineNumber": 2225,
       "specialises": "MeasurementPoint",
       "attributes": [
         {
@@ -29996,7 +31067,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2177,
+      "lineNumber": 2235,
       "specialises": "MeasurementPoint",
       "attributes": [
         {
@@ -30034,7 +31105,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2187,
+      "lineNumber": 2245,
       "specialises": "MeasurementSchedule",
       "attributes": [
         {
@@ -30062,7 +31133,7 @@
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 2275,
+      "lineNumber": 2333,
       "attributes": [
         {
           "name": "contractName",
@@ -31275,7 +32346,7 @@
         },
         {
           "name": "relatedElements",
-          "value": "Foundation::GenerationPipeline",
+          "value": "scripts/ (the generators",
           "isRedefinition": true
         },
         {
@@ -31328,7 +32399,7 @@
         },
         {
           "name": "relatedElements",
-          "value": "ServiceDelivery::ClinicalPathways, Foundation::MetadataLibrary::TemporalWorkflow",
+          "value": "ServiceDelivery::ClinicalPathways, TemporalMetadata::TemporalWorkflow",
           "isRedefinition": true
         },
         {
@@ -31540,7 +32611,7 @@
         },
         {
           "name": "relatedElements",
-          "value": "Foundation::MetadataLibrary, Foundation::GenerationPipeline",
+          "value": "ProjectionMetadata (formerly Foundation::MetadataLibrary",
           "isRedefinition": true
         },
         {
@@ -33950,6 +35021,177 @@
         },
         {
           "name": "accountType",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "metadata_def",
+      "name": "CatalogueTag",
+      "parentPackage": "ProjectionMetadata",
+      "doc": "Catalogue classification metadata for dynamic\ngrouping and filtering. Applied to any element\nthat should appear in the Component Catalogue.\nEach attribute represents a classification\ndimension. New dimensions are added as new\nattributes when needed.\nbmmConcern: which BMM concern this element belongs",
+      "sourceFile": "model/projection-metadata.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 41,
+      "attributes": [
+        {
+          "name": "bmmConcern",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "classification",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "metadata_def",
+      "name": "UserFacing",
+      "parentPackage": "ProjectionMetadata",
+      "doc": "Human-readable metadata for the comprehension layer.\nApplied to any element that should be comprehensible\nto non-specialist users of the Ontara Console.\nfriendlyName: a short, lay-language name\n  (e.g. \"Pricing Model\" for PricingModel).\nshortDescription: a brief explanation (1-2 sentences)\n  in plai",
+      "sourceFile": "model/projection-metadata.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 69,
+      "attributes": [
+        {
+          "name": "friendlyName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "shortDescription",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "metadata_def",
+      "name": "PurposiveDescription",
+      "parentPackage": "ProjectionMetadata",
+      "doc": "Authored purposive description for the comprehension\nlayer. Explains what this element means for a service\nbusiness and what the system does with it \u2014 the\n\"why should I care?\" and \"what happens when I define\none of these?\" explanation.\nRegister 1 (authored comprehension content). Distinct\nfrom @User",
+      "sourceFile": "model/projection-metadata.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 89,
+      "attributes": [
+        {
+          "name": "description",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "metadata_def",
+      "name": "Comprehension",
+      "parentPackage": "ProjectionMetadata",
+      "doc": "Comprehension traversal schema. Declares which\ncategories of dynamically assembled content the\ncomprehension engine should surface for this\nelement.\nThe annotation is a recipe \u2014 it declares what to\nshow, not what to say. The generator reads these\nflags and discovers structural facts from the live\nmo",
+      "sourceFile": "model/projection-metadata.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 111,
+      "attributes": [
+        {
+          "name": "surfaceEnumValues",
+          "type": "Boolean",
+          "isRedefinition": false
+        },
+        {
+          "name": "surfaceDomainInstantiations",
+          "type": "Boolean",
+          "isRedefinition": false
+        },
+        {
+          "name": "surfaceRelatedConcepts",
+          "type": "Boolean",
+          "isRedefinition": false
+        },
+        {
+          "name": "surfaceAttributes",
+          "type": "Boolean",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "RelationshipStrength",
+      "parentPackage": "ProjectionMetadata",
+      "doc": "Ordinal classification of interaction effect strength\nbetween related elements. Starting point for the\nweighted relationship model (B14).\nDesigned for hybrid evolution: ordinal now, numeric\nweights later, structural derivation baseline with\nhuman overrides (J12 \u2014 experimentation before\nconvention).\n",
+      "sourceFile": "model/projection-metadata.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 155,
+      "attributes": [
+        {
+          "name": "strong"
+        },
+        {
+          "name": "moderate"
+        },
+        {
+          "name": "weak"
+        },
+        {
+          "name": "contextual"
+        }
+      ]
+    },
+    {
+      "kind": "metadata_def",
+      "name": "WeightedRelationship",
+      "parentPackage": "ProjectionMetadata",
+      "doc": "Declares a weighted relationship from the annotated\nelement to a named target element. Each annotation\ndeclares one relationship. Multiple annotations of\nthis metaclass may be applied to a single element\n(verified v3.17, Session 51).\ntarget: name of the related element (String for now;\n  migration t",
+      "sourceFile": "model/projection-metadata.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 174,
+      "attributes": [
+        {
+          "name": "target",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "strength",
+          "type": "RelationshipStrength",
+          "isRedefinition": false
+        },
+        {
+          "name": "rationale",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "metadata_def",
+      "name": "BfoType",
+      "parentPackage": "ProjectionMetadata",
+      "doc": "BFO ontological grounding annotation. Declares the\nBFO 2020 category and mid-level ontology parent for\na BMM or SMM element.\nThis annotation is the input to Stage 2 of the\nOWL mapping pipeline \u2014 the classification step that\ndetermines how each SysML element projects into the\nknowledge graph's domain",
+      "sourceFile": "model/projection-metadata.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 208,
+      "attributes": [
+        {
+          "name": "bfoClass",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "midLevelClass",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "mappingNotes",
           "type": "String",
           "isRedefinition": false
         }
@@ -43174,6 +44416,226 @@
           "isRedefinition": true
         }
       ]
+    },
+    {
+      "kind": "part_def",
+      "name": "Booking",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "Paws Booking canonical runtime type.\nA Booking represents a scheduled grooming appointment \u2014\nits existence begins when the owner books (online or\nwalk-in) and ends when the engagement closes post-\ngrooming. The runtime instance carries a four-axis\nstatus tuple at all times:\n- lifecycle (ordered): sc",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 862,
+      "specialises": "CanonicalRuntimeType"
+    },
+    {
+      "kind": "part",
+      "name": "lifecycleAxis",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 890,
+      "specialises": "StatusAxis"
+    },
+    {
+      "kind": "part",
+      "name": "scheduledToCheckedIn",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 903,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "checkedInToInProgress",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 910,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "inProgressToReady",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 917,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "readyToCollected",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 924,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "collectedToClosed",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 931,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "confirmationAxis",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 941,
+      "specialises": "StatusAxis"
+    },
+    {
+      "kind": "part",
+      "name": "unconfirmedToAwaitingReply",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 954,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "awaitingReplyToConfirmed",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 961,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "awaitingReplyToLapsed",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 968,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "paymentAxis",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 978,
+      "specialises": "StatusAxis"
+    },
+    {
+      "kind": "part",
+      "name": "unpaidToDepositHeld",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 992,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "depositHeldToPaidInFull",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 999,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "depositHeldToPartiallyRefunded",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 1006,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "depositHeldToFullyRefunded",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 1013,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "cancellationAxis",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 1023,
+      "specialises": "StatusAxis"
+    },
+    {
+      "kind": "part",
+      "name": "activeToCancelledByOwner",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 1036,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "activeToCancelledByTenant",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 1043,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "activeToNoShow",
+      "parentPackage": "PawsCanonicalRuntime",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "unknown",
+      "lineNumber": 1050,
+      "specialises": "AxisTransition"
     }
   ]
 }

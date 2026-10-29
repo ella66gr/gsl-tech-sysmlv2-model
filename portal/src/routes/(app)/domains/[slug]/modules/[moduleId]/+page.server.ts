@@ -9,7 +9,7 @@ import {
     recordTransition,
     getTransitionsForInstance,
     duplicateInstance,
-    updateEpistemicCharacter
+    updateRealityContext
 } from '$lib/server/db/modules';
 import {
     validateOperationalTransition,
@@ -17,7 +17,7 @@ import {
 } from '$lib/modules/lifecycle';
 import { checkActivationGovernance } from '$lib/server/governance/index.js';
 import { getComparisonResults } from '$lib/server/simulation/metrics.js';
-import type { OperationalState, EpistemicCharacter } from '$lib/types';
+import type { OperationalState, RealityContext } from '$lib/types';
 
 export const load: PageServerLoad = async ({ params, parent }) => {
     const { domain } = await parent();
@@ -153,15 +153,15 @@ export const actions: Actions = {
             return fail(404, { error: 'Module not found.' });
         }
 
-        if (instance.epistemicCharacter !== 'production') {
+        if (instance.realityContext !== 'real') {
             return fail(400, { error: 'Only production modules can be demoted.' });
         }
 
-        updateEpistemicCharacter(instance.id, 'hypothesis');
+        updateRealityContext(instance.id, 'hypothesis');
         recordTransition(
             instance.id,
-            'epistemic',
-            'production',
+            'reality_context',
+            'real',
             'hypothesis',
             locals.user!.id,
             'Demoted from production'
@@ -170,7 +170,7 @@ export const actions: Actions = {
         return { demoteSuccess: true };
     },
 
-    setEpistemic: async ({ request, params }) => {
+    setRealityContext: async ({ request, params }) => {
         const domain = getDomainBySlug(params.slug);
         if (!domain) return fail(404, { error: 'Domain not found.' });
 
@@ -180,16 +180,16 @@ export const actions: Actions = {
         }
 
         if (instance.operationalState !== 'draft') {
-            return fail(400, { error: 'Epistemic character can only be changed in draft state.' });
+            return fail(400, { error: 'Reality context can only be changed in draft state.' });
         }
 
         const data = await request.formData();
-        const character = data.get('epistemicCharacter') as EpistemicCharacter;
-        if (!['production', 'hypothesis', 'projection'].includes(character)) {
-            return fail(400, { error: 'Invalid epistemic character.' });
+        const character = data.get('realityContext') as RealityContext;
+        if (!['real', 'hypothesis', 'simulation'].includes(character)) {
+            return fail(400, { error: 'Invalid reality context.' });
         }
 
-        updateEpistemicCharacter(instance.id, character);
+        updateRealityContext(instance.id, character);
         return {};
     }
 };

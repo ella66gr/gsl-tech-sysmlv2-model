@@ -27,14 +27,14 @@ export function evaluatePromotionReadiness(
     const prerequisites: PromotionPrerequisite[] = [];
 
     // P1: Not already production
-    const isNonProduction = instance.epistemicCharacter !== 'production';
+    const isNonProduction = instance.realityContext !== 'real';
     prerequisites.push({
         id: 'P1',
         label: 'Module is not already in production',
         passed: isNonProduction,
         blocking: true,
         explanation: isNonProduction
-            ? `Current epistemic character: ${instance.epistemicCharacter}.`
+            ? `Current reality context: ${instance.realityContext}.`
             : 'This module is already in production.'
     });
 
@@ -79,7 +79,7 @@ export function evaluatePromotionReadiness(
         m.id !== instance.id &&
         m.installationState === 'installed' &&
         m.operationalState === 'active' &&
-        m.epistemicCharacter !== 'production' &&
+        m.realityContext !== 'real' &&
         m.definition.bmmConcerns.some(c => instance.definition.bmmConcerns.includes(c))
     );
 

@@ -808,7 +808,9 @@ package PawsGovernance {
 // Session 255 — First tenant declaration of W-094 (multi-axis status
 // primitive). Source specification: ontara-model-multi-axis-status-
 // primitive-2026-04-22 (S253). Canonical worked example — Paws Booking
-// with five axes (four tenant-declared + platform-inherited epistemic).
+// with four tenant-declared axes. (Until S514 it was described as five,
+// with a platform-inherited epistemic axis; that axis was retired by
+// ADR-011. Mode and method now sit on the platform's record of each write.)
 //
 // Stratum-and-side locus: Configured-Model stratum, business side
 // (tenant's DBM — Domain Business Model for Paws). Per the strengthened
@@ -817,17 +819,17 @@ package PawsGovernance {
 // Scope of this package:
 //   - Booking: first canonical runtime type for Paws, specialising
 //     CanonicalRuntime::CanonicalRuntimeType. Declares four tenant axes
-//     (lifecycle, confirmation, payment, cancellation). Inherits the
-//     platform-provided epistemicAxis.
+//     (lifecycle, confirmation, payment, cancellation). No axis is
+//     inherited from the platform (S514, ADR-011).
 //
 // Out of scope for this session:
-//   - Pet canonical type (S253 §8.2 — platform epistemic axis only at v1).
+//   - Pet canonical type (S253 §8.2 — no tenant axes at v1).
 //   - Cross-axis consequence rules (S253 §6) — cancellation-policy
 //     evaluator architecture resolved, implementation deferred.
 //   - Further Paws canonical types (Appointment, PaymentRecord, etc.).
 //   - Tenant BMM-concern-structured content beyond axis declarations.
 //
-// Per S253 §8.1 — five-axis Booking is the driving worked example
+// Per S253 §8.1 — the (now four-axis) Booking is the driving worked example
 // for W-094 first implementation.
 //
 // =========================================================================
@@ -844,9 +846,9 @@ package PawsCanonicalRuntime {
          * vocabulary. The StatusAxis part def and its supporting types
          * live in CanonicalRuntime (BMM General, Metamodel stratum).
          *
-         * Five-axis Booking per S253 §8.1: lifecycle, confirmation,
-         * payment, cancellation, epistemic (inherited from
-         * CanonicalRuntimeType).
+         * Four-axis Booking (S253 §8.1 as amended by ADR-011, S514):
+         * lifecycle, confirmation, payment, cancellation. The record
+         * of each write carries mode and method beside the tuple.
          *
          * Cross-axis rules (cancellation → payment refund, lifecycle →
          * payment on-check-in hold, confirmation preconditions on
@@ -854,7 +856,7 @@ package PawsCanonicalRuntime {
          * in this first implementation pass. */
 
     // =====================================================================
-    // BOOKING — Five-axis canonical runtime type (S253 §8.1)
+    // BOOKING — Four-axis canonical runtime type (S253 §8.1; ADR-011)
     // =====================================================================
 
     part def Booking :> CanonicalRuntimeType {
@@ -863,7 +865,7 @@ package PawsCanonicalRuntime {
              * A Booking represents a scheduled grooming appointment —
              * its existence begins when the owner books (online or
              * walk-in) and ends when the engagement closes post-
-             * grooming. The runtime instance carries a five-axis
+             * grooming. The runtime instance carries a four-axis
              * status tuple at all times:
              *
              * - lifecycle (ordered): scheduled → checked-in →
@@ -874,9 +876,11 @@ package PawsCanonicalRuntime {
              *     refund states
              * - cancellation (unordered): active / cancelled-by-owner
              *     / cancelled-by-tenant / no-show
-             * - epistemic (platform-inherited): real / inferred /
-             *     expected / predicted / hypothetical / simulated /
-             *     retrospectively-recorded
+             *
+             * No epistemic axis (retired S514, ADR-011). Whether a
+             * record of the booking is real or simulated, and whether
+             * it was direct, inferred or predicted, is carried by the
+             * platform's record of the write, not by the booking.
              *
              * Source: S253 §8.1. Configured-model content (tenant's
              * DBM). */

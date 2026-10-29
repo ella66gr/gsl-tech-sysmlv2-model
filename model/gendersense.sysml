@@ -6,6 +6,7 @@ package GenderSense {
     private import Platform::*;
     private import Operations::*;
     private import Foundation::*;
+    private import ProjectionMetadata::*;
     private import BusinessModel::*;
     private import BusinessScenarios::*;
     private import BusinessStrategy::*;
@@ -32,7 +33,8 @@ package GenderSense {
          *   service-delivery.sysml     — PatientJourney, ClinicalPathways, Consent, Coaching, Governance, Entities
          *   platform.sysml             — Portal, Booking, EHR, Forms, Messaging, Video, Labs, Prescribing, Payments, Docs, Identity, Orchestration, Integration
          *   operations.sysml           — Finance, People, Marketing, CRM, Reporting, EstatesAndFacilities
-         *   foundation.sysml           — MetadataLibrary, CommonTypes, StatePatterns, GenerationPipeline
+         *   foundation.sysml           — Residual: MetadataLibrary (clinical, governance, openEHR, agency annotations), CommonTypes, DomainRegistry, StatePatterns. Being dissolved by meaning (ADR-011 §4.7, S514)
+         *   projection-metadata.sysml  — ProjectionMetadata: the generators' annotation schema (formerly Foundation::MetadataLibrary)
          *   business-model.sysml       — ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning
          *   business-scenarios.sysml   — ScenarioDefinitions, ProjectionParameters, Formulas, Outputs, Comparisons, Steering
          *   business-strategy.sysml    — StrategicObjectives, BusinessModelVariants, PivotScenarios

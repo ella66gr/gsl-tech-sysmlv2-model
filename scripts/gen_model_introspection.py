@@ -101,9 +101,14 @@ BMM_PACKAGES = {
 }
 
 # Packages known to belong to the system meta model
+# S514 (OP-125, ADR-011 §4.7): `Foundation` and its sub-packages are no
+# longer classed as SMM. The package is being dissolved by meaning; what
+# remains in it has not yet been allocated and is classed "unknown" until
+# it moves. `ProjectionMetadata` (the generators' annotation schema, formerly
+# Foundation::MetadataLibrary) belongs to no layer and is deliberately absent
+# from every list.
 SMM_PACKAGES = {
-    "Foundation", "MetadataLibrary", "CommonTypes", "StatePatterns",
-    "GenerationPipeline", "Knowledge", "ClinicalDecisionSupport",
+    "Knowledge", "ClinicalDecisionSupport",
     "ConstraintLibrary", "LogicEngine", "DecisionModels",
     "OutcomeFramework", "LearningCycles", "Analytics",
     "Platform", "PatientPortal", "EHR", "Booking", "Forms",

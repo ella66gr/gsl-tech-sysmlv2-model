@@ -9,7 +9,7 @@
     } from 'flowbite-svelte-icons';
     import { getOperationalStateDisplay, getAvailableActions } from '$lib/modules/lifecycle.js';
     import { findConnectedModules } from '$lib/modules/connections.js';
-    import { getEpistemicDisplay, canEditEpistemic } from '$lib/modules/epistemic.js';
+    import { getRealityContextDisplay, canEditRealityContext } from '$lib/modules/reality-context.js';
     import { healthScoreBgColor, formatCurrency, formatNumber } from '$lib/modules/metrics.js';
     import { enhance } from '$app/forms';
     import type { PageData, ActionData } from './$types';
@@ -27,14 +27,14 @@
     const Icon = $derived(iconMap[data.instance.definition.icon]);
     const stateDisplay = $derived(getOperationalStateDisplay(data.instance.operationalState));
     const actions = $derived(getAvailableActions(data.instance.operationalState));
-    const epistemicDisplay = $derived(getEpistemicDisplay(data.instance.epistemicCharacter));
-    const epistemicEditable = $derived(canEditEpistemic(data.instance.operationalState));
+    const realityContextDisplay = $derived(getRealityContextDisplay(data.instance.realityContext));
+    const realityContextEditable = $derived(canEditRealityContext(data.instance.operationalState));
 
     const canShowPromote = $derived(
         data.instance.operationalState === 'active' &&
-        data.instance.epistemicCharacter !== 'production'
+        data.instance.realityContext !== 'real'
     );
-    const canDemote = $derived(data.instance.epistemicCharacter === 'production');
+    const canDemote = $derived(data.instance.realityContext === 'real');
 
     let showDuplicateModal = $state(false);
     let variantName = $state('');
@@ -98,7 +98,7 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <Badge color={epistemicDisplay.badgeColor} class="text-xs">{epistemicDisplay.label}</Badge>
+                <Badge color={realityContextDisplay.badgeColor} class="text-xs">{realityContextDisplay.label}</Badge>
                 <Badge color={stateDisplay.badgeColor} class="text-sm px-3 py-1">{stateDisplay.label}</Badge>
             </div>
         </div>
@@ -386,16 +386,16 @@
                         <p class="text-sm text-secondary-600 dark:text-secondary-400">{formatDateTime(data.instance.installedAt)}</p>
                     </div>
                     <div>
-                        <p class="text-xs text-secondary-400 mb-1.5">Epistemic Character</p>
-                        {#if epistemicEditable}
-                            <form method="POST" action="?/setEpistemic" use:enhance>
+                        <p class="text-xs text-secondary-400 mb-1.5">Reality context</p>
+                        {#if realityContextEditable}
+                            <form method="POST" action="?/setRealityContext" use:enhance>
                                 <div class="flex gap-1">
-                                    {#each ['production', 'hypothesis', 'projection'] as char}
+                                    {#each ['real', 'hypothesis', 'simulation'] as char}
                                         <button
                                             type="submit"
-                                            name="epistemicCharacter"
+                                            name="realityContext"
                                             value={char}
-                                            class="text-xs px-2 py-1 rounded-lg capitalize transition-colors {data.instance.epistemicCharacter === char
+                                            class="text-xs px-2 py-1 rounded-lg capitalize transition-colors {data.instance.realityContext === char
                                                 ? 'bg-primary-100 dark:bg-primary-900/40 text-primary-700 dark:text-primary-300 font-medium'
                                                 : 'bg-secondary-100 dark:bg-secondary-700 text-secondary-500 dark:text-secondary-400 hover:bg-secondary-200 dark:hover:bg-secondary-600'}"
                                         >
@@ -406,7 +406,7 @@
                             </form>
                             <p class="text-xs text-secondary-400 mt-1">Editable in draft state</p>
                         {:else}
-                            <Badge color={epistemicDisplay.badgeColor} class="text-xs">{epistemicDisplay.label}</Badge>
+                            <Badge color={realityContextDisplay.badgeColor} class="text-xs">{realityContextDisplay.label}</Badge>
                             <p class="text-xs text-secondary-400 mt-1">Locked — reset to draft to change</p>
                         {/if}
                     </div>

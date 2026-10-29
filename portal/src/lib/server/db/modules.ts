@@ -7,7 +7,7 @@ import type {
     ModuleStateTransition,
     OperationalState,
     InstallationState,
-    EpistemicCharacter,
+    RealityContext,
     ConfigFieldDefinition,
     GovernanceConstraint
 } from '$lib/types.js';
@@ -35,7 +35,7 @@ interface InstanceRow {
     display_name: string;
     installation_state: string;
     operational_state: string;
-    epistemic_character: string;
+    reality_context: string;
     config_values: string;
     installed_by: string;
     installed_at: string;
@@ -79,7 +79,7 @@ function mapInstance(row: InstanceRow): ModuleInstance {
         displayName: row.display_name,
         installationState: row.installation_state as InstallationState,
         operationalState: row.operational_state as OperationalState,
-        epistemicCharacter: (row.epistemic_character || 'production') as EpistemicCharacter,
+        realityContext: (row.reality_context || 'real') as RealityContext,
         configValues: JSON.parse(row.config_values) as Record<string, unknown>,
         installedBy: row.installed_by,
         installedAt: row.installed_at,
@@ -254,19 +254,19 @@ export function duplicateInstance(
     const id = uuidv4();
     db.prepare(`
         INSERT INTO module_instances
-            (id, domain_id, definition_id, display_name, installation_state, operational_state, epistemic_character, config_values, installed_by)
+            (id, domain_id, definition_id, display_name, installation_state, operational_state, reality_context, config_values, installed_by)
         VALUES (?, ?, ?, ?, 'installed', 'draft', 'hypothesis', ?, ?)
     `).run(id, original.domain_id, original.definition_id, variantName, original.config_values, userId);
 
     return mapInstance(db.prepare('SELECT * FROM module_instances WHERE id = ?').get(id) as InstanceRow);
 }
 
-export function updateEpistemicCharacter(
+export function updateRealityContext(
     instanceId: string,
-    character: EpistemicCharacter
+    character: RealityContext
 ): ModuleInstance {
     db.prepare(`
-        UPDATE module_instances SET epistemic_character = ?, updated_at = datetime('now') WHERE id = ?
+        UPDATE module_instances SET reality_context = ?, updated_at = datetime('now') WHERE id = ?
     `).run(character, instanceId);
     return mapInstance(db.prepare('SELECT * FROM module_instances WHERE id = ?').get(instanceId) as InstanceRow);
 }

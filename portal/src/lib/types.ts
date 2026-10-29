@@ -63,7 +63,10 @@ export type DomainWithRole = Domain & { role: string };
 export type ModuleCategory = 'business' | 'analytical' | 'generative';
 export type InstallationState = 'installed' | 'trashed';
 export type OperationalState = 'draft' | 'active' | 'paused' | 'stopped';
-export type EpistemicCharacter = 'production' | 'hypothesis' | 'projection';
+// ADR-011 §4.2 (S514): the declared context a module instance runs in — a live
+// service (real), a hypothesis instantiation or a simulation run (both simulated).
+// Formerly EpistemicCharacter = 'production' | 'hypothesis' | 'projection'.
+export type RealityContext = 'real' | 'hypothesis' | 'simulation';
 export type SimulationFidelity = 'simplified' | 'realistic';
 export type SimulationRunStatus = 'pending' | 'running' | 'completed' | 'cancelled';
 export type SimulationEventType = 'customer_arrival' | 'transaction' | 'issue_raised' | 'resource_request';
@@ -99,7 +102,7 @@ export interface ModuleInstance {
     displayName: string;
     installationState: InstallationState;
     operationalState: OperationalState;
-    epistemicCharacter: EpistemicCharacter;
+    realityContext: RealityContext;
     configValues: Record<string, unknown>;
     installedBy: string;
     installedAt: string;
@@ -113,7 +116,7 @@ export interface ModuleInstanceWithDefinition extends ModuleInstance {
 export interface ModuleStateTransition {
     id: string;
     moduleInstanceId: string;
-    lifecycleType: 'installation' | 'operational' | 'epistemic';
+    lifecycleType: 'installation' | 'operational' | 'reality_context';
     fromState: string;
     toState: string;
     triggeredBy: string;

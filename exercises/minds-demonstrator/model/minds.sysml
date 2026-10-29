@@ -1554,13 +1554,12 @@ package MindsCanonicalRuntime {
              *     orthogonal to lifecycle
              *   - confidentiality (unorderedEnum): consent and
              *     confidentiality configuration
-             *   - epistemic (platform-inherited): real / inferred /
-             *     expected / predicted / hypothetical / simulated /
-             *     retrospectively-recorded
              *
-             * No per-type epistemic axis declared — B17 platform-
-             * provided tag handles real-vs-synthetic at SRS level
-             * uniformly. Per S272 §11.7.
+             * No epistemic axis (retired S514, ADR-011). Real-vs-
+             * simulated is the mode on the platform's record of each
+             * write, set from the declared context; it is not an axis
+             * on the engagement. (S272 §11.7 described a platform-
+             * provided tag; that reading is superseded.)
              *
              * Cross-axis rules (S272 §11.5) noted but not authored
              * as SysML in this first implementation. Examples:
@@ -1957,8 +1956,8 @@ package MindsCanonicalRuntime {
     // canonical runtime type — flagged as OW-S272-4 territory for
     // multi-axis-primitive paper sharpening.
     //
-    // No per-type epistemic axis declared (B17 platform-provided tag
-    // handles real-vs-synthetic at SRS level uniformly).
+    // No epistemic axis (retired S514, ADR-011): mode and method sit on
+    // the platform's record of each write, not on the subscription.
     //
     // =====================================================================
 
@@ -1985,9 +1984,9 @@ package MindsCanonicalRuntime {
              *     derived axis in the platform; OW-S272-4 territory.
              *   - planConfiguration (unorderedEnum): plan-level shape
              *     (monthly / annual / changing)
-             *   - epistemic (platform-inherited)
              *
-             * No per-type epistemic axis (per S272 §12.8).
+             * No epistemic axis (retired S514, ADR-011; S272 §12.8 is
+             * superseded on this point).
              *
              * Cross-axis rules (S272 §12.5) noted but not authored
              * as SysML in this first implementation. Examples:

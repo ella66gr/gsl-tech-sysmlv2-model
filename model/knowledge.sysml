@@ -1766,6 +1766,7 @@ package Knowledge {
         private import ScalarValues::*;
         private import Foundation::CommonTypes::*;
         private import Foundation::MetadataLibrary::*;
+        private import ProjectionMetadata::*;
 
         doc /* Outcome definitions, measurement points, structured outcome
              * capture, and outcome-to-pathway feedback for clinical
@@ -1808,6 +1809,63 @@ package Knowledge {
              * Connects to Phase 1 (self-knowledge data structures),
              * Phase 2 (GoalProjector, GapAnalyser), and Phase 3
              * (decision tables that consume outcome-derived inputs). */
+
+        // -- Outcome enumerations ---------------------------------
+        // Moved here from Foundation::CommonTypes at S514 (OP-125,
+        // ADR-011 §4.7). Used only by this package; defined here
+        // since Session 11 for it.
+
+
+        enum def OutcomeCategory {
+            doc /* Category of a clinical outcome measure.
+                 * Determines which outcomes are collected at
+                 * each measurement point and how they are
+                 * reported. */
+            clinical;
+            adherence;
+            safety;
+            patientReported;
+        }
+
+        enum def OutcomeStatus {
+            doc /* Status of an individual outcome measurement
+                 * against its defined target.
+                 * pending: measurement due but not yet taken
+                 * measured: data collected, not yet evaluated
+                 * targetMet: evaluated and within target
+                 * targetNotMet: evaluated and outside target
+                 * indeterminate: data insufficient for evaluation */
+            pending;
+            measured;
+            targetMet;
+            targetNotMet;
+            indeterminate;
+        }
+
+        enum def MeasurementFrequency {
+            doc /* How often an outcome is measured. Determines
+                 * which measurement points include this outcome. */
+            baseline;
+            threeMonthly;
+            sixMonthly;
+            annually;
+            adHoc;
+        }
+
+        enum def ComparisonOperator {
+            doc /* How a target value is compared against an actual
+                 * measurement. Used in OutcomeDefinition to specify
+                 * the target condition.
+                 * within: actual falls within a range (uses
+                 *   targetValue and targetUpperBound)
+                 * greaterThan: actual exceeds a threshold
+                 * lessThan: actual is below a threshold
+                 * equalTo: actual matches exactly */
+            within;
+            greaterThan;
+            lessThan;
+            equalTo;
+        }
 
         // =============================================================
         // Core structural definitions

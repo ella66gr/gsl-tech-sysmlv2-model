@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Badge } from 'flowbite-svelte';
     import { ShieldCheckOutline } from 'flowbite-svelte-icons';
-    import { getEpistemicDisplay } from '$lib/modules/epistemic.js';
+    import { getRealityContextDisplay } from '$lib/modules/reality-context.js';
     import { enhance } from '$app/forms';
     import type { PageData, ActionData } from './$types';
     import type { ConstraintResult, GovernanceLevel } from '$lib/types';
@@ -108,14 +108,14 @@
     <!-- Production modules section -->
     {#if data.assessments.some(a => {
         const m = data.modules.find(mod => mod.id === a.moduleInstanceId);
-        return m && m.epistemicCharacter === 'production';
+        return m && m.realityContext === 'real';
     })}
         <div class="mb-6">
             <h2 class="text-xs font-semibold uppercase tracking-wider text-secondary-400 dark:text-secondary-500 mb-3">Production Modules</h2>
             <div class="space-y-4">
                 {#each data.assessments.filter(a => {
                     const m = data.modules.find(mod => mod.id === a.moduleInstanceId);
-                    return m && m.epistemicCharacter === 'production';
+                    return m && m.realityContext === 'real';
                 }) as assessment}
                     {@const moduleInstance = data.modules.find(m => m.id === assessment.moduleInstanceId)}
                     <div class="bg-white dark:bg-secondary-800 rounded-2xl border-2 border-teal-200 dark:border-teal-800 overflow-hidden">
@@ -163,7 +163,7 @@
         <div class="space-y-4">
             {#each data.assessments as assessment}
                 {@const moduleInstance = data.modules.find(m => m.id === assessment.moduleInstanceId)}
-                {@const epDisplay = moduleInstance ? getEpistemicDisplay(moduleInstance.epistemicCharacter) : null}
+                {@const epDisplay = moduleInstance ? getRealityContextDisplay(moduleInstance.realityContext) : null}
                 <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 overflow-hidden">
                     <!-- Module header -->
                     <div class="px-5 py-4 border-b border-secondary-100 dark:border-secondary-700 flex items-center justify-between">

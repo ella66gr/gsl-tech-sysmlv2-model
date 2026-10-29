@@ -5,7 +5,7 @@
 
 package BusinessModel {
     private import ScalarValues::*;
-    private import Foundation::MetadataLibrary::*;
+    private import ProjectionMetadata::*;
     private import Foundation::CommonTypes::*;
 
     doc /* The business model package captures the strategic logic of the
@@ -44,7 +44,8 @@ package BusinessModel {
          *   These are business meta model concepts — they describe
          *   what any service business offers and what resources it
          *   needs. System meta model concepts (PersistencePolicy,
-         *   AgencyClassification) are in Foundation. */
+         *   AgencyClassification) remain in Foundation pending their
+         *   allocation (S514, ADR-011 §4.7). */
 
     // =================================================================
     // SERVICE CONCEPT — What value is delivered, to whom, and why

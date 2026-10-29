@@ -295,7 +295,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::guidance;
-        attribute :>> relatedElements = "Foundation::GenerationPipeline";
+        attribute :>> relatedElements = "scripts/ (the generators; the empty Foundation::GenerationPipeline package was deleted S514, ADR-011)";
         attribute :>> sourceSession = "Session 1";
         attribute :>> validatedIn = "CSW, GSL";
         // Semantic relationships
@@ -312,7 +312,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "ServiceDelivery::ClinicalPathways, Foundation::MetadataLibrary::TemporalWorkflow";
+        attribute :>> relatedElements = "ServiceDelivery::ClinicalPathways, TemporalMetadata::TemporalWorkflow";
         attribute :>> sourceSession = "Session 1";
         attribute :>> validatedIn = "CSW, GSL";
         // Semantic relationships
@@ -378,7 +378,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "Foundation::MetadataLibrary, Foundation::GenerationPipeline";
+        attribute :>> relatedElements = "ProjectionMetadata (formerly Foundation::MetadataLibrary; Foundation::GenerationPipeline deleted S514)";
         attribute :>> sourceSession = "Session 2";
         attribute :>> validatedIn = "CSW, GSL";
         // Semantic relationships

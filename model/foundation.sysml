@@ -5,14 +5,42 @@
 package Foundation {
     private import ScalarValues::*;
 
-    doc /* Cross-cutting infrastructure that everything else imports.
-         * The shared vocabulary of the entire model. */
+    doc /* RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7,
+         * decision 7; OP-125 canon pass Step 2, S514).
+         *
+         * The name reads as the Ontology Foundation Layer, which holds
+         * only published ontologies, and the package put tenant-specific
+         * vocabulary in a folder every tenant imports (against A13). So
+         * every item is to move to where its meaning puts it. At S514:
+         *
+         *   - the generators' annotation schema (@CatalogueTag, @UserFacing,
+         *     @PurposiveDescription, @Comprehension, @WeightedRelationship,
+         *     RelationshipStrength, @BfoType) moved to the new top-level
+         *     package ProjectionMetadata (model/projection-metadata.sysml);
+         *   - the four OutcomeFramework enumerations (OutcomeCategory,
+         *     OutcomeStatus, MeasurementFrequency, ComparisonOperator)
+         *     moved into Knowledge::OutcomeFramework, their only user;
+         *   - the empty GenerationPipeline package was deleted.
+         *
+         * Everything still here is an item whose home is genuinely
+         * doubtful under Ella's S514 rule (move only where the meaning
+         * gives a clear home; never guess). Each is listed, with the
+         * reason, in session-514-op-125-canon-pass-step2-reese.md and
+         * awaits her allocation. Nothing here should be read as "shared
+         * vocabulary of the entire model" any longer. */
 
     package MetadataLibrary {
         private import ScalarValues::*;
 
-        doc /* Metadata definitions for generator configuration and
-             * cross-cutting annotations.
+        doc /* Residual annotation definitions awaiting allocation
+             * (S514, ADR-011 §4.7). The projection annotations that were
+             * here (@CatalogueTag, @UserFacing, @PurposiveDescription,
+             * @Comprehension, @WeightedRelationship, @BfoType) are now in
+             * ProjectionMetadata. What remains: the clinical pathway
+             * annotations, the governance annotations (@ConsentRequired,
+             * @AuditPoint — IGF-owned meaning, awaiting the reference
+             * form from Saskia and Cyril), the openEHR annotations, and
+             * the agency classification.
              *
              * Validated in demonstrator: @TemporalWorkflow,
              * @TemporalActivity, @TemporalSignal, @StateTransitionTrigger.
@@ -148,217 +176,6 @@ package Foundation {
             attribute templateId : String;
         }
 
-        // -- Catalogue and comprehension metadata -----------------
-        // Added Session 38: Ontara Stage 2 Phase 1.
-        // Source: ontara-discussion-element-grouping-viewpoints-
-        //   comprehension-2026-03-19.md §9.1
-        // Meta model: Business System (placed in Foundation
-        // MetadataLibrary as cross-cutting metadata).
-
-        metadata def CatalogueTag {
-            doc /* Catalogue classification metadata for dynamic
-                 * grouping and filtering. Applied to any element
-                 * that should appear in the Component Catalogue.
-                 *
-                 * Each attribute represents a classification
-                 * dimension. New dimensions are added as new
-                 * attributes when needed.
-                 *
-                 * bmmConcern: which BMM concern this element belongs
-                 *   to (ServiceConcept, ActivityModel,
-                 *   ResourceCapability, FinancialModel, Governance).
-                 *   Named 'bmmConcern' because 'concern' triggers a
-                 *   Syside parsing error (not a KerML reserved word
-                 *   but treated as one by the parser).
-                 * classification: General (domain-agnostic) or
-                 *   Tailored (domain-specific). May evolve to a
-                 *   multi-tiered scheme.
-                 *
-                 * One @CatalogueTag per element. The generator
-                 * reads all attributes and produces a faceted
-                 * structure in JSON.
-                 *
-                 * System meta model concept. */
-            attribute bmmConcern : String;
-            attribute classification : String;
-        }
-
-        metadata def UserFacing {
-            doc /* Human-readable metadata for the comprehension layer.
-                 * Applied to any element that should be comprehensible
-                 * to non-specialist users of the Ontara Console.
-                 *
-                 * friendlyName: a short, lay-language name
-                 *   (e.g. "Pricing Model" for PricingModel).
-                 * shortDescription: a brief explanation (1-2 sentences)
-                 *   in plain language.
-                 *
-                 * Generated into the console as tooltips, glossary
-                 * entries, and info panel content. Consistent with
-                 * I14 (comprehension layer) and A3 (model generates
-                 * everything).
-                 *
-                 * System meta model concept. */
-            attribute friendlyName : String;
-            attribute shortDescription : String;
-        }
-
-        metadata def PurposiveDescription {
-            doc /* Authored purposive description for the comprehension
-                 * layer. Explains what this element means for a service
-                 * business and what the system does with it — the
-                 * "why should I care?" and "what happens when I define
-                 * one of these?" explanation.
-                 *
-                 * Register 1 (authored comprehension content). Distinct
-                 * from @UserFacing (labels and short tooltips) and
-                 * @Comprehension (traversal instructions for dynamically
-                 * assembled content).
-                 *
-                 * Style: purposive, systemic, second-person, contract
-                 * language. See phase-3-draft-descriptions for the
-                 * style guide.
-                 *
-                 * System meta model concept.
-                 * Intrinsic self-knowledge principle (A10).
-                 * Session 49 — Stage 3 Phase 3, Step 2. */
-            attribute description : String;
-        }
-
-        metadata def Comprehension {
-            doc /* Comprehension traversal schema. Declares which
-                 * categories of dynamically assembled content the
-                 * comprehension engine should surface for this
-                 * element.
-                 *
-                 * The annotation is a recipe — it declares what to
-                 * show, not what to say. The generator reads these
-                 * flags and discovers structural facts from the live
-                 * model at generation time.
-                 *
-                 * 3b approach (Session 49, S49-D4): declarative
-                 * flags with smart generator. The annotation is
-                 * lightweight; the intelligence is in the
-                 * generator's traversal logic.
-                 *
-                 * surfaceEnumValues: show associated enum values
-                 *   discovered via attribute type matching.
-                 * surfaceDomainInstantiations: show cross-domain
-                 *   usage counts and instance names.
-                 * surfaceRelatedConcepts: show structurally related
-                 *   elements (same-package siblings for pilot;
-                 *   typed refs in future per O25).
-                 * surfaceAttributes: show the element's own
-                 *   attributes with their types.
-                 *
-                 * System meta model concept.
-                 * Intrinsic self-knowledge principle (A10).
-                 * Unity principle (A11).
-                 * Session 50 — Stage 3 Phase 3, Step 3. */
-            attribute surfaceEnumValues : Boolean;
-            attribute surfaceDomainInstantiations : Boolean;
-            attribute surfaceRelatedConcepts : Boolean;
-            attribute surfaceAttributes : Boolean;
-        }
-
-        // -- Weighted relationship metadata -----------------------
-        // Added Session 51: Ontara Stage 3 Phase 3, Step 4.
-        // Source: ontara-stage-3-plan-phase-3-implementation-2026-03-20.md §4 (Step 4)
-        // Design: Option B — one annotation per relationship,
-        //   multiple same-metaclass annotations per element.
-        //   Verified v3.17: stacking up to 6 annotations works.
-        // Meta model: Business System (cross-cutting metadata).
-
-        enum def RelationshipStrength {
-            doc /* Ordinal classification of interaction effect strength
-                 * between related elements. Starting point for the
-                 * weighted relationship model (B14).
-                 *
-                 * Designed for hybrid evolution: ordinal now, numeric
-                 * weights later, structural derivation baseline with
-                 * human overrides (J12 — experimentation before
-                 * convention).
-                 *
-                 * System meta model concept. Unity principle
-                 * (A11): same weights inform comprehension, reasoning,
-                 * simulation, governance, and assembly guidance. */
-            strong;
-            moderate;
-            weak;
-            contextual;
-        }
-
-        metadata def WeightedRelationship {
-            doc /* Declares a weighted relationship from the annotated
-                 * element to a named target element. Each annotation
-                 * declares one relationship. Multiple annotations of
-                 * this metaclass may be applied to a single element
-                 * (verified v3.17, Session 51).
-                 *
-                 * target: name of the related element (String for now;
-                 *   migration to typed ref per O25 is the architectural
-                 *   direction).
-                 * strength: ordinal classification of the interaction
-                 *   effect. Typed as RelationshipStrength enum.
-                 * rationale: brief explanation of why this weight was
-                 *   assigned.
-                 *
-                 * Annotation ordering convention (Position A, prefix):
-                 *   @CatalogueTag → @UserFacing → @PurposiveDescription
-                 *   → @Comprehension → @WeightedRelationship (multiple)
-                 *
-                 * System meta model concept.
-                 * Unity principle (A11). Weighted relationships (B14).
-                 * Non-constraining (J3): ordinal weights designed for
-                 * hybrid evolution to numeric/structural derivation.
-                 * Session 51 — Stage 3 Phase 3, Step 4. */
-            attribute target : String;
-            attribute strength : RelationshipStrength;
-            attribute rationale : String;
-        }
-
-        // -- BFO ontological grounding metadata ---------------
-        // Added Session 98: Knowledge graph architecture (Session 97).
-        // Source: ontara-discussion-bfo-type-mapping-2026-04-01.md
-        // Meta model: Business System (cross-cutting metadata).
-
-        metadata def BfoType {
-            doc /* BFO ontological grounding annotation. Declares the
-                 * BFO 2020 category and mid-level ontology parent for
-                 * a BMM or SMM element.
-                 *
-                 * This annotation is the input to Stage 2 of the
-                 * OWL mapping pipeline — the classification step that
-                 * determines how each SysML element projects into the
-                 * knowledge graph's domain graph stratum.
-                 *
-                 * bfoClass: the BFO 2020 class name. Uses the standard
-                 *   BFO label (e.g. "Role", "Process", "Quality",
-                 *   "GenericallyDependentContinuant"). Validated against
-                 *   the loaded BFO OWL file at pipeline Stage 4.
-                 * midLevelClass: the CCO, IAO, OGMS, or other mid-level
-                 *   ontology class that this element maps to. Uses
-                 *   prefix:ClassName format (e.g. "CCO:ActOfServiceProvision",
-                 *   "IAO:InformationContentEntity"). Empty string if no
-                 *   mid-level mapping is identified yet.
-                 * mappingNotes: brief rationale for the classification,
-                 *   especially where the mapping is non-obvious or where
-                 *   alternatives were considered.
-                 *
-                 * Annotation ordering convention (Position A, prefix):
-                 *   @CatalogueTag → @BfoType → @UserFacing →
-                 *   @PurposiveDescription → @Comprehension →
-                 *   @WeightedRelationship (multiple)
-                 *
-                 * Ontological grounding (B18, B19). OWL 2 DL (B23).
-                 * Knowledge graph (B22). Mapping ontology (B24).
-                 * Domain-semantic mapping (Session 97 D6).
-                 * System meta model concept.
-                 * Session 98. */
-            attribute bfoClass : String;
-            attribute midLevelClass : String;
-            attribute mappingNotes : String;
-        }
 
         // -- Agency classification metadata -----------------------
         // System meta model concepts: annotate pathway
@@ -692,58 +509,6 @@ package Foundation {
             clinicalReviewUrgent;
         }
 
-        // Added Session 11: Knowledge Layer Phase 4 (OutcomeFramework)
-
-        enum def OutcomeCategory {
-            doc /* Category of a clinical outcome measure.
-                 * Determines which outcomes are collected at
-                 * each measurement point and how they are
-                 * reported. */
-            clinical;
-            adherence;
-            safety;
-            patientReported;
-        }
-
-        enum def OutcomeStatus {
-            doc /* Status of an individual outcome measurement
-                 * against its defined target.
-                 * pending: measurement due but not yet taken
-                 * measured: data collected, not yet evaluated
-                 * targetMet: evaluated and within target
-                 * targetNotMet: evaluated and outside target
-                 * indeterminate: data insufficient for evaluation */
-            pending;
-            measured;
-            targetMet;
-            targetNotMet;
-            indeterminate;
-        }
-
-        enum def MeasurementFrequency {
-            doc /* How often an outcome is measured. Determines
-                 * which measurement points include this outcome. */
-            baseline;
-            threeMonthly;
-            sixMonthly;
-            annually;
-            adHoc;
-        }
-
-        enum def ComparisonOperator {
-            doc /* How a target value is compared against an actual
-                 * measurement. Used in OutcomeDefinition to specify
-                 * the target condition.
-                 * within: actual falls within a range (uses
-                 *   targetValue and targetUpperBound)
-                 * greaterThan: actual exceeds a threshold
-                 * lessThan: actual is below a threshold
-                 * equalTo: actual matches exactly */
-            within;
-            greaterThan;
-            lessThan;
-            equalTo;
-        }
         // -- Persistence architecture types -------------------------
         // System meta model concepts: describe where domain
         // data lives and why. Cross-cutting — importable by any package.
@@ -1317,21 +1082,5 @@ package Foundation {
                 accept Cancelled
                 then cancelled;
         }
-    }
-
-    package GenerationPipeline {
-        private import ScalarValues::*;
-
-        doc /* Generator configurations, template definitions, generation
-             * conventions, output format specifications.
-             *
-             * Validated generators from demonstrator:
-             * - gen_typescript_types.py (SysML -> TypeScript interfaces)
-             * - gen_state_machines.py (SysML -> XState v5 machines)
-             * - gen_temporal_workflow.py (SysML -> Temporal workflows)
-             * - gen_mermaid_pathway.py (SysML -> Mermaid diagrams)
-             *
-             * Future: Syside Automator for semantic model access,
-             * replacing regex-based parsing. */
     }
 }

@@ -1,13 +1,13 @@
 <script lang="ts">
     import { Badge, Button } from 'flowbite-svelte';
     import { ShieldCheckOutline, ArrowUpOutline } from 'flowbite-svelte-icons';
-    import { getEpistemicDisplay } from '$lib/modules/epistemic.js';
+    import { getRealityContextDisplay } from '$lib/modules/reality-context.js';
     import { enhance } from '$app/forms';
     import type { PageData, ActionData } from './$types';
 
     let { data, form }: { data: PageData; form: ActionData } = $props();
 
-    const epDisplay = $derived(getEpistemicDisplay(data.instance.epistemicCharacter));
+    const epDisplay = $derived(getRealityContextDisplay(data.instance.realityContext));
 
     let currentStep = $state(1);
 </script>
@@ -107,7 +107,7 @@
                 <div class="flex items-start gap-3 p-3 rounded-lg bg-secondary-50 dark:bg-secondary-900/30">
                     <span class="text-primary-600 dark:text-primary-400 font-bold text-lg">→</span>
                     <div>
-                        <p class="text-sm font-medium text-secondary-800 dark:text-secondary-200">Epistemic character: <Badge color={epDisplay.badgeColor} class="text-xs">{epDisplay.label}</Badge> → <Badge color="teal" class="text-xs">Production</Badge></p>
+                        <p class="text-sm font-medium text-secondary-800 dark:text-secondary-200">Reality context: <Badge color={epDisplay.badgeColor} class="text-xs">{epDisplay.label}</Badge> → <Badge color="teal" class="text-xs">Production</Badge></p>
                         <p class="text-xs text-secondary-500 dark:text-secondary-400 mt-1">This module's outputs will represent real business activity.</p>
                     </div>
                 </div>

@@ -9,7 +9,7 @@
     import { getOperationalStateDisplay, getPrimaryAction } from '$lib/modules/lifecycle.js';
     import { getConcernCoverage } from '$lib/modules/connections.js';
     import { CONCERN_META } from '$lib/context/schemas.js';
-    import { getEpistemicDisplay } from '$lib/modules/epistemic.js';
+    import { getRealityContextDisplay } from '$lib/modules/reality-context.js';
     import { enhance } from '$app/forms';
     import type { PageData, ActionData } from './$types';
     import type { ModuleInstanceWithDefinition, ConcernCoverage } from '$lib/types';
@@ -45,11 +45,11 @@
     let analyticalCount  = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.definition.category === 'analytical').length);
     let totalSimEvents   = $derived((data.runs ?? []).reduce((sum: number, r: any) => sum + r.eventCount, 0));
 
-    let productionCount  = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.epistemicCharacter === 'production').length);
+    let productionCount  = $derived(data.modules.filter((m: ModuleInstanceWithDefinition) => m.realityContext === 'real').length);
     let showProductionOnly = $state(false);
     let filteredModules  = $derived(
         showProductionOnly
-            ? data.modules.filter((m: ModuleInstanceWithDefinition) => m.epistemicCharacter === 'production')
+            ? data.modules.filter((m: ModuleInstanceWithDefinition) => m.realityContext === 'real')
             : data.modules
     );
 
@@ -145,7 +145,7 @@
             {:else}
                 <!-- Governance alert banner -->
                 {#if data.domain.governanceLevel !== 'exploratory'}
-                    {@const productionFailing = data.modules.filter((m: ModuleInstanceWithDefinition) => m.epistemicCharacter === 'production' && data.governanceSummary[m.id] && !data.governanceSummary[m.id].overallPass)}
+                    {@const productionFailing = data.modules.filter((m: ModuleInstanceWithDefinition) => m.realityContext === 'real' && data.governanceSummary[m.id] && !data.governanceSummary[m.id].overallPass)}
                     {#if productionFailing.length > 0}
                         <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 flex items-center gap-3">
                             <ShieldCheckOutline class="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
@@ -199,8 +199,8 @@
                         {@const Icon = iconMap[mod.definition.icon]}
                         {@const stateDisplay = getOperationalStateDisplay(mod.operationalState)}
                         {@const primaryAction = getPrimaryAction(mod.operationalState)}
-                        {@const epDisplay = getEpistemicDisplay(mod.epistemicCharacter)}
-                        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 border-l-4 {mod.epistemicCharacter === 'production' ? 'border-l-teal-500' : stateDisplay.borderClass} overflow-hidden hover:shadow-sm transition-shadow {epDisplay.bgTint}">
+                        {@const epDisplay = getRealityContextDisplay(mod.realityContext)}
+                        <div class="bg-white dark:bg-secondary-800 rounded-2xl border border-secondary-200 dark:border-secondary-700 border-l-4 {mod.realityContext === 'real' ? 'border-l-teal-500' : stateDisplay.borderClass} overflow-hidden hover:shadow-sm transition-shadow {epDisplay.bgTint}">
                             <a href="/domains/{data.domain.slug}/modules/{mod.id}" class="block p-4">
                                 <div class="flex items-start justify-between mb-2">
                                     <div class="flex items-center gap-2.5">
@@ -211,7 +211,7 @@
                                         </div>
                                         <div>
                                             <span class="font-medium text-secondary-900 dark:text-secondary-100 text-sm">{mod.displayName || mod.definition.name}</span>
-                                            {#if mod.epistemicCharacter === 'production'}
+                                            {#if mod.realityContext === 'real'}
                                                 <span class="text-xs ml-1.5 px-2 py-0.5 rounded bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-200 font-semibold uppercase tracking-wider">Production</span>
                                             {:else}
                                                 <Badge color={epDisplay.badgeColor} class="text-xs ml-1.5">{epDisplay.label}</Badge>

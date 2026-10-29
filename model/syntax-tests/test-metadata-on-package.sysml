@@ -20,7 +20,7 @@
 
 package TestPackageAnnotation {
     private import ScalarValues::*;
-    private import Foundation::MetadataLibrary::*;
+    private import ProjectionMetadata::*;
 
     // --- Test 1: annotation on a top-level package ---
 

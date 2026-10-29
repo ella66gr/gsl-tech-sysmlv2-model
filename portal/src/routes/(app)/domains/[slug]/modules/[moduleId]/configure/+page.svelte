@@ -94,7 +94,7 @@
                                                 class="rounded border-secondary-300 dark:border-secondary-600 text-primary-600 focus:ring-primary-500"
                                             />
                                             <span class="text-sm text-secondary-700 dark:text-secondary-300">{bm.displayName || bm.definition.name}</span>
-                                            <Badge color={bm.epistemicCharacter === 'hypothesis' ? 'purple' : bm.epistemicCharacter === 'projection' ? 'blue' : 'teal'} class="text-xs ml-auto">{bm.epistemicCharacter}</Badge>
+                                            <Badge color={bm.realityContext === 'hypothesis' ? 'purple' : bm.realityContext === 'simulation' ? 'blue' : 'teal'} class="text-xs ml-auto">{bm.realityContext}</Badge>
                                         </label>
                                     {/each}
                                 </div>

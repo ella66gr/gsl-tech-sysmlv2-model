@@ -301,11 +301,26 @@ def extract_outcome_inventory(knowledge_text):
     return outcomes
 
 
-def extract_metadata_inventory(foundation_text, library_texts):
-    """Extract metadata defs from MetadataLibrary and TemporalMetadata."""
+def extract_metadata_inventory(foundation_text, library_texts, projection_text=""):
+    """Extract metadata defs from ProjectionMetadata, the residual
+    Foundation::MetadataLibrary, and TemporalMetadata."""
     metadata = []
 
-    # Foundation::MetadataLibrary
+    # ProjectionMetadata (S514: the generators' annotation schema, formerly
+    # Foundation::MetadataLibrary)
+    pm_text = find_package_block(projection_text, "ProjectionMetadata") if projection_text else None
+    if pm_text:
+        for block in extract_blocks(pm_text, "metadata def"):
+            attrs = []
+            for attr_match in re.finditer(r'attribute\s+(\w+)\s*:\s*(\w+)\s*;', block['body']):
+                attrs.append(attr_match.group(1))
+            metadata.append({
+                'name': block['name'],
+                'package': 'ProjectionMetadata',
+                'attributes': attrs,
+            })
+
+    # Foundation::MetadataLibrary (residual: clinical, governance, openEHR, agency)
     ml_text = find_package_block(foundation_text, "MetadataLibrary")
     if ml_text:
         for block in extract_blocks(ml_text, "metadata def"):
@@ -509,7 +524,8 @@ def main():
     lifecycles = extract_entity_lifecycle_inventory(sd_text)
     pathways = extract_pathway_inventory(sd_text)
     outcomes = extract_outcome_inventory(knowledge_text)
-    metadata = extract_metadata_inventory(foundation_text, library_texts)
+    projection_text = all_texts.get("projection-metadata.sysml", "")
+    metadata = extract_metadata_inventory(foundation_text, library_texts, projection_text)
     use_cases = extract_use_case_inventory(all_texts)
     decision_tables = extract_decision_table_inventory(knowledge_text)
 
