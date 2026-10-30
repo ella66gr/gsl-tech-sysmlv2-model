@@ -355,8 +355,8 @@ package ArchitecturalStructure {
         description = "The right-stack counterpart of the BMM General vocabulary. Defines what a business system is — the domain-neutral system concepts any Ontara tenant would need. Organised into six capability groups (B25): Persistence and Data Management, Process Orchestration, Evaluation and Reasoning, Observation and Self-Knowledge, Integration and Communication, Identity and Access. Horizontal mappings to the BMM are many-to-many.";
     }
     @ArchitecturalLocation {
-        representationalModalitySummary = "SysML v2 part defs. Designed (Session 76 discussion paper) but not yet implemented. Individual concepts exist scattered across Foundation, Knowledge, ServiceDelivery, Platform, and Operations.";
-        persistenceSummary = "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: distributed across existing SysML packages without explicit SMM organisation.";
+        representationalModalitySummary = "SysML v2 package SystemMetamodelGeneral (SMG), eleven sub-packages, with one clinical annotation in SystemMetamodelDomainClinical (ADR-012).";
+        persistenceSummary = "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: the SystemMetamodelGeneral package in model/system-metamodel-general.sysml.";
         interfacesSummary = "Vertical downward: instantiated by the system instance. Vertical upward: traces to system ontological categories. Horizontal leftward: explicit many-to-many mappings to BMM General vocabulary.";
         domainIllustrationSummary = "For Paws: PersistencePolicy for data storage, ProcessSpecification for workflow shapes, ConstraintEvaluationSpec for scheduling rules, ExternalServiceBinding for payment integration, CommunicationChannel for notifications.";
     }
