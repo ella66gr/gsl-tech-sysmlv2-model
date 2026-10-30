@@ -57,6 +57,16 @@
     owl:versionInfo "2026-10-29 — Session 514, OP-125 canon pass Step 1: first version (ADR-011)."@en .
 
 
+# -----------------------------------------------------------------------------
+# Annotation property declarations
+# -----------------------------------------------------------------------------
+
+skos:definition a owl:AnnotationProperty .
+skos:altLabel a owl:AnnotationProperty .
+skos:editorialNote a owl:AnnotationProperty .
+dcterms:created a owl:AnnotationProperty .
+
+
 # =============================================================================
 # SECTION 1: The platform record
 # =============================================================================
