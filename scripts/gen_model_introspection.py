@@ -80,6 +80,14 @@ DOMAIN_SOURCES = {
         "model_dirs": [EXERCISES_DIR / "paws-demonstrator" / "model"],
         "description": "Dog grooming demonstrator \u2014 appointment-based service validation",
     },
+    # S515 (OP-132 step 3, ADR-012): GSL is a tenant, not the core model.
+    # The root assembly package moves here first; the whole-GSL packages
+    # follow in later OP-132 steps.
+    "gsl": {
+        "label": "GSL",
+        "model_dirs": [EXERCISES_DIR / "gendersense" / "model"],
+        "description": "GenderSense Limited \u2014 production tenant",
+    },
 }
 
 # Meta model classification keywords found in doc blocks

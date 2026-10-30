@@ -36,6 +36,7 @@ from xml.dom import minidom
 REPO_ROOT = pathlib.Path(__file__).parent.parent
 MODEL_DIR = REPO_ROOT / "model"
 LIBRARY_DIR = REPO_ROOT / "libraries"
+GSL_MODEL_DIR = REPO_ROOT / "exercises" / "gendersense" / "model"
 DOCS_DIR = REPO_ROOT / "documentation"
 GENERATED_DIR = DOCS_DIR / "generated"
 PROPOSAL_PATH = DOCS_DIR / "architecture" / "gsl-platform-package-hierarchy-proposal.md"
@@ -184,6 +185,15 @@ def parse_all_model_files():
     for filepath in sorted(MODEL_DIR.glob("*.sysml")):
         all_packages.extend(parse_sysml_file(filepath))
 
+    # S515 (OP-132 step 3): the GenderSense root assembly file now lives in
+    # the GSL tenant directory. Until step 12 re-shapes this generator to
+    # show GSL as a tenant, keep parsing it so the tree is unchanged.
+    for filepath in sorted(GSL_MODEL_DIR.glob("*.sysml")):
+        packages = parse_sysml_file(filepath)
+        for pkg in packages:
+            pkg.source_file = f"exercises/gendersense/model/{filepath.name}"
+        all_packages.extend(packages)
+
     for filepath in sorted(LIBRARY_DIR.rglob("*.sysml")):
         packages = parse_sysml_file(filepath)
         for pkg in packages:
@@ -199,7 +209,7 @@ def parse_all_model_files():
             break
 
     if root:
-        root_file = MODEL_DIR / "gendersense.sysml"
+        root_file = GSL_MODEL_DIR / "gendersense.sysml"
         imported_names = set()
         if root_file.exists():
             text = root_file.read_text(encoding="utf-8")

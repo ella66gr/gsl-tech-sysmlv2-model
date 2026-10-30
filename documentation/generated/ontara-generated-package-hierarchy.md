@@ -1,6 +1,6 @@
 # Ontara Package Hierarchy (Generated)
 
-**Generated:** 2026-10-30 12:04  
+**Generated:** 2026-10-30 14:58  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
 **Total packages:** 76 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
@@ -11,7 +11,7 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 Ontara Package Hierarchy
-Generated 2026-10-30 12:04 from model/*.sysml (76 packages)
+Generated 2026-10-30 14:58 from model/*.sysml (76 packages)
 
 GenderSense
 ├── Enterprise                    Defines the organisational, regulatory, strategic, and risk context.
@@ -106,4 +106,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-10-30 12:04 by `gen_package_hierarchy.py`.*
+*Generated 2026-10-30 14:58 by `gen_package_hierarchy.py`.*

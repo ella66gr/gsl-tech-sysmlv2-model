@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T12:05:47.469146",
+  "generatedAt": "2026-10-30T14:58:24.402153",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
@@ -21,6 +21,11 @@
       "label": "Paws",
       "description": "Dog grooming demonstrator \u2014 appointment-based service validation",
       "elementCount": 80
+    },
+    "gsl": {
+      "label": "GSL",
+      "description": "GenderSense Limited \u2014 production tenant",
+      "elementCount": 0
     }
   },
   "summary": {

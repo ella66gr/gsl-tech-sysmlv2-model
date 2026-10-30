@@ -30,7 +30,6 @@ The **Integrated Trust, Security, Privacy & Governance Framework (IGF)** is a cr
 ```
 gsl-sysml-model/
 ├── model/                          SysML v2 model files (engineering projection of KG-canonical content)
-│   ├── gendersense.sysml           Root package — imports all domain packages
 │   ├── business-model.sysml        BMM: 34 General part defs across 6 concern packages + 96 weighted relationships
 │   ├── business-scenarios.sysml    Business scenario definitions
 │   ├── business-strategy.sysml     Business strategy definitions
@@ -44,7 +43,8 @@ gsl-sysml-model/
 │   ├── service-delivery.sysml      Clinical pathways, consent, governance
 │   ├── platform.sysml              Portal, EHR, messaging, integration
 │   └── operations.sysml            Finance, people, reporting
-├── exercises/                      Demonstrator domain projections
+├── exercises/                      Tenant and demonstrator domain projections
+│   ├── gendersense/model/          GSL — production tenant; gendersense.sysml root package (OP-132 step 3)
 │   ├── coffeeshop-demonstrator/    Cafe — full-stack reference implementation (SvelteKit + Temporal + EHRbase)
 │   ├── paws-demonstrator/          Paws — appointment-based dog grooming (SysML projection)
 │   ├── suds-demonstrator/          Suds — batch processing launderette (SysML projection)

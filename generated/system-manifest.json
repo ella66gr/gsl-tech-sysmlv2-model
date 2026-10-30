@@ -1,6 +1,6 @@
 {
   "modelVersion": "2026-10-30",
-  "generatedAt": "2026-10-30T12:04:35Z",
+  "generatedAt": "2026-10-30T14:58:16Z",
   "generator": "scripts/gen_system_manifest.py",
   "sourceFiles": [
     "model/architectural-structure.sysml",
@@ -10,7 +10,6 @@
     "model/canonical-runtime.sysml",
     "model/enterprise.sysml",
     "model/foundation.sysml",
-    "model/gendersense.sysml",
     "model/knowledge.sysml",
     "model/operations.sysml",
     "model/pattern-catalogue.sysml",

@@ -83,6 +83,8 @@ DOMAIN_SOURCES = {
     "cafe": {"model_dirs": [EXERCISES_DIR / "coffeeshop-demonstrator" / "model"]},
     "suds": {"model_dirs": [EXERCISES_DIR / "suds-demonstrator" / "model"]},
     "paws": {"model_dirs": [EXERCISES_DIR / "paws-demonstrator" / "model"]},
+    # S515 (OP-132 step 3, ADR-012): GSL tenant directory.
+    "gsl": {"model_dirs": [EXERCISES_DIR / "gendersense" / "model"]},
 }
 
 EXCLUDE_PATTERNS = ["test-", "spike-"]
