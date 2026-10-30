@@ -1,6 +1,6 @@
 {
-  "modelVersion": "2026-10-29",
-  "generatedAt": "2026-10-29T23:25:10Z",
+  "modelVersion": "2026-10-30",
+  "generatedAt": "2026-10-30T12:04:35Z",
   "generator": "scripts/gen_system_manifest.py",
   "sourceFiles": [
     "model/architectural-structure.sysml",

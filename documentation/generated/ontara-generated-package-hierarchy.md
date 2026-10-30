@@ -1,8 +1,8 @@
 # Ontara Package Hierarchy (Generated)
 
-**Generated:** 2026-03-24 16:35  
+**Generated:** 2026-10-30 12:04  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
-**Total packages:** 74 (excluding root)  
+**Total packages:** 76 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
 
 This document is generated from the SysML model. Do not edit manually.
@@ -11,7 +11,7 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 Ontara Package Hierarchy
-Generated 2026-03-24 16:35 from model/*.sysml (74 packages)
+Generated 2026-10-30 12:04 from model/*.sysml (76 packages)
 
 GenderSense
 ├── Enterprise                    Defines the organisational, regulatory, strategic, and risk context.
@@ -20,18 +20,18 @@ GenderSense
 │   ├── Strategy                  Partnerships, strategic context, ethos and values, — [2 parts]
 │   └── Risk                      Clinical risk management, business continuity, safeguarding — [3 use cases]
 │
-├── Foundation                    Cross-cutting infrastructure that everything else imports.
-│   ├── MetadataLibrary           Metadata definitions for generator configuration and — [2 enums, 15 metadata]
-│   ├── CommonTypes               Shared data types, enumerations, units of measure, and — [3 parts, 27 enums]
-│   ├── StatePatterns             Reusable lifecycle state machine patterns. — [1 states]
-│   └── GenerationPipeline        Generator configurations, template definitions, generation
+├── Foundation                    RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7,
+│   ├── MetadataLibrary           Residual annotation definitions awaiting allocation — [1 enums, 10 metadata]
+│   ├── CommonTypes               Shared data types, enumerations, units of measure, and — [3 parts, 32 enums]
+│   ├── DomainRegistry            Domain identity infrastructure: the formal representation — [2 parts]
+│   └── StatePatterns             Reusable lifecycle state machine patterns. — [1 states]
 │
 ├── Knowledge                     Explicit treatment of knowledge, decision logic, and adaptive
 │   ├── ClinicalDecisionSupport   Decision rules, eligibility criteria, monitoring protocols, — [3 parts, 3 use cases]
 │   ├── ConstraintLibrary         Composable clinical constraints, safety rules, drug — [8 constraints]
 │   ├── LogicEngine               Inference rules, Prolog-style reasoning, deterministic — [21 parts, 4 use cases]
 │   ├── DecisionModels            DMN-style decision tables modelled as SysML part defs — [5 parts, 2 use cases, 1 enums]
-│   ├── OutcomeFramework          Outcome definitions, measurement points, structured outcome — [5 parts, 4 use cases]
+│   ├── OutcomeFramework          Outcome definitions, measurement points, structured outcome — [5 parts, 4 use cases, 4 enums]
 │   ├── LearningCycles            Pathway refinement process, evidence review, change control — [2 use cases]
 │   └── Analytics                 Data contracts for BI and predictive analytics, event stream — [1 parts]
 │
@@ -89,13 +89,16 @@ GenderSense
 │   ├── ActivityModel             Cross-cutting activity taxonomy and costing foundation. — [5 parts, 2 enums]
 │   ├── ResourcePlanning          Defines the resources required to operate the service — [7 parts]
 │   ├── FinancialPlanning         Defines the financial structure of the business: how — [5 parts, 1 enums]
-│   └── GovernanceMapping         General vocabulary for governance traceability. — [1 parts, 1 requirements]
+│   ├── GovernanceMapping         General vocabulary for governance traceability. — [1 parts, 1 requirements]
+│   └── StakeholderModel          The relational boundary of the business: how it — [6 parts]
 │
 ├── BusinessScenarios             Provides the mechanics for driving the business model — [11 parts, 2 enums]
 │
 ├── BusinessStrategy              Strategic direction, business model variants, and — [2 parts, 1 requirements]
 │
-└── PatternCatalogue              Cross-domain concept registry, architectural pattern catalogue, — [3 parts, 4 enums]
+├── PatternCatalogue              Cross-domain concept registry, architectural pattern catalogue, — [3 parts, 4 enums]
+│
+└── ProjectionMetadata            The annotation schema the projection and the generators run on: — [1 enums, 6 metadata]
 
 Libraries (separate from main model):
   TemporalMetadata (libraries/temporal-metadata/temporal-metadata.sysml) — Metadata definitions for Temporal workflow generation. — [4 metadata]
@@ -103,4 +106,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-03-24 16:35 by `gen_package_hierarchy.py`.*
+*Generated 2026-10-30 12:04 by `gen_package_hierarchy.py`.*
