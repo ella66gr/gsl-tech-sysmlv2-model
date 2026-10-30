@@ -2,20 +2,28 @@
 
 ## What This Is
 
-Ontara is a service system development and delivery platform built on SysML v2 and OWL 2 DL. The SysML model and the OWL ontology stack together are the single source of truth for platform structure — generators produce console data, evaluators, ontology files, and other downstream artefacts. The sole developer and architect is Ella Green.
+Ontara is a service system development and delivery platform. The platform model is **one bounded model in two canonical forms** (AC-19, ADR-007): the ontology form (OWL 2 DL / RDF, held in the knowledge graph) and the textual form (the PostgreSQL `ontara` substrate database). The SysML v2 model in this repo is an **engineering projection** of the ontology form: it is authored where its expressiveness wins and generated into OWL, and it is not itself canonical. Generators produce console data, evaluators, ontology files and other downstream artefacts. The sole developer and architect is Ella Green.
 
-Ontara is in its **contraction phase** (from S241), driving toward a v1 working prototype. V1 acceptance is defined in the vault at `02 ONTARA/01 Ontara START HERE/ontara-ref-v1-acceptance.md`. The v1 prototype is a locally-hosted platform running concurrent demonstrator tenants — currently Cafe, Paws, Suds, Ears, and Minds — each able to simulate a period of operation, present band-appropriate user surfaces, and answer queries about its performance. **GSL (GenderSense Limited)** is the production target *post-v1*; it is not a v1 demonstrator.
+The project is in a **steady state, staged by mandate** (AC-17). The current stage is **Plan B Stage 0, the first Cafe build**: the first stage of the Cafe proof. The stage sequence runs Cafe proof → a second tenant → v1 acceptance. Every task is measured by the stage test: *does the Cafe need this to run as a genuine tenant of the platform, at the current stage?* Work that fails it needs Ella's explicit yes before it starts. The programme mandate is the vault document with slug `ontara-ref-gv-programme-mandate`; Stage 0 is specified, step by step, in slug `cafe-plan-b-stage-0-specification`.
+
+V1 (slug `ontara-ref-db-v1-acceptance`) is a locally-hosted platform running plural concurrent tenants (AC-18), listed in the tenant landing register (slug `ontara-ref-db-landing-tenants`): currently Cafe, Paws, Suds, Ears and Minds, each able to simulate a period of operation, present band-appropriate user surfaces, and answer queries about its performance. **GSL (GenderSense Limited)** is the production target *post-v1*; it is not a v1 demonstrator.
+
+**Stage 0 decisions already taken** (S515–S517), which code in this repo must respect:
+
+- The Cafe's runtime runs as its own stack in Docker Compose and **never depends on the Mac's authoring rig** (S516).
+- Runtime state is held as triples in GraphDB; GraphDB's own SHACL validates in the write transaction.
+- MRB mapping rules are SPARQL Update, each held as the body of an RDF rule declaration in the tenant's configured model. Rules are **written in Turtle, in a `rules/` folder beside each tenant's model, not in SysML** (S517). Their declaration vocabulary will live in a shared, OWL-only declared-writer module at PML, named at S0.6 (ADR-014).
 
 ## Architecture in Brief
 
-- **Two meta models:** Business Meta Model (BMM — what a service business *is*) and Service Meta Model (SMM — how a system *works*). They are distinct and connected by explicit mappings. Note: SMM was previously called BSMM (Business System Meta Model). Renamed S92. The SysML section name `bsmm-general-vocabulary` is a structural identifier and stays.
+- **Two meta models:** Business Meta Model (BMM — what a service business *is*) and System Meta Model (SMM — how a system *works*). They are distinct and connected by explicit mappings. Note: SMM was previously called BSMM (Business System Meta Model). Renamed S92. The SysML section name `bsmm-general-vocabulary` is a structural identifier and stays.
 - **Nine layers** (S429 rename; replaces the former eight-stratum terminology — "strata" is retired): OFL (Ontology Foundation Layer) → ODL (Ontology Domain Layer) → PML (Platform Metamodel Layer) → CML (Configured Model Layer) → KRL (Knowledge Representation Layer) → IRL (Internal Reaction Layer, inserted at S429 to house MRB) → SRL (Substrate Reasoning Layer) → BRL (Binding Realisation Layer) → PRL (Platform Realisation Layer). Strengthened A4 (S208–S210) commits the Knowledge Graph as the canonical KRL substrate (B22).
-- **Five v1 demonstrator tenants:** Cafe (coffee shop, full app prior art), Paws (dog grooming), Suds (laundry), Ears (clinical / regulated-care, furthest-progressed clinical demonstrator, W-015), Minds (counselling / professional-body-regulated). Cross-domain validation discipline (J1) requires every BMM concept to validate in at least two demonstrators.
-- **Six BMM concerns:** ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel (sixth concern added S81). 34 BMM General `part def`s.
+- **Demonstrator tenants** (the tenant landing register's current set): Cafe (coffee shop; the existing app is prior art to be audited, not replaced unaudited), Paws (dog grooming), Suds (laundry), Ears (clinical / regulated care), Minds (counselling / professional-body-regulated). Cross-domain validation discipline (J1) requires every BMM concept to validate in at least two demonstrators.
+- **Six BMM concerns:** ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning, GovernanceMapping, StakeholderModel (sixth concern added S81). 34 concern `part def`s sit directly under `BusinessMetamodelGeneral`; the BMM element table holds 53 elements in all, adding `BusinessScenarios`, `BusinessStrategy`, `CanonicalRuntime` and `DomainIdentityTypes`.
 - **Comprehension architecture:** Every BMM General `part def` carries `@CatalogueTag`, `@BfoType`, `@UserFacing`, `@PurposiveDescription`, `@Comprehension`, and `@WeightedRelationship` annotations. 34/34 coverage; 96 weighted relationships. Tenant projections (`paws.sysml`, `minds.sysml`, etc.) carry doc blocks only — annotation semantics are inherited via `:>` and `part` instantiation.
-- **Knowledge graph:** Dual-formalism — SysML v2 for structure, OWL 2 DL for ontological semantics. BFO 2020 as upper ontology, CCO + IAO + PROV-O core subset as mid-level. GraphDB Free as triple store. Three-stratum graph: metamodel / domain / correspondence. Full OWL 2 DL reasoning via HermiT (Robot). Stage 7 Phase 1+2+3 complete — HermiT CONSISTENT. Hand-authored modules: `ontara-governance.ttl`, `ontara-domain.ttl`, `ontara-reasoning.ttl` (42 classes, 15 named individuals, 40 object properties, 10 datatype properties, PROV-O dual subclassing, STAMP/STPA safety structures, FRAM-ready function/variability slots), `ears-reasoning-instances.ttl` (~83 named individuals, S166). 13-file ontology stack. **66-query SPARQL validation suite across 12 groups.** MVP CQC Regulation 12 test individuals validated.
-- **PostgreSQL `ontara` repository** (lives in the vault at `02 ONTARA/db/`): canonical store for concepts, concept relationships, EIL entries, risks, the work tracker (DCR, active work items, OW register), strata, tenants, BMM elements, modelling paradigms, tech stack, and substrate-canonical document content. Surfaced through (a) generated markdown exports (`ontara-ref-glossary.md`, etc.) regenerated on every database write, (b) the **resolver service** at `http://localhost:7310/`, and (c) **substrate documents** rendered from the substrate block tables. Concept additions and changes flow through database migrations or the resolver admin UI, not through markdown edits.
-- **Substrate-canonical documents** (from S290+): a growing class of vault references (architecture papers, BMM main + vocabulary, the V&A reference, and the new Architecture & Principles family) are stored as ProseMirror block trees in the substrate tables (`block`, `block_edge`, `document`, `revision`) and rendered to vault markdown via the resolver. The vault `.md` is the rendered surface; the database is the source of truth. Editing the rendered markdown by hand is a category error; edits flow through the substrate editor (Portal) or build scripts (one-off authoring).
+- **Knowledge graph:** OWL 2 DL is the canonical form for formal axiomatic content (AC-07); SysML v2 is its engineering projection. BFO 2020 as upper ontology, CCO + IAO + PROV-O core subset as mid-level (AC-08). GraphDB as triple store. Full OWL 2 DL reasoning via HermiT (Robot). Hand-authored modules: `ontara-governance.ttl`, `ontara-domain.ttl`, `ontara-reasoning.ttl` (42 classes, 15 named individuals, 40 object properties, 10 datatype properties, PROV-O dual subclassing, STAMP/STPA safety structures, FRAM-ready function/variability slots), `ears-reasoning-instances.ttl` (~83 named individuals, S166). The ontology stack is the set `scripts/reason_kg.py` loads; the SPARQL validation suite is in `scripts/validate_kg.py`.
+- **PostgreSQL `ontara` repository** (lives in the vault at `02 ONTARA/db/`): the textual canonical form (AC-19): concepts, concept relationships, EIL entries, risks, the DCR, the OW register, the harvest register, strata, tenants, BMM elements, modelling paradigms, tech stack, and substrate-canonical document content. **Work items live in Plane (project `OP`), not in the database** (S441). Surfaced through (a) generated markdown exports (the glossary, slug `ontara-ref-rs-glossary`, etc.) regenerated on every database write, (b) the **resolver service** at `http://localhost:7310/`, and (c) **substrate documents** rendered from the substrate block tables. Concept additions and changes flow through database migrations or the resolver admin UI, not through markdown edits.
+- **Substrate-canonical documents** (from S290+): a growing class of vault references (the Architecture & Principles family, the BMM family, the IGF references, the coherence ledger and others) are stored as ProseMirror block trees in the substrate tables (`block`, `block_edge`, `document`, `revision`) and rendered to vault markdown via the resolver. The vault `.md` is the rendered surface; the database is the source of truth. Editing the rendered markdown by hand is a category error; edits flow through the substrate editor (Portal) or build scripts (one-off authoring).
 
 ## Two Repos, Kept Separate
 
@@ -102,10 +110,10 @@ CLAUDE.md                  # this file
 The `ontara` PostgreSQL database lives on the macOS host (Homebrew Postgres 16). Its repository (schema, migrations, queries, resolver service code, exports including build-scripts) is **inside the vault** at `/Users/ellagreen/Obsidian/GenderSense/02 ONTARA/db/`. From inside the SysML repo, the database is reached via:
 
 - **Direct psql** — `psql -d ontara …` (peer auth, no password). Migrations: `psql -d ontara -f path/to/migration.sql`.
-- **Resolver HTTP service** — `http://localhost:7310/`. Public read views (concepts, EIL, risks, work items, OW register, DCR). Token-protected write surface at `/api/{ct}` and `/admin/{ct}`. Token at `02 ONTARA/db/resolver/.ontara-token`.
+- **Resolver HTTP service** — `http://localhost:7310/`. Public read views (concepts, EIL, risks, OW register, DCR, harvest register). Token-protected write surface at `/api/{ct}` and `/admin/{ct}`. Token at `02 ONTARA/db/resolver/.ontara-token`.
 - **Postgres MCP** (when in a Claude Desktop session) — TCP via Docker bridge, used for ad-hoc inspection.
 
-Full reach details and the `pg_hba.conf` setup are in the vault at `02 ONTARA/02 Ontara DEVELOPMENT/Ontara REFERENCE & GUIDES/ontara-ref-guide-db-access.md`. The shell command catalogue (resolver service control, generator commands, console operations) is in the vault at `ontara-ref-guide-shell-commands.md`.
+Full reach details and the `pg_hba.conf` setup are in the vault document with slug `ontara-ref-guide-db-access`. The shell command catalogue (resolver service control, generator commands, console operations) is in slug `ontara-ref-guide-shell-commands`. **Find vault documents by their frontmatter `slug:` line, not by filename** (search with `grep -rl` for `slug: <slug>`): filenames are Ella's to change at any time, and a slug never changes.
 
 ## Substrate, Resolver, and Exporter
 
@@ -132,12 +140,13 @@ db/
 - Restart: `launchctl kickstart -k gui/501/dev.ontara.resolver`.
 - Auth: `X-Ontara-Token: <token>` header for write APIs; cookie auth for the admin UI (set once via `/admin/login`).
 - Surfaces:
-  - `/admin/{ct}` — HTML admin UI for marker-bound content types (concepts, EIL, work items, OW register, DCR, risks, etc.).
-  - `/api/{ct}` — JSON API for the same content types (GET / POST / PATCH / DELETE).
-  - `/v1/documents/{id}/mutations` — substrate write API (createBlock, insertChild, addEdge, removeEdge, patchBlockContent, moveBlock).
+  - `/admin/{ct}` — HTML admin UI for marker-bound content types (concepts, EIL, harvest entries, OW register, DCR, risks, etc.).
+  - `/api/{ct}` — JSON API for the same content types (GET / POST / PATCH / DELETE). `POST /api/{ct}` has no trailing slash: with one it reaches the GET-only list and returns a misleading 405.
+  - `/api/{ct}/{key}/rename` — identity rename (OP-87, ADR-006).
+  - `/v1/documents/{id}/mutations` — substrate write API (createBlock, insertChild, addEdge, removeEdge, patchBlockContent, moveBlock). There is no `deleteBlock`: `removeEdge` detaches a block. The body key is `operations`, with snake_case per-op keys.
   - `/v1/documents/{id}/render?target=vault[&path=...]` — substrate render to vault markdown. When `path=` is omitted, the renderer walks the vault tree and matches `document.slug` against frontmatter `slug:` fields (W-148 / W-149 / S367); renames in Obsidian require zero resolver-side action. When `path=` is supplied, it wins (preserves existing build scripts).
   - `/v1/audit/document-paths` — walks every `document` row and returns `{resolved, missing, ambiguous}` lists for batch path-health checks (W-149).
-- Specs live in `db/resolver/specs/`. Each marker-bound content type has a `*_spec.py` (work_items_spec.py, dcr_spec.py, etc.). Specs declare columns, validation rules, regenerate hooks, and pre-create hooks (e.g. W-code allocation).
+- Specs live in `db/resolver/specs/`. Each marker-bound content type has a `*_spec.py` (concepts_spec.py, dcr_spec.py, etc.). Specs declare columns, validation rules, regenerate hooks, and pre-create hooks (e.g. harvest-code allocation). Spec and exporter edits take effect only after a resolver restart.
 
 ### Marker-bound writes
 
@@ -188,28 +197,29 @@ Build scripts (`db/exports/build-scripts/build_sNNN_*.py`) author substrate docu
 7. Render via `/v1/documents/{slug}/render?target=return` for verification.
 8. Render via `/v1/documents/{slug}/render?target=vault&path=...` for placement.
 
-The S359 W-139 Stage 2 build script (`build_s359_w139_stage2.py`) is the current canonical reference for build script shape.
+`build_s372_arch_diagram.py` is the most complete reference for build script shape. A vault render (`target=vault`) also regenerates every marker section in the rendered file (OP-107, S508).
 
 ### Critical rules
 
 - **Substrate writes go through the resolver, not direct SQL.** The resolver carries reconciliation logic (W-126, W-127) that direct SQL skips.
 - **Marker-bound writes go through the resolver.** Direct SQL on `work_items`, `dcr_rows`, `concepts`, etc. bypasses regen.
 - **`reset_document()` order:** NULL `current_revision_id` BEFORE deleting revisions (FK constraint on `document_current_revision_fk`). The trap: a first run succeeds because no revision row exists yet; the FK violation only surfaces on the second run after mutations have populated `current_revision_id`. Idempotent build scripts must NULL the column first. (S372 surfaced; S373 W-158 back-ported across 12 build scripts.)
-- **PATCH identity-column rejection (S373):** The resolver's `PATCH /api/{ct}/{key}` endpoint rejects attempts to update identity columns with HTTP 400 + structured field error (`"Identity column cannot be updated via PATCH."`). It previously silently no-oped these updates, returning 200 while leaving the database unchanged. To rename a row's identity column (e.g. `stable_filename` on a DCR row), use direct SQL then follow with a PATCH on the new key to trigger regen.
+- **PATCH identity-column rejection (S373):** The resolver's `PATCH /api/{ct}/{key}` endpoint rejects attempts to update identity columns with HTTP 400 + structured field error (`"Identity column cannot be updated via PATCH."`). It previously silently no-oped these updates, returning 200 while leaving the database unchanged. To rename a row's identity column (e.g. `stable_filename` on a DCR row), use `POST /api/{ct}/{key}/rename` (OP-87, ADR-006), which fires the regen hook. Do not rename by direct SQL.
+- **Read before you PATCH a free-text field.** A PATCH replaces each field it names; carry over anything worth keeping.
 - **Adjacent same-mark inline runs in a paragraph** (e.g. two `code` runs back-to-back) trigger a `<!--/-->` separator from the renderer (W-S346). Merge them into a single run with the combined text.
 - **Render `target='vault'`** resolves the output path either from the `path=` query param or from `document.slug` matched against frontmatter `slug:` in the vault (W-148 / W-149 / S367). Substrate document identity is by slug; renaming a file in Obsidian requires zero resolver-side action — the next render finds it by slug. New build scripts omit `path=`. The legacy `_substrate-rendered/` staging directory is retired.
-- **Work-item codes are allocated server-side** from the `w_item_sequence` counter via the `work_items_spec` pre-create hook. Omit the `code` field on POST; the resolver fills it. Never reuse codes from deleted items.
+- **Work items live in Plane** (project `OP`, items `OP-NN`). The legacy `work_items` content type left behind at S441 is awaiting retirement (OP-129); do not write to it.
 
 ## Tech Stack
 
 - **Console:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4. Package manager: pnpm. Dev port: 5173. **Navigation infrastructure (S133):** `NavigationStore` in `$lib/stores/navigation.svelte.ts` with `NavigationProvider`, `NavLink`, `Breadcrumb`. Routes opt in incrementally — see `$lib/types/navigation.ts` for the `PageStateContract`. The console currently has 12 routes: Home, Architecture, Catalogue, Coverage, Domains, Glossary, Governance, Meta-Model, Ontology, Packages, Patterns, Relationships.
 - **Portal:** SvelteKit + Svelte 5 (runes) + Flowbite Svelte + Tailwind v4 + SQLite (better-sqlite3) + bcryptjs. Package manager: pnpm. Dev port: 5174. Warm teal theme distinct from console's cool slate. 10 module definitions (6 business + 2 generative + 2 analytical). Database `portal/data/portal.db` is auto-created and gitignored. Routes: `(app)/` group for authenticated pages, auth pages at root level. **Portal constraints:** (1) Pure logic shared between server and client must go in `$lib/modules/`, not `$lib/server/` (SvelteKit enforces `$lib/server/` as server-only — OW-19). (2) Client-only APIs (`localStorage`, `document`) must use `$effect` + `browser` guard from `$app/environment` (OW-20). (3) Svelte 5 `{@const}` must be a direct child of logic blocks — use `$derived` in script block or `{@const}` directly inside `{#if}` / `{#each}` / `{#snippet}` (OW-25). (4) When changing the SQLite schema, stop the dev server and delete all three files (`portal.db`, `portal.db-shm`, `portal.db-wal`) before restarting (OW-21).
-- **Cafe Demonstrator** (`exercises/coffeeshop-demonstrator/`): SvelteKit + Temporal (workflow engine) + EHRbase (CDR) + PostgreSQL. pnpm workspace monorepo with packages: web, temporal, shared.
+- **Cafe Demonstrator** (`exercises/coffeeshop-demonstrator/`): SvelteKit + Temporal (workflow engine) + EHRbase (CDR) + PostgreSQL. pnpm workspace monorepo with packages: web, temporal, shared. This app is prior art; the Stage 0 build follows the Stage 0 specification, not the app's existing structure.
 - **Generators:** Python 3. Standard library for introspection generator. OWL pipeline requires `rdflib` and `PyYAML` (`pip3 install rdflib PyYAML`).
-- **Knowledge graph:** GraphDB Free 10.x (local Java app, port 7200). Robot (wraps HermiT, `tools/robot.jar`) for OWL 2 DL consistency checking. BFO 2020 + CCO 2.0 + IAO + PROV-O (core subset) as imported ontologies. Reasoning runtime ~20 minutes against the 13-file stack.
+- **Knowledge graph:** GraphDB Free 10.x (local Java app, port 7200). Robot (wraps HermiT, `tools/robot.jar`) for OWL 2 DL consistency checking. BFO 2020 + CCO 2.0 + IAO + PROV-O (core subset) as imported ontologies. A full reasoning run takes around 20 minutes.
 - **Resolver / database:** Local Homebrew PostgreSQL 16. The resolver is a FastAPI service auto-started via launchd (LaunchAgent at `~/Library/LaunchAgents/dev.ontara.resolver.plist`). Substrate write engine, marker-bound spec engine, and admin UI all in `db/resolver/`.
 - **Substrate editor:** Portal hosts the substrate editor at `http://localhost:5174/substrate/{slug}` (TipTap + ProseMirror). Used for in-browser editing of substrate-canonical documents.
-- **Model editing:** Syside Modeler (VS Code extension for SysML v2). Claude cannot run Syside — only Ella can verify SysML parses.
+- **Model editing:** the free Syside Editor (VS Code extension `sensmetry.syside-editor`), which replaced Syside Modeler at S491; there is no Automator API or CLI. Claude cannot run the editor — only Ella can verify SysML parses in it. `scripts/check_package_direction.sh` is the scripted structural check.
 
 ## Console Commands
 
@@ -291,7 +301,7 @@ python3 scripts/diff_kg.py --verbose
 python3 scripts/diff_kg.py --json-only
 
 # OWL 2 DL Reasoning (requires Java + tools/robot.jar — does NOT require GraphDB)
-python3 scripts/reason_kg.py                       # Reason over full 13-file ontology stack
+python3 scripts/reason_kg.py                       # Reason over the full ontology stack
 python3 scripts/reason_kg.py --test-violation      # Inject contradiction, confirm reasoner catches it
 python3 scripts/reason_kg.py --save-summary        # Save reasoning-summary.json (uses rdflib, no GraphDB)
 ```
@@ -305,7 +315,7 @@ python3 scripts/reason_kg.py --save-summary        # Save reasoning-summary.json
 - `gen_model_introspection.py` — reads SysML, writes JSON. No GraphDB dependency.
 - Console / portal dev servers — read static JSON, not GraphDB.
 
-**Resolver service** (localhost:7310) is required for: writes to PostgreSQL-canonical content (concepts, EIL, work tracker, OW register, DCR, risks), substrate document mutations, and marker regeneration. Auto-started on login; status checks via `curl http://localhost:7310/healthz`.
+**Resolver service** (localhost:7310) is required for: writes to PostgreSQL-canonical content (concepts, EIL, harvest register, OW register, DCR, risks), substrate document mutations, and marker regeneration. Auto-started on login; status checks via `curl http://localhost:7310/healthz`.
 
 If a task instruction says "run reason_kg.py --save-summary", do NOT attempt to load GraphDB or run validate_kg.py unless explicitly instructed. These are independent operations.
 
@@ -343,16 +353,18 @@ cd console && pnpm refresh-data
 
 - **Co-evolution (J2):** Never add model content without tooling to make it legible. Never build tooling without model content to exercise it.
 - **Non-constraining (J3):** Decisions should not foreclose future development paths.
-- **Model generates everything (A3):** SysML is the single source of truth for structure; OWL ontology stack is the canonical form for ontological semantics. Generated artefacts are derived, not authoritative.
+- **Model generates everything (A3):** the canonical model — OWL 2 DL in the knowledge graph, with a SysML engineering projection for the parts that are projectable — is the single source of truth for generated artefacts. Generated code, documentation, configuration and console data are derived, not authoritative.
 - **Cross-domain validation (J1):** New BMM concepts must validate in at least two demonstrators.
 - **Discipline as load-bearing structure (A9):** Workflow practices propagate reliability through the platform. Skipping a step is not saving time — it is introducing structural risk.
-- **Contraction default (S241):** During contraction, the default response to an emergent possibility is capture in the EIL, not divert landing work. New features must be justified against "does this block landing?" not "is this architecturally interesting?"
+- **The stage test (AC-17, programme mandate):** work is measured by whether the Cafe needs it to run as a genuine tenant at the current stage. An emergent possibility is captured in the EIL, not allowed to divert stage work. A Cafe-specific shortcut must not pass as platform-general (A13: only the metamodels are core).
 
 ## Commit Convention
 
 - **Code commits at the end of a task** with a descriptive commit message, unless Ella has asked to review before committing. Do not leave uncommitted changes for Ella to commit manually.
 - Commit messages reference the session number: `Session NN: description of changes`
 - The vault repo and the SysML repo are committed independently. Vault material in vault repo, SysML repo material here. Ella drives the vault commit; Claude Code may handle the SysML repo commit.
+- **Stage only the files your task changed** (`git add <path>`, never `git add -A`). **Never stage `documentation/reference/`**: those files are Ella's.
+- **In a multi-agent (Pattern A) brief, only the orchestrator commits** to a shared repository; specialists return their changes uncommitted.
 
 ## Ontara Toolkit
 
@@ -380,7 +392,7 @@ The Obsidian CLI (v1.12+, GA) provides terminal control of the running Obsidian 
 
 **Prerequisites:** Obsidian must be running. CLI enabled in Settings → General. The vault parameter must come first.
 
-**Full reference:** See the `/vault` skill (`.claude/skills/vault/SKILL.md`) for complete command reference, and the vault's CLI reference document (`ontara-ref-guide-obsidian-cli-commands.md`) for the comprehensive command catalogue.
+**Full reference:** See the `/vault` skill (`.claude/skills/vault/SKILL.md`) for complete command reference, and the vault's CLI reference document (slug `ontara-ref-guide-obsidian-cli-commands`) for the comprehensive command catalogue.
 
 ### Core commands
 
@@ -449,7 +461,7 @@ This goes through Obsidian's API so wikilinks are updated. Allow 1 second betwee
 - Ontara content root: `02 ONTARA/`
 - File paths are relative to vault root; `.md` extension usually optional
 - Always use `obsidian move` instead of raw `mv` — the CLI preserves wikilinks
-- All vault documents must use `[[filename|display text]]` wikilinks — no plain text vault references
+- Vault documents use `[[slug|display text]]` wikilinks — no plain text vault references. Links target the slug, which never changes; the resolver resolves it to the current filename at render (OP-127, OP-128).
 
 ---
 
@@ -466,4 +478,4 @@ This goes through Obsidian's API so wikilinks are updated. Allow 1 second betwee
 
 ---
 
-*CLAUDE.md updated S359 (substrate / resolver / exporter section added; resolver commands added; marker regen commands added; substrate-canonical document class noted in Architecture in Brief). Tooling guide reference: vault `02 ONTARA/02 Ontara DEVELOPMENT/Ontara REFERENCE & GUIDES/ontara-ref-guide-using-claude-tools.md` v2 (S359). DCR threshold 20 sessions. S431 housekeeping pass: nine-layer stack (OFL–PRL, S429) corrected from stale eight-strata text; layer-and-side locus terminology updated; resolver port verified at 7310.*
+*CLAUDE.md updated S359 (substrate / resolver / exporter section added; resolver commands added; marker regen commands added; substrate-canonical document class noted in Architecture in Brief). Tooling guide reference: vault slug `ontara-ref-guide-using-claude-tools`. DCR threshold 20 sessions. S431 housekeeping pass: nine-layer stack (OFL–PRL, S429) corrected from stale eight-strata text; layer-and-side locus terminology updated; resolver port verified at 7310. S516 (OP-132): repository layout, model files, package-direction check and General / Domain / tenant convention follow ADR-012. S517 currency pass: two canonical forms with SysML as projection (AC-19); steady state staged by mandate, current stage Plan B Stage 0, with the Stage 0 decisions taken so far (AC-17); tenants per the landing register (AC-18); BMM element counts; work items in Plane; resolver rename, no-trailing-slash and render-regeneration notes; Syside Editor in place of Modeler (S491); commit staging rules; slug-based vault references.*
