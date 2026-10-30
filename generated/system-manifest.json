@@ -1,6 +1,6 @@
 {
   "modelVersion": "2026-10-30",
-  "generatedAt": "2026-10-30T15:35:14Z",
+  "generatedAt": "2026-10-30T15:42:10Z",
   "generator": "scripts/gen_system_manifest.py",
   "sourceFiles": [
     "model/architectural-structure.sysml",
@@ -12,6 +12,7 @@
     "model/system-metamodel-general.sysml",
     "exercises/gendersense/model/gendersense.sysml",
     "exercises/gendersense/model/gsl-business-model.sysml",
+    "exercises/gendersense/model/gsl-domain-registration.sysml",
     "exercises/gendersense/model/gsl-enterprise.sysml",
     "exercises/gendersense/model/gsl-knowledge.sysml",
     "exercises/gendersense/model/gsl-operations.sysml",

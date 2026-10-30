@@ -2,7 +2,7 @@
 <opml version="2.0">
   <head>
     <title>Ontara Package Hierarchy</title>
-    <dateCreated>2026-10-30 15:35</dateCreated>
+    <dateCreated>2026-10-30 15:42</dateCreated>
   </head>
   <body>
     <outline text="Ontara — Model-driven service system development and delivery platform">
@@ -13,8 +13,7 @@
         <outline text="Risk  — Clinical risk management, business continuity, safeguarding  [3 use cases]" _note="gsl-enterprise.sysml:272"/>
       </outline>
       <outline text="Foundation  — RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7," _note="foundation.sysml:5">
-        <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [2 parts, 11 enums]" _note="foundation.sysml:32"/>
-        <outline text="DomainRegistry  — Domain identity infrastructure: the formal representation  [2 parts]" _note="foundation.sysml:305"/>
+        <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [2 parts, 4 enums]" _note="foundation.sysml:32"/>
       </outline>
       <outline text="SystemMetamodelGeneral  — The system metamodel, General layer: how the platform evaluates," _note="system-metamodel-general.sysml:12">
         <outline text="ProcessAnnotations  — General annotations on process steps: consent and audit  [1 enums, 6 metadata]" _note="system-metamodel-general.sysml:24"/>
@@ -27,6 +26,7 @@
         <outline text="Analytics  — Data contracts for BI and predictive analytics, event stream  [1 parts]" _note="system-metamodel-general.sysml:1637"/>
         <outline text="Persistence  — Persistence architecture types: where a domain concept is  [1 parts, 2 enums]" _note="system-metamodel-general.sysml:1655"/>
         <outline text="OpenEhrIntegration  — Clinical record layer: openEHR CDR (EHRbase).  [5 parts, 4 use cases, 3 metadata]" _note="system-metamodel-general.sysml:1734"/>
+        <outline text="DomainConfigurationTypes  — Domain configuration: how the platform discovers, organises,  [1 parts]" _note="system-metamodel-general.sysml:1989"/>
       </outline>
       <outline text="GslOperations  — Back office and growth functions." _note="exercises/gendersense/model/gsl-operations.sysml:5">
         <outline text="Finance  — Operational accounting: invoice processing, payment  [1 parts, 4 use cases]" _note="gsl-operations.sysml:33"/>
@@ -90,11 +90,13 @@
         <outline text="BusinessScenarios  — Provides the mechanics for driving the business model  [11 parts, 2 enums]" _note="business-metamodel-general.sysml:2054"/>
         <outline text="BusinessStrategy  — Strategic direction, business model variants, and  [2 parts, 1 requirements]" _note="business-metamodel-general.sysml:2237"/>
         <outline text="CanonicalRuntime  — BMM General canonical-runtime vocabulary.  [4 parts, 3 enums]" _note="business-metamodel-general.sysml:2401"/>
+        <outline text="DomainIdentityTypes  — Domain identity: what kind of service business a tenant is,  [1 parts, 7 enums]" _note="business-metamodel-general.sysml:2742"/>
       </outline>
       <outline text="PatternCatalogue  — Cross-domain concept registry, architectural pattern catalogue,  [3 parts, 4 enums]" _note="pattern-catalogue.sysml:17"/>
       <outline text="ProjectionMetadata  — The annotation schema the projection and the generators run on:  [1 enums, 6 metadata]" _note="projection-metadata.sysml:18"/>
       <outline text="SystemMetamodelDomainClinical  — System-side metamodel vocabulary that is clinical by meaning  [1 metadata]" _note="system-metamodel-domain-clinical.sysml:12"/>
       <outline text="GslBusinessModel  — GenderSense Limited business model: concrete customer segments," _note="exercises/gendersense/model/gsl-business-model.sysml:12"/>
+      <outline text="GslDomainRegistration" _note="exercises/gendersense/model/gsl-domain-registration.sysml:11"/>
       <outline text="GslKnowledge  — GenderSense Limited clinical knowledge: the hormone-therapy" _note="exercises/gendersense/model/gsl-knowledge.sysml:14">
         <outline text="HormoneTherapyTypes  — Enumerations for the hormone-therapy decision tables.  [9 enums]" _note="gsl-knowledge.sysml:26"/>
         <outline text="ConstraintLibrary  — Composable clinical constraints, safety rules, drug  [8 constraints]" _note="gsl-knowledge.sysml:125"/>

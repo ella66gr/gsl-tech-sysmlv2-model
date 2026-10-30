@@ -1055,3 +1055,48 @@ package PawsCanonicalRuntime {
     }
 }
 
+// =========================================================================
+// PAWS DOMAIN REGISTRATION — tenant domain registration
+// =========================================================================
+//
+// OP-132 step 10 (S515, ADR-012 group H). The DomainIdentity (BMG) and
+// DomainConfiguration (SMG) instances for this tenant, formerly in
+// Foundation's DomainRegistry. The pair is linked one way, from the
+// configuration to the identity (Action 2).
+// =========================================================================
+
+package PawsDomainRegistration {
+    private import BusinessMetamodelGeneral::DomainIdentityTypes::*;
+    private import SystemMetamodelGeneral::DomainConfigurationTypes::*;
+
+    // --- Paws (Dog Grooming) ------------------------------------
+
+    part pawsIdentity : DomainIdentity {
+        doc /* Pedagogical anchoring and cross-domain validation
+             * domain — appointment-based dog grooming service.
+             * Dual purpose (S142-D6): simple enough to introduce
+             * concepts, different enough to validate generalisation.
+             * Breed/size surcharges. Locally licensed (Animal
+             * Welfare Act duties; some local authorities require
+             * grooming-specific licences). */
+
+        attribute :>> regulatoryShape = RegulatoryShape::locallyLicensed;
+        attribute :>> bmmVocabularyScope = BmmVocabularyScope::generalOnly;
+        attribute :>> domainPurpose = (DomainPurpose::pedagogicalAnchoring, DomainPurpose::crossDomainValidation);
+        attribute :>> jurisdiction = Jurisdiction::england;
+        attribute :>> organisationalForm = OrganisationalForm::registeredIndividual;
+        attribute :>> authorisationRequiredToTrade = false;
+        attribute :>> description = "Pedagogical anchoring and cross-domain validation domain — appointment-based dog grooming. Breed/size surcharges.";
+        attribute :>> introducedSession = 43;
+    }
+
+    part pawsConfiguration : DomainConfiguration {
+        attribute :>> canonicalKey = "paws";
+        attribute :>> displayLabel = "Paws";
+        attribute :>> fullName = "Paws (Dog Grooming)";
+        attribute :>> packageName = "PawsBusinessModel";
+        attribute :>> modelPath = "exercises/paws-demonstrator/model";
+        attribute :>> isActive = true;
+        ref :>> domainIdentity = pawsIdentity;
+    }
+}

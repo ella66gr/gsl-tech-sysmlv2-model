@@ -1,31 +1,31 @@
 {
-  "generatedAt": "2026-10-30T15:35:14.156188",
+  "generatedAt": "2026-10-30T15:42:10.003277",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 277
+      "elementCount": 269
     },
     "cafe": {
       "label": "Cafe",
       "description": "Cafe demonstrator \u2014 reference validation domain",
-      "elementCount": 125
+      "elementCount": 127
     },
     "suds": {
       "label": "Suds",
       "description": "Laundry service demonstrator \u2014 cross-domain validation",
-      "elementCount": 67
+      "elementCount": 69
     },
     "paws": {
       "label": "Paws",
       "description": "Dog grooming demonstrator \u2014 appointment-based service validation",
-      "elementCount": 80
+      "elementCount": 82
     },
     "gsl": {
       "label": "GSL",
       "description": "GenderSense Limited \u2014 production tenant",
-      "elementCount": 256
+      "elementCount": 258
     }
   },
   "summary": {
@@ -43,16 +43,16 @@
     },
     "byLayer": {
       "smm": 196,
-      "unknown": 69,
+      "unknown": 61,
       "bmm": 74,
-      "domain": 466
+      "domain": 474
     },
     "byDomain": {
-      "core": 277,
-      "cafe": 125,
-      "suds": 67,
-      "paws": 80,
-      "gsl": 256
+      "core": 269,
+      "cafe": 127,
+      "suds": 69,
+      "paws": 82,
+      "gsl": 258
     },
     "bfoTypeCoverage": 38
   },
@@ -4664,7 +4664,7 @@
     "DomainIdentity": {
       "name": "DomainIdentity",
       "layer": "bmm",
-      "package": "DomainRegistry",
+      "package": "DomainIdentityTypes",
       "doc": "Business Meta Model concept.\nThe business identity of a domain: what kind of service\nbusiness it is, what regulatory environment it operates\nin, and why it exists in the platform.\nIn the dual-stack ar",
       "catalogueTag": {},
       "userFacing": {},
@@ -4673,54 +4673,28 @@
       "weightedRelationships": [],
       "bfoType": {},
       "domains": {
-        "core": [
+        "cafe": [
           {
             "name": "cafeIdentity",
-            "package": "DomainRegistry"
-          },
+            "package": "CoffeeShopDomainRegistration"
+          }
+        ],
+        "suds": [
           {
             "name": "sudsIdentity",
-            "package": "DomainRegistry"
-          },
+            "package": "SudsDomainRegistration"
+          }
+        ],
+        "paws": [
           {
             "name": "pawsIdentity",
-            "package": "DomainRegistry"
-          },
+            "package": "PawsDomainRegistration"
+          }
+        ],
+        "gsl": [
           {
             "name": "gslIdentity",
-            "package": "DomainRegistry"
-          }
-        ]
-      }
-    },
-    "DomainConfiguration": {
-      "name": "DomainConfiguration",
-      "layer": "smm",
-      "package": "DomainRegistry",
-      "doc": "System Meta Model concept.\nThe system configuration for a domain: how the platform\ndiscovers, organises, presents, and manages this domain.\nConnected to DomainIdentity via horizontal mapping.\nChanges ",
-      "catalogueTag": {},
-      "userFacing": {},
-      "purposiveDescription": {},
-      "comprehension": {},
-      "weightedRelationships": [],
-      "bfoType": {},
-      "domains": {
-        "core": [
-          {
-            "name": "cafeConfiguration",
-            "package": "DomainRegistry"
-          },
-          {
-            "name": "sudsConfiguration",
-            "package": "DomainRegistry"
-          },
-          {
-            "name": "pawsConfiguration",
-            "package": "DomainRegistry"
-          },
-          {
-            "name": "gslConfiguration",
-            "package": "DomainRegistry"
+            "package": "GslDomainRegistration"
           }
         ]
       }
@@ -5815,6 +5789,44 @@
       "weightedRelationships": [],
       "bfoType": {},
       "domains": {}
+    },
+    "DomainConfiguration": {
+      "name": "DomainConfiguration",
+      "layer": "smm",
+      "package": "DomainConfigurationTypes",
+      "doc": "System Meta Model concept.\nThe system configuration for a domain: how the platform\ndiscovers, organises, presents, and manages this domain.\nConnected to DomainIdentity via horizontal mapping.\nChanges ",
+      "catalogueTag": {},
+      "userFacing": {},
+      "purposiveDescription": {},
+      "comprehension": {},
+      "weightedRelationships": [],
+      "bfoType": {},
+      "domains": {
+        "cafe": [
+          {
+            "name": "cafeConfiguration",
+            "package": "CoffeeShopDomainRegistration"
+          }
+        ],
+        "suds": [
+          {
+            "name": "sudsConfiguration",
+            "package": "SudsDomainRegistration"
+          }
+        ],
+        "paws": [
+          {
+            "name": "pawsConfiguration",
+            "package": "PawsDomainRegistration"
+          }
+        ],
+        "gsl": [
+          {
+            "name": "gslConfiguration",
+            "package": "GslDomainRegistration"
+          }
+        ]
+      }
     },
     "UserAccount": {
       "name": "UserAccount",
@@ -10633,7 +10645,6 @@
           "authorisationRequiredToTrade": false,
           "description": "Reference validation domain \u2014 original demonstrator. Immediate retail service with walk-in customers and 2-minute fulfilment cycle.",
           "introducedSession": 1,
-          "domainConfiguration": "cafeConfiguration",
           "_partName": "cafeIdentity"
         },
         "configuration": {
@@ -10657,15 +10668,14 @@
           "authorisationRequiredToTrade": false,
           "description": "Cross-domain validation domain \u2014 batch processing laundry service. Weight/type pricing, COSHH governance chain.",
           "introducedSession": 16,
-          "domainConfiguration": "sudsConfiguration",
           "_partName": "sudsIdentity"
         },
         "configuration": {
           "canonicalKey": "suds",
           "displayLabel": "Suds",
           "fullName": "Suds (Laundry Service)",
-          "packageName": "SudsLaundry",
-          "modelPath": "exercises/suds-demonstrator",
+          "packageName": "SudsBusinessModel",
+          "modelPath": "exercises/suds-demonstrator/model",
           "isActive": true,
           "domainIdentity": "sudsIdentity",
           "_partName": "sudsConfiguration"
@@ -10684,15 +10694,14 @@
           "authorisationRequiredToTrade": false,
           "description": "Pedagogical anchoring and cross-domain validation domain \u2014 appointment-based dog grooming. Breed/size surcharges.",
           "introducedSession": 43,
-          "domainConfiguration": "pawsConfiguration",
           "_partName": "pawsIdentity"
         },
         "configuration": {
           "canonicalKey": "paws",
           "displayLabel": "Paws",
           "fullName": "Paws (Dog Grooming)",
-          "packageName": "PawsGrooming",
-          "modelPath": "exercises/paws-demonstrator",
+          "packageName": "PawsBusinessModel",
+          "modelPath": "exercises/paws-demonstrator/model",
           "isActive": true,
           "domainIdentity": "pawsIdentity",
           "_partName": "pawsConfiguration"
@@ -10716,7 +10725,6 @@
           "authorisationRequiredToTrade": true,
           "description": "Production domain \u2014 GenderSense Limited. Private gender-affirming healthcare service. First production tenant.",
           "introducedSession": 8,
-          "domainConfiguration": "gslConfiguration",
           "_partName": "gslIdentity"
         },
         "configuration": {
@@ -10724,7 +10732,7 @@
           "displayLabel": "GSL",
           "fullName": "GenderSense Limited",
           "packageName": "GenderSense",
-          "modelPath": "exercises/gendersense",
+          "modelPath": "exercises/gendersense/model",
           "isActive": true,
           "domainIdentity": "gslIdentity",
           "_partName": "gslConfiguration"
@@ -18712,6 +18720,293 @@
     },
     {
       "kind": "enum_def",
+      "name": "RegulatoryShape",
+      "parentPackage": "DomainIdentityTypes",
+      "doc": "Five-value kind-based classification of the principal\ngovernance frame applicable to a service business.\nNames what governs the business, not how much.\nMutually exclusive and exhaustive for the principal\nregulatory frame; nuance carried on orthogonal\nsupporting attributes (authorisationRequiredToTra",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2764,
+      "attributes": [
+        {
+          "name": "generallyGoverned"
+        },
+        {
+          "name": "locallyLicensed"
+        },
+        {
+          "name": "professionalBodyRegulated"
+        },
+        {
+          "name": "statutoryProfessionRegulated"
+        },
+        {
+          "name": "sectorRegulated"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "ProfessionalBody",
+      "parentPackage": "DomainIdentityTypes",
+      "doc": "Closed enum of recognised professional bodies whose\nregistration or membership constitutes part of a\ntenant's regulatory shape. Used on the\nDomainIdentity.professionalRegistrations multi-valued\nattribute. Each entry carries an implicit category\n(statutory or membership-based) \u2014 see the value\ndescrip",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2821,
+      "attributes": [
+        {
+          "name": "gmc"
+        },
+        {
+          "name": "nmc"
+        },
+        {
+          "name": "hcpc"
+        },
+        {
+          "name": "gphc"
+        },
+        {
+          "name": "gdc"
+        },
+        {
+          "name": "gosc"
+        },
+        {
+          "name": "gcc"
+        },
+        {
+          "name": "goc"
+        },
+        {
+          "name": "bacp"
+        },
+        {
+          "name": "ukcp"
+        },
+        {
+          "name": "icf"
+        },
+        {
+          "name": "bps"
+        },
+        {
+          "name": "bcsh"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "BmmVocabularyScope",
+      "parentPackage": "DomainIdentityTypes",
+      "doc": "Which subset of the Business Meta Model vocabulary\na domain instantiates.\ngeneralOnly: uses only General-level BMM elements.\nfull: uses both General and Tailored elements.\nproduction: full vocabulary plus production-grade\n  governance, audit, and operational requirements.\nBusiness meta model concept",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2874,
+      "attributes": [
+        {
+          "name": "generalOnly"
+        },
+        {
+          "name": "full"
+        },
+        {
+          "name": "production"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "DomainPurpose",
+      "parentPackage": "DomainIdentityTypes",
+      "doc": "Why a domain exists in the Ontara platform.\nA domain may have multiple purposes (e.g. Paws is\nboth pedagogicalAnchoring and crossDomainValidation).\nreferenceValidation: the original demonstrator domain\n  against which patterns are first developed.\ncrossDomainValidation: validates that meta model\n  c",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2889,
+      "attributes": [
+        {
+          "name": "referenceValidation"
+        },
+        {
+          "name": "crossDomainValidation"
+        },
+        {
+          "name": "pedagogicalAnchoring"
+        },
+        {
+          "name": "production"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "Jurisdiction",
+      "parentPackage": "DomainIdentityTypes",
+      "doc": "Territorial jurisdiction for governance framework\napplicability. Based on UK devolution structure \u2014 the\nprimary governance frameworks Ontara supports have\njurisdiction-specific scope. Extensible as the platform\nsupports non-UK jurisdictions.\nBusiness meta model concept. Domain identity (B15).\nSessio",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2911,
+      "attributes": [
+        {
+          "name": "england"
+        },
+        {
+          "name": "scotland"
+        },
+        {
+          "name": "wales"
+        },
+        {
+          "name": "northernIreland"
+        },
+        {
+          "name": "unitedKingdom"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "RegulatedActivity",
+      "parentPackage": "DomainIdentityTypes",
+      "doc": "Activities regulated by CQC under the Health and Social\nCare Act 2008. A service providing any of these must be\nregistered with CQC. Used during governance framework\nactivation to determine directive applicability.\nSource: HSCA 2008 (Regulated Activities) Regulations 2014,\nSchedule 1.\nBusiness meta ",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2927,
+      "attributes": [
+        {
+          "name": "personalCare"
+        },
+        {
+          "name": "accommodationForPersonsRequiringNursingOrPersonalCare"
+        },
+        {
+          "name": "accommodationForPersonsRequiringTreatmentForSubstanceMisuse"
+        },
+        {
+          "name": "treatment"
+        },
+        {
+          "name": "assessmentOrMedicalTreatmentForPersonsDetainedUnderMentalHealthAct"
+        },
+        {
+          "name": "surgicalProcedures"
+        },
+        {
+          "name": "diagnosticAndScreeningProcedures"
+        },
+        {
+          "name": "managementOfSupplyOfBloodAndBloodDerivedProducts"
+        },
+        {
+          "name": "transportServicesTimedAndUntimed"
+        },
+        {
+          "name": "maternity"
+        },
+        {
+          "name": "terminationOfPregnancies"
+        },
+        {
+          "name": "familyPlanning"
+        },
+        {
+          "name": "nursingCare"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "OrganisationalForm",
+      "parentPackage": "DomainIdentityTypes",
+      "doc": "The legal/organisational form of a service provider.\nSome governance directives apply only to specific forms\n(e.g. \"body corporate\" provisions in CQC regulations).\nSource: CQC registration requirements; Companies Act 2006.\nBusiness meta model concept. Domain identity (B15).\nSession 142 (S142-D7).",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2953,
+      "attributes": [
+        {
+          "name": "registeredIndividual"
+        },
+        {
+          "name": "partnership"
+        },
+        {
+          "name": "organisation"
+        },
+        {
+          "name": "bodyCorporate"
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "DomainIdentity",
+      "parentPackage": "DomainIdentityTypes",
+      "doc": "Business Meta Model concept.\nThe business identity of a domain: what kind of service\nbusiness it is, what regulatory environment it operates\nin, and why it exists in the platform.\nIn the dual-stack architecture, DomainIdentity is the\nBMM-side of domain identity. The SMM-side is\nDomainConfiguration, ",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2968,
+      "attributes": [
+        {
+          "name": "regulatoryShape",
+          "type": "RegulatoryShape",
+          "isRedefinition": false
+        },
+        {
+          "name": "bmmVocabularyScope",
+          "type": "BmmVocabularyScope",
+          "isRedefinition": false
+        },
+        {
+          "name": "domainPurpose",
+          "type": "DomainPurpose[1..*]",
+          "isRedefinition": false
+        },
+        {
+          "name": "jurisdiction",
+          "type": "Jurisdiction",
+          "isRedefinition": false
+        },
+        {
+          "name": "regulatedActivities",
+          "type": "RegulatedActivity[0..*]",
+          "isRedefinition": false
+        },
+        {
+          "name": "professionalRegistrations",
+          "type": "ProfessionalBody[0..*]",
+          "isRedefinition": false
+        },
+        {
+          "name": "organisationalForm",
+          "type": "OrganisationalForm",
+          "isRedefinition": false
+        },
+        {
+          "name": "authorisationRequiredToTrade",
+          "type": "Boolean",
+          "isRedefinition": false
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "introducedSession",
+          "type": "Integer",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
       "name": "Gender",
       "parentPackage": "CommonTypes",
       "doc": "Gender identity as recorded for clinical purposes.",
@@ -18873,739 +19168,6 @@
           "name": "preferredMethod",
           "type": "ContactMethod",
           "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "RegulatoryShape",
-      "parentPackage": "CommonTypes",
-      "doc": "Five-value kind-based classification of the principal\ngovernance frame applicable to a service business.\nNames what governs the business, not how much.\nMutually exclusive and exhaustive for the principal\nregulatory frame; nuance carried on orthogonal\nsupporting attributes (authorisationRequiredToTra",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "bmm",
-      "lineNumber": 100,
-      "attributes": [
-        {
-          "name": "generallyGoverned"
-        },
-        {
-          "name": "locallyLicensed"
-        },
-        {
-          "name": "professionalBodyRegulated"
-        },
-        {
-          "name": "statutoryProfessionRegulated"
-        },
-        {
-          "name": "sectorRegulated"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "ProfessionalBody",
-      "parentPackage": "CommonTypes",
-      "doc": "Closed enum of recognised professional bodies whose\nregistration or membership constitutes part of a\ntenant's regulatory shape. Used on the\nDomainIdentity.professionalRegistrations multi-valued\nattribute. Each entry carries an implicit category\n(statutory or membership-based) \u2014 see the value\ndescrip",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "bmm",
-      "lineNumber": 157,
-      "attributes": [
-        {
-          "name": "gmc"
-        },
-        {
-          "name": "nmc"
-        },
-        {
-          "name": "hcpc"
-        },
-        {
-          "name": "gphc"
-        },
-        {
-          "name": "gdc"
-        },
-        {
-          "name": "gosc"
-        },
-        {
-          "name": "gcc"
-        },
-        {
-          "name": "goc"
-        },
-        {
-          "name": "bacp"
-        },
-        {
-          "name": "ukcp"
-        },
-        {
-          "name": "icf"
-        },
-        {
-          "name": "bps"
-        },
-        {
-          "name": "bcsh"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "BmmVocabularyScope",
-      "parentPackage": "CommonTypes",
-      "doc": "Which subset of the Business Meta Model vocabulary\na domain instantiates.\ngeneralOnly: uses only General-level BMM elements.\nfull: uses both General and Tailored elements.\nproduction: full vocabulary plus production-grade\n  governance, audit, and operational requirements.\nBusiness meta model concept",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "bmm",
-      "lineNumber": 210,
-      "attributes": [
-        {
-          "name": "generalOnly"
-        },
-        {
-          "name": "full"
-        },
-        {
-          "name": "production"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "DomainPurpose",
-      "parentPackage": "CommonTypes",
-      "doc": "Why a domain exists in the Ontara platform.\nA domain may have multiple purposes (e.g. Paws is\nboth pedagogicalAnchoring and crossDomainValidation).\nreferenceValidation: the original demonstrator domain\n  against which patterns are first developed.\ncrossDomainValidation: validates that meta model\n  c",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "bmm",
-      "lineNumber": 225,
-      "attributes": [
-        {
-          "name": "referenceValidation"
-        },
-        {
-          "name": "crossDomainValidation"
-        },
-        {
-          "name": "pedagogicalAnchoring"
-        },
-        {
-          "name": "production"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "Jurisdiction",
-      "parentPackage": "CommonTypes",
-      "doc": "Territorial jurisdiction for governance framework\napplicability. Based on UK devolution structure \u2014 the\nprimary governance frameworks Ontara supports have\njurisdiction-specific scope. Extensible as the platform\nsupports non-UK jurisdictions.\nBusiness meta model concept. Domain identity (B15).\nSessio",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "bmm",
-      "lineNumber": 247,
-      "attributes": [
-        {
-          "name": "england"
-        },
-        {
-          "name": "scotland"
-        },
-        {
-          "name": "wales"
-        },
-        {
-          "name": "northernIreland"
-        },
-        {
-          "name": "unitedKingdom"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "RegulatedActivity",
-      "parentPackage": "CommonTypes",
-      "doc": "Activities regulated by CQC under the Health and Social\nCare Act 2008. A service providing any of these must be\nregistered with CQC. Used during governance framework\nactivation to determine directive applicability.\nSource: HSCA 2008 (Regulated Activities) Regulations 2014,\nSchedule 1.\nBusiness meta ",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "bmm",
-      "lineNumber": 263,
-      "attributes": [
-        {
-          "name": "personalCare"
-        },
-        {
-          "name": "accommodationForPersonsRequiringNursingOrPersonalCare"
-        },
-        {
-          "name": "accommodationForPersonsRequiringTreatmentForSubstanceMisuse"
-        },
-        {
-          "name": "treatment"
-        },
-        {
-          "name": "assessmentOrMedicalTreatmentForPersonsDetainedUnderMentalHealthAct"
-        },
-        {
-          "name": "surgicalProcedures"
-        },
-        {
-          "name": "diagnosticAndScreeningProcedures"
-        },
-        {
-          "name": "managementOfSupplyOfBloodAndBloodDerivedProducts"
-        },
-        {
-          "name": "transportServicesTimedAndUntimed"
-        },
-        {
-          "name": "maternity"
-        },
-        {
-          "name": "terminationOfPregnancies"
-        },
-        {
-          "name": "familyPlanning"
-        },
-        {
-          "name": "nursingCare"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "OrganisationalForm",
-      "parentPackage": "CommonTypes",
-      "doc": "The legal/organisational form of a service provider.\nSome governance directives apply only to specific forms\n(e.g. \"body corporate\" provisions in CQC regulations).\nSource: CQC registration requirements; Companies Act 2006.\nBusiness meta model concept. Domain identity (B15).\nSession 142 (S142-D7).",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "bmm",
-      "lineNumber": 289,
-      "attributes": [
-        {
-          "name": "registeredIndividual"
-        },
-        {
-          "name": "partnership"
-        },
-        {
-          "name": "organisation"
-        },
-        {
-          "name": "bodyCorporate"
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "DomainIdentity",
-      "parentPackage": "DomainRegistry",
-      "doc": "Business Meta Model concept.\nThe business identity of a domain: what kind of service\nbusiness it is, what regulatory environment it operates\nin, and why it exists in the platform.\nIn the dual-stack architecture, DomainIdentity is the\nBMM-side of domain identity. The SMM-side is\nDomainConfiguration, ",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "bmm",
-      "lineNumber": 332,
-      "attributes": [
-        {
-          "name": "regulatoryShape",
-          "type": "RegulatoryShape",
-          "isRedefinition": false
-        },
-        {
-          "name": "bmmVocabularyScope",
-          "type": "BmmVocabularyScope",
-          "isRedefinition": false
-        },
-        {
-          "name": "domainPurpose",
-          "type": "DomainPurpose[1..*]",
-          "isRedefinition": false
-        },
-        {
-          "name": "jurisdiction",
-          "type": "Jurisdiction",
-          "isRedefinition": false
-        },
-        {
-          "name": "regulatedActivities",
-          "type": "RegulatedActivity[0..*]",
-          "isRedefinition": false
-        },
-        {
-          "name": "professionalRegistrations",
-          "type": "ProfessionalBody[0..*]",
-          "isRedefinition": false
-        },
-        {
-          "name": "organisationalForm",
-          "type": "OrganisationalForm",
-          "isRedefinition": false
-        },
-        {
-          "name": "authorisationRequiredToTrade",
-          "type": "Boolean",
-          "isRedefinition": false
-        },
-        {
-          "name": "description",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "introducedSession",
-          "type": "Integer",
-          "isRedefinition": false
-        },
-        {
-          "name": "domainConfiguration",
-          "type": "DomainConfiguration",
-          "isRef": true
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "DomainConfiguration",
-      "parentPackage": "DomainRegistry",
-      "doc": "System Meta Model concept.\nThe system configuration for a domain: how the platform\ndiscovers, organises, presents, and manages this domain.\nConnected to DomainIdentity via horizontal mapping.\nChanges to configuration (package paths, display names)\ndo not affect business identity or governance bindin",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 371,
-      "attributes": [
-        {
-          "name": "canonicalKey",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "displayLabel",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "fullName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "packageName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "modelPath",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "isActive",
-          "type": "Boolean",
-          "isRedefinition": false
-        },
-        {
-          "name": "domainIdentity",
-          "type": "DomainIdentity",
-          "isRef": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "cafeIdentity",
-      "parentPackage": "DomainRegistry",
-      "doc": "Reference validation domain \u2014 the original demonstrator\nagainst which all meta model patterns were first\ndeveloped. Immediate retail, walk-in, 2-minute cycle.\nGenerally governed (no sector-specific regulation,\nno licensing regime, no role-binding professional\nbody). Subject only to general business ",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 402,
-      "specialises": "DomainIdentity",
-      "attributes": [
-        {
-          "name": "regulatoryShape",
-          "value": "RegulatoryShape::generallyGoverned",
-          "isRedefinition": true
-        },
-        {
-          "name": "bmmVocabularyScope",
-          "value": "BmmVocabularyScope::full",
-          "isRedefinition": true
-        },
-        {
-          "name": "domainPurpose",
-          "value": "DomainPurpose::referenceValidation",
-          "isRedefinition": true
-        },
-        {
-          "name": "jurisdiction",
-          "value": "Jurisdiction::england",
-          "isRedefinition": true
-        },
-        {
-          "name": "organisationalForm",
-          "value": "OrganisationalForm::registeredIndividual",
-          "isRedefinition": true
-        },
-        {
-          "name": "authorisationRequiredToTrade",
-          "value": "false",
-          "isRedefinition": true
-        },
-        {
-          "name": "description",
-          "value": "Reference validation domain \u2014 original demonstrator. Immediate retail service with walk-in customers and 2-minute fulfilment cycle.",
-          "isRedefinition": true
-        },
-        {
-          "name": "introducedSession",
-          "value": "1",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "cafeConfiguration",
-      "parentPackage": "DomainRegistry",
-      "doc": "",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 421,
-      "specialises": "DomainConfiguration",
-      "attributes": [
-        {
-          "name": "canonicalKey",
-          "value": "cafe",
-          "isRedefinition": true
-        },
-        {
-          "name": "displayLabel",
-          "value": "Cafe",
-          "isRedefinition": true
-        },
-        {
-          "name": "fullName",
-          "value": "Cafe (Coffee Shop)",
-          "isRedefinition": true
-        },
-        {
-          "name": "packageName",
-          "value": "CoffeeShop",
-          "isRedefinition": true
-        },
-        {
-          "name": "modelPath",
-          "value": "exercises/coffeeshop-demonstrator/model",
-          "isRedefinition": true
-        },
-        {
-          "name": "isActive",
-          "value": "true",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "sudsIdentity",
-      "parentPackage": "DomainRegistry",
-      "doc": "Cross-domain validation domain \u2014 batch processing\nlaundry service. Validates meta model generality\nbeyond immediate retail. Weight/type pricing,\nCOSHH governance chain. Locally licensed (subject to\nCOSHH and other operator-controlled statutory duties\nbeyond general business law; no sector regulator)",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 433,
-      "specialises": "DomainIdentity",
-      "attributes": [
-        {
-          "name": "regulatoryShape",
-          "value": "RegulatoryShape::locallyLicensed",
-          "isRedefinition": true
-        },
-        {
-          "name": "bmmVocabularyScope",
-          "value": "BmmVocabularyScope::full",
-          "isRedefinition": true
-        },
-        {
-          "name": "domainPurpose",
-          "value": "DomainPurpose::crossDomainValidation",
-          "isRedefinition": true
-        },
-        {
-          "name": "jurisdiction",
-          "value": "Jurisdiction::england",
-          "isRedefinition": true
-        },
-        {
-          "name": "organisationalForm",
-          "value": "OrganisationalForm::registeredIndividual",
-          "isRedefinition": true
-        },
-        {
-          "name": "authorisationRequiredToTrade",
-          "value": "false",
-          "isRedefinition": true
-        },
-        {
-          "name": "description",
-          "value": "Cross-domain validation domain \u2014 batch processing laundry service. Weight/type pricing, COSHH governance chain.",
-          "isRedefinition": true
-        },
-        {
-          "name": "introducedSession",
-          "value": "16",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "sudsConfiguration",
-      "parentPackage": "DomainRegistry",
-      "doc": "",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 452,
-      "specialises": "DomainConfiguration",
-      "attributes": [
-        {
-          "name": "canonicalKey",
-          "value": "suds",
-          "isRedefinition": true
-        },
-        {
-          "name": "displayLabel",
-          "value": "Suds",
-          "isRedefinition": true
-        },
-        {
-          "name": "fullName",
-          "value": "Suds (Laundry Service)",
-          "isRedefinition": true
-        },
-        {
-          "name": "packageName",
-          "value": "SudsLaundry",
-          "isRedefinition": true
-        },
-        {
-          "name": "modelPath",
-          "value": "exercises/suds-demonstrator",
-          "isRedefinition": true
-        },
-        {
-          "name": "isActive",
-          "value": "true",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "pawsIdentity",
-      "parentPackage": "DomainRegistry",
-      "doc": "Pedagogical anchoring and cross-domain validation\ndomain \u2014 appointment-based dog grooming service.\nDual purpose (S142-D6): simple enough to introduce\nconcepts, different enough to validate generalisation.\nBreed/size surcharges. Locally licensed (Animal\nWelfare Act duties; some local authorities requ",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 464,
-      "specialises": "DomainIdentity",
-      "attributes": [
-        {
-          "name": "regulatoryShape",
-          "value": "RegulatoryShape::locallyLicensed",
-          "isRedefinition": true
-        },
-        {
-          "name": "bmmVocabularyScope",
-          "value": "BmmVocabularyScope::generalOnly",
-          "isRedefinition": true
-        },
-        {
-          "name": "domainPurpose",
-          "value": "(DomainPurpose::pedagogicalAnchoring, DomainPurpose::crossDomainValidation)",
-          "isRedefinition": true
-        },
-        {
-          "name": "jurisdiction",
-          "value": "Jurisdiction::england",
-          "isRedefinition": true
-        },
-        {
-          "name": "organisationalForm",
-          "value": "OrganisationalForm::registeredIndividual",
-          "isRedefinition": true
-        },
-        {
-          "name": "authorisationRequiredToTrade",
-          "value": "false",
-          "isRedefinition": true
-        },
-        {
-          "name": "description",
-          "value": "Pedagogical anchoring and cross-domain validation domain \u2014 appointment-based dog grooming. Breed/size surcharges.",
-          "isRedefinition": true
-        },
-        {
-          "name": "introducedSession",
-          "value": "43",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "pawsConfiguration",
-      "parentPackage": "DomainRegistry",
-      "doc": "",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 484,
-      "specialises": "DomainConfiguration",
-      "attributes": [
-        {
-          "name": "canonicalKey",
-          "value": "paws",
-          "isRedefinition": true
-        },
-        {
-          "name": "displayLabel",
-          "value": "Paws",
-          "isRedefinition": true
-        },
-        {
-          "name": "fullName",
-          "value": "Paws (Dog Grooming)",
-          "isRedefinition": true
-        },
-        {
-          "name": "packageName",
-          "value": "PawsGrooming",
-          "isRedefinition": true
-        },
-        {
-          "name": "modelPath",
-          "value": "exercises/paws-demonstrator",
-          "isRedefinition": true
-        },
-        {
-          "name": "isActive",
-          "value": "true",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "gslIdentity",
-      "parentPackage": "DomainRegistry",
-      "doc": "Production domain \u2014 GenderSense Limited, a private\ngender-affirming healthcare service. The primary\nmotivating use case and first production tenant.\nSector-regulated (CQC). Practitioners hold statutory\nprofessional registrations (GMC, NMC). Authorisation\nrequired to trade (CQC registration is a prec",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 496,
-      "specialises": "DomainIdentity",
-      "attributes": [
-        {
-          "name": "regulatoryShape",
-          "value": "RegulatoryShape::sectorRegulated",
-          "isRedefinition": true
-        },
-        {
-          "name": "bmmVocabularyScope",
-          "value": "BmmVocabularyScope::production",
-          "isRedefinition": true
-        },
-        {
-          "name": "domainPurpose",
-          "value": "DomainPurpose::production",
-          "isRedefinition": true
-        },
-        {
-          "name": "jurisdiction",
-          "value": "Jurisdiction::england",
-          "isRedefinition": true
-        },
-        {
-          "name": "regulatedActivities",
-          "value": "(RegulatedActivity::treatment, RegulatedActivity::diagnosticAndScreeningProcedures)",
-          "isRedefinition": true
-        },
-        {
-          "name": "professionalRegistrations",
-          "value": "(ProfessionalBody::gmc, ProfessionalBody::nmc)",
-          "isRedefinition": true
-        },
-        {
-          "name": "organisationalForm",
-          "value": "OrganisationalForm::registeredIndividual",
-          "isRedefinition": true
-        },
-        {
-          "name": "authorisationRequiredToTrade",
-          "value": "true",
-          "isRedefinition": true
-        },
-        {
-          "name": "description",
-          "value": "Production domain \u2014 GenderSense Limited. Private gender-affirming healthcare service. First production tenant.",
-          "isRedefinition": true
-        },
-        {
-          "name": "introducedSession",
-          "value": "8",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "gslConfiguration",
-      "parentPackage": "DomainRegistry",
-      "doc": "",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 520,
-      "specialises": "DomainConfiguration",
-      "attributes": [
-        {
-          "name": "canonicalKey",
-          "value": "gsl",
-          "isRedefinition": true
-        },
-        {
-          "name": "displayLabel",
-          "value": "GSL",
-          "isRedefinition": true
-        },
-        {
-          "name": "fullName",
-          "value": "GenderSense Limited",
-          "isRedefinition": true
-        },
-        {
-          "name": "packageName",
-          "value": "GenderSense",
-          "isRedefinition": true
-        },
-        {
-          "name": "modelPath",
-          "value": "exercises/gendersense",
-          "isRedefinition": true
-        },
-        {
-          "name": "isActive",
-          "value": "true",
-          "isRedefinition": true
         }
       ]
     },
@@ -25098,6 +24660,53 @@
       ]
     },
     {
+      "kind": "part_def",
+      "name": "DomainConfiguration",
+      "parentPackage": "DomainConfigurationTypes",
+      "doc": "System Meta Model concept.\nThe system configuration for a domain: how the platform\ndiscovers, organises, presents, and manages this domain.\nConnected to DomainIdentity via horizontal mapping.\nChanges to configuration (package paths, display names)\ndo not affect business identity or governance bindin",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 1999,
+      "attributes": [
+        {
+          "name": "canonicalKey",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "displayLabel",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "fullName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "packageName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "modelPath",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "isActive",
+          "type": "Boolean",
+          "isRedefinition": false
+        },
+        {
+          "name": "domainIdentity",
+          "type": "DomainIdentity",
+          "isRef": true
+        }
+      ]
+    },
+    {
       "kind": "enum_def",
       "name": "DrinkName",
       "parentPackage": "CoffeeShopArchetypes",
@@ -26860,6 +26469,102 @@
         {
           "name": "supportRequired",
           "value": "Clear menu display, allergen information, queue management.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "cafeIdentity",
+      "parentPackage": "CoffeeShopDomainRegistration",
+      "doc": "Reference validation domain \u2014 the original demonstrator\nagainst which all meta model patterns were first\ndeveloped. Immediate retail, walk-in, 2-minute cycle.\nGenerally governed (no sector-specific regulation,\nno licensing regime, no role-binding professional\nbody). Subject only to general business ",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-domain-registration.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 24,
+      "specialises": "DomainIdentity",
+      "attributes": [
+        {
+          "name": "regulatoryShape",
+          "value": "RegulatoryShape::generallyGoverned",
+          "isRedefinition": true
+        },
+        {
+          "name": "bmmVocabularyScope",
+          "value": "BmmVocabularyScope::full",
+          "isRedefinition": true
+        },
+        {
+          "name": "domainPurpose",
+          "value": "DomainPurpose::referenceValidation",
+          "isRedefinition": true
+        },
+        {
+          "name": "jurisdiction",
+          "value": "Jurisdiction::england",
+          "isRedefinition": true
+        },
+        {
+          "name": "organisationalForm",
+          "value": "OrganisationalForm::registeredIndividual",
+          "isRedefinition": true
+        },
+        {
+          "name": "authorisationRequiredToTrade",
+          "value": "false",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Reference validation domain \u2014 original demonstrator. Immediate retail service with walk-in customers and 2-minute fulfilment cycle.",
+          "isRedefinition": true
+        },
+        {
+          "name": "introducedSession",
+          "value": "1",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "cafeConfiguration",
+      "parentPackage": "CoffeeShopDomainRegistration",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-domain-registration.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 42,
+      "specialises": "DomainConfiguration",
+      "attributes": [
+        {
+          "name": "canonicalKey",
+          "value": "cafe",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayLabel",
+          "value": "Cafe",
+          "isRedefinition": true
+        },
+        {
+          "name": "fullName",
+          "value": "Cafe (Coffee Shop)",
+          "isRedefinition": true
+        },
+        {
+          "name": "packageName",
+          "value": "CoffeeShop",
+          "isRedefinition": true
+        },
+        {
+          "name": "modelPath",
+          "value": "exercises/coffeeshop-demonstrator/model",
+          "isRedefinition": true
+        },
+        {
+          "name": "isActive",
+          "value": "true",
           "isRedefinition": true
         }
       ]
@@ -31782,6 +31487,102 @@
     },
     {
       "kind": "part",
+      "name": "sudsIdentity",
+      "parentPackage": "SudsDomainRegistration",
+      "doc": "Cross-domain validation domain \u2014 batch processing\nlaundry service. Validates meta model generality\nbeyond immediate retail. Weight/type pricing,\nCOSHH governance chain. Locally licensed (subject to\nCOSHH and other operator-controlled statutory duties\nbeyond general business law; no sector regulator)",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 848,
+      "specialises": "DomainIdentity",
+      "attributes": [
+        {
+          "name": "regulatoryShape",
+          "value": "RegulatoryShape::locallyLicensed",
+          "isRedefinition": true
+        },
+        {
+          "name": "bmmVocabularyScope",
+          "value": "BmmVocabularyScope::full",
+          "isRedefinition": true
+        },
+        {
+          "name": "domainPurpose",
+          "value": "DomainPurpose::crossDomainValidation",
+          "isRedefinition": true
+        },
+        {
+          "name": "jurisdiction",
+          "value": "Jurisdiction::england",
+          "isRedefinition": true
+        },
+        {
+          "name": "organisationalForm",
+          "value": "OrganisationalForm::registeredIndividual",
+          "isRedefinition": true
+        },
+        {
+          "name": "authorisationRequiredToTrade",
+          "value": "false",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Cross-domain validation domain \u2014 batch processing laundry service. Weight/type pricing, COSHH governance chain.",
+          "isRedefinition": true
+        },
+        {
+          "name": "introducedSession",
+          "value": "16",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "sudsConfiguration",
+      "parentPackage": "SudsDomainRegistration",
+      "doc": "",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "metaModelLayer": "domain",
+      "lineNumber": 866,
+      "specialises": "DomainConfiguration",
+      "attributes": [
+        {
+          "name": "canonicalKey",
+          "value": "suds",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayLabel",
+          "value": "Suds",
+          "isRedefinition": true
+        },
+        {
+          "name": "fullName",
+          "value": "Suds (Laundry Service)",
+          "isRedefinition": true
+        },
+        {
+          "name": "packageName",
+          "value": "SudsBusinessModel",
+          "isRedefinition": true
+        },
+        {
+          "name": "modelPath",
+          "value": "exercises/suds-demonstrator/model",
+          "isRedefinition": true
+        },
+        {
+          "name": "isActive",
+          "value": "true",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
       "name": "pawsValueProposition",
       "parentPackage": "PawsBusinessModel",
       "doc": "",
@@ -34319,6 +34120,102 @@
       "metaModelLayer": "unknown",
       "lineNumber": 1048,
       "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "pawsIdentity",
+      "parentPackage": "PawsDomainRegistration",
+      "doc": "Pedagogical anchoring and cross-domain validation\ndomain \u2014 appointment-based dog grooming service.\nDual purpose (S142-D6): simple enough to introduce\nconcepts, different enough to validate generalisation.\nBreed/size surcharges. Locally licensed (Animal\nWelfare Act duties; some local authorities requ",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 1074,
+      "specialises": "DomainIdentity",
+      "attributes": [
+        {
+          "name": "regulatoryShape",
+          "value": "RegulatoryShape::locallyLicensed",
+          "isRedefinition": true
+        },
+        {
+          "name": "bmmVocabularyScope",
+          "value": "BmmVocabularyScope::generalOnly",
+          "isRedefinition": true
+        },
+        {
+          "name": "domainPurpose",
+          "value": "(DomainPurpose::pedagogicalAnchoring, DomainPurpose::crossDomainValidation)",
+          "isRedefinition": true
+        },
+        {
+          "name": "jurisdiction",
+          "value": "Jurisdiction::england",
+          "isRedefinition": true
+        },
+        {
+          "name": "organisationalForm",
+          "value": "OrganisationalForm::registeredIndividual",
+          "isRedefinition": true
+        },
+        {
+          "name": "authorisationRequiredToTrade",
+          "value": "false",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Pedagogical anchoring and cross-domain validation domain \u2014 appointment-based dog grooming. Breed/size surcharges.",
+          "isRedefinition": true
+        },
+        {
+          "name": "introducedSession",
+          "value": "43",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "pawsConfiguration",
+      "parentPackage": "PawsDomainRegistration",
+      "doc": "",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "metaModelLayer": "domain",
+      "lineNumber": 1093,
+      "specialises": "DomainConfiguration",
+      "attributes": [
+        {
+          "name": "canonicalKey",
+          "value": "paws",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayLabel",
+          "value": "Paws",
+          "isRedefinition": true
+        },
+        {
+          "name": "fullName",
+          "value": "Paws (Dog Grooming)",
+          "isRedefinition": true
+        },
+        {
+          "name": "packageName",
+          "value": "PawsBusinessModel",
+          "isRedefinition": true
+        },
+        {
+          "name": "modelPath",
+          "value": "exercises/paws-demonstrator/model",
+          "isRedefinition": true
+        },
+        {
+          "name": "isActive",
+          "value": "true",
+          "isRedefinition": true
+        }
+      ]
     },
     {
       "kind": "part",
@@ -36946,6 +36843,112 @@
         {
           "name": "supportRequired",
           "value": "Health literacy support, education on hormone therapy effects and monitoring, digital literacy for portal use, accessibility accommodations as needed.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "gslIdentity",
+      "parentPackage": "GslDomainRegistration",
+      "doc": "Production domain \u2014 GenderSense Limited, a private\ngender-affirming healthcare service. The primary\nmotivating use case and first production tenant.\nSector-regulated (CQC). Practitioners hold statutory\nprofessional registrations (GMC, NMC). Authorisation\nrequired to trade (CQC registration is a prec",
+      "sourceFile": "exercises/gendersense/model/gsl-domain-registration.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 17,
+      "specialises": "DomainIdentity",
+      "attributes": [
+        {
+          "name": "regulatoryShape",
+          "value": "RegulatoryShape::sectorRegulated",
+          "isRedefinition": true
+        },
+        {
+          "name": "bmmVocabularyScope",
+          "value": "BmmVocabularyScope::production",
+          "isRedefinition": true
+        },
+        {
+          "name": "domainPurpose",
+          "value": "DomainPurpose::production",
+          "isRedefinition": true
+        },
+        {
+          "name": "jurisdiction",
+          "value": "Jurisdiction::england",
+          "isRedefinition": true
+        },
+        {
+          "name": "regulatedActivities",
+          "value": "(RegulatedActivity::treatment, RegulatedActivity::diagnosticAndScreeningProcedures)",
+          "isRedefinition": true
+        },
+        {
+          "name": "professionalRegistrations",
+          "value": "(ProfessionalBody::gmc, ProfessionalBody::nmc)",
+          "isRedefinition": true
+        },
+        {
+          "name": "organisationalForm",
+          "value": "OrganisationalForm::registeredIndividual",
+          "isRedefinition": true
+        },
+        {
+          "name": "authorisationRequiredToTrade",
+          "value": "true",
+          "isRedefinition": true
+        },
+        {
+          "name": "description",
+          "value": "Production domain \u2014 GenderSense Limited. Private gender-affirming healthcare service. First production tenant.",
+          "isRedefinition": true
+        },
+        {
+          "name": "introducedSession",
+          "value": "8",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "gslConfiguration",
+      "parentPackage": "GslDomainRegistration",
+      "doc": "",
+      "sourceFile": "exercises/gendersense/model/gsl-domain-registration.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 40,
+      "specialises": "DomainConfiguration",
+      "attributes": [
+        {
+          "name": "canonicalKey",
+          "value": "gsl",
+          "isRedefinition": true
+        },
+        {
+          "name": "displayLabel",
+          "value": "GSL",
+          "isRedefinition": true
+        },
+        {
+          "name": "fullName",
+          "value": "GenderSense Limited",
+          "isRedefinition": true
+        },
+        {
+          "name": "packageName",
+          "value": "GenderSense",
+          "isRedefinition": true
+        },
+        {
+          "name": "modelPath",
+          "value": "exercises/gendersense/model",
+          "isRedefinition": true
+        },
+        {
+          "name": "isActive",
+          "value": "true",
           "isRedefinition": true
         }
       ]

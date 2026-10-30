@@ -1,8 +1,8 @@
 # Ontara Package Hierarchy (Generated)
 
-**Generated:** 2026-10-30 15:35  
+**Generated:** 2026-10-30 15:42  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
-**Total packages:** 86 (excluding root)  
+**Total packages:** 88 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
 
 This document is generated from the SysML model. Do not edit manually.
@@ -11,7 +11,7 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 Ontara Package Hierarchy
-Generated 2026-10-30 15:35 from model/*.sysml (86 packages)
+Generated 2026-10-30 15:42 from model/*.sysml (88 packages)
 
 GenderSense
 ├── GslEnterprise                   Defines the organisational, regulatory, strategic, and risk context.
@@ -21,8 +21,7 @@ GenderSense
 │   └── Risk                        Clinical risk management, business continuity, safeguarding — [3 use cases]
 │
 ├── Foundation                      RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7,
-│   ├── CommonTypes                 Shared data types, enumerations, units of measure, and — [2 parts, 11 enums]
-│   └── DomainRegistry              Domain identity infrastructure: the formal representation — [2 parts]
+│   └── CommonTypes                 Shared data types, enumerations, units of measure, and — [2 parts, 4 enums]
 │
 ├── SystemMetamodelGeneral          The system metamodel, General layer: how the platform evaluates,
 │   ├── ProcessAnnotations          General annotations on process steps: consent and audit — [1 enums, 6 metadata]
@@ -34,7 +33,8 @@ GenderSense
 │   ├── LearningCycles              Pathway refinement process, evidence review, change control — [2 use cases]
 │   ├── Analytics                   Data contracts for BI and predictive analytics, event stream — [1 parts]
 │   ├── Persistence                 Persistence architecture types: where a domain concept is — [1 parts, 2 enums]
-│   └── OpenEhrIntegration          Clinical record layer: openEHR CDR (EHRbase). — [5 parts, 4 use cases, 3 metadata]
+│   ├── OpenEhrIntegration          Clinical record layer: openEHR CDR (EHRbase). — [5 parts, 4 use cases, 3 metadata]
+│   └── DomainConfigurationTypes    Domain configuration: how the platform discovers, organises, — [1 parts]
 │
 ├── GslOperations                   Back office and growth functions.
 │   ├── Finance                     Operational accounting: invoice processing, payment — [1 parts, 4 use cases]
@@ -93,7 +93,8 @@ GenderSense
 │   ├── StakeholderModel            The relational boundary of the business: how it — [6 parts, 3 enums]
 │   ├── BusinessScenarios           Provides the mechanics for driving the business model — [11 parts, 2 enums]
 │   ├── BusinessStrategy            Strategic direction, business model variants, and — [2 parts, 1 requirements]
-│   └── CanonicalRuntime            BMM General canonical-runtime vocabulary. — [4 parts, 3 enums]
+│   ├── CanonicalRuntime            BMM General canonical-runtime vocabulary. — [4 parts, 3 enums]
+│   └── DomainIdentityTypes         Domain identity: what kind of service business a tenant is, — [1 parts, 7 enums]
 │
 ├── PatternCatalogue                Cross-domain concept registry, architectural pattern catalogue, — [3 parts, 4 enums]
 │
@@ -102,6 +103,8 @@ GenderSense
 ├── SystemMetamodelDomainClinical   System-side metamodel vocabulary that is clinical by meaning — [1 metadata]
 │
 ├── GslBusinessModel                GenderSense Limited business model: concrete customer segments,
+│
+├── GslDomainRegistration
 │
 ├── GslKnowledge                    GenderSense Limited clinical knowledge: the hormone-therapy
 │   ├── HormoneTherapyTypes         Enumerations for the hormone-therapy decision tables. — [9 enums]
@@ -118,4 +121,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-10-30 15:35 by `gen_package_hierarchy.py`.*
+*Generated 2026-10-30 15:42 by `gen_package_hierarchy.py`.*

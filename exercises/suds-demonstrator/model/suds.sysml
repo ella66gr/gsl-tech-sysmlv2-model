@@ -828,3 +828,48 @@ package SudsStakeholderModel {
         ref :>> relatedServiceOffering = (standardWash, delicatesWash, expressWash);
     }
 }
+
+// =========================================================================
+// SUDS DOMAIN REGISTRATION — tenant domain registration
+// =========================================================================
+//
+// OP-132 step 10 (S515, ADR-012 group H). The DomainIdentity (BMG) and
+// DomainConfiguration (SMG) instances for this tenant, formerly in
+// Foundation's DomainRegistry. The pair is linked one way, from the
+// configuration to the identity (Action 2).
+// =========================================================================
+
+package SudsDomainRegistration {
+    private import BusinessMetamodelGeneral::DomainIdentityTypes::*;
+    private import SystemMetamodelGeneral::DomainConfigurationTypes::*;
+
+    // --- Suds (Laundry Service) ---------------------------------
+
+    part sudsIdentity : DomainIdentity {
+        doc /* Cross-domain validation domain — batch processing
+             * laundry service. Validates meta model generality
+             * beyond immediate retail. Weight/type pricing,
+             * COSHH governance chain. Locally licensed (subject to
+             * COSHH and other operator-controlled statutory duties
+             * beyond general business law; no sector regulator). */
+
+        attribute :>> regulatoryShape = RegulatoryShape::locallyLicensed;
+        attribute :>> bmmVocabularyScope = BmmVocabularyScope::full;
+        attribute :>> domainPurpose = DomainPurpose::crossDomainValidation;
+        attribute :>> jurisdiction = Jurisdiction::england;
+        attribute :>> organisationalForm = OrganisationalForm::registeredIndividual;
+        attribute :>> authorisationRequiredToTrade = false;
+        attribute :>> description = "Cross-domain validation domain — batch processing laundry service. Weight/type pricing, COSHH governance chain.";
+        attribute :>> introducedSession = 16;
+    }
+
+    part sudsConfiguration : DomainConfiguration {
+        attribute :>> canonicalKey = "suds";
+        attribute :>> displayLabel = "Suds";
+        attribute :>> fullName = "Suds (Laundry Service)";
+        attribute :>> packageName = "SudsBusinessModel";
+        attribute :>> modelPath = "exercises/suds-demonstrator/model";
+        attribute :>> isActive = true;
+        ref :>> domainIdentity = sudsIdentity;
+    }
+}

@@ -107,6 +107,7 @@ BMM_PACKAGES = {
     "ResourcePlanning", "FinancialPlanning",
     "BusinessScenarios", "BusinessStrategy",
     "GovernanceMapping", "StakeholderModel", "CanonicalRuntime",
+    "DomainIdentityTypes",  # S515 OP-132 step 10
 }
 
 # Packages known to belong to the system meta model
@@ -120,6 +121,7 @@ SMM_PACKAGES = {
     "SystemMetamodelDomainClinical",  # S515 OP-132 step 7: system-side Domain package (ADR-012)
     "SystemMetamodelGeneral", "ProcessAnnotations", "StatePatterns", "EvaluationSpecs",
     "Persistence", "OpenEhrIntegration",  # S515 OP-132 step 8
+    "DomainConfigurationTypes",  # S515 OP-132 step 10
     "ClinicalDecisionSupport",
     "ConstraintLibrary", "LogicEngine", "DecisionModels",
     "OutcomeFramework", "LearningCycles", "Analytics",
@@ -140,6 +142,8 @@ DOMAIN_PACKAGES = {
     "PawsBusinessModel", "PawsResourceFinancial", "PawsGovernance",
     "GslBusinessModel", "GslScenarios",  # S515 OP-132 step 5
     "GslKnowledge", "DecisionTables", "OutcomeTargets", "HormoneTherapyTypes",  # S515 OP-132 step 6
+    "CoffeeShopDomainRegistration", "SudsDomainRegistration", "PawsDomainRegistration",
+    "GslDomainRegistration",  # S515 OP-132 step 10
 }
 
 
@@ -815,69 +819,76 @@ def build_ontological_hierarchy(coverage_matrix):
 # ---------------------------------------------------------------
 
 def build_domain_registry():
-    """Extract DomainIdentity and DomainConfiguration instances from
-    Foundation::DomainRegistry in foundation.sysml.
+    """Extract the DomainIdentity and DomainConfiguration instances from the
+    tenant models and pair them.
 
-    Reads the file directly and parses attribute :>> redefinitions
-    and ref :>> redefinitions to produce structured domain data.
-    This replaces the hardcoded DOMAIN_SOURCES metadata with
-    model-derived domain information.
+    S515 (OP-132 step 10, map §5 row 2): the instances live in each tenant's
+    DomainRegistration package (CoffeeShopDomainRegistration,
+    SudsDomainRegistration, PawsDomainRegistration, GslDomainRegistration),
+    not in Foundation::DomainRegistry. Every directory in DOMAIN_SOURCES is
+    scanned for `part X : DomainIdentity {` and `part X : DomainConfiguration {`
+    usages; a pair is formed from the configuration's `ref :>> domainIdentity`
+    (the identity no longer refers back — OP-132 Action 2). Output order
+    follows DOMAIN_SOURCES order, then file order.
 
     Session 144 — Block A Step 5 (pipeline extension).
     A3 (model generates everything), A13 (multi-tenancy).
     """
-    foundation_file = MODEL_DIR / "foundation.sysml"
-    if not foundation_file.exists():
-        return {"domains": [], "error": "foundation.sysml not found"}
-
-    lines = foundation_file.read_text(encoding="utf-8").splitlines()
-    domains = []  # list of {"identity": {...}, "configuration": {...}}
     identity_parts = {}   # name -> dict of parsed attributes
     config_parts = {}     # name -> dict of parsed attributes
+    config_order = []     # configuration part names, in scan order
 
-    in_registry = False
-    current_part = None    # (kind, name, type_name)
-    current_attrs = {}     # attribute name -> value
+    for domain_key, domain_info in DOMAIN_SOURCES.items():
+        for model_dir in domain_info["model_dirs"]:
+            if not model_dir.exists():
+                continue
+            for path in sorted(model_dir.rglob("*.sysml")):
+                if any(pat in path.name for pat in EXCLUDE_PATTERNS):
+                    continue
+                _scan_domain_parts(path.read_text(encoding="utf-8").splitlines(),
+                                   identity_parts, config_parts, config_order)
+
+    domains = []
+    paired = set()
+    for cfg_name in config_order:
+        cfg = config_parts[cfg_name]
+        id_name = cfg.get("domainIdentity", "")
+        paired.add(id_name)
+        domains.append({"identity": identity_parts.get(id_name, {}),
+                        "configuration": cfg})
+    for id_name, id_attrs in identity_parts.items():   # unpaired identities (none today)
+        if id_name not in paired:
+            domains.append({"identity": id_attrs, "configuration": {}})
+
+    return {"domains": domains}
+
+
+def _scan_domain_parts(lines, identity_parts, config_parts, config_order):
+    """Collect `part X : DomainIdentity|DomainConfiguration { ... }` blocks
+    from one file's lines into the given dicts."""
+    current_part = None    # (type_name, part_name)
+    current_attrs = {}
     brace_depth = 0
     part_start_depth = 0
 
     for line in lines:
         stripped = line.strip()
-
-        # Track when we enter DomainRegistry package
-        if "package DomainRegistry" in stripped:
-            in_registry = True
+        if stripped.startswith("//"):
             continue
-
-        if not in_registry:
-            continue
-
-        # Track brace depth within DomainRegistry
         brace_depth += stripped.count("{") - stripped.count("}")
 
-        # Exit DomainRegistry when braces close
-        if brace_depth < 0:
-            in_registry = False
-            break
-
-        # Detect part instance declarations
-        # Pattern: part someName : DomainIdentity {
-        #          part someName : DomainConfiguration {
         part_match = re.match(
             r'part\s+(\w+)\s*:\s*(DomainIdentity|DomainConfiguration)\s*\{',
             stripped
         )
         if part_match:
-            # Save previous part if any
-            if current_part:
-                _save_domain_part(current_part, current_attrs,
-                                  identity_parts, config_parts)
             current_part = (part_match.group(2), part_match.group(1))
             current_attrs = {}
             part_start_depth = brace_depth
+            if part_match.group(2) == "DomainConfiguration":
+                config_order.append(part_match.group(1))
             continue
 
-        # Detect end of current part block
         if current_part and brace_depth < part_start_depth:
             _save_domain_part(current_part, current_attrs,
                               identity_parts, config_parts)
@@ -885,43 +896,18 @@ def build_domain_registry():
             current_attrs = {}
             continue
 
-        # Parse attribute :>> and ref :>> redefinitions inside a part
         if current_part:
-            # attribute :>> name = value;
-            attr_match = re.match(
-                r'attribute\s+:>>\s+(\w+)\s*=\s*(.+?)\s*;',
-                stripped
-            )
+            attr_match = re.match(r'attribute\s+:>>\s+(\w+)\s*=\s*(.+?)\s*;', stripped)
             if attr_match:
-                attr_name = attr_match.group(1)
-                raw_value = attr_match.group(2)
-                current_attrs[attr_name] = _parse_attr_value(raw_value)
+                current_attrs[attr_match.group(1)] = _parse_attr_value(attr_match.group(2))
                 continue
-
-            # ref :>> name = value;
-            ref_match = re.match(
-                r'ref\s+:>>\s+(\w+)\s*=\s*(.+?)\s*;',
-                stripped
-            )
+            ref_match = re.match(r'ref\s+:>>\s+(\w+)\s*=\s*(.+?)\s*;', stripped)
             if ref_match:
                 current_attrs[ref_match.group(1)] = ref_match.group(2).strip()
                 continue
 
-    # Save last part if file ended inside one
     if current_part:
-        _save_domain_part(current_part, current_attrs,
-                          identity_parts, config_parts)
-
-    # Pair identity and configuration by cross-references
-    for id_name, id_attrs in identity_parts.items():
-        config_ref = id_attrs.get("domainConfiguration", "")
-        config_attrs = config_parts.get(config_ref, {})
-        domains.append({
-            "identity": id_attrs,
-            "configuration": config_attrs,
-        })
-
-    return {"domains": domains}
+        _save_domain_part(current_part, current_attrs, identity_parts, config_parts)
 
 
 def _save_domain_part(current_part, attrs, identity_parts, config_parts):
@@ -1038,7 +1024,7 @@ def main():
     # Stage 5 Phase 2 Block B Step 9: build ontological hierarchy
     ontological_hierarchy = build_ontological_hierarchy(coverage)
 
-    # Session 144: extract domain registry from Foundation::DomainRegistry
+    # Session 144: extract domain registry from the tenant DomainRegistration packages (S515 OP-132 step 10)
     domain_registry = build_domain_registry()
 
     # Summary stats

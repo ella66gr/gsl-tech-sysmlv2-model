@@ -2738,4 +2738,283 @@ package BusinessMetamodelGeneral {
 
         }
     }
+
+    package DomainIdentityTypes {
+        private import ScalarValues::*;
+
+        doc /* Domain identity: what kind of service business a tenant is,
+             * what regulatory environment it operates in, and why it exists
+             * in the platform (B15, S142-D1). The seven classification enums
+             * and the DomainIdentity part def, formerly in Foundation's
+             * CommonTypes and DomainRegistry (OP-132 step 10, groups G and H).
+             * Tenant instances live in each tenant's DomainRegistration
+             * package. The system-side counterpart is
+             * SystemMetamodelGeneral::DomainConfigurationTypes. */
+
+        // -- Domain identity enums (Session 59 design, Session 142 extension,
+        //                            Session 278 RegulatoryShape rebuild) --
+        // Three original enums from Session 59 domain identity paper (B15).
+        // Three new enums from Session 142 dual-stack extension (S142-D7).
+        // RegulatoryTier renamed to RegulatoryShape and rebuilt from an
+        // intensity scale to a kind-based classification at Session 278.
+        // ProfessionalBody enum added Session 278.
+        // All placed in CommonTypes for independent importability by
+        // governance, generators, and other subsystems.
+
+        enum def RegulatoryShape {
+            doc /* Five-value kind-based classification of the principal
+                 * governance frame applicable to a service business.
+                 * Names what governs the business, not how much.
+                 * Mutually exclusive and exhaustive for the principal
+                 * regulatory frame; nuance carried on orthogonal
+                 * supporting attributes (authorisationRequiredToTrade,
+                 * professionalRegistrations, regulatedActivities).
+                 *
+                 * generallyGoverned: only general business law (consumer,
+                 *   contract, H&S, employment, GDPR). No sector regulator,
+                 *   no licensing regime, no role-binding professional body.
+                 *   Example: Cafe.
+                 * locallyLicensed: no sector regulator, but provision
+                 *   requires a local-authority licence, environmental
+                 *   permit, or sector-specific statutory duty (animal
+                 *   welfare, COSHH, premises licence) beyond general law.
+                 *   Example: Suds, Paws.
+                 * professionalBodyRegulated: no sector regulator, but
+                 *   practitioners are bound by membership-based
+                 *   professional bodies (BACP, UKCP, ICF, BPS) whose
+                 *   codes of ethics and complaint routes are the principal
+                 *   governance frame. Example: Minds.
+                 * statutoryProfessionRegulated: practitioners hold
+                 *   statutory professional registration (GMC, NMC, HCPC,
+                 *   GPhC) that the regulator can suspend or remove, but
+                 *   the business itself is not within a sector-regulator
+                 *   perimeter. Example: an independent advisory clinic
+                 *   below CQC threshold.
+                 * sectorRegulated: the business itself sits within a
+                 *   sector regulator's perimeter (CQC, FCA, Ofsted, SRA,
+                 *   Ofcom, EA). Authorisation/registration is required
+                 *   to lawfully provide the core service.
+                 *   Example: Ears, GSL.
+                 *
+                 * Renamed from RegulatoryTier and rebuilt at S278:
+                 * the previous four-value intensity scale
+                 * {generallyGoverned, lightlyRegulated, partiallyRegulated,
+                 * sectorRegulated} muddled kind and intensity. The new
+                 * vocabulary captures kind explicitly. partiallyRegulated
+                 * is removed; mixed-services-with-regulated-components
+                 * cases are now expressed by a non-empty regulatedActivities
+                 * list on a tenant whose principal shape is one of the
+                 * other values. lightlyRegulated → locallyLicensed for
+                 * vocabulary precision. moderatelyRegulated — used in
+                 * documentation but never in the SysML enum — is replaced
+                 * by sectorRegulated for the Ears-shaped case.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 59, confirmed Session 142, rebuilt Session 278. */
+            generallyGoverned;
+            locallyLicensed;
+            professionalBodyRegulated;
+            statutoryProfessionRegulated;
+            sectorRegulated;
+        }
+
+        enum def ProfessionalBody {
+            doc /* Closed enum of recognised professional bodies whose
+                 * registration or membership constitutes part of a
+                 * tenant's regulatory shape. Used on the
+                 * DomainIdentity.professionalRegistrations multi-valued
+                 * attribute. Each entry carries an implicit category
+                 * (statutory or membership-based) — see the value
+                 * descriptions below; surfaced as documentation rather
+                 * than a separate axis enum to keep one queryable list.
+                 *
+                 * Statutory bodies (registration that the regulator can
+                 * suspend or remove, with statutory power):
+                 *   gmc — General Medical Council (doctors, UK).
+                 *   nmc — Nursing and Midwifery Council.
+                 *   hcpc — Health and Care Professions Council.
+                 *   gphc — General Pharmaceutical Council.
+                 *   gdc — General Dental Council.
+                 *   gosc — General Osteopathic Council.
+                 *   gcc — General Chiropractic Council.
+                 *   goc — General Optical Council.
+                 *
+                 * Membership-based bodies (membership of a body whose
+                 * code of ethics binds the member by contract, with
+                 * complaint routes and possible expulsion but no
+                 * statutory removal of the right to practise):
+                 *   bacp — British Association for Counselling and
+                 *     Psychotherapy.
+                 *   ukcp — UK Council for Psychotherapy.
+                 *   icf — International Coaching Federation.
+                 *   bps — British Psychological Society.
+                 *   bcsh — British Council of Self-Hypnosis (placeholder
+                 *     for analogous bodies — extend as encountered).
+                 *
+                 * Extension policy: add new values when first encountered
+                 * by a tenant being modelled. Do not pre-populate.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 278. */
+            gmc;
+            nmc;
+            hcpc;
+            gphc;
+            gdc;
+            gosc;
+            gcc;
+            goc;
+            bacp;
+            ukcp;
+            icf;
+            bps;
+            bcsh;
+        }
+
+        enum def BmmVocabularyScope {
+            doc /* Which subset of the Business Meta Model vocabulary
+                 * a domain instantiates.
+                 * generalOnly: uses only General-level BMM elements.
+                 * full: uses both General and Tailored elements.
+                 * production: full vocabulary plus production-grade
+                 *   governance, audit, and operational requirements.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 59, confirmed Session 142. */
+            generalOnly;
+            full;
+            production;
+        }
+
+        enum def DomainPurpose {
+            doc /* Why a domain exists in the Ontara platform.
+                 * A domain may have multiple purposes (e.g. Paws is
+                 * both pedagogicalAnchoring and crossDomainValidation).
+                 *
+                 * referenceValidation: the original demonstrator domain
+                 *   against which patterns are first developed.
+                 * crossDomainValidation: validates that meta model
+                 *   concepts generalise beyond the reference domain.
+                 * pedagogicalAnchoring: simple domain used to introduce
+                 *   concepts and verify understanding.
+                 * production: a real service business using the platform
+                 *   for actual service delivery.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 59, confirmed Session 142 (S142-D6: multi-valued). */
+            referenceValidation;
+            crossDomainValidation;
+            pedagogicalAnchoring;
+            production;
+        }
+
+        enum def Jurisdiction {
+            doc /* Territorial jurisdiction for governance framework
+                 * applicability. Based on UK devolution structure — the
+                 * primary governance frameworks Ontara supports have
+                 * jurisdiction-specific scope. Extensible as the platform
+                 * supports non-UK jurisdictions.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 142 (S142-D7). */
+            england;
+            scotland;
+            wales;
+            northernIreland;
+            unitedKingdom;
+        }
+
+        enum def RegulatedActivity {
+            doc /* Activities regulated by CQC under the Health and Social
+                 * Care Act 2008. A service providing any of these must be
+                 * registered with CQC. Used during governance framework
+                 * activation to determine directive applicability.
+                 *
+                 * Source: HSCA 2008 (Regulated Activities) Regulations 2014,
+                 * Schedule 1.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 142 (S142-D7). */
+            personalCare;
+            accommodationForPersonsRequiringNursingOrPersonalCare;
+            accommodationForPersonsRequiringTreatmentForSubstanceMisuse;
+            treatment;
+            assessmentOrMedicalTreatmentForPersonsDetainedUnderMentalHealthAct;
+            surgicalProcedures;
+            diagnosticAndScreeningProcedures;
+            managementOfSupplyOfBloodAndBloodDerivedProducts;
+            transportServicesTimedAndUntimed;
+            maternity;
+            terminationOfPregnancies;
+            familyPlanning;
+            nursingCare;
+        }
+
+        enum def OrganisationalForm {
+            doc /* The legal/organisational form of a service provider.
+                 * Some governance directives apply only to specific forms
+                 * (e.g. "body corporate" provisions in CQC regulations).
+                 *
+                 * Source: CQC registration requirements; Companies Act 2006.
+                 *
+                 * Business meta model concept. Domain identity (B15).
+                 * Session 142 (S142-D7). */
+            registeredIndividual;
+            partnership;
+            organisation;
+            bodyCorporate;
+        }
+
+        part def DomainIdentity {
+            doc /* Business Meta Model concept.
+                 * The business identity of a domain: what kind of service
+                 * business it is, what regulatory environment it operates
+                 * in, and why it exists in the platform.
+                 *
+                 * In the dual-stack architecture, DomainIdentity is the
+                 * BMM-side of domain identity. The SMM-side is
+                 * DomainConfiguration, connected by a horizontal mapping.
+                 *
+                 * In the multi-tenancy architecture (A13), only the meta
+                 * model is core. Every DomainIdentity represents a tenant
+                 * instantiation.
+                 *
+                 * BFO grounding: IAO:plan_specification (S142-D2).
+                 * Domain identity (B15). Dual-stack (B21).
+                 * Multi-tenancy (A13). Session 142 design, Session 143.
+                 * Session 278: regulatoryTier renamed to regulatoryShape
+                 * (kind-based, not intensity-based); two orthogonal
+                 * supporting attributes added
+                 * (authorisationRequiredToTrade,
+                 * professionalRegistrations). regulatedActivities
+                 * is now also the carrier of the
+                 * mixed-services-with-regulated-components case (the
+                 * old partiallyRegulated tier).
+                 *
+                 * authorisationRequiredToTrade (canon definition, S515):
+                 * True where the business cannot lawfully offer its core
+                 * service without a prior authorisation or licence that
+                 * the authority can refuse or withdraw (for example CQC
+                 * registration, or a premises licence); false otherwise. A
+                 * prior registration that the authority cannot refuse,
+                 * such as UK food business registration, is a notification
+                 * duty, not an authorisation: it sets the attribute false
+                 * and is recorded among the tenant's regulatedActivities.
+                 *
+                 * The pairing with DomainConfiguration is held on the
+                 * system side only (DomainConfiguration.domainIdentity);
+                 * this def no longer refers back (OP-132 Action 2, S515). */
+
+            attribute regulatoryShape : RegulatoryShape;
+            attribute bmmVocabularyScope : BmmVocabularyScope;
+            attribute domainPurpose : DomainPurpose[1..*];
+            attribute jurisdiction : Jurisdiction;
+            attribute regulatedActivities : RegulatedActivity[0..*];
+            attribute professionalRegistrations : ProfessionalBody[0..*];
+            attribute organisationalForm : OrganisationalForm;
+            attribute authorisationRequiredToTrade : Boolean;
+            attribute description : String;
+            attribute introducedSession : Integer;
+        }
+    }
 }

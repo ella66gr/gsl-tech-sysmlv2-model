@@ -31,15 +31,16 @@ The **Integrated Trust, Security, Privacy & Governance Framework (IGF)** is a cr
 gsl-sysml-model/
 ├── model/                          SysML v2 model files (engineering projection of KG-canonical content)
 │   ├── business-metamodel-general.sysml  BMG: six concern packages (34 General part defs + 98 weighted relationships),
-│   │                               BusinessScenarios, BusinessStrategy, CanonicalRuntime (OP-132 step 9)
+│   │                               BusinessScenarios, BusinessStrategy, CanonicalRuntime (OP-132 step 9), DomainIdentityTypes (step 10)
 │   ├── architectural-structure.sysml  SMM: ArchitecturalSection + instances
 │   ├── system-metamodel-general.sysml  SMG: ProcessAnnotations, StatePatterns, LogicEngine, EvaluationSpecs, DecisionModels,
-│   │                               OutcomeFramework, LearningCycles, Analytics, Persistence, OpenEhrIntegration (OP-132 step 8)
+│   │                               OutcomeFramework, LearningCycles, Analytics, Persistence, OpenEhrIntegration (OP-132 step 8),
+│   │                               DomainConfigurationTypes (step 10)
 │   ├── system-metamodel-domain-clinical.sysml  SMD (clinical): @ClinicalReviewGate (OP-132 step 7)
 │   ├── canonical-runtime.sysml     Multi-axis status primitive (B71/B72) — CanonicalRuntimeType, StatusAxis,
 │   │                               ValueSpace, AxisTransition; Paws Booking five-axis declaration
 │   ├── pattern-catalogue.sysml     Validated patterns + architectural principles
-│   └── foundation.sysml            Residual: CommonTypes (remaining enums), DomainRegistry (dissolving, OP-132 steps 9–11)
+│   └── foundation.sysml            Residual: CommonTypes (Gender, ContactMethod, AppointmentType, ConsentStatus, Address, ContactDetails) — deleted at OP-132 step 11
 ├── exercises/                      Tenant and demonstrator domain projections
 │   ├── gendersense/model/          GSL — production tenant (OP-132 steps 3–4): gendersense.sysml root,
 │   │                               gsl-enterprise, gsl-service-delivery, gsl-platform, gsl-operations,

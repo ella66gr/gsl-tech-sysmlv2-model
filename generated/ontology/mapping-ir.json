@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "generated_at": "2026-10-30T15:35:14.644060+00:00",
+  "generated_at": "2026-10-30T15:42:10.462466+00:00",
   "session": 116,
   "summary": {
     "StructuralOnly": 741,
@@ -1045,6 +1045,78 @@
       }
     },
     {
+      "name": "RegulatoryShape",
+      "kind": "enum_def",
+      "parentPackage": "DomainIdentityTypes",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ProfessionalBody",
+      "kind": "enum_def",
+      "parentPackage": "DomainIdentityTypes",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "BmmVocabularyScope",
+      "kind": "enum_def",
+      "parentPackage": "DomainIdentityTypes",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DomainPurpose",
+      "kind": "enum_def",
+      "parentPackage": "DomainIdentityTypes",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Jurisdiction",
+      "kind": "enum_def",
+      "parentPackage": "DomainIdentityTypes",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "RegulatedActivity",
+      "kind": "enum_def",
+      "parentPackage": "DomainIdentityTypes",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OrganisationalForm",
+      "kind": "enum_def",
+      "parentPackage": "DomainIdentityTypes",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DomainIdentity",
+      "kind": "part_def",
+      "parentPackage": "DomainIdentityTypes",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
       "name": "Gender",
       "kind": "enum_def",
       "parentPackage": "CommonTypes",
@@ -1093,159 +1165,6 @@
       "name": "ContactDetails",
       "kind": "part_def",
       "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "RegulatoryShape",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ProfessionalBody",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "BmmVocabularyScope",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DomainPurpose",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Jurisdiction",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "RegulatedActivity",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OrganisationalForm",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DomainIdentity",
-      "kind": "part_def",
-      "parentPackage": "DomainRegistry",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DomainConfiguration",
-      "kind": "part_def",
-      "parentPackage": "DomainRegistry",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "cafeIdentity",
-      "kind": "part",
-      "parentPackage": "DomainRegistry",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "cafeConfiguration",
-      "kind": "part",
-      "parentPackage": "DomainRegistry",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "sudsIdentity",
-      "kind": "part",
-      "parentPackage": "DomainRegistry",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "sudsConfiguration",
-      "kind": "part",
-      "parentPackage": "DomainRegistry",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "pawsIdentity",
-      "kind": "part",
-      "parentPackage": "DomainRegistry",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "pawsConfiguration",
-      "kind": "part",
-      "parentPackage": "DomainRegistry",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "gslIdentity",
-      "kind": "part",
-      "parentPackage": "DomainRegistry",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "gslConfiguration",
-      "kind": "part",
-      "parentPackage": "DomainRegistry",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "classification": "StructuralOnly",
@@ -2728,6 +2647,15 @@
       "targetGraph": null
     },
     {
+      "name": "DomainConfiguration",
+      "kind": "part_def",
+      "parentPackage": "DomainConfigurationTypes",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
       "name": "DrinkName",
       "kind": "enum_def",
       "parentPackage": "CoffeeShopArchetypes",
@@ -3182,6 +3110,24 @@
       "kind": "part",
       "parentPackage": "CoffeeShopBusinessModel",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "cafeIdentity",
+      "kind": "part",
+      "parentPackage": "CoffeeShopDomainRegistration",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-domain-registration.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "cafeConfiguration",
+      "kind": "part",
+      "parentPackage": "CoffeeShopDomainRegistration",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-domain-registration.sysml",
       "sourceDomain": "cafe",
       "classification": "StructuralOnly",
       "targetGraph": null
@@ -4186,6 +4132,24 @@
       "targetGraph": null
     },
     {
+      "name": "sudsIdentity",
+      "kind": "part",
+      "parentPackage": "SudsDomainRegistration",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "sudsConfiguration",
+      "kind": "part",
+      "parentPackage": "SudsDomainRegistration",
+      "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
+      "sourceDomain": "suds",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
       "name": "pawsValueProposition",
       "kind": "part",
       "parentPackage": "PawsBusinessModel",
@@ -4906,6 +4870,24 @@
       "targetGraph": null
     },
     {
+      "name": "pawsIdentity",
+      "kind": "part",
+      "parentPackage": "PawsDomainRegistration",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "pawsConfiguration",
+      "kind": "part",
+      "parentPackage": "PawsDomainRegistration",
+      "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+      "sourceDomain": "paws",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
       "name": "selfReferringIndividuals",
       "kind": "part",
       "parentPackage": "GslBusinessModel",
@@ -5540,6 +5522,24 @@
       "kind": "part",
       "parentPackage": "GslBusinessModel",
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "gslIdentity",
+      "kind": "part",
+      "parentPackage": "GslDomainRegistration",
+      "sourceFile": "exercises/gendersense/model/gsl-domain-registration.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "gslConfiguration",
+      "kind": "part",
+      "parentPackage": "GslDomainRegistration",
+      "sourceFile": "exercises/gendersense/model/gsl-domain-registration.sysml",
       "sourceDomain": "gsl",
       "classification": "StructuralOnly",
       "targetGraph": null

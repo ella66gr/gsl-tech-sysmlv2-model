@@ -1,7 +1,7 @@
 // ============================================================
 // DO NOT EDIT — Generated from GenderSense SysML v2 model
 // Source: exercises/gendersense/model/gsl-knowledge.sysml (GslKnowledge::ClinicalDecisionSupport)
-// Generated: 2026-10-30T15:35:14Z
+// Generated: 2026-10-30T15:42:10Z
 // Generator: scripts/gen_constraint_evaluator.py
 // ============================================================
 

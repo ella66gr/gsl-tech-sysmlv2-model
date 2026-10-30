@@ -1985,4 +1985,37 @@ package SystemMetamodelGeneral {
             attribute templateId : String;
         }
     }
+
+    package DomainConfigurationTypes {
+        private import ScalarValues::*;
+        private import BusinessMetamodelGeneral::DomainIdentityTypes::*;  // DomainIdentity (ref target)
+
+        doc /* Domain configuration: how the platform discovers, organises,
+             * presents and manages a tenant domain (S142-D1). Formerly in
+             * Foundation's DomainRegistry (OP-132 step 10, group H). Holds the
+             * one-way pairing to the business-side DomainIdentity. Tenant
+             * instances live in each tenant's DomainRegistration package. */
+
+        part def DomainConfiguration {
+            doc /* System Meta Model concept.
+                 * The system configuration for a domain: how the platform
+                 * discovers, organises, presents, and manages this domain.
+                 *
+                 * Connected to DomainIdentity via horizontal mapping.
+                 * Changes to configuration (package paths, display names)
+                 * do not affect business identity or governance bindings.
+                 *
+                 * BFO grounding: IAO:data_item (S142-D2).
+                 * Domain identity (B15). Dual-stack (B21).
+                 * Session 142 design, Session 143. */
+
+            attribute canonicalKey : String;
+            attribute displayLabel : String;
+            attribute fullName : String;
+            attribute packageName : String;
+            attribute modelPath : String;
+            attribute isActive : Boolean;
+            ref domainIdentity : DomainIdentity;
+        }
+    }
 }
