@@ -23,8 +23,8 @@
 
 package SudsBusinessModel {
     private import ScalarValues::*;
-    private import BusinessModel::ServiceConcept::*;
-    private import BusinessModel::ActivityModel::*;
+    private import BusinessMetamodelGeneral::ServiceConcept::*;
+    private import BusinessMetamodelGeneral::ActivityModel::*;
 
     doc /* Suds laundry service business model. Instantiates the
          * ServiceConcept and ActivityModel part defs from the main
@@ -350,8 +350,8 @@ package SudsBusinessModel {
 
 package SudsResourceFinancial {
     private import ScalarValues::*;
-    private import BusinessModel::ResourcePlanning::*;
-    private import BusinessModel::FinancialPlanning::*;
+    private import BusinessMetamodelGeneral::ResourcePlanning::*;
+    private import BusinessMetamodelGeneral::FinancialPlanning::*;
     private import SudsBusinessModel::*;
 
     // -- Resource types ----------------------------------------
@@ -563,8 +563,8 @@ package SudsResourceFinancial {
 
 package SudsGovernance {
     private import ScalarValues::*;
-    private import BusinessModel::ServiceConcept::ExternalReference;
-    private import BusinessModel::GovernanceMapping::*;
+    private import BusinessMetamodelGeneral::ServiceConcept::ExternalReference;
+    private import BusinessMetamodelGeneral::GovernanceMapping::*;
 
     doc /* COSHH governance traceability for the Suds laundry service.
          * Demonstrates the full satisfy chain in a non-health context:
@@ -738,10 +738,9 @@ package SudsGovernance {
 
 package SudsStakeholderModel {
     private import ScalarValues::*;
-    private import BusinessModel::StakeholderModel::*;
-    private import BusinessModel::ServiceConcept::*;
-    private import BusinessModel::GovernanceMapping::*;
-    private import Foundation::CommonTypes::*;
+    private import BusinessMetamodelGeneral::StakeholderModel::*;
+    private import BusinessMetamodelGeneral::ServiceConcept::*;
+    private import BusinessMetamodelGeneral::GovernanceMapping::*;
     private import SudsBusinessModel::*;
     private import SudsGovernance::*;
 

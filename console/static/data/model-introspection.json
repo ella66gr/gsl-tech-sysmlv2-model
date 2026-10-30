@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T15:28:07.657325",
+  "generatedAt": "2026-10-30T15:35:14.156188",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
@@ -43,8 +43,8 @@
     },
     "byLayer": {
       "smm": 196,
-      "unknown": 75,
-      "bmm": 68,
+      "unknown": 69,
+      "bmm": 74,
       "domain": 466
     },
     "byDomain": {
@@ -12580,10 +12580,10 @@
       "name": "CustomerSegment",
       "parentPackage": "ServiceConcept",
       "doc": "A defined group of customers with shared needs,\nbehaviours, and willingness to pay. Each segment\nhas distinct needs and may require distinct value\npropositions.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 105,
+      "lineNumber": 112,
       "attributes": [
         {
           "name": "segmentName",
@@ -12719,10 +12719,10 @@
       "name": "ValueProposition",
       "parentPackage": "ServiceConcept",
       "doc": "A specific promise of value to a specific customer\nsegment. Defines what the customer gets, how it\ndiffers from alternatives, and why it matters.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 151,
+      "lineNumber": 158,
       "attributes": [
         {
           "name": "propositionName",
@@ -12858,10 +12858,10 @@
       "name": "ServiceOffering",
       "parentPackage": "ServiceConcept",
       "doc": "A packaged, deliverable unit of service that realises\none or more value propositions for one or more\nsegments. This is the unit at which pricing, resource\nrequirements, and pathway mapping are defined.\nCross-reference: each ServiceOffering maps to one or\nmore clinical pathways in\nServiceDelivery::Cl",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 221,
+      "lineNumber": 228,
       "attributes": [
         {
           "name": "offeringName",
@@ -13067,10 +13067,10 @@
       "name": "Channel",
       "parentPackage": "ServiceConcept",
       "doc": "A means by which customers discover, access, and\ninteract with the service. Channels have reach,\ncost, and conversion characteristics.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 267,
+      "lineNumber": 274,
       "attributes": [
         {
           "name": "channelName",
@@ -13198,10 +13198,10 @@
       "name": "DifferentiationClaim",
       "parentPackage": "ServiceConcept",
       "doc": "An explicit statement of how this service differs\nfrom available alternatives, from the customer's\nperspective. Each claim should be testable.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 308,
+      "lineNumber": 315,
       "attributes": [
         {
           "name": "claimName",
@@ -13319,10 +13319,10 @@
       "name": "ServiceSubject",
       "parentPackage": "ServiceConcept",
       "doc": "The entity upon which a service is performed. The dog\nbeing groomed, the patient receiving care, the garment\nbeing laundered, the item being repaired.\nA service subject is structurally distinct from a\nservice participant: the service acts *on* the subject,\nwhile participants influence, commission, f",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 369,
+      "lineNumber": 376,
       "attributes": [
         {
           "name": "subjectName",
@@ -13484,10 +13484,10 @@
       "name": "ServiceParticipant",
       "parentPackage": "ServiceConcept",
       "doc": "An entity involved in a service engagement in a\ndefined role. The person who pays, the organisation\nthat commissions, the carer who makes decisions,\nthe expert called in for assessment.\nA service participant is structurally distinct from\na service subject: the service acts *on* the subject,\nwhile pa",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 443,
+      "lineNumber": 450,
       "attributes": [
         {
           "name": "participantName",
@@ -13636,10 +13636,10 @@
       "name": "CatalogueEntry",
       "parentPackage": "ServiceConcept",
       "doc": "The business decision to offer an item for sale or\nuse within a service. References an item definition\nand adds business-context properties.\nThe four-layer model separates what something\nintrinsically is (item definition) from how the\nbusiness offers it (catalogue entry) from its\noperational stock s",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 523,
+      "lineNumber": 530,
       "attributes": [
         {
           "name": "entryName",
@@ -13785,10 +13785,10 @@
       "name": "ExternalReference",
       "parentPackage": "ServiceConcept",
       "doc": "A link to knowledge that lives outside the system.\nThe system does not own this data; it points to it.\nBusiness meta model concept. Domain-agnostic:\n  Coffee shop: supplier datasheet, origin cert\n  Healthcare: SPC, BNF, NICE guidance\n  Education: accreditation body, curriculum standard\nSource: gsl-s",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 572,
+      "lineNumber": 579,
       "attributes": [
         {
           "name": "referenceType",
@@ -13893,10 +13893,10 @@
       "name": "ActivityCategory",
       "parentPackage": "ActivityModel",
       "doc": "The five categories of business activity. Every\nactivity belongs to at least one category. The\ntaxonomy ensures completeness of coverage \u2014 nothing\nfalls through the gaps.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 621,
+      "lineNumber": 628,
       "attributes": [
         {
           "name": "serviceDelivery;"
@@ -13920,10 +13920,10 @@
       "name": "GranularityLevel",
       "parentPackage": "ActivityModel",
       "doc": "The level of detail at which activity is tracked\nfor a given activity type or business area.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 633,
+      "lineNumber": 640,
       "attributes": [
         {
           "name": "envelope;"
@@ -13941,10 +13941,10 @@
       "name": "ActivityType",
       "parentPackage": "ActivityModel",
       "doc": "A defined type of activity within the business.\nEvery activity has a type, and every type belongs\nto one of the five taxonomy categories.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 692,
+      "lineNumber": 699,
       "attributes": [
         {
           "name": "activityTypeName",
@@ -14119,10 +14119,10 @@
       "name": "ActivityRecord",
       "parentPackage": "ActivityModel",
       "doc": "A recorded instance of an activity. At the tracked\nlevel, the system produces these for every observable\nactivity. At coarser levels, they are estimated\naggregates.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 727,
+      "lineNumber": 734,
       "attributes": [
         {
           "name": "activityType",
@@ -14232,10 +14232,10 @@
       "name": "ActivityBudget",
       "parentPackage": "ActivityModel",
       "doc": "A planned allocation of activity volume by type,\nperiod, and resource. The activity-level equivalent\nof a financial budget.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 768,
+      "lineNumber": 775,
       "attributes": [
         {
           "name": "budgetPeriod",
@@ -14358,10 +14358,10 @@
       "name": "ActivityGranularity",
       "parentPackage": "ActivityModel",
       "doc": "Policy declaration: the granularity level at which\nactivity is tracked for a given business area.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 808,
+      "lineNumber": 815,
       "attributes": [
         {
           "name": "businessArea",
@@ -14479,10 +14479,10 @@
       "name": "ActivityCostAllocation",
       "parentPackage": "ActivityModel",
       "doc": "The mapping from an activity (or aggregate) to its\nfinancial cost. Makes resource consumption visible\nto the financial model.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 851,
+      "lineNumber": 858,
       "attributes": [
         {
           "name": "activityType",
@@ -14613,10 +14613,10 @@
       "name": "ResourceType",
       "parentPackage": "ResourcePlanning",
       "doc": "A category of resource required to operate the\nservice delivery system. Each type has acquisition\ncharacteristics, capacity constraints, and cost\nprofiles.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 936,
+      "lineNumber": 943,
       "attributes": [
         {
           "name": "resourceTypeName",
@@ -14791,10 +14791,10 @@
       "name": "ResourceInstance",
       "parentPackage": "ResourcePlanning",
       "doc": "A specific resource available to the business at\na defined capacity and cost. Represents planning-\nlevel archetypes (\"a prescribing clinician at\n0.5 FTE\") rather than named individuals.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 977,
+      "lineNumber": 984,
       "attributes": [
         {
           "name": "instanceName",
@@ -14922,10 +14922,10 @@
       "name": "Capability",
       "parentPackage": "ResourcePlanning",
       "doc": "An organised combination of resources that produces\na defined service function. Capabilities bridge the\ngap between raw resources and service delivery \u2014 you\ndon't deliver care with \"a doctor\" and \"a system\";\nyou deliver it with \"the ability to conduct a hormone\ntherapy monitoring review.\"\nPhase 7: e",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1029,
+      "lineNumber": 1036,
       "attributes": [
         {
           "name": "capabilityName",
@@ -15076,10 +15076,10 @@
       "name": "CapacityModel",
       "parentPackage": "ResourcePlanning",
       "doc": "The relationship between resource configuration and\nservice throughput. A planning assertion, not a\ncomputed formula \u2014 the formula representation lives\nin BusinessScenarios::ProjectionFormula.\nCapacityModel says \"with 1 clinician at 8 sessions/\nday we can see 80 patients/week.\" ProjectionFormula\ncom",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1077,
+      "lineNumber": 1084,
       "attributes": [
         {
           "name": "resourceConfiguration",
@@ -15202,10 +15202,10 @@
       "name": "ResourceConstraint",
       "parentPackage": "ResourcePlanning",
       "doc": "A constraint on resource availability or use that\naffects service delivery. May be regulatory,\nfinancial, temporal, or contractual.\nPhase 7: regulatorySourceDescription retains the\nhuman-readable reference. Formal ref to\nEnterprise::Regulation requirement defs is deferred\n\u2014 ref to a requirement def ",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1123,
+      "lineNumber": 1130,
       "attributes": [
         {
           "name": "constraintName",
@@ -15328,10 +15328,10 @@
       "name": "InventoryRecord",
       "parentPackage": "ResourcePlanning",
       "doc": "A point-in-time record of stock level for an item\nin the catalogue. References a catalogue entry\nbecause inventory is scoped to what the business\ncurrently offers.\nDistinct from ResourceInstance (planning-level):\nResourceInstance models \"we have 0.5 FTE of\nclinician capacity.\" InventoryRecord models",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1171,
+      "lineNumber": 1178,
       "attributes": [
         {
           "name": "catalogueEntry",
@@ -15446,10 +15446,10 @@
       "name": "ObjectiveCapabilityMapping",
       "parentPackage": "ResourcePlanning",
       "doc": "Maps a StrategicObjective to the Capability\nusages that contribute to achieving it.\nPhase 7 traceability pattern.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1235,
+      "lineNumber": 1242,
       "attributes": [
         {
           "name": "strategicObjective",
@@ -15545,10 +15545,10 @@
       "name": "PricingType",
       "parentPackage": "FinancialPlanning",
       "doc": "The structural pricing model for a service offering.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1266,
+      "lineNumber": 1273,
       "attributes": [
         {
           "name": "perEpisode"
@@ -15572,10 +15572,10 @@
       "name": "RevenueStream",
       "parentPackage": "FinancialPlanning",
       "doc": "A mechanism by which income is generated.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1309,
+      "lineNumber": 1316,
       "attributes": [
         {
           "name": "streamName",
@@ -15711,10 +15711,10 @@
       "name": "CostDriver",
       "parentPackage": "FinancialPlanning",
       "doc": "A structural factor that generates cost.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1357,
+      "lineNumber": 1364,
       "attributes": [
         {
           "name": "driverName",
@@ -15864,10 +15864,10 @@
       "name": "UnitEconomics",
       "parentPackage": "FinancialPlanning",
       "doc": "The financial profile of a single unit of service delivery.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1395,
+      "lineNumber": 1402,
       "attributes": [
         {
           "name": "offering",
@@ -15990,10 +15990,10 @@
       "name": "PricingModel",
       "parentPackage": "FinancialPlanning",
       "doc": "The logic that determines what a customer pays.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1438,
+      "lineNumber": 1445,
       "attributes": [
         {
           "name": "pricingModelName",
@@ -16129,10 +16129,10 @@
       "name": "FinancialProjection",
       "parentPackage": "FinancialPlanning",
       "doc": "A named financial projection linked to a scenario.\nLightweight placeholder \u2014 full mechanics in\nBusinessScenarios.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1476,
+      "lineNumber": 1483,
       "attributes": [
         {
           "name": "projectionName",
@@ -16260,10 +16260,10 @@
       "name": "GovernanceRequirement",
       "parentPackage": "GovernanceMapping",
       "doc": "A regulatory, legal, or standards obligation that\nthe business must satisfy. General vocabulary \u2014\napplicable to COSHH, CQC, GDPR, food hygiene,\nprofessional standards, or any regulatory context.\nDomain-specific requirement usages redefine these\nattributes with concrete values. The satisfy chain\nconn",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1554,
+      "lineNumber": 1561,
       "attributes": [
         {
           "name": "requirementId",
@@ -16399,10 +16399,10 @@
       "name": "AuditEvidenceRecord",
       "parentPackage": "GovernanceMapping",
       "doc": "A record or document that provides evidence of\ncompliance with a governance requirement. The\naudit trail: what was checked, when, by whom,\nand how often.\nGeneral vocabulary \u2014 applicable to any regulated\nbusiness. COSHH risk assessments, CQC inspection\nrecords, GDPR processing logs, staff training\nre",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1604,
+      "lineNumber": 1611,
       "attributes": [
         {
           "name": "evidenceType",
@@ -16521,14 +16521,86 @@
       }
     },
     {
+      "kind": "enum_def",
+      "name": "RelationshipNature",
+      "parentPackage": "StakeholderModel",
+      "doc": "Classification of the nature of a stakeholder\nrelationship. Closed enum \u2014 tailored extensions\ncan add domain-specific values via :>> redefinition\n(e.g. clinicalNetwork for healthcare).\nBusiness meta model concept. StakeholderModel (C7).\nSession 81.",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 1671,
+      "attributes": [
+        {
+          "name": "regulatory"
+        },
+        {
+          "name": "contractual"
+        },
+        {
+          "name": "professional"
+        },
+        {
+          "name": "advisory"
+        },
+        {
+          "name": "commissioning"
+        },
+        {
+          "name": "peer"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "DependencyCriticality",
+      "parentPackage": "StakeholderModel",
+      "doc": "Classification of how critical an external\ndependency is to the business's operation.\nDrives contingency planning priority.\nBusiness meta model concept. StakeholderModel (C7).\nSession 81.",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 1687,
+      "attributes": [
+        {
+          "name": "essential"
+        },
+        {
+          "name": "important"
+        },
+        {
+          "name": "convenient"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "ReferralDirection",
+      "parentPackage": "StakeholderModel",
+      "doc": "Direction of a referral or referral pathway.\nExtended Session 81: bidirectional added for\nreferral pathways where both directions operate\n(e.g. GP refers to GSL, GSL refers back to GP).",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 1699,
+      "attributes": [
+        {
+          "name": "inbound"
+        },
+        {
+          "name": "outbound"
+        },
+        {
+          "name": "bidirectional"
+        }
+      ]
+    },
+    {
       "kind": "part_def",
       "name": "StakeholderRelationship",
       "parentPackage": "StakeholderModel",
       "doc": "A typed, ongoing, structured relationship between\nthe business and an external entity. The core\nabstraction of the StakeholderModel concern.\nThe relationshipNature enum classifies the\nrelationship. The ref to GovernanceRequirement\nimplements the GovernanceMapping boundary decision\n(Session 78 Q2): r",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1696,
+      "lineNumber": 1745,
       "attributes": [
         {
           "name": "stakeholderName",
@@ -16690,10 +16762,10 @@
       "name": "CooperativeArrangement",
       "parentPackage": "StakeholderModel",
       "doc": "A formalised agreement to jointly deliver or manage\nsomething. Distinguished by shared responsibility\nfor an outcome \u2014 neither party can deliver\nindependently.\nDistinct from StakeholderRelationship: if neither\nparty can deliver the outcome independently, it's\na CooperativeArrangement. If the relatio",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1754,
+      "lineNumber": 1803,
       "attributes": [
         {
           "name": "arrangementName",
@@ -16844,10 +16916,10 @@
       "name": "ReferralPathway",
       "parentPackage": "StakeholderModel",
       "doc": "A structured route for directing or receiving work\nbetween organisations. Characterised by direction\n(inbound, outbound, bidirectional), criteria,\nprotocol, and outcome tracking.\nBusiness meta model concept.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1806,
+      "lineNumber": 1855,
       "attributes": [
         {
           "name": "pathwayName",
@@ -16985,10 +17057,10 @@
       "name": "ExternalDependency",
       "parentPackage": "StakeholderModel",
       "doc": "Something the business depends on that it does not\ncontrol. Characterised by asymmetric reliance \u2014 the\nbusiness depends on the provider, but the provider\ndoes not depend on the business (or the dependence\nis negligible).\nDistinguished from CooperativeArrangement by\nasymmetric power. The criticality ",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1857,
+      "lineNumber": 1906,
       "attributes": [
         {
           "name": "dependencyName",
@@ -17139,10 +17211,10 @@
       "name": "CommunityRelationship",
       "parentPackage": "StakeholderModel",
       "doc": "The business's connection to its broader community\nof interest. Constitutive, not transactional \u2014\ndeliberately lighter on governance attributes than\nthe other StakeholderModel elements.\nBusiness meta model concept.",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1913,
+      "lineNumber": 1962,
       "attributes": [
         {
           "name": "communityName",
@@ -17270,10 +17342,10 @@
       "name": "ParticipationModel",
       "parentPackage": "StakeholderModel",
       "doc": "How the customer/patient participates as co-producer,\nnot merely recipient. Connected to A7 (patient\nautonomy), H2 (agency classification), and the\nservice participation framework (O26).\nStructurally distinct from the five outward-looking\nelements \u2014 ParticipationModel describes the boundary\nlooking ",
-      "sourceFile": "model/business-model.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 1962,
+      "lineNumber": 2011,
       "attributes": [
         {
           "name": "participationName",
@@ -17425,10 +17497,10 @@
       "name": "GrowthShape",
       "parentPackage": "BusinessScenarios",
       "doc": "",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 53,
+      "lineNumber": 2085,
       "attributes": [
         {
           "name": "linear"
@@ -17449,10 +17521,10 @@
       "name": "VarianceSource",
       "parentPackage": "BusinessScenarios",
       "doc": "",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 60,
+      "lineNumber": 2092,
       "attributes": [
         {
           "name": "volume"
@@ -17473,10 +17545,10 @@
       "name": "ScenarioDefinition",
       "parentPackage": "BusinessScenarios",
       "doc": "A named, self-contained configuration of a business\nmodel variant. Selects which ServiceOfferings are\nactive, sets all parameters, specifies growth\nassumptions, and configures resource levels.\nPhase 7: activeServiceOfferings is a typed ref to\nServiceOffering[0..*] (cross-package). The string\nattribu",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 69,
+      "lineNumber": 2101,
       "attributes": [
         {
           "name": "scenarioName",
@@ -17521,10 +17593,10 @@
       "name": "ProjectionParameter",
       "parentPackage": "BusinessScenarios",
       "doc": "",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 88,
+      "lineNumber": 2120,
       "attributes": [
         {
           "name": "parameterName",
@@ -17563,10 +17635,10 @@
       "name": "GrowthAssumption",
       "parentPackage": "BusinessScenarios",
       "doc": "",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 97,
+      "lineNumber": 2129,
       "attributes": [
         {
           "name": "assumptionName",
@@ -17615,10 +17687,10 @@
       "name": "ProjectionFormula",
       "parentPackage": "BusinessScenarios",
       "doc": "",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 108,
+      "lineNumber": 2140,
       "attributes": [
         {
           "name": "formulaName",
@@ -17657,10 +17729,10 @@
       "name": "ProjectionTimeline",
       "parentPackage": "BusinessScenarios",
       "doc": "",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 117,
+      "lineNumber": 2149,
       "attributes": [
         {
           "name": "timelineName",
@@ -17689,10 +17761,10 @@
       "name": "ProjectionOutput",
       "parentPackage": "BusinessScenarios",
       "doc": "",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 124,
+      "lineNumber": 2156,
       "attributes": [
         {
           "name": "periodLabel",
@@ -17741,10 +17813,10 @@
       "name": "SensitivityParameter",
       "parentPackage": "BusinessScenarios",
       "doc": "",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 135,
+      "lineNumber": 2167,
       "attributes": [
         {
           "name": "parameterRef",
@@ -17778,10 +17850,10 @@
       "name": "ScenarioComparison",
       "parentPackage": "BusinessScenarios",
       "doc": "",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 143,
+      "lineNumber": 2175,
       "attributes": [
         {
           "name": "comparisonName",
@@ -17810,10 +17882,10 @@
       "name": "PeriodActuals",
       "parentPackage": "BusinessScenarios",
       "doc": "",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 152,
+      "lineNumber": 2184,
       "attributes": [
         {
           "name": "periodLabel",
@@ -17857,10 +17929,10 @@
       "name": "VarianceAnalysis",
       "parentPackage": "BusinessScenarios",
       "doc": "Phase 6B: varianceSource typed as VarianceSource enum\n(was String). Resolves deferred item from Phase 3.",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 162,
+      "lineNumber": 2194,
       "attributes": [
         {
           "name": "periodLabel",
@@ -17909,10 +17981,10 @@
       "name": "ForecastBaseline",
       "parentPackage": "BusinessScenarios",
       "doc": "",
-      "sourceFile": "model/business-scenarios.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 175,
+      "lineNumber": 2207,
       "attributes": [
         {
           "name": "baselineName",
@@ -17951,10 +18023,10 @@
       "name": "StrategicObjective",
       "parentPackage": "BusinessStrategy",
       "doc": "A defined business goal with a timeframe, success\ncriteria, and traceability to capabilities that\nsatisfy it and scenarios that parameterise it.\nModelled as requirement def (not part def) to enable\nformal satisfy relationships from objectives to\nCapability usages in ResourcePlanning. This preserves\n",
-      "sourceFile": "model/business-strategy.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 52,
+      "lineNumber": 2269,
       "attributes": [
         {
           "name": "objectiveName",
@@ -17994,10 +18066,10 @@
       "name": "BusinessModelVariant",
       "parentPackage": "BusinessStrategy",
       "doc": "A named alternative business model configuration.\nLighter than a full ScenarioDefinition \u2014 captures\nthe strategic essence for comparison at the\nboardroom level. The detailed scenario lives in\nBusinessScenarios and is referenced via scenarioRef.",
-      "sourceFile": "model/business-strategy.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 84,
+      "lineNumber": 2301,
       "attributes": [
         {
           "name": "variantName",
@@ -18046,10 +18118,10 @@
       "name": "PivotScenario",
       "parentPackage": "BusinessStrategy",
       "doc": "A structured what-if analysis for transitioning\nbetween business model variants. Captures the\ntrigger condition, transition plan, estimated\nduration, and risks.",
-      "sourceFile": "model/business-strategy.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 100,
+      "lineNumber": 2317,
       "attributes": [
         {
           "name": "pivotName",
@@ -18093,10 +18165,10 @@
       "name": "AxisScope",
       "parentPackage": "CanonicalRuntime",
       "doc": "The scope of an axis declaration.\ntenantDeclared: the axis is declared by a specific tenant\n  on a specific canonical type. This is the only scope.\n  `platformBuiltIn` was removed at S514 (ADR-011): no\n  built-in axis remains, and a future one would be\n  re-added by decision, not by default.",
-      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 101,
+      "metaModelLayer": "bmm",
+      "lineNumber": 2433,
       "attributes": [
         {
           "name": "tenantDeclared"
@@ -18108,10 +18180,10 @@
       "name": "AxisAuthority",
       "parentPackage": "CanonicalRuntime",
       "doc": "Declares which party or component may write to an axis.\nMirrors the binding-class vocabulary at B60 (BRL).\nA write through the wrong binding class is a constraint\nviolation; the canonical-edge contract (B61) enforces\nthe declaration uniformly. Multi-valued attributes of\nthis type are used where more",
-      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 112,
+      "metaModelLayer": "bmm",
+      "lineNumber": 2444,
       "attributes": [
         {
           "name": "operatorSide"
@@ -18138,10 +18210,10 @@
       "name": "ValueSpaceShape",
       "parentPackage": "CanonicalRuntime",
       "doc": "The three shapes a StatusAxis value space may take.\nSelected when the axis is declared (S253 \u00a73.2).\n- unorderedEnum: a set of named values with no implicit\n    ordering. Cancellation axis is a typical case.\n- orderedEnum: a totally-ordered sequence. Lifecycle axes\n    use this. Admits unordered bran",
-      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 141,
+      "metaModelLayer": "bmm",
+      "lineNumber": 2473,
       "attributes": [
         {
           "name": "unorderedEnum"
@@ -18159,10 +18231,10 @@
       "name": "ValueSpace",
       "parentPackage": "CanonicalRuntime",
       "doc": "The permitted values for a StatusAxis, plus the shape\n(ordered / unordered / structured) that determines how\nthe values relate to one another.\nFor enumeration shapes, the `enumValues` multi-valued\nattribute holds the permitted value strings. For the\nstructured shape, a tenant-authored spec describes",
-      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 194,
+      "lineNumber": 2526,
       "attributes": [
         {
           "name": "valueShape",
@@ -18275,10 +18347,10 @@
       "name": "AxisTransition",
       "parentPackage": "CanonicalRuntime",
       "doc": "A permitted value-to-value transition on a single axis.\nDeclared transitions are exhaustive for the axis \u2014 any\n(fromValue, toValue) pair not represented by an\nAxisTransition in the permitted set is a prohibited\ntransition. Attempts at prohibited transitions are\nrejected at write time by the canonica",
-      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 245,
+      "lineNumber": 2577,
       "attributes": [
         {
           "name": "fromValue",
@@ -18396,10 +18468,10 @@
       "name": "StatusAxis",
       "parentPackage": "CanonicalRuntime",
       "doc": "B71 \u2014 StatusAxis as a BMM General part def.\nA StatusAxis instance declares WHAT A SINGLE DIMENSION\nOF STATUS LOOKS LIKE: its value space, its permitted\ntransitions, its default, its authority, its scope.\nA canonical runtime type declares N StatusAxis part\nusages (one per dimension of status it carri",
-      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 307,
+      "lineNumber": 2639,
       "attributes": [
         {
           "name": "axisName",
@@ -18535,10 +18607,10 @@
       "name": "valueSpace",
       "parentPackage": "CanonicalRuntime",
       "doc": "",
-      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 332,
+      "metaModelLayer": "bmm",
+      "lineNumber": 2664,
       "specialises": "ValueSpace"
     },
     {
@@ -18546,10 +18618,10 @@
       "name": "permittedTransitions",
       "parentPackage": "CanonicalRuntime",
       "doc": "",
-      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 333,
+      "metaModelLayer": "bmm",
+      "lineNumber": 2665,
       "specialises": "AxisTransition"
     },
     {
@@ -18557,10 +18629,10 @@
       "name": "CanonicalRuntimeType",
       "parentPackage": "CanonicalRuntime",
       "doc": "Base part def for every canonical runtime type \u2014 types\nwhose runtime instances live in DBR (business-side\ncontinuant trajectories) or DSR (system-side occurrent\nlog).\nCarries no built-in axis. Tenant-declared axes are added\nby the specialising canonical type. (The platform-provided\nepistemic axis of",
-      "sourceFile": "model/canonical-runtime.sysml",
+      "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 380,
+      "lineNumber": 2712,
       "catalogueTag": {
         "bmmConcern": "CanonicalRuntime",
         "classification": "General"
@@ -18718,85 +18790,13 @@
     },
     {
       "kind": "enum_def",
-      "name": "ReferralDirection",
-      "parentPackage": "CommonTypes",
-      "doc": "Direction of a referral or referral pathway.\nExtended Session 81: bidirectional added for\nreferral pathways where both directions operate\n(e.g. GP refers to GSL, GSL refers back to GP).",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 64,
-      "attributes": [
-        {
-          "name": "inbound"
-        },
-        {
-          "name": "outbound"
-        },
-        {
-          "name": "bidirectional"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "RelationshipNature",
-      "parentPackage": "CommonTypes",
-      "doc": "Classification of the nature of a stakeholder\nrelationship. Closed enum \u2014 tailored extensions\ncan add domain-specific values via :>> redefinition\n(e.g. clinicalNetwork for healthcare).\nBusiness meta model concept. StakeholderModel (C7).\nSession 81.",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "bmm",
-      "lineNumber": 76,
-      "attributes": [
-        {
-          "name": "regulatory"
-        },
-        {
-          "name": "contractual"
-        },
-        {
-          "name": "professional"
-        },
-        {
-          "name": "advisory"
-        },
-        {
-          "name": "commissioning"
-        },
-        {
-          "name": "peer"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "DependencyCriticality",
-      "parentPackage": "CommonTypes",
-      "doc": "Classification of how critical an external\ndependency is to the business's operation.\nDrives contingency planning priority.\nBusiness meta model concept. StakeholderModel (C7).\nSession 81.",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "bmm",
-      "lineNumber": 92,
-      "attributes": [
-        {
-          "name": "essential"
-        },
-        {
-          "name": "important"
-        },
-        {
-          "name": "convenient"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
       "name": "ConsentStatus",
       "parentPackage": "CommonTypes",
       "doc": "Status of a consent record.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 104,
+      "lineNumber": 66,
       "attributes": [
         {
           "name": "given"
@@ -18820,7 +18820,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 112,
+      "lineNumber": 74,
       "attributes": [
         {
           "name": "line1",
@@ -18857,7 +18857,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 121,
+      "lineNumber": 83,
       "attributes": [
         {
           "name": "email",
@@ -18884,7 +18884,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 138,
+      "lineNumber": 100,
       "attributes": [
         {
           "name": "generallyGoverned"
@@ -18911,7 +18911,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 195,
+      "lineNumber": 157,
       "attributes": [
         {
           "name": "gmc"
@@ -18962,7 +18962,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 248,
+      "lineNumber": 210,
       "attributes": [
         {
           "name": "generalOnly"
@@ -18983,7 +18983,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 263,
+      "lineNumber": 225,
       "attributes": [
         {
           "name": "referenceValidation"
@@ -19007,7 +19007,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 285,
+      "lineNumber": 247,
       "attributes": [
         {
           "name": "england"
@@ -19034,7 +19034,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 301,
+      "lineNumber": 263,
       "attributes": [
         {
           "name": "personalCare"
@@ -19085,7 +19085,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 327,
+      "lineNumber": 289,
       "attributes": [
         {
           "name": "registeredIndividual"
@@ -19109,7 +19109,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 370,
+      "lineNumber": 332,
       "attributes": [
         {
           "name": "regulatoryShape",
@@ -19176,7 +19176,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 409,
+      "lineNumber": 371,
       "attributes": [
         {
           "name": "canonicalKey",
@@ -19223,7 +19223,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 440,
+      "lineNumber": 402,
       "specialises": "DomainIdentity",
       "attributes": [
         {
@@ -19276,7 +19276,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 459,
+      "lineNumber": 421,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -19319,7 +19319,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 471,
+      "lineNumber": 433,
       "specialises": "DomainIdentity",
       "attributes": [
         {
@@ -19372,7 +19372,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 490,
+      "lineNumber": 452,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -19415,7 +19415,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 502,
+      "lineNumber": 464,
       "specialises": "DomainIdentity",
       "attributes": [
         {
@@ -19468,7 +19468,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 522,
+      "lineNumber": 484,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -19511,7 +19511,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 534,
+      "lineNumber": 496,
       "specialises": "DomainIdentity",
       "attributes": [
         {
@@ -19574,7 +19574,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 558,
+      "lineNumber": 520,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -25401,7 +25401,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 43,
+      "lineNumber": 42,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -25439,7 +25439,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 51,
+      "lineNumber": 50,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -25482,7 +25482,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 62,
+      "lineNumber": 61,
       "specialises": "Channel",
       "attributes": [
         {
@@ -25525,7 +25525,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 76,
+      "lineNumber": 75,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -25563,7 +25563,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 87,
+      "lineNumber": 86,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -25601,7 +25601,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 97,
+      "lineNumber": 96,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -25639,7 +25639,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 105,
+      "lineNumber": 104,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -25677,7 +25677,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 113,
+      "lineNumber": 112,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -25715,7 +25715,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 121,
+      "lineNumber": 120,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -25753,7 +25753,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 134,
+      "lineNumber": 133,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -25786,7 +25786,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 144,
+      "lineNumber": 143,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -25819,7 +25819,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 151,
+      "lineNumber": 150,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -25852,7 +25852,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 158,
+      "lineNumber": 157,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -25885,7 +25885,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 165,
+      "lineNumber": 164,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -25918,7 +25918,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 182,
+      "lineNumber": 181,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25961,7 +25961,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 192,
+      "lineNumber": 191,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -26004,7 +26004,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 201,
+      "lineNumber": 200,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -26047,7 +26047,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 210,
+      "lineNumber": 209,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -26090,7 +26090,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 219,
+      "lineNumber": 218,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -26133,7 +26133,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 230,
+      "lineNumber": 229,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -26176,7 +26176,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 239,
+      "lineNumber": 238,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -26219,7 +26219,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 250,
+      "lineNumber": 249,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -26262,7 +26262,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 260,
+      "lineNumber": 259,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -26305,7 +26305,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 272,
+      "lineNumber": 271,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -26348,7 +26348,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 283,
+      "lineNumber": 282,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -26391,7 +26391,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 304,
+      "lineNumber": 303,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -26419,7 +26419,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 313,
+      "lineNumber": 312,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -26447,7 +26447,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 321,
+      "lineNumber": 320,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -26475,7 +26475,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 329,
+      "lineNumber": 328,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -26503,7 +26503,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 337,
+      "lineNumber": 336,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -26531,7 +26531,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 345,
+      "lineNumber": 344,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -26559,7 +26559,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 359,
+      "lineNumber": 358,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -26617,7 +26617,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 373,
+      "lineNumber": 372,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -26675,7 +26675,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 385,
+      "lineNumber": 384,
       "specialises": "CooperativeArrangement",
       "attributes": [
         {
@@ -26728,7 +26728,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 399,
+      "lineNumber": 398,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -26781,7 +26781,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 410,
+      "lineNumber": 409,
       "specialises": "CommunityRelationship",
       "attributes": [
         {
@@ -26824,7 +26824,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 419,
+      "lineNumber": 418,
       "specialises": "ParticipationModel",
       "attributes": [
         {
@@ -31480,7 +31480,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "unknown",
-      "lineNumber": 756,
+      "lineNumber": 755,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -31538,7 +31538,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "unknown",
-      "lineNumber": 771,
+      "lineNumber": 770,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -31591,7 +31591,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "unknown",
-      "lineNumber": 784,
+      "lineNumber": 783,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -31644,7 +31644,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "unknown",
-      "lineNumber": 797,
+      "lineNumber": 796,
       "specialises": "CommunityRelationship",
       "attributes": [
         {
@@ -31687,7 +31687,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "unknown",
-      "lineNumber": 808,
+      "lineNumber": 807,
       "specialises": "CooperativeArrangement",
       "attributes": [
         {
@@ -31740,7 +31740,7 @@
       "sourceFile": "exercises/suds-demonstrator/model/suds.sysml",
       "sourceDomain": "suds",
       "metaModelLayer": "unknown",
-      "lineNumber": 821,
+      "lineNumber": 820,
       "specialises": "ParticipationModel",
       "attributes": [
         {
@@ -31788,7 +31788,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 52,
+      "lineNumber": 51,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -31821,7 +31821,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 60,
+      "lineNumber": 59,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -31864,7 +31864,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 73,
+      "lineNumber": 72,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -31907,7 +31907,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 86,
+      "lineNumber": 85,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -31950,7 +31950,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 98,
+      "lineNumber": 97,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -31988,7 +31988,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 106,
+      "lineNumber": 105,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -32026,7 +32026,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 118,
+      "lineNumber": 117,
       "specialises": "Channel",
       "attributes": [
         {
@@ -32069,7 +32069,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 127,
+      "lineNumber": 126,
       "specialises": "Channel",
       "attributes": [
         {
@@ -32112,7 +32112,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 138,
+      "lineNumber": 137,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -32145,7 +32145,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 145,
+      "lineNumber": 144,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -32178,7 +32178,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 159,
+      "lineNumber": 158,
       "specialises": "ServiceSubject",
       "attributes": [
         {
@@ -32216,7 +32216,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 178,
+      "lineNumber": 177,
       "specialises": "ServiceParticipant",
       "attributes": [
         {
@@ -32254,7 +32254,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 197,
+      "lineNumber": 196,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -32302,7 +32302,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 209,
+      "lineNumber": 208,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -32350,7 +32350,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 220,
+      "lineNumber": 219,
       "specialises": "CatalogueEntry",
       "attributes": [
         {
@@ -32398,7 +32398,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 237,
+      "lineNumber": 236,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -32436,7 +32436,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 249,
+      "lineNumber": 248,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -32474,7 +32474,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 261,
+      "lineNumber": 260,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -32512,7 +32512,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 274,
+      "lineNumber": 273,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -32550,7 +32550,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 285,
+      "lineNumber": 284,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -32588,7 +32588,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 297,
+      "lineNumber": 296,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -32626,7 +32626,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 308,
+      "lineNumber": 307,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -32664,7 +32664,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 320,
+      "lineNumber": 319,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -32702,7 +32702,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 333,
+      "lineNumber": 332,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -32735,7 +32735,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 343,
+      "lineNumber": 342,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -32768,7 +32768,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 350,
+      "lineNumber": 349,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -32801,7 +32801,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 357,
+      "lineNumber": 356,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -32834,7 +32834,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 364,
+      "lineNumber": 363,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -32867,7 +32867,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 373,
+      "lineNumber": 372,
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
@@ -32895,7 +32895,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 383,
+      "lineNumber": 382,
       "specialises": "ActivityCostAllocation",
       "attributes": [
         {
@@ -32923,7 +32923,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 398,
+      "lineNumber": 397,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -32981,7 +32981,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 412,
+      "lineNumber": 411,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -33039,7 +33039,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 424,
+      "lineNumber": 423,
       "specialises": "CooperativeArrangement",
       "attributes": [
         {
@@ -33092,7 +33092,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 437,
+      "lineNumber": 436,
       "specialises": "ReferralPathway",
       "attributes": [
         {
@@ -33145,7 +33145,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 450,
+      "lineNumber": 449,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -33198,7 +33198,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 461,
+      "lineNumber": 460,
       "specialises": "CommunityRelationship",
       "attributes": [
         {
@@ -33241,7 +33241,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 470,
+      "lineNumber": 469,
       "specialises": "ParticipationModel",
       "attributes": [
         {
@@ -33289,7 +33289,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 496,
+      "lineNumber": 494,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33327,7 +33327,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 507,
+      "lineNumber": 505,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33365,7 +33365,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 518,
+      "lineNumber": 516,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33403,7 +33403,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 528,
+      "lineNumber": 526,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33441,7 +33441,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 536,
+      "lineNumber": 534,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33479,7 +33479,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 547,
+      "lineNumber": 545,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -33517,7 +33517,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 560,
+      "lineNumber": 558,
       "specialises": "Capability",
       "attributes": [
         {
@@ -33550,7 +33550,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 569,
+      "lineNumber": 567,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -33588,7 +33588,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 583,
+      "lineNumber": 581,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -33621,7 +33621,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 601,
+      "lineNumber": 599,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -33654,7 +33654,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 611,
+      "lineNumber": 609,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -33687,7 +33687,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 619,
+      "lineNumber": 617,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -33720,7 +33720,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 627,
+      "lineNumber": 625,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -33753,7 +33753,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 635,
+      "lineNumber": 633,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -33786,7 +33786,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 645,
+      "lineNumber": 643,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -33819,7 +33819,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 656,
+      "lineNumber": 654,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -33852,7 +33852,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 667,
+      "lineNumber": 665,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -33885,7 +33885,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 681,
+      "lineNumber": 679,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -33923,7 +33923,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 734,
+      "lineNumber": 732,
       "specialises": "GovernanceRequirement",
       "attributes": [
         {
@@ -33961,7 +33961,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 758,
+      "lineNumber": 756,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -33999,7 +33999,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 769,
+      "lineNumber": 767,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -34037,7 +34037,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 781,
+      "lineNumber": 779,
       "specialises": "AuditEvidenceRecord",
       "attributes": [
         {
@@ -34075,7 +34075,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "domain",
-      "lineNumber": 794,
+      "lineNumber": 792,
       "specialises": "ExternalReference",
       "attributes": [
         {
@@ -34108,7 +34108,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 862,
+      "lineNumber": 860,
       "specialises": "CanonicalRuntimeType"
     },
     {
@@ -34119,7 +34119,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 890,
+      "lineNumber": 888,
       "specialises": "StatusAxis"
     },
     {
@@ -34130,7 +34130,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 903,
+      "lineNumber": 901,
       "specialises": "AxisTransition"
     },
     {
@@ -34141,7 +34141,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 910,
+      "lineNumber": 908,
       "specialises": "AxisTransition"
     },
     {
@@ -34152,7 +34152,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 917,
+      "lineNumber": 915,
       "specialises": "AxisTransition"
     },
     {
@@ -34163,7 +34163,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 924,
+      "lineNumber": 922,
       "specialises": "AxisTransition"
     },
     {
@@ -34174,7 +34174,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 931,
+      "lineNumber": 929,
       "specialises": "AxisTransition"
     },
     {
@@ -34185,7 +34185,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 941,
+      "lineNumber": 939,
       "specialises": "StatusAxis"
     },
     {
@@ -34196,7 +34196,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 954,
+      "lineNumber": 952,
       "specialises": "AxisTransition"
     },
     {
@@ -34207,7 +34207,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 961,
+      "lineNumber": 959,
       "specialises": "AxisTransition"
     },
     {
@@ -34218,7 +34218,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 968,
+      "lineNumber": 966,
       "specialises": "AxisTransition"
     },
     {
@@ -34229,7 +34229,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 978,
+      "lineNumber": 976,
       "specialises": "StatusAxis"
     },
     {
@@ -34240,7 +34240,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 992,
+      "lineNumber": 990,
       "specialises": "AxisTransition"
     },
     {
@@ -34251,7 +34251,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 999,
+      "lineNumber": 997,
       "specialises": "AxisTransition"
     },
     {
@@ -34262,7 +34262,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 1006,
+      "lineNumber": 1004,
       "specialises": "AxisTransition"
     },
     {
@@ -34273,7 +34273,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 1013,
+      "lineNumber": 1011,
       "specialises": "AxisTransition"
     },
     {
@@ -34284,7 +34284,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 1023,
+      "lineNumber": 1021,
       "specialises": "StatusAxis"
     },
     {
@@ -34295,7 +34295,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 1036,
+      "lineNumber": 1034,
       "specialises": "AxisTransition"
     },
     {
@@ -34306,7 +34306,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 1043,
+      "lineNumber": 1041,
       "specialises": "AxisTransition"
     },
     {
@@ -34317,7 +34317,7 @@
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
       "metaModelLayer": "unknown",
-      "lineNumber": 1050,
+      "lineNumber": 1048,
       "specialises": "AxisTransition"
     },
     {

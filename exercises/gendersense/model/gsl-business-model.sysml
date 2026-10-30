@@ -11,10 +11,10 @@
 
 package GslBusinessModel {
     private import ScalarValues::*;
-    private import BusinessModel::ServiceConcept::*;
-    private import BusinessModel::ResourcePlanning::*;
-    private import BusinessModel::FinancialPlanning::*;
-    private import BusinessModel::StakeholderModel::*;
+    private import BusinessMetamodelGeneral::ServiceConcept::*;
+    private import BusinessMetamodelGeneral::ResourcePlanning::*;
+    private import BusinessMetamodelGeneral::FinancialPlanning::*;
+    private import BusinessMetamodelGeneral::StakeholderModel::*;
     private import Foundation::CommonTypes::*;
     private import GslScenarios::*;  // objective* requirements and *Scenario usages bound by ref
 

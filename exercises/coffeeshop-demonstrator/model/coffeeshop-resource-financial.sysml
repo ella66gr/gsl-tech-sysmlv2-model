@@ -11,8 +11,8 @@
 
 package CoffeeshopResourceFinancial {
     private import ScalarValues::*;
-    private import BusinessModel::ResourcePlanning::*;
-    private import BusinessModel::FinancialPlanning::*;
+    private import BusinessMetamodelGeneral::ResourcePlanning::*;
+    private import BusinessMetamodelGeneral::FinancialPlanning::*;
     private import CoffeeShopBusinessModel::*;
 
     // -- Resource types ----------------------------------------

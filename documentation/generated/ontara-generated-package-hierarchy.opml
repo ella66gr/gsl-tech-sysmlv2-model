@@ -2,7 +2,7 @@
 <opml version="2.0">
   <head>
     <title>Ontara Package Hierarchy</title>
-    <dateCreated>2026-10-30 15:28</dateCreated>
+    <dateCreated>2026-10-30 15:35</dateCreated>
   </head>
   <body>
     <outline text="Ontara — Model-driven service system development and delivery platform">
@@ -13,8 +13,8 @@
         <outline text="Risk  — Clinical risk management, business continuity, safeguarding  [3 use cases]" _note="gsl-enterprise.sysml:272"/>
       </outline>
       <outline text="Foundation  — RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7," _note="foundation.sysml:5">
-        <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [2 parts, 14 enums]" _note="foundation.sysml:32"/>
-        <outline text="DomainRegistry  — Domain identity infrastructure: the formal representation  [2 parts]" _note="foundation.sysml:343"/>
+        <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [2 parts, 11 enums]" _note="foundation.sysml:32"/>
+        <outline text="DomainRegistry  — Domain identity infrastructure: the formal representation  [2 parts]" _note="foundation.sysml:305"/>
       </outline>
       <outline text="SystemMetamodelGeneral  — The system metamodel, General layer: how the platform evaluates," _note="system-metamodel-general.sysml:12">
         <outline text="ProcessAnnotations  — General annotations on process steps: consent and audit  [1 enums, 6 metadata]" _note="system-metamodel-general.sysml:24"/>
@@ -80,16 +80,17 @@
         <outline text="ClinicalGovernance  — Policies, protocols, procedures, clinical audit, outcome  [3 use cases]" _note="gsl-service-delivery.sysml:821"/>
         <outline text="ClinicalEntities  — Core domain entities: the nouns of the clinical domain.  [6 parts, 4 states]" _note="gsl-service-delivery.sysml:849"/>
       </outline>
-      <outline text="BusinessModel  — The business model package captures the strategic logic of the" _note="business-model.sysml:6">
-        <outline text="ServiceConcept  — Defines the value proposition, customer segments, service  [9 parts]" _note="business-model.sysml:54"/>
-        <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-model.sysml:593"/>
-        <outline text="ResourcePlanning  — Defines the resources required to operate the service  [7 parts]" _note="business-model.sysml:866"/>
-        <outline text="FinancialPlanning  — Defines the financial structure of the business: how  [5 parts, 1 enums]" _note="business-model.sysml:1248"/>
-        <outline text="GovernanceMapping  — General vocabulary for governance traceability.  [1 parts, 1 requirements]" _note="business-model.sysml:1493"/>
-        <outline text="StakeholderModel  — The relational boundary of the business: how it  [6 parts]" _note="business-model.sysml:1629"/>
+      <outline text="BusinessMetamodelGeneral  — The business model package captures the strategic logic of the" _note="business-metamodel-general.sysml:14">
+        <outline text="ServiceConcept  — Defines the value proposition, customer segments, service  [9 parts]" _note="business-metamodel-general.sysml:61"/>
+        <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-metamodel-general.sysml:600"/>
+        <outline text="ResourcePlanning  — Defines the resources required to operate the service  [7 parts]" _note="business-metamodel-general.sysml:873"/>
+        <outline text="FinancialPlanning  — Defines the financial structure of the business: how  [5 parts, 1 enums]" _note="business-metamodel-general.sysml:1255"/>
+        <outline text="GovernanceMapping  — General vocabulary for governance traceability.  [1 parts, 1 requirements]" _note="business-metamodel-general.sysml:1500"/>
+        <outline text="StakeholderModel  — The relational boundary of the business: how it  [6 parts, 3 enums]" _note="business-metamodel-general.sysml:1636"/>
+        <outline text="BusinessScenarios  — Provides the mechanics for driving the business model  [11 parts, 2 enums]" _note="business-metamodel-general.sysml:2054"/>
+        <outline text="BusinessStrategy  — Strategic direction, business model variants, and  [2 parts, 1 requirements]" _note="business-metamodel-general.sysml:2237"/>
+        <outline text="CanonicalRuntime  — BMM General canonical-runtime vocabulary.  [4 parts, 3 enums]" _note="business-metamodel-general.sysml:2401"/>
       </outline>
-      <outline text="BusinessScenarios  — Provides the mechanics for driving the business model  [11 parts, 2 enums]" _note="business-scenarios.sysml:21"/>
-      <outline text="BusinessStrategy  — Strategic direction, business model variants, and  [2 parts, 1 requirements]" _note="business-strategy.sysml:20"/>
       <outline text="PatternCatalogue  — Cross-domain concept registry, architectural pattern catalogue,  [3 parts, 4 enums]" _note="pattern-catalogue.sysml:17"/>
       <outline text="ProjectionMetadata  — The annotation schema the projection and the generators run on:  [1 enums, 6 metadata]" _note="projection-metadata.sysml:18"/>
       <outline text="SystemMetamodelDomainClinical  — System-side metamodel vocabulary that is clinical by meaning  [1 metadata]" _note="system-metamodel-domain-clinical.sysml:12"/>

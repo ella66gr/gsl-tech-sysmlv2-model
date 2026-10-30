@@ -18,9 +18,9 @@
 
 package CoffeeshopScenarios {
     private import ScalarValues::*;
-    private import BusinessScenarios::*;
-    private import BusinessStrategy::*;
-    private import BusinessModel::ResourcePlanning::ObjectiveCapabilityMapping;
+    private import BusinessMetamodelGeneral::BusinessScenarios::*;
+    private import BusinessMetamodelGeneral::BusinessStrategy::*;
+    private import BusinessMetamodelGeneral::ResourcePlanning::ObjectiveCapabilityMapping;
     private import SystemMetamodelGeneral::LogicEngine::*;  // GoalProjection, Deficit, Severity, AssessmentScope, DeficitDomain, RemediationCategory
 
     doc /* Coffee shop scenario modelling extension. Two scenarios

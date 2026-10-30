@@ -63,13 +63,12 @@
 
 package MindsBusinessModel {
     private import ScalarValues::*;
-    private import BusinessModel::ServiceConcept::*;
-    private import BusinessModel::ActivityModel::*;
-    private import BusinessModel::ResourcePlanning::*;
-    private import BusinessModel::FinancialPlanning::*;
-    private import BusinessModel::GovernanceMapping::*;
-    private import BusinessModel::StakeholderModel::*;
-    private import Foundation::CommonTypes::*;
+    private import BusinessMetamodelGeneral::ServiceConcept::*;
+    private import BusinessMetamodelGeneral::ActivityModel::*;
+    private import BusinessMetamodelGeneral::ResourcePlanning::*;
+    private import BusinessMetamodelGeneral::FinancialPlanning::*;
+    private import BusinessMetamodelGeneral::GovernanceMapping::*;
+    private import BusinessMetamodelGeneral::StakeholderModel::*;
 
     doc /* Minds blended remote mental health and wellbeing service
          * business model. Instantiates BMM General part defs across
@@ -637,9 +636,8 @@ package MindsBusinessModel {
 
 package MindsResourceFinancial {
     private import ScalarValues::*;
-    private import BusinessModel::ResourcePlanning::*;
-    private import BusinessModel::FinancialPlanning::*;
-    private import Foundation::CommonTypes::*;
+    private import BusinessMetamodelGeneral::ResourcePlanning::*;
+    private import BusinessMetamodelGeneral::FinancialPlanning::*;
     private import MindsBusinessModel::*;
 
     // -- Resource Types — the three founder-practitioners ------
@@ -1044,9 +1042,8 @@ package MindsResourceFinancial {
 
 package MindsGovernance {
     private import ScalarValues::*;
-    private import BusinessModel::ServiceConcept::ExternalReference;
-    private import BusinessModel::GovernanceMapping::*;
-    private import Foundation::CommonTypes::*;
+    private import BusinessMetamodelGeneral::ServiceConcept::ExternalReference;
+    private import BusinessMetamodelGeneral::GovernanceMapping::*;
     private import MindsBusinessModel::*;
 
     doc /* Minds governance configuration. Professional-body-regulated
@@ -1224,8 +1221,7 @@ package MindsGovernance {
 
 package MindsStakeholderModel {
     private import ScalarValues::*;
-    private import BusinessModel::StakeholderModel::*;
-    private import Foundation::CommonTypes::*;
+    private import BusinessMetamodelGeneral::StakeholderModel::*;
     private import MindsBusinessModel::*;
 
     doc /* Minds stakeholder configuration. Inbound referral routes
@@ -1510,7 +1506,7 @@ package MindsStakeholderModel {
 
 package MindsCanonicalRuntime {
     private import ScalarValues::*;
-    private import CanonicalRuntime::*;
+    private import BusinessMetamodelGeneral::CanonicalRuntime::*;
 
     doc /* Canonical runtime types for the Minds tenant. At Stage 3
          * (this session) the two principal types are declared:

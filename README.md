@@ -30,9 +30,8 @@ The **Integrated Trust, Security, Privacy & Governance Framework (IGF)** is a cr
 ```
 gsl-sysml-model/
 ├── model/                          SysML v2 model files (engineering projection of KG-canonical content)
-│   ├── business-model.sysml        BMM: 34 General part defs across 6 concern packages + 96 weighted relationships
-│   ├── business-scenarios.sysml    Business scenario definitions
-│   ├── business-strategy.sysml     Business strategy definitions
+│   ├── business-metamodel-general.sysml  BMG: six concern packages (34 General part defs + 98 weighted relationships),
+│   │                               BusinessScenarios, BusinessStrategy, CanonicalRuntime (OP-132 step 9)
 │   ├── architectural-structure.sysml  SMM: ArchitecturalSection + instances
 │   ├── system-metamodel-general.sysml  SMG: ProcessAnnotations, StatePatterns, LogicEngine, EvaluationSpecs, DecisionModels,
 │   │                               OutcomeFramework, LearningCycles, Analytics, Persistence, OpenEhrIntegration (OP-132 step 8)

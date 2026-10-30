@@ -1,7 +1,7 @@
 // ============================================================
 // DO NOT EDIT — Generated from GenderSense SysML v2 model
 // Source: model/system-metamodel-general.sysml (SystemMetamodelGeneral::LogicEngine, ::EvaluationSpecs)
-// Generated: 2026-10-30T15:28:08Z
+// Generated: 2026-10-30T15:35:14Z
 // Generator: scripts/gen_constraint_evaluator.py
 // ============================================================
 

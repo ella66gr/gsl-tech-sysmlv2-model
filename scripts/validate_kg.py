@@ -278,9 +278,9 @@ SELECT ?sysmlName ?sourceFile ?lineNum WHERE {
         "display_vars": ["sysmlName", "sourceFile", "lineNum"],
         "extra_check": lambda rows: (
             rows[0].get("sysmlName", {}).get("value") == "CustomerSegment"
-            and rows[0].get("sourceFile", {}).get("value") == "model/business-model.sysml"
+            and rows[0].get("sourceFile", {}).get("value") == "model/business-metamodel-general.sysml"
         ) if rows else False,
-        "extra_check_desc": "sysmlName=CustomerSegment, sourceFile=model/business-model.sysml",
+        "extra_check_desc": "sysmlName=CustomerSegment, sourceFile=model/business-metamodel-general.sysml",
     },
     # --- Group 3: Inference ---
     {

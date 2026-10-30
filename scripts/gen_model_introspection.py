@@ -102,10 +102,11 @@ SMM_MARKERS = [
 
 # Packages known to belong to the business meta model
 BMM_PACKAGES = {
-    "BusinessModel", "ServiceConcept", "ActivityModel",
+    "BusinessMetamodelGeneral",  # S515 OP-132 step 9 (BusinessModel retired)
+    "ServiceConcept", "ActivityModel",
     "ResourcePlanning", "FinancialPlanning",
     "BusinessScenarios", "BusinessStrategy",
-    "GovernanceMapping",
+    "GovernanceMapping", "StakeholderModel", "CanonicalRuntime",
 }
 
 # Packages known to belong to the system meta model

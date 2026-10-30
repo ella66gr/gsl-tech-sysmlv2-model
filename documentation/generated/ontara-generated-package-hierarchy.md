@@ -1,8 +1,8 @@
 # Ontara Package Hierarchy (Generated)
 
-**Generated:** 2026-10-30 15:28  
+**Generated:** 2026-10-30 15:35  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
-**Total packages:** 85 (excluding root)  
+**Total packages:** 86 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
 
 This document is generated from the SysML model. Do not edit manually.
@@ -11,7 +11,7 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 Ontara Package Hierarchy
-Generated 2026-10-30 15:28 from model/*.sysml (85 packages)
+Generated 2026-10-30 15:35 from model/*.sysml (86 packages)
 
 GenderSense
 ├── GslEnterprise                   Defines the organisational, regulatory, strategic, and risk context.
@@ -21,7 +21,7 @@ GenderSense
 │   └── Risk                        Clinical risk management, business continuity, safeguarding — [3 use cases]
 │
 ├── Foundation                      RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7,
-│   ├── CommonTypes                 Shared data types, enumerations, units of measure, and — [2 parts, 14 enums]
+│   ├── CommonTypes                 Shared data types, enumerations, units of measure, and — [2 parts, 11 enums]
 │   └── DomainRegistry              Domain identity infrastructure: the formal representation — [2 parts]
 │
 ├── SystemMetamodelGeneral          The system metamodel, General layer: how the platform evaluates,
@@ -84,17 +84,16 @@ GenderSense
 │   ├── ClinicalGovernance          Policies, protocols, procedures, clinical audit, outcome — [3 use cases]
 │   └── ClinicalEntities            Core domain entities: the nouns of the clinical domain. — [6 parts, 4 states]
 │
-├── BusinessModel                   The business model package captures the strategic logic of the
+├── BusinessMetamodelGeneral        The business model package captures the strategic logic of the
 │   ├── ServiceConcept              Defines the value proposition, customer segments, service — [9 parts]
 │   ├── ActivityModel               Cross-cutting activity taxonomy and costing foundation. — [5 parts, 2 enums]
 │   ├── ResourcePlanning            Defines the resources required to operate the service — [7 parts]
 │   ├── FinancialPlanning           Defines the financial structure of the business: how — [5 parts, 1 enums]
 │   ├── GovernanceMapping           General vocabulary for governance traceability. — [1 parts, 1 requirements]
-│   └── StakeholderModel            The relational boundary of the business: how it — [6 parts]
-│
-├── BusinessScenarios               Provides the mechanics for driving the business model — [11 parts, 2 enums]
-│
-├── BusinessStrategy                Strategic direction, business model variants, and — [2 parts, 1 requirements]
+│   ├── StakeholderModel            The relational boundary of the business: how it — [6 parts, 3 enums]
+│   ├── BusinessScenarios           Provides the mechanics for driving the business model — [11 parts, 2 enums]
+│   ├── BusinessStrategy            Strategic direction, business model variants, and — [2 parts, 1 requirements]
+│   └── CanonicalRuntime            BMM General canonical-runtime vocabulary. — [4 parts, 3 enums]
 │
 ├── PatternCatalogue                Cross-domain concept registry, architectural pattern catalogue, — [3 parts, 4 enums]
 │
@@ -119,4 +118,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-10-30 15:28 by `gen_package_hierarchy.py`.*
+*Generated 2026-10-30 15:35 by `gen_package_hierarchy.py`.*

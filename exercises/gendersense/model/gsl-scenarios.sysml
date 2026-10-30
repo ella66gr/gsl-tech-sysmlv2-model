@@ -13,8 +13,8 @@
 
 package GslScenarios {
     private import ScalarValues::*;
-    private import BusinessScenarios::*;
-    private import BusinessStrategy::*;
+    private import BusinessMetamodelGeneral::BusinessScenarios::*;
+    private import BusinessMetamodelGeneral::BusinessStrategy::*;
     private import SystemMetamodelGeneral::LogicEngine::*;   // GoalProjection, Deficit, Severity, AssessmentScope, DeficitDomain, RemediationCategory
 
     doc /* GenderSense Limited scenario and strategy content: the Variant A

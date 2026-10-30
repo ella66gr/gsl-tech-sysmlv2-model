@@ -16,12 +16,11 @@
 
 package CoffeeShopBusinessModel {
     private import ScalarValues::*;
-    private import BusinessModel::ServiceConcept::*;
-    private import BusinessModel::ActivityModel::*;
-    private import Foundation::CommonTypes::*;                    // RelationshipNature, DependencyCriticality (BMG::StakeholderModel after OP-132 step 9)
+    private import BusinessMetamodelGeneral::ServiceConcept::*;
+    private import BusinessMetamodelGeneral::ActivityModel::*;
     private import SystemMetamodelGeneral::Persistence::*;        // PersistenceLayer, PersistencePolicy
     private import CoffeeShop::*;
-    private import BusinessModel::StakeholderModel::*;
+    private import BusinessMetamodelGeneral::StakeholderModel::*;
 
     // Import note: Both CoffeeShop and BusinessModel::ServiceConcept
     // export CatalogueEntry and ExternalReference (name collision

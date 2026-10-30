@@ -6,8 +6,8 @@ Ontara	Model-driven service system development and delivery platform
 		Strategy	Partnerships, strategic context, ethos and values,	2 parts	gsl-enterprise.sysml:207
 		Risk	Clinical risk management, business continuity, safeguarding	3 use cases	gsl-enterprise.sysml:272
 	Foundation	RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7,		foundation.sysml:5
-		CommonTypes	Shared data types, enumerations, units of measure, and	2 parts, 14 enums	foundation.sysml:32
-		DomainRegistry	Domain identity infrastructure: the formal representation	2 parts	foundation.sysml:343
+		CommonTypes	Shared data types, enumerations, units of measure, and	2 parts, 11 enums	foundation.sysml:32
+		DomainRegistry	Domain identity infrastructure: the formal representation	2 parts	foundation.sysml:305
 	SystemMetamodelGeneral	The system metamodel, General layer: how the platform evaluates,		system-metamodel-general.sysml:12
 		ProcessAnnotations	General annotations on process steps: consent and audit	1 enums, 6 metadata	system-metamodel-general.sysml:24
 		StatePatterns	Reusable lifecycle state machine patterns.	1 states	system-metamodel-general.sysml:130
@@ -64,15 +64,16 @@ Ontara	Model-driven service system development and delivery platform
 		CoachingSupport	Transition coaching services, group work, peer support	2 use cases	gsl-service-delivery.sysml:803
 		ClinicalGovernance	Policies, protocols, procedures, clinical audit, outcome	3 use cases	gsl-service-delivery.sysml:821
 		ClinicalEntities	Core domain entities: the nouns of the clinical domain.	6 parts, 4 states	gsl-service-delivery.sysml:849
-	BusinessModel	The business model package captures the strategic logic of the		business-model.sysml:6
-		ServiceConcept	Defines the value proposition, customer segments, service	9 parts	business-model.sysml:54
-		ActivityModel	Cross-cutting activity taxonomy and costing foundation.	5 parts, 2 enums	business-model.sysml:593
-		ResourcePlanning	Defines the resources required to operate the service	7 parts	business-model.sysml:866
-		FinancialPlanning	Defines the financial structure of the business: how	5 parts, 1 enums	business-model.sysml:1248
-		GovernanceMapping	General vocabulary for governance traceability.	1 parts, 1 requirements	business-model.sysml:1493
-		StakeholderModel	The relational boundary of the business: how it	6 parts	business-model.sysml:1629
-	BusinessScenarios	Provides the mechanics for driving the business model	11 parts, 2 enums	business-scenarios.sysml:21
-	BusinessStrategy	Strategic direction, business model variants, and	2 parts, 1 requirements	business-strategy.sysml:20
+	BusinessMetamodelGeneral	The business model package captures the strategic logic of the		business-metamodel-general.sysml:14
+		ServiceConcept	Defines the value proposition, customer segments, service	9 parts	business-metamodel-general.sysml:61
+		ActivityModel	Cross-cutting activity taxonomy and costing foundation.	5 parts, 2 enums	business-metamodel-general.sysml:600
+		ResourcePlanning	Defines the resources required to operate the service	7 parts	business-metamodel-general.sysml:873
+		FinancialPlanning	Defines the financial structure of the business: how	5 parts, 1 enums	business-metamodel-general.sysml:1255
+		GovernanceMapping	General vocabulary for governance traceability.	1 parts, 1 requirements	business-metamodel-general.sysml:1500
+		StakeholderModel	The relational boundary of the business: how it	6 parts, 3 enums	business-metamodel-general.sysml:1636
+		BusinessScenarios	Provides the mechanics for driving the business model	11 parts, 2 enums	business-metamodel-general.sysml:2054
+		BusinessStrategy	Strategic direction, business model variants, and	2 parts, 1 requirements	business-metamodel-general.sysml:2237
+		CanonicalRuntime	BMM General canonical-runtime vocabulary.	4 parts, 3 enums	business-metamodel-general.sysml:2401
 	PatternCatalogue	Cross-domain concept registry, architectural pattern catalogue,	3 parts, 4 enums	pattern-catalogue.sysml:17
 	ProjectionMetadata	The annotation schema the projection and the generators run on:	1 enums, 6 metadata	projection-metadata.sysml:18
 	SystemMetamodelDomainClinical	System-side metamodel vocabulary that is clinical by meaning	1 metadata	system-metamodel-domain-clinical.sysml:12

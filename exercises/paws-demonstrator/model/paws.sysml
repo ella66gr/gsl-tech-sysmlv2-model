@@ -24,10 +24,9 @@
 
 package PawsBusinessModel {
     private import ScalarValues::*;
-    private import BusinessModel::ServiceConcept::*;
-    private import BusinessModel::ActivityModel::*;
-    private import BusinessModel::StakeholderModel::*;
-    private import Foundation::CommonTypes::*;
+    private import BusinessMetamodelGeneral::ServiceConcept::*;
+    private import BusinessMetamodelGeneral::ActivityModel::*;
+    private import BusinessMetamodelGeneral::StakeholderModel::*;
 
     doc /* Paws dog grooming service business model. Instantiates the
          * ServiceConcept and ActivityModel part defs from the main
@@ -486,9 +485,8 @@ package PawsBusinessModel {
 
 package PawsResourceFinancial {
     private import ScalarValues::*;
-    private import BusinessModel::ResourcePlanning::*;
-    private import BusinessModel::FinancialPlanning::*;
-    private import Foundation::CommonTypes::*;
+    private import BusinessMetamodelGeneral::ResourcePlanning::*;
+    private import BusinessMetamodelGeneral::FinancialPlanning::*;
     private import PawsBusinessModel::*;
 
     // -- Resource types ----------------------------------------
@@ -714,8 +712,8 @@ package PawsResourceFinancial {
 
 package PawsGovernance {
     private import ScalarValues::*;
-    private import BusinessModel::ServiceConcept::ExternalReference;
-    private import BusinessModel::GovernanceMapping::*;
+    private import BusinessMetamodelGeneral::ServiceConcept::ExternalReference;
+    private import BusinessMetamodelGeneral::GovernanceMapping::*;
 
     doc /* Animal welfare governance for the Paws grooming service.
          * Demonstrates the governance vocabulary under a general
@@ -836,7 +834,7 @@ package PawsGovernance {
 
 package PawsCanonicalRuntime {
     private import ScalarValues::*;
-    private import CanonicalRuntime::*;
+    private import BusinessMetamodelGeneral::CanonicalRuntime::*;
 
     doc /* Canonical runtime types for the Paws tenant. At v1, the
          * Booking type is the worked example for multi-axis status.

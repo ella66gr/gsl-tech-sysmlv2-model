@@ -1,13 +1,10 @@
 {
   "modelVersion": "2026-10-30",
-  "generatedAt": "2026-10-30T15:28:07Z",
+  "generatedAt": "2026-10-30T15:35:14Z",
   "generator": "scripts/gen_system_manifest.py",
   "sourceFiles": [
     "model/architectural-structure.sysml",
-    "model/business-model.sysml",
-    "model/business-scenarios.sysml",
-    "model/business-strategy.sysml",
-    "model/canonical-runtime.sysml",
+    "model/business-metamodel-general.sysml",
     "model/foundation.sysml",
     "model/pattern-catalogue.sysml",
     "model/projection-metadata.sysml",
