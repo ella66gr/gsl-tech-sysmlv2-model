@@ -730,7 +730,7 @@ SELECT ?weight ?source ?target ?strength WHERE {
 }
 ORDER BY ?weight
 """,
-        "expect_exactly": 96,
+        "expect_exactly": 98,  # 96 at S117; AuditEvidenceRecord gained two at S277 (raised S517)
         "display_vars": ["weight", "source", "target", "strength"],
     },
     {
@@ -749,7 +749,7 @@ SELECT ?record ?sysmlName ?weightTarget WHERE {
 }
 ORDER BY ?sysmlName ?weightTarget
 """,
-        "expect_exactly": 96,
+        "expect_exactly": 98,  # 96 at S117; AuditEvidenceRecord gained two at S277 (raised S517)
         "display_vars": ["record", "sysmlName", "weightTarget"],
     },
     # --- Group 10: Domain Identity (Session 144) ---

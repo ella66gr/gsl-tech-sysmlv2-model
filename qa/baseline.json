@@ -14,7 +14,8 @@
     "robot": "1.9.8",
     "reasoner": "HermiT"
   },
-  "overall": "fail",
+  "overall": "pass",
+  "overallNote": "Measured fail at 7fb1493 (64/66, finding F1). F1 resolved in Session 517: Q28 and Q29 now expect 98; qa-validate re-run 66/66 by Chat. The other three layers are unchanged by the fix.",
   "layers": {
     "pipeline": {
       "target": "qa-pipeline",
@@ -41,11 +42,11 @@
     "validate": {
       "target": "qa-validate",
       "command": "python3 scripts/validate_kg.py --load",
-      "result": "fail",
+      "result": "pass",
       "counts": {
         "queries": 66,
-        "passed": 64,
-        "failed": 2,
+        "passed": 66,
+        "failed": 0,
         "filesLoaded": 12,
         "domainGraphTriples": 30099,
         "correspondenceGraphTriples": 1398
@@ -59,25 +60,12 @@
         "Governance-MVP": "7/7",
         "Properties": "2/2",
         "Axioms": "2/2",
-        "Weights": "0/2",
+        "Weights": "2/2",
         "Domain-Identity": "6/6",
         "Reasoning": "21/21",
         "Ears Instances": "10/10"
       },
-      "failures": [
-        {
-          "id": "Q28",
-          "name": "Reified weighted relationship individuals",
-          "count": 98,
-          "expectation": "expected: 96"
-        },
-        {
-          "id": "Q29",
-          "name": "Weighted relationship correspondence records",
-          "count": 98,
-          "expectation": "expected: 96"
-        }
-      ],
+      "failures": [],
       "q7": {
         "id": "Q7",
         "name": "Specific lookup: CustomerSegment",
@@ -278,16 +266,16 @@
         {
           "id": "Q28",
           "name": "Reified weighted relationship individuals",
-          "result": "FAIL",
+          "result": "PASS",
           "count": 98,
-          "expectation": "expected: 96"
+          "expectation": "expected: 98"
         },
         {
           "id": "Q29",
           "name": "Weighted relationship correspondence records",
-          "result": "FAIL",
+          "result": "PASS",
           "count": 98,
-          "expectation": "expected: 96"
+          "expectation": "expected: 98"
         },
         {
           "id": "Q30",
@@ -631,7 +619,10 @@
       "id": "F1",
       "layer": "validate",
       "summary": "Q28 and Q29 fail: 98 weighted relationship individuals and 98 correspondence records against a hard-coded expectation of exactly 96 (validate_kg.py, expect_exactly: 96, set at S117).",
-      "evidence": "The two extra individuals are weight-AuditEvidenceRecord-to-ActivityType and weight-AuditEvidenceRecord-to-GovernanceRequirement, first in generated output at cfa404a (OP-132 S515 step 1 regeneration). The round-trip diff agrees with the store at 98. CLAUDE.md also still says 96 weighted relationships."
+      "evidence": "The two extra individuals are weight-AuditEvidenceRecord-to-ActivityType and weight-AuditEvidenceRecord-to-GovernanceRequirement, first in generated output at cfa404a (OP-132 S515 step 1 regeneration). The round-trip diff agrees with the store at 98. CLAUDE.md also still says 96 weighted relationships.",
+      "cause": "The two AuditEvidenceRecord weighted relationships were added to the SysML at S277 (c98ebe2); the generated OWL was not regenerated until cfa404a, so the S117 expectation had been stale since S277.",
+      "resolution": "Session 517, at Ella's direction: Q28 and Q29 expect_exactly raised to 98 in scripts/validate_kg.py, and CLAUDE.md corrected to 98. make qa-validate re-run: 66/66.",
+      "status": "resolved"
     }
   ],
   "observations": [

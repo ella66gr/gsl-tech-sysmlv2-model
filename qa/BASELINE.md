@@ -12,11 +12,11 @@ This is the baseline that S0.3 and S0.4's Cafe content is checked against. The o
 | Layer | Target | Result | Headline |
 |---|---|---|---|
 | OWL pipeline | `make qa-pipeline` | pass | 775 elements, 34 DomainClass, 14 object properties, 98 weights |
-| SPARQL validation | `make qa-validate` | **fail** | 64 of 66 queries pass; Q28 and Q29 fail (finding F1) |
+| SPARQL validation | `make qa-validate` | pass | 66 of 66 queries pass. Measured 64 of 66 at `7fb1493` (finding F1); F1 resolved in Session 517 and re-run 66 of 66 |
 | HermiT consistency | `make qa-reason` | pass | consistent on the full 14-file stack and on the 12-file General-only stack |
 | Round-trip diff | `make qa-diff` | pass | 292 units, 0 added, 0 removed, 0 modified |
 
-`make qa` therefore exits non-zero at this baseline, solely because of F1. All four layers ran in 11 minutes 32 seconds.
+As first measured, `make qa` exited non-zero solely because of F1. With F1 resolved (see Findings), every layer passes. All four layers ran in 11 minutes 32 seconds.
 
 ## Commands
 
@@ -98,6 +98,8 @@ java -jar tools/robot.jar merge --catalog ontology/catalog-v001.xml \
 
 **F1: Q28 and Q29 expect 96 weighted relationships, and the model has 98.** Q28 (reified weighted relationship individuals) and Q29 (weighted relationship correspondence records) each return 98 rows against `expect_exactly: 96`, a figure set at S117. The two extra individuals are `weight-AuditEvidenceRecord-to-ActivityType` and `weight-AuditEvidenceRecord-to-GovernanceRequirement`, from the `AuditEvidenceRecord` part def's weighted relationships. They first appear in generated output at `cfa404a` (OP-132 S515 step 1 regeneration). The pipeline, the store and the round-trip diff all agree on 98, so this is a stale expectation in the suite rather than a defect in the generated OWL. `CLAUDE.md` also still says 96 weighted relationships. Under specification §2.8 item 5 it is fixed before S0.3's Cafe content is checked against this baseline. This pass does not fix it.
 
+**F1 resolved (Session 517, at Ella's direction).** The two `AuditEvidenceRecord` weighted relationships were added to the SysML at S277 (`c98ebe2`); the generated OWL was not regenerated until `cfa404a`, so the S117 expectation had been stale since S277. Q28 and Q29 now expect 98 in `scripts/validate_kg.py`, and `CLAUDE.md` says 98. `make qa-validate` re-run: 66 of 66.
+
 ## Observations (not failures)
 
 - Q8 returns 35 BMM continuants against an ideal of 34 (threshold 30). The 35th is `ontara-bmm:WeightedRelationship`, the reification class, which sits in the `bmm/` namespace.
@@ -109,6 +111,6 @@ java -jar tools/robot.jar merge --catalog ontology/catalog-v001.xml \
 
 Run `make qa` and compare these with `qa/baseline.json`:
 
-- the validation summary's `OVERALL` line (64/66) and its failing query ids (Q28, Q29);
+- the validation summary's `OVERALL` line (66/66, with no failing query ids);
 - the `REASONING SUMMARY` block (14 files, consistency PASS);
 - `generated/ontara/diff-report.json` `summary` (292 unchanged, 0 otherwise).
