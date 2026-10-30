@@ -621,7 +621,7 @@ ontara-domain-ax:authorisationRequiredToTrade a owl:DatatypeProperty ;
     rdfs:label "authorisation required to trade"@en ;
     rdfs:domain ontara-domain:DomainIdentity ;
     rdfs:range xsd:boolean ;
-    rdfs:comment "True where the business cannot lawfully offer its core service without a prior authorisation or licence that the authority can refuse or withdraw (for example CQC registration, or a premises licence); false otherwise. A prior registration that the authority cannot refuse, such as UK food business registration, is a notification duty, not an authorisation: it sets the attribute false and is recorded among the tenant's regulatedActivities. (Canon definition set at Session 515, OP-132; property added Session 278.)"@en ;
+    rdfs:comment "True where the business cannot lawfully offer its core service without a prior authorisation or licence that the authority can refuse or withdraw (for example CQC registration, or a premises licence); false otherwise. A prior registration that the authority cannot refuse, such as UK food business registration, is a notification duty, not an authorisation: it sets the attribute false and is recorded among the tenant's regulatedActivities."@en ;
     a owl:FunctionalProperty .
 
 # --- DomainConfiguration data properties -----------------------------------
