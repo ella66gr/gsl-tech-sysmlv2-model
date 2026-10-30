@@ -1,8 +1,8 @@
 # Ontara Package Hierarchy (Generated)
 
-**Generated:** 2026-10-30 15:10  
+**Generated:** 2026-10-30 15:17  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
-**Total packages:** 79 (excluding root)  
+**Total packages:** 84 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
 
 This document is generated from the SysML model. Do not edit manually.
@@ -11,7 +11,7 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 Ontara Package Hierarchy
-Generated 2026-10-30 15:10 from model/*.sysml (79 packages)
+Generated 2026-10-30 15:17 from model/*.sysml (84 packages)
 
 GenderSense
 ├── GslEnterprise                 Defines the organisational, regulatory, strategic, and risk context.
@@ -22,16 +22,15 @@ GenderSense
 │
 ├── Foundation                    RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7,
 │   ├── MetadataLibrary           Residual annotation definitions awaiting allocation — [1 enums, 10 metadata]
-│   ├── CommonTypes               Shared data types, enumerations, units of measure, and — [3 parts, 32 enums]
+│   ├── CommonTypes               Shared data types, enumerations, units of measure, and — [3 parts, 23 enums]
 │   ├── DomainRegistry            Domain identity infrastructure: the formal representation — [2 parts]
 │   └── StatePatterns             Reusable lifecycle state machine patterns. — [1 states]
 │
 ├── Knowledge                     Explicit treatment of knowledge, decision logic, and adaptive
-│   ├── ClinicalDecisionSupport   Decision rules, eligibility criteria, monitoring protocols, — [3 parts, 3 use cases]
-│   ├── ConstraintLibrary         Composable clinical constraints, safety rules, drug — [8 constraints]
+│   ├── ClinicalDecisionSupport   Decision rules, eligibility criteria, monitoring protocols, — [3 parts]
 │   ├── LogicEngine               Inference rules, Prolog-style reasoning, deterministic — [21 parts, 4 use cases]
-│   ├── DecisionModels            DMN-style decision tables modelled as SysML part defs — [5 parts, 2 use cases, 1 enums]
-│   ├── OutcomeFramework          Outcome definitions, measurement points, structured outcome — [5 parts, 4 use cases, 4 enums]
+│   ├── DecisionModels            DMN-style decision tables modelled as SysML part defs — [1 parts, 1 enums]
+│   ├── OutcomeFramework          Outcome definitions, measurement points, structured outcome — [5 parts, 4 enums]
 │   ├── LearningCycles            Pathway refinement process, evidence review, change control — [2 use cases]
 │   └── Analytics                 Data contracts for BI and predictive analytics, event stream — [1 parts]
 │
@@ -104,6 +103,13 @@ GenderSense
 │
 ├── GslBusinessModel              GenderSense Limited business model: concrete customer segments,
 │
+├── GslKnowledge                  GenderSense Limited clinical knowledge: the hormone-therapy
+│   ├── HormoneTherapyTypes       Enumerations for the hormone-therapy decision tables. — [9 enums]
+│   ├── ConstraintLibrary         Composable clinical constraints, safety rules, drug — [8 constraints]
+│   ├── ClinicalDecisionSupport   The GSL evaluation specifications: one per ConstraintLibrary — [3 use cases]
+│   ├── DecisionTables            The two hormone-therapy decision tables — regimen selection — [4 parts, 2 use cases]
+│   └── OutcomeTargets            The GSL hormone-therapy outcome targets, measurement points, — [4 use cases]
+│
 └── GslScenarios                  GenderSense Limited scenario and strategy content: the Variant A
 
 Libraries (separate from main model):
@@ -112,4 +118,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-10-30 15:10 by `gen_package_hierarchy.py`.*
+*Generated 2026-10-30 15:17 by `gen_package_hierarchy.py`.*

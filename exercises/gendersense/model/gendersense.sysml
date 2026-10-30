@@ -13,6 +13,7 @@ package GenderSense {
     private import BusinessStrategy::*;
     private import GslBusinessModel::*;
     private import GslScenarios::*;
+    private import GslKnowledge::*;
     private import PatternCatalogue::*;
 
     doc /* GenderSense: Model-driven clinical service management platform

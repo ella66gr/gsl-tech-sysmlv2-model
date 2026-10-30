@@ -135,6 +135,7 @@ DOMAIN_PACKAGES = {
     "SudsBusinessModel", "SudsResourceFinancial", "SudsGovernance",
     "PawsBusinessModel", "PawsResourceFinancial", "PawsGovernance",
     "GslBusinessModel", "GslScenarios",  # S515 OP-132 step 5
+    "GslKnowledge", "DecisionTables", "OutcomeTargets", "HormoneTherapyTypes",  # S515 OP-132 step 6
 }
 
 

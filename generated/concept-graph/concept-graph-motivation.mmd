@@ -13,15 +13,15 @@ graph LR
 
     subgraph PAT["Patterns"]
         direction TB
-        persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]
         auditAsTimelineDataSource["Audit-as-timeline data source"]
-        agencyClassificationOnActions["Agency classification on pathway actions"]
+        sysmlAsSingleSourceOfTruth["SysML v2 as single source of truth"]
         fiveLayerSelfKnowledge["Five-layer self-knowledge architecture"]
+        agencyClassificationOnActions["Agency classification on pathway actions"]
+        dataReleaseModel["Data release model (patient-facing)"]
         coffeeshopDemonstratorAsPractice["Coffee shop demonstrator as standing validation practice"]
         twoLayerActionFlow["Two-layer pathway modelling"]
-        dataReleaseModel["Data release model (patient-facing)"]
         optionEvaluatorHelpMeChoose["OptionEvaluator / Help Me Choose"]
-        sysmlAsSingleSourceOfTruth["SysML v2 as single source of truth"]
+        persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]
     end
 
     persistencePolicyAsReasoning -->|motivated by| selfDescribingSystem

@@ -43,7 +43,7 @@ gsl-sysml-model/
 ├── exercises/                      Tenant and demonstrator domain projections
 │   ├── gendersense/model/          GSL — production tenant (OP-132 steps 3–4): gendersense.sysml root,
 │   │                               gsl-enterprise, gsl-service-delivery, gsl-platform, gsl-operations,
-│   │                               gsl-business-model, gsl-scenarios (step 5)
+│   │                               gsl-business-model, gsl-scenarios (step 5), gsl-knowledge (step 6)
 │   ├── coffeeshop-demonstrator/    Cafe — full-stack reference implementation (SvelteKit + Temporal + EHRbase)
 │   ├── paws-demonstrator/          Paws — appointment-based dog grooming (SysML projection)
 │   ├── suds-demonstrator/          Suds — batch processing launderette (SysML projection)

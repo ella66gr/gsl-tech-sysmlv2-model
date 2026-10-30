@@ -101,29 +101,29 @@ graph TD
 ```mermaid
 graph TD
 
-    threeLayerPersistence["Three-persistence-layer architecture"]:::validated
-    autoLoadingEntityViews["Auto-loading entity views"]:::validated
+    selfAssessmentDashboard["Self-assessment dashboard (KL Increment 3)"]:::designed
+    agencyClassificationOnActions["Agency classification on pathway actions"]:::designed
+    notificationTriggersOnTransitions["Notification triggers on state transitions"]:::discussion
     twoLayerModelVisualisation["Two-layer model visualisation in the UI"]:::validated
+    autoLoadingEntityViews["Auto-loading entity views"]:::validated
+    kanbanAsProcessDashboard["Kanban-as-process-dashboard"]:::validated
     catalogueAsUiContract["Catalogue-as-UI-contract"]:::validated
-    persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]:::validated
+    xstateInTemporal["XState in Temporal"]:::validated
+    compositeOrderOrchestration["Composite order / multi-workflow orchestration"]:::discussion
+    fourLayerItemModel["Four-layer item model"]:::validated
     auditAsTimelineDataSource["Audit-as-timeline data source"]:::validated
-    fiveLayerSelfKnowledge["Five-layer self-knowledge architecture"]:::validated
     multiSourceMetricsAggregation["Multi-source metrics aggregation with graceful degradation"]:::validated
     dataReleaseModel["Data release model (patient-facing)"]:::discussion
+    threeLayerPersistence["Three-persistence-layer architecture"]:::validated
     cdrSourceProvenanceBadges["CDR source provenance badges"]:::validated
-    notificationTriggersOnTransitions["Notification triggers on state transitions"]:::discussion
-    twoLayerActionFlow["Two-layer pathway modelling"]:::validated
-    infrastructureHealthAsAppConcern["Infrastructure health as application-level concern"]:::validated
-    categoryConditionalFormFields["Category-conditional form fields"]:::validated
-    kanbanAsProcessDashboard["Kanban-as-process-dashboard"]:::validated
-    xstateInTemporal["XState in Temporal"]:::validated
-    agencyClassificationOnActions["Agency classification on pathway actions"]:::designed
-    selfAssessmentDashboard["Self-assessment dashboard (KL Increment 3)"]:::designed
-    fourLayerItemModel["Four-layer item model"]:::validated
-    crossPageDataConsistency["Cross-page data consistency"]:::validated
     optionEvaluatorHelpMeChoose["OptionEvaluator / Help Me Choose"]:::designed
+    fiveLayerSelfKnowledge["Five-layer self-knowledge architecture"]:::validated
+    categoryConditionalFormFields["Category-conditional form fields"]:::validated
     processDomainGovernanceUnifiedView["Process + domain + governance unified view"]:::validated
-    compositeOrderOrchestration["Composite order / multi-workflow orchestration"]:::discussion
+    infrastructureHealthAsAppConcern["Infrastructure health as application-level concern"]:::validated
+    twoLayerActionFlow["Two-layer pathway modelling"]:::validated
+    crossPageDataConsistency["Cross-page data consistency"]:::validated
+    persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]:::validated
 
     persistencePolicyAsReasoning --> fourLayerItemModel
     persistencePolicyAsReasoning --> threeLayerPersistence
@@ -173,15 +173,15 @@ graph LR
 
     subgraph PAT["Patterns"]
         direction TB
-        persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]
         auditAsTimelineDataSource["Audit-as-timeline data source"]
-        agencyClassificationOnActions["Agency classification on pathway actions"]
+        sysmlAsSingleSourceOfTruth["SysML v2 as single source of truth"]
         fiveLayerSelfKnowledge["Five-layer self-knowledge architecture"]
+        agencyClassificationOnActions["Agency classification on pathway actions"]
+        dataReleaseModel["Data release model (patient-facing)"]
         coffeeshopDemonstratorAsPractice["Coffee shop demonstrator as standing validation practice"]
         twoLayerActionFlow["Two-layer pathway modelling"]
-        dataReleaseModel["Data release model (patient-facing)"]
         optionEvaluatorHelpMeChoose["OptionEvaluator / Help Me Choose"]
-        sysmlAsSingleSourceOfTruth["SysML v2 as single source of truth"]
+        persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]
     end
 
     persistencePolicyAsReasoning -->|motivated by| selfDescribingSystem

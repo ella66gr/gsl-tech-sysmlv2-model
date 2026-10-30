@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "generated_at": "2026-10-30T15:10:31.046394+00:00",
+  "generated_at": "2026-10-30T15:17:49.291215+00:00",
   "session": 116,
   "summary": {
     "StructuralOnly": 741,
@@ -1261,87 +1261,6 @@
       "targetGraph": null
     },
     {
-      "name": "HormoneLevel",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "TherapyPreference",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ContraindicationCategory",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "HormoneMedication",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "AdministrationRoute",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DoseCategory",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "PatientSatisfaction",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "StabilityClassification",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "MonitoringAction",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
       "name": "PersistenceLayer",
       "kind": "enum_def",
       "parentPackage": "CommonTypes",
@@ -1549,78 +1468,6 @@
       "targetGraph": null
     },
     {
-      "name": "consentSpec",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "informationSpec",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "baselineBloodsSpec",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "clinicalReviewSpec",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "regimenProtocolSpec",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "bloodMonitoringSpec",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "doseAdjustmentSpec",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "sharedCareSpec",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
       "name": "DecisionTableEvaluationSpec",
       "kind": "part_def",
       "parentPackage": "ClinicalDecisionSupport",
@@ -1633,168 +1480,6 @@
       "name": "inputDerivations",
       "kind": "part",
       "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "regimenSelectionSpec",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "stabilityAssessmentSpec",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ConsentRecordedConstraint",
-      "kind": "constraint_def",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "PatientInformationProvidedConstraint",
-      "kind": "constraint_def",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "BaselineBloodsReviewedConstraint",
-      "kind": "constraint_def",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ClinicalReviewCompletedConstraint",
-      "kind": "constraint_def",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "RegimenWithinProtocolConstraint",
-      "kind": "constraint_def",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "BloodMonitoringIntervalConstraint",
-      "kind": "constraint_def",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DoseAdjustmentReviewedConstraint",
-      "kind": "constraint_def",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "SharedCareAcceptedConstraint",
-      "kind": "constraint_def",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "consentCheck",
-      "kind": "constraint",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "informationCheck",
-      "kind": "constraint",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "baselineBloodsCheck",
-      "kind": "constraint",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "clinicalReviewCheck",
-      "kind": "constraint",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "regimenProtocolCheck",
-      "kind": "constraint",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "bloodMonitoringCheck",
-      "kind": "constraint",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "doseAdjustmentReviewCheck",
-      "kind": "constraint",
-      "parentPackage": "ConstraintLibrary",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "sharedCareCheck",
-      "kind": "constraint",
-      "parentPackage": "ConstraintLibrary",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "classification": "StructuralOnly",
@@ -2152,195 +1837,6 @@
       "targetGraph": null
     },
     {
-      "name": "RegimenSelectionRow",
-      "kind": "part_def",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "RegimenSelectionTable",
-      "kind": "part_def",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row01",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row02",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row03",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row04",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row05",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row06",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row07",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row08",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row09",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "StabilityAssessmentRow",
-      "kind": "part_def",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "StabilityAssessmentTable",
-      "kind": "part_def",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row01",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row02",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row03",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row04",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row05",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row06",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row07",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "row08",
-      "kind": "part",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
       "name": "OutcomeCategory",
       "kind": "enum_def",
       "parentPackage": "OutcomeFramework",
@@ -2424,150 +1920,6 @@
     {
       "name": "OutcomeFeedbackRecord",
       "kind": "part_def",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "oestradiolTarget",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "testosteroneMascTarget",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "testosteroneSuppressionTarget",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "haematologySafety",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "metabolicSafety",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "monitoringAdherence",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "appointmentAdherence",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "adverseEventTracking",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "treatmentSatisfaction",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "goalAttainment",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "baselinePoint",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "threeMonthPoint",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "sixMonthPoint",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "twelveMonthPoint",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "annualMonitoringPoint",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "hormoneTherapySchedule",
-      "kind": "part",
       "parentPackage": "OutcomeFramework",
       "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
@@ -6314,6 +5666,654 @@
       "kind": "part",
       "parentPackage": "Strategy",
       "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "HormoneLevel",
+      "kind": "enum_def",
+      "parentPackage": "HormoneTherapyTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "TherapyPreference",
+      "kind": "enum_def",
+      "parentPackage": "HormoneTherapyTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ContraindicationCategory",
+      "kind": "enum_def",
+      "parentPackage": "HormoneTherapyTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "HormoneMedication",
+      "kind": "enum_def",
+      "parentPackage": "HormoneTherapyTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AdministrationRoute",
+      "kind": "enum_def",
+      "parentPackage": "HormoneTherapyTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DoseCategory",
+      "kind": "enum_def",
+      "parentPackage": "HormoneTherapyTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "PatientSatisfaction",
+      "kind": "enum_def",
+      "parentPackage": "HormoneTherapyTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "StabilityClassification",
+      "kind": "enum_def",
+      "parentPackage": "HormoneTherapyTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "MonitoringAction",
+      "kind": "enum_def",
+      "parentPackage": "HormoneTherapyTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ConsentRecordedConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "PatientInformationProvidedConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "BaselineBloodsReviewedConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ClinicalReviewCompletedConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "RegimenWithinProtocolConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "BloodMonitoringIntervalConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DoseAdjustmentReviewedConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "SharedCareAcceptedConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "consentCheck",
+      "kind": "constraint",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "informationCheck",
+      "kind": "constraint",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "baselineBloodsCheck",
+      "kind": "constraint",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "clinicalReviewCheck",
+      "kind": "constraint",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "regimenProtocolCheck",
+      "kind": "constraint",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "bloodMonitoringCheck",
+      "kind": "constraint",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "doseAdjustmentReviewCheck",
+      "kind": "constraint",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "sharedCareCheck",
+      "kind": "constraint",
+      "parentPackage": "ConstraintLibrary",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "consentSpec",
+      "kind": "part",
+      "parentPackage": "ClinicalDecisionSupport",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "informationSpec",
+      "kind": "part",
+      "parentPackage": "ClinicalDecisionSupport",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "baselineBloodsSpec",
+      "kind": "part",
+      "parentPackage": "ClinicalDecisionSupport",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "clinicalReviewSpec",
+      "kind": "part",
+      "parentPackage": "ClinicalDecisionSupport",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "regimenProtocolSpec",
+      "kind": "part",
+      "parentPackage": "ClinicalDecisionSupport",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "bloodMonitoringSpec",
+      "kind": "part",
+      "parentPackage": "ClinicalDecisionSupport",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "doseAdjustmentSpec",
+      "kind": "part",
+      "parentPackage": "ClinicalDecisionSupport",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "sharedCareSpec",
+      "kind": "part",
+      "parentPackage": "ClinicalDecisionSupport",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "regimenSelectionSpec",
+      "kind": "part",
+      "parentPackage": "ClinicalDecisionSupport",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "stabilityAssessmentSpec",
+      "kind": "part",
+      "parentPackage": "ClinicalDecisionSupport",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "RegimenSelectionRow",
+      "kind": "part_def",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "RegimenSelectionTable",
+      "kind": "part_def",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row01",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row02",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row03",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row04",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row05",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row06",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row07",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row08",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row09",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "StabilityAssessmentRow",
+      "kind": "part_def",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "StabilityAssessmentTable",
+      "kind": "part_def",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row01",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row02",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row03",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row04",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row05",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row06",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row07",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "row08",
+      "kind": "part",
+      "parentPackage": "DecisionTables",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "oestradiolTarget",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "testosteroneMascTarget",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "testosteroneSuppressionTarget",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "haematologySafety",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "metabolicSafety",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "monitoringAdherence",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "appointmentAdherence",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "adverseEventTracking",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "treatmentSatisfaction",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "goalAttainment",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "baselinePoint",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "threeMonthPoint",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "sixMonthPoint",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "twelveMonthPoint",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "annualMonitoringPoint",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "hormoneTherapySchedule",
+      "kind": "part",
+      "parentPackage": "OutcomeTargets",
+      "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
       "sourceDomain": "gsl",
       "classification": "StructuralOnly",
       "targetGraph": null

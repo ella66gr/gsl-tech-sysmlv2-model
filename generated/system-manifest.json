@@ -1,6 +1,6 @@
 {
   "modelVersion": "2026-10-30",
-  "generatedAt": "2026-10-30T15:10:30Z",
+  "generatedAt": "2026-10-30T15:17:49Z",
   "generator": "scripts/gen_system_manifest.py",
   "sourceFiles": [
     "model/architectural-structure.sysml",
@@ -16,6 +16,7 @@
     "exercises/gendersense/model/gendersense.sysml",
     "exercises/gendersense/model/gsl-business-model.sysml",
     "exercises/gendersense/model/gsl-enterprise.sysml",
+    "exercises/gendersense/model/gsl-knowledge.sysml",
     "exercises/gendersense/model/gsl-operations.sysml",
     "exercises/gendersense/model/gsl-platform.sysml",
     "exercises/gendersense/model/gsl-scenarios.sysml",
@@ -27,7 +28,7 @@
     "items": [
       {
         "name": "ConsentRecordedConstraint",
-        "package": "Knowledge::ConstraintLibrary",
+        "package": "GslKnowledge::ConstraintLibrary",
         "inputs": [
           {
             "name": "consentRecorded",
@@ -41,7 +42,7 @@
       },
       {
         "name": "PatientInformationProvidedConstraint",
-        "package": "Knowledge::ConstraintLibrary",
+        "package": "GslKnowledge::ConstraintLibrary",
         "inputs": [
           {
             "name": "informationProvided",
@@ -55,7 +56,7 @@
       },
       {
         "name": "BaselineBloodsReviewedConstraint",
-        "package": "Knowledge::ConstraintLibrary",
+        "package": "GslKnowledge::ConstraintLibrary",
         "inputs": [
           {
             "name": "allBaselineTestsResulted",
@@ -73,7 +74,7 @@
       },
       {
         "name": "ClinicalReviewCompletedConstraint",
-        "package": "Knowledge::ConstraintLibrary",
+        "package": "GslKnowledge::ConstraintLibrary",
         "inputs": [
           {
             "name": "reviewCompleted",
@@ -87,7 +88,7 @@
       },
       {
         "name": "RegimenWithinProtocolConstraint",
-        "package": "Knowledge::ConstraintLibrary",
+        "package": "GslKnowledge::ConstraintLibrary",
         "inputs": [
           {
             "name": "medicationApproved",
@@ -109,7 +110,7 @@
       },
       {
         "name": "BloodMonitoringIntervalConstraint",
-        "package": "Knowledge::ConstraintLibrary",
+        "package": "GslKnowledge::ConstraintLibrary",
         "inputs": [
           {
             "name": "weeksSinceLastTest",
@@ -127,7 +128,7 @@
       },
       {
         "name": "DoseAdjustmentReviewedConstraint",
-        "package": "Knowledge::ConstraintLibrary",
+        "package": "GslKnowledge::ConstraintLibrary",
         "inputs": [
           {
             "name": "clinicalReviewCompleted",
@@ -145,7 +146,7 @@
       },
       {
         "name": "SharedCareAcceptedConstraint",
-        "package": "Knowledge::ConstraintLibrary",
+        "package": "GslKnowledge::ConstraintLibrary",
         "inputs": [
           {
             "name": "sharedCareProtocolSent",
@@ -316,7 +317,7 @@
     "items": [
       {
         "usageName": "oestradiolTarget",
-        "package": "Knowledge::OutcomeFramework",
+        "package": "GslKnowledge::OutcomeTargets",
         "outcomeName": "OestradiolTherapeuticRange",
         "description": "Serum oestradiol within therapeutic target range at trough",
         "targetValue": "400",
@@ -330,7 +331,7 @@
       },
       {
         "usageName": "testosteroneMascTarget",
-        "package": "Knowledge::OutcomeFramework",
+        "package": "GslKnowledge::OutcomeTargets",
         "outcomeName": "TestosteroneTherapeuticRange",
         "description": "Serum testosterone within therapeutic target range",
         "targetValue": "10",
@@ -344,7 +345,7 @@
       },
       {
         "usageName": "testosteroneSuppressionTarget",
-        "package": "Knowledge::OutcomeFramework",
+        "package": "GslKnowledge::OutcomeTargets",
         "outcomeName": "TestosteroneSuppression",
         "description": "Serum testosterone suppressed below threshold on feminising therapy",
         "targetValue": "2",
@@ -357,7 +358,7 @@
       },
       {
         "usageName": "haematologySafety",
-        "package": "Knowledge::OutcomeFramework",
+        "package": "GslKnowledge::OutcomeTargets",
         "outcomeName": "HaematologySafety",
         "description": "Haematological safety markers within safe limits",
         "targetValue": "0.54",
@@ -370,7 +371,7 @@
       },
       {
         "usageName": "metabolicSafety",
-        "package": "Knowledge::OutcomeFramework",
+        "package": "GslKnowledge::OutcomeTargets",
         "outcomeName": "MetabolicSafety",
         "description": "Liver function and lipid profile within acceptable limits",
         "targetValue": "3",
@@ -383,7 +384,7 @@
       },
       {
         "usageName": "monitoringAdherence",
-        "package": "Knowledge::OutcomeFramework",
+        "package": "GslKnowledge::OutcomeTargets",
         "outcomeName": "MonitoringAdherence",
         "description": "Monitoring blood tests completed at all scheduled measurement points",
         "targetValue": "complete",
@@ -395,7 +396,7 @@
       },
       {
         "usageName": "appointmentAdherence",
-        "package": "Knowledge::OutcomeFramework",
+        "package": "GslKnowledge::OutcomeTargets",
         "outcomeName": "AppointmentAdherence",
         "description": "Scheduled clinical appointments attended or rescheduled within window",
         "targetValue": "complete",
@@ -407,7 +408,7 @@
       },
       {
         "usageName": "adverseEventTracking",
-        "package": "Knowledge::OutcomeFramework",
+        "package": "GslKnowledge::OutcomeTargets",
         "outcomeName": "AdverseEventTracking",
         "description": "No critical adverse events; warning-level events managed and documented",
         "targetValue": "none-critical",
@@ -419,7 +420,7 @@
       },
       {
         "usageName": "treatmentSatisfaction",
-        "package": "Knowledge::OutcomeFramework",
+        "package": "GslKnowledge::OutcomeTargets",
         "outcomeName": "TreatmentSatisfaction",
         "description": "Patient-reported satisfaction with treatment progress",
         "targetValue": "satisfied",
@@ -432,7 +433,7 @@
       },
       {
         "usageName": "goalAttainment",
-        "package": "Knowledge::OutcomeFramework",
+        "package": "GslKnowledge::OutcomeTargets",
         "outcomeName": "GoalAttainment",
         "description": "Patient-reported progress toward personal treatment goals",
         "targetValue": "met",
@@ -453,14 +454,14 @@
         "tableName": "regimenSelection",
         "hitPolicy": "unique",
         "rowCount": 9,
-        "package": "Knowledge::DecisionModels"
+        "package": "GslKnowledge::DecisionTables"
       },
       {
         "defName": "StabilityAssessmentTable",
         "tableName": "stabilityAssessment",
         "hitPolicy": "unique",
         "rowCount": 8,
-        "package": "Knowledge::DecisionModels"
+        "package": "GslKnowledge::DecisionTables"
       }
     ]
   },
@@ -631,21 +632,6 @@
     "count": 108,
     "items": [
       {
-        "name": "EvaluateEligibility",
-        "source": "knowledge.sysml",
-        "description": "Determine whether a patient meets eligibility criteria for a specific pathway or intervention."
-      },
-      {
-        "name": "TriggerMonitoringAlert",
-        "source": "knowledge.sysml",
-        "description": "Flag when clinical data (e.g."
-      },
-      {
-        "name": "ProvidePathwayGuidance",
-        "source": "knowledge.sysml",
-        "description": "Surface personalised clinical guidance to patients and clinicians derived from structured data and rules."
-      },
-      {
         "name": "EvaluateConstraint",
         "source": "knowledge.sysml",
         "description": "Evaluate a single constraint for a specific patient or context."
@@ -664,36 +650,6 @@
         "name": "ExplainEvaluationResult",
         "source": "knowledge.sysml",
         "description": "Given an EvaluationResult or SystemStateAssessment, produce an audience-appropriate explanation."
-      },
-      {
-        "name": "EvaluateDecisionTable",
-        "source": "knowledge.sysml",
-        "description": "Evaluate a decision table for a specific patient and clinical context."
-      },
-      {
-        "name": "ValidateDecisionAgainstTable",
-        "source": "knowledge.sysml",
-        "description": "After a clinician makes a prescribing decision, validate that the chosen regimen appears in the decision table."
-      },
-      {
-        "name": "RecordOutcomeMeasurement",
-        "source": "knowledge.sysml",
-        "description": "Capture an outcome measurement for a patient at a specific measurement point."
-      },
-      {
-        "name": "EvaluateOutcomeAgainstTarget",
-        "source": "knowledge.sysml",
-        "description": "Evaluate a recorded outcome measurement against its defined target."
-      },
-      {
-        "name": "ProduceOutcomeReport",
-        "source": "knowledge.sysml",
-        "description": "Generate an outcome report for a patient, cohort, or pathway."
-      },
-      {
-        "name": "FeedOutcomeToLearningCycle",
-        "source": "knowledge.sysml",
-        "description": "When outcome patterns indicate a potential pathway issue, package the evidence as an OutcomeFeedbackRecord and feed it i"
       },
       {
         "name": "ProposePathwayRefinement",
@@ -759,6 +715,51 @@
         "name": "ManageSafeguarding",
         "source": "gsl-enterprise.sysml",
         "description": "Safeguarding framework for vulnerable adults and children, including referral pathways and reporting."
+      },
+      {
+        "name": "EvaluateEligibility",
+        "source": "gsl-knowledge.sysml",
+        "description": "Determine whether a patient meets eligibility criteria for a specific pathway or intervention."
+      },
+      {
+        "name": "TriggerMonitoringAlert",
+        "source": "gsl-knowledge.sysml",
+        "description": "Flag when clinical data (e.g."
+      },
+      {
+        "name": "ProvidePathwayGuidance",
+        "source": "gsl-knowledge.sysml",
+        "description": "Surface personalised clinical guidance to patients and clinicians derived from structured data and rules."
+      },
+      {
+        "name": "EvaluateDecisionTable",
+        "source": "gsl-knowledge.sysml",
+        "description": "Evaluate a decision table for a specific patient and clinical context."
+      },
+      {
+        "name": "ValidateDecisionAgainstTable",
+        "source": "gsl-knowledge.sysml",
+        "description": "After a clinician makes a prescribing decision, validate that the chosen regimen appears in the decision table."
+      },
+      {
+        "name": "RecordOutcomeMeasurement",
+        "source": "gsl-knowledge.sysml",
+        "description": "Capture an outcome measurement for a patient at a specific measurement point."
+      },
+      {
+        "name": "EvaluateOutcomeAgainstTarget",
+        "source": "gsl-knowledge.sysml",
+        "description": "Evaluate a recorded outcome measurement against its defined target."
+      },
+      {
+        "name": "ProduceOutcomeReport",
+        "source": "gsl-knowledge.sysml",
+        "description": "Generate an outcome report for a patient, cohort, or pathway."
+      },
+      {
+        "name": "FeedOutcomeToLearningCycle",
+        "source": "gsl-knowledge.sysml",
+        "description": "When outcome patterns indicate a potential pathway issue, package the evidence as an OutcomeFeedbackRecord and feed it i"
       },
       {
         "name": "ProcessInvoice",

@@ -3,7 +3,7 @@
 GenderSense Decision Table Evaluator Generator
 ================================================
 
-Reads decision table definitions from Knowledge::DecisionModels
+Reads decision table definitions from GslKnowledge::DecisionTables
 in the SysML v2 model and generates:
 
 1. generated/decision-table-evaluators.ts — row data + lookup functions
@@ -28,7 +28,13 @@ import datetime
 
 REPO_ROOT = pathlib.Path(__file__).parent.parent
 MODEL_DIR = REPO_ROOT / "model"
-KNOWLEDGE_FILE = MODEL_DIR / "knowledge.sysml"
+# S515 (OP-132 step 6): the decision tables live in the GSL tenant model
+# (GslKnowledge::DecisionTables). The pattern (HitPolicy, DecisionTableDef)
+# stays in PATTERN_FILE — re-point to SystemMetamodelGeneral at step 8.
+GSL_MODEL_DIR = REPO_ROOT / "exercises" / "gendersense" / "model"
+KNOWLEDGE_FILE = GSL_MODEL_DIR / "gsl-knowledge.sysml"
+PATTERN_FILE = MODEL_DIR / "knowledge.sysml"
+TABLES_PACKAGE = "DecisionTables"
 GENERATED_DIR = REPO_ROOT / "generated"
 
 HEADER_TEMPLATE = """\
@@ -337,7 +343,7 @@ def to_camel_case(name):
 def emit_decision_table_evaluators(tables, timestamp):
     """Generate decision-table-evaluators.ts."""
     header = HEADER_TEMPLATE.format(
-        source="model/knowledge.sysml (Knowledge::DecisionModels)",
+        source="exercises/gendersense/model/gsl-knowledge.sysml (GslKnowledge::DecisionTables)",
         timestamp=timestamp,
     )
 
@@ -519,15 +525,15 @@ def main():
 
     text = KNOWLEDGE_FILE.read_text(encoding="utf-8")
 
-    dm_text = find_package_block(text, "DecisionModels")
+    dm_text = find_package_block(text, TABLES_PACKAGE)
     if not dm_text:
-        print("ERROR: Could not find DecisionModels package.", file=sys.stderr)
+        print(f"ERROR: Could not find {TABLES_PACKAGE} package.", file=sys.stderr)
         sys.exit(1)
 
     tables = discover_tables(dm_text)
 
     # Report
-    print(f"Discovered {len(tables)} decision tables in DecisionModels:")
+    print(f"Discovered {len(tables)} decision tables in {TABLES_PACKAGE}:")
     for table in tables:
         meta = table['meta']
         attrs = table['attributes']

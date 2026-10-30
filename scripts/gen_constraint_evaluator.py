@@ -3,8 +3,8 @@
 GenderSense Constraint Evaluator Generator
 ============================================
 
-Reads constraint definitions from Knowledge::ConstraintLibrary and
-evaluation specifications from Knowledge::ClinicalDecisionSupport
+Reads constraint definitions from GslKnowledge::ConstraintLibrary and
+evaluation specifications from GslKnowledge::ClinicalDecisionSupport
 in the SysML v2 model, and generates:
 
 1. generated/evaluation-types.ts     — TypeScript type definitions
@@ -31,7 +31,14 @@ import datetime
 
 REPO_ROOT = pathlib.Path(__file__).parent.parent
 MODEL_DIR = REPO_ROOT / "model"
-KNOWLEDGE_FILE = MODEL_DIR / "knowledge.sysml"
+# S515 (OP-132 step 6): the GSL content (ConstraintLibrary, the evaluation
+# spec instances) lives in the GSL tenant model. The pattern types it
+# instantiates (InputDerivation, ConstraintEvaluationSpec,
+# DecisionTableEvaluationSpec) stay in PATTERN_FILE — re-point PATTERN_FILE
+# to the SystemMetamodelGeneral file at step 8. Only the GSL file is parsed.
+GSL_MODEL_DIR = REPO_ROOT / "exercises" / "gendersense" / "model"
+KNOWLEDGE_FILE = GSL_MODEL_DIR / "gsl-knowledge.sysml"
+PATTERN_FILE = MODEL_DIR / "knowledge.sysml"
 GENERATED_DIR = REPO_ROOT / "generated"
 
 HEADER_TEMPLATE = """\
@@ -433,7 +440,7 @@ export interface ConstraintEvaluationSpec {{
 def emit_evaluators(constraints, timestamp):
     """Generate constraint-evaluators.ts — one evaluation function per constraint."""
     header = HEADER_TEMPLATE.format(
-        source="model/knowledge.sysml (Knowledge::ConstraintLibrary)",
+        source="exercises/gendersense/model/gsl-knowledge.sysml (GslKnowledge::ConstraintLibrary)",
         timestamp=timestamp,
     )
 
@@ -554,7 +561,7 @@ def emit_evaluators(constraints, timestamp):
 def emit_specs(constraint_specs, decision_table_specs, timestamp):
     """Generate constraint-specs.ts — evaluation spec registry."""
     header = HEADER_TEMPLATE.format(
-        source="model/knowledge.sysml (Knowledge::ClinicalDecisionSupport)",
+        source="exercises/gendersense/model/gsl-knowledge.sysml (GslKnowledge::ClinicalDecisionSupport)",
         timestamp=timestamp,
     )
 

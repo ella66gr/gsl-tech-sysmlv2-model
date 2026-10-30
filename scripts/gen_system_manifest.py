@@ -136,7 +136,7 @@ def extract_constraint_inventory(knowledge_text):
 
         constraints.append({
             'name': block['name'],
-            'package': 'Knowledge::ConstraintLibrary',
+            'package': 'GslKnowledge::ConstraintLibrary',
             'inputs': inputs,
             'description': first_sentence(block['doc']),
         })
@@ -268,8 +268,8 @@ def extract_pathway_inventory(sd_text):
 
 
 def extract_outcome_inventory(knowledge_text):
-    """Extract outcome definitions from Knowledge::OutcomeFramework."""
-    of_text = find_package_block(knowledge_text, "OutcomeFramework")
+    """Extract outcome definitions from GslKnowledge::OutcomeTargets."""
+    of_text = find_package_block(knowledge_text, "OutcomeTargets")
     if not of_text:
         return []
 
@@ -287,7 +287,7 @@ def extract_outcome_inventory(knowledge_text):
             i += 1
         body = of_text[start:i - 1]
 
-        outcome = {'usageName': usage_name, 'package': 'Knowledge::OutcomeFramework'}
+        outcome = {'usageName': usage_name, 'package': 'GslKnowledge::OutcomeTargets'}
 
         # Extract :>> string values
         for sv_match in re.finditer(r'attribute\s+:>>\s+(\w+)\s*=\s*"([^"]+)"', body):
@@ -376,8 +376,8 @@ def extract_use_case_inventory(all_texts):
 
 
 def extract_decision_table_inventory(knowledge_text):
-    """Extract decision table metadata from DecisionModels."""
-    dm_text = find_package_block(knowledge_text, "DecisionModels")
+    """Extract decision table metadata from GslKnowledge::DecisionTables."""
+    dm_text = find_package_block(knowledge_text, "DecisionTables")
     if not dm_text:
         return []
 
@@ -404,7 +404,7 @@ def extract_decision_table_inventory(knowledge_text):
             'tableName': tn_match.group(1) if tn_match else table_name,
             'hitPolicy': hp_match.group(1) if hp_match else 'unknown',
             'rowCount': row_count,
-            'package': 'Knowledge::DecisionModels',
+            'package': 'GslKnowledge::DecisionTables',
         })
 
     return tables
@@ -522,19 +522,22 @@ def main():
 
     # Extract inventories
     knowledge_text = all_texts.get("knowledge.sysml", "")
+    # S515 (OP-132 step 6): constraints, specs, decision tables and outcome
+    # targets are GSL tenant content.
+    gsl_knowledge_text = all_texts.get("gsl-knowledge.sysml", "")
     enterprise_text = all_texts.get("gsl-enterprise.sysml", "")
     foundation_text = all_texts.get("foundation.sysml", "")
     sd_text = all_texts.get("gsl-service-delivery.sysml", "")
 
-    constraints = extract_constraint_inventory(knowledge_text)
+    constraints = extract_constraint_inventory(gsl_knowledge_text)
     requirements = extract_requirement_inventory(enterprise_text)
     lifecycles = extract_entity_lifecycle_inventory(sd_text)
     pathways = extract_pathway_inventory(sd_text)
-    outcomes = extract_outcome_inventory(knowledge_text)
+    outcomes = extract_outcome_inventory(gsl_knowledge_text)
     projection_text = all_texts.get("projection-metadata.sysml", "")
     metadata = extract_metadata_inventory(foundation_text, library_texts, projection_text)
     use_cases = extract_use_case_inventory(all_texts)
-    decision_tables = extract_decision_table_inventory(knowledge_text)
+    decision_tables = extract_decision_table_inventory(gsl_knowledge_text)
 
     # Report
     print(f"\nInventory:")
