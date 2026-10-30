@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "generated_at": "2026-10-30T14:58:24.744154+00:00",
+  "generated_at": "2026-10-30T15:03:42.570955+00:00",
   "session": 116,
   "summary": {
     "StructuralOnly": 741,
@@ -2386,132 +2386,6 @@
       }
     },
     {
-      "name": "Role",
-      "kind": "part_def",
-      "parentPackage": "Organisation",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Team",
-      "kind": "part_def",
-      "parentPackage": "Organisation",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "GovernanceBody",
-      "kind": "part_def",
-      "parentPackage": "Organisation",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ConsentBeforeTreatment",
-      "kind": "requirement_def",
-      "parentPackage": "Regulation",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "InformedConsentRequiresInformation",
-      "kind": "requirement_def",
-      "parentPackage": "Regulation",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "BaselineInvestigationsBeforePrescribing",
-      "kind": "requirement_def",
-      "parentPackage": "Regulation",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ClinicalReviewBeforePrescribing",
-      "kind": "requirement_def",
-      "parentPackage": "Regulation",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "PrescribingProtocolAdherence",
-      "kind": "requirement_def",
-      "parentPackage": "Regulation",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "BloodMonitoringRequired",
-      "kind": "requirement_def",
-      "parentPackage": "Regulation",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ClinicalReviewBeforeDoseAdjustment",
-      "kind": "requirement_def",
-      "parentPackage": "Regulation",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "SharedCareCommunication",
-      "kind": "requirement_def",
-      "parentPackage": "Regulation",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Partnership",
-      "kind": "part_def",
-      "parentPackage": "Strategy",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "StrategicContext",
-      "kind": "part_def",
-      "parentPackage": "Strategy",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "gslStrategicContext",
-      "kind": "part",
-      "parentPackage": "Strategy",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
       "name": "ClinicalReviewGate",
       "kind": "metadata_def",
       "parentPackage": "MetadataLibrary",
@@ -4078,105 +3952,6 @@
       "targetGraph": null
     },
     {
-      "name": "AccountingIntegration",
-      "kind": "part_def",
-      "parentPackage": "Finance",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "xeroIntegration",
-      "kind": "part",
-      "parentPackage": "Finance",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "WorkforceRole",
-      "kind": "part_def",
-      "parentPackage": "People",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "clinicianRole",
-      "kind": "part",
-      "parentPackage": "People",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "adminRole",
-      "kind": "part",
-      "parentPackage": "People",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "PremisesArrangement",
-      "kind": "part_def",
-      "parentPackage": "EstatesAndFacilities",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "EquipmentInventory",
-      "kind": "part_def",
-      "parentPackage": "EstatesAndFacilities",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "clinicRoom",
-      "kind": "part",
-      "parentPackage": "EstatesAndFacilities",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "homeOffice",
-      "kind": "part",
-      "parentPackage": "EstatesAndFacilities",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "itEquipment",
-      "kind": "part",
-      "parentPackage": "EstatesAndFacilities",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "clinicalEquipment",
-      "kind": "part",
-      "parentPackage": "EstatesAndFacilities",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
       "name": "PatternMaturity",
       "kind": "enum_def",
       "parentPackage": "PatternCatalogue",
@@ -4906,15 +4681,6 @@
       "targetGraph": null
     },
     {
-      "name": "UserAccount",
-      "kind": "part_def",
-      "parentPackage": "Identity",
-      "sourceFile": "model/platform.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
       "name": "CatalogueTag",
       "kind": "metadata_def",
       "parentPackage": "ProjectionMetadata",
@@ -4973,60 +4739,6 @@
       "kind": "metadata_def",
       "parentPackage": "ProjectionMetadata",
       "sourceFile": "model/projection-metadata.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Patient",
-      "kind": "part_def",
-      "parentPackage": "ClinicalEntities",
-      "sourceFile": "model/service-delivery.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Episode",
-      "kind": "part_def",
-      "parentPackage": "ClinicalEntities",
-      "sourceFile": "model/service-delivery.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Consultation",
-      "kind": "part_def",
-      "parentPackage": "ClinicalEntities",
-      "sourceFile": "model/service-delivery.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Prescription",
-      "kind": "part_def",
-      "parentPackage": "ClinicalEntities",
-      "sourceFile": "model/service-delivery.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "LabResult",
-      "kind": "part_def",
-      "parentPackage": "ClinicalEntities",
-      "sourceFile": "model/service-delivery.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Referral",
-      "kind": "part_def",
-      "parentPackage": "ClinicalEntities",
-      "sourceFile": "model/service-delivery.sysml",
       "sourceDomain": "core",
       "classification": "StructuralOnly",
       "targetGraph": null
@@ -7206,6 +6918,294 @@
       "parentPackage": "PawsCanonicalRuntime",
       "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
       "sourceDomain": "paws",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Role",
+      "kind": "part_def",
+      "parentPackage": "Organisation",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Team",
+      "kind": "part_def",
+      "parentPackage": "Organisation",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "GovernanceBody",
+      "kind": "part_def",
+      "parentPackage": "Organisation",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ConsentBeforeTreatment",
+      "kind": "requirement_def",
+      "parentPackage": "Regulation",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "InformedConsentRequiresInformation",
+      "kind": "requirement_def",
+      "parentPackage": "Regulation",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "BaselineInvestigationsBeforePrescribing",
+      "kind": "requirement_def",
+      "parentPackage": "Regulation",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ClinicalReviewBeforePrescribing",
+      "kind": "requirement_def",
+      "parentPackage": "Regulation",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "PrescribingProtocolAdherence",
+      "kind": "requirement_def",
+      "parentPackage": "Regulation",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "BloodMonitoringRequired",
+      "kind": "requirement_def",
+      "parentPackage": "Regulation",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ClinicalReviewBeforeDoseAdjustment",
+      "kind": "requirement_def",
+      "parentPackage": "Regulation",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "SharedCareCommunication",
+      "kind": "requirement_def",
+      "parentPackage": "Regulation",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Partnership",
+      "kind": "part_def",
+      "parentPackage": "Strategy",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "StrategicContext",
+      "kind": "part_def",
+      "parentPackage": "Strategy",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "gslStrategicContext",
+      "kind": "part",
+      "parentPackage": "Strategy",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AccountingIntegration",
+      "kind": "part_def",
+      "parentPackage": "Finance",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "xeroIntegration",
+      "kind": "part",
+      "parentPackage": "Finance",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "WorkforceRole",
+      "kind": "part_def",
+      "parentPackage": "People",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "clinicianRole",
+      "kind": "part",
+      "parentPackage": "People",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "adminRole",
+      "kind": "part",
+      "parentPackage": "People",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "PremisesArrangement",
+      "kind": "part_def",
+      "parentPackage": "EstatesAndFacilities",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "EquipmentInventory",
+      "kind": "part_def",
+      "parentPackage": "EstatesAndFacilities",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "clinicRoom",
+      "kind": "part",
+      "parentPackage": "EstatesAndFacilities",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "homeOffice",
+      "kind": "part",
+      "parentPackage": "EstatesAndFacilities",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "itEquipment",
+      "kind": "part",
+      "parentPackage": "EstatesAndFacilities",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "clinicalEquipment",
+      "kind": "part",
+      "parentPackage": "EstatesAndFacilities",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "UserAccount",
+      "kind": "part_def",
+      "parentPackage": "Identity",
+      "sourceFile": "exercises/gendersense/model/gsl-platform.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Patient",
+      "kind": "part_def",
+      "parentPackage": "ClinicalEntities",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Episode",
+      "kind": "part_def",
+      "parentPackage": "ClinicalEntities",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Consultation",
+      "kind": "part_def",
+      "parentPackage": "ClinicalEntities",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Prescription",
+      "kind": "part_def",
+      "parentPackage": "ClinicalEntities",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "LabResult",
+      "kind": "part_def",
+      "parentPackage": "ClinicalEntities",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Referral",
+      "kind": "part_def",
+      "parentPackage": "ClinicalEntities",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
       "classification": "StructuralOnly",
       "targetGraph": null
     }

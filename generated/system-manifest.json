@@ -1,6 +1,6 @@
 {
   "modelVersion": "2026-10-30",
-  "generatedAt": "2026-10-30T14:58:16Z",
+  "generatedAt": "2026-10-30T15:03:42Z",
   "generator": "scripts/gen_system_manifest.py",
   "sourceFiles": [
     "model/architectural-structure.sysml",
@@ -8,14 +8,16 @@
     "model/business-scenarios.sysml",
     "model/business-strategy.sysml",
     "model/canonical-runtime.sysml",
-    "model/enterprise.sysml",
     "model/foundation.sysml",
     "model/knowledge.sysml",
-    "model/operations.sysml",
     "model/pattern-catalogue.sysml",
     "model/platform.sysml",
     "model/projection-metadata.sysml",
-    "model/service-delivery.sysml",
+    "exercises/gendersense/model/gendersense.sysml",
+    "exercises/gendersense/model/gsl-enterprise.sysml",
+    "exercises/gendersense/model/gsl-operations.sysml",
+    "exercises/gendersense/model/gsl-platform.sysml",
+    "exercises/gendersense/model/gsl-service-delivery.sysml",
     "libraries/temporal-metadata/temporal-metadata.sysml"
   ],
   "constraints": {
@@ -164,42 +166,42 @@
     "items": [
       {
         "name": "ConsentBeforeTreatment",
-        "package": "Enterprise::Regulation",
+        "package": "GslEnterprise::Regulation",
         "description": "Informed consent must be obtained and recorded before any treatment is initiated."
       },
       {
         "name": "InformedConsentRequiresInformation",
-        "package": "Enterprise::Regulation",
+        "package": "GslEnterprise::Regulation",
         "description": "Before consent can be considered informed, the patient must have received and had opportunity to consider relevant infor"
       },
       {
         "name": "BaselineInvestigationsBeforePrescribing",
-        "package": "Enterprise::Regulation",
+        "package": "GslEnterprise::Regulation",
         "description": "Baseline blood tests must be completed, resulted, and reviewed by a clinician before a hormone therapy prescription is a"
       },
       {
         "name": "ClinicalReviewBeforePrescribing",
-        "package": "Enterprise::Regulation",
+        "package": "GslEnterprise::Regulation",
         "description": "A clinician with appropriate competence must conduct a clinical review before authorising a hormone therapy prescription"
       },
       {
         "name": "PrescribingProtocolAdherence",
-        "package": "Enterprise::Regulation",
+        "package": "GslEnterprise::Regulation",
         "description": "Prescribing must follow an approved clinical protocol."
       },
       {
         "name": "BloodMonitoringRequired",
-        "package": "Enterprise::Regulation",
+        "package": "GslEnterprise::Regulation",
         "description": "Patients on hormone therapy must have blood tests performed at defined monitoring intervals."
       },
       {
         "name": "ClinicalReviewBeforeDoseAdjustment",
-        "package": "Enterprise::Regulation",
+        "package": "GslEnterprise::Regulation",
         "description": "Any change to hormone therapy dosage must be preceded by a clinical review that considers current blood results, symptom"
       },
       {
         "name": "SharedCareCommunication",
-        "package": "Enterprise::Regulation",
+        "package": "GslEnterprise::Regulation",
         "description": "When hormone therapy monitoring is transitioned to shared care with the patient's GP, the GP must receive a shared care "
       }
     ]
@@ -209,7 +211,7 @@
     "items": [
       {
         "name": "EpisodeLifecycle",
-        "package": "ServiceDelivery::ClinicalEntities",
+        "package": "GslServiceDelivery::ClinicalEntities",
         "states": [
           "created",
           "active",
@@ -224,7 +226,7 @@
       },
       {
         "name": "PrescriptionLifecycle",
-        "package": "ServiceDelivery::ClinicalEntities",
+        "package": "GslServiceDelivery::ClinicalEntities",
         "states": [
           "drafted",
           "authorised",
@@ -240,7 +242,7 @@
       },
       {
         "name": "LabResultLifecycle",
-        "package": "ServiceDelivery::ClinicalEntities",
+        "package": "GslServiceDelivery::ClinicalEntities",
         "states": [
           "requested",
           "collected",
@@ -256,7 +258,7 @@
       },
       {
         "name": "ReferralLifecycle",
-        "package": "ServiceDelivery::ClinicalEntities",
+        "package": "GslServiceDelivery::ClinicalEntities",
         "states": [
           "drafted",
           "sent",
@@ -279,7 +281,7 @@
     "items": [
       {
         "name": "InitiateHormoneTherapyProcess",
-        "package": "ServiceDelivery::ClinicalPathways",
+        "package": "GslServiceDelivery::ClinicalPathways",
         "type": "domain",
         "stepCount": 17,
         "metadataAnnotations": [
@@ -294,7 +296,7 @@
       },
       {
         "name": "InitiateHormoneTherapyWorkflow",
-        "package": "ServiceDelivery::ClinicalPathways",
+        "package": "GslServiceDelivery::ClinicalPathways",
         "type": "domain",
         "stepCount": 21,
         "metadataAnnotations": [
@@ -627,41 +629,6 @@
     "count": 108,
     "items": [
       {
-        "name": "MeetCQCFundamentalStandards",
-        "source": "enterprise.sysml",
-        "description": "Demonstrate compliance with CQC fundamental standards for a regulated healthcare provider."
-      },
-      {
-        "name": "MeetDataProtectionObligations",
-        "source": "enterprise.sysml",
-        "description": "Demonstrate compliance with UK GDPR / Data Protection Act 2018 including DPIA, lawful basis, subject rights."
-      },
-      {
-        "name": "MeetClinicalSafetyRequirements",
-        "source": "enterprise.sysml",
-        "description": "Demonstrate compliance with DCB0129 (manufacturer) and DCB0160 (deployer) clinical risk management standards."
-      },
-      {
-        "name": "MeetProfessionalStandards",
-        "source": "enterprise.sysml",
-        "description": "GMC Good Medical Practice, specialist standards, appraisal and revalidation requirements."
-      },
-      {
-        "name": "ManageClinicalRisk",
-        "source": "enterprise.sysml",
-        "description": "Identify, assess, mitigate, and monitor clinical risks across all service delivery pathways."
-      },
-      {
-        "name": "MaintainBusinessContinuity",
-        "source": "enterprise.sysml",
-        "description": "Ensure service continuity under adverse conditions including system failure, staff absence, and external disruption."
-      },
-      {
-        "name": "ManageSafeguarding",
-        "source": "enterprise.sysml",
-        "description": "Safeguarding framework for vulnerable adults and children, including referral pathways and reporting."
-      },
-      {
         "name": "EvaluateEligibility",
         "source": "knowledge.sysml",
         "description": "Determine whether a patient meets eligibility criteria for a specific pathway or intervention."
@@ -737,216 +704,6 @@
         "description": "Clinical governance review and approval of a proposed pathway or protocol change."
       },
       {
-        "name": "ProcessInvoice",
-        "source": "operations.sysml",
-        "description": "Generate, issue, and track an invoice."
-      },
-      {
-        "name": "ReconcilePayments",
-        "source": "operations.sysml",
-        "description": "Reconcile payments received against invoices issued."
-      },
-      {
-        "name": "ProduceManagementAccounts",
-        "source": "operations.sysml",
-        "description": "Generate monthly management accounts from Xero data."
-      },
-      {
-        "name": "GenerateCashFlowForecast",
-        "source": "operations.sysml",
-        "description": "Produce a cash flow forecast from current actuals and projection parameters."
-      },
-      {
-        "name": "ManageRecruitment",
-        "source": "operations.sysml",
-        "description": "Hiring pipeline from need identification through to onboarding."
-      },
-      {
-        "name": "ConductAppraisal",
-        "source": "operations.sysml",
-        "description": "Annual appraisal process."
-      },
-      {
-        "name": "ManageProfessionalDevelopment",
-        "source": "operations.sysml",
-        "description": "CPD tracking and planning."
-      },
-      {
-        "name": "RenewIndemnityInsurance",
-        "source": "operations.sysml",
-        "description": "Annual insurance renewal cycle."
-      },
-      {
-        "name": "ManageProcurement",
-        "source": "operations.sysml",
-        "description": "Purchasing workflow from need identification to delivery."
-      },
-      {
-        "name": "ManageAcquisitionFunnel",
-        "source": "operations.sysml",
-        "description": "Track patient acquisition from initial awareness through to registration."
-      },
-      {
-        "name": "GenerateOperationalDashboard",
-        "source": "operations.sysml",
-        "description": "Produce operational dashboard: referral-to-appointment times, pathway bottlenecks, capacity utilisation."
-      },
-      {
-        "name": "ProduceRegulatoryReport",
-        "source": "operations.sysml",
-        "description": "Generate regulatory reports for CQC, NHS England, or other bodies from system data."
-      },
-      {
-        "name": "ProduceBusinessModelMetrics",
-        "source": "operations.sysml",
-        "description": "Generate KPI report mapped to BusinessModel and BusinessScenarios components."
-      },
-      {
-        "name": "ViewPatientDashboard",
-        "source": "platform.sysml",
-        "description": "Patient views their personalised dashboard with upcoming appointments, recent results, and pending actions."
-      },
-      {
-        "name": "CompleteSelfServiceTask",
-        "source": "platform.sysml",
-        "description": "Patient completes a self-service task: form, consent, payment, questionnaire, booking change."
-      },
-      {
-        "name": "ViewClinicalRecord",
-        "source": "platform.sysml",
-        "description": "Patient views their own clinical data: blood results, prescriptions, consultation summaries."
-      },
-      {
-        "name": "TrackProgress",
-        "source": "platform.sysml",
-        "description": "Patient tracks their progress through a pathway or towards clinical targets."
-      },
-      {
-        "name": "CompleteSelfAssessment",
-        "source": "platform.sysml",
-        "description": "Patient completes a triggered or scheduled self- assessment instrument."
-      },
-      {
-        "name": "EditIdentityProfile",
-        "source": "platform.sysml",
-        "description": "Patient creates or updates their identity representation — gender expression, presentation preferences, values, concerns"
-      },
-      {
-        "name": "ReviewIdentityHistory",
-        "source": "platform.sysml",
-        "description": "Patient reviews the versioned history of their identity profile, reflecting on their journey and development over time."
-      },
-      {
-        "name": "ManageSharingControls",
-        "source": "platform.sysml",
-        "description": "Patient configures which aspects of their identity profile are visible to clinicians, peer groups, or kept private."
-      },
-      {
-        "name": "WriteJournalEntry",
-        "source": "platform.sysml",
-        "description": "Patient writes a journal entry — free text, prompted reflection, or structured format."
-      },
-      {
-        "name": "ReviewJournalHistory",
-        "source": "platform.sysml",
-        "description": "Patient reviews their journal entries over time, with filtering by date, sharing level, or linked therapy exercise."
-      },
-      {
-        "name": "PrepareForSession",
-        "source": "platform.sysml",
-        "description": "Patient prepares for an upcoming consultation: sets agenda items, notes questions, reviews relevant clinical data."
-      },
-      {
-        "name": "RecordPostSessionActions",
-        "source": "platform.sysml",
-        "description": "Patient records their understanding of what was discussed and agreed, and any actions they need to take before the next "
-      },
-      {
-        "name": "ViewDocuments",
-        "source": "platform.sysml",
-        "description": "Patient views documents associated with their care: letters, reports, consent records."
-      },
-      {
-        "name": "SignDocument",
-        "source": "platform.sysml",
-        "description": "Patient electronically signs a document — consent form, shared care agreement, or similar."
-      },
-      {
-        "name": "ShareDocument",
-        "source": "platform.sysml",
-        "description": "Patient shares a document with a third party (GP, employer, other provider)."
-      },
-      {
-        "name": "SearchKnowledgeBase",
-        "source": "platform.sysml",
-        "description": "Patient searches for information on a topic — medication, procedure, terminology, rights, practical guidance."
-      },
-      {
-        "name": "ViewDecisionAid",
-        "source": "platform.sysml",
-        "description": "Patient accesses a structured decision aid to help them understand options and make informed choices about their care."
-      },
-      {
-        "name": "FollowLearningModule",
-        "source": "platform.sysml",
-        "description": "Patient works through a structured learning module at their own pace — video, reading, exercises, self-check questions."
-      },
-      {
-        "name": "FollowTherapyExercise",
-        "source": "platform.sysml",
-        "description": "Patient works through a guided therapeutic exercise — identity exploration, values clarification, confidence building, s"
-      },
-      {
-        "name": "ReviewTherapyProgress",
-        "source": "platform.sysml",
-        "description": "Patient reviews their progress through a therapy pathway, with summaries of completed exercises and insights captured."
-      },
-      {
-        "name": "RecommendContent",
-        "source": "platform.sysml",
-        "description": "System recommends educational content to a patient based on their pathway stage, recent clinical events, and learning hi"
-      },
-      {
-        "name": "ManageContent",
-        "source": "platform.sysml",
-        "description": "Clinical or editorial team creates, updates, tags, and publishes educational content."
-      },
-      {
-        "name": "ParticipateInGroupSpace",
-        "source": "platform.sysml",
-        "description": "Patient joins and participates in a community group space — posting, reading, responding, sharing resources."
-      },
-      {
-        "name": "ModerateGroupSpace",
-        "source": "platform.sysml",
-        "description": "Moderator manages a group space: reviewing flagged content, enforcing community guidelines, managing membership."
-      },
-      {
-        "name": "HostGroupSession",
-        "source": "platform.sysml",
-        "description": "Facilitate a live group session: peer support circle, workshop, or group therapy exercise."
-      },
-      {
-        "name": "JoinGroupSession",
-        "source": "platform.sysml",
-        "description": "Patient joins a scheduled group session."
-      },
-      {
-        "name": "SendPeerMessage",
-        "source": "platform.sysml",
-        "description": "Patient sends a message to another patient or to a peer support channel."
-      },
-      {
-        "name": "BookAppointment",
-        "source": "platform.sysml",
-        "description": "Schedule an appointment: check availability, confirm with patient, send reminders."
-      },
-      {
-        "name": "CancelAppointment",
-        "source": "platform.sysml",
-        "description": "Process an appointment cancellation from patient or clinician, including downstream pathway effects."
-      },
-      {
         "name": "CommitComposition",
         "source": "platform.sysml",
         "description": "Store a clinical composition in the CDR conforming to a registered template."
@@ -967,203 +724,448 @@
         "description": "Design, version, and deploy archetypes and templates."
       },
       {
+        "name": "MeetCQCFundamentalStandards",
+        "source": "gsl-enterprise.sysml",
+        "description": "Demonstrate compliance with CQC fundamental standards for a regulated healthcare provider."
+      },
+      {
+        "name": "MeetDataProtectionObligations",
+        "source": "gsl-enterprise.sysml",
+        "description": "Demonstrate compliance with UK GDPR / Data Protection Act 2018 including DPIA, lawful basis, subject rights."
+      },
+      {
+        "name": "MeetClinicalSafetyRequirements",
+        "source": "gsl-enterprise.sysml",
+        "description": "Demonstrate compliance with DCB0129 (manufacturer) and DCB0160 (deployer) clinical risk management standards."
+      },
+      {
+        "name": "MeetProfessionalStandards",
+        "source": "gsl-enterprise.sysml",
+        "description": "GMC Good Medical Practice, specialist standards, appraisal and revalidation requirements."
+      },
+      {
+        "name": "ManageClinicalRisk",
+        "source": "gsl-enterprise.sysml",
+        "description": "Identify, assess, mitigate, and monitor clinical risks across all service delivery pathways."
+      },
+      {
+        "name": "MaintainBusinessContinuity",
+        "source": "gsl-enterprise.sysml",
+        "description": "Ensure service continuity under adverse conditions including system failure, staff absence, and external disruption."
+      },
+      {
+        "name": "ManageSafeguarding",
+        "source": "gsl-enterprise.sysml",
+        "description": "Safeguarding framework for vulnerable adults and children, including referral pathways and reporting."
+      },
+      {
+        "name": "ProcessInvoice",
+        "source": "gsl-operations.sysml",
+        "description": "Generate, issue, and track an invoice."
+      },
+      {
+        "name": "ReconcilePayments",
+        "source": "gsl-operations.sysml",
+        "description": "Reconcile payments received against invoices issued."
+      },
+      {
+        "name": "ProduceManagementAccounts",
+        "source": "gsl-operations.sysml",
+        "description": "Generate monthly management accounts from Xero data."
+      },
+      {
+        "name": "GenerateCashFlowForecast",
+        "source": "gsl-operations.sysml",
+        "description": "Produce a cash flow forecast from current actuals and projection parameters."
+      },
+      {
+        "name": "ManageRecruitment",
+        "source": "gsl-operations.sysml",
+        "description": "Hiring pipeline from need identification through to onboarding."
+      },
+      {
+        "name": "ConductAppraisal",
+        "source": "gsl-operations.sysml",
+        "description": "Annual appraisal process."
+      },
+      {
+        "name": "ManageProfessionalDevelopment",
+        "source": "gsl-operations.sysml",
+        "description": "CPD tracking and planning."
+      },
+      {
+        "name": "RenewIndemnityInsurance",
+        "source": "gsl-operations.sysml",
+        "description": "Annual insurance renewal cycle."
+      },
+      {
+        "name": "ManageProcurement",
+        "source": "gsl-operations.sysml",
+        "description": "Purchasing workflow from need identification to delivery."
+      },
+      {
+        "name": "ManageAcquisitionFunnel",
+        "source": "gsl-operations.sysml",
+        "description": "Track patient acquisition from initial awareness through to registration."
+      },
+      {
+        "name": "GenerateOperationalDashboard",
+        "source": "gsl-operations.sysml",
+        "description": "Produce operational dashboard: referral-to-appointment times, pathway bottlenecks, capacity utilisation."
+      },
+      {
+        "name": "ProduceRegulatoryReport",
+        "source": "gsl-operations.sysml",
+        "description": "Generate regulatory reports for CQC, NHS England, or other bodies from system data."
+      },
+      {
+        "name": "ProduceBusinessModelMetrics",
+        "source": "gsl-operations.sysml",
+        "description": "Generate KPI report mapped to BusinessModel and BusinessScenarios components."
+      },
+      {
+        "name": "ViewPatientDashboard",
+        "source": "gsl-platform.sysml",
+        "description": "Patient views their personalised dashboard with upcoming appointments, recent results, and pending actions."
+      },
+      {
+        "name": "CompleteSelfServiceTask",
+        "source": "gsl-platform.sysml",
+        "description": "Patient completes a self-service task: form, consent, payment, questionnaire, booking change."
+      },
+      {
+        "name": "ViewClinicalRecord",
+        "source": "gsl-platform.sysml",
+        "description": "Patient views their own clinical data: blood results, prescriptions, consultation summaries."
+      },
+      {
+        "name": "TrackProgress",
+        "source": "gsl-platform.sysml",
+        "description": "Patient tracks their progress through a pathway or towards clinical targets."
+      },
+      {
+        "name": "CompleteSelfAssessment",
+        "source": "gsl-platform.sysml",
+        "description": "Patient completes a triggered or scheduled self- assessment instrument."
+      },
+      {
+        "name": "EditIdentityProfile",
+        "source": "gsl-platform.sysml",
+        "description": "Patient creates or updates their identity representation — gender expression, presentation preferences, values, concerns"
+      },
+      {
+        "name": "ReviewIdentityHistory",
+        "source": "gsl-platform.sysml",
+        "description": "Patient reviews the versioned history of their identity profile, reflecting on their journey and development over time."
+      },
+      {
+        "name": "ManageSharingControls",
+        "source": "gsl-platform.sysml",
+        "description": "Patient configures which aspects of their identity profile are visible to clinicians, peer groups, or kept private."
+      },
+      {
+        "name": "WriteJournalEntry",
+        "source": "gsl-platform.sysml",
+        "description": "Patient writes a journal entry — free text, prompted reflection, or structured format."
+      },
+      {
+        "name": "ReviewJournalHistory",
+        "source": "gsl-platform.sysml",
+        "description": "Patient reviews their journal entries over time, with filtering by date, sharing level, or linked therapy exercise."
+      },
+      {
+        "name": "PrepareForSession",
+        "source": "gsl-platform.sysml",
+        "description": "Patient prepares for an upcoming consultation: sets agenda items, notes questions, reviews relevant clinical data."
+      },
+      {
+        "name": "RecordPostSessionActions",
+        "source": "gsl-platform.sysml",
+        "description": "Patient records their understanding of what was discussed and agreed, and any actions they need to take before the next "
+      },
+      {
+        "name": "ViewDocuments",
+        "source": "gsl-platform.sysml",
+        "description": "Patient views documents associated with their care: letters, reports, consent records."
+      },
+      {
+        "name": "SignDocument",
+        "source": "gsl-platform.sysml",
+        "description": "Patient electronically signs a document — consent form, shared care agreement, or similar."
+      },
+      {
+        "name": "ShareDocument",
+        "source": "gsl-platform.sysml",
+        "description": "Patient shares a document with a third party (GP, employer, other provider)."
+      },
+      {
+        "name": "SearchKnowledgeBase",
+        "source": "gsl-platform.sysml",
+        "description": "Patient searches for information on a topic — medication, procedure, terminology, rights, practical guidance."
+      },
+      {
+        "name": "ViewDecisionAid",
+        "source": "gsl-platform.sysml",
+        "description": "Patient accesses a structured decision aid to help them understand options and make informed choices about their care."
+      },
+      {
+        "name": "FollowLearningModule",
+        "source": "gsl-platform.sysml",
+        "description": "Patient works through a structured learning module at their own pace — video, reading, exercises, self-check questions."
+      },
+      {
+        "name": "FollowTherapyExercise",
+        "source": "gsl-platform.sysml",
+        "description": "Patient works through a guided therapeutic exercise — identity exploration, values clarification, confidence building, s"
+      },
+      {
+        "name": "ReviewTherapyProgress",
+        "source": "gsl-platform.sysml",
+        "description": "Patient reviews their progress through a therapy pathway, with summaries of completed exercises and insights captured."
+      },
+      {
+        "name": "RecommendContent",
+        "source": "gsl-platform.sysml",
+        "description": "System recommends educational content to a patient based on their pathway stage, recent clinical events, and learning hi"
+      },
+      {
+        "name": "ManageContent",
+        "source": "gsl-platform.sysml",
+        "description": "Clinical or editorial team creates, updates, tags, and publishes educational content."
+      },
+      {
+        "name": "ParticipateInGroupSpace",
+        "source": "gsl-platform.sysml",
+        "description": "Patient joins and participates in a community group space — posting, reading, responding, sharing resources."
+      },
+      {
+        "name": "ModerateGroupSpace",
+        "source": "gsl-platform.sysml",
+        "description": "Moderator manages a group space: reviewing flagged content, enforcing community guidelines, managing membership."
+      },
+      {
+        "name": "HostGroupSession",
+        "source": "gsl-platform.sysml",
+        "description": "Facilitate a live group session: peer support circle, workshop, or group therapy exercise."
+      },
+      {
+        "name": "JoinGroupSession",
+        "source": "gsl-platform.sysml",
+        "description": "Patient joins a scheduled group session."
+      },
+      {
+        "name": "SendPeerMessage",
+        "source": "gsl-platform.sysml",
+        "description": "Patient sends a message to another patient or to a peer support channel."
+      },
+      {
+        "name": "BookAppointment",
+        "source": "gsl-platform.sysml",
+        "description": "Schedule an appointment: check availability, confirm with patient, send reminders."
+      },
+      {
+        "name": "CancelAppointment",
+        "source": "gsl-platform.sysml",
+        "description": "Process an appointment cancellation from patient or clinician, including downstream pathway effects."
+      },
+      {
         "name": "RenderClinicalForm",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Present a clinical form to a clinician or patient with validation, conditional logic, and CDR mapping."
       },
       {
         "name": "SubmitFormData",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Validate and submit form data, mapping to an openEHR composition for CDR storage."
       },
       {
         "name": "SendNotification",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Send a notification to a patient or clinician via the appropriate channel (email, SMS, in-app)."
       },
       {
         "name": "ConductSecureMessaging",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Secure asynchronous messaging between patient and clinical team."
       },
       {
         "name": "HostVideoConsultation",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Set up and manage a video consultation session between patient and clinician."
       },
       {
         "name": "OrderLabTests",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Submit a lab order for a patient: test panel selection, patient details, clinical context."
       },
       {
         "name": "ReceiveLabResults",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Receive and process inbound lab results, commit to CDR, and signal waiting pathways."
       },
       {
         "name": "IssuePrescription",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Transmit a prescription to a dispensing pharmacy via electronic prescribing integration."
       },
       {
         "name": "CheckInteractions",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Screen a proposed prescription against the patient's current medications for interactions and contraindications."
       },
       {
         "name": "ProcessPayment",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Take a payment from a patient for a service, issuing a receipt."
       },
       {
         "name": "ManageSubscription",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Manage recurring payment subscriptions for ongoing service packages."
       },
       {
         "name": "GenerateDocument",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Generate a document from a template populated with clinical and administrative data."
       },
       {
         "name": "ObtainElectronicSignature",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Obtain an electronic signature on a document (e.g."
       },
       {
         "name": "AuthenticateUser",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Authenticate a user and establish a session."
       },
       {
         "name": "AuthoriseAccess",
-        "source": "platform.sysml",
+        "source": "gsl-platform.sysml",
         "description": "Determine whether an authenticated user is authorised to access a specific resource or perform an action."
       },
       {
         "name": "AcquirePatient",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Patient discovers and engages with GenderSense."
       },
       {
         "name": "RegisterPatient",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Patient registration, identity verification, demographic capture, consent collection, account creation."
       },
       {
         "name": "AssessPatient",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Comprehensive assessment: self-assessment instruments, clinician assessment, formulation, and treatment planning."
       },
       {
         "name": "TreatPatient",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Active treatment phase: pathway-specific interventions, monitoring, adjustments, shared care."
       },
       {
         "name": "FollowUpPatient",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Ongoing follow-up, outcome capture, discharge planning, or transition to long-term shared care."
       },
       {
         "name": "InitiateHormoneTherapy",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "End-to-end hormone therapy initiation from clinical decision through to established stable regimen."
       },
       {
         "name": "MonitorHormoneTherapy",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Ongoing monitoring: scheduled blood tests, clinical review, dose adjustment, safety checks."
       },
       {
         "name": "TransitionToSharedCare",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Establish shared care arrangement with the patient's GP for ongoing prescribing and monitoring."
       },
       {
         "name": "ConductNewPatientAssessment",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Full new patient assessment process from initial self-assessment through clinician evaluation to formulation and treatme"
       },
       {
         "name": "AdministorSelfAssessment",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Patient completes validated self-assessment instruments (e.g."
       },
       {
         "name": "ConductClinicianAssessment",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Clinician-led assessment including history taking, examination where indicated, risk assessment, and clinical formulatio"
       },
       {
         "name": "ProcessInboundReferral",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Receive, triage, and action an inbound referral from a GP, self-referral, or other source."
       },
       {
         "name": "MakeOutboundReferral",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Refer a patient to an external specialist service (endocrinology, surgery, mental health, etc)."
       },
       {
         "name": "EstablishSharedCare",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Set up a shared care agreement with a GP practice for ongoing prescribing and monitoring."
       },
       {
         "name": "PrescribeMedication",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Issue a prescription following clinical decision, safety checks, and interaction screening."
       },
       {
         "name": "MonitorMedication",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Ongoing medication monitoring including blood tests, side effect assessment, and dose adjustment."
       },
       {
         "name": "ManageRepeatPrescription",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Repeat prescription workflow including review intervals, blood test requirements, and renewal."
       },
       {
         "name": "ObtainInformedConsent",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Obtain and record informed consent for a specific treatment or intervention."
       },
       {
         "name": "WithdrawConsent",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Process a patient's withdrawal of consent, including downstream effects on active pathways."
       },
       {
         "name": "AssessCapacity",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Formal capacity assessment where there is doubt about a patient's ability to consent."
       },
       {
         "name": "ProvideTransitionCoaching",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "One-to-one coaching support for patients navigating gender transition."
       },
       {
         "name": "FacilitateGroupWork",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Facilitated group sessions: peer support, psycho- education, shared experience."
       },
       {
         "name": "ConductClinicalAudit",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Population-level clinical audit: does every patient have required measurements recorded? Are monitoring schedules being "
       },
       {
         "name": "AnalyseSignificantEvent",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Structured significant event analysis following an adverse event, near-miss, or complaint."
       },
       {
         "name": "ReviewClinicalProtocol",
-        "source": "service-delivery.sysml",
+        "source": "gsl-service-delivery.sysml",
         "description": "Periodic review and update of clinical protocols and guidelines."
       }
     ]

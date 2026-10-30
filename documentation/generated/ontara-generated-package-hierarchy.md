@@ -1,8 +1,8 @@
 # Ontara Package Hierarchy (Generated)
 
-**Generated:** 2026-10-30 14:58  
+**Generated:** 2026-10-30 15:03  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
-**Total packages:** 76 (excluding root)  
+**Total packages:** 77 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
 
 This document is generated from the SysML model. Do not edit manually.
@@ -11,10 +11,10 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 Ontara Package Hierarchy
-Generated 2026-10-30 14:58 from model/*.sysml (76 packages)
+Generated 2026-10-30 15:03 from model/*.sysml (77 packages)
 
 GenderSense
-├── Enterprise                    Defines the organisational, regulatory, strategic, and risk context.
+├── GslEnterprise                 Defines the organisational, regulatory, strategic, and risk context.
 │   ├── Organisation              Roles, teams, governance structure, board, leadership, — [3 parts]
 │   ├── Regulation                CQC fundamental standards, ICO/GDPR obligations, — [4 use cases, 8 requirements]
 │   ├── Strategy                  Partnerships, strategic context, ethos and values, — [2 parts]
@@ -35,7 +35,7 @@ GenderSense
 │   ├── LearningCycles            Pathway refinement process, evidence review, change control — [2 use cases]
 │   └── Analytics                 Data contracts for BI and predictive analytics, event stream — [1 parts]
 │
-├── Operations                    Back office and growth functions.
+├── GslOperations                 Back office and growth functions.
 │   ├── Finance                   Operational accounting: invoice processing, payment — [1 parts, 4 use cases]
 │   ├── People                    Workforce management: roles, contracts, recruitment, — [1 parts, 4 use cases]
 │   ├── EstatesAndFacilities      Premises, equipment, and procurement. — [2 parts, 1 use cases]
@@ -43,7 +43,7 @@ GenderSense
 │   ├── CRM                       Prospect and patient relationship management,
 │   └── Reporting                 Business intelligence, operational dashboards, regulatory — [3 use cases]
 │
-├── Platform                      The technology systems that support service delivery.
+├── GslPlatform                   The technology systems that support service delivery.
 │   ├── PatientPortal             Patient-facing web platform, self-management hub. — [2 use cases]
 │   │   ├── SelfManagement        Personal dashboard, progress tracking, alerts and — [3 use cases]
 │   │   ├── IdentityAndAvatar     Personal evolving avatar: self-representation, identity — [3 use cases]
@@ -60,7 +60,6 @@ GenderSense
 │   │   ├── GroupSessions         Group video sessions, facilitated workshops, peer — [2 use cases]
 │   │   └── PeerMessaging         Patient-to-patient messaging, group chat, peer — [1 use cases]
 │   ├── Booking                   Appointment scheduling, availability management, reminders, — [2 use cases]
-│   ├── EHR                       Clinical record layer: openEHR CDR (EHRbase). — [5 parts, 4 use cases]
 │   ├── Forms                     Questionnaires, clinical assessment forms, validation rules, — [2 use cases]
 │   ├── Messaging                 Patient communications, secure messaging, notifications, — [2 use cases]
 │   ├── VideoConsulting           Telehealth platform integration, session management. — [1 use cases]
@@ -72,7 +71,10 @@ GenderSense
 │   ├── Orchestration             Temporal infrastructure, workflow engine, worker deployment,
 │   └── Integration               API gateway, third-party connectors, webhook management,
 │
-├── ServiceDelivery               The clinical and operational heart of GenderSense.
+├── Platform                      Residual package (OP-132 step 4, S515).
+│   └── EHR                       Clinical record layer: openEHR CDR (EHRbase). — [5 parts, 4 use cases]
+│
+├── GslServiceDelivery            The clinical and operational heart of GenderSense.
 │   ├── PatientJourney            Top-level lifecycle from acquisition through to discharge — [5 use cases]
 │   ├── ClinicalPathways          Detailed clinical pathway models.
 │   │   ├── HormoneTherapy        Hormone therapy initiation, titration, monitoring, — [3 use cases, 2 actions]
@@ -106,4 +108,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-10-30 14:58 by `gen_package_hierarchy.py`.*
+*Generated 2026-10-30 15:03 by `gen_package_hierarchy.py`.*

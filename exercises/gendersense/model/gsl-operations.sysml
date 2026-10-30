@@ -1,8 +1,8 @@
 // =========================================================================
-// OPERATIONS — Back office and growth functions
+// GSL OPERATIONS — GenderSense back office and growth functions (tenant package, OP-132 step 4)
 // =========================================================================
 
-package Operations {
+package GslOperations {
     private import ScalarValues::*;
 
     doc /* Back office and growth functions. The day-to-day operational

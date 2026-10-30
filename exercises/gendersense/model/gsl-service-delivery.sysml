@@ -1,8 +1,8 @@
 // =========================================================================
-// SERVICE DELIVERY — Clinical and operational heart of the system
+// GSL SERVICE DELIVERY — Clinical and operational heart of GenderSense (tenant package, OP-132 step 4)
 // =========================================================================
 
-package ServiceDelivery {
+package GslServiceDelivery {
     private import ScalarValues::*;
 
     doc /* The clinical and operational heart of GenderSense. Inner ring:
@@ -62,7 +62,7 @@ package ServiceDelivery {
 
         package HormoneTherapy {
             private import ScalarValues::*;
-            private import ServiceDelivery::ClinicalEntities::*;
+            private import GslServiceDelivery::ClinicalEntities::*;
             private import Foundation::MetadataLibrary::*;
             private import TemporalMetadata::*;
 

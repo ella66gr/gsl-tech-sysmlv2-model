@@ -1,10 +1,10 @@
 Package	Description	Elements	Source
 Ontara	Model-driven service system development and delivery platform		
-	Enterprise	Defines the organisational, regulatory, strategic, and risk context.		enterprise.sysml:5
-		Organisation	Roles, teams, governance structure, board, leadership,	3 parts	enterprise.sysml:12
-		Regulation	CQC fundamental standards, ICO/GDPR obligations,	4 use cases, 8 requirements	enterprise.sysml:38
-		Strategy	Partnerships, strategic context, ethos and values,	2 parts	enterprise.sysml:207
-		Risk	Clinical risk management, business continuity, safeguarding	3 use cases	enterprise.sysml:272
+	GslEnterprise	Defines the organisational, regulatory, strategic, and risk context.		exercises/gendersense/model/gsl-enterprise.sysml:5
+		Organisation	Roles, teams, governance structure, board, leadership,	3 parts	gsl-enterprise.sysml:12
+		Regulation	CQC fundamental standards, ICO/GDPR obligations,	4 use cases, 8 requirements	gsl-enterprise.sysml:38
+		Strategy	Partnerships, strategic context, ethos and values,	2 parts	gsl-enterprise.sysml:207
+		Risk	Clinical risk management, business continuity, safeguarding	3 use cases	gsl-enterprise.sysml:272
 	Foundation	RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7,		foundation.sysml:5
 		MetadataLibrary	Residual annotation definitions awaiting allocation	1 enums, 10 metadata	foundation.sysml:32
 		CommonTypes	Shared data types, enumerations, units of measure, and	3 parts, 32 enums	foundation.sysml:242
@@ -18,52 +18,53 @@ Ontara	Model-driven service system development and delivery platform
 		OutcomeFramework	Outcome definitions, measurement points, structured outcome	5 parts, 4 use cases, 4 enums	knowledge.sysml:1765
 		LearningCycles	Pathway refinement process, evidence review, change control	2 use cases	knowledge.sysml:2285
 		Analytics	Data contracts for BI and predictive analytics, event stream	1 parts	knowledge.sysml:2323
-	Operations	Back office and growth functions.		operations.sysml:5
-		Finance	Operational accounting: invoice processing, payment	1 parts, 4 use cases	operations.sysml:33
-		People	Workforce management: roles, contracts, recruitment,	1 parts, 4 use cases	operations.sysml:107
-		EstatesAndFacilities	Premises, equipment, and procurement.	2 parts, 1 use cases	operations.sysml:205
-		Marketing	Acquisition funnel, content production, community	1 use cases	operations.sysml:299
-		CRM	Prospect and patient relationship management,		operations.sysml:322
-		Reporting	Business intelligence, operational dashboards, regulatory	3 use cases	operations.sysml:333
-	Platform	The technology systems that support service delivery.		platform.sysml:5
-		PatientPortal	Patient-facing web platform, self-management hub.	2 use cases	platform.sysml:21
-			SelfManagement	Personal dashboard, progress tracking, alerts and	3 use cases	platform.sysml:44
-			IdentityAndAvatar	Personal evolving avatar: self-representation, identity	3 use cases	platform.sysml:79
-			Journal	Personal journal for reflective practice.	2 use cases	platform.sysml:127
-			SessionPlanning	Consultation session sequence planning, appointment	2 use cases	platform.sysml:155
-			DocumentAccess	Secure document portal for patient access to their	3 use cases	platform.sysml:180
-		Education	Patient-facing knowledge and learning platform.		platform.sysml:210
-			KnowledgeBase	FAQs, reference materials, answerbase, curated	2 use cases	platform.sysml:226
-			LearningContent	Structured courses, self-directed learning modules,	1 use cases	platform.sysml:250
-			TherapyPathways	Structured therapy journeys, guided self-development,	2 use cases	platform.sysml:267
-			ContentDelivery	Content management, personalised recommendations,	2 use cases	platform.sysml:299
-		Community	Patient-to-patient and group interaction platform.		platform.sysml:325
-			GroupSpaces	Group spaces with privacy controls, shared resources,	2 use cases	platform.sysml:340
-			GroupSessions	Group video sessions, facilitated workshops, peer	2 use cases	platform.sysml:365
-			PeerMessaging	Patient-to-patient messaging, group chat, peer	1 use cases	platform.sysml:390
-		Booking	Appointment scheduling, availability management, reminders,	2 use cases	platform.sysml:409
-		EHR	Clinical record layer: openEHR CDR (EHRbase).	5 parts, 4 use cases	platform.sysml:427
-		Forms	Questionnaires, clinical assessment forms, validation rules,	2 use cases	platform.sysml:613
-		Messaging	Patient communications, secure messaging, notifications,	2 use cases	platform.sysml:633
-		VideoConsulting	Telehealth platform integration, session management.	1 use cases	platform.sysml:651
-		LabInterface	Laboratory orders, results receipt, pathology integration,	2 use cases	platform.sysml:663
-		PrescribingSystem	Electronic prescribing system integration, medication	2 use cases	platform.sysml:683
-		Payments	Payment processing, invoicing, receipts, subscription	2 use cases	platform.sysml:704
-		Documents	Document generation, templates, electronic signing,	2 use cases	platform.sysml:721
-		Identity	User accounts, authentication, authorisation, role-based	1 parts, 2 use cases	platform.sysml:739
-		Orchestration	Temporal infrastructure, workflow engine, worker deployment,		platform.sysml:764
-		Integration	API gateway, third-party connectors, webhook management,		platform.sysml:776
-	ServiceDelivery	The clinical and operational heart of GenderSense.		service-delivery.sysml:5
-		PatientJourney	Top-level lifecycle from acquisition through to discharge	5 use cases	service-delivery.sysml:13
-		ClinicalPathways	Detailed clinical pathway models.		service-delivery.sysml:55
-			HormoneTherapy	Hormone therapy initiation, titration, monitoring,	3 use cases, 2 actions	service-delivery.sysml:63
-			Assessment	New patient assessment, self-assessment instruments,	3 use cases	service-delivery.sysml:703
-			Referrals	Inbound referral processing, outbound specialist	3 use cases	service-delivery.sysml:729
-			Prescribing	Prescribing protocols, dispensing, medication monitoring,	3 use cases	service-delivery.sysml:751
-		Consent	Consent models: informed consent for treatment, consent	3 use cases	service-delivery.sysml:774
-		CoachingSupport	Transition coaching services, group work, peer support	2 use cases	service-delivery.sysml:802
-		ClinicalGovernance	Policies, protocols, procedures, clinical audit, outcome	3 use cases	service-delivery.sysml:820
-		ClinicalEntities	Core domain entities: the nouns of the clinical domain.	6 parts, 4 states	service-delivery.sysml:848
+	GslOperations	Back office and growth functions.		exercises/gendersense/model/gsl-operations.sysml:5
+		Finance	Operational accounting: invoice processing, payment	1 parts, 4 use cases	gsl-operations.sysml:33
+		People	Workforce management: roles, contracts, recruitment,	1 parts, 4 use cases	gsl-operations.sysml:107
+		EstatesAndFacilities	Premises, equipment, and procurement.	2 parts, 1 use cases	gsl-operations.sysml:205
+		Marketing	Acquisition funnel, content production, community	1 use cases	gsl-operations.sysml:299
+		CRM	Prospect and patient relationship management,		gsl-operations.sysml:322
+		Reporting	Business intelligence, operational dashboards, regulatory	3 use cases	gsl-operations.sysml:333
+	GslPlatform	The technology systems that support service delivery.		exercises/gendersense/model/gsl-platform.sysml:5
+		PatientPortal	Patient-facing web platform, self-management hub.	2 use cases	gsl-platform.sysml:21
+			SelfManagement	Personal dashboard, progress tracking, alerts and	3 use cases	gsl-platform.sysml:44
+			IdentityAndAvatar	Personal evolving avatar: self-representation, identity	3 use cases	gsl-platform.sysml:79
+			Journal	Personal journal for reflective practice.	2 use cases	gsl-platform.sysml:127
+			SessionPlanning	Consultation session sequence planning, appointment	2 use cases	gsl-platform.sysml:155
+			DocumentAccess	Secure document portal for patient access to their	3 use cases	gsl-platform.sysml:180
+		Education	Patient-facing knowledge and learning platform.		gsl-platform.sysml:210
+			KnowledgeBase	FAQs, reference materials, answerbase, curated	2 use cases	gsl-platform.sysml:226
+			LearningContent	Structured courses, self-directed learning modules,	1 use cases	gsl-platform.sysml:250
+			TherapyPathways	Structured therapy journeys, guided self-development,	2 use cases	gsl-platform.sysml:267
+			ContentDelivery	Content management, personalised recommendations,	2 use cases	gsl-platform.sysml:299
+		Community	Patient-to-patient and group interaction platform.		gsl-platform.sysml:325
+			GroupSpaces	Group spaces with privacy controls, shared resources,	2 use cases	gsl-platform.sysml:340
+			GroupSessions	Group video sessions, facilitated workshops, peer	2 use cases	gsl-platform.sysml:365
+			PeerMessaging	Patient-to-patient messaging, group chat, peer	1 use cases	gsl-platform.sysml:390
+		Booking	Appointment scheduling, availability management, reminders,	2 use cases	gsl-platform.sysml:409
+		Forms	Questionnaires, clinical assessment forms, validation rules,	2 use cases	gsl-platform.sysml:427
+		Messaging	Patient communications, secure messaging, notifications,	2 use cases	gsl-platform.sysml:447
+		VideoConsulting	Telehealth platform integration, session management.	1 use cases	gsl-platform.sysml:465
+		LabInterface	Laboratory orders, results receipt, pathology integration,	2 use cases	gsl-platform.sysml:477
+		PrescribingSystem	Electronic prescribing system integration, medication	2 use cases	gsl-platform.sysml:497
+		Payments	Payment processing, invoicing, receipts, subscription	2 use cases	gsl-platform.sysml:518
+		Documents	Document generation, templates, electronic signing,	2 use cases	gsl-platform.sysml:535
+		Identity	User accounts, authentication, authorisation, role-based	1 parts, 2 use cases	gsl-platform.sysml:553
+		Orchestration	Temporal infrastructure, workflow engine, worker deployment,		gsl-platform.sysml:578
+		Integration	API gateway, third-party connectors, webhook management,		gsl-platform.sysml:590
+	Platform	Residual package (OP-132 step 4, S515).		platform.sysml:5
+		EHR	Clinical record layer: openEHR CDR (EHRbase).	5 parts, 4 use cases	platform.sysml:14
+	GslServiceDelivery	The clinical and operational heart of GenderSense.		exercises/gendersense/model/gsl-service-delivery.sysml:5
+		PatientJourney	Top-level lifecycle from acquisition through to discharge	5 use cases	gsl-service-delivery.sysml:13
+		ClinicalPathways	Detailed clinical pathway models.		gsl-service-delivery.sysml:55
+			HormoneTherapy	Hormone therapy initiation, titration, monitoring,	3 use cases, 2 actions	gsl-service-delivery.sysml:63
+			Assessment	New patient assessment, self-assessment instruments,	3 use cases	gsl-service-delivery.sysml:703
+			Referrals	Inbound referral processing, outbound specialist	3 use cases	gsl-service-delivery.sysml:729
+			Prescribing	Prescribing protocols, dispensing, medication monitoring,	3 use cases	gsl-service-delivery.sysml:751
+		Consent	Consent models: informed consent for treatment, consent	3 use cases	gsl-service-delivery.sysml:774
+		CoachingSupport	Transition coaching services, group work, peer support	2 use cases	gsl-service-delivery.sysml:802
+		ClinicalGovernance	Policies, protocols, procedures, clinical audit, outcome	3 use cases	gsl-service-delivery.sysml:820
+		ClinicalEntities	Core domain entities: the nouns of the clinical domain.	6 parts, 4 states	gsl-service-delivery.sysml:848
 	BusinessModel	The business model package captures the strategic logic of the		business-model.sysml:6
 		ServiceConcept	Defines the value proposition, customer segments, service	9 parts	business-model.sysml:54
 		ActivityModel	Cross-cutting activity taxonomy and costing foundation.	5 parts, 2 enums	business-model.sysml:786

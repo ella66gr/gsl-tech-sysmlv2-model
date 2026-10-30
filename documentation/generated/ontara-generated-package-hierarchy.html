@@ -42,7 +42,7 @@
 <body>
     <div id="banner">
         <span class="title">Ontara — Package Hierarchy</span>
-        <span class="meta">Generated 2026-10-30 14:58 &nbsp;|&nbsp;
+        <span class="meta">Generated 2026-10-30 15:03 &nbsp;|&nbsp;
               Scroll to zoom &nbsp;|&nbsp; Drag to pan &nbsp;|&nbsp;
               Click nodes to collapse</span>
     </div>
@@ -53,7 +53,7 @@
     <script src="https://cdn.jsdelivr.net/npm/markmap-lib@0.15.4/dist/browser/index.js"></script>
     <script>
         const md = `# Ontara
-## Enterprise — Defines the organisational, regulatory, strategic, and risk context.
+## GslEnterprise — Defines the organisational, regulatory, strategic, and risk context.
 ### Organisation — Roles, teams, governance structure, board, leadership, *[3 parts]*
 ### Regulation — CQC fundamental standards, ICO/GDPR obligations, *[4 use cases, 8 requirements]*
 ### Strategy — Partnerships, strategic context, ethos and values, *[2 parts]*
@@ -71,14 +71,14 @@
 ### OutcomeFramework — Outcome definitions, measurement points, structured outcome *[5 parts, 4 use cases, 4 enums]*
 ### LearningCycles — Pathway refinement process, evidence review, change control *[2 use cases]*
 ### Analytics — Data contracts for BI and predictive analytics, event stream *[1 parts]*
-## Operations — Back office and growth functions.
+## GslOperations — Back office and growth functions.
 ### Finance — Operational accounting: invoice processing, payment *[1 parts, 4 use cases]*
 ### People — Workforce management: roles, contracts, recruitment, *[1 parts, 4 use cases]*
 ### EstatesAndFacilities — Premises, equipment, and procurement. *[2 parts, 1 use cases]*
 ### Marketing — Acquisition funnel, content production, community *[1 use cases]*
 ### CRM — Prospect and patient relationship management,
 ### Reporting — Business intelligence, operational dashboards, regulatory *[3 use cases]*
-## Platform — The technology systems that support service delivery.
+## GslPlatform — The technology systems that support service delivery.
 ### PatientPortal — Patient-facing web platform, self-management hub. *[2 use cases]*
 #### SelfManagement — Personal dashboard, progress tracking, alerts and *[3 use cases]*
 #### IdentityAndAvatar — Personal evolving avatar: self-representation, identity *[3 use cases]*
@@ -95,7 +95,6 @@
 #### GroupSessions — Group video sessions, facilitated workshops, peer *[2 use cases]*
 #### PeerMessaging — Patient-to-patient messaging, group chat, peer *[1 use cases]*
 ### Booking — Appointment scheduling, availability management, reminders, *[2 use cases]*
-### EHR — Clinical record layer: openEHR CDR (EHRbase). *[5 parts, 4 use cases]*
 ### Forms — Questionnaires, clinical assessment forms, validation rules, *[2 use cases]*
 ### Messaging — Patient communications, secure messaging, notifications, *[2 use cases]*
 ### VideoConsulting — Telehealth platform integration, session management. *[1 use cases]*
@@ -106,7 +105,9 @@
 ### Identity — User accounts, authentication, authorisation, role-based *[1 parts, 2 use cases]*
 ### Orchestration — Temporal infrastructure, workflow engine, worker deployment,
 ### Integration — API gateway, third-party connectors, webhook management,
-## ServiceDelivery — The clinical and operational heart of GenderSense.
+## Platform — Residual package (OP-132 step 4, S515).
+### EHR — Clinical record layer: openEHR CDR (EHRbase). *[5 parts, 4 use cases]*
+## GslServiceDelivery — The clinical and operational heart of GenderSense.
 ### PatientJourney — Top-level lifecycle from acquisition through to discharge *[5 use cases]*
 ### ClinicalPathways — Detailed clinical pathway models.
 #### HormoneTherapy — Hormone therapy initiation, titration, monitoring, *[3 use cases, 2 actions]*

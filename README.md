@@ -38,13 +38,11 @@ gsl-sysml-model/
 │   │                               ValueSpace, AxisTransition; Paws Booking five-axis declaration
 │   ├── pattern-catalogue.sysml     Validated patterns + architectural principles
 │   ├── foundation.sysml            MetadataLibrary, CommonTypes, StatePatterns
-│   ├── enterprise.sysml            Organisation, Regulation, Strategy, Risk
 │   ├── knowledge.sysml             CDS, Constraints, Logic, Decisions
-│   ├── service-delivery.sysml      Clinical pathways, consent, governance
-│   ├── platform.sysml              Portal, EHR, messaging, integration
-│   └── operations.sysml            Finance, people, reporting
+│   └── platform.sysml              Residual: EHR only (rest → gsl-platform.sysml; EHR → SMG at OP-132 step 8)
 ├── exercises/                      Tenant and demonstrator domain projections
-│   ├── gendersense/model/          GSL — production tenant; gendersense.sysml root package (OP-132 step 3)
+│   ├── gendersense/model/          GSL — production tenant (OP-132 steps 3–4): gendersense.sysml root,
+│   │                               gsl-enterprise, gsl-service-delivery, gsl-platform, gsl-operations
 │   ├── coffeeshop-demonstrator/    Cafe — full-stack reference implementation (SvelteKit + Temporal + EHRbase)
 │   ├── paws-demonstrator/          Paws — appointment-based dog grooming (SysML projection)
 │   ├── suds-demonstrator/          Suds — batch processing launderette (SysML projection)

@@ -36,6 +36,7 @@ import datetime
 
 REPO_ROOT = pathlib.Path(__file__).parent.parent
 MODEL_DIR = REPO_ROOT / "model"
+GSL_MODEL_DIR = REPO_ROOT / "exercises" / "gendersense" / "model"
 LIBRARY_DIR = REPO_ROOT / "libraries"
 GENERATED_DIR = REPO_ROOT / "generated"
 
@@ -184,7 +185,7 @@ def extract_constraint_inventory(knowledge_text):
 
 
 def extract_requirement_inventory(enterprise_text):
-    """Extract requirement defs from Enterprise::Regulation."""
+    """Extract requirement defs from GslEnterprise::Regulation."""
     reg_text = find_package_block(enterprise_text, "Regulation")
     if not reg_text:
         return []
@@ -193,14 +194,14 @@ def extract_requirement_inventory(enterprise_text):
     for block in extract_blocks(reg_text, "requirement def"):
         requirements.append({
             'name': block['name'],
-            'package': 'Enterprise::Regulation',
+            'package': 'GslEnterprise::Regulation',
             'description': first_sentence(block['doc']),
         })
     return requirements
 
 
 def extract_entity_lifecycle_inventory(sd_text):
-    """Extract state defs from ServiceDelivery::ClinicalEntities."""
+    """Extract state defs from GslServiceDelivery::ClinicalEntities."""
     entities_text = find_package_block(sd_text, "ClinicalEntities")
     if not entities_text:
         return []
@@ -224,7 +225,7 @@ def extract_entity_lifecycle_inventory(sd_text):
 
         lifecycles.append({
             'name': block['name'],
-            'package': 'ServiceDelivery::ClinicalEntities',
+            'package': 'GslServiceDelivery::ClinicalEntities',
             'states': states,
             'terminalStates': terminal_states,
         })
@@ -232,7 +233,7 @@ def extract_entity_lifecycle_inventory(sd_text):
 
 
 def extract_pathway_inventory(sd_text):
-    """Extract action defs from ServiceDelivery::ClinicalPathways."""
+    """Extract action defs from GslServiceDelivery::ClinicalPathways."""
     pathways_text = find_package_block(sd_text, "ClinicalPathways")
     if not pathways_text:
         return []
@@ -256,7 +257,7 @@ def extract_pathway_inventory(sd_text):
 
         pathways.append({
             'name': block['name'],
-            'package': 'ServiceDelivery::ClinicalPathways',
+            'package': 'GslServiceDelivery::ClinicalPathways',
             'type': action_type,
             'stepCount': step_count,
             'metadataAnnotations': sorted(annotations),
@@ -499,6 +500,12 @@ def main():
         all_texts[filepath.name] = filepath.read_text(encoding="utf-8")
         source_files.append(f"model/{filepath.name}")
 
+    # S515 (OP-132 step 4): the GSL tenant files hold the requirement,
+    # lifecycle and pathway inventories (GslEnterprise, GslServiceDelivery).
+    for filepath in sorted(GSL_MODEL_DIR.glob("*.sysml")):
+        all_texts[filepath.name] = filepath.read_text(encoding="utf-8")
+        source_files.append(f"exercises/gendersense/model/{filepath.name}")
+
     library_texts = []
     for filepath in sorted(LIBRARY_DIR.rglob("*.sysml")):
         text = filepath.read_text(encoding="utf-8")
@@ -515,9 +522,9 @@ def main():
 
     # Extract inventories
     knowledge_text = all_texts.get("knowledge.sysml", "")
-    enterprise_text = all_texts.get("enterprise.sysml", "")
+    enterprise_text = all_texts.get("gsl-enterprise.sysml", "")
     foundation_text = all_texts.get("foundation.sysml", "")
-    sd_text = all_texts.get("service-delivery.sysml", "")
+    sd_text = all_texts.get("gsl-service-delivery.sysml", "")
 
     constraints = extract_constraint_inventory(knowledge_text)
     requirements = extract_requirement_inventory(enterprise_text)

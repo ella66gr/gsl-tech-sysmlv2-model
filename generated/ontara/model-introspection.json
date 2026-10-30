@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-30T14:58:24.402153",
+  "generatedAt": "2026-10-30T15:03:42.104406",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 533
+      "elementCount": 501
     },
     "cafe": {
       "label": "Cafe",
@@ -25,7 +25,7 @@
     "gsl": {
       "label": "GSL",
       "description": "GenderSense Limited \u2014 production tenant",
-      "elementCount": 0
+      "elementCount": 32
     }
   },
   "summary": {
@@ -48,10 +48,11 @@
       "domain": 268
     },
     "byDomain": {
-      "core": 533,
+      "core": 501,
       "cafe": 125,
       "suds": 67,
-      "paws": 80
+      "paws": 80,
+      "gsl": 32
     },
     "bfoTypeCoverage": 38
   },
@@ -186,6 +187,56 @@
         "purposiveDescription": {}
       },
       {
+        "name": "LoyaltyDiscountRequired",
+        "package": "BusinessRules",
+        "layer": "unknown",
+        "doc": "Members of the loyalty scheme must receive\na minimum 10% discount on every order.",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {},
+        "purposiveDescription": {}
+      },
+      {
+        "name": "MinimumOrderSize",
+        "package": "BusinessRules",
+        "layer": "unknown",
+        "doc": "Orders must contain at least one item.",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {},
+        "purposiveDescription": {}
+      },
+      {
+        "name": "MaximumOrderSize",
+        "package": "BusinessRules",
+        "layer": "unknown",
+        "doc": "Orders must contain no more than 10 items\nto avoid barista overload.",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {},
+        "purposiveDescription": {}
+      },
+      {
+        "name": "veganMilkDrinkRule",
+        "package": "BusinessRules",
+        "layer": "unknown",
+        "doc": "Any drink marked as vegan must not use\ndairy milk \u2014 only oat, soy, or almond.",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {},
+        "purposiveDescription": {}
+      },
+      {
+        "name": "BaristaMinimumHours",
+        "package": "BusinessRules",
+        "layer": "unknown",
+        "doc": "Staff members in the barista role must be\ncontracted for at least 12 hours per week.",
+        "attributes": [],
+        "catalogueTag": {},
+        "userFacing": {},
+        "purposiveDescription": {}
+      },
+      {
         "name": "ConsentBeforeTreatment",
         "package": "Regulation",
         "layer": "domain",
@@ -266,56 +317,6 @@
         "package": "Regulation",
         "layer": "domain",
         "doc": "When hormone therapy monitoring is transitioned to\nshared care with the patient's GP, the GP must receive\na shared care protocol document that includes the\ncurrent regimen, monitoring schedule, therapeutic\ntarget ranges, action thresholds, and clear guidance\non when to refer back.\nShared care must n",
-        "attributes": [],
-        "catalogueTag": {},
-        "userFacing": {},
-        "purposiveDescription": {}
-      },
-      {
-        "name": "LoyaltyDiscountRequired",
-        "package": "BusinessRules",
-        "layer": "unknown",
-        "doc": "Members of the loyalty scheme must receive\na minimum 10% discount on every order.",
-        "attributes": [],
-        "catalogueTag": {},
-        "userFacing": {},
-        "purposiveDescription": {}
-      },
-      {
-        "name": "MinimumOrderSize",
-        "package": "BusinessRules",
-        "layer": "unknown",
-        "doc": "Orders must contain at least one item.",
-        "attributes": [],
-        "catalogueTag": {},
-        "userFacing": {},
-        "purposiveDescription": {}
-      },
-      {
-        "name": "MaximumOrderSize",
-        "package": "BusinessRules",
-        "layer": "unknown",
-        "doc": "Orders must contain no more than 10 items\nto avoid barista overload.",
-        "attributes": [],
-        "catalogueTag": {},
-        "userFacing": {},
-        "purposiveDescription": {}
-      },
-      {
-        "name": "veganMilkDrinkRule",
-        "package": "BusinessRules",
-        "layer": "unknown",
-        "doc": "Any drink marked as vegan must not use\ndairy milk \u2014 only oat, soy, or almond.",
-        "attributes": [],
-        "catalogueTag": {},
-        "userFacing": {},
-        "purposiveDescription": {}
-      },
-      {
-        "name": "BaristaMinimumHours",
-        "package": "BusinessRules",
-        "layer": "unknown",
-        "doc": "Staff members in the barista role must be\ncontracted for at least 12 hours per week.",
         "attributes": [],
         "catalogueTag": {},
         "userFacing": {},
@@ -25028,252 +25029,6 @@
       }
     },
     {
-      "kind": "part_def",
-      "name": "Role",
-      "parentPackage": "Organisation",
-      "doc": "A named role within the organisation.",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 18,
-      "attributes": [
-        {
-          "name": "roleName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "description",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "Team",
-      "parentPackage": "Organisation",
-      "doc": "An organisational unit composed of roles.",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 24,
-      "attributes": [
-        {
-          "name": "teamName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "roles",
-          "type": "Role",
-          "isRef": true,
-          "multiplicity": "1..*"
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "GovernanceBody",
-      "parentPackage": "Organisation",
-      "doc": "A governance or oversight body (e.g. clinical governance\ncommittee, board, advisory group).",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 30,
-      "attributes": [
-        {
-          "name": "bodyName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "remit",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "requirement_def",
-      "name": "ConsentBeforeTreatment",
-      "parentPackage": "Regulation",
-      "doc": "Informed consent must be obtained and recorded\nbefore any treatment is initiated. Consent must\nbe specific to the proposed treatment, documented\nin the clinical record, and include evidence that\nthe patient had capacity at the time of consent.\nRegulatory basis: GMC Good Medical Practice,\nMontgomery ",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 77
-    },
-    {
-      "kind": "requirement_def",
-      "name": "InformedConsentRequiresInformation",
-      "parentPackage": "Regulation",
-      "doc": "Before consent can be considered informed, the patient\nmust have received and had opportunity to consider\nrelevant information about the proposed treatment,\nincluding expected effects, potential risks, alternative\noptions, and the consequences of not proceeding.\nThis is a precondition of ConsentBefo",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 89
-    },
-    {
-      "kind": "requirement_def",
-      "name": "BaselineInvestigationsBeforePrescribing",
-      "parentPackage": "Regulation",
-      "doc": "Baseline blood tests must be completed, resulted,\nand reviewed by a clinician before a hormone therapy\nprescription is authorised. The required baseline\npanel includes FBC, U&Es, LFTs, lipid profile,\nfasting glucose, prolactin, and baseline hormone\nlevels (testosterone, oestradiol).\n'Reviewed' means",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 107
-    },
-    {
-      "kind": "requirement_def",
-      "name": "ClinicalReviewBeforePrescribing",
-      "parentPackage": "Regulation",
-      "doc": "A clinician with appropriate competence must conduct\na clinical review before authorising a hormone therapy\nprescription. The review must consider baseline\ninvestigations, patient history, contraindications,\nand the proposed regimen.\nThis applies to both initial prescribing and any\nsubsequent dose a",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 126
-    },
-    {
-      "kind": "requirement_def",
-      "name": "PrescribingProtocolAdherence",
-      "parentPackage": "Regulation",
-      "doc": "Prescribing must follow an approved clinical protocol.\nThe protocol defines eligible medications, routes of\nadministration, starting doses, titration schedules,\nand therapeutic target ranges.\nDeviations from protocol must be clinically justified\nand documented in the clinical record.\nRegulatory basi",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 141
-    },
-    {
-      "kind": "requirement_def",
-      "name": "BloodMonitoringRequired",
-      "parentPackage": "Regulation",
-      "doc": "Patients on hormone therapy must have blood tests\nperformed at defined monitoring intervals. The\nmonitoring schedule is determined by the prescribing\nprotocol and the patient's clinical stability.\nInitial monitoring is typically at 3 months post-\ninitiation, then at intervals determined by clinical\n",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 157,
-      "attributes": [
-        {
-          "name": "monitoringIntervalWeeks",
-          "type": "Integer",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "requirement_def",
-      "name": "ClinicalReviewBeforeDoseAdjustment",
-      "parentPackage": "Regulation",
-      "doc": "Any change to hormone therapy dosage must be preceded\nby a clinical review that considers current blood\nresults, symptom assessment, side effect evaluation,\nand the patient's overall clinical picture.\nDose adjustments without clinical review are not\npermitted, even when blood results suggest a chang",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 173
-    },
-    {
-      "kind": "requirement_def",
-      "name": "SharedCareCommunication",
-      "parentPackage": "Regulation",
-      "doc": "When hormone therapy monitoring is transitioned to\nshared care with the patient's GP, the GP must receive\na shared care protocol document that includes the\ncurrent regimen, monitoring schedule, therapeutic\ntarget ranges, action thresholds, and clear guidance\non when to refer back.\nShared care must n",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 190
-    },
-    {
-      "kind": "part_def",
-      "name": "Partnership",
-      "parentPackage": "Strategy",
-      "doc": "A strategic partnership or collaboration.\nCross-references BusinessStrategy::\nStrategicObjective by name where the\npartnership supports a specific objective.",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 226,
-      "attributes": [
-        {
-          "name": "partnerName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "nature",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "strategicObjectiveRef",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "StrategicContext",
-      "parentPackage": "Strategy",
-      "doc": "Connects the enterprise-level strategic context\nto the detailed business strategy and scenario\nmodelling. This is the structural bridge between\nthe outer ring (Enterprise) and the business\nmodel layer.\nRenamed from BusinessModel (Phase 7) to avoid\ncollision with the top-level BusinessModel\npackage a",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 236,
-      "attributes": [
-        {
-          "name": "contextName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "currentVariant",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "strategicHorizonMonths",
-          "type": "Integer",
-          "isRedefinition": false
-        },
-        {
-          "name": "governanceNotes",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "gslStrategicContext",
-      "parentPackage": "Strategy",
-      "doc": "GenderSense strategic context as of 2026.\nSole founder governance. Lean Clinical variant\nis the active business model configuration.",
-      "sourceFile": "model/enterprise.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 261,
-      "specialises": "StrategicContext",
-      "attributes": [
-        {
-          "name": "contextName",
-          "value": "GenderSense Strategic Context 2026",
-          "isRedefinition": true
-        },
-        {
-          "name": "currentVariant",
-          "value": "Lean Clinical (Variant A)",
-          "isRedefinition": true
-        },
-        {
-          "name": "strategicHorizonMonths",
-          "value": "24",
-          "isRedefinition": true
-        },
-        {
-          "name": "governanceNotes",
-          "value": "Sole founder governance. Clinical governance via CQC registration. Strategic decisions informed by projection comparison and actuals tracking via BusinessScenarios steering cycle.",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
       "kind": "metadata_def",
       "name": "ClinicalReviewGate",
       "parentPackage": "MetadataLibrary",
@@ -31153,465 +30908,6 @@
       ]
     },
     {
-      "kind": "part_def",
-      "name": "AccountingIntegration",
-      "parentPackage": "Finance",
-      "doc": "Describes an integration point with an external\naccounting system. Currently Xero; the part def\nis system-agnostic.",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 50,
-      "attributes": [
-        {
-          "name": "integrationName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "targetSystem",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "syncFrequency",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "dataFlows",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "notes",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "xeroIntegration",
-      "parentPackage": "Finance",
-      "doc": "",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 94,
-      "specialises": "AccountingIntegration",
-      "attributes": [
-        {
-          "name": "integrationName",
-          "value": "Xero accounting integration",
-          "isRedefinition": true
-        },
-        {
-          "name": "targetSystem",
-          "value": "Xero",
-          "isRedefinition": true
-        },
-        {
-          "name": "syncFrequency",
-          "value": "Daily automatic sync via bank feed",
-          "isRedefinition": true
-        },
-        {
-          "name": "dataFlows",
-          "value": "Invoices (out), payments (in), bank transactions (in), chart of accounts (bidirectional)",
-          "isRedefinition": true
-        },
-        {
-          "name": "notes",
-          "value": "Xero is the primary financial record. Management accounts derived from Xero data.",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "WorkforceRole",
-      "parentPackage": "People",
-      "doc": "A defined role within the operational workforce.\nCaptures the contract and qualification view of\na role, complementing the planning view in\nBusinessModel::ResourcePlanning::ResourceType.\nWorkforceRole says \"this person needs these\nqualifications and this contract type.\"\nResourceType says \"this categ",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 124,
-      "attributes": [
-        {
-          "name": "roleName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "contractType",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "requiredQualifications",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "regulatoryRequirements",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "fteAllocation",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "appraisalCycle",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "resourceTypeRef",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "clinicianRole",
-      "parentPackage": "People",
-      "doc": "",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 180,
-      "specialises": "WorkforceRole",
-      "attributes": [
-        {
-          "name": "roleName",
-          "value": "Prescribing clinician",
-          "isRedefinition": true
-        },
-        {
-          "name": "contractType",
-          "value": "employed or contracted",
-          "isRedefinition": true
-        },
-        {
-          "name": "requiredQualifications",
-          "value": "GMC registration, prescribing qualification, RCP Certificate in Gender Identity Healthcare",
-          "isRedefinition": true
-        },
-        {
-          "name": "regulatoryRequirements",
-          "value": "GMC registration, annual appraisal, revalidation cycle, DBS enhanced check",
-          "isRedefinition": true
-        },
-        {
-          "name": "fteAllocation",
-          "value": "0.5-0.8 FTE (Variant A)",
-          "isRedefinition": true
-        },
-        {
-          "name": "appraisalCycle",
-          "value": "annual (feeds GMC revalidation)",
-          "isRedefinition": true
-        },
-        {
-          "name": "resourceTypeRef",
-          "value": "Prescribing clinician",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "adminRole",
-      "parentPackage": "People",
-      "doc": "",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 190,
-      "specialises": "WorkforceRole",
-      "attributes": [
-        {
-          "name": "roleName",
-          "value": "Administrative support",
-          "isRedefinition": true
-        },
-        {
-          "name": "contractType",
-          "value": "employed",
-          "isRedefinition": true
-        },
-        {
-          "name": "requiredQualifications",
-          "value": "None specific \u2014 administrative and organisational competence",
-          "isRedefinition": true
-        },
-        {
-          "name": "regulatoryRequirements",
-          "value": "DBS basic check",
-          "isRedefinition": true
-        },
-        {
-          "name": "fteAllocation",
-          "value": "0.3 FTE",
-          "isRedefinition": true
-        },
-        {
-          "name": "appraisalCycle",
-          "value": "annual",
-          "isRedefinition": true
-        },
-        {
-          "name": "resourceTypeRef",
-          "value": "Administrative support",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "PremisesArrangement",
-      "parentPackage": "EstatesAndFacilities",
-      "doc": "Describes a premises arrangement \u2014 the physical\nspace used for clinical or administrative work.\nMay be rented, shared, or virtual.",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 219,
-      "attributes": [
-        {
-          "name": "premisesName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "locationType",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "tenureType",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "monthlyCost",
-          "type": "Real",
-          "isRedefinition": false
-        },
-        {
-          "name": "capacityNotes",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "availabilityNotes",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "EquipmentInventory",
-      "parentPackage": "EstatesAndFacilities",
-      "doc": "A category of equipment used in service delivery\nor operations. Tracks what exists, not individual\nasset management.",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 231,
-      "attributes": [
-        {
-          "name": "equipmentCategory",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "items",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "maintenanceSchedule",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "replacementCycle",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "notes",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "clinicRoom",
-      "parentPackage": "EstatesAndFacilities",
-      "doc": "Sessional clinic room for face-to-face consultations.\nMost consultations are via video; face-to-face is\navailable for assessment and complex reviews.",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 254,
-      "specialises": "PremisesArrangement",
-      "attributes": [
-        {
-          "name": "premisesName",
-          "value": "Sessional clinic room",
-          "isRedefinition": true
-        },
-        {
-          "name": "locationType",
-          "value": "clinic room",
-          "isRedefinition": true
-        },
-        {
-          "name": "tenureType",
-          "value": "sessional",
-          "isRedefinition": true
-        },
-        {
-          "name": "monthlyCost",
-          "value": "0.0",
-          "isRedefinition": true
-        },
-        {
-          "name": "capacityNotes",
-          "value": "1 consultation room, seats 2-3",
-          "isRedefinition": true
-        },
-        {
-          "name": "availabilityNotes",
-          "value": "Booked as needed \u2014 1-2 days per month initially",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "homeOffice",
-      "parentPackage": "EstatesAndFacilities",
-      "doc": "Home office for administrative work, video\nconsultations, and platform development. Primary\nworking location for the sole clinician model.",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 266,
-      "specialises": "PremisesArrangement",
-      "attributes": [
-        {
-          "name": "premisesName",
-          "value": "Home office",
-          "isRedefinition": true
-        },
-        {
-          "name": "locationType",
-          "value": "home",
-          "isRedefinition": true
-        },
-        {
-          "name": "tenureType",
-          "value": "none",
-          "isRedefinition": true
-        },
-        {
-          "name": "monthlyCost",
-          "value": "0.0",
-          "isRedefinition": true
-        },
-        {
-          "name": "capacityNotes",
-          "value": "Desk, video setup, dual monitors",
-          "isRedefinition": true
-        },
-        {
-          "name": "availabilityNotes",
-          "value": "Full availability",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "itEquipment",
-      "parentPackage": "EstatesAndFacilities",
-      "doc": "",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 278,
-      "specialises": "EquipmentInventory",
-      "attributes": [
-        {
-          "name": "equipmentCategory",
-          "value": "IT",
-          "isRedefinition": true
-        },
-        {
-          "name": "items",
-          "value": "MacBook Pro (development and clinical), external displays, webcam, headset, backup storage",
-          "isRedefinition": true
-        },
-        {
-          "name": "maintenanceSchedule",
-          "value": "Continuous \u2014 OS and software updates",
-          "isRedefinition": true
-        },
-        {
-          "name": "replacementCycle",
-          "value": "3-4 years",
-          "isRedefinition": true
-        },
-        {
-          "name": "notes",
-          "value": "Development machine doubles as clinical workstation in Variant A",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
-      "kind": "part",
-      "name": "clinicalEquipment",
-      "parentPackage": "EstatesAndFacilities",
-      "doc": "",
-      "sourceFile": "model/operations.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 286,
-      "specialises": "EquipmentInventory",
-      "attributes": [
-        {
-          "name": "equipmentCategory",
-          "value": "clinical",
-          "isRedefinition": true
-        },
-        {
-          "name": "items",
-          "value": "Blood pressure monitor, weighing scales, height measure, phlebotomy kit (if in-house blood draws)",
-          "isRedefinition": true
-        },
-        {
-          "name": "maintenanceSchedule",
-          "value": "Annual calibration for BP monitor and scales",
-          "isRedefinition": true
-        },
-        {
-          "name": "replacementCycle",
-          "value": "5 years",
-          "isRedefinition": true
-        },
-        {
-          "name": "notes",
-          "value": "Minimal equipment for a primarily digital service with external lab",
-          "isRedefinition": true
-        }
-      ]
-    },
-    {
       "kind": "enum_def",
       "name": "PatternMaturity",
       "parentPackage": "PatternCatalogue",
@@ -34877,7 +34173,7 @@
       "sourceFile": "model/platform.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 460,
+      "lineNumber": 47,
       "attributes": [
         {
           "name": "baseUrl",
@@ -34904,7 +34200,7 @@
       "sourceFile": "model/platform.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 475,
+      "lineNumber": 62,
       "attributes": [
         {
           "name": "ehrId",
@@ -34936,7 +34232,7 @@
       "sourceFile": "model/platform.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 493,
+      "lineNumber": 80,
       "attributes": [
         {
           "name": "templateId",
@@ -34958,7 +34254,7 @@
       "sourceFile": "model/platform.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 510,
+      "lineNumber": 97,
       "attributes": [
         {
           "name": "compositionUid",
@@ -34990,7 +34286,7 @@
       "sourceFile": "model/platform.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 538,
+      "lineNumber": 125,
       "attributes": [
         {
           "name": "queryName",
@@ -34999,33 +34295,6 @@
         },
         {
           "name": "aql",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "UserAccount",
-      "parentPackage": "Identity",
-      "doc": "A user account for authentication and authorisation.",
-      "sourceFile": "model/platform.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "smm",
-      "lineNumber": 747,
-      "attributes": [
-        {
-          "name": "accountId",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "email",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "accountType",
           "type": "String",
           "isRedefinition": false
         }
@@ -35199,223 +34468,6 @@
           "name": "mappingNotes",
           "type": "String",
           "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "Patient",
-      "parentPackage": "ClinicalEntities",
-      "doc": "A patient registered with GenderSense.",
-      "sourceFile": "model/service-delivery.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 866,
-      "attributes": [
-        {
-          "name": "nhsNumber",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "familyName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "givenName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "dateOfBirth",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "Episode",
-      "parentPackage": "ClinicalEntities",
-      "doc": "A bounded episode of care with a defined start, end,\nand clinical context. A patient may have multiple\nconcurrent or sequential episodes.",
-      "sourceFile": "model/service-delivery.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 941,
-      "attributes": [
-        {
-          "name": "episodeId",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "episodeType",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "patient",
-          "type": "Patient",
-          "isRef": true
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "Consultation",
-      "parentPackage": "ClinicalEntities",
-      "doc": "A single clinical consultation (face-to-face, video,\ntelephone, or asynchronous).",
-      "sourceFile": "model/service-delivery.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 956,
-      "attributes": [
-        {
-          "name": "consultationId",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "consultationType",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "episode",
-          "type": "Episode",
-          "isRef": true
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "Prescription",
-      "parentPackage": "ClinicalEntities",
-      "doc": "A medication prescription. Each prescription represents\na single authorised medication at a specific dose. Dose\nadjustments create a new prescription; the previous one\nis completed.",
-      "sourceFile": "model/service-delivery.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 1044,
-      "attributes": [
-        {
-          "name": "prescriptionId",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "medicationName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "dose",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "route",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "patient",
-          "type": "Patient",
-          "isRef": true
-        },
-        {
-          "name": "episode",
-          "type": "Episode",
-          "isRef": true
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "LabResult",
-      "parentPackage": "ClinicalEntities",
-      "doc": "A laboratory test result, tracking the full lifecycle\nfrom order through collection, reporting, clinical\nreview, and action.",
-      "sourceFile": "model/service-delivery.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 1131,
-      "attributes": [
-        {
-          "name": "resultId",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "testName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "value",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "units",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "referenceRange",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "patient",
-          "type": "Patient",
-          "isRef": true
-        },
-        {
-          "name": "episode",
-          "type": "Episode",
-          "isRef": true
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "Referral",
-      "parentPackage": "ClinicalEntities",
-      "doc": "A referral to or from an external service. Each referral\nis a distinct entity with its own lifecycle. If a referral\nis declined, a new Referral is created for any re-referral\nrather than reusing the declined one.",
-      "sourceFile": "model/service-delivery.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "domain",
-      "lineNumber": 1225,
-      "attributes": [
-        {
-          "name": "referralId",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "direction",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "destination",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "reason",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "patient",
-          "type": "Patient",
-          "isRef": true
-        },
-        {
-          "name": "episode",
-          "type": "Episode",
-          "isRef": true
         }
       ]
     },
@@ -44641,6 +43693,955 @@
       "metaModelLayer": "unknown",
       "lineNumber": 1050,
       "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part_def",
+      "name": "Role",
+      "parentPackage": "Organisation",
+      "doc": "A named role within the organisation.",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 18,
+      "attributes": [
+        {
+          "name": "roleName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "Team",
+      "parentPackage": "Organisation",
+      "doc": "An organisational unit composed of roles.",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 24,
+      "attributes": [
+        {
+          "name": "teamName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "roles",
+          "type": "Role",
+          "isRef": true,
+          "multiplicity": "1..*"
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "GovernanceBody",
+      "parentPackage": "Organisation",
+      "doc": "A governance or oversight body (e.g. clinical governance\ncommittee, board, advisory group).",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 30,
+      "attributes": [
+        {
+          "name": "bodyName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "remit",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "requirement_def",
+      "name": "ConsentBeforeTreatment",
+      "parentPackage": "Regulation",
+      "doc": "Informed consent must be obtained and recorded\nbefore any treatment is initiated. Consent must\nbe specific to the proposed treatment, documented\nin the clinical record, and include evidence that\nthe patient had capacity at the time of consent.\nRegulatory basis: GMC Good Medical Practice,\nMontgomery ",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 77
+    },
+    {
+      "kind": "requirement_def",
+      "name": "InformedConsentRequiresInformation",
+      "parentPackage": "Regulation",
+      "doc": "Before consent can be considered informed, the patient\nmust have received and had opportunity to consider\nrelevant information about the proposed treatment,\nincluding expected effects, potential risks, alternative\noptions, and the consequences of not proceeding.\nThis is a precondition of ConsentBefo",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 89
+    },
+    {
+      "kind": "requirement_def",
+      "name": "BaselineInvestigationsBeforePrescribing",
+      "parentPackage": "Regulation",
+      "doc": "Baseline blood tests must be completed, resulted,\nand reviewed by a clinician before a hormone therapy\nprescription is authorised. The required baseline\npanel includes FBC, U&Es, LFTs, lipid profile,\nfasting glucose, prolactin, and baseline hormone\nlevels (testosterone, oestradiol).\n'Reviewed' means",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 107
+    },
+    {
+      "kind": "requirement_def",
+      "name": "ClinicalReviewBeforePrescribing",
+      "parentPackage": "Regulation",
+      "doc": "A clinician with appropriate competence must conduct\na clinical review before authorising a hormone therapy\nprescription. The review must consider baseline\ninvestigations, patient history, contraindications,\nand the proposed regimen.\nThis applies to both initial prescribing and any\nsubsequent dose a",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 126
+    },
+    {
+      "kind": "requirement_def",
+      "name": "PrescribingProtocolAdherence",
+      "parentPackage": "Regulation",
+      "doc": "Prescribing must follow an approved clinical protocol.\nThe protocol defines eligible medications, routes of\nadministration, starting doses, titration schedules,\nand therapeutic target ranges.\nDeviations from protocol must be clinically justified\nand documented in the clinical record.\nRegulatory basi",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 141
+    },
+    {
+      "kind": "requirement_def",
+      "name": "BloodMonitoringRequired",
+      "parentPackage": "Regulation",
+      "doc": "Patients on hormone therapy must have blood tests\nperformed at defined monitoring intervals. The\nmonitoring schedule is determined by the prescribing\nprotocol and the patient's clinical stability.\nInitial monitoring is typically at 3 months post-\ninitiation, then at intervals determined by clinical\n",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 157,
+      "attributes": [
+        {
+          "name": "monitoringIntervalWeeks",
+          "type": "Integer",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "requirement_def",
+      "name": "ClinicalReviewBeforeDoseAdjustment",
+      "parentPackage": "Regulation",
+      "doc": "Any change to hormone therapy dosage must be preceded\nby a clinical review that considers current blood\nresults, symptom assessment, side effect evaluation,\nand the patient's overall clinical picture.\nDose adjustments without clinical review are not\npermitted, even when blood results suggest a chang",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 173
+    },
+    {
+      "kind": "requirement_def",
+      "name": "SharedCareCommunication",
+      "parentPackage": "Regulation",
+      "doc": "When hormone therapy monitoring is transitioned to\nshared care with the patient's GP, the GP must receive\na shared care protocol document that includes the\ncurrent regimen, monitoring schedule, therapeutic\ntarget ranges, action thresholds, and clear guidance\non when to refer back.\nShared care must n",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 190
+    },
+    {
+      "kind": "part_def",
+      "name": "Partnership",
+      "parentPackage": "Strategy",
+      "doc": "A strategic partnership or collaboration.\nCross-references BusinessStrategy::\nStrategicObjective by name where the\npartnership supports a specific objective.",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 226,
+      "attributes": [
+        {
+          "name": "partnerName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "nature",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "strategicObjectiveRef",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "StrategicContext",
+      "parentPackage": "Strategy",
+      "doc": "Connects the enterprise-level strategic context\nto the detailed business strategy and scenario\nmodelling. This is the structural bridge between\nthe outer ring (Enterprise) and the business\nmodel layer.\nRenamed from BusinessModel (Phase 7) to avoid\ncollision with the top-level BusinessModel\npackage a",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 236,
+      "attributes": [
+        {
+          "name": "contextName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "currentVariant",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "strategicHorizonMonths",
+          "type": "Integer",
+          "isRedefinition": false
+        },
+        {
+          "name": "governanceNotes",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "gslStrategicContext",
+      "parentPackage": "Strategy",
+      "doc": "GenderSense strategic context as of 2026.\nSole founder governance. Lean Clinical variant\nis the active business model configuration.",
+      "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 261,
+      "specialises": "StrategicContext",
+      "attributes": [
+        {
+          "name": "contextName",
+          "value": "GenderSense Strategic Context 2026",
+          "isRedefinition": true
+        },
+        {
+          "name": "currentVariant",
+          "value": "Lean Clinical (Variant A)",
+          "isRedefinition": true
+        },
+        {
+          "name": "strategicHorizonMonths",
+          "value": "24",
+          "isRedefinition": true
+        },
+        {
+          "name": "governanceNotes",
+          "value": "Sole founder governance. Clinical governance via CQC registration. Strategic decisions informed by projection comparison and actuals tracking via BusinessScenarios steering cycle.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "AccountingIntegration",
+      "parentPackage": "Finance",
+      "doc": "Describes an integration point with an external\naccounting system. Currently Xero; the part def\nis system-agnostic.",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 50,
+      "attributes": [
+        {
+          "name": "integrationName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "targetSystem",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "syncFrequency",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "dataFlows",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "notes",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "xeroIntegration",
+      "parentPackage": "Finance",
+      "doc": "",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 94,
+      "specialises": "AccountingIntegration",
+      "attributes": [
+        {
+          "name": "integrationName",
+          "value": "Xero accounting integration",
+          "isRedefinition": true
+        },
+        {
+          "name": "targetSystem",
+          "value": "Xero",
+          "isRedefinition": true
+        },
+        {
+          "name": "syncFrequency",
+          "value": "Daily automatic sync via bank feed",
+          "isRedefinition": true
+        },
+        {
+          "name": "dataFlows",
+          "value": "Invoices (out), payments (in), bank transactions (in), chart of accounts (bidirectional)",
+          "isRedefinition": true
+        },
+        {
+          "name": "notes",
+          "value": "Xero is the primary financial record. Management accounts derived from Xero data.",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "WorkforceRole",
+      "parentPackage": "People",
+      "doc": "A defined role within the operational workforce.\nCaptures the contract and qualification view of\na role, complementing the planning view in\nBusinessModel::ResourcePlanning::ResourceType.\nWorkforceRole says \"this person needs these\nqualifications and this contract type.\"\nResourceType says \"this categ",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 124,
+      "attributes": [
+        {
+          "name": "roleName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "contractType",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "requiredQualifications",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "regulatoryRequirements",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "fteAllocation",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "appraisalCycle",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "resourceTypeRef",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "clinicianRole",
+      "parentPackage": "People",
+      "doc": "",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 180,
+      "specialises": "WorkforceRole",
+      "attributes": [
+        {
+          "name": "roleName",
+          "value": "Prescribing clinician",
+          "isRedefinition": true
+        },
+        {
+          "name": "contractType",
+          "value": "employed or contracted",
+          "isRedefinition": true
+        },
+        {
+          "name": "requiredQualifications",
+          "value": "GMC registration, prescribing qualification, RCP Certificate in Gender Identity Healthcare",
+          "isRedefinition": true
+        },
+        {
+          "name": "regulatoryRequirements",
+          "value": "GMC registration, annual appraisal, revalidation cycle, DBS enhanced check",
+          "isRedefinition": true
+        },
+        {
+          "name": "fteAllocation",
+          "value": "0.5-0.8 FTE (Variant A)",
+          "isRedefinition": true
+        },
+        {
+          "name": "appraisalCycle",
+          "value": "annual (feeds GMC revalidation)",
+          "isRedefinition": true
+        },
+        {
+          "name": "resourceTypeRef",
+          "value": "Prescribing clinician",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "adminRole",
+      "parentPackage": "People",
+      "doc": "",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 190,
+      "specialises": "WorkforceRole",
+      "attributes": [
+        {
+          "name": "roleName",
+          "value": "Administrative support",
+          "isRedefinition": true
+        },
+        {
+          "name": "contractType",
+          "value": "employed",
+          "isRedefinition": true
+        },
+        {
+          "name": "requiredQualifications",
+          "value": "None specific \u2014 administrative and organisational competence",
+          "isRedefinition": true
+        },
+        {
+          "name": "regulatoryRequirements",
+          "value": "DBS basic check",
+          "isRedefinition": true
+        },
+        {
+          "name": "fteAllocation",
+          "value": "0.3 FTE",
+          "isRedefinition": true
+        },
+        {
+          "name": "appraisalCycle",
+          "value": "annual",
+          "isRedefinition": true
+        },
+        {
+          "name": "resourceTypeRef",
+          "value": "Administrative support",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "PremisesArrangement",
+      "parentPackage": "EstatesAndFacilities",
+      "doc": "Describes a premises arrangement \u2014 the physical\nspace used for clinical or administrative work.\nMay be rented, shared, or virtual.",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 219,
+      "attributes": [
+        {
+          "name": "premisesName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "locationType",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "tenureType",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "monthlyCost",
+          "type": "Real",
+          "isRedefinition": false
+        },
+        {
+          "name": "capacityNotes",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "availabilityNotes",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "EquipmentInventory",
+      "parentPackage": "EstatesAndFacilities",
+      "doc": "A category of equipment used in service delivery\nor operations. Tracks what exists, not individual\nasset management.",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 231,
+      "attributes": [
+        {
+          "name": "equipmentCategory",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "items",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "maintenanceSchedule",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "replacementCycle",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "notes",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "clinicRoom",
+      "parentPackage": "EstatesAndFacilities",
+      "doc": "Sessional clinic room for face-to-face consultations.\nMost consultations are via video; face-to-face is\navailable for assessment and complex reviews.",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 254,
+      "specialises": "PremisesArrangement",
+      "attributes": [
+        {
+          "name": "premisesName",
+          "value": "Sessional clinic room",
+          "isRedefinition": true
+        },
+        {
+          "name": "locationType",
+          "value": "clinic room",
+          "isRedefinition": true
+        },
+        {
+          "name": "tenureType",
+          "value": "sessional",
+          "isRedefinition": true
+        },
+        {
+          "name": "monthlyCost",
+          "value": "0.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "capacityNotes",
+          "value": "1 consultation room, seats 2-3",
+          "isRedefinition": true
+        },
+        {
+          "name": "availabilityNotes",
+          "value": "Booked as needed \u2014 1-2 days per month initially",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "homeOffice",
+      "parentPackage": "EstatesAndFacilities",
+      "doc": "Home office for administrative work, video\nconsultations, and platform development. Primary\nworking location for the sole clinician model.",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 266,
+      "specialises": "PremisesArrangement",
+      "attributes": [
+        {
+          "name": "premisesName",
+          "value": "Home office",
+          "isRedefinition": true
+        },
+        {
+          "name": "locationType",
+          "value": "home",
+          "isRedefinition": true
+        },
+        {
+          "name": "tenureType",
+          "value": "none",
+          "isRedefinition": true
+        },
+        {
+          "name": "monthlyCost",
+          "value": "0.0",
+          "isRedefinition": true
+        },
+        {
+          "name": "capacityNotes",
+          "value": "Desk, video setup, dual monitors",
+          "isRedefinition": true
+        },
+        {
+          "name": "availabilityNotes",
+          "value": "Full availability",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "itEquipment",
+      "parentPackage": "EstatesAndFacilities",
+      "doc": "",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 278,
+      "specialises": "EquipmentInventory",
+      "attributes": [
+        {
+          "name": "equipmentCategory",
+          "value": "IT",
+          "isRedefinition": true
+        },
+        {
+          "name": "items",
+          "value": "MacBook Pro (development and clinical), external displays, webcam, headset, backup storage",
+          "isRedefinition": true
+        },
+        {
+          "name": "maintenanceSchedule",
+          "value": "Continuous \u2014 OS and software updates",
+          "isRedefinition": true
+        },
+        {
+          "name": "replacementCycle",
+          "value": "3-4 years",
+          "isRedefinition": true
+        },
+        {
+          "name": "notes",
+          "value": "Development machine doubles as clinical workstation in Variant A",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part",
+      "name": "clinicalEquipment",
+      "parentPackage": "EstatesAndFacilities",
+      "doc": "",
+      "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 286,
+      "specialises": "EquipmentInventory",
+      "attributes": [
+        {
+          "name": "equipmentCategory",
+          "value": "clinical",
+          "isRedefinition": true
+        },
+        {
+          "name": "items",
+          "value": "Blood pressure monitor, weighing scales, height measure, phlebotomy kit (if in-house blood draws)",
+          "isRedefinition": true
+        },
+        {
+          "name": "maintenanceSchedule",
+          "value": "Annual calibration for BP monitor and scales",
+          "isRedefinition": true
+        },
+        {
+          "name": "replacementCycle",
+          "value": "5 years",
+          "isRedefinition": true
+        },
+        {
+          "name": "notes",
+          "value": "Minimal equipment for a primarily digital service with external lab",
+          "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "UserAccount",
+      "parentPackage": "Identity",
+      "doc": "A user account for authentication and authorisation.",
+      "sourceFile": "exercises/gendersense/model/gsl-platform.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "smm",
+      "lineNumber": 561,
+      "attributes": [
+        {
+          "name": "accountId",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "email",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "accountType",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "Patient",
+      "parentPackage": "ClinicalEntities",
+      "doc": "A patient registered with GenderSense.",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 866,
+      "attributes": [
+        {
+          "name": "nhsNumber",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "familyName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "givenName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "Episode",
+      "parentPackage": "ClinicalEntities",
+      "doc": "A bounded episode of care with a defined start, end,\nand clinical context. A patient may have multiple\nconcurrent or sequential episodes.",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 941,
+      "attributes": [
+        {
+          "name": "episodeId",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "episodeType",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "patient",
+          "type": "Patient",
+          "isRef": true
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "Consultation",
+      "parentPackage": "ClinicalEntities",
+      "doc": "A single clinical consultation (face-to-face, video,\ntelephone, or asynchronous).",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 956,
+      "attributes": [
+        {
+          "name": "consultationId",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "consultationType",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "episode",
+          "type": "Episode",
+          "isRef": true
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "Prescription",
+      "parentPackage": "ClinicalEntities",
+      "doc": "A medication prescription. Each prescription represents\na single authorised medication at a specific dose. Dose\nadjustments create a new prescription; the previous one\nis completed.",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 1044,
+      "attributes": [
+        {
+          "name": "prescriptionId",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "medicationName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "dose",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "route",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "patient",
+          "type": "Patient",
+          "isRef": true
+        },
+        {
+          "name": "episode",
+          "type": "Episode",
+          "isRef": true
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "LabResult",
+      "parentPackage": "ClinicalEntities",
+      "doc": "A laboratory test result, tracking the full lifecycle\nfrom order through collection, reporting, clinical\nreview, and action.",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 1131,
+      "attributes": [
+        {
+          "name": "resultId",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "testName",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "value",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "units",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "referenceRange",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "patient",
+          "type": "Patient",
+          "isRef": true
+        },
+        {
+          "name": "episode",
+          "type": "Episode",
+          "isRef": true
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "Referral",
+      "parentPackage": "ClinicalEntities",
+      "doc": "A referral to or from an external service. Each referral\nis a distinct entity with its own lifecycle. If a referral\nis declined, a new Referral is created for any re-referral\nrather than reusing the declined one.",
+      "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 1225,
+      "attributes": [
+        {
+          "name": "referralId",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "direction",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "destination",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "reason",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "patient",
+          "type": "Patient",
+          "isRef": true
+        },
+        {
+          "name": "episode",
+          "type": "Episode",
+          "isRef": true
+        }
+      ]
     }
   ]
 }

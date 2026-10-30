@@ -1,8 +1,8 @@
 // =========================================================================
-// ENTERPRISE — What GenderSense is and how it is governed
+// GSL ENTERPRISE — What GenderSense is and how it is governed (tenant package, OP-132 step 4)
 // =========================================================================
 
-package Enterprise {
+package GslEnterprise {
     private import ScalarValues::*;
 
     doc /* Defines the organisational, regulatory, strategic, and risk context.
@@ -37,7 +37,7 @@ package Enterprise {
 
     package Regulation {
         private import ScalarValues::*;
-        private import ServiceDelivery::ClinicalEntities::*;
+        private import GslServiceDelivery::ClinicalEntities::*;
 
         doc /* CQC fundamental standards, ICO/GDPR obligations,
              * DCB0129/DCB0160 clinical safety, GMC professional standards,

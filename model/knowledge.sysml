@@ -240,7 +240,7 @@ package Knowledge {
 
     package ConstraintLibrary {
         private import ScalarValues::*;
-        private import Enterprise::Regulation::*;
+        private import GslEnterprise::Regulation::*;  // tenant import from a model/ package; resolved when OP-132 step 6 moves ConstraintLibrary to GslKnowledge
 
         doc /* Composable clinical constraints, safety rules, drug
              * interaction checks, contraindication screening. Constraints

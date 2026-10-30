@@ -119,14 +119,14 @@ SMM_PACKAGES = {
     "Knowledge", "ClinicalDecisionSupport",
     "ConstraintLibrary", "LogicEngine", "DecisionModels",
     "OutcomeFramework", "LearningCycles", "Analytics",
-    "Platform", "PatientPortal", "EHR", "Booking", "Forms",
+    "Platform", "GslPlatform", "PatientPortal", "EHR", "Booking", "Forms",
     "Orchestration", "Integration", "Identity",
-    "ServiceDelivery", "ClinicalPathways", "PatternCatalogue",
+    "ServiceDelivery", "GslServiceDelivery", "ClinicalPathways", "PatternCatalogue",
 }
 
 # Domain-specific packages (not meta model — instances)
 DOMAIN_PACKAGES = {
-    "Enterprise", "Operations", "GenderSense",
+    "Enterprise", "GslEnterprise", "Operations", "GslOperations", "GenderSense",
     "Organisation", "Strategy", "Finance", "People",
     "EstatesAndFacilities", "Regulation", "ClinicalEntities",
     "CoffeeShop", "CoffeeShopBusinessModel",
