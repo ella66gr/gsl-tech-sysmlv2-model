@@ -302,9 +302,9 @@ def extract_outcome_inventory(knowledge_text):
     return outcomes
 
 
-def extract_metadata_inventory(foundation_text, library_texts, projection_text="", smd_clinical_text=""):
-    """Extract metadata defs from ProjectionMetadata, the residual
-    Foundation::MetadataLibrary, SystemMetamodelDomainClinical, and TemporalMetadata."""
+def extract_metadata_inventory(smg_text, library_texts, projection_text="", smd_clinical_text=""):
+    """Extract metadata defs from ProjectionMetadata, SystemMetamodelGeneral
+    (ProcessAnnotations, OpenEhrIntegration), SystemMetamodelDomainClinical, and TemporalMetadata."""
     metadata = []
 
     # ProjectionMetadata (S514: the generators' annotation schema, formerly
@@ -321,18 +321,20 @@ def extract_metadata_inventory(foundation_text, library_texts, projection_text="
                 'attributes': attrs,
             })
 
-    # Foundation::MetadataLibrary (residual: clinical, governance, openEHR, agency)
-    ml_text = find_package_block(foundation_text, "MetadataLibrary")
-    if ml_text:
-        for block in extract_blocks(ml_text, "metadata def"):
-            attrs = []
-            for attr_match in re.finditer(r'attribute\s+(\w+)\s*:\s*(\w+)\s*;', block['body']):
-                attrs.append(attr_match.group(1))
-            metadata.append({
-                'name': block['name'],
-                'package': 'Foundation::MetadataLibrary',
-                'attributes': attrs,
-            })
+    # SystemMetamodelGeneral (S515 OP-132 step 8): process annotations and
+    # openEHR annotation metadata, formerly Foundation::MetadataLibrary.
+    for sub_pkg in ("ProcessAnnotations", "OpenEhrIntegration"):
+        sp_text = find_package_block(smg_text, sub_pkg) if smg_text else None
+        if sp_text:
+            for block in extract_blocks(sp_text, "metadata def"):
+                attrs = []
+                for attr_match in re.finditer(r'attribute\s+(\w+)\s*:\s*(\w+)\s*;', block['body']):
+                    attrs.append(attr_match.group(1))
+                metadata.append({
+                    'name': block['name'],
+                    'package': f'SystemMetamodelGeneral::{sub_pkg}',
+                    'attributes': attrs,
+                })
 
     # SystemMetamodelDomainClinical (S515 OP-132 step 7: @ClinicalReviewGate)
     smd_text = find_package_block(smd_clinical_text, "SystemMetamodelDomainClinical") if smd_clinical_text else None
@@ -534,12 +536,11 @@ def main():
     print(f"Read {len(all_texts)} .sysml files")
 
     # Extract inventories
-    knowledge_text = all_texts.get("knowledge.sysml", "")
     # S515 (OP-132 step 6): constraints, specs, decision tables and outcome
     # targets are GSL tenant content.
     gsl_knowledge_text = all_texts.get("gsl-knowledge.sysml", "")
     enterprise_text = all_texts.get("gsl-enterprise.sysml", "")
-    foundation_text = all_texts.get("foundation.sysml", "")
+    smg_text = all_texts.get("system-metamodel-general.sysml", "")
     sd_text = all_texts.get("gsl-service-delivery.sysml", "")
 
     constraints = extract_constraint_inventory(gsl_knowledge_text)
@@ -549,7 +550,7 @@ def main():
     outcomes = extract_outcome_inventory(gsl_knowledge_text)
     projection_text = all_texts.get("projection-metadata.sysml", "")
     smd_clinical_text = all_texts.get("system-metamodel-domain-clinical.sysml", "")
-    metadata = extract_metadata_inventory(foundation_text, library_texts, projection_text, smd_clinical_text)
+    metadata = extract_metadata_inventory(smg_text, library_texts, projection_text, smd_clinical_text)
     use_cases = extract_use_case_inventory(all_texts)
     decision_tables = extract_decision_table_inventory(gsl_knowledge_text)
 

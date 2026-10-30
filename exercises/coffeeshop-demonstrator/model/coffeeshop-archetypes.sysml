@@ -26,7 +26,7 @@
 
 package CoffeeShopArchetypes {
     private import ScalarValues::*;
-    private import Foundation::MetadataLibrary::*;
+    private import SystemMetamodelGeneral::OpenEhrIntegration::*;  // @OpenEhrArchetype, @OpenEhrTemplate
 
     doc /* SysML representation of the coffee shop openEHR archetypes
          * and templates. Maps structural model elements to their CDR

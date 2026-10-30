@@ -15,8 +15,7 @@ package GslScenarios {
     private import ScalarValues::*;
     private import BusinessScenarios::*;
     private import BusinessStrategy::*;
-    private import Knowledge::LogicEngine::*;    // GoalProjection, Deficit (SMG::LogicEngine after OP-132 step 8)
-    private import Foundation::CommonTypes::*;   // Severity, AssessmentScope, DeficitDomain, RemediationCategory
+    private import SystemMetamodelGeneral::LogicEngine::*;   // GoalProjection, Deficit, Severity, AssessmentScope, DeficitDomain, RemediationCategory
 
     doc /* GenderSense Limited scenario and strategy content: the Variant A
          * and Variant B projections with their parameters, growth

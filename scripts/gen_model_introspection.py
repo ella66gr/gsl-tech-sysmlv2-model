@@ -117,10 +117,12 @@ BMM_PACKAGES = {
 # from every list.
 SMM_PACKAGES = {
     "SystemMetamodelDomainClinical",  # S515 OP-132 step 7: system-side Domain package (ADR-012)
-    "Knowledge", "ClinicalDecisionSupport",
+    "SystemMetamodelGeneral", "ProcessAnnotations", "StatePatterns", "EvaluationSpecs",
+    "Persistence", "OpenEhrIntegration",  # S515 OP-132 step 8
+    "ClinicalDecisionSupport",
     "ConstraintLibrary", "LogicEngine", "DecisionModels",
     "OutcomeFramework", "LearningCycles", "Analytics",
-    "Platform", "GslPlatform", "PatientPortal", "EHR", "Booking", "Forms",
+    "GslPlatform", "PatientPortal", "EHR", "Booking", "Forms",
     "Orchestration", "Integration", "Identity",
     "ServiceDelivery", "GslServiceDelivery", "ClinicalPathways", "PatternCatalogue",
 }

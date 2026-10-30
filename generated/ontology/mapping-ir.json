@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "generated_at": "2026-10-30T15:20:51.646880+00:00",
+  "generated_at": "2026-10-30T15:28:08.137860+00:00",
   "session": 116,
   "summary": {
     "StructuralOnly": 741,
@@ -1018,96 +1018,6 @@
       }
     },
     {
-      "name": "ConsentRequired",
-      "kind": "metadata_def",
-      "parentPackage": "MetadataLibrary",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "AuditPoint",
-      "kind": "metadata_def",
-      "parentPackage": "MetadataLibrary",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "LogicRule",
-      "kind": "metadata_def",
-      "parentPackage": "MetadataLibrary",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DecisionTable",
-      "kind": "metadata_def",
-      "parentPackage": "MetadataLibrary",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "SafetyConstraint",
-      "kind": "metadata_def",
-      "parentPackage": "MetadataLibrary",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OpenEhrArchetype",
-      "kind": "metadata_def",
-      "parentPackage": "MetadataLibrary",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OpenEhrElement",
-      "kind": "metadata_def",
-      "parentPackage": "MetadataLibrary",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OpenEhrTemplate",
-      "kind": "metadata_def",
-      "parentPackage": "MetadataLibrary",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "AgencyType",
-      "kind": "enum_def",
-      "parentPackage": "MetadataLibrary",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "AgencyClassification",
-      "kind": "metadata_def",
-      "parentPackage": "MetadataLibrary",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
       "name": "Gender",
       "kind": "enum_def",
       "parentPackage": "CommonTypes",
@@ -1181,96 +1091,6 @@
     },
     {
       "name": "ContactDetails",
-      "kind": "part_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "EvaluationOutcome",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Severity",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "AssessmentScope",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DataSourceType",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DeficitDomain",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "RemediationCategory",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ServiceHealthStatus",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "PersistenceLayer",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DataCharacteristic",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "PersistencePolicy",
       "kind": "part_def",
       "parentPackage": "CommonTypes",
       "sourceFile": "model/foundation.sysml",
@@ -1427,501 +1247,6 @@
       "kind": "part",
       "parentPackage": "DomainRegistry",
       "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "InputDerivation",
-      "kind": "part_def",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ConstraintEvaluationSpec",
-      "kind": "part_def",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "inputDerivations",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DecisionTableEvaluationSpec",
-      "kind": "part_def",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "inputDerivations",
-      "kind": "part",
-      "parentPackage": "ClinicalDecisionSupport",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "EvaluatedInput",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ExplanationTrace",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "evaluatedInputs",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "EvaluationResult",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "explanation",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "subEvaluations",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Deficit",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "supportingEvaluations",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "SystemStateAssessment",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "operationalSnapshot",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "deficits",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "evaluationResults",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "InputResolver",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ExpressionEvaluator",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ExplanationBuilder",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ConstraintEvaluator",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "inputResolver",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "expressionEvaluator",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "explanationBuilder",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OperationalQuery",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OperationalSnapshot",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OperationalStateAggregator",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "processStateQuery",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "clinicalDataQuery",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "entityStateQuery",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "infrastructureQuery",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "financialDataQuery",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "GoalProjection",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "GoalProjector",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "GapAnalyser",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "goalProjector",
-      "kind": "part",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "InferenceEvaluator",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "AdvisoryInterface",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "SelfExplanationService",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "AssessmentOrchestrator",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "EvaluationSpecRegistry",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "EvaluationContext",
-      "kind": "part_def",
-      "parentPackage": "LogicEngine",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "HitPolicy",
-      "kind": "enum_def",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DecisionTableDef",
-      "kind": "part_def",
-      "parentPackage": "DecisionModels",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OutcomeCategory",
-      "kind": "enum_def",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OutcomeStatus",
-      "kind": "enum_def",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "MeasurementFrequency",
-      "kind": "enum_def",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ComparisonOperator",
-      "kind": "enum_def",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OutcomeDefinition",
-      "kind": "part_def",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "MeasurementPoint",
-      "kind": "part_def",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "MeasurementSchedule",
-      "kind": "part_def",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "measurementPoints",
-      "kind": "part",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OutcomeEvaluationResult",
-      "kind": "part_def",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OutcomeFeedbackRecord",
-      "kind": "part_def",
-      "parentPackage": "OutcomeFramework",
-      "sourceFile": "model/knowledge.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DataContract",
-      "kind": "part_def",
-      "parentPackage": "Analytics",
-      "sourceFile": "model/knowledge.sysml",
       "sourceDomain": "core",
       "classification": "StructuralOnly",
       "targetGraph": null
@@ -2611,51 +1936,6 @@
       "targetGraph": null
     },
     {
-      "name": "CdrConnection",
-      "kind": "part_def",
-      "parentPackage": "EHR",
-      "sourceFile": "model/platform.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "EhrRecord",
-      "kind": "part_def",
-      "parentPackage": "EHR",
-      "sourceFile": "model/platform.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "RegisteredTemplate",
-      "kind": "part_def",
-      "parentPackage": "EHR",
-      "sourceFile": "model/platform.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Composition",
-      "kind": "part_def",
-      "parentPackage": "EHR",
-      "sourceFile": "model/platform.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "AqlQuery",
-      "kind": "part_def",
-      "parentPackage": "EHR",
-      "sourceFile": "model/platform.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
       "name": "CatalogueTag",
       "kind": "metadata_def",
       "parentPackage": "ProjectionMetadata",
@@ -2723,6 +2003,726 @@
       "kind": "metadata_def",
       "parentPackage": "SystemMetamodelDomainClinical",
       "sourceFile": "model/system-metamodel-domain-clinical.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ConsentRequired",
+      "kind": "metadata_def",
+      "parentPackage": "ProcessAnnotations",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AuditPoint",
+      "kind": "metadata_def",
+      "parentPackage": "ProcessAnnotations",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "LogicRule",
+      "kind": "metadata_def",
+      "parentPackage": "ProcessAnnotations",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DecisionTable",
+      "kind": "metadata_def",
+      "parentPackage": "ProcessAnnotations",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "SafetyConstraint",
+      "kind": "metadata_def",
+      "parentPackage": "ProcessAnnotations",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AgencyType",
+      "kind": "enum_def",
+      "parentPackage": "ProcessAnnotations",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AgencyClassification",
+      "kind": "metadata_def",
+      "parentPackage": "ProcessAnnotations",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "EvaluationOutcome",
+      "kind": "enum_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Severity",
+      "kind": "enum_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AssessmentScope",
+      "kind": "enum_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DataSourceType",
+      "kind": "enum_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DeficitDomain",
+      "kind": "enum_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "RemediationCategory",
+      "kind": "enum_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ServiceHealthStatus",
+      "kind": "enum_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "EvaluatedInput",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ExplanationTrace",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "evaluatedInputs",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "EvaluationResult",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "explanation",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "subEvaluations",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Deficit",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "supportingEvaluations",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "SystemStateAssessment",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "operationalSnapshot",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "deficits",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "evaluationResults",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "InputResolver",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ExpressionEvaluator",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ExplanationBuilder",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ConstraintEvaluator",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "inputResolver",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "expressionEvaluator",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "explanationBuilder",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OperationalQuery",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OperationalSnapshot",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OperationalStateAggregator",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "processStateQuery",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "clinicalDataQuery",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "entityStateQuery",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "infrastructureQuery",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "financialDataQuery",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "GoalProjection",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "GoalProjector",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "GapAnalyser",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "goalProjector",
+      "kind": "part",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "InferenceEvaluator",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AdvisoryInterface",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "SelfExplanationService",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AssessmentOrchestrator",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "EvaluationSpecRegistry",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "EvaluationContext",
+      "kind": "part_def",
+      "parentPackage": "LogicEngine",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "InputDerivation",
+      "kind": "part_def",
+      "parentPackage": "EvaluationSpecs",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ConstraintEvaluationSpec",
+      "kind": "part_def",
+      "parentPackage": "EvaluationSpecs",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "inputDerivations",
+      "kind": "part",
+      "parentPackage": "EvaluationSpecs",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DecisionTableEvaluationSpec",
+      "kind": "part_def",
+      "parentPackage": "EvaluationSpecs",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "inputDerivations",
+      "kind": "part",
+      "parentPackage": "EvaluationSpecs",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "HitPolicy",
+      "kind": "enum_def",
+      "parentPackage": "DecisionModels",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DecisionTableDef",
+      "kind": "part_def",
+      "parentPackage": "DecisionModels",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OutcomeCategory",
+      "kind": "enum_def",
+      "parentPackage": "OutcomeFramework",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OutcomeStatus",
+      "kind": "enum_def",
+      "parentPackage": "OutcomeFramework",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "MeasurementFrequency",
+      "kind": "enum_def",
+      "parentPackage": "OutcomeFramework",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ComparisonOperator",
+      "kind": "enum_def",
+      "parentPackage": "OutcomeFramework",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OutcomeDefinition",
+      "kind": "part_def",
+      "parentPackage": "OutcomeFramework",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "MeasurementPoint",
+      "kind": "part_def",
+      "parentPackage": "OutcomeFramework",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "MeasurementSchedule",
+      "kind": "part_def",
+      "parentPackage": "OutcomeFramework",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "measurementPoints",
+      "kind": "part",
+      "parentPackage": "OutcomeFramework",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OutcomeEvaluationResult",
+      "kind": "part_def",
+      "parentPackage": "OutcomeFramework",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OutcomeFeedbackRecord",
+      "kind": "part_def",
+      "parentPackage": "OutcomeFramework",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DataContract",
+      "kind": "part_def",
+      "parentPackage": "Analytics",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "PersistenceLayer",
+      "kind": "enum_def",
+      "parentPackage": "Persistence",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DataCharacteristic",
+      "kind": "enum_def",
+      "parentPackage": "Persistence",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "PersistencePolicy",
+      "kind": "part_def",
+      "parentPackage": "Persistence",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "CdrConnection",
+      "kind": "part_def",
+      "parentPackage": "OpenEhrIntegration",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "EhrRecord",
+      "kind": "part_def",
+      "parentPackage": "OpenEhrIntegration",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "RegisteredTemplate",
+      "kind": "part_def",
+      "parentPackage": "OpenEhrIntegration",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Composition",
+      "kind": "part_def",
+      "parentPackage": "OpenEhrIntegration",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AqlQuery",
+      "kind": "part_def",
+      "parentPackage": "OpenEhrIntegration",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OpenEhrArchetype",
+      "kind": "metadata_def",
+      "parentPackage": "OpenEhrIntegration",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OpenEhrElement",
+      "kind": "metadata_def",
+      "parentPackage": "OpenEhrIntegration",
+      "sourceFile": "model/system-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OpenEhrTemplate",
+      "kind": "metadata_def",
+      "parentPackage": "OpenEhrIntegration",
+      "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "classification": "StructuralOnly",
       "targetGraph": null

@@ -228,9 +228,8 @@ def parse_all_model_files():
 
         # S515 (OP-132 step 4): GSL names keep their old slots so the tree
         # order is unchanged until step 12 reshapes this generator.
-        display_order = ["GslEnterprise", "Foundation", "Knowledge",
-                         "GslOperations", "GslPlatform", "Platform",
-                         "GslServiceDelivery"]
+        display_order = ["GslEnterprise", "Foundation", "SystemMetamodelGeneral",
+                         "GslOperations", "GslPlatform", "GslServiceDelivery"]
         to_reparent.sort(key=lambda p: (
             display_order.index(p.name) if p.name in display_order
             else len(display_order)

@@ -31,11 +31,11 @@ PENDING_OK=0
 # Old top-level names that OP-132 has not yet retired. A line is "pending" if
 # the package it names is in this list. Trim the list as steps complete:
 #   step 5  BusinessModel/BusinessScenarios/BusinessStrategy GSL usages leave
-#   step 8  Knowledge, Platform retired
+#   step 8  Knowledge, Platform retired (done S515)
 #   step 9  BusinessModel, BusinessScenarios, BusinessStrategy, CanonicalRuntime retired
 #   step 11 Foundation retired
 #   step 12 root's PatternCatalogue import dropped
-PENDING_NAMES='Knowledge|Foundation|BusinessModel|BusinessScenarios|BusinessStrategy|CanonicalRuntime|Platform|PatternCatalogue'
+PENDING_NAMES='Foundation|BusinessModel|BusinessScenarios|BusinessStrategy|CanonicalRuntime|PatternCatalogue'
 
 IMPORT_RE='^\s*(private |public )?import '
 APPARATUS='ScalarValues|ProjectionMetadata|TemporalMetadata'

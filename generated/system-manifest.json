@@ -1,6 +1,6 @@
 {
   "modelVersion": "2026-10-30",
-  "generatedAt": "2026-10-30T15:20:51Z",
+  "generatedAt": "2026-10-30T15:28:07Z",
   "generator": "scripts/gen_system_manifest.py",
   "sourceFiles": [
     "model/architectural-structure.sysml",
@@ -9,11 +9,10 @@
     "model/business-strategy.sysml",
     "model/canonical-runtime.sysml",
     "model/foundation.sysml",
-    "model/knowledge.sysml",
     "model/pattern-catalogue.sysml",
-    "model/platform.sysml",
     "model/projection-metadata.sysml",
     "model/system-metamodel-domain-clinical.sysml",
+    "model/system-metamodel-general.sysml",
     "exercises/gendersense/model/gendersense.sysml",
     "exercises/gendersense/model/gsl-business-model.sysml",
     "exercises/gendersense/model/gsl-enterprise.sysml",
@@ -522,43 +521,52 @@
       },
       {
         "name": "ConsentRequired",
-        "package": "Foundation::MetadataLibrary",
+        "package": "SystemMetamodelGeneral::ProcessAnnotations",
         "attributes": [
           "consentType"
         ]
       },
       {
         "name": "AuditPoint",
-        "package": "Foundation::MetadataLibrary",
+        "package": "SystemMetamodelGeneral::ProcessAnnotations",
         "attributes": [
           "auditCategory"
         ]
       },
       {
         "name": "LogicRule",
-        "package": "Foundation::MetadataLibrary",
+        "package": "SystemMetamodelGeneral::ProcessAnnotations",
         "attributes": [
           "ruleName"
         ]
       },
       {
         "name": "DecisionTable",
-        "package": "Foundation::MetadataLibrary",
+        "package": "SystemMetamodelGeneral::ProcessAnnotations",
         "attributes": [
           "tableName"
         ]
       },
       {
         "name": "SafetyConstraint",
-        "package": "Foundation::MetadataLibrary",
+        "package": "SystemMetamodelGeneral::ProcessAnnotations",
         "attributes": [
           "constraintName",
           "severity"
         ]
       },
       {
+        "name": "AgencyClassification",
+        "package": "SystemMetamodelGeneral::ProcessAnnotations",
+        "attributes": [
+          "agencyType",
+          "authorityModelVersion",
+          "agencyNotes"
+        ]
+      },
+      {
         "name": "OpenEhrArchetype",
-        "package": "Foundation::MetadataLibrary",
+        "package": "SystemMetamodelGeneral::OpenEhrIntegration",
         "attributes": [
           "archetypeId",
           "rmClass"
@@ -566,7 +574,7 @@
       },
       {
         "name": "OpenEhrElement",
-        "package": "Foundation::MetadataLibrary",
+        "package": "SystemMetamodelGeneral::OpenEhrIntegration",
         "attributes": [
           "name",
           "nodeId",
@@ -575,18 +583,9 @@
       },
       {
         "name": "OpenEhrTemplate",
-        "package": "Foundation::MetadataLibrary",
+        "package": "SystemMetamodelGeneral::OpenEhrIntegration",
         "attributes": [
           "templateId"
-        ]
-      },
-      {
-        "name": "AgencyClassification",
-        "package": "Foundation::MetadataLibrary",
-        "attributes": [
-          "agencyType",
-          "authorityModelVersion",
-          "agencyNotes"
         ]
       },
       {
@@ -634,52 +633,52 @@
     "items": [
       {
         "name": "EvaluateConstraint",
-        "source": "knowledge.sysml",
+        "source": "system-metamodel-general.sysml",
         "description": "Evaluate a single constraint for a specific patient or context."
       },
       {
         "name": "PerformGapAnalysis",
-        "source": "knowledge.sysml",
+        "source": "system-metamodel-general.sysml",
         "description": "Compare operational state against goal state for a defined scope (patient, pathway, domain, system)."
       },
       {
         "name": "ProduceSystemStateAssessment",
-        "source": "knowledge.sysml",
+        "source": "system-metamodel-general.sysml",
         "description": "Aggregate structural self-knowledge, operational state, goal compliance, deficits, and remediation recommendations into "
       },
       {
         "name": "ExplainEvaluationResult",
-        "source": "knowledge.sysml",
+        "source": "system-metamodel-general.sysml",
         "description": "Given an EvaluationResult or SystemStateAssessment, produce an audience-appropriate explanation."
       },
       {
         "name": "ProposePathwayRefinement",
-        "source": "knowledge.sysml",
+        "source": "system-metamodel-general.sysml",
         "description": "Initiate a pathway change proposal based on outcome data, OutcomeFeedbackRecords, or advisory deficits from SystemStateA"
       },
       {
         "name": "ReviewAndApproveChange",
-        "source": "knowledge.sysml",
+        "source": "system-metamodel-general.sysml",
         "description": "Clinical governance review and approval of a proposed pathway or protocol change."
       },
       {
         "name": "CommitComposition",
-        "source": "platform.sysml",
+        "source": "system-metamodel-general.sysml",
         "description": "Store a clinical composition in the CDR conforming to a registered template."
       },
       {
         "name": "QueryByArchetype",
-        "source": "platform.sysml",
+        "source": "system-metamodel-general.sysml",
         "description": "Retrieve clinical data via AQL query filtered by archetype type."
       },
       {
         "name": "RunGovernanceAudit",
-        "source": "platform.sysml",
+        "source": "system-metamodel-general.sysml",
         "description": "Execute a population-level data completeness audit."
       },
       {
         "name": "ManageArchetypes",
-        "source": "platform.sysml",
+        "source": "system-metamodel-general.sysml",
         "description": "Design, version, and deploy archetypes and templates."
       },
       {

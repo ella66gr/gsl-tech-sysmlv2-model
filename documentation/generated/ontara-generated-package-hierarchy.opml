@@ -2,7 +2,7 @@
 <opml version="2.0">
   <head>
     <title>Ontara Package Hierarchy</title>
-    <dateCreated>2026-10-30 15:20</dateCreated>
+    <dateCreated>2026-10-30 15:28</dateCreated>
   </head>
   <body>
     <outline text="Ontara — Model-driven service system development and delivery platform">
@@ -13,18 +13,20 @@
         <outline text="Risk  — Clinical risk management, business continuity, safeguarding  [3 use cases]" _note="gsl-enterprise.sysml:272"/>
       </outline>
       <outline text="Foundation  — RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7," _note="foundation.sysml:5">
-        <outline text="MetadataLibrary  — Residual annotation definitions awaiting allocation  [1 enums, 9 metadata]" _note="foundation.sysml:32"/>
-        <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [3 parts, 23 enums]" _note="foundation.sysml:234"/>
-        <outline text="DomainRegistry  — Domain identity infrastructure: the formal representation  [2 parts]" _note="foundation.sysml:698"/>
-        <outline text="StatePatterns  — Reusable lifecycle state machine patterns.  [1 states]" _note="foundation.sysml:924"/>
+        <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [2 parts, 14 enums]" _note="foundation.sysml:32"/>
+        <outline text="DomainRegistry  — Domain identity infrastructure: the formal representation  [2 parts]" _note="foundation.sysml:343"/>
       </outline>
-      <outline text="Knowledge  — Explicit treatment of knowledge, decision logic, and adaptive" _note="knowledge.sysml:5">
-        <outline text="ClinicalDecisionSupport  — Decision rules, eligibility criteria, monitoring protocols,  [3 parts]" _note="knowledge.sysml:18"/>
-        <outline text="LogicEngine  — Inference rules, Prolog-style reasoning, deterministic  [21 parts, 4 use cases]" _note="knowledge.sysml:114"/>
-        <outline text="DecisionModels  — DMN-style decision tables modelled as SysML part defs  [1 parts, 1 enums]" _note="knowledge.sysml:1029"/>
-        <outline text="OutcomeFramework  — Outcome definitions, measurement points, structured outcome  [5 parts, 4 enums]" _note="knowledge.sysml:1102"/>
-        <outline text="LearningCycles  — Pathway refinement process, evidence review, change control  [2 use cases]" _note="knowledge.sysml:1341"/>
-        <outline text="Analytics  — Data contracts for BI and predictive analytics, event stream  [1 parts]" _note="knowledge.sysml:1379"/>
+      <outline text="SystemMetamodelGeneral  — The system metamodel, General layer: how the platform evaluates," _note="system-metamodel-general.sysml:12">
+        <outline text="ProcessAnnotations  — General annotations on process steps: consent and audit  [1 enums, 6 metadata]" _note="system-metamodel-general.sysml:24"/>
+        <outline text="StatePatterns  — Reusable lifecycle state machine patterns.  [1 states]" _note="system-metamodel-general.sysml:130"/>
+        <outline text="LogicEngine  — Inference rules, Prolog-style reasoning, deterministic  [21 parts, 4 use cases, 7 enums]" _note="system-metamodel-general.sysml:193"/>
+        <outline text="EvaluationSpecs  — Decision rules, eligibility criteria, monitoring protocols,  [3 parts]" _note="system-metamodel-general.sysml:1193"/>
+        <outline text="DecisionModels  — DMN-style decision tables modelled as SysML part defs  [1 parts, 1 enums]" _note="system-metamodel-general.sysml:1288"/>
+        <outline text="OutcomeFramework  — Outcome definitions, measurement points, structured outcome  [5 parts, 4 enums]" _note="system-metamodel-general.sysml:1360"/>
+        <outline text="LearningCycles  — Pathway refinement process, evidence review, change control  [2 use cases]" _note="system-metamodel-general.sysml:1599"/>
+        <outline text="Analytics  — Data contracts for BI and predictive analytics, event stream  [1 parts]" _note="system-metamodel-general.sysml:1637"/>
+        <outline text="Persistence  — Persistence architecture types: where a domain concept is  [1 parts, 2 enums]" _note="system-metamodel-general.sysml:1655"/>
+        <outline text="OpenEhrIntegration  — Clinical record layer: openEHR CDR (EHRbase).  [5 parts, 4 use cases, 3 metadata]" _note="system-metamodel-general.sysml:1734"/>
       </outline>
       <outline text="GslOperations  — Back office and growth functions." _note="exercises/gendersense/model/gsl-operations.sysml:5">
         <outline text="Finance  — Operational accounting: invoice processing, payment  [1 parts, 4 use cases]" _note="gsl-operations.sysml:33"/>
@@ -64,9 +66,6 @@
         <outline text="Identity  — User accounts, authentication, authorisation, role-based  [1 parts, 2 use cases]" _note="gsl-platform.sysml:553"/>
         <outline text="Orchestration  — Temporal infrastructure, workflow engine, worker deployment," _note="gsl-platform.sysml:578"/>
         <outline text="Integration  — API gateway, third-party connectors, webhook management," _note="gsl-platform.sysml:590"/>
-      </outline>
-      <outline text="Platform  — Residual package (OP-132 step 4, S515)." _note="platform.sysml:5">
-        <outline text="EHR  — Clinical record layer: openEHR CDR (EHRbase).  [5 parts, 4 use cases]" _note="platform.sysml:14"/>
       </outline>
       <outline text="GslServiceDelivery  — The clinical and operational heart of GenderSense." _note="exercises/gendersense/model/gsl-service-delivery.sysml:5">
         <outline text="PatientJourney  — Top-level lifecycle from acquisition through to discharge  [5 use cases]" _note="gsl-service-delivery.sysml:13"/>

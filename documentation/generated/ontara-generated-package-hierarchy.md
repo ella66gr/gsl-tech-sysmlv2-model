@@ -1,6 +1,6 @@
 # Ontara Package Hierarchy (Generated)
 
-**Generated:** 2026-10-30 15:20  
+**Generated:** 2026-10-30 15:28  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
 **Total packages:** 85 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
@@ -11,7 +11,7 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 Ontara Package Hierarchy
-Generated 2026-10-30 15:20 from model/*.sysml (85 packages)
+Generated 2026-10-30 15:28 from model/*.sysml (85 packages)
 
 GenderSense
 ├── GslEnterprise                   Defines the organisational, regulatory, strategic, and risk context.
@@ -21,18 +21,20 @@ GenderSense
 │   └── Risk                        Clinical risk management, business continuity, safeguarding — [3 use cases]
 │
 ├── Foundation                      RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7,
-│   ├── MetadataLibrary             Residual annotation definitions awaiting allocation — [1 enums, 9 metadata]
-│   ├── CommonTypes                 Shared data types, enumerations, units of measure, and — [3 parts, 23 enums]
-│   ├── DomainRegistry              Domain identity infrastructure: the formal representation — [2 parts]
-│   └── StatePatterns               Reusable lifecycle state machine patterns. — [1 states]
+│   ├── CommonTypes                 Shared data types, enumerations, units of measure, and — [2 parts, 14 enums]
+│   └── DomainRegistry              Domain identity infrastructure: the formal representation — [2 parts]
 │
-├── Knowledge                       Explicit treatment of knowledge, decision logic, and adaptive
-│   ├── ClinicalDecisionSupport     Decision rules, eligibility criteria, monitoring protocols, — [3 parts]
-│   ├── LogicEngine                 Inference rules, Prolog-style reasoning, deterministic — [21 parts, 4 use cases]
+├── SystemMetamodelGeneral          The system metamodel, General layer: how the platform evaluates,
+│   ├── ProcessAnnotations          General annotations on process steps: consent and audit — [1 enums, 6 metadata]
+│   ├── StatePatterns               Reusable lifecycle state machine patterns. — [1 states]
+│   ├── LogicEngine                 Inference rules, Prolog-style reasoning, deterministic — [21 parts, 4 use cases, 7 enums]
+│   ├── EvaluationSpecs             Decision rules, eligibility criteria, monitoring protocols, — [3 parts]
 │   ├── DecisionModels              DMN-style decision tables modelled as SysML part defs — [1 parts, 1 enums]
 │   ├── OutcomeFramework            Outcome definitions, measurement points, structured outcome — [5 parts, 4 enums]
 │   ├── LearningCycles              Pathway refinement process, evidence review, change control — [2 use cases]
-│   └── Analytics                   Data contracts for BI and predictive analytics, event stream — [1 parts]
+│   ├── Analytics                   Data contracts for BI and predictive analytics, event stream — [1 parts]
+│   ├── Persistence                 Persistence architecture types: where a domain concept is — [1 parts, 2 enums]
+│   └── OpenEhrIntegration          Clinical record layer: openEHR CDR (EHRbase). — [5 parts, 4 use cases, 3 metadata]
 │
 ├── GslOperations                   Back office and growth functions.
 │   ├── Finance                     Operational accounting: invoice processing, payment — [1 parts, 4 use cases]
@@ -69,9 +71,6 @@ GenderSense
 │   ├── Identity                    User accounts, authentication, authorisation, role-based — [1 parts, 2 use cases]
 │   ├── Orchestration               Temporal infrastructure, workflow engine, worker deployment,
 │   └── Integration                 API gateway, third-party connectors, webhook management,
-│
-├── Platform                        Residual package (OP-132 step 4, S515).
-│   └── EHR                         Clinical record layer: openEHR CDR (EHRbase). — [5 parts, 4 use cases]
 │
 ├── GslServiceDelivery              The clinical and operational heart of GenderSense.
 │   ├── PatientJourney              Top-level lifecycle from acquisition through to discharge — [5 use cases]
@@ -120,4 +119,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-10-30 15:20 by `gen_package_hierarchy.py`.*
+*Generated 2026-10-30 15:28 by `gen_package_hierarchy.py`.*

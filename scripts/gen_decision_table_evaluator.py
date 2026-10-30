@@ -30,10 +30,10 @@ REPO_ROOT = pathlib.Path(__file__).parent.parent
 MODEL_DIR = REPO_ROOT / "model"
 # S515 (OP-132 step 6): the decision tables live in the GSL tenant model
 # (GslKnowledge::DecisionTables). The pattern (HitPolicy, DecisionTableDef)
-# stays in PATTERN_FILE — re-point to SystemMetamodelGeneral at step 8.
+# stays in PATTERN_FILE (SystemMetamodelGeneral since step 8).
 GSL_MODEL_DIR = REPO_ROOT / "exercises" / "gendersense" / "model"
 KNOWLEDGE_FILE = GSL_MODEL_DIR / "gsl-knowledge.sysml"
-PATTERN_FILE = MODEL_DIR / "knowledge.sysml"
+PATTERN_FILE = MODEL_DIR / "system-metamodel-general.sysml"  # SystemMetamodelGeneral::DecisionModels
 TABLES_PACKAGE = "DecisionTables"
 GENERATED_DIR = REPO_ROOT / "generated"
 

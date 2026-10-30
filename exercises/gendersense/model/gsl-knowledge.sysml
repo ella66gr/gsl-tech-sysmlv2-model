@@ -311,8 +311,8 @@ package GslKnowledge {
 
     package ClinicalDecisionSupport {
         private import ScalarValues::*;
-        private import Foundation::CommonTypes::*;          // Severity
-        private import Knowledge::ClinicalDecisionSupport::*; // InputDerivation, ConstraintEvaluationSpec, DecisionTableEvaluationSpec (SMG::EvaluationSpecs after step 8)
+        private import SystemMetamodelGeneral::LogicEngine::*;       // Severity
+        private import SystemMetamodelGeneral::EvaluationSpecs::*;   // InputDerivation, ConstraintEvaluationSpec, DecisionTableEvaluationSpec
 
         doc /* The GSL evaluation specifications: one per ConstraintLibrary
              * constraint, one per decision table, and the clinical
@@ -449,8 +449,8 @@ package GslKnowledge {
 
     package DecisionTables {
         private import ScalarValues::*;
-        private import Foundation::CommonTypes::*;        // Severity
-        private import Knowledge::DecisionModels::*;      // HitPolicy, DecisionTableDef (SMG::DecisionModels after step 8)
+        private import SystemMetamodelGeneral::LogicEngine::*;       // Severity
+        private import SystemMetamodelGeneral::DecisionModels::*;    // HitPolicy, DecisionTableDef
         private import GslKnowledge::HormoneTherapyTypes::*;
 
         doc /* The two hormone-therapy decision tables — regimen selection
@@ -811,8 +811,8 @@ package GslKnowledge {
 
     package OutcomeTargets {
         private import ScalarValues::*;
-        private import Foundation::CommonTypes::*;        // Severity
-        private import Knowledge::OutcomeFramework::*;    // OutcomeDefinition, MeasurementPoint, MeasurementSchedule and the outcome enums (SMG::OutcomeFramework after step 8)
+        private import SystemMetamodelGeneral::LogicEngine::*;       // Severity
+        private import SystemMetamodelGeneral::OutcomeFramework::*;  // OutcomeDefinition, MeasurementPoint, MeasurementSchedule and the outcome enums
 
         doc /* The GSL hormone-therapy outcome targets, measurement points,
              * the initiation-pathway measurement schedule, and the

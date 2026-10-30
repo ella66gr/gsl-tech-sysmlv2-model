@@ -34,11 +34,11 @@ MODEL_DIR = REPO_ROOT / "model"
 # S515 (OP-132 step 6): the GSL content (ConstraintLibrary, the evaluation
 # spec instances) lives in the GSL tenant model. The pattern types it
 # instantiates (InputDerivation, ConstraintEvaluationSpec,
-# DecisionTableEvaluationSpec) stay in PATTERN_FILE — re-point PATTERN_FILE
+# DecisionTableEvaluationSpec) stay in PATTERN_FILE (SystemMetamodelGeneral since step 8).
 # to the SystemMetamodelGeneral file at step 8. Only the GSL file is parsed.
 GSL_MODEL_DIR = REPO_ROOT / "exercises" / "gendersense" / "model"
 KNOWLEDGE_FILE = GSL_MODEL_DIR / "gsl-knowledge.sysml"
-PATTERN_FILE = MODEL_DIR / "knowledge.sysml"
+PATTERN_FILE = MODEL_DIR / "system-metamodel-general.sysml"  # SystemMetamodelGeneral::EvaluationSpecs
 GENERATED_DIR = REPO_ROOT / "generated"
 
 HEADER_TEMPLATE = """\
@@ -350,7 +350,7 @@ def translate_expression(expression, inputs):
 def emit_types(timestamp):
     """Generate evaluation-types.ts — shared type definitions."""
     header = HEADER_TEMPLATE.format(
-        source="model/knowledge.sysml, model/foundation.sysml",
+        source="model/system-metamodel-general.sysml (SystemMetamodelGeneral::LogicEngine, ::EvaluationSpecs)",
         timestamp=timestamp,
     )
 

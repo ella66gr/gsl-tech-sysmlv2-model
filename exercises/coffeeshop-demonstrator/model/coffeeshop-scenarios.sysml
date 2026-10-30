@@ -21,8 +21,7 @@ package CoffeeshopScenarios {
     private import BusinessScenarios::*;
     private import BusinessStrategy::*;
     private import BusinessModel::ResourcePlanning::ObjectiveCapabilityMapping;
-    private import Knowledge::LogicEngine::*;
-    private import Foundation::CommonTypes::*;
+    private import SystemMetamodelGeneral::LogicEngine::*;  // GoalProjection, Deficit, Severity, AssessmentScope, DeficitDomain, RemediationCategory
 
     doc /* Coffee shop scenario modelling extension. Two scenarios
          * for the same coffee shop business, demonstrating that the

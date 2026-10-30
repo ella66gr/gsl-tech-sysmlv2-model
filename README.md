@@ -34,13 +34,13 @@ gsl-sysml-model/
 │   ├── business-scenarios.sysml    Business scenario definitions
 │   ├── business-strategy.sysml     Business strategy definitions
 │   ├── architectural-structure.sysml  SMM: ArchitecturalSection + instances
+│   ├── system-metamodel-general.sysml  SMG: ProcessAnnotations, StatePatterns, LogicEngine, EvaluationSpecs, DecisionModels,
+│   │                               OutcomeFramework, LearningCycles, Analytics, Persistence, OpenEhrIntegration (OP-132 step 8)
 │   ├── system-metamodel-domain-clinical.sysml  SMD (clinical): @ClinicalReviewGate (OP-132 step 7)
 │   ├── canonical-runtime.sysml     Multi-axis status primitive (B71/B72) — CanonicalRuntimeType, StatusAxis,
 │   │                               ValueSpace, AxisTransition; Paws Booking five-axis declaration
 │   ├── pattern-catalogue.sysml     Validated patterns + architectural principles
-│   ├── foundation.sysml            MetadataLibrary, CommonTypes, StatePatterns
-│   ├── knowledge.sysml             CDS, Constraints, Logic, Decisions
-│   └── platform.sysml              Residual: EHR only (rest → gsl-platform.sysml; EHR → SMG at OP-132 step 8)
+│   └── foundation.sysml            Residual: CommonTypes (remaining enums), DomainRegistry (dissolving, OP-132 steps 9–11)
 ├── exercises/                      Tenant and demonstrator domain projections
 │   ├── gendersense/model/          GSL — production tenant (OP-132 steps 3–4): gendersense.sysml root,
 │   │                               gsl-enterprise, gsl-service-delivery, gsl-platform, gsl-operations,

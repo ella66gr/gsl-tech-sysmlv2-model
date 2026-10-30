@@ -1,119 +1,197 @@
 // =========================================================================
-// KNOWLEDGE — Decision logic, constraints, reasoning, and learning
+// SYSTEM METAMODEL GENERAL — the system-side General packages
+// =========================================================================
+//
+// OP-132 step 8 (S515, ADR-012 §4.1–4.2). Sector-agnostic system-side
+// vocabulary assembled from the former Knowledge package, Platform::EHR,
+// and the Foundation groups A, C, D, E, I and J (ADR-011 §4.7). Imports are
+// limited by rule R1: General and apparatus only. Tenant and Domain
+// content never appears here.
 // =========================================================================
 
-package Knowledge {
+package SystemMetamodelGeneral {
     private import ScalarValues::*;
 
-    doc /* Explicit treatment of knowledge, decision logic, and adaptive
-         * behaviour as first-class architectural concerns. Cross-cutting:
-         * imported by clinical pathways, referenced by governance, and
-         * consuming outcome data.
-         *
-         * Three-tier reasoning stack:
-         * Tier 1 — Deterministic logic (constraints, safety rules)
-         * Tier 2 — Structured decision support (DMN-style tables)
-         * Tier 3 — ML/LLM-augmented intelligence (advisory only) */
+    doc /* The system metamodel, General layer: how the platform evaluates,
+         * reasons, persists, annotates process steps, and integrates with
+         * the openEHR clinical data repository. Configured by tenants and
+         * extended by sector Domain packages (SystemMetamodelDomain<Sector>).
+         * Three-tier reasoning stack: Tier 1 deterministic logic
+         * (constraints, safety rules), Tier 2 structured decision support
+         * (DMN-style tables), Tier 3 ML/LLM-augmented intelligence
+         * (advisory only). */
 
-    package ClinicalDecisionSupport {
+    package ProcessAnnotations {
         private import ScalarValues::*;
-        private import Foundation::CommonTypes::*;
-        private import Knowledge::LogicEngine::*;
 
-        doc /* Decision rules, eligibility criteria, monitoring protocols,
-             * and clinical guidelines modelled as evaluable constraints.
-             * Consumes CDR data via AQL queries, evaluates against
-             * model-derived rules, and surfaces results to pathways
-             * and clinician/patient interfaces.
-             *
-             * Separates "what the rule is" (ConstraintLibrary) from
-             * "how to get the data for the rule" (here). Each
-             * constraint def has a corresponding ConstraintEvaluationSpec
-             * that binds it to its input derivations. Decision tables
-             * in DecisionModels have corresponding
-             * DecisionTableEvaluationSpecs following the same pattern.
-             *
-             * Goal-state projection:
-             * The GoalProjector (LogicEngine) consumes three goal
-             * sources: requirements (Enterprise::Regulation),
-             * constraint evaluation specs (here), and outcome
-             * definitions (Knowledge::OutcomeFramework). Outcome
-             * definitions are self-contained — they specify both
-             * the target and the evaluation query, so a separate
-             * evaluation spec is not needed for them.
-             *
-             * Elaborated Session 8 (Phase 1: constraint specs),
-             * Session 10 (Phase 3: decision table specs),
-             * Session 11 (Phase 4: goal-state projection note). */
+        doc /* General annotations on process steps: consent and audit
+             * hooks whose meaning is given by reference to the IGF type
+             * module (form of that reference still to be set, ADR-011 §4.7),
+             * the Tier 1 and Tier 2 evaluation markers (@LogicRule,
+             * @DecisionTable, @SafetyConstraint), and the agency
+             * classification enum and annotation. Formerly in
+             * Foundation's MetadataLibrary (groups A, B, D, E). */
 
-        // =============================================================
-        // Input derivation pattern
-        // =============================================================
+        // -- Clinical pathway metadata --------------------------
 
-        part def InputDerivation {
-            doc /* Defines how a single constraint input is derived
-                 * from an authoritative data source. The pattern is
-                 * source-agnostic: the same structure describes AQL
-                 * queries against the CDR, Temporal workflow state
-                 * queries, and platform service API calls.
-                 *
-                 * Each input in a constraint def has a corresponding
-                 * InputDerivation that specifies the query,
-                 * computation, and fallback behaviour. This formalises
-                 * what the ConstraintLibrary doc blocks describe
-                 * narratively. */
-            attribute inputName : String;
-            attribute sourceType : DataSourceType;
-            attribute query : String;
-            attribute computation : String;
-            attribute fallbackOutcome : EvaluationOutcome;
-            attribute fallbackReason : String;
+        metadata def ConsentRequired {
+            doc /* Marks a pathway step as requiring patient consent
+                 * before proceeding. */
+            attribute consentType : String;
         }
 
-        part def ConstraintEvaluationSpec {
-            doc /* Binds a constraint definition to its input
-                 * derivations, forming a complete evaluation
-                 * specification. This is the unit that the evaluation
-                 * engine consumes: it knows which constraint to
-                 * evaluate and how to get every input.
-                 *
-                 * Separates "what the rule is" (ConstraintLibrary)
-                 * from "how to get the data" (here). */
-            attribute constraintName : String;
-            attribute requirementName : String;
-            attribute severity : Severity;
-            part inputDerivations : InputDerivation[0..*];
+        metadata def AuditPoint {
+            doc /* Marks a step that must produce a governance audit
+                 * record. */
+            attribute auditCategory : String;
         }
 
-        // =============================================================
-        // Decision table evaluation specifications
-        //
-        // Parallel to ConstraintEvaluationSpecs, these bind decision
-        // tables to their input derivations. The same InputDerivation
-        // pattern applies: each table input is derived from an
-        // authoritative data source.
-        // =============================================================
+        metadata def LogicRule {
+            doc /* Marks an element as containing or referencing a
+                 * deterministic logic rule for Tier 1 evaluation. */
+            attribute ruleName : String;
+        }
 
-        part def DecisionTableEvaluationSpec {
-            doc /* Binds a decision table to its input derivations
-                 * and evaluation metadata, parallel to
-                 * ConstraintEvaluationSpec for constraints.
-                 *
-                 * The tableName matches the @DecisionTable metadata
-                 * annotation on pathway steps. The evaluation
-                 * infrastructure resolves the name to this spec,
-                 * derives inputs, evaluates the table, and returns
-                 * the matching row's outputs. */
+        metadata def DecisionTable {
+            doc /* Marks an element as containing or referencing a
+                 * DMN-style decision table for Tier 2 evaluation. */
             attribute tableName : String;
-            attribute description : String;
-            part inputDerivations : InputDerivation[0..*];
         }
 
+        metadata def SafetyConstraint {
+            doc /* Marks a constraint as safety-critical: must be
+                 * evaluated and must not be overridden. */
+            attribute constraintName : String;
+            attribute severity : String;
+        }
+
+        // -- Agency classification metadata -----------------------
+        // System meta model concepts: annotate pathway
+        // action nodes with the agent who performs them.
+        // Prerequisite for all four generations of self-service.
+        // Added Session 29: CSW Extension Phase 10 (items 9.1, 9.2).
+        // Source: gsl-discussion-model-self-service-enabling-
+        //   architecture-2026-03-14.md §7
+        // Meta model: Business System (placed in Foundation
+        // MetadataLibrary as cross-cutting metadata).
+
+        enum def AgencyType {
+            doc /* Who performs an action in a pathway. Applies to
+                 * both clinical and non-clinical contexts.
+                 *
+                 * Coffee shop: customer (self-service kiosk), staff
+                 * (barista makes drink), automated (order routing),
+                 * collaborative (customer and barista discuss).
+                 *
+                 * Clinical: patientAgent, clinicianAgent, automated,
+                 * collaborative (e.g. ICE-supported shared decision).
+                 *
+                 * System meta model concept.
+                 *
+                 * NOTE: 'system' is a KerML reserved word and cannot
+                 * be used as an enum literal. 'automated' is used
+                 * instead. 'patient' and 'clinician' are suffixed
+                 * with 'Agent' to avoid potential conflicts. */
+            patientAgent;
+            clinicianAgent;
+            automated;
+            collaborative;
+        }
+
+        metadata def AgencyClassification {
+            doc /* Annotates a pathway action node with the agent who
+                 * performs it. Applied via @AgencyClassification on
+                 * action usages within action defs.
+                 *
+                 * The authorityModelVersion attribute records which
+                 * generation's authority rules were in effect when
+                 * this classification was assigned. Supports
+                 * governance traceability as the self-service model
+                 * evolves through generations.
+                 *
+                 * Initial version: "G1-clinician-authority" — all
+                 * clinical decisions made by clinician, patient role
+                 * is to provide information and give consent.
+                 *
+                 * System meta model concept.
+                 *
+                 * Source: gsl-discussion-model-self-service-enabling-
+                 *   architecture-2026-03-14.md §7
+                 *
+                 * SYNTAX NOTE (Session 29): enum-typed attribute on
+                 * metadata def. If agencyType : AgencyType fails in
+                 * Syside, fall back to agencyType : String. */
+            attribute agencyType : AgencyType;
+            attribute authorityModelVersion : String;
+            attribute agencyNotes : String;
+        }
+    }
+
+    package StatePatterns {
+        private import ScalarValues::*;
+
+        doc /* Reusable lifecycle state machine patterns. Many entities
+             * share similar lifecycle shapes (e.g. created -> active ->
+             * suspended -> completed -> cancelled). Define once here,
+             * specialise in ClinicalEntities and elsewhere.
+             *
+             * Pattern: define a generic state def, then specialise it
+             * for specific entity types with additional states or
+             * transitions as needed. */
+
+        // Standard lifecycle events
+        attribute def Activated;
+        attribute def Suspended;
+        attribute def Resumed;
+        attribute def Completed;
+        attribute def Cancelled;
+
+        state def StandardLifecycle {
+            doc /* A generic lifecycle pattern applicable to many entities.
+                 * States: created, active, suspended, completed, cancelled.
+                 * Specialise for entity-specific variations. */
+
+            initial;
+            state created;
+            state active;
+            state suspended;
+            state completed;
+            state cancelled;
+
+            transition created_to_active
+                first created
+                accept Activated
+                then active;
+
+            transition active_to_suspended
+                first active
+                accept Suspended
+                then suspended;
+
+            transition suspended_to_active
+                first suspended
+                accept Resumed
+                then active;
+
+            transition active_to_completed
+                first active
+                accept Completed
+                then completed;
+
+            transition active_to_cancelled
+                first active
+                accept Cancelled
+                then cancelled;
+
+            transition created_to_cancelled
+                first created
+                accept Cancelled
+                then cancelled;
+        }
     }
 
     package LogicEngine {
         private import ScalarValues::*;
-        private import Foundation::CommonTypes::*;
 
         doc /* Inference rules, Prolog-style reasoning, deterministic
              * constraint evaluation, and system self-knowledge
@@ -168,6 +246,92 @@ package Knowledge {
              * Elaborated Session 8 (Phase 1: data structures),
              * Session 9 (Phase 2: component model),
              * Session 18 (Phase 6B: business steering extension). */
+
+        // -- Evaluation and self-knowledge enumerations ----------
+        // Formerly in Foundation's CommonTypes (group J, ADR-011 §4.7); their
+        // consumers are LogicEngine, EvaluationSpecs and tenant scenarios.
+
+        // --- Evaluation and self-knowledge types ---------------
+        // Added Session 8: Knowledge Layer Phase 1
+
+        enum def EvaluationOutcome {
+            doc /* Result of evaluating a constraint, rule, or goal.
+                 * Three-valued: pass (condition met), fail (condition
+                 * not met), indeterminate (insufficient data). */
+            pass;
+            fail;
+            indeterminate;
+        }
+
+        enum def Severity {
+            doc /* Severity classification for deficits, constraints,
+                 * and audit findings. */
+            critical;
+            warning;
+            informational;
+        }
+
+        enum def AssessmentScope {
+            doc /* Scope at which an evaluation or assessment is
+                 * performed. */
+            patient;
+            cohort;
+            pathway;
+            domain;
+            system;
+        }
+
+        enum def DataSourceType {
+            doc /* Authoritative data source for input derivation.
+                 * Source-agnostic: same InputDerivation structure
+                 * works regardless of where data comes from.
+                 *
+                 * Phase 6B: added accounting for financial actuals
+                 * from Xero via Operations::Finance. */
+            cdr;         // openEHR CDR via AQL
+            temporal;    // Temporal workflow state and history
+            platform;    // Platform services (infrastructure, identity)
+            entity;      // Entity lifecycle state (XState / Temporal)
+            accounting;  // Accounting system (Xero) via Operations::Finance
+        }
+
+        enum def DeficitDomain {
+            doc /* Domain classification for a deficit.
+                 *
+                 * Phase 6B: added financial for deficits arising
+                 * from financial variance (revenue shortfall, cost
+                 * overrun, margin below forecast). Distinct from
+                 * operational (process state) because financial
+                 * deficits are about the money flowing through
+                 * processes, not the processes themselves. */
+            clinical;
+            operational;
+            infrastructure;
+            governance;
+            financial;
+        }
+
+        enum def RemediationCategory {
+            doc /* How a deficit can be addressed. Defines the boundary
+                 * between deterministic system action and advisory
+                 * output.
+                 * automatic: pathway model defines next step, system
+                 *   can trigger it.
+                 * recommended: specific action identified but requires
+                 *   human decision.
+                 * advisory: deficit is systemic or compound, system
+                 *   surfaces it with supporting data. */
+            automatic;
+            recommended;
+            advisory;
+        }
+
+        enum def ServiceHealthStatus {
+            doc /* Health status of an infrastructure service. */
+            healthy;
+            degraded;
+            unreachable;
+        }
 
         // =============================================================
         // Evaluation result structures (Phase 1 — Track A)
@@ -1026,9 +1190,103 @@ package Knowledge {
         }
     }
 
+    package EvaluationSpecs {
+        private import ScalarValues::*;
+        private import SystemMetamodelGeneral::LogicEngine::*;  // Severity, DataSourceType
+
+        doc /* Decision rules, eligibility criteria, monitoring protocols,
+             * and clinical guidelines modelled as evaluable constraints.
+             * Consumes CDR data via AQL queries, evaluates against
+             * model-derived rules, and surfaces results to pathways
+             * and clinician/patient interfaces.
+             *
+             * Separates "what the rule is" (ConstraintLibrary) from
+             * "how to get the data for the rule" (here). Each
+             * constraint def has a corresponding ConstraintEvaluationSpec
+             * that binds it to its input derivations. Decision tables
+             * in DecisionModels have corresponding
+             * DecisionTableEvaluationSpecs following the same pattern.
+             *
+             * Goal-state projection:
+             * The GoalProjector (LogicEngine) consumes three goal
+             * sources: requirements (Enterprise::Regulation),
+             * constraint evaluation specs (here), and outcome
+             * definitions (Knowledge::OutcomeFramework). Outcome
+             * definitions are self-contained — they specify both
+             * the target and the evaluation query, so a separate
+             * evaluation spec is not needed for them.
+             *
+             * Elaborated Session 8 (Phase 1: constraint specs),
+             * Session 10 (Phase 3: decision table specs),
+             * Session 11 (Phase 4: goal-state projection note). */
+
+        // =============================================================
+        // Input derivation pattern
+        // =============================================================
+
+        part def InputDerivation {
+            doc /* Defines how a single constraint input is derived
+                 * from an authoritative data source. The pattern is
+                 * source-agnostic: the same structure describes AQL
+                 * queries against the CDR, Temporal workflow state
+                 * queries, and platform service API calls.
+                 *
+                 * Each input in a constraint def has a corresponding
+                 * InputDerivation that specifies the query,
+                 * computation, and fallback behaviour. This formalises
+                 * what the ConstraintLibrary doc blocks describe
+                 * narratively. */
+            attribute inputName : String;
+            attribute sourceType : DataSourceType;
+            attribute query : String;
+            attribute computation : String;
+            attribute fallbackOutcome : EvaluationOutcome;
+            attribute fallbackReason : String;
+        }
+
+        part def ConstraintEvaluationSpec {
+            doc /* Binds a constraint definition to its input
+                 * derivations, forming a complete evaluation
+                 * specification. This is the unit that the evaluation
+                 * engine consumes: it knows which constraint to
+                 * evaluate and how to get every input.
+                 *
+                 * Separates "what the rule is" (ConstraintLibrary)
+                 * from "how to get the data" (here). */
+            attribute constraintName : String;
+            attribute requirementName : String;
+            attribute severity : Severity;
+            part inputDerivations : InputDerivation[0..*];
+        }
+
+        // =============================================================
+        // Decision table evaluation specifications
+        //
+        // Parallel to ConstraintEvaluationSpecs, these bind decision
+        // tables to their input derivations. The same InputDerivation
+        // pattern applies: each table input is derived from an
+        // authoritative data source.
+        // =============================================================
+
+        part def DecisionTableEvaluationSpec {
+            doc /* Binds a decision table to its input derivations
+                 * and evaluation metadata, parallel to
+                 * ConstraintEvaluationSpec for constraints.
+                 *
+                 * The tableName matches the @DecisionTable metadata
+                 * annotation on pathway steps. The evaluation
+                 * infrastructure resolves the name to this spec,
+                 * derives inputs, evaluates the table, and returns
+                 * the matching row's outputs. */
+            attribute tableName : String;
+            attribute description : String;
+            part inputDerivations : InputDerivation[0..*];
+        }
+
+    }
+
     package DecisionModels {
         private import ScalarValues::*;
-        private import Foundation::CommonTypes::*;
 
         doc /* DMN-style decision tables modelled as SysML part defs
              * with typed inputs, outputs, and row-level rules.
@@ -1101,8 +1359,8 @@ package Knowledge {
 
     package OutcomeFramework {
         private import ScalarValues::*;
-        private import Foundation::CommonTypes::*;
-        private import Foundation::MetadataLibrary::*;
+        private import SystemMetamodelGeneral::LogicEngine::*;          // Severity
+        private import SystemMetamodelGeneral::OpenEhrIntegration::*;   // @OpenEhrArchetype
         private import ProjectionMetadata::*;
 
         doc /* Outcome definitions, measurement points, structured outcome
@@ -1148,7 +1406,7 @@ package Knowledge {
              * (decision tables that consume outcome-derived inputs). */
 
         // -- Outcome enumerations ---------------------------------
-        // Moved here from Foundation::CommonTypes at S514 (OP-125,
+        // Moved here from Foundation's CommonTypes at S514 (OP-125,
         // ADR-011 §4.7). Used only by this package; defined here
         // since Session 11 for it.
 
@@ -1391,6 +1649,340 @@ package Knowledge {
                  * consumed by analytics or ML pipelines. */
             attribute contractName : String;
             attribute description : String;
+        }
+    }
+
+    package Persistence {
+        private import ScalarValues::*;
+
+        doc /* Persistence architecture types: where a domain concept is
+             * stored and why. Formerly in Foundation's CommonTypes (group J);
+             * consumed by the Cafe persistence policies. */
+
+        // -- Persistence architecture types -------------------------
+        // System meta model concepts: describe where domain
+        // data lives and why. Cross-cutting — importable by any package.
+        // Added Session 29: CSW Extension Phase 10.
+        // Source: gsl-spec-catalogue-inventory-v2.1.md §8.3
+        // Meta model: Business System (placed in Foundation for
+        // practical cross-cutting access; will migrate when the
+        // system meta model is extracted as a named package).
+
+        enum def PersistenceLayer {
+            doc /* The persistence technology layer where a domain
+                 * concept is stored. Each layer has distinct
+                 * characteristics:
+                 * - clinicalDataRepository: archetype-validated,
+                 *   terminology-bound, versioned (openEHR)
+                 * - businessDatabase: relational CRUD, transactional
+                 *   integrity (PostgreSQL)
+                 * - processEngine: durable execution, signal handling
+                 *   (Temporal)
+                 * - externalReference: knowledge the system links to
+                 *   but does not own
+                 *
+                 * System meta model concept. */
+            clinicalDataRepository;
+            businessDatabase;
+            processEngine;
+            externalReference;
+        }
+
+        enum def DataCharacteristic {
+            doc /* Distinguishing characteristics that determine the
+                 * natural persistence home for a domain concept.
+                 * A concept's characteristic profile maps to a
+                 * persistence layer.
+                 *
+                 * System meta model concept. */
+            clinicalSignificance;
+            terminologyBound;
+            requiresVersioning;
+            highFrequencyUpdate;
+            transactionalIntegrity;
+            relationalJoins;
+            archetypeValidated;
+            durableExecution;
+            eventDriven;
+            referenceData;
+            regulatoryAudit;
+        }
+
+        part def PersistencePolicy {
+            doc /* Maps a domain concept to its persistence layer,
+                 * with explicit rationale expressed as distinguishing
+                 * characteristics. Makes architectural reasoning
+                 * queryable and auditable — the system can explain
+                 * why each concept lives where it does.
+                 *
+                 * System meta model concept: describes how
+                 * the system is architected, not what the business
+                 * offers. Any service business system that uses
+                 * multiple persistence technologies needs this.
+                 *
+                 * Instantiated per domain concept in each domain's
+                 * business model (e.g. CoffeeShopBusinessModel).
+                 *
+                 * Source: gsl-spec-catalogue-inventory-v2.1.md §8.3 */
+            attribute domainConcept : String;
+            attribute targetLayer : PersistenceLayer;
+            attribute rationale : String;
+            attribute characteristics : DataCharacteristic [1..*];
+        }
+    }
+
+    package OpenEhrIntegration {
+        private import ScalarValues::*;
+
+
+        doc /* Clinical record layer: openEHR CDR (EHRbase).
+             *
+             * The CDR is the persistent, semantically structured clinical
+             * data layer. It stores compositions conforming to templates
+             * built from archetypes. The CDR does not care how data
+             * arrived — it validates against the template on commit.
+             *
+             * Two data paths, both producing the same structured,
+             * queryable, semantically typed data:
+             *   - Workflow-driven: Temporal activities commit compositions
+             *     as part of pathway execution (validated Phase B)
+             *   - Form-driven: direct entry outside workflows via
+             *     SvelteKit endpoints (validated Phase C)
+             *
+             * Entity views query the CDR by archetype type (e.g. all
+             * blood results, all consultations) regardless of which
+             * pathway or form produced the data.
+             *
+             * Population-level governance queries compare CDR contents
+             * against model-derived rules to identify data completeness
+             * gaps (validated Phase D).
+             *
+             * Elaborated 8 March 2026 (CDR Exercise Phase E) with
+             * structural elements informed by Phases A-D findings.
+             * See also: @OpenEhrArchetype below in this package
+             * and @OpenEhrTemplate metadata defs used to annotate
+             * archetype-mapped part defs elsewhere in the model. */
+
+        // -- CDR infrastructure ---------------------------------
+
+        part def CdrConnection {
+            doc /* Connection configuration for an openEHR CDR instance.
+                 *
+                 * Validated against EHRbase 2.11.0 (Docker).
+                 * REST API base path: /ehrbase/rest/openehr/v1/
+                 * Auth: basic auth for development; production TBD.
+                 *
+                 * The nodeName appears in composition UIDs as the
+                 * second segment: {uuid}::{nodeName}::{version}.
+                 * Must match SERVER_NODENAME in EHRbase config. */
+            attribute baseUrl : String;
+            attribute authType : String;     // basic | oauth2
+            attribute nodeName : String;     // e.g. "gendersense.local"
+        }
+
+        part def EhrRecord {
+            doc /* An openEHR Electronic Health Record for one patient.
+                 *
+                 * One EHR per patient, created at registration. The
+                 * subjectId + subjectNamespace pair enables idempotent
+                 * lookup via GET /ehr?subject_id=X&subject_namespace=Y.
+                 * The getOrCreateEhr pattern (validated Phase B) makes
+                 * EHR resolution safe to call from any activity.
+                 *
+                 * Namespace must match pattern [a-zA-Z][a-zA-Z0-9-_:/&+?]*
+                 * — dots are NOT allowed (EHRbase validation, Phase B
+                 * finding). Use hyphens as separators. */
+            attribute ehrId : String;              // UUID assigned by CDR
+            attribute subjectId : String;          // external patient ID
+            attribute subjectNamespace : String;   // e.g. "gendersense-patient"
+            attribute systemId : String;           // matches nodeName
+        }
+
+        part def RegisteredTemplate {
+            doc /* An Operational Template (OPT) registered in the CDR.
+                 *
+                 * Templates compose archetypes into use-case-specific
+                 * data sets. Each template defines one composition type.
+                 * Uploaded via the Definition API (POST /definition/template/adl1.4).
+                 *
+                 * EHRbase rejects duplicate template_id uploads (HTTP 409).
+                 * For development: database reset (docker compose down -v).
+                 * For production: ehrbase.template.allow-overwrite=true.
+                 *
+                 * OPTs are exported from Archetype Designer (Firefox only —
+                 * Chrome export hangs, Phase A finding). */
+            attribute templateId : String;         // e.g. "coffeeshop-order-composition.v1"
+            attribute archetypeIds : String;        // comma-separated archetype IDs in this template
+        }
+
+        part def Composition {
+            doc /* A composition committed to the CDR.
+                 *
+                 * Compositions are the unit of clinical data committed
+                 * and retrieved. Each conforms to a registered template.
+                 * Canonical JSON format maps directly to the openEHR
+                 * Reference Model hierarchy:
+                 *   COMPOSITION > content > ENTRY > data/description > items
+                 *
+                 * Commit returns 204 with Prefer: return=minimal.
+                 * UID in ETag header (quoted): "uid::nodeName::version".
+                 *
+                 * EHRbase validates DV_CODED_TEXT values against archetype
+                 * term definitions — exact text match required (Phase A
+                 * finding). Composition builders must derive display text
+                 * from the template, not from developer input.
+                 *
+                 * Entry RM classes have different structures:
+                 *   OBSERVATION: data (HISTORY > POINT_EVENT > ITEM_TREE)
+                 *   EVALUATION: data (ITEM_TREE)
+                 *   ACTION: description (ITEM_TREE) + time + ism_transition
+                 * All three validated in CDR Exercise Phases A-D. */
+            attribute compositionUid : String;     // uuid::nodeName::version
+            attribute templateId : String;         // template this conforms to
+            attribute ehrId : String;              // owning EHR
+            attribute composerName : String;       // who committed
+        }
+
+        part def AqlQuery {
+            doc /* A named AQL (Archetype Query Language) query.
+                 *
+                 * AQL queries the CDR by archetype type, providing
+                 * entity views independent of the process that produced
+                 * the data. Paths mirror the RM hierarchy using archetype
+                 * node IDs (at-codes).
+                 *
+                 * EHRbase 2.11.0 limitations:
+                 *   - COUNT / GROUP BY not supported (use application-
+                 *     level aggregation, Phase C finding)
+                 *   - NOT EXISTS subqueries not supported (use
+                 *     application-level join, Phase D finding)
+                 *
+                 * Governance audit pattern (validated Phase D): two AQL
+                 * queries (one per composition type), joined in
+                 * application code by EHR ID, applying rules derived
+                 * from the SysML model to identify gaps. */
+            attribute queryName : String;          // human-readable name
+            attribute aql : String;                // AQL query string
+        }
+
+        // -- Use cases ------------------------------------------
+
+        use case def CommitComposition {
+            doc /* Store a clinical composition in the CDR conforming to
+                 * a registered template. The CDR validates the composition
+                 * structure and coded terms against the template.
+                 *
+                 * Called from: Temporal activity implementations (workflow
+                 * path) or SvelteKit server endpoints (form path). Both
+                 * use the same EHRbase client module and canonical JSON
+                 * composition format. */
+        }
+
+        use case def QueryByArchetype {
+            doc /* Retrieve clinical data via AQL query filtered by
+                 * archetype type. Entity view pattern: "show me all
+                 * blood results for this patient" regardless of which
+                 * pathway produced them.
+                 *
+                 * Results are returned as row sets. Application code
+                 * maps result columns to typed objects for front-end
+                 * rendering. */
+        }
+
+        use case def RunGovernanceAudit {
+            doc /* Execute a population-level data completeness audit.
+                 *
+                 * Pattern: query CDR for expected compositions (e.g.
+                 * all orders), query for matching compositions (e.g.
+                 * all preparations), join by EHR ID in application
+                 * code, identify gaps. Produces a governance report
+                 * with summary statistics and per-patient detail.
+                 *
+                 * Can run as scheduled Temporal workflow (cron) or
+                 * on-demand from a SvelteKit endpoint. Validated in
+                 * CDR Exercise Phase D. */
+        }
+
+        use case def ManageArchetypes {
+            doc /* Design, version, and deploy archetypes and templates.
+                 *
+                 * Workflow: design in Archetype Designer (web tool) →
+                 * export OPT via Firefox → upload to EHRbase via
+                 * Definition API. Term definitions edited in archetype,
+                 * not template (two-level modelling principle).
+                 *
+                 * Archetype Designer traps:
+                 *   - OPT export hangs in Chrome (use Firefox)
+                 *   - Unassigned elements default to BOOLEAN
+                 *   - Always explicitly set every element's data type */
+        }
+
+        // -- openEHR annotation metadata ----------------------------
+        // Formerly in Foundation's MetadataLibrary (group C). Used by both the
+        // Cafe (coffeeshop-archetypes) and GSL.
+
+        // -- openEHR CDR integration metadata -------------------
+
+        metadata def OpenEhrArchetype {
+            doc /* Maps a SysML part def to an openEHR archetype.
+                 *
+                 * Provides traceability between the structural model
+                 * and the CDR archetype layer. The archetypeId is the
+                 * full openEHR archetype identifier (e.g.
+                 * "openEHR-EHR-OBSERVATION.order_record.v0").
+                 * The rmClass identifies the Reference Model entry
+                 * class (OBSERVATION, ACTION, EVALUATION, etc.).
+                 *
+                 * Verified on part defs in Syside 0.8.5 (8 March 2026).
+                 * Cross-project import resolves correctly. Hover tooltip
+                 * shows doc string and source location.
+                 *
+                 * Does not generate code (yet) — purpose is traceability
+                 * and model self-description. A future generator could
+                 * use this to produce composition builder code from the
+                 * model. Queryable via Syside Automator metadata
+                 * filtering (evaluate_filter). */
+            attribute archetypeId : String;
+            attribute rmClass : String;
+        }
+
+        metadata def OpenEhrElement {
+            doc /* Maps a SysML element to an openEHR archetype data
+                 * element (at-code).
+                 *
+                 * The nodeId is the at-code within the archetype
+                 * (e.g. "at0005"). The rmType is the openEHR data
+                 * type (e.g. "DV_CODED_TEXT", "DV_TEXT",
+                 * "DV_DATE_TIME", "DV_QUANTITY").
+                 *
+                 * LIMITATION (verified 8 March 2026): Syside does NOT
+                 * accept @ annotations inside attribute bodies, and
+                 * doc blocks after semicolon-terminated attributes also
+                 * fail. This metadata def cannot be applied to attributes.
+                 * Retained for potential use on sub-part defs if a future
+                 * modelling pattern represents archetype data elements as
+                 * contained parts rather than attributes.
+                 *
+                 * Current recommendation: use inline comments for
+                 * per-element mapping. Format:
+                 *   attribute name : Type; // at0NNN | DV_CODED_TEXT */
+            attribute nodeId : String;
+            attribute rmType : String;
+        }
+
+        metadata def OpenEhrTemplate {
+            doc /* Maps a SysML part def to an openEHR template
+                 * (OPT / operational template).
+                 *
+                 * Templates compose archetypes into use-case-specific
+                 * data sets. Each template corresponds to a composition
+                 * type committed to the CDR. The templateId matches
+                 * the template_id used in EHRbase API calls.
+                 *
+                 * Applied to part defs that represent composition
+                 * types (containers of archetype-mapped data).
+                 * Verified on part defs in Syside 0.8.5 (8 March 2026). */
+            attribute templateId : String;
         }
     }
 }

@@ -63,7 +63,7 @@ package GslServiceDelivery {
         package HormoneTherapy {
             private import ScalarValues::*;
             private import GslServiceDelivery::ClinicalEntities::*;
-            private import Foundation::MetadataLibrary::*;   // @AuditPoint, @ConsentRequired, @LogicRule, @DecisionTable, @SafetyConstraint (SMG::ProcessAnnotations after step 8)
+            private import SystemMetamodelGeneral::ProcessAnnotations::*;  // @AuditPoint, @ConsentRequired, @LogicRule, @DecisionTable, @SafetyConstraint
             private import SystemMetamodelDomainClinical::*;  // @ClinicalReviewGate
             private import TemporalMetadata::*;
 

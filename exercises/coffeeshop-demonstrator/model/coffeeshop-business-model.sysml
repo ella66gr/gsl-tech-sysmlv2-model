@@ -18,7 +18,8 @@ package CoffeeShopBusinessModel {
     private import ScalarValues::*;
     private import BusinessModel::ServiceConcept::*;
     private import BusinessModel::ActivityModel::*;
-    private import Foundation::CommonTypes::*;
+    private import Foundation::CommonTypes::*;                    // RelationshipNature, DependencyCriticality (BMG::StakeholderModel after OP-132 step 9)
+    private import SystemMetamodelGeneral::Persistence::*;        // PersistenceLayer, PersistencePolicy
     private import CoffeeShop::*;
     private import BusinessModel::StakeholderModel::*;
 

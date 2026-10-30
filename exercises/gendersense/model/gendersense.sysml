@@ -1,10 +1,9 @@
 package GenderSense {
     private import ScalarValues::*;
     private import GslEnterprise::*;
-    private import Knowledge::*;
+    private import SystemMetamodelGeneral::*;
     private import GslServiceDelivery::*;
     private import GslPlatform::*;
-    private import Platform::*;  // residual: EHR only, until OP-132 step 8
     private import GslOperations::*;
     private import Foundation::*;
     private import ProjectionMetadata::*;
