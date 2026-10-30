@@ -1142,7 +1142,7 @@ package BusinessMetamodelGeneral {
             attribute constraintType : String;     // regulatory, financial, temporal, contractual, practical
             ref affectedResource : ResourceType;
             attribute limit : String;
-            attribute regulatorySourceDescription : String;   // e.g. "Enterprise::Regulation" or empty
+            attribute regulatorySourceDescription : String;   // e.g. the tenant's regulation package (GSL: GslEnterprise, Regulation) or empty
         }
 
         // -- Inventory tracking abstraction ----------------------

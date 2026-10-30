@@ -1,6 +1,6 @@
 package CrossPackageViewTests {
     private import ScalarValues::*;
-    private import BusinessModel::GovernanceMapping::*;
+    private import BusinessMetamodelGeneral::GovernanceMapping::*;
 
     doc /* VERIFIED — Session 43, 19 March 2026. All sub-tests pass.
          *
@@ -11,7 +11,7 @@ package CrossPackageViewTests {
          * package? This simulates the real Ontara use case: a view
          * selecting BMM elements for presentation in the console.
          *
-         * Test 6a: expose from BusinessModel::GovernanceMapping.
+         * Test 6a: expose from BusinessMetamodelGeneral::GovernanceMapping.
          * Test 6b: expose from multiple BMM sub-packages.
          *
          * Depends on: Tests 2 and 3 passing (view def and expose).
@@ -20,14 +20,14 @@ package CrossPackageViewTests {
     // --- Test 6a: expose from a single real model package ---
     view governanceElementsView {
         doc /* View exposing governance elements from the BMM. */
-        expose BusinessModel::GovernanceMapping::*;
+        expose BusinessMetamodelGeneral::GovernanceMapping::*;
     }
 
     // --- Test 6b: expose from multiple real model packages ---
     // (comment out if 6a fails)
     view financialAndGovernanceView {
         doc /* View combining elements from two BMM sub-packages. */
-        expose BusinessModel::GovernanceMapping::*;
-        expose BusinessModel::FinancialPlanning::*;
+        expose BusinessMetamodelGeneral::GovernanceMapping::*;
+        expose BusinessMetamodelGeneral::FinancialPlanning::*;
     }
 }

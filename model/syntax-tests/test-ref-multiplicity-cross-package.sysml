@@ -16,16 +16,16 @@
 // is verified in the syntax reference v3.10.
 //
 // Imports: Uses real project types to test genuine cross-package
-// resolution — BusinessModel::ServiceConcept::ServiceOffering and
-// BusinessModel::ResourcePlanning::Capability.
+// resolution — BusinessMetamodelGeneral::ServiceConcept::ServiceOffering and
+// BusinessMetamodelGeneral::ResourcePlanning::Capability.
 //
 // SysML v2 spec: ref x : Type[0..*];
 // =========================================================================
 
 package SyntaxTestRefMultiplicityCrossPackage {
     private import ScalarValues::*;
-    private import BusinessModel::ServiceConcept::ServiceOffering;
-    private import BusinessModel::ResourcePlanning::Capability;
+    private import BusinessMetamodelGeneral::ServiceConcept::ServiceOffering;
+    private import BusinessMetamodelGeneral::ResourcePlanning::Capability;
 
     doc /* Test: ref with multiplicity across packages.
          * Phase 7 pre-flight verification. */

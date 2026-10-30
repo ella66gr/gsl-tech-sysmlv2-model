@@ -18,7 +18,7 @@
 // Background:
 //   - business-model.sysml: ALL annotations placed BEFORE part def
 //     (the "prefix" or "Position A" convention noted in the BfoType
-//     metadata def doc block, Foundation::MetadataLibrary).
+//     metadata def doc block, ProjectionMetadata).
 //   - canonical-runtime.sysml (S255): @UserFacing and @BfoType placed
 //     INSIDE part def body. S255 verified parses cleanly in Syside.
 //   - Whether the other four annotations also parse inside the body
@@ -76,13 +76,13 @@ package SyntaxTestInlineVsPrefixAnnotation {
 
     // -- Supporting definitions ----------------------------------
     // Mirror the production metadata defs and enum from
-    // Foundation::MetadataLibrary so this test is self-contained
+    // ProjectionMetadata so this test is self-contained
     // (matches the convention of test-multiple-same-metaclass-
     // annotations.sysml, which mirrors RelationshipStrength and
     // WeightedRelationship locally).
 
     enum def RelationshipStrength {
-        doc /* Mirrors Foundation::MetadataLibrary::RelationshipStrength. */
+        doc /* Mirrors ProjectionMetadata::RelationshipStrength. */
         strong;
         moderate;
         weak;
@@ -90,31 +90,31 @@ package SyntaxTestInlineVsPrefixAnnotation {
     }
 
     metadata def CatalogueTag {
-        doc /* Mirrors Foundation::MetadataLibrary::CatalogueTag. */
+        doc /* Mirrors ProjectionMetadata::CatalogueTag. */
         attribute bmmConcern : String;
         attribute classification : String;
     }
 
     metadata def BfoType {
-        doc /* Mirrors Foundation::MetadataLibrary::BfoType. */
+        doc /* Mirrors ProjectionMetadata::BfoType. */
         attribute bfoClass : String;
         attribute midLevelClass : String;
         attribute mappingNotes : String;
     }
 
     metadata def UserFacing {
-        doc /* Mirrors Foundation::MetadataLibrary::UserFacing. */
+        doc /* Mirrors ProjectionMetadata::UserFacing. */
         attribute friendlyName : String;
         attribute shortDescription : String;
     }
 
     metadata def PurposiveDescription {
-        doc /* Mirrors Foundation::MetadataLibrary::PurposiveDescription. */
+        doc /* Mirrors ProjectionMetadata::PurposiveDescription. */
         attribute description : String;
     }
 
     metadata def Comprehension {
-        doc /* Mirrors Foundation::MetadataLibrary::Comprehension. */
+        doc /* Mirrors ProjectionMetadata::Comprehension. */
         attribute surfaceEnumValues : Boolean;
         attribute surfaceDomainInstantiations : Boolean;
         attribute surfaceRelatedConcepts : Boolean;
@@ -122,7 +122,7 @@ package SyntaxTestInlineVsPrefixAnnotation {
     }
 
     metadata def WeightedRelationship {
-        doc /* Mirrors Foundation::MetadataLibrary::WeightedRelationship. */
+        doc /* Mirrors ProjectionMetadata::WeightedRelationship. */
         attribute target : String;
         attribute strength : RelationshipStrength;
         attribute rationale : String;

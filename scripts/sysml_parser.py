@@ -27,10 +27,11 @@ class SysmlElement:
     """An element extracted from a .sysml file."""
     def __init__(self, kind, name, parent_package="", specialises="",
                  doc="", attributes=None, source_file="",
-                 source_domain="", line_number=0):
+                 source_domain="", line_number=0, top_level_package=""):
         self.kind = kind              # "part_def", "part", "enum_def", etc.
         self.name = name
-        self.parent_package = parent_package
+        self.parent_package = parent_package      # innermost enclosing package
+        self.top_level_package = top_level_package  # outermost enclosing package (S515 OP-132 step 12, map §5 row 1)
         self.specialises = specialises  # ":> SuperType" if present
         self.doc = doc.strip()
         self.attributes = attributes or []
@@ -52,6 +53,7 @@ class SysmlElement:
             "kind": self.kind,
             "name": self.name,
             "parentPackage": self.parent_package,
+            "topLevelPackage": self.top_level_package,
             "doc": self.doc[:300] if self.doc else "",
             "sourceFile": self.source_file,
             "sourceDomain": self.source_domain,
@@ -394,6 +396,7 @@ def parse_sysml_file(filepath, domain_key, repo_root=None):
             continue
 
         current_package = package_stack[-1][0] if package_stack else ""
+        top_level_package = package_stack[0][0] if package_stack else ""
 
         # Part def
         m = part_def_pattern.match(line)
@@ -413,6 +416,7 @@ def parse_sysml_file(filepath, domain_key, repo_root=None):
                 kind="part_def",
                 name=name,
                 parent_package=current_package,
+                top_level_package=top_level_package,
                 specialises=specialises,
                 doc=doc,
                 attributes=attrs,
@@ -442,6 +446,7 @@ def parse_sysml_file(filepath, domain_key, repo_root=None):
                 kind="part",
                 name=name,
                 parent_package=current_package,
+                top_level_package=top_level_package,
                 specialises=type_ref,
                 doc=doc,
                 attributes=attrs,
@@ -475,6 +480,7 @@ def parse_sysml_file(filepath, domain_key, repo_root=None):
                 kind="enum_def",
                 name=name,
                 parent_package=current_package,
+                top_level_package=top_level_package,
                 doc=doc,
                 attributes=values,
                 source_file=rel_path,
@@ -501,6 +507,7 @@ def parse_sysml_file(filepath, domain_key, repo_root=None):
                 kind="metadata_def",
                 name=name,
                 parent_package=current_package,
+                top_level_package=top_level_package,
                 doc=doc,
                 attributes=attrs,
                 source_file=rel_path,
@@ -527,6 +534,7 @@ def parse_sysml_file(filepath, domain_key, repo_root=None):
                 kind="requirement_def",
                 name=name,
                 parent_package=current_package,
+                top_level_package=top_level_package,
                 doc=doc,
                 attributes=attrs,
                 source_file=rel_path,
@@ -553,6 +561,7 @@ def parse_sysml_file(filepath, domain_key, repo_root=None):
                 kind="constraint_def",
                 name=name,
                 parent_package=current_package,
+                top_level_package=top_level_package,
                 doc=doc,
                 attributes=attrs,
                 source_file=rel_path,
@@ -574,6 +583,7 @@ def parse_sysml_file(filepath, domain_key, repo_root=None):
                 kind="constraint",
                 name=name,
                 parent_package=current_package,
+                top_level_package=top_level_package,
                 specialises=type_ref,
                 source_file=rel_path,
                 source_domain=domain_key,
@@ -602,6 +612,7 @@ def parse_sysml_file(filepath, domain_key, repo_root=None):
                 kind="satisfy",
                 name=satisfy_name,
                 parent_package=current_package,
+                top_level_package=top_level_package,
                 specialises=req_def,
                 source_file=rel_path,
                 source_domain=domain_key,
@@ -631,6 +642,7 @@ def parse_sysml_file(filepath, domain_key, repo_root=None):
                 kind="requirement",
                 name=name,
                 parent_package=current_package,
+                top_level_package=top_level_package,
                 specialises=type_ref,
                 doc=doc,
                 attributes=attrs,

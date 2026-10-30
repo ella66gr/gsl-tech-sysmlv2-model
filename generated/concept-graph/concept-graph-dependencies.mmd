@@ -1,28 +1,28 @@
 graph TD
 
-    notificationTriggersOnTransitions["Notification triggers on state transitions"]:::discussion
     selfAssessmentDashboard["Self-assessment dashboard (KL Increment 3)"]:::designed
-    autoLoadingEntityViews["Auto-loading entity views"]:::validated
-    optionEvaluatorHelpMeChoose["OptionEvaluator / Help Me Choose"]:::designed
-    xstateInTemporal["XState in Temporal"]:::validated
-    agencyClassificationOnActions["Agency classification on pathway actions"]:::designed
-    persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]:::validated
-    dataReleaseModel["Data release model (patient-facing)"]:::discussion
-    twoLayerActionFlow["Two-layer pathway modelling"]:::validated
-    auditAsTimelineDataSource["Audit-as-timeline data source"]:::validated
-    categoryConditionalFormFields["Category-conditional form fields"]:::validated
-    threeLayerPersistence["Three-persistence-layer architecture"]:::validated
-    infrastructureHealthAsAppConcern["Infrastructure health as application-level concern"]:::validated
-    crossPageDataConsistency["Cross-page data consistency"]:::validated
-    cdrSourceProvenanceBadges["CDR source provenance badges"]:::validated
-    processDomainGovernanceUnifiedView["Process + domain + governance unified view"]:::validated
-    fourLayerItemModel["Four-layer item model"]:::validated
-    multiSourceMetricsAggregation["Multi-source metrics aggregation with graceful degradation"]:::validated
     twoLayerModelVisualisation["Two-layer model visualisation in the UI"]:::validated
+    fourLayerItemModel["Four-layer item model"]:::validated
+    threeLayerPersistence["Three-persistence-layer architecture"]:::validated
     compositeOrderOrchestration["Composite order / multi-workflow orchestration"]:::discussion
-    kanbanAsProcessDashboard["Kanban-as-process-dashboard"]:::validated
-    fiveLayerSelfKnowledge["Five-layer self-knowledge architecture"]:::validated
+    xstateInTemporal["XState in Temporal"]:::validated
+    categoryConditionalFormFields["Category-conditional form fields"]:::validated
+    agencyClassificationOnActions["Agency classification on pathway actions"]:::designed
+    notificationTriggersOnTransitions["Notification triggers on state transitions"]:::discussion
+    persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]:::validated
     catalogueAsUiContract["Catalogue-as-UI-contract"]:::validated
+    crossPageDataConsistency["Cross-page data consistency"]:::validated
+    optionEvaluatorHelpMeChoose["OptionEvaluator / Help Me Choose"]:::designed
+    autoLoadingEntityViews["Auto-loading entity views"]:::validated
+    kanbanAsProcessDashboard["Kanban-as-process-dashboard"]:::validated
+    cdrSourceProvenanceBadges["CDR source provenance badges"]:::validated
+    twoLayerActionFlow["Two-layer pathway modelling"]:::validated
+    infrastructureHealthAsAppConcern["Infrastructure health as application-level concern"]:::validated
+    fiveLayerSelfKnowledge["Five-layer self-knowledge architecture"]:::validated
+    auditAsTimelineDataSource["Audit-as-timeline data source"]:::validated
+    dataReleaseModel["Data release model (patient-facing)"]:::discussion
+    multiSourceMetricsAggregation["Multi-source metrics aggregation with graceful degradation"]:::validated
+    processDomainGovernanceUnifiedView["Process + domain + governance unified view"]:::validated
 
     persistencePolicyAsReasoning --> fourLayerItemModel
     persistencePolicyAsReasoning --> threeLayerPersistence

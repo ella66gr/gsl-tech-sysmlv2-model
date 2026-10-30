@@ -11,7 +11,7 @@
 //   3. Can additional states/transitions be added in the specialisation?
 //   4. Does exhibit state work with a specialised state def?
 //
-// Context: Foundation::StatePatterns::StandardLifecycle defines a
+// Context: SystemMetamodelGeneral::StatePatterns::StandardLifecycle defines a
 // generic 5-state lifecycle. If specialisation works, entity-specific
 // lifecycles can extend it rather than duplicating the base pattern.
 // Currently, entity lifecycles are standalone (duplicating base states)

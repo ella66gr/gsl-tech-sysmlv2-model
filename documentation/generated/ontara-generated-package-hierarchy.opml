@@ -2,15 +2,21 @@
 <opml version="2.0">
   <head>
     <title>Ontara Package Hierarchy</title>
-    <dateCreated>2026-10-30 15:44</dateCreated>
+    <dateCreated>2026-10-30 15:50</dateCreated>
   </head>
   <body>
     <outline text="Ontara — Model-driven service system development and delivery platform">
-      <outline text="GslEnterprise  — Defines the organisational, regulatory, strategic, and risk context." _note="exercises/gendersense/model/gsl-enterprise.sysml:5">
-        <outline text="Organisation  — Roles, teams, governance structure, board, leadership,  [3 parts]" _note="gsl-enterprise.sysml:12"/>
-        <outline text="Regulation  — CQC fundamental standards, ICO/GDPR obligations,  [4 use cases, 8 requirements]" _note="gsl-enterprise.sysml:38"/>
-        <outline text="Strategy  — Partnerships, strategic context, ethos and values,  [2 parts]" _note="gsl-enterprise.sysml:207"/>
-        <outline text="Risk  — Clinical risk management, business continuity, safeguarding  [3 use cases]" _note="gsl-enterprise.sysml:272"/>
+      <outline text="BusinessMetamodelGeneral  — The business model package captures the strategic logic of the" _note="business-metamodel-general.sysml:14">
+        <outline text="ServiceConcept  — Defines the value proposition, customer segments, service  [9 parts]" _note="business-metamodel-general.sysml:61"/>
+        <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-metamodel-general.sysml:600"/>
+        <outline text="ResourcePlanning  — Defines the resources required to operate the service  [7 parts]" _note="business-metamodel-general.sysml:873"/>
+        <outline text="FinancialPlanning  — Defines the financial structure of the business: how  [5 parts, 1 enums]" _note="business-metamodel-general.sysml:1255"/>
+        <outline text="GovernanceMapping  — General vocabulary for governance traceability.  [1 parts, 1 requirements]" _note="business-metamodel-general.sysml:1500"/>
+        <outline text="StakeholderModel  — The relational boundary of the business: how it  [6 parts, 3 enums]" _note="business-metamodel-general.sysml:1636"/>
+        <outline text="BusinessScenarios  — Provides the mechanics for driving the business model  [11 parts, 2 enums]" _note="business-metamodel-general.sysml:2054"/>
+        <outline text="BusinessStrategy  — Strategic direction, business model variants, and  [2 parts, 1 requirements]" _note="business-metamodel-general.sysml:2237"/>
+        <outline text="CanonicalRuntime  — BMM General canonical-runtime vocabulary.  [4 parts, 3 enums]" _note="business-metamodel-general.sysml:2401"/>
+        <outline text="DomainIdentityTypes  — Domain identity: what kind of service business a tenant is,  [1 parts, 7 enums]" _note="business-metamodel-general.sysml:2742"/>
       </outline>
       <outline text="SystemMetamodelGeneral  — The system metamodel, General layer: how the platform evaluates," _note="system-metamodel-general.sysml:12">
         <outline text="ProcessAnnotations  — General annotations on process steps: consent and audit  [1 enums, 6 metadata]" _note="system-metamodel-general.sysml:24"/>
@@ -25,84 +31,81 @@
         <outline text="OpenEhrIntegration  — Clinical record layer: openEHR CDR (EHRbase).  [5 parts, 4 use cases, 3 metadata]" _note="system-metamodel-general.sysml:1734"/>
         <outline text="DomainConfigurationTypes  — Domain configuration: how the platform discovers, organises,  [1 parts]" _note="system-metamodel-general.sysml:1989"/>
       </outline>
-      <outline text="GslOperations  — Back office and growth functions." _note="exercises/gendersense/model/gsl-operations.sysml:5">
-        <outline text="Finance  — Operational accounting: invoice processing, payment  [1 parts, 4 use cases]" _note="gsl-operations.sysml:33"/>
-        <outline text="People  — Workforce management: roles, contracts, recruitment,  [1 parts, 4 use cases]" _note="gsl-operations.sysml:107"/>
-        <outline text="EstatesAndFacilities  — Premises, equipment, and procurement.  [2 parts, 1 use cases]" _note="gsl-operations.sysml:205"/>
-        <outline text="Marketing  — Acquisition funnel, content production, community  [1 use cases]" _note="gsl-operations.sysml:299"/>
-        <outline text="CRM  — Prospect and patient relationship management," _note="gsl-operations.sysml:322"/>
-        <outline text="Reporting  — Business intelligence, operational dashboards, regulatory  [3 use cases]" _note="gsl-operations.sysml:333"/>
-      </outline>
-      <outline text="GslPlatform  — The technology systems that support service delivery." _note="exercises/gendersense/model/gsl-platform.sysml:5">
-        <outline text="PatientPortal  — Patient-facing web platform, self-management hub.  [2 use cases]" _note="gsl-platform.sysml:21">
-          <outline text="SelfManagement  — Personal dashboard, progress tracking, alerts and  [3 use cases]" _note="gsl-platform.sysml:44"/>
-          <outline text="IdentityAndAvatar  — Personal evolving avatar: self-representation, identity  [3 use cases]" _note="gsl-platform.sysml:79"/>
-          <outline text="Journal  — Personal journal for reflective practice.  [2 use cases]" _note="gsl-platform.sysml:127"/>
-          <outline text="SessionPlanning  — Consultation session sequence planning, appointment  [2 use cases]" _note="gsl-platform.sysml:155"/>
-          <outline text="DocumentAccess  — Secure document portal for patient access to their  [3 use cases]" _note="gsl-platform.sysml:180"/>
-        </outline>
-        <outline text="Education  — Patient-facing knowledge and learning platform." _note="gsl-platform.sysml:210">
-          <outline text="KnowledgeBase  — FAQs, reference materials, answerbase, curated  [2 use cases]" _note="gsl-platform.sysml:226"/>
-          <outline text="LearningContent  — Structured courses, self-directed learning modules,  [1 use cases]" _note="gsl-platform.sysml:250"/>
-          <outline text="TherapyPathways  — Structured therapy journeys, guided self-development,  [2 use cases]" _note="gsl-platform.sysml:267"/>
-          <outline text="ContentDelivery  — Content management, personalised recommendations,  [2 use cases]" _note="gsl-platform.sysml:299"/>
-        </outline>
-        <outline text="Community  — Patient-to-patient and group interaction platform." _note="gsl-platform.sysml:325">
-          <outline text="GroupSpaces  — Group spaces with privacy controls, shared resources,  [2 use cases]" _note="gsl-platform.sysml:340"/>
-          <outline text="GroupSessions  — Group video sessions, facilitated workshops, peer  [2 use cases]" _note="gsl-platform.sysml:365"/>
-          <outline text="PeerMessaging  — Patient-to-patient messaging, group chat, peer  [1 use cases]" _note="gsl-platform.sysml:390"/>
-        </outline>
-        <outline text="Booking  — Appointment scheduling, availability management, reminders,  [2 use cases]" _note="gsl-platform.sysml:409"/>
-        <outline text="Forms  — Questionnaires, clinical assessment forms, validation rules,  [2 use cases]" _note="gsl-platform.sysml:427"/>
-        <outline text="Messaging  — Patient communications, secure messaging, notifications,  [2 use cases]" _note="gsl-platform.sysml:447"/>
-        <outline text="VideoConsulting  — Telehealth platform integration, session management.  [1 use cases]" _note="gsl-platform.sysml:465"/>
-        <outline text="LabInterface  — Laboratory orders, results receipt, pathology integration,  [2 use cases]" _note="gsl-platform.sysml:477"/>
-        <outline text="PrescribingSystem  — Electronic prescribing system integration, medication  [2 use cases]" _note="gsl-platform.sysml:497"/>
-        <outline text="Payments  — Payment processing, invoicing, receipts, subscription  [2 use cases]" _note="gsl-platform.sysml:518"/>
-        <outline text="Documents  — Document generation, templates, electronic signing,  [2 use cases]" _note="gsl-platform.sysml:535"/>
-        <outline text="Identity  — User accounts, authentication, authorisation, role-based  [1 parts, 2 use cases]" _note="gsl-platform.sysml:553"/>
-        <outline text="Orchestration  — Temporal infrastructure, workflow engine, worker deployment," _note="gsl-platform.sysml:578"/>
-        <outline text="Integration  — API gateway, third-party connectors, webhook management," _note="gsl-platform.sysml:590"/>
-      </outline>
-      <outline text="GslServiceDelivery  — The clinical and operational heart of GenderSense." _note="exercises/gendersense/model/gsl-service-delivery.sysml:5">
-        <outline text="PatientJourney  — Top-level lifecycle from acquisition through to discharge  [5 use cases]" _note="gsl-service-delivery.sysml:13"/>
-        <outline text="ClinicalPathways  — Detailed clinical pathway models." _note="gsl-service-delivery.sysml:55">
-          <outline text="HormoneTherapy  — Hormone therapy initiation, titration, monitoring,  [3 use cases, 2 actions]" _note="gsl-service-delivery.sysml:63"/>
-          <outline text="Assessment  — New patient assessment, self-assessment instruments,  [3 use cases]" _note="gsl-service-delivery.sysml:704"/>
-          <outline text="Referrals  — Inbound referral processing, outbound specialist  [3 use cases]" _note="gsl-service-delivery.sysml:730"/>
-          <outline text="Prescribing  — Prescribing protocols, dispensing, medication monitoring,  [3 use cases]" _note="gsl-service-delivery.sysml:752"/>
-        </outline>
-        <outline text="Consent  — Consent models: informed consent for treatment, consent  [3 use cases]" _note="gsl-service-delivery.sysml:775"/>
-        <outline text="CoachingSupport  — Transition coaching services, group work, peer support  [2 use cases]" _note="gsl-service-delivery.sysml:803"/>
-        <outline text="ClinicalGovernance  — Policies, protocols, procedures, clinical audit, outcome  [3 use cases]" _note="gsl-service-delivery.sysml:821"/>
-        <outline text="ClinicalEntities  — Core domain entities: the nouns of the clinical domain.  [6 parts, 4 states]" _note="gsl-service-delivery.sysml:849"/>
-      </outline>
-      <outline text="BusinessMetamodelGeneral  — The business model package captures the strategic logic of the" _note="business-metamodel-general.sysml:14">
-        <outline text="ServiceConcept  — Defines the value proposition, customer segments, service  [9 parts]" _note="business-metamodel-general.sysml:61"/>
-        <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-metamodel-general.sysml:600"/>
-        <outline text="ResourcePlanning  — Defines the resources required to operate the service  [7 parts]" _note="business-metamodel-general.sysml:873"/>
-        <outline text="FinancialPlanning  — Defines the financial structure of the business: how  [5 parts, 1 enums]" _note="business-metamodel-general.sysml:1255"/>
-        <outline text="GovernanceMapping  — General vocabulary for governance traceability.  [1 parts, 1 requirements]" _note="business-metamodel-general.sysml:1500"/>
-        <outline text="StakeholderModel  — The relational boundary of the business: how it  [6 parts, 3 enums]" _note="business-metamodel-general.sysml:1636"/>
-        <outline text="BusinessScenarios  — Provides the mechanics for driving the business model  [11 parts, 2 enums]" _note="business-metamodel-general.sysml:2054"/>
-        <outline text="BusinessStrategy  — Strategic direction, business model variants, and  [2 parts, 1 requirements]" _note="business-metamodel-general.sysml:2237"/>
-        <outline text="CanonicalRuntime  — BMM General canonical-runtime vocabulary.  [4 parts, 3 enums]" _note="business-metamodel-general.sysml:2401"/>
-        <outline text="DomainIdentityTypes  — Domain identity: what kind of service business a tenant is,  [1 parts, 7 enums]" _note="business-metamodel-general.sysml:2742"/>
-      </outline>
-      <outline text="PatternCatalogue  — Cross-domain concept registry, architectural pattern catalogue,  [3 parts, 4 enums]" _note="pattern-catalogue.sysml:17"/>
-      <outline text="ProjectionMetadata  — The annotation schema the projection and the generators run on:  [1 enums, 6 metadata]" _note="projection-metadata.sysml:18"/>
       <outline text="SystemMetamodelDomainClinical  — System-side metamodel vocabulary that is clinical by meaning  [1 metadata]" _note="system-metamodel-domain-clinical.sysml:12"/>
-      <outline text="GslBusinessModel  — GenderSense Limited business model: concrete customer segments," _note="exercises/gendersense/model/gsl-business-model.sysml:12"/>
-      <outline text="GslCommonTypes  — GenderSense value types: clinical (Gender, AppointmentType),  [2 parts, 4 enums]" _note="exercises/gendersense/model/gsl-common-types.sysml:13"/>
-      <outline text="GslDomainRegistration" _note="exercises/gendersense/model/gsl-domain-registration.sysml:11"/>
-      <outline text="GslKnowledge  — GenderSense Limited clinical knowledge: the hormone-therapy" _note="exercises/gendersense/model/gsl-knowledge.sysml:14">
-        <outline text="HormoneTherapyTypes  — Enumerations for the hormone-therapy decision tables.  [9 enums]" _note="gsl-knowledge.sysml:26"/>
-        <outline text="ConstraintLibrary  — Composable clinical constraints, safety rules, drug  [8 constraints]" _note="gsl-knowledge.sysml:125"/>
-        <outline text="ClinicalDecisionSupport  — The GSL evaluation specifications: one per ConstraintLibrary  [3 use cases]" _note="gsl-knowledge.sysml:312"/>
-        <outline text="DecisionTables  — The two hormone-therapy decision tables — regimen selection  [4 parts, 2 use cases]" _note="gsl-knowledge.sysml:450"/>
-        <outline text="OutcomeTargets  — The GSL hormone-therapy outcome targets, measurement points,  [4 use cases]" _note="gsl-knowledge.sysml:812"/>
+      <outline text="ProjectionMetadata  — The annotation schema the projection and the generators run on:  [1 enums, 6 metadata]" _note="projection-metadata.sysml:18"/>
+      <outline text="ArchitecturalStructure  — Architectural sections of the dual-stack architecture (B27).  [1 parts, 3 enums, 1 metadata]" _note="architectural-structure.sysml:21"/>
+      <outline text="PatternCatalogue  — Cross-domain concept registry, architectural pattern catalogue,  [3 parts, 4 enums]" _note="pattern-catalogue.sysml:17"/>
+      <outline text="GenderSense  — GenderSense: Model-driven clinical service management platform" _note="exercises/gendersense/model/gendersense.sysml:1">
+        <outline text="GslBusinessModel  — GenderSense Limited business model: concrete customer segments," _note="exercises/gendersense/model/gsl-business-model.sysml:12"/>
+        <outline text="GslCommonTypes  — GenderSense value types: clinical (Gender, AppointmentType),  [2 parts, 4 enums]" _note="exercises/gendersense/model/gsl-common-types.sysml:13"/>
+        <outline text="GslDomainRegistration" _note="exercises/gendersense/model/gsl-domain-registration.sysml:11"/>
+        <outline text="GslEnterprise  — Defines the organisational, regulatory, strategic, and risk context." _note="exercises/gendersense/model/gsl-enterprise.sysml:5">
+          <outline text="Organisation  — Roles, teams, governance structure, board, leadership,  [3 parts]" _note="gsl-enterprise.sysml:12"/>
+          <outline text="Regulation  — CQC fundamental standards, ICO/GDPR obligations,  [4 use cases, 8 requirements]" _note="gsl-enterprise.sysml:38"/>
+          <outline text="Strategy  — Partnerships, strategic context, ethos and values,  [2 parts]" _note="gsl-enterprise.sysml:207"/>
+          <outline text="Risk  — Clinical risk management, business continuity, safeguarding  [3 use cases]" _note="gsl-enterprise.sysml:272"/>
+        </outline>
+        <outline text="GslKnowledge  — GenderSense Limited clinical knowledge: the hormone-therapy" _note="exercises/gendersense/model/gsl-knowledge.sysml:14">
+          <outline text="HormoneTherapyTypes  — Enumerations for the hormone-therapy decision tables.  [9 enums]" _note="gsl-knowledge.sysml:26"/>
+          <outline text="ConstraintLibrary  — Composable clinical constraints, safety rules, drug  [8 constraints]" _note="gsl-knowledge.sysml:125"/>
+          <outline text="ClinicalDecisionSupport  — The GSL evaluation specifications: one per ConstraintLibrary  [3 use cases]" _note="gsl-knowledge.sysml:312"/>
+          <outline text="DecisionTables  — The two hormone-therapy decision tables — regimen selection  [4 parts, 2 use cases]" _note="gsl-knowledge.sysml:450"/>
+          <outline text="OutcomeTargets  — The GSL hormone-therapy outcome targets, measurement points,  [4 use cases]" _note="gsl-knowledge.sysml:812"/>
+        </outline>
+        <outline text="GslOperations  — Back office and growth functions." _note="exercises/gendersense/model/gsl-operations.sysml:5">
+          <outline text="Finance  — Operational accounting: invoice processing, payment  [1 parts, 4 use cases]" _note="gsl-operations.sysml:33"/>
+          <outline text="People  — Workforce management: roles, contracts, recruitment,  [1 parts, 4 use cases]" _note="gsl-operations.sysml:107"/>
+          <outline text="EstatesAndFacilities  — Premises, equipment, and procurement.  [2 parts, 1 use cases]" _note="gsl-operations.sysml:205"/>
+          <outline text="Marketing  — Acquisition funnel, content production, community  [1 use cases]" _note="gsl-operations.sysml:299"/>
+          <outline text="CRM  — Prospect and patient relationship management," _note="gsl-operations.sysml:322"/>
+          <outline text="Reporting  — Business intelligence, operational dashboards, regulatory  [3 use cases]" _note="gsl-operations.sysml:333"/>
+        </outline>
+        <outline text="GslPlatform  — The technology systems that support service delivery." _note="exercises/gendersense/model/gsl-platform.sysml:5">
+          <outline text="PatientPortal  — Patient-facing web platform, self-management hub.  [2 use cases]" _note="gsl-platform.sysml:21">
+            <outline text="SelfManagement  — Personal dashboard, progress tracking, alerts and  [3 use cases]" _note="gsl-platform.sysml:44"/>
+            <outline text="IdentityAndAvatar  — Personal evolving avatar: self-representation, identity  [3 use cases]" _note="gsl-platform.sysml:79"/>
+            <outline text="Journal  — Personal journal for reflective practice.  [2 use cases]" _note="gsl-platform.sysml:127"/>
+            <outline text="SessionPlanning  — Consultation session sequence planning, appointment  [2 use cases]" _note="gsl-platform.sysml:155"/>
+            <outline text="DocumentAccess  — Secure document portal for patient access to their  [3 use cases]" _note="gsl-platform.sysml:180"/>
+          </outline>
+          <outline text="Education  — Patient-facing knowledge and learning platform." _note="gsl-platform.sysml:210">
+            <outline text="KnowledgeBase  — FAQs, reference materials, answerbase, curated  [2 use cases]" _note="gsl-platform.sysml:226"/>
+            <outline text="LearningContent  — Structured courses, self-directed learning modules,  [1 use cases]" _note="gsl-platform.sysml:250"/>
+            <outline text="TherapyPathways  — Structured therapy journeys, guided self-development,  [2 use cases]" _note="gsl-platform.sysml:267"/>
+            <outline text="ContentDelivery  — Content management, personalised recommendations,  [2 use cases]" _note="gsl-platform.sysml:299"/>
+          </outline>
+          <outline text="Community  — Patient-to-patient and group interaction platform." _note="gsl-platform.sysml:325">
+            <outline text="GroupSpaces  — Group spaces with privacy controls, shared resources,  [2 use cases]" _note="gsl-platform.sysml:340"/>
+            <outline text="GroupSessions  — Group video sessions, facilitated workshops, peer  [2 use cases]" _note="gsl-platform.sysml:365"/>
+            <outline text="PeerMessaging  — Patient-to-patient messaging, group chat, peer  [1 use cases]" _note="gsl-platform.sysml:390"/>
+          </outline>
+          <outline text="Booking  — Appointment scheduling, availability management, reminders,  [2 use cases]" _note="gsl-platform.sysml:409"/>
+          <outline text="Forms  — Questionnaires, clinical assessment forms, validation rules,  [2 use cases]" _note="gsl-platform.sysml:427"/>
+          <outline text="Messaging  — Patient communications, secure messaging, notifications,  [2 use cases]" _note="gsl-platform.sysml:447"/>
+          <outline text="VideoConsulting  — Telehealth platform integration, session management.  [1 use cases]" _note="gsl-platform.sysml:465"/>
+          <outline text="LabInterface  — Laboratory orders, results receipt, pathology integration,  [2 use cases]" _note="gsl-platform.sysml:477"/>
+          <outline text="PrescribingSystem  — Electronic prescribing system integration, medication  [2 use cases]" _note="gsl-platform.sysml:497"/>
+          <outline text="Payments  — Payment processing, invoicing, receipts, subscription  [2 use cases]" _note="gsl-platform.sysml:518"/>
+          <outline text="Documents  — Document generation, templates, electronic signing,  [2 use cases]" _note="gsl-platform.sysml:535"/>
+          <outline text="Identity  — User accounts, authentication, authorisation, role-based  [1 parts, 2 use cases]" _note="gsl-platform.sysml:553"/>
+          <outline text="Orchestration  — Temporal infrastructure, workflow engine, worker deployment," _note="gsl-platform.sysml:578"/>
+          <outline text="Integration  — API gateway, third-party connectors, webhook management," _note="gsl-platform.sysml:590"/>
+        </outline>
+        <outline text="GslScenarios  — GenderSense Limited scenario and strategy content: the Variant A" _note="exercises/gendersense/model/gsl-scenarios.sysml:14"/>
+        <outline text="GslServiceDelivery  — The clinical and operational heart of GenderSense." _note="exercises/gendersense/model/gsl-service-delivery.sysml:5">
+          <outline text="PatientJourney  — Top-level lifecycle from acquisition through to discharge  [5 use cases]" _note="gsl-service-delivery.sysml:13"/>
+          <outline text="ClinicalPathways  — Detailed clinical pathway models." _note="gsl-service-delivery.sysml:55">
+            <outline text="HormoneTherapy  — Hormone therapy initiation, titration, monitoring,  [3 use cases, 2 actions]" _note="gsl-service-delivery.sysml:63"/>
+            <outline text="Assessment  — New patient assessment, self-assessment instruments,  [3 use cases]" _note="gsl-service-delivery.sysml:704"/>
+            <outline text="Referrals  — Inbound referral processing, outbound specialist  [3 use cases]" _note="gsl-service-delivery.sysml:730"/>
+            <outline text="Prescribing  — Prescribing protocols, dispensing, medication monitoring,  [3 use cases]" _note="gsl-service-delivery.sysml:752"/>
+          </outline>
+          <outline text="Consent  — Consent models: informed consent for treatment, consent  [3 use cases]" _note="gsl-service-delivery.sysml:775"/>
+          <outline text="CoachingSupport  — Transition coaching services, group work, peer support  [2 use cases]" _note="gsl-service-delivery.sysml:803"/>
+          <outline text="ClinicalGovernance  — Policies, protocols, procedures, clinical audit, outcome  [3 use cases]" _note="gsl-service-delivery.sysml:821"/>
+          <outline text="ClinicalEntities  — Core domain entities: the nouns of the clinical domain.  [6 parts, 4 states]" _note="gsl-service-delivery.sysml:849"/>
+        </outline>
       </outline>
-      <outline text="GslScenarios  — GenderSense Limited scenario and strategy content: the Variant A" _note="exercises/gendersense/model/gsl-scenarios.sysml:14"/>
     </outline>
     <outline text="Libraries (separate from main model)">
       <outline text="TemporalMetadata  — Metadata definitions for Temporal workflow generation.  [4 metadata]" _note="libraries/temporal-metadata/temporal-metadata.sysml:1"/>

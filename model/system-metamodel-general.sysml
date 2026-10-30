@@ -292,7 +292,7 @@ package SystemMetamodelGeneral {
             temporal;    // Temporal workflow state and history
             platform;    // Platform services (infrastructure, identity)
             entity;      // Entity lifecycle state (XState / Temporal)
-            accounting;  // Accounting system (Xero) via Operations::Finance
+            accounting;  // Accounting system (Xero) via a tenant's finance package (GSL: GslOperations, Finance)
         }
 
         enum def DeficitDomain {

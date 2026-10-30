@@ -34,8 +34,8 @@ PENDING_OK=0
 #   step 8  Knowledge, Platform retired (done S515)
 #   step 9  BusinessModel, BusinessScenarios, BusinessStrategy, CanonicalRuntime retired (done S515)
 #   step 11 Foundation retired (done S515)
-#   step 12 root's PatternCatalogue import dropped
-PENDING_NAMES='PatternCatalogue'
+#   step 12 root's PatternCatalogue import dropped (done S515) — list now empty
+PENDING_NAMES=''   # empty since S515 step 12: every rule runs strict; --pending-ok now equals the default
 
 IMPORT_RE='^\s*(private |public )?import '
 APPARATUS='ScalarValues|ProjectionMetadata|TemporalMetadata'
@@ -53,7 +53,8 @@ report() {
     local real=0 pending=0
     while IFS= read -r line; do
         [[ -z "$line" ]] && continue
-        if grep -qE "(import |^package |\b)(${PENDING_NAMES})(::| |\{)" <<<"$line" \
+        if [[ -n "$PENDING_NAMES" ]] \
+           && grep -qE "(import |^package |\b)(${PENDING_NAMES})(::| |\{)" <<<"$line" \
            && grep -qE "(${PENDING_NAMES})" <<<"$line"; then
             if (( PENDING_OK )); then
                 echo "  pending  $line"; ((pending++)); continue

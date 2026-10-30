@@ -90,117 +90,27 @@ DOMAIN_SOURCES = {
     },
 }
 
-# Meta model classification keywords found in doc blocks
-BMM_MARKERS = [
-    "business meta model",
-    "business model concept",
-]
-SMM_MARKERS = [
-    "system meta model",
-    "business system meta model",  # retained for backward compatibility during rename transition
-]
-
-# Packages known to belong to the business meta model
-BMM_PACKAGES = {
-    "BusinessMetamodelGeneral",  # S515 OP-132 step 9 (BusinessModel retired)
-    "ServiceConcept", "ActivityModel",
-    "ResourcePlanning", "FinancialPlanning",
-    "BusinessScenarios", "BusinessStrategy",
-    "GovernanceMapping", "StakeholderModel", "CanonicalRuntime",
-    "DomainIdentityTypes",  # S515 OP-132 step 10
-}
-
-# Packages known to belong to the system meta model
-# S514 (OP-125, ADR-011 §4.7): `Foundation` and its sub-packages are no
-# longer classed as SMM. The package is being dissolved by meaning; what
-# remains in it has not yet been allocated and is classed "unknown" until
-# it moves. `ProjectionMetadata` (the generators' annotation schema, formerly
-# Foundation::MetadataLibrary) belongs to no layer and is deliberately absent
-# from every list.
-SMM_PACKAGES = {
-    "SystemMetamodelDomainClinical",  # S515 OP-132 step 7: system-side Domain package (ADR-012)
-    "SystemMetamodelGeneral", "ProcessAnnotations", "StatePatterns", "EvaluationSpecs",
-    "Persistence", "OpenEhrIntegration",  # S515 OP-132 step 8
-    "DomainConfigurationTypes",  # S515 OP-132 step 10
-    "ClinicalDecisionSupport",
-    "ConstraintLibrary", "LogicEngine", "DecisionModels",
-    "OutcomeFramework", "LearningCycles", "Analytics",
-    "GslPlatform", "PatientPortal", "EHR", "Booking", "Forms",
-    "Orchestration", "Integration", "Identity",
-    "ServiceDelivery", "GslServiceDelivery", "ClinicalPathways", "PatternCatalogue",
-}
-
-# Domain-specific packages (not meta model — instances)
-DOMAIN_PACKAGES = {
-    "Enterprise", "GslEnterprise", "Operations", "GslOperations", "GenderSense",
-    "Organisation", "Strategy", "Finance", "People",
-    "EstatesAndFacilities", "Regulation", "ClinicalEntities",
-    "CoffeeShop", "CoffeeShopBusinessModel",
-    "CoffeeShopArchetypes", "CoffeeshopResourceFinancial",
-    "CoffeeshopScenarios",
-    "SudsBusinessModel", "SudsResourceFinancial", "SudsGovernance",
-    "PawsBusinessModel", "PawsResourceFinancial", "PawsGovernance",
-    "GslBusinessModel", "GslScenarios",  # S515 OP-132 step 5
-    "GslKnowledge", "DecisionTables", "OutcomeTargets", "HormoneTherapyTypes",  # S515 OP-132 step 6
-    "CoffeeShopDomainRegistration", "SudsDomainRegistration", "PawsDomainRegistration",
-    "GslDomainRegistration",  # S515 OP-132 step 10
-    "GslCommonTypes",  # S515 OP-132 step 11
-}
-
-
 # ---------------------------------------------------------------
-# Meta model classification
+# Meta model classification (S515 OP-132 step 12, map §5 row 2)
 # ---------------------------------------------------------------
+# Layer is decided by the top-level package the element sits in, not by
+# doc-block keywords or lists of short names:
+#   BusinessMetamodelGeneral / BusinessMetamodelDomain*  -> "bmm"
+#   SystemMetamodelGeneral  / SystemMetamodelDomain*     -> "smm"
+#   any package under exercises/ (tenant content)         -> "domain"
+#   ProjectionMetadata, ArchitecturalStructure, PatternCatalogue (apparatus
+#   and platform description — no layer, ADR-012 Action 4)  -> "unknown"
 
 def classify_meta_model_layer(elem):
-    """Determine whether an element belongs to BMM, SMM, domain, or unknown."""
-    doc_lower = elem.doc.lower() if elem.doc else ""
-    pkg = elem.parent_package
-    
-    # Check doc block markers first (most authoritative)
-    for marker in BMM_MARKERS:
-        if marker in doc_lower:
-            return "bmm"
-    for marker in SMM_MARKERS:
-        if marker in doc_lower:
-            return "smm"
-
-    # Check package membership
-    if pkg in BMM_PACKAGES:
-        return "bmm"
-    if pkg in SMM_PACKAGES:
-        return "smm"
-    if pkg in DOMAIN_PACKAGES:
+    """Determine whether an element belongs to BMM, SMM, domain (tenant), or
+    has no layer, from its top-level package and source domain."""
+    if elem.source_domain != "core":
         return "domain"
-    
-    # Part usages that instantiate a known meta model type
-    if elem.kind == "part" and elem.specialises:
-        type_name = elem.specialises.split("::")[-1]
-        # These are BMM part defs
-        bmm_types = {
-            "CustomerSegment", "ServiceOffering", "Channel",
-            "CatalogueEntry", "ActivityType", "ActivityGranularity",
-            "ResourceType", "Capability", "CapacityModel",
-            "ResourceConstraint", "RevenueStream", "CostDriver",
-            "UnitEconomics", "PricingModel", "ScenarioDefinition",
-            "ProjectionParameter", "GrowthAssumption", "ProjectionOutput",
-            "ProjectionFormula", "BusinessModelVariant", "PivotScenario",
-            "PeriodActuals", "VarianceAnalysis", "StrategicObjective",
-            "ObjectiveCapabilityMapping", "ValueProposition",
-            "DifferentiationClaim", "InventoryRecord", "ExternalReference",
-            "AuditEvidenceRecord", "ActivityCostAllocation",
-        }
-        # These are SMM part defs
-        smm_types = {
-            "PersistencePolicy", "AgencyClassification",
-            "GoalProjection", "Deficit",
-            "Pattern", "ArchitecturalPrinciple", "DomainInstantiation",
-        }
-        if type_name in bmm_types:
-            return "bmm_instance"
-        if type_name in smm_types:
-            return "smm_instance"
-    
+    top = elem.top_level_package
+    if top.startswith("BusinessMetamodel"):
+        return "bmm"
+    if top.startswith("SystemMetamodel"):
+        return "smm"
     return "unknown"
 
 

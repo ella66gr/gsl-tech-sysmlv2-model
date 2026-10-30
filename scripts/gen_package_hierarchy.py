@@ -178,73 +178,85 @@ def parse_sysml_file(filepath):
     return packages
 
 
+# Display order for the top-level model packages (S515 OP-132 step 12,
+# map §5 row 8): General, Domain, apparatus, platform description. Tenants
+# follow, each shown as a tenant tree, never as the root.
+MODEL_DISPLAY_ORDER = [
+    "BusinessMetamodelGeneral",
+    "SystemMetamodelGeneral",
+    "SystemMetamodelDomainClinical",
+    "ProjectionMetadata",
+    "ArchitecturalStructure",
+    "PatternCatalogue",
+]
+TENANT_DIRS = [
+    ("GenderSense", GSL_MODEL_DIR, "gendersense.sysml"),
+]
+
+
 def parse_all_model_files():
-    """Parse all .sysml files and reassemble the logical hierarchy."""
-    all_packages = []
+    """Parse all .sysml files and assemble the display hierarchy.
 
+    Returns a list whose first item is a synthetic root ("Ontara") holding
+    the top-level model packages in MODEL_DISPLAY_ORDER, followed by one
+    tenant tree per entry in TENANT_DIRS; library packages follow as
+    top-level items and are rendered separately.
+    """
+    model_packages = []
     for filepath in sorted(MODEL_DIR.glob("*.sysml")):
-        all_packages.extend(parse_sysml_file(filepath))
+        model_packages.extend(parse_sysml_file(filepath))
 
-    # S515 (OP-132 step 3): the GenderSense root assembly file now lives in
-    # the GSL tenant directory. Until step 12 re-shapes this generator to
-    # show GSL as a tenant, keep parsing it so the tree is unchanged.
-    for filepath in sorted(GSL_MODEL_DIR.glob("*.sysml")):
-        packages = parse_sysml_file(filepath)
-        for pkg in packages:
-            pkg.source_file = f"exercises/gendersense/model/{filepath.name}"
-        all_packages.extend(packages)
-
+    library_packages = []
     for filepath in sorted(LIBRARY_DIR.rglob("*.sysml")):
         packages = parse_sysml_file(filepath)
         for pkg in packages:
             pkg.source_file = f"libraries/{filepath.relative_to(LIBRARY_DIR)}"
-        all_packages.extend(packages)
+        library_packages.extend(packages)
 
-    # Reassemble: domain packages imported by gendersense.sysml become
-    # children of the GenderSense root.
-    root = None
-    for pkg in all_packages:
-        if pkg.name == "GenderSense":
-            root = pkg
-            break
+    order = {name: i for i, name in enumerate(MODEL_DISPLAY_ORDER)}
+    model_packages.sort(key=lambda p: (order.get(p.name, len(order)), p.name))
 
-    if root:
-        root_file = GSL_MODEL_DIR / "gendersense.sysml"
-        imported_names = set()
-        if root_file.exists():
-            text = root_file.read_text(encoding="utf-8")
-            for match in re.finditer(r'private\s+import\s+(\w+)::\*', text):
-                name = match.group(1)
-                if name != "ScalarValues":
-                    imported_names.add(name)
+    tenants = []
+    for tenant_name, tenant_dir, root_file_name in TENANT_DIRS:
+        tenant_pkgs = []
+        for filepath in sorted(tenant_dir.glob("*.sysml")):
+            packages = parse_sysml_file(filepath)
+            rel = filepath.relative_to(REPO_ROOT)
+            for pkg in packages:
+                pkg.source_file = str(rel)
+            tenant_pkgs.extend(packages)
+        # The tenant root package (e.g. GenderSense) gathers the packages it
+        # imports as children; anything else in the tenant dir follows them.
+        root = next((p for p in tenant_pkgs if p.name == tenant_name), None)
+        if root is None:
+            root = SysmlPackage(tenant_name, doc=f"{tenant_name} tenant",
+                                source_file=str(tenant_dir.relative_to(REPO_ROOT)))
+            root.children = list(tenant_pkgs)
+        else:
+            imported = set()
+            root_file = tenant_dir / root_file_name
+            if root_file.exists():
+                for match in re.finditer(r'private\s+import\s+(\w+)::\*',
+                                         root_file.read_text(encoding="utf-8")):
+                    imported.add(match.group(1))
+            children = [p for p in tenant_pkgs if p is not root and p.name in imported]
+            others = [p for p in tenant_pkgs if p is not root and p.name not in imported]
+            root.children = children + others
+        tenants.append(root)
 
-        to_reparent = []
-        remaining = []
-        for pkg in all_packages:
-            if pkg.name in imported_names and pkg is not root:
-                to_reparent.append(pkg)
-            else:
-                remaining.append(pkg)
-
-        # S515 (OP-132 step 4): GSL names keep their old slots so the tree
-        # order is unchanged until step 12 reshapes this generator.
-        display_order = ["GslEnterprise", "SystemMetamodelGeneral",
-                         "GslOperations", "GslPlatform", "GslServiceDelivery"]
-        to_reparent.sort(key=lambda p: (
-            display_order.index(p.name) if p.name in display_order
-            else len(display_order)
-        ))
-        root.children = to_reparent
-        all_packages = remaining
-
-    return all_packages
+    synthetic = SysmlPackage(
+        "Ontara",
+        doc="The General and Domain metamodel packages, the apparatus, the platform description, then each tenant model.",
+        source_file="model/")
+    synthetic.children = model_packages + tenants
+    return [synthetic] + library_packages
 
 
 def get_root_and_libraries(packages):
     root = None
     libraries = []
     for pkg in packages:
-        if pkg.name == "GenderSense":
+        if pkg.name == "Ontara":
             root = pkg
         elif "libraries" in str(pkg.source_file):
             libraries.append(pkg)
@@ -329,9 +341,9 @@ def generate_terminal_view(packages):
 
     lines = [
         f"Ontara Package Hierarchy",
-        f"Generated {now} from model/*.sysml ({total} packages)",
+        f"Generated {now} from model/*.sysml and exercises/gendersense/model/*.sysml ({total} packages)",
         "",
-        "GenderSense",
+        "Ontara",
     ]
 
     if root and root.children:
@@ -365,7 +377,7 @@ def generate_markdown(packages):
         "# Ontara Package Hierarchy (Generated)",
         "",
         f"**Generated:** {now}  ",
-        f"**Source:** `model/*.sysml`, `libraries/**/*.sysml`  ",
+        f"**Source:** `model/*.sysml`, `exercises/gendersense/model/*.sysml`, `libraries/**/*.sysml`  ",
         f"**Total packages:** {total} (excluding root)  ",
         f"**Generator:** `scripts/gen_package_hierarchy.py --save=markdown`",
         "",

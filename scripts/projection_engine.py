@@ -5,7 +5,7 @@ GenderSense Projection Engine — Phases 4-5, Business Meta Model Implementation
 Reads scenario parameters (hard-coded from the SysML model) and produces
 a monthly time-series financial projection.
 
-Source parameters: model/business-model.sysml :: ScenarioModelling
+Source parameters: exercises/gendersense/model/gsl-scenarios.sysml :: GslScenarios (General defs in BusinessMetamodelGeneral::BusinessScenarios)
 Source formulas:   gsl-service-business-meta-modelling.md section 7.2
 
 Usage:
@@ -38,7 +38,7 @@ from pathlib import Path
 # SCENARIO PARAMETER SETS
 # =========================================================================
 # Each parameter set is drawn directly from the SysML model.
-# Comments reference the source part usage in business-model.sysml.
+# Comments reference the source part usage in exercises/gendersense/model/gsl-scenarios.sysml (GslScenarios).
 #
 # REVENUE MODEL NOTE (Phase 4 finding):
 # The SysML model defines monitoringFeePerQuarter = £150 (paramMonitoringFee).
@@ -117,7 +117,7 @@ LEAN_CLINICAL_PARAMS = {
 # - Higher platform cost (£500/month vs £200/month)
 # - Two-clinician FTE schedule (faster scaling)
 #
-# Source: business-model.sysml :: ScenarioModelling :: fullPlatformScenario
+# Source: gsl-scenarios.sysml :: GslScenarios :: fullPlatformScenario
 # All values are illustrative placeholders per Phase 5 guardrail G1.
 
 FULL_PLATFORM_PARAMS = {

@@ -234,7 +234,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::business;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "BusinessModel::ServiceConcept::CatalogueEntry, BusinessModel::ServiceConcept::ExternalReference, BusinessModel::ResourcePlanning::InventoryRecord";
+        attribute :>> relatedElements = "BusinessMetamodelGeneral::ServiceConcept::CatalogueEntry, BusinessMetamodelGeneral::ServiceConcept::ExternalReference, BusinessMetamodelGeneral::ResourcePlanning::InventoryRecord";
         attribute :>> sourceSession = "Session 20 (CSW Phase 1)";
         attribute :>> validatedIn = "CSW";
         // Semantic relationships
@@ -249,7 +249,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::business;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "BusinessModel::ActivityModel::ActivityCategory";
+        attribute :>> relatedElements = "BusinessMetamodelGeneral::ActivityModel::ActivityCategory";
         attribute :>> sourceSession = "Session 15 (Business Meta Model Phase 3)";
         attribute :>> validatedIn = "CSW, GSL";
     }
@@ -262,7 +262,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::business;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "BusinessScenarios::ScenarioModelling::ScenarioDefinition, BusinessScenarios::ScenarioModelling::ScenarioComparison";
+        attribute :>> relatedElements = "BusinessMetamodelGeneral::BusinessScenarios::ScenarioDefinition, BusinessMetamodelGeneral::BusinessScenarios::ScenarioComparison";
         attribute :>> sourceSession = "Session 17 (Business Meta Model Phase 5)";
         attribute :>> validatedIn = "GSL";
     }
@@ -275,7 +275,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::business;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "Foundation::CommonTypes::PersistencePolicy, Foundation::CommonTypes::PersistenceLayer, Foundation::CommonTypes::DataCharacteristic";
+        attribute :>> relatedElements = "SystemMetamodelGeneral::Persistence::PersistencePolicy, SystemMetamodelGeneral::Persistence::PersistenceLayer, SystemMetamodelGeneral::Persistence::DataCharacteristic";
         attribute :>> sourceSession = "Session 20 (CSW Phase 1), formalised Session 29 (Phase 10)";
         attribute :>> validatedIn = "CSW";
         // Semantic relationships
@@ -295,7 +295,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::guidance;
-        attribute :>> relatedElements = "scripts/ (the generators; the empty Foundation::GenerationPipeline package was deleted S514, ADR-011)";
+        attribute :>> relatedElements = "scripts/ (the generators; the former Foundation GenerationPipeline package, empty, was deleted S514, ADR-011)";
         attribute :>> sourceSession = "Session 1";
         attribute :>> validatedIn = "CSW, GSL";
         // Semantic relationships
@@ -312,7 +312,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "ServiceDelivery::ClinicalPathways, TemporalMetadata::TemporalWorkflow";
+        attribute :>> relatedElements = "GslServiceDelivery::ClinicalPathways, TemporalMetadata::TemporalWorkflow";
         attribute :>> sourceSession = "Session 1";
         attribute :>> validatedIn = "CSW, GSL";
         // Semantic relationships
@@ -329,7 +329,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "Knowledge::SelfKnowledge";
+        attribute :>> relatedElements = "SystemMetamodelGeneral::LogicEngine";
         attribute :>> sourceSession = "Session 10 (Knowledge Layer Phase 3)";
         attribute :>> validatedIn = "GSL";
         // Semantic relationships
@@ -362,7 +362,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "Foundation::CommonTypes::PersistenceLayer";
+        attribute :>> relatedElements = "SystemMetamodelGeneral::Persistence::PersistenceLayer";
         attribute :>> sourceSession = "Session 20 (CSW Phase 1)";
         attribute :>> validatedIn = "CSW";
         // Semantic relationships
@@ -378,7 +378,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "ProjectionMetadata (formerly Foundation::MetadataLibrary; Foundation::GenerationPipeline deleted S514)";
+        attribute :>> relatedElements = "ProjectionMetadata (formerly Foundation's MetadataLibrary; the Foundation GenerationPipeline package was deleted S514)";
         attribute :>> sourceSession = "Session 2";
         attribute :>> validatedIn = "CSW, GSL";
         // Semantic relationships
@@ -393,7 +393,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "Foundation::MetadataLibrary::StateTransitionTrigger, Foundation::StatePatterns::EntityLifecycle";
+        attribute :>> relatedElements = "TemporalMetadata::StateTransitionTrigger, SystemMetamodelGeneral::StatePatterns::StandardLifecycle";
         attribute :>> sourceSession = "Session 3 (CSW Phase C)";
         attribute :>> validatedIn = "CSW";
     }
@@ -405,7 +405,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::guidance;
-        attribute :>> relatedElements = "CoffeeShop::CatalogueEntry, BusinessModel::ServiceConcept::CatalogueEntry";
+        attribute :>> relatedElements = "CoffeeShop::CatalogueEntry, BusinessMetamodelGeneral::ServiceConcept::CatalogueEntry";
         attribute :>> sourceSession = "Session 24 (CSW Phase 5)";
         attribute :>> validatedIn = "CSW";
         // Semantic relationships
@@ -419,7 +419,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::guidance;
-        attribute :>> relatedElements = "Foundation::StatePatterns::EntityLifecycle";
+        attribute :>> relatedElements = "SystemMetamodelGeneral::StatePatterns::StandardLifecycle";
         attribute :>> sourceSession = "Session 26 (CSW Phase 7)";
         attribute :>> validatedIn = "CSW";
         // Semantic relationships
@@ -477,7 +477,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::guidance;
-        attribute :>> relatedElements = "ServiceDelivery::Governance";
+        attribute :>> relatedElements = "GslServiceDelivery::ClinicalGovernance";
         attribute :>> sourceSession = "Session 26 (CSW Phase 7)";
         attribute :>> validatedIn = "CSW";
         // Semantic relationships
@@ -492,7 +492,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::guidance;
-        attribute :>> relatedElements = "ServiceDelivery::ClinicalPathways, Foundation::MetadataLibrary";
+        attribute :>> relatedElements = "GslServiceDelivery::ClinicalPathways, SystemMetamodelGeneral::ProcessAnnotations, SystemMetamodelDomainClinical";
         attribute :>> sourceSession = "Session 26 (CSW Phase 7)";
         attribute :>> validatedIn = "CSW";
         // Semantic relationships
@@ -565,7 +565,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::validated;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::guidance;
-        attribute :>> relatedElements = "ServiceDelivery::ClinicalPathways";
+        attribute :>> relatedElements = "GslServiceDelivery::ClinicalPathways";
         attribute :>> sourceSession = "Session 28 (CSW Phase 9)";
         attribute :>> validatedIn = "CSW";
         // Semantic relationships
@@ -600,7 +600,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::discussion;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::guidance;
-        attribute :>> relatedElements = "ServiceDelivery::ClinicalPathways (future multi-pathway)";
+        attribute :>> relatedElements = "GslServiceDelivery::ClinicalPathways (future multi-pathway)";
         attribute :>> sourceSession = "Session 22 (deferred)";
         attribute :>> validatedIn = "";
         // Semantic relationships
@@ -615,7 +615,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::designed;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "Foundation::MetadataLibrary::AgencyClassification, Foundation::MetadataLibrary::AgencyType";
+        attribute :>> relatedElements = "SystemMetamodelGeneral::ProcessAnnotations::AgencyClassification, SystemMetamodelGeneral::ProcessAnnotations::AgencyType";
         attribute :>> sourceSession = "Session 25 (self-service paper), formalised Session 29";
         attribute :>> validatedIn = "";
         // Semantic relationships
@@ -632,7 +632,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::designed;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::formalised;
-        attribute :>> relatedElements = "Knowledge::SelfKnowledge";
+        attribute :>> relatedElements = "SystemMetamodelGeneral::LogicEngine";
         attribute :>> sourceSession = "Session 10 (KL Phase 3), landing zone Session 28";
         attribute :>> validatedIn = "";
         // Semantic relationships
@@ -647,7 +647,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::designed;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::guidance;
-        attribute :>> relatedElements = "Knowledge::DecisionModels";
+        attribute :>> relatedElements = "SystemMetamodelGeneral::DecisionModels";
         attribute :>> sourceSession = "Session 25 (self-service paper)";
         attribute :>> validatedIn = "";
         // Semantic relationships
@@ -679,7 +679,7 @@ package PatternCatalogue {
         attribute :>> maturity = PatternMaturity::discussion;
         attribute :>> metaModelClassification = MetaModelHome::businessSystem;
         attribute :>> kind = PatternKind::guidance;
-        attribute :>> relatedElements = "Foundation::StatePatterns::EntityLifecycle, Foundation::MetadataLibrary::StateTransitionTrigger";
+        attribute :>> relatedElements = "SystemMetamodelGeneral::StatePatterns::StandardLifecycle, TemporalMetadata::StateTransitionTrigger";
         attribute :>> sourceSession = "Identified across sessions";
         attribute :>> validatedIn = "";
         // Semantic relationships
@@ -721,7 +721,7 @@ package PatternCatalogue {
     part gslTwoLayerActionFlow : DomainInstantiation {
         attribute :>> domain = "GSL";
         attribute :>> maturity = PatternMaturity::validated;
-        attribute :>> implementationRef = "ServiceDelivery::ClinicalPathways::HormoneTherapyInitiation (domain). Orchestration layer designed but not generated.";
+        attribute :>> implementationRef = "GslServiceDelivery::ClinicalPathways::HormoneTherapy::InitiateHormoneTherapyProcess (domain). Orchestration layer designed but not generated.";
         attribute :>> sessionRef = "Sessions 5-7";
         attribute :>> notes = "Clinical pathway: assessment, consent, prescribing, monitoring. Orchestration designed but not yet implemented as a Temporal workflow.";
     }
@@ -767,7 +767,7 @@ package PatternCatalogue {
     part gslFiveLayerSelfKnowledge : DomainInstantiation {
         attribute :>> domain = "GSL";
         attribute :>> maturity = PatternMaturity::validated;
-        attribute :>> implementationRef = "Knowledge::SelfKnowledge — GoalProjector, OperationalStateAggregator, GapAnalyser, ExplanationTrace. Python projection engine.";
+        attribute :>> implementationRef = "SystemMetamodelGeneral::LogicEngine — GoalProjector, OperationalStateAggregator, GapAnalyser, ExplanationTrace. Python projection engine.";
         attribute :>> sessionRef = "Sessions 8-12 (Knowledge Layer Elaboration)";
         attribute :>> notes = "Five-layer architecture validated as domain-agnostic. Knowledge layer generators designed.";
     }
@@ -951,7 +951,7 @@ package PatternCatalogue {
     part gslActivityTaxonomy : DomainInstantiation {
         attribute :>> domain = "GSL";
         attribute :>> maturity = PatternMaturity::validated;
-        attribute :>> implementationRef = "BusinessModel::ActivityModel — ActivityCategory enum, ActivityType part def. Clinical activity types.";
+        attribute :>> implementationRef = "BusinessMetamodelGeneral::ActivityModel — ActivityCategory enum, ActivityType part def. Clinical activity types.";
         attribute :>> sessionRef = "Session 15 (Business Meta Model Phase 3)";
         attribute :>> notes = "Activity taxonomy designed as domain-agnostic from the start.";
     }
