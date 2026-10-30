@@ -2,7 +2,7 @@
 <opml version="2.0">
   <head>
     <title>Ontara Package Hierarchy</title>
-    <dateCreated>2026-10-30 15:42</dateCreated>
+    <dateCreated>2026-10-30 15:44</dateCreated>
   </head>
   <body>
     <outline text="Ontara — Model-driven service system development and delivery platform">
@@ -11,9 +11,6 @@
         <outline text="Regulation  — CQC fundamental standards, ICO/GDPR obligations,  [4 use cases, 8 requirements]" _note="gsl-enterprise.sysml:38"/>
         <outline text="Strategy  — Partnerships, strategic context, ethos and values,  [2 parts]" _note="gsl-enterprise.sysml:207"/>
         <outline text="Risk  — Clinical risk management, business continuity, safeguarding  [3 use cases]" _note="gsl-enterprise.sysml:272"/>
-      </outline>
-      <outline text="Foundation  — RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7," _note="foundation.sysml:5">
-        <outline text="CommonTypes  — Shared data types, enumerations, units of measure, and  [2 parts, 4 enums]" _note="foundation.sysml:32"/>
       </outline>
       <outline text="SystemMetamodelGeneral  — The system metamodel, General layer: how the platform evaluates," _note="system-metamodel-general.sysml:12">
         <outline text="ProcessAnnotations  — General annotations on process steps: consent and audit  [1 enums, 6 metadata]" _note="system-metamodel-general.sysml:24"/>
@@ -96,6 +93,7 @@
       <outline text="ProjectionMetadata  — The annotation schema the projection and the generators run on:  [1 enums, 6 metadata]" _note="projection-metadata.sysml:18"/>
       <outline text="SystemMetamodelDomainClinical  — System-side metamodel vocabulary that is clinical by meaning  [1 metadata]" _note="system-metamodel-domain-clinical.sysml:12"/>
       <outline text="GslBusinessModel  — GenderSense Limited business model: concrete customer segments," _note="exercises/gendersense/model/gsl-business-model.sysml:12"/>
+      <outline text="GslCommonTypes  — GenderSense value types: clinical (Gender, AppointmentType),  [2 parts, 4 enums]" _note="exercises/gendersense/model/gsl-common-types.sysml:13"/>
       <outline text="GslDomainRegistration" _note="exercises/gendersense/model/gsl-domain-registration.sysml:11"/>
       <outline text="GslKnowledge  — GenderSense Limited clinical knowledge: the hormone-therapy" _note="exercises/gendersense/model/gsl-knowledge.sysml:14">
         <outline text="HormoneTherapyTypes  — Enumerations for the hormone-therapy decision tables.  [9 enums]" _note="gsl-knowledge.sysml:26"/>

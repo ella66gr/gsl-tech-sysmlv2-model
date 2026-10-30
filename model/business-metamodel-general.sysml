@@ -2065,7 +2065,7 @@ package BusinessMetamodelGeneral {
              * top-level package in Phase 6A for file size management.
              *
              * Phase 6B: imports from Knowledge::LogicEngine and
-             * Foundation::CommonTypes establish the structural wiring
+             * Foundation's CommonTypes established the structural wiring
              * between the business model and the self-knowledge
              * architecture. GoalProjection and Deficit part defs from
              * LogicEngine are used to express financial goals and

@@ -5,8 +5,6 @@ Ontara	Model-driven service system development and delivery platform
 		Regulation	CQC fundamental standards, ICO/GDPR obligations,	4 use cases, 8 requirements	gsl-enterprise.sysml:38
 		Strategy	Partnerships, strategic context, ethos and values,	2 parts	gsl-enterprise.sysml:207
 		Risk	Clinical risk management, business continuity, safeguarding	3 use cases	gsl-enterprise.sysml:272
-	Foundation	RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7,		foundation.sysml:5
-		CommonTypes	Shared data types, enumerations, units of measure, and	2 parts, 4 enums	foundation.sysml:32
 	SystemMetamodelGeneral	The system metamodel, General layer: how the platform evaluates,		system-metamodel-general.sysml:12
 		ProcessAnnotations	General annotations on process steps: consent and audit	1 enums, 6 metadata	system-metamodel-general.sysml:24
 		StatePatterns	Reusable lifecycle state machine patterns.	1 states	system-metamodel-general.sysml:130
@@ -79,6 +77,7 @@ Ontara	Model-driven service system development and delivery platform
 	ProjectionMetadata	The annotation schema the projection and the generators run on:	1 enums, 6 metadata	projection-metadata.sysml:18
 	SystemMetamodelDomainClinical	System-side metamodel vocabulary that is clinical by meaning	1 metadata	system-metamodel-domain-clinical.sysml:12
 	GslBusinessModel	GenderSense Limited business model: concrete customer segments,		exercises/gendersense/model/gsl-business-model.sysml:12
+	GslCommonTypes	GenderSense value types: clinical (Gender, AppointmentType),	2 parts, 4 enums	exercises/gendersense/model/gsl-common-types.sysml:13
 	GslDomainRegistration			exercises/gendersense/model/gsl-domain-registration.sysml:11
 	GslKnowledge	GenderSense Limited clinical knowledge: the hormone-therapy		exercises/gendersense/model/gsl-knowledge.sysml:14
 		HormoneTherapyTypes	Enumerations for the hormone-therapy decision tables.	9 enums	gsl-knowledge.sysml:26

@@ -144,6 +144,7 @@ DOMAIN_PACKAGES = {
     "GslKnowledge", "DecisionTables", "OutcomeTargets", "HormoneTherapyTypes",  # S515 OP-132 step 6
     "CoffeeShopDomainRegistration", "SudsDomainRegistration", "PawsDomainRegistration",
     "GslDomainRegistration",  # S515 OP-132 step 10
+    "GslCommonTypes",  # S515 OP-132 step 11
 }
 
 

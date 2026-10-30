@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "generated_at": "2026-10-30T15:42:10.462466+00:00",
+  "generated_at": "2026-10-30T15:44:37.605381+00:00",
   "session": 116,
   "summary": {
     "StructuralOnly": 741,
@@ -1112,60 +1112,6 @@
       "kind": "part_def",
       "parentPackage": "DomainIdentityTypes",
       "sourceFile": "model/business-metamodel-general.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Gender",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ContactMethod",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "AppointmentType",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ConsentStatus",
-      "kind": "enum_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "Address",
-      "kind": "part_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "ContactDetails",
-      "kind": "part_def",
-      "parentPackage": "CommonTypes",
-      "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "classification": "StructuralOnly",
       "targetGraph": null
@@ -5522,6 +5468,60 @@
       "kind": "part",
       "parentPackage": "GslBusinessModel",
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Gender",
+      "kind": "enum_def",
+      "parentPackage": "GslCommonTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ContactMethod",
+      "kind": "enum_def",
+      "parentPackage": "GslCommonTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AppointmentType",
+      "kind": "enum_def",
+      "parentPackage": "GslCommonTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ConsentStatus",
+      "kind": "enum_def",
+      "parentPackage": "GslCommonTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Address",
+      "kind": "part_def",
+      "parentPackage": "GslCommonTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+      "sourceDomain": "gsl",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ContactDetails",
+      "kind": "part_def",
+      "parentPackage": "GslCommonTypes",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
       "sourceDomain": "gsl",
       "classification": "StructuralOnly",
       "targetGraph": null

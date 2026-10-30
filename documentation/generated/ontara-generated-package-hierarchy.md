@@ -1,8 +1,8 @@
 # Ontara Package Hierarchy (Generated)
 
-**Generated:** 2026-10-30 15:42  
+**Generated:** 2026-10-30 15:44  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
-**Total packages:** 88 (excluding root)  
+**Total packages:** 87 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
 
 This document is generated from the SysML model. Do not edit manually.
@@ -11,7 +11,7 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 Ontara Package Hierarchy
-Generated 2026-10-30 15:42 from model/*.sysml (88 packages)
+Generated 2026-10-30 15:44 from model/*.sysml (87 packages)
 
 GenderSense
 ├── GslEnterprise                   Defines the organisational, regulatory, strategic, and risk context.
@@ -19,9 +19,6 @@ GenderSense
 │   ├── Regulation                  CQC fundamental standards, ICO/GDPR obligations, — [4 use cases, 8 requirements]
 │   ├── Strategy                    Partnerships, strategic context, ethos and values, — [2 parts]
 │   └── Risk                        Clinical risk management, business continuity, safeguarding — [3 use cases]
-│
-├── Foundation                      RESIDUAL PACKAGE — being dissolved by meaning (ADR-011 §4.7,
-│   └── CommonTypes                 Shared data types, enumerations, units of measure, and — [2 parts, 4 enums]
 │
 ├── SystemMetamodelGeneral          The system metamodel, General layer: how the platform evaluates,
 │   ├── ProcessAnnotations          General annotations on process steps: consent and audit — [1 enums, 6 metadata]
@@ -104,6 +101,8 @@ GenderSense
 │
 ├── GslBusinessModel                GenderSense Limited business model: concrete customer segments,
 │
+├── GslCommonTypes                  GenderSense value types: clinical (Gender, AppointmentType), — [2 parts, 4 enums]
+│
 ├── GslDomainRegistration
 │
 ├── GslKnowledge                    GenderSense Limited clinical knowledge: the hormone-therapy
@@ -121,4 +120,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-10-30 15:42 by `gen_package_hierarchy.py`.*
+*Generated 2026-10-30 15:44 by `gen_package_hierarchy.py`.*

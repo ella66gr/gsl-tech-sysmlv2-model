@@ -15,7 +15,6 @@ package GslBusinessModel {
     private import BusinessMetamodelGeneral::ResourcePlanning::*;
     private import BusinessMetamodelGeneral::FinancialPlanning::*;
     private import BusinessMetamodelGeneral::StakeholderModel::*;
-    private import Foundation::CommonTypes::*;
     private import GslScenarios::*;  // objective* requirements and *Scenario usages bound by ref
 
     doc /* GenderSense Limited business model: concrete customer segments,

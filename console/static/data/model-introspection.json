@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-30T15:42:10.003277",
+  "generatedAt": "2026-10-30T15:44:37.104048",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 269
+      "elementCount": 263
     },
     "cafe": {
       "label": "Cafe",
@@ -25,7 +25,7 @@
     "gsl": {
       "label": "GSL",
       "description": "GenderSense Limited \u2014 production tenant",
-      "elementCount": 258
+      "elementCount": 264
     }
   },
   "summary": {
@@ -43,16 +43,16 @@
     },
     "byLayer": {
       "smm": 196,
-      "unknown": 61,
+      "unknown": 55,
       "bmm": 74,
-      "domain": 474
+      "domain": 480
     },
     "byDomain": {
-      "core": 269,
+      "core": 263,
       "cafe": 127,
       "suds": 69,
       "paws": 82,
-      "gsl": 258
+      "gsl": 264
     },
     "bfoTypeCoverage": 38
   },
@@ -10749,7 +10749,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 48,
+      "lineNumber": 47,
       "attributes": [
         {
           "name": "sharedFoundation"
@@ -10779,7 +10779,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 62,
+      "lineNumber": 61,
       "attributes": [
         {
           "name": "owl2dl"
@@ -10803,7 +10803,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 73,
+      "lineNumber": 72,
       "attributes": [
         {
           "name": "implemented"
@@ -10827,7 +10827,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 93,
+      "lineNumber": 92,
       "attributes": [
         {
           "name": "representationalModalitySummary",
@@ -10859,7 +10859,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 122,
+      "lineNumber": 121,
       "attributes": [
         {
           "name": "name",
@@ -10911,7 +10911,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 174,
+      "lineNumber": 173,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -10995,7 +10995,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 204,
+      "lineNumber": 203,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -11079,7 +11079,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 230,
+      "lineNumber": 229,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -11163,7 +11163,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 256,
+      "lineNumber": 255,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -11247,7 +11247,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 282,
+      "lineNumber": 281,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -11331,7 +11331,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 308,
+      "lineNumber": 307,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -11415,7 +11415,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 338,
+      "lineNumber": 337,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -11499,7 +11499,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 364,
+      "lineNumber": 363,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -11583,7 +11583,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 390,
+      "lineNumber": 389,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -11667,7 +11667,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 416,
+      "lineNumber": 415,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -11751,7 +11751,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 442,
+      "lineNumber": 441,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -11835,7 +11835,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 472,
+      "lineNumber": 471,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -11919,7 +11919,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 502,
+      "lineNumber": 501,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -12003,7 +12003,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 532,
+      "lineNumber": 531,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -12087,7 +12087,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 558,
+      "lineNumber": 557,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -12171,7 +12171,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 584,
+      "lineNumber": 583,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -12255,7 +12255,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 610,
+      "lineNumber": 609,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -12339,7 +12339,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 636,
+      "lineNumber": 635,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -12423,7 +12423,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 662,
+      "lineNumber": 661,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -12507,7 +12507,7 @@
       "sourceFile": "model/architectural-structure.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 688,
+      "lineNumber": 687,
       "specialises": "ArchitecturalSection",
       "attributes": [
         {
@@ -19001,172 +19001,6 @@
         {
           "name": "introducedSession",
           "type": "Integer",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "Gender",
-      "parentPackage": "CommonTypes",
-      "doc": "Gender identity as recorded for clinical purposes.",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 38,
-      "attributes": [
-        {
-          "name": "male"
-        },
-        {
-          "name": "female"
-        },
-        {
-          "name": "nonBinary"
-        },
-        {
-          "name": "other"
-        },
-        {
-          "name": "notStated"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "ContactMethod",
-      "parentPackage": "CommonTypes",
-      "doc": "Preferred method of contact.",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 47,
-      "attributes": [
-        {
-          "name": "email"
-        },
-        {
-          "name": "phone"
-        },
-        {
-          "name": "sms"
-        },
-        {
-          "name": "secureMessage"
-        },
-        {
-          "name": "post"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "AppointmentType",
-      "parentPackage": "CommonTypes",
-      "doc": "Type of clinical appointment.",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 56,
-      "attributes": [
-        {
-          "name": "faceToFace"
-        },
-        {
-          "name": "video"
-        },
-        {
-          "name": "telephone"
-        },
-        {
-          "name": "asynchronous"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "ConsentStatus",
-      "parentPackage": "CommonTypes",
-      "doc": "Status of a consent record.",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 66,
-      "attributes": [
-        {
-          "name": "given"
-        },
-        {
-          "name": "withdrawn"
-        },
-        {
-          "name": "notYetObtained"
-        },
-        {
-          "name": "declined"
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "Address",
-      "parentPackage": "CommonTypes",
-      "doc": "A postal address.",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 74,
-      "attributes": [
-        {
-          "name": "line1",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "line2",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "city",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "postcode",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "country",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "ContactDetails",
-      "parentPackage": "CommonTypes",
-      "doc": "Contact information for a person or organisation.",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 83,
-      "attributes": [
-        {
-          "name": "email",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "phone",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "preferredMethod",
-          "type": "ContactMethod",
           "isRedefinition": false
         }
       ]
@@ -34225,7 +34059,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 36,
+      "lineNumber": 35,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -34263,7 +34097,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 47,
+      "lineNumber": 46,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -34301,7 +34135,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 60,
+      "lineNumber": 59,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -34334,7 +34168,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 68,
+      "lineNumber": 67,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -34367,7 +34201,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 76,
+      "lineNumber": 75,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -34400,7 +34234,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 86,
+      "lineNumber": 85,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -34443,7 +34277,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 98,
+      "lineNumber": 97,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -34486,7 +34320,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 110,
+      "lineNumber": 109,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -34529,7 +34363,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 124,
+      "lineNumber": 123,
       "specialises": "Channel",
       "attributes": [
         {
@@ -34572,7 +34406,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 133,
+      "lineNumber": 132,
       "specialises": "Channel",
       "attributes": [
         {
@@ -34615,7 +34449,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 144,
+      "lineNumber": 143,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -34648,7 +34482,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 151,
+      "lineNumber": 150,
       "specialises": "DifferentiationClaim",
       "attributes": [
         {
@@ -34681,7 +34515,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 160,
+      "lineNumber": 159,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -34724,7 +34558,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 173,
+      "lineNumber": 172,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -34767,7 +34601,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 185,
+      "lineNumber": 184,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -34810,7 +34644,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 197,
+      "lineNumber": 196,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -34853,7 +34687,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 213,
+      "lineNumber": 212,
       "specialises": "ValueProposition",
       "attributes": [
         {
@@ -34886,7 +34720,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 223,
+      "lineNumber": 222,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34924,7 +34758,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 234,
+      "lineNumber": 233,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -34962,7 +34796,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 242,
+      "lineNumber": 241,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -35000,7 +34834,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 252,
+      "lineNumber": 251,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -35038,7 +34872,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 260,
+      "lineNumber": 259,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -35076,7 +34910,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 268,
+      "lineNumber": 267,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -35114,7 +34948,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 278,
+      "lineNumber": 277,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -35152,7 +34986,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 289,
+      "lineNumber": 288,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -35190,7 +35024,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 300,
+      "lineNumber": 299,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -35228,7 +35062,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 309,
+      "lineNumber": 308,
       "specialises": "Capability",
       "attributes": [
         {
@@ -35261,7 +35095,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 319,
+      "lineNumber": 318,
       "specialises": "Capability",
       "attributes": [
         {
@@ -35294,7 +35128,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 326,
+      "lineNumber": 325,
       "specialises": "Capability",
       "attributes": [
         {
@@ -35327,7 +35161,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 333,
+      "lineNumber": 332,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -35365,7 +35199,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 343,
+      "lineNumber": 342,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -35398,7 +35232,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 351,
+      "lineNumber": 350,
       "specialises": "ResourceConstraint",
       "attributes": [
         {
@@ -35431,7 +35265,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 364,
+      "lineNumber": 363,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -35469,7 +35303,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 374,
+      "lineNumber": 373,
       "specialises": "ResourceType",
       "attributes": [
         {
@@ -35507,7 +35341,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 384,
+      "lineNumber": 383,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -35545,7 +35379,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 393,
+      "lineNumber": 392,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -35583,7 +35417,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 402,
+      "lineNumber": 401,
       "specialises": "ResourceInstance",
       "attributes": [
         {
@@ -35621,7 +35455,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 413,
+      "lineNumber": 412,
       "specialises": "Capability",
       "attributes": [
         {
@@ -35654,7 +35488,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 420,
+      "lineNumber": 419,
       "specialises": "Capability",
       "attributes": [
         {
@@ -35687,7 +35521,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 427,
+      "lineNumber": 426,
       "specialises": "CapacityModel",
       "attributes": [
         {
@@ -35725,7 +35559,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 438,
+      "lineNumber": 437,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -35736,7 +35570,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 444,
+      "lineNumber": 443,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -35747,7 +35581,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 451,
+      "lineNumber": 450,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -35758,7 +35592,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 458,
+      "lineNumber": 457,
       "specialises": "ObjectiveCapabilityMapping"
     },
     {
@@ -35769,7 +35603,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 468,
+      "lineNumber": 467,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -35802,7 +35636,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 476,
+      "lineNumber": 475,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -35835,7 +35669,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 484,
+      "lineNumber": 483,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -35868,7 +35702,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 492,
+      "lineNumber": 491,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -35901,7 +35735,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 500,
+      "lineNumber": 499,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -35934,7 +35768,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 508,
+      "lineNumber": 507,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -35967,7 +35801,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 516,
+      "lineNumber": 515,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -36000,7 +35834,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 524,
+      "lineNumber": 523,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -36033,7 +35867,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 531,
+      "lineNumber": 530,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -36066,7 +35900,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 539,
+      "lineNumber": 538,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -36099,7 +35933,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 547,
+      "lineNumber": 546,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -36137,7 +35971,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 555,
+      "lineNumber": 554,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -36175,7 +36009,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 566,
+      "lineNumber": 565,
       "specialises": "RevenueStream",
       "attributes": [
         {
@@ -36208,7 +36042,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 578,
+      "lineNumber": 577,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -36241,7 +36075,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 586,
+      "lineNumber": 585,
       "specialises": "CostDriver",
       "attributes": [
         {
@@ -36274,7 +36108,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 594,
+      "lineNumber": 593,
       "specialises": "PricingModel",
       "attributes": [
         {
@@ -36312,7 +36146,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 605,
+      "lineNumber": 604,
       "specialises": "UnitEconomics",
       "attributes": [
         {
@@ -36345,7 +36179,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 618,
+      "lineNumber": 617,
       "specialises": "FinancialProjection",
       "attributes": [
         {
@@ -36383,7 +36217,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 629,
+      "lineNumber": 628,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -36441,7 +36275,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 644,
+      "lineNumber": 643,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -36499,7 +36333,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 658,
+      "lineNumber": 657,
       "specialises": "CooperativeArrangement",
       "attributes": [
         {
@@ -36552,7 +36386,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 672,
+      "lineNumber": 671,
       "specialises": "ReferralPathway",
       "attributes": [
         {
@@ -36605,7 +36439,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 686,
+      "lineNumber": 685,
       "specialises": "ReferralPathway",
       "attributes": [
         {
@@ -36658,7 +36492,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 699,
+      "lineNumber": 698,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -36711,7 +36545,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 713,
+      "lineNumber": 712,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -36764,7 +36598,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 726,
+      "lineNumber": 725,
       "specialises": "CommunityRelationship",
       "attributes": [
         {
@@ -36807,7 +36641,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 738,
+      "lineNumber": 737,
       "specialises": "ParticipationModel",
       "attributes": [
         {
@@ -36844,6 +36678,172 @@
           "name": "supportRequired",
           "value": "Health literacy support, education on hormone therapy effects and monitoring, digital literacy for portal use, accessibility accommodations as needed.",
           "isRedefinition": true
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "Gender",
+      "parentPackage": "GslCommonTypes",
+      "doc": "Gender identity as recorded for clinical purposes.",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 21,
+      "attributes": [
+        {
+          "name": "male"
+        },
+        {
+          "name": "female"
+        },
+        {
+          "name": "nonBinary"
+        },
+        {
+          "name": "other"
+        },
+        {
+          "name": "notStated"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "ContactMethod",
+      "parentPackage": "GslCommonTypes",
+      "doc": "Preferred method of contact.",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 30,
+      "attributes": [
+        {
+          "name": "email"
+        },
+        {
+          "name": "phone"
+        },
+        {
+          "name": "sms"
+        },
+        {
+          "name": "secureMessage"
+        },
+        {
+          "name": "post"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "AppointmentType",
+      "parentPackage": "GslCommonTypes",
+      "doc": "Type of clinical appointment.",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 39,
+      "attributes": [
+        {
+          "name": "faceToFace"
+        },
+        {
+          "name": "video"
+        },
+        {
+          "name": "telephone"
+        },
+        {
+          "name": "asynchronous"
+        }
+      ]
+    },
+    {
+      "kind": "enum_def",
+      "name": "ConsentStatus",
+      "parentPackage": "GslCommonTypes",
+      "doc": "Status of a consent record.",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 49,
+      "attributes": [
+        {
+          "name": "given"
+        },
+        {
+          "name": "withdrawn"
+        },
+        {
+          "name": "notYetObtained"
+        },
+        {
+          "name": "declined"
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "Address",
+      "parentPackage": "GslCommonTypes",
+      "doc": "A postal address.",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 57,
+      "attributes": [
+        {
+          "name": "line1",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "line2",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "city",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "postcode",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "country",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "part_def",
+      "name": "ContactDetails",
+      "parentPackage": "GslCommonTypes",
+      "doc": "Contact information for a person or organisation.",
+      "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+      "sourceDomain": "gsl",
+      "metaModelLayer": "domain",
+      "lineNumber": 66,
+      "attributes": [
+        {
+          "name": "email",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "phone",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "preferredMethod",
+          "type": "ContactMethod",
+          "isRedefinition": false
         }
       ]
     },

@@ -7,7 +7,7 @@
 // evaluation spec instances and use cases, the regimen-selection and
 // stability-assessment decision tables, the outcome targets, measurement
 // points and schedule, and the hormone-therapy enums from
-// Foundation::CommonTypes (group F). The General pattern types stay in
+// Foundation's CommonTypes (group F). The General pattern types stay in
 // model/knowledge.sysml until OP-132 step 8 (SystemMetamodelGeneral).
 // =========================================================================
 
@@ -27,7 +27,7 @@ package GslKnowledge {
         private import ScalarValues::*;
 
         doc /* Enumerations for the hormone-therapy decision tables.
-             * Formerly Foundation::CommonTypes (group F, ADR-011 §4.7);
+             * Formerly in Foundation's CommonTypes (group F, ADR-011 §4.7);
              * their only consumers are the GSL decision tables. */
 
 

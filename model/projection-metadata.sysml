@@ -5,7 +5,7 @@
 // Session 514 — OP-125 canon pass, Step 2 (ADR-011 §4.7, decision 7).
 // The SysML `Foundation` package was dissolved by meaning. The only part
 // that survives as a unit is this annotation schema, the metadata the
-// projection and the generators run on. It was `Foundation::MetadataLibrary`
+// projection and the generators run on. It was Foundation's `MetadataLibrary`
 // (the catalogue, comprehension, weighted-relationship and BFO-grounding
 // annotations). It is projection apparatus and belongs to no layer; it is
 // FGZ (Formalism Governance Zone) machinery, not content of any layer.
@@ -27,7 +27,7 @@ package ProjectionMetadata {
          * concept graph, and the OWL projection; @BfoType reaches BFO and
          * CCO IRIs through the lookup tables in ontology/config/.
          *
-         * Formerly Foundation::MetadataLibrary (S514, OP-125). The clinical,
+         * Formerly Foundation's MetadataLibrary (S514, OP-125). The clinical,
          * governance, openEHR and agency annotations that shared that
          * package were not projection apparatus and did not move here. */
 

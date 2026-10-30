@@ -33,9 +33,9 @@ PENDING_OK=0
 #   step 5  BusinessModel/BusinessScenarios/BusinessStrategy GSL usages leave
 #   step 8  Knowledge, Platform retired (done S515)
 #   step 9  BusinessModel, BusinessScenarios, BusinessStrategy, CanonicalRuntime retired (done S515)
-#   step 11 Foundation retired
+#   step 11 Foundation retired (done S515)
 #   step 12 root's PatternCatalogue import dropped
-PENDING_NAMES='Foundation|PatternCatalogue'
+PENDING_NAMES='PatternCatalogue'
 
 IMPORT_RE='^\s*(private |public )?import '
 APPARATUS='ScalarValues|ProjectionMetadata|TemporalMetadata'

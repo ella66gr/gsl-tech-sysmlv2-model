@@ -21,7 +21,6 @@
 package ArchitecturalStructure {
     private import ScalarValues::*;
     private import ProjectionMetadata::*;
-    private import Foundation::CommonTypes::*;
 
     doc /* Architectural sections of the dual-stack architecture (B27).
          * Each section is a bounded region with a characteristic

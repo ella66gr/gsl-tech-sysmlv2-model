@@ -36,15 +36,15 @@ gsl-sysml-model/
 │   ├── system-metamodel-general.sysml  SMG: ProcessAnnotations, StatePatterns, LogicEngine, EvaluationSpecs, DecisionModels,
 │   │                               OutcomeFramework, LearningCycles, Analytics, Persistence, OpenEhrIntegration (OP-132 step 8),
 │   │                               DomainConfigurationTypes (step 10)
-│   ├── system-metamodel-domain-clinical.sysml  SMD (clinical): @ClinicalReviewGate (OP-132 step 7)
+│   └── system-metamodel-domain-clinical.sysml  SMD (clinical): @ClinicalReviewGate (OP-132 step 7)
 │   ├── canonical-runtime.sysml     Multi-axis status primitive (B71/B72) — CanonicalRuntimeType, StatusAxis,
 │   │                               ValueSpace, AxisTransition; Paws Booking five-axis declaration
 │   ├── pattern-catalogue.sysml     Validated patterns + architectural principles
-│   └── foundation.sysml            Residual: CommonTypes (Gender, ContactMethod, AppointmentType, ConsentStatus, Address, ContactDetails) — deleted at OP-132 step 11
 ├── exercises/                      Tenant and demonstrator domain projections
 │   ├── gendersense/model/          GSL — production tenant (OP-132 steps 3–4): gendersense.sysml root,
 │   │                               gsl-enterprise, gsl-service-delivery, gsl-platform, gsl-operations,
-│   │                               gsl-business-model, gsl-scenarios (step 5), gsl-knowledge (step 6)
+│   │                               gsl-business-model, gsl-scenarios (step 5), gsl-knowledge (step 6),
+│   │                               gsl-domain-registration (step 10), gsl-common-types (step 11)
 │   ├── coffeeshop-demonstrator/    Cafe — full-stack reference implementation (SvelteKit + Temporal + EHRbase)
 │   ├── paws-demonstrator/          Paws — appointment-based dog grooming (SysML projection)
 │   ├── suds-demonstrator/          Suds — batch processing launderette (SysML projection)
