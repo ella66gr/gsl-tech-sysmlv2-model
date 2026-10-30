@@ -101,29 +101,29 @@ graph TD
 ```mermaid
 graph TD
 
-    selfAssessmentDashboard["Self-assessment dashboard (KL Increment 3)"]:::designed
-    agencyClassificationOnActions["Agency classification on pathway actions"]:::designed
-    notificationTriggersOnTransitions["Notification triggers on state transitions"]:::discussion
-    twoLayerModelVisualisation["Two-layer model visualisation in the UI"]:::validated
-    autoLoadingEntityViews["Auto-loading entity views"]:::validated
-    kanbanAsProcessDashboard["Kanban-as-process-dashboard"]:::validated
-    catalogueAsUiContract["Catalogue-as-UI-contract"]:::validated
-    xstateInTemporal["XState in Temporal"]:::validated
-    compositeOrderOrchestration["Composite order / multi-workflow orchestration"]:::discussion
-    fourLayerItemModel["Four-layer item model"]:::validated
-    auditAsTimelineDataSource["Audit-as-timeline data source"]:::validated
-    multiSourceMetricsAggregation["Multi-source metrics aggregation with graceful degradation"]:::validated
-    dataReleaseModel["Data release model (patient-facing)"]:::discussion
-    threeLayerPersistence["Three-persistence-layer architecture"]:::validated
-    cdrSourceProvenanceBadges["CDR source provenance badges"]:::validated
-    optionEvaluatorHelpMeChoose["OptionEvaluator / Help Me Choose"]:::designed
     fiveLayerSelfKnowledge["Five-layer self-knowledge architecture"]:::validated
-    categoryConditionalFormFields["Category-conditional form fields"]:::validated
-    processDomainGovernanceUnifiedView["Process + domain + governance unified view"]:::validated
-    infrastructureHealthAsAppConcern["Infrastructure health as application-level concern"]:::validated
-    twoLayerActionFlow["Two-layer pathway modelling"]:::validated
-    crossPageDataConsistency["Cross-page data consistency"]:::validated
+    kanbanAsProcessDashboard["Kanban-as-process-dashboard"]:::validated
+    dataReleaseModel["Data release model (patient-facing)"]:::discussion
+    notificationTriggersOnTransitions["Notification triggers on state transitions"]:::discussion
+    xstateInTemporal["XState in Temporal"]:::validated
     persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]:::validated
+    catalogueAsUiContract["Catalogue-as-UI-contract"]:::validated
+    compositeOrderOrchestration["Composite order / multi-workflow orchestration"]:::discussion
+    cdrSourceProvenanceBadges["CDR source provenance badges"]:::validated
+    multiSourceMetricsAggregation["Multi-source metrics aggregation with graceful degradation"]:::validated
+    threeLayerPersistence["Three-persistence-layer architecture"]:::validated
+    optionEvaluatorHelpMeChoose["OptionEvaluator / Help Me Choose"]:::designed
+    agencyClassificationOnActions["Agency classification on pathway actions"]:::designed
+    selfAssessmentDashboard["Self-assessment dashboard (KL Increment 3)"]:::designed
+    categoryConditionalFormFields["Category-conditional form fields"]:::validated
+    twoLayerModelVisualisation["Two-layer model visualisation in the UI"]:::validated
+    infrastructureHealthAsAppConcern["Infrastructure health as application-level concern"]:::validated
+    fourLayerItemModel["Four-layer item model"]:::validated
+    twoLayerActionFlow["Two-layer pathway modelling"]:::validated
+    auditAsTimelineDataSource["Audit-as-timeline data source"]:::validated
+    processDomainGovernanceUnifiedView["Process + domain + governance unified view"]:::validated
+    autoLoadingEntityViews["Auto-loading entity views"]:::validated
+    crossPageDataConsistency["Cross-page data consistency"]:::validated
 
     persistencePolicyAsReasoning --> fourLayerItemModel
     persistencePolicyAsReasoning --> threeLayerPersistence
@@ -173,15 +173,15 @@ graph LR
 
     subgraph PAT["Patterns"]
         direction TB
-        auditAsTimelineDataSource["Audit-as-timeline data source"]
         sysmlAsSingleSourceOfTruth["SysML v2 as single source of truth"]
         fiveLayerSelfKnowledge["Five-layer self-knowledge architecture"]
+        auditAsTimelineDataSource["Audit-as-timeline data source"]
+        optionEvaluatorHelpMeChoose["OptionEvaluator / Help Me Choose"]
         agencyClassificationOnActions["Agency classification on pathway actions"]
         dataReleaseModel["Data release model (patient-facing)"]
+        persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]
         coffeeshopDemonstratorAsPractice["Coffee shop demonstrator as standing validation practice"]
         twoLayerActionFlow["Two-layer pathway modelling"]
-        optionEvaluatorHelpMeChoose["OptionEvaluator / Help Me Choose"]
-        persistencePolicyAsReasoning["Persistence policy as queryable reasoning"]
     end
 
     persistencePolicyAsReasoning -->|motivated by| selfDescribingSystem

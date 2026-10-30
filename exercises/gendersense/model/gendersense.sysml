@@ -8,6 +8,7 @@ package GenderSense {
     private import GslOperations::*;
     private import Foundation::*;
     private import ProjectionMetadata::*;
+    private import SystemMetamodelDomainClinical::*;
     private import BusinessModel::*;
     private import BusinessScenarios::*;
     private import BusinessStrategy::*;

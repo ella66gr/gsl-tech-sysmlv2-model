@@ -73,14 +73,6 @@ package Foundation {
 
         // -- Clinical pathway metadata --------------------------
 
-        metadata def ClinicalReviewGate {
-            doc /* Marks a pathway step as requiring clinical review
-                 * before proceeding. Generates a human-task wait point
-                 * in the orchestration layer. */
-            attribute reviewerRole : String;
-            attribute reviewCriteria : String;
-        }
-
         metadata def ConsentRequired {
             doc /* Marks a pathway step as requiring patient consent
                  * before proceeding. */

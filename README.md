@@ -34,6 +34,7 @@ gsl-sysml-model/
 │   ├── business-scenarios.sysml    Business scenario definitions
 │   ├── business-strategy.sysml     Business strategy definitions
 │   ├── architectural-structure.sysml  SMM: ArchitecturalSection + instances
+│   ├── system-metamodel-domain-clinical.sysml  SMD (clinical): @ClinicalReviewGate (OP-132 step 7)
 │   ├── canonical-runtime.sysml     Multi-axis status primitive (B71/B72) — CanonicalRuntimeType, StatusAxis,
 │   │                               ValueSpace, AxisTransition; Paws Booking five-axis declaration
 │   ├── pattern-catalogue.sysml     Validated patterns + architectural principles

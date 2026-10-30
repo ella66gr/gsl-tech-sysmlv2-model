@@ -1,7 +1,7 @@
 // ============================================================
 // DO NOT EDIT — Generated from GenderSense SysML v2 model
 // Source: exercises/gendersense/model/gsl-knowledge.sysml (GslKnowledge::DecisionTables)
-// Generated: 2026-10-30T15:17:49Z
+// Generated: 2026-10-30T15:20:51Z
 // Generator: scripts/gen_decision_table_evaluator.py
 // ============================================================
 

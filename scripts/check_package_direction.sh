@@ -172,12 +172,13 @@ gen_files=(model/*-metamodel-general.sysml)
 shopt -u nullglob
 if (( ${#gen_files[@]} || ${#domain_files[@]} )); then
     out=""
-    for f in "${gen_files[@]}"; do
+    # bash 3.2 + set -u: an empty array expansion is "unbound"; guard it.
+    for f in ${gen_files[@]+"${gen_files[@]}"}; do
         o=$(grep -nHE "\b(BusinessMetamodelDomain[A-Za-z]*|SystemMetamodelDomain[A-Za-z]*|${TENANT_NAMES})::" "$f" \
             | grep -vE '^[^:]+:[0-9]+:\s*(//|\*)')
         [[ -n "$o" ]] && out+="$o"$'\n'
     done
-    for f in "${domain_files[@]}"; do
+    for f in ${domain_files[@]+"${domain_files[@]}"}; do
         sector=$(sed -E 's/.*-metamodel-domain-([a-z]+)\.sysml/\1/' <<<"$f")
         Sector="$(tr '[:lower:]' '[:upper:]' <<<"${sector:0:1}")${sector:1}"
         o=$(grep -nHE "\b(BusinessMetamodelDomain[A-Za-z]*|SystemMetamodelDomain[A-Za-z]*|${TENANT_NAMES})::" "$f" \

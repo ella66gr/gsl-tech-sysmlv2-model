@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "generated_at": "2026-10-30T15:17:49.291215+00:00",
+  "generated_at": "2026-10-30T15:20:51.646880+00:00",
   "session": 116,
   "summary": {
     "StructuralOnly": 741,
@@ -1016,15 +1016,6 @@
         "midLevelClass": "",
         "mappingNotes": "CanonicalRuntimeType is the structural parent for types whose runtime instances live in DBR (business-side continuant trajectories) or DSR (system-side occurrent log). Anchored at BFO entity (S514, ADR-011): it defines a shape, not a kind of thing, and its concrete types have different BFO kinds. The BFO classification of a concrete canonical type is carried by its own @BfoType annotation; this parent establishes only the platform-level shape."
       }
-    },
-    {
-      "name": "ClinicalReviewGate",
-      "kind": "metadata_def",
-      "parentPackage": "MetadataLibrary",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
     },
     {
       "name": "ConsentRequired",
@@ -2723,6 +2714,15 @@
       "kind": "metadata_def",
       "parentPackage": "ProjectionMetadata",
       "sourceFile": "model/projection-metadata.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ClinicalReviewGate",
+      "kind": "metadata_def",
+      "parentPackage": "SystemMetamodelDomainClinical",
+      "sourceFile": "model/system-metamodel-domain-clinical.sysml",
       "sourceDomain": "core",
       "classification": "StructuralOnly",
       "targetGraph": null

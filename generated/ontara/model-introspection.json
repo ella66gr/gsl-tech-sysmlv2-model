@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T15:17:48.862703",
+  "generatedAt": "2026-10-30T15:20:51.225859",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
@@ -42,8 +42,8 @@
       "satisfy": 2
     },
     "byLayer": {
-      "smm": 180,
-      "unknown": 91,
+      "smm": 181,
+      "unknown": 90,
       "bmm": 68,
       "domain": 466
     },
@@ -18640,35 +18640,13 @@
     },
     {
       "kind": "metadata_def",
-      "name": "ClinicalReviewGate",
-      "parentPackage": "MetadataLibrary",
-      "doc": "Marks a pathway step as requiring clinical review\nbefore proceeding. Generates a human-task wait point\nin the orchestration layer.",
-      "sourceFile": "model/foundation.sysml",
-      "sourceDomain": "core",
-      "metaModelLayer": "unknown",
-      "lineNumber": 76,
-      "attributes": [
-        {
-          "name": "reviewerRole",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "reviewCriteria",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "metadata_def",
       "name": "ConsentRequired",
       "parentPackage": "MetadataLibrary",
       "doc": "Marks a pathway step as requiring patient consent\nbefore proceeding.",
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 84,
+      "lineNumber": 76,
       "attributes": [
         {
           "name": "consentType",
@@ -18685,7 +18663,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 90,
+      "lineNumber": 82,
       "attributes": [
         {
           "name": "auditCategory",
@@ -18702,7 +18680,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 96,
+      "lineNumber": 88,
       "attributes": [
         {
           "name": "ruleName",
@@ -18719,7 +18697,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 102,
+      "lineNumber": 94,
       "attributes": [
         {
           "name": "tableName",
@@ -18736,7 +18714,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 108,
+      "lineNumber": 100,
       "attributes": [
         {
           "name": "constraintName",
@@ -18758,7 +18736,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 117,
+      "lineNumber": 109,
       "attributes": [
         {
           "name": "archetypeId",
@@ -18780,7 +18758,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 140,
+      "lineNumber": 132,
       "attributes": [
         {
           "name": "nodeId",
@@ -18802,7 +18780,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 164,
+      "lineNumber": 156,
       "attributes": [
         {
           "name": "templateId",
@@ -18819,7 +18797,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 190,
+      "lineNumber": 182,
       "attributes": [
         {
           "name": "patientAgent"
@@ -18843,7 +18821,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 213,
+      "lineNumber": 205,
       "attributes": [
         {
           "name": "agencyType",
@@ -18870,7 +18848,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 248,
+      "lineNumber": 240,
       "attributes": [
         {
           "name": "male"
@@ -18897,7 +18875,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 257,
+      "lineNumber": 249,
       "attributes": [
         {
           "name": "email"
@@ -18924,7 +18902,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 266,
+      "lineNumber": 258,
       "attributes": [
         {
           "name": "faceToFace"
@@ -18948,7 +18926,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 274,
+      "lineNumber": 266,
       "attributes": [
         {
           "name": "inbound"
@@ -18969,7 +18947,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 286,
+      "lineNumber": 278,
       "attributes": [
         {
           "name": "regulatory"
@@ -18999,7 +18977,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 302,
+      "lineNumber": 294,
       "attributes": [
         {
           "name": "essential"
@@ -19020,7 +18998,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 314,
+      "lineNumber": 306,
       "attributes": [
         {
           "name": "given"
@@ -19044,7 +19022,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 322,
+      "lineNumber": 314,
       "attributes": [
         {
           "name": "line1",
@@ -19081,7 +19059,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 331,
+      "lineNumber": 323,
       "attributes": [
         {
           "name": "email",
@@ -19108,7 +19086,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 341,
+      "lineNumber": 333,
       "attributes": [
         {
           "name": "pass"
@@ -19129,7 +19107,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 350,
+      "lineNumber": 342,
       "attributes": [
         {
           "name": "critical"
@@ -19150,7 +19128,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 358,
+      "lineNumber": 350,
       "attributes": [
         {
           "name": "patient"
@@ -19177,7 +19155,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 368,
+      "lineNumber": 360,
       "attributes": [
         {
           "name": "cdr;"
@@ -19204,7 +19182,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 382,
+      "lineNumber": 374,
       "attributes": [
         {
           "name": "clinical"
@@ -19231,7 +19209,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 398,
+      "lineNumber": 390,
       "attributes": [
         {
           "name": "automatic"
@@ -19252,7 +19230,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 413,
+      "lineNumber": 405,
       "attributes": [
         {
           "name": "healthy"
@@ -19273,7 +19251,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 429,
+      "lineNumber": 421,
       "attributes": [
         {
           "name": "clinicalDataRepository"
@@ -19297,7 +19275,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 449,
+      "lineNumber": 441,
       "attributes": [
         {
           "name": "clinicalSignificance"
@@ -19342,7 +19320,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 469,
+      "lineNumber": 461,
       "attributes": [
         {
           "name": "domainConcept",
@@ -19374,7 +19352,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 501,
+      "lineNumber": 493,
       "attributes": [
         {
           "name": "generallyGoverned"
@@ -19401,7 +19379,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 558,
+      "lineNumber": 550,
       "attributes": [
         {
           "name": "gmc"
@@ -19452,7 +19430,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 611,
+      "lineNumber": 603,
       "attributes": [
         {
           "name": "generalOnly"
@@ -19473,7 +19451,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 626,
+      "lineNumber": 618,
       "attributes": [
         {
           "name": "referenceValidation"
@@ -19497,7 +19475,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 648,
+      "lineNumber": 640,
       "attributes": [
         {
           "name": "england"
@@ -19524,7 +19502,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 664,
+      "lineNumber": 656,
       "attributes": [
         {
           "name": "personalCare"
@@ -19575,7 +19553,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 690,
+      "lineNumber": 682,
       "attributes": [
         {
           "name": "registeredIndividual"
@@ -19599,7 +19577,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 733,
+      "lineNumber": 725,
       "attributes": [
         {
           "name": "regulatoryShape",
@@ -19666,7 +19644,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 772,
+      "lineNumber": 764,
       "attributes": [
         {
           "name": "canonicalKey",
@@ -19713,7 +19691,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 803,
+      "lineNumber": 795,
       "specialises": "DomainIdentity",
       "attributes": [
         {
@@ -19766,7 +19744,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 822,
+      "lineNumber": 814,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -19809,7 +19787,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 834,
+      "lineNumber": 826,
       "specialises": "DomainIdentity",
       "attributes": [
         {
@@ -19862,7 +19840,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 853,
+      "lineNumber": 845,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -19905,7 +19883,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 865,
+      "lineNumber": 857,
       "specialises": "DomainIdentity",
       "attributes": [
         {
@@ -19958,7 +19936,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 885,
+      "lineNumber": 877,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -20001,7 +19979,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 897,
+      "lineNumber": 889,
       "specialises": "DomainIdentity",
       "attributes": [
         {
@@ -20064,7 +20042,7 @@
       "sourceFile": "model/foundation.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "unknown",
-      "lineNumber": 921,
+      "lineNumber": 913,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -25092,6 +25070,28 @@
         },
         {
           "name": "mappingNotes",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ]
+    },
+    {
+      "kind": "metadata_def",
+      "name": "ClinicalReviewGate",
+      "parentPackage": "SystemMetamodelDomainClinical",
+      "doc": "Marks a pathway step as requiring clinical review\nbefore proceeding. Generates a human-task wait point\nin the orchestration layer.",
+      "sourceFile": "model/system-metamodel-domain-clinical.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "smm",
+      "lineNumber": 20,
+      "attributes": [
+        {
+          "name": "reviewerRole",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "reviewCriteria",
           "type": "String",
           "isRedefinition": false
         }
@@ -44312,7 +44312,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 866,
+      "lineNumber": 867,
       "attributes": [
         {
           "name": "nhsNumber",
@@ -44344,7 +44344,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 941,
+      "lineNumber": 942,
       "attributes": [
         {
           "name": "episodeId",
@@ -44371,7 +44371,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 956,
+      "lineNumber": 957,
       "attributes": [
         {
           "name": "consultationId",
@@ -44398,7 +44398,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 1044,
+      "lineNumber": 1045,
       "attributes": [
         {
           "name": "prescriptionId",
@@ -44440,7 +44440,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 1131,
+      "lineNumber": 1132,
       "attributes": [
         {
           "name": "resultId",
@@ -44487,7 +44487,7 @@
       "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
-      "lineNumber": 1225,
+      "lineNumber": 1226,
       "attributes": [
         {
           "name": "referralId",

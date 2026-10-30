@@ -63,7 +63,8 @@ package GslServiceDelivery {
         package HormoneTherapy {
             private import ScalarValues::*;
             private import GslServiceDelivery::ClinicalEntities::*;
-            private import Foundation::MetadataLibrary::*;
+            private import Foundation::MetadataLibrary::*;   // @AuditPoint, @ConsentRequired, @LogicRule, @DecisionTable, @SafetyConstraint (SMG::ProcessAnnotations after step 8)
+            private import SystemMetamodelDomainClinical::*;  // @ClinicalReviewGate
             private import TemporalMetadata::*;
 
             doc /* Hormone therapy initiation, titration, monitoring,

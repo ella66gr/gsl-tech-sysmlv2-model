@@ -4,7 +4,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 ontara-corr:map-ActivityBudget a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ActivityBudget ;
@@ -14,7 +14,7 @@ ontara-corr:map-ActivityBudget a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ActivityCostAllocation a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ActivityCostAllocation ;
@@ -24,7 +24,7 @@ ontara-corr:map-ActivityCostAllocation a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ActivityGranularity a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ActivityGranularity ;
@@ -34,7 +34,7 @@ ontara-corr:map-ActivityGranularity a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ActivityRecord a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ActivityRecord ;
@@ -44,7 +44,7 @@ ontara-corr:map-ActivityRecord a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ActivityType a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ActivityType ;
@@ -54,7 +54,7 @@ ontara-corr:map-ActivityType a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-AuditEvidenceRecord a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:AuditEvidenceRecord ;
@@ -64,7 +64,7 @@ ontara-corr:map-AuditEvidenceRecord a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-Capability a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:Capability ;
@@ -74,7 +74,7 @@ ontara-corr:map-Capability a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CapacityModel a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CapacityModel ;
@@ -84,7 +84,7 @@ ontara-corr:map-CapacityModel a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CatalogueEntry a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CatalogueEntry ;
@@ -94,7 +94,7 @@ ontara-corr:map-CatalogueEntry a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-Channel a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:Channel ;
@@ -104,7 +104,7 @@ ontara-corr:map-Channel a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CommunityRelationship a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CommunityRelationship ;
@@ -114,7 +114,7 @@ ontara-corr:map-CommunityRelationship a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CooperativeArrangement a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CooperativeArrangement ;
@@ -124,7 +124,7 @@ ontara-corr:map-CooperativeArrangement a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CostDriver a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CostDriver ;
@@ -134,7 +134,7 @@ ontara-corr:map-CostDriver a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-CustomerSegment a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:CustomerSegment ;
@@ -144,7 +144,7 @@ ontara-corr:map-CustomerSegment a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-DifferentiationClaim a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:DifferentiationClaim ;
@@ -154,7 +154,7 @@ ontara-corr:map-DifferentiationClaim a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ExternalDependency a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ExternalDependency ;
@@ -164,7 +164,7 @@ ontara-corr:map-ExternalDependency a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ExternalReference a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ExternalReference ;
@@ -174,7 +174,7 @@ ontara-corr:map-ExternalReference a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-FinancialProjection a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:FinancialProjection ;
@@ -184,7 +184,7 @@ ontara-corr:map-FinancialProjection a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-GovernanceRequirement a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:GovernanceRequirement ;
@@ -194,7 +194,7 @@ ontara-corr:map-GovernanceRequirement a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-InventoryRecord a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:InventoryRecord ;
@@ -204,7 +204,7 @@ ontara-corr:map-InventoryRecord a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ObjectiveCapabilityMapping a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ObjectiveCapabilityMapping ;
@@ -214,7 +214,7 @@ ontara-corr:map-ObjectiveCapabilityMapping a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ParticipationModel a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ParticipationModel ;
@@ -224,7 +224,7 @@ ontara-corr:map-ParticipationModel a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-PricingModel a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:PricingModel ;
@@ -234,7 +234,7 @@ ontara-corr:map-PricingModel a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ReferralPathway a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ReferralPathway ;
@@ -244,7 +244,7 @@ ontara-corr:map-ReferralPathway a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ResourceConstraint a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ResourceConstraint ;
@@ -254,7 +254,7 @@ ontara-corr:map-ResourceConstraint a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ResourceInstance a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ResourceInstance ;
@@ -264,7 +264,7 @@ ontara-corr:map-ResourceInstance a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ResourceType a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ResourceType ;
@@ -274,7 +274,7 @@ ontara-corr:map-ResourceType a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-RevenueStream a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:RevenueStream ;
@@ -284,7 +284,7 @@ ontara-corr:map-RevenueStream a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ServiceOffering a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ServiceOffering ;
@@ -294,7 +294,7 @@ ontara-corr:map-ServiceOffering a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ServiceParticipant a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ServiceParticipant ;
@@ -304,7 +304,7 @@ ontara-corr:map-ServiceParticipant a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ServiceSubject a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ServiceSubject ;
@@ -314,7 +314,7 @@ ontara-corr:map-ServiceSubject a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-StakeholderRelationship a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:StakeholderRelationship ;
@@ -324,7 +324,7 @@ ontara-corr:map-StakeholderRelationship a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-UnitEconomics a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:UnitEconomics ;
@@ -334,7 +334,7 @@ ontara-corr:map-UnitEconomics a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-ValueProposition a ontara-corr:MappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.294630+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.650765+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
     ontara-corr:owlEntity ontara-bmm:ValueProposition ;
@@ -344,7 +344,7 @@ ontara-corr:map-ValueProposition a ontara-corr:MappingRecord ;
     ontara-corr:sysmlSourceFile "model/business-model.sysml" .
 
 ontara-corr:map-prop-hasActivityType a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional true ;
@@ -353,7 +353,7 @@ ontara-corr:map-prop-hasActivityType a ontara-corr:PropertyMappingRecord ;
     ontara-corr:sysmlElementName "ActivityRecord.activityType" .
 
 ontara-corr:map-prop-hasAffectedResource a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional true ;
@@ -362,7 +362,7 @@ ontara-corr:map-prop-hasAffectedResource a ontara-corr:PropertyMappingRecord ;
     ontara-corr:sysmlElementName "ResourceConstraint.affectedResource" .
 
 ontara-corr:map-prop-hasAllocatedActivityType a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional true ;
@@ -371,7 +371,7 @@ ontara-corr:map-prop-hasAllocatedActivityType a ontara-corr:PropertyMappingRecor
     ontara-corr:sysmlElementName "ActivityCostAllocation.activityType" .
 
 ontara-corr:map-prop-hasBudgetActivityType a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional true ;
@@ -380,7 +380,7 @@ ontara-corr:map-prop-hasBudgetActivityType a ontara-corr:PropertyMappingRecord ;
     ontara-corr:sysmlElementName "ActivityBudget.activityType" .
 
 ontara-corr:map-prop-hasCatalogueEntry a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional true ;
@@ -389,7 +389,7 @@ ontara-corr:map-prop-hasCatalogueEntry a ontara-corr:PropertyMappingRecord ;
     ontara-corr:sysmlElementName "InventoryRecord.catalogueEntry" .
 
 ontara-corr:map-prop-hasEnabledServiceOffering a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional false ;
@@ -398,7 +398,7 @@ ontara-corr:map-prop-hasEnabledServiceOffering a ontara-corr:PropertyMappingReco
     ontara-corr:sysmlElementName "Capability.enabledServiceOfferings" .
 
 ontara-corr:map-prop-hasLinkedResource a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional false ;
@@ -407,7 +407,7 @@ ontara-corr:map-prop-hasLinkedResource a ontara-corr:PropertyMappingRecord ;
     ontara-corr:sysmlElementName "CostDriver.linkedResource" .
 
 ontara-corr:map-prop-hasOffering a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional true ;
@@ -416,7 +416,7 @@ ontara-corr:map-prop-hasOffering a ontara-corr:PropertyMappingRecord ;
     ontara-corr:sysmlElementName "UnitEconomics.offering" .
 
 ontara-corr:map-prop-hasPricingModel a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional true ;
@@ -425,7 +425,7 @@ ontara-corr:map-prop-hasPricingModel a ontara-corr:PropertyMappingRecord ;
     ontara-corr:sysmlElementName "RevenueStream.pricingModel" .
 
 ontara-corr:map-prop-hasRelatedGovernanceRequirement a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional false ;
@@ -434,7 +434,7 @@ ontara-corr:map-prop-hasRelatedGovernanceRequirement a ontara-corr:PropertyMappi
     ontara-corr:sysmlElementName "StakeholderRelationship.relatedGovernanceRequirements" .
 
 ontara-corr:map-prop-hasRelatedServiceOffering a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional false ;
@@ -443,7 +443,7 @@ ontara-corr:map-prop-hasRelatedServiceOffering a ontara-corr:PropertyMappingReco
     ontara-corr:sysmlElementName "ParticipationModel.relatedServiceOffering" .
 
 ontara-corr:map-prop-hasResourceType a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional true ;
@@ -452,7 +452,7 @@ ontara-corr:map-prop-hasResourceType a ontara-corr:PropertyMappingRecord ;
     ontara-corr:sysmlElementName "ResourceInstance.resourceType" .
 
 ontara-corr:map-prop-hasSupportingCapability a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional false ;
@@ -461,7 +461,7 @@ ontara-corr:map-prop-hasSupportingCapability a ontara-corr:PropertyMappingRecord
     ontara-corr:sysmlElementName "ObjectiveCapabilityMapping.supportingCapabilities" .
 
 ontara-corr:map-prop-hasTargetSegment a ontara-corr:PropertyMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "ObjectProperty" ;
     ontara-corr:isFunctional true ;
@@ -470,7 +470,7 @@ ontara-corr:map-prop-hasTargetSegment a ontara-corr:PropertyMappingRecord ;
     ontara-corr:sysmlElementName "ValueProposition.targetSegment" .
 
 ontara-corr:map-weight-ActivityBudget-to-ActivityType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityBudget-to-ActivityType ;
@@ -481,7 +481,7 @@ ontara-corr:map-weight-ActivityBudget-to-ActivityType a ontara-corr:WeightMappin
     ontara-corr:weightTarget "ActivityType" .
 
 ontara-corr:map-weight-ActivityBudget-to-FinancialProjection a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityBudget-to-FinancialProjection ;
@@ -492,7 +492,7 @@ ontara-corr:map-weight-ActivityBudget-to-FinancialProjection a ontara-corr:Weigh
     ontara-corr:weightTarget "FinancialProjection" .
 
 ontara-corr:map-weight-ActivityCostAllocation-to-ActivityType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityCostAllocation-to-ActivityType ;
@@ -503,7 +503,7 @@ ontara-corr:map-weight-ActivityCostAllocation-to-ActivityType a ontara-corr:Weig
     ontara-corr:weightTarget "ActivityType" .
 
 ontara-corr:map-weight-ActivityCostAllocation-to-CostDriver a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityCostAllocation-to-CostDriver ;
@@ -514,7 +514,7 @@ ontara-corr:map-weight-ActivityCostAllocation-to-CostDriver a ontara-corr:Weight
     ontara-corr:weightTarget "CostDriver" .
 
 ontara-corr:map-weight-ActivityCostAllocation-to-UnitEconomics a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityCostAllocation-to-UnitEconomics ;
@@ -525,7 +525,7 @@ ontara-corr:map-weight-ActivityCostAllocation-to-UnitEconomics a ontara-corr:Wei
     ontara-corr:weightTarget "UnitEconomics" .
 
 ontara-corr:map-weight-ActivityGranularity-to-ActivityRecord a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityGranularity-to-ActivityRecord ;
@@ -536,7 +536,7 @@ ontara-corr:map-weight-ActivityGranularity-to-ActivityRecord a ontara-corr:Weigh
     ontara-corr:weightTarget "ActivityRecord" .
 
 ontara-corr:map-weight-ActivityGranularity-to-ActivityType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityGranularity-to-ActivityType ;
@@ -547,7 +547,7 @@ ontara-corr:map-weight-ActivityGranularity-to-ActivityType a ontara-corr:WeightM
     ontara-corr:weightTarget "ActivityType" .
 
 ontara-corr:map-weight-ActivityRecord-to-ActivityType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityRecord-to-ActivityType ;
@@ -558,7 +558,7 @@ ontara-corr:map-weight-ActivityRecord-to-ActivityType a ontara-corr:WeightMappin
     ontara-corr:weightTarget "ActivityType" .
 
 ontara-corr:map-weight-ActivityType-to-ActivityBudget a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityType-to-ActivityBudget ;
@@ -569,7 +569,7 @@ ontara-corr:map-weight-ActivityType-to-ActivityBudget a ontara-corr:WeightMappin
     ontara-corr:weightTarget "ActivityBudget" .
 
 ontara-corr:map-weight-ActivityType-to-ActivityCostAllocation a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityType-to-ActivityCostAllocation ;
@@ -580,7 +580,7 @@ ontara-corr:map-weight-ActivityType-to-ActivityCostAllocation a ontara-corr:Weig
     ontara-corr:weightTarget "ActivityCostAllocation" .
 
 ontara-corr:map-weight-ActivityType-to-ActivityGranularity a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityType-to-ActivityGranularity ;
@@ -591,7 +591,7 @@ ontara-corr:map-weight-ActivityType-to-ActivityGranularity a ontara-corr:WeightM
     ontara-corr:weightTarget "ActivityGranularity" .
 
 ontara-corr:map-weight-ActivityType-to-ActivityRecord a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityType-to-ActivityRecord ;
@@ -602,7 +602,7 @@ ontara-corr:map-weight-ActivityType-to-ActivityRecord a ontara-corr:WeightMappin
     ontara-corr:weightTarget "ActivityRecord" .
 
 ontara-corr:map-weight-ActivityType-to-Channel a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityType-to-Channel ;
@@ -613,7 +613,7 @@ ontara-corr:map-weight-ActivityType-to-Channel a ontara-corr:WeightMappingRecord
     ontara-corr:weightTarget "Channel" .
 
 ontara-corr:map-weight-ActivityType-to-ResourceType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ActivityType-to-ResourceType ;
@@ -624,7 +624,7 @@ ontara-corr:map-weight-ActivityType-to-ResourceType a ontara-corr:WeightMappingR
     ontara-corr:weightTarget "ResourceType" .
 
 ontara-corr:map-weight-AuditEvidenceRecord-to-ActivityType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-AuditEvidenceRecord-to-ActivityType ;
@@ -635,7 +635,7 @@ ontara-corr:map-weight-AuditEvidenceRecord-to-ActivityType a ontara-corr:WeightM
     ontara-corr:weightTarget "ActivityType" .
 
 ontara-corr:map-weight-AuditEvidenceRecord-to-GovernanceRequirement a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-AuditEvidenceRecord-to-GovernanceRequirement ;
@@ -646,7 +646,7 @@ ontara-corr:map-weight-AuditEvidenceRecord-to-GovernanceRequirement a ontara-cor
     ontara-corr:weightTarget "GovernanceRequirement" .
 
 ontara-corr:map-weight-Capability-to-CapacityModel a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-Capability-to-CapacityModel ;
@@ -657,7 +657,7 @@ ontara-corr:map-weight-Capability-to-CapacityModel a ontara-corr:WeightMappingRe
     ontara-corr:weightTarget "CapacityModel" .
 
 ontara-corr:map-weight-Capability-to-ObjectiveCapabilityMapping a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-Capability-to-ObjectiveCapabilityMapping ;
@@ -668,7 +668,7 @@ ontara-corr:map-weight-Capability-to-ObjectiveCapabilityMapping a ontara-corr:We
     ontara-corr:weightTarget "ObjectiveCapabilityMapping" .
 
 ontara-corr:map-weight-Capability-to-ResourceType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-Capability-to-ResourceType ;
@@ -679,7 +679,7 @@ ontara-corr:map-weight-Capability-to-ResourceType a ontara-corr:WeightMappingRec
     ontara-corr:weightTarget "ResourceType" .
 
 ontara-corr:map-weight-Capability-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-Capability-to-ServiceOffering ;
@@ -690,7 +690,7 @@ ontara-corr:map-weight-Capability-to-ServiceOffering a ontara-corr:WeightMapping
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-CapacityModel-to-ResourceConstraint a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CapacityModel-to-ResourceConstraint ;
@@ -701,7 +701,7 @@ ontara-corr:map-weight-CapacityModel-to-ResourceConstraint a ontara-corr:WeightM
     ontara-corr:weightTarget "ResourceConstraint" .
 
 ontara-corr:map-weight-CapacityModel-to-ResourceType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CapacityModel-to-ResourceType ;
@@ -712,7 +712,7 @@ ontara-corr:map-weight-CapacityModel-to-ResourceType a ontara-corr:WeightMapping
     ontara-corr:weightTarget "ResourceType" .
 
 ontara-corr:map-weight-CatalogueEntry-to-ExternalReference a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CatalogueEntry-to-ExternalReference ;
@@ -723,7 +723,7 @@ ontara-corr:map-weight-CatalogueEntry-to-ExternalReference a ontara-corr:WeightM
     ontara-corr:weightTarget "ExternalReference" .
 
 ontara-corr:map-weight-CatalogueEntry-to-InventoryRecord a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CatalogueEntry-to-InventoryRecord ;
@@ -734,7 +734,7 @@ ontara-corr:map-weight-CatalogueEntry-to-InventoryRecord a ontara-corr:WeightMap
     ontara-corr:weightTarget "InventoryRecord" .
 
 ontara-corr:map-weight-CatalogueEntry-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CatalogueEntry-to-ServiceOffering ;
@@ -745,7 +745,7 @@ ontara-corr:map-weight-CatalogueEntry-to-ServiceOffering a ontara-corr:WeightMap
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-Channel-to-CustomerSegment a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-Channel-to-CustomerSegment ;
@@ -756,7 +756,7 @@ ontara-corr:map-weight-Channel-to-CustomerSegment a ontara-corr:WeightMappingRec
     ontara-corr:weightTarget "CustomerSegment" .
 
 ontara-corr:map-weight-Channel-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-Channel-to-ServiceOffering ;
@@ -767,7 +767,7 @@ ontara-corr:map-weight-Channel-to-ServiceOffering a ontara-corr:WeightMappingRec
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-CommunityRelationship-to-CustomerSegment a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CommunityRelationship-to-CustomerSegment ;
@@ -778,7 +778,7 @@ ontara-corr:map-weight-CommunityRelationship-to-CustomerSegment a ontara-corr:We
     ontara-corr:weightTarget "CustomerSegment" .
 
 ontara-corr:map-weight-CommunityRelationship-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CommunityRelationship-to-ServiceOffering ;
@@ -789,7 +789,7 @@ ontara-corr:map-weight-CommunityRelationship-to-ServiceOffering a ontara-corr:We
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-CooperativeArrangement-to-ActivityType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CooperativeArrangement-to-ActivityType ;
@@ -800,7 +800,7 @@ ontara-corr:map-weight-CooperativeArrangement-to-ActivityType a ontara-corr:Weig
     ontara-corr:weightTarget "ActivityType" .
 
 ontara-corr:map-weight-CooperativeArrangement-to-ResourceType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CooperativeArrangement-to-ResourceType ;
@@ -811,7 +811,7 @@ ontara-corr:map-weight-CooperativeArrangement-to-ResourceType a ontara-corr:Weig
     ontara-corr:weightTarget "ResourceType" .
 
 ontara-corr:map-weight-CooperativeArrangement-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CooperativeArrangement-to-ServiceOffering ;
@@ -822,7 +822,7 @@ ontara-corr:map-weight-CooperativeArrangement-to-ServiceOffering a ontara-corr:W
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-CostDriver-to-ActivityCostAllocation a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CostDriver-to-ActivityCostAllocation ;
@@ -833,7 +833,7 @@ ontara-corr:map-weight-CostDriver-to-ActivityCostAllocation a ontara-corr:Weight
     ontara-corr:weightTarget "ActivityCostAllocation" .
 
 ontara-corr:map-weight-CostDriver-to-ResourceType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CostDriver-to-ResourceType ;
@@ -844,7 +844,7 @@ ontara-corr:map-weight-CostDriver-to-ResourceType a ontara-corr:WeightMappingRec
     ontara-corr:weightTarget "ResourceType" .
 
 ontara-corr:map-weight-CostDriver-to-RevenueStream a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CostDriver-to-RevenueStream ;
@@ -855,7 +855,7 @@ ontara-corr:map-weight-CostDriver-to-RevenueStream a ontara-corr:WeightMappingRe
     ontara-corr:weightTarget "RevenueStream" .
 
 ontara-corr:map-weight-CostDriver-to-UnitEconomics a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CostDriver-to-UnitEconomics ;
@@ -866,7 +866,7 @@ ontara-corr:map-weight-CostDriver-to-UnitEconomics a ontara-corr:WeightMappingRe
     ontara-corr:weightTarget "UnitEconomics" .
 
 ontara-corr:map-weight-CustomerSegment-to-Channel a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CustomerSegment-to-Channel ;
@@ -877,7 +877,7 @@ ontara-corr:map-weight-CustomerSegment-to-Channel a ontara-corr:WeightMappingRec
     ontara-corr:weightTarget "Channel" .
 
 ontara-corr:map-weight-CustomerSegment-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CustomerSegment-to-ServiceOffering ;
@@ -888,7 +888,7 @@ ontara-corr:map-weight-CustomerSegment-to-ServiceOffering a ontara-corr:WeightMa
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-CustomerSegment-to-ValueProposition a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-CustomerSegment-to-ValueProposition ;
@@ -899,7 +899,7 @@ ontara-corr:map-weight-CustomerSegment-to-ValueProposition a ontara-corr:WeightM
     ontara-corr:weightTarget "ValueProposition" .
 
 ontara-corr:map-weight-DifferentiationClaim-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-DifferentiationClaim-to-ServiceOffering ;
@@ -910,7 +910,7 @@ ontara-corr:map-weight-DifferentiationClaim-to-ServiceOffering a ontara-corr:Wei
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-DifferentiationClaim-to-ValueProposition a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-DifferentiationClaim-to-ValueProposition ;
@@ -921,7 +921,7 @@ ontara-corr:map-weight-DifferentiationClaim-to-ValueProposition a ontara-corr:We
     ontara-corr:weightTarget "ValueProposition" .
 
 ontara-corr:map-weight-ExternalDependency-to-CostDriver a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ExternalDependency-to-CostDriver ;
@@ -932,7 +932,7 @@ ontara-corr:map-weight-ExternalDependency-to-CostDriver a ontara-corr:WeightMapp
     ontara-corr:weightTarget "CostDriver" .
 
 ontara-corr:map-weight-ExternalDependency-to-ResourceType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ExternalDependency-to-ResourceType ;
@@ -943,7 +943,7 @@ ontara-corr:map-weight-ExternalDependency-to-ResourceType a ontara-corr:WeightMa
     ontara-corr:weightTarget "ResourceType" .
 
 ontara-corr:map-weight-ExternalDependency-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ExternalDependency-to-ServiceOffering ;
@@ -954,7 +954,7 @@ ontara-corr:map-weight-ExternalDependency-to-ServiceOffering a ontara-corr:Weigh
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-ExternalReference-to-CatalogueEntry a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ExternalReference-to-CatalogueEntry ;
@@ -965,7 +965,7 @@ ontara-corr:map-weight-ExternalReference-to-CatalogueEntry a ontara-corr:WeightM
     ontara-corr:weightTarget "CatalogueEntry" .
 
 ontara-corr:map-weight-FinancialProjection-to-CostDriver a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-FinancialProjection-to-CostDriver ;
@@ -976,7 +976,7 @@ ontara-corr:map-weight-FinancialProjection-to-CostDriver a ontara-corr:WeightMap
     ontara-corr:weightTarget "CostDriver" .
 
 ontara-corr:map-weight-FinancialProjection-to-RevenueStream a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-FinancialProjection-to-RevenueStream ;
@@ -987,7 +987,7 @@ ontara-corr:map-weight-FinancialProjection-to-RevenueStream a ontara-corr:Weight
     ontara-corr:weightTarget "RevenueStream" .
 
 ontara-corr:map-weight-GovernanceRequirement-to-AuditEvidenceRecord a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-GovernanceRequirement-to-AuditEvidenceRecord ;
@@ -998,7 +998,7 @@ ontara-corr:map-weight-GovernanceRequirement-to-AuditEvidenceRecord a ontara-cor
     ontara-corr:weightTarget "AuditEvidenceRecord" .
 
 ontara-corr:map-weight-GovernanceRequirement-to-ResourceConstraint a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-GovernanceRequirement-to-ResourceConstraint ;
@@ -1009,7 +1009,7 @@ ontara-corr:map-weight-GovernanceRequirement-to-ResourceConstraint a ontara-corr
     ontara-corr:weightTarget "ResourceConstraint" .
 
 ontara-corr:map-weight-GovernanceRequirement-to-StakeholderRelationship a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-GovernanceRequirement-to-StakeholderRelationship ;
@@ -1020,7 +1020,7 @@ ontara-corr:map-weight-GovernanceRequirement-to-StakeholderRelationship a ontara
     ontara-corr:weightTarget "StakeholderRelationship" .
 
 ontara-corr:map-weight-InventoryRecord-to-CatalogueEntry a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-InventoryRecord-to-CatalogueEntry ;
@@ -1031,7 +1031,7 @@ ontara-corr:map-weight-InventoryRecord-to-CatalogueEntry a ontara-corr:WeightMap
     ontara-corr:weightTarget "CatalogueEntry" .
 
 ontara-corr:map-weight-ObjectiveCapabilityMapping-to-Capability a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ObjectiveCapabilityMapping-to-Capability ;
@@ -1042,7 +1042,7 @@ ontara-corr:map-weight-ObjectiveCapabilityMapping-to-Capability a ontara-corr:We
     ontara-corr:weightTarget "Capability" .
 
 ontara-corr:map-weight-ParticipationModel-to-ActivityType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ParticipationModel-to-ActivityType ;
@@ -1053,7 +1053,7 @@ ontara-corr:map-weight-ParticipationModel-to-ActivityType a ontara-corr:WeightMa
     ontara-corr:weightTarget "ActivityType" .
 
 ontara-corr:map-weight-ParticipationModel-to-Channel a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ParticipationModel-to-Channel ;
@@ -1064,7 +1064,7 @@ ontara-corr:map-weight-ParticipationModel-to-Channel a ontara-corr:WeightMapping
     ontara-corr:weightTarget "Channel" .
 
 ontara-corr:map-weight-ParticipationModel-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ParticipationModel-to-ServiceOffering ;
@@ -1075,7 +1075,7 @@ ontara-corr:map-weight-ParticipationModel-to-ServiceOffering a ontara-corr:Weigh
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-PricingModel-to-RevenueStream a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-PricingModel-to-RevenueStream ;
@@ -1086,7 +1086,7 @@ ontara-corr:map-weight-PricingModel-to-RevenueStream a ontara-corr:WeightMapping
     ontara-corr:weightTarget "RevenueStream" .
 
 ontara-corr:map-weight-PricingModel-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-PricingModel-to-ServiceOffering ;
@@ -1097,7 +1097,7 @@ ontara-corr:map-weight-PricingModel-to-ServiceOffering a ontara-corr:WeightMappi
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-PricingModel-to-UnitEconomics a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-PricingModel-to-UnitEconomics ;
@@ -1108,7 +1108,7 @@ ontara-corr:map-weight-PricingModel-to-UnitEconomics a ontara-corr:WeightMapping
     ontara-corr:weightTarget "UnitEconomics" .
 
 ontara-corr:map-weight-ReferralPathway-to-ActivityType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ReferralPathway-to-ActivityType ;
@@ -1119,7 +1119,7 @@ ontara-corr:map-weight-ReferralPathway-to-ActivityType a ontara-corr:WeightMappi
     ontara-corr:weightTarget "ActivityType" .
 
 ontara-corr:map-weight-ReferralPathway-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ReferralPathway-to-ServiceOffering ;
@@ -1130,7 +1130,7 @@ ontara-corr:map-weight-ReferralPathway-to-ServiceOffering a ontara-corr:WeightMa
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-ResourceConstraint-to-CapacityModel a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ResourceConstraint-to-CapacityModel ;
@@ -1141,7 +1141,7 @@ ontara-corr:map-weight-ResourceConstraint-to-CapacityModel a ontara-corr:WeightM
     ontara-corr:weightTarget "CapacityModel" .
 
 ontara-corr:map-weight-ResourceConstraint-to-ResourceType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ResourceConstraint-to-ResourceType ;
@@ -1152,7 +1152,7 @@ ontara-corr:map-weight-ResourceConstraint-to-ResourceType a ontara-corr:WeightMa
     ontara-corr:weightTarget "ResourceType" .
 
 ontara-corr:map-weight-ResourceInstance-to-CapacityModel a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ResourceInstance-to-CapacityModel ;
@@ -1163,7 +1163,7 @@ ontara-corr:map-weight-ResourceInstance-to-CapacityModel a ontara-corr:WeightMap
     ontara-corr:weightTarget "CapacityModel" .
 
 ontara-corr:map-weight-ResourceInstance-to-ResourceType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ResourceInstance-to-ResourceType ;
@@ -1174,7 +1174,7 @@ ontara-corr:map-weight-ResourceInstance-to-ResourceType a ontara-corr:WeightMapp
     ontara-corr:weightTarget "ResourceType" .
 
 ontara-corr:map-weight-ResourceType-to-ActivityType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ResourceType-to-ActivityType ;
@@ -1185,7 +1185,7 @@ ontara-corr:map-weight-ResourceType-to-ActivityType a ontara-corr:WeightMappingR
     ontara-corr:weightTarget "ActivityType" .
 
 ontara-corr:map-weight-ResourceType-to-Capability a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ResourceType-to-Capability ;
@@ -1196,7 +1196,7 @@ ontara-corr:map-weight-ResourceType-to-Capability a ontara-corr:WeightMappingRec
     ontara-corr:weightTarget "Capability" .
 
 ontara-corr:map-weight-ResourceType-to-CapacityModel a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ResourceType-to-CapacityModel ;
@@ -1207,7 +1207,7 @@ ontara-corr:map-weight-ResourceType-to-CapacityModel a ontara-corr:WeightMapping
     ontara-corr:weightTarget "CapacityModel" .
 
 ontara-corr:map-weight-ResourceType-to-CostDriver a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ResourceType-to-CostDriver ;
@@ -1218,7 +1218,7 @@ ontara-corr:map-weight-ResourceType-to-CostDriver a ontara-corr:WeightMappingRec
     ontara-corr:weightTarget "CostDriver" .
 
 ontara-corr:map-weight-ResourceType-to-ResourceConstraint a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ResourceType-to-ResourceConstraint ;
@@ -1229,7 +1229,7 @@ ontara-corr:map-weight-ResourceType-to-ResourceConstraint a ontara-corr:WeightMa
     ontara-corr:weightTarget "ResourceConstraint" .
 
 ontara-corr:map-weight-ResourceType-to-ResourceInstance a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ResourceType-to-ResourceInstance ;
@@ -1240,7 +1240,7 @@ ontara-corr:map-weight-ResourceType-to-ResourceInstance a ontara-corr:WeightMapp
     ontara-corr:weightTarget "ResourceInstance" .
 
 ontara-corr:map-weight-RevenueStream-to-FinancialProjection a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-RevenueStream-to-FinancialProjection ;
@@ -1251,7 +1251,7 @@ ontara-corr:map-weight-RevenueStream-to-FinancialProjection a ontara-corr:Weight
     ontara-corr:weightTarget "FinancialProjection" .
 
 ontara-corr:map-weight-RevenueStream-to-PricingModel a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-RevenueStream-to-PricingModel ;
@@ -1262,7 +1262,7 @@ ontara-corr:map-weight-RevenueStream-to-PricingModel a ontara-corr:WeightMapping
     ontara-corr:weightTarget "PricingModel" .
 
 ontara-corr:map-weight-RevenueStream-to-UnitEconomics a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-RevenueStream-to-UnitEconomics ;
@@ -1273,7 +1273,7 @@ ontara-corr:map-weight-RevenueStream-to-UnitEconomics a ontara-corr:WeightMappin
     ontara-corr:weightTarget "UnitEconomics" .
 
 ontara-corr:map-weight-ServiceOffering-to-ActivityType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceOffering-to-ActivityType ;
@@ -1284,7 +1284,7 @@ ontara-corr:map-weight-ServiceOffering-to-ActivityType a ontara-corr:WeightMappi
     ontara-corr:weightTarget "ActivityType" .
 
 ontara-corr:map-weight-ServiceOffering-to-CatalogueEntry a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceOffering-to-CatalogueEntry ;
@@ -1295,7 +1295,7 @@ ontara-corr:map-weight-ServiceOffering-to-CatalogueEntry a ontara-corr:WeightMap
     ontara-corr:weightTarget "CatalogueEntry" .
 
 ontara-corr:map-weight-ServiceOffering-to-Channel a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceOffering-to-Channel ;
@@ -1306,7 +1306,7 @@ ontara-corr:map-weight-ServiceOffering-to-Channel a ontara-corr:WeightMappingRec
     ontara-corr:weightTarget "Channel" .
 
 ontara-corr:map-weight-ServiceOffering-to-CustomerSegment a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceOffering-to-CustomerSegment ;
@@ -1317,7 +1317,7 @@ ontara-corr:map-weight-ServiceOffering-to-CustomerSegment a ontara-corr:WeightMa
     ontara-corr:weightTarget "CustomerSegment" .
 
 ontara-corr:map-weight-ServiceOffering-to-DifferentiationClaim a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceOffering-to-DifferentiationClaim ;
@@ -1328,7 +1328,7 @@ ontara-corr:map-weight-ServiceOffering-to-DifferentiationClaim a ontara-corr:Wei
     ontara-corr:weightTarget "DifferentiationClaim" .
 
 ontara-corr:map-weight-ServiceOffering-to-PricingModel a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceOffering-to-PricingModel ;
@@ -1339,7 +1339,7 @@ ontara-corr:map-weight-ServiceOffering-to-PricingModel a ontara-corr:WeightMappi
     ontara-corr:weightTarget "PricingModel" .
 
 ontara-corr:map-weight-ServiceOffering-to-ResourceType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceOffering-to-ResourceType ;
@@ -1350,7 +1350,7 @@ ontara-corr:map-weight-ServiceOffering-to-ResourceType a ontara-corr:WeightMappi
     ontara-corr:weightTarget "ResourceType" .
 
 ontara-corr:map-weight-ServiceOffering-to-ValueProposition a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceOffering-to-ValueProposition ;
@@ -1361,7 +1361,7 @@ ontara-corr:map-weight-ServiceOffering-to-ValueProposition a ontara-corr:WeightM
     ontara-corr:weightTarget "ValueProposition" .
 
 ontara-corr:map-weight-ServiceParticipant-to-CustomerSegment a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceParticipant-to-CustomerSegment ;
@@ -1372,7 +1372,7 @@ ontara-corr:map-weight-ServiceParticipant-to-CustomerSegment a ontara-corr:Weigh
     ontara-corr:weightTarget "CustomerSegment" .
 
 ontara-corr:map-weight-ServiceParticipant-to-GovernanceRequirement a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceParticipant-to-GovernanceRequirement ;
@@ -1383,7 +1383,7 @@ ontara-corr:map-weight-ServiceParticipant-to-GovernanceRequirement a ontara-corr
     ontara-corr:weightTarget "GovernanceRequirement" .
 
 ontara-corr:map-weight-ServiceParticipant-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceParticipant-to-ServiceOffering ;
@@ -1394,7 +1394,7 @@ ontara-corr:map-weight-ServiceParticipant-to-ServiceOffering a ontara-corr:Weigh
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-ServiceParticipant-to-ServiceSubject a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceParticipant-to-ServiceSubject ;
@@ -1405,7 +1405,7 @@ ontara-corr:map-weight-ServiceParticipant-to-ServiceSubject a ontara-corr:Weight
     ontara-corr:weightTarget "ServiceSubject" .
 
 ontara-corr:map-weight-ServiceSubject-to-ActivityType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceSubject-to-ActivityType ;
@@ -1416,7 +1416,7 @@ ontara-corr:map-weight-ServiceSubject-to-ActivityType a ontara-corr:WeightMappin
     ontara-corr:weightTarget "ActivityType" .
 
 ontara-corr:map-weight-ServiceSubject-to-CustomerSegment a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceSubject-to-CustomerSegment ;
@@ -1427,7 +1427,7 @@ ontara-corr:map-weight-ServiceSubject-to-CustomerSegment a ontara-corr:WeightMap
     ontara-corr:weightTarget "CustomerSegment" .
 
 ontara-corr:map-weight-ServiceSubject-to-GovernanceRequirement a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceSubject-to-GovernanceRequirement ;
@@ -1438,7 +1438,7 @@ ontara-corr:map-weight-ServiceSubject-to-GovernanceRequirement a ontara-corr:Wei
     ontara-corr:weightTarget "GovernanceRequirement" .
 
 ontara-corr:map-weight-ServiceSubject-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceSubject-to-ServiceOffering ;
@@ -1449,7 +1449,7 @@ ontara-corr:map-weight-ServiceSubject-to-ServiceOffering a ontara-corr:WeightMap
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-ServiceSubject-to-ServiceParticipant a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ServiceSubject-to-ServiceParticipant ;
@@ -1460,7 +1460,7 @@ ontara-corr:map-weight-ServiceSubject-to-ServiceParticipant a ontara-corr:Weight
     ontara-corr:weightTarget "ServiceParticipant" .
 
 ontara-corr:map-weight-StakeholderRelationship-to-GovernanceRequirement a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-StakeholderRelationship-to-GovernanceRequirement ;
@@ -1471,7 +1471,7 @@ ontara-corr:map-weight-StakeholderRelationship-to-GovernanceRequirement a ontara
     ontara-corr:weightTarget "GovernanceRequirement" .
 
 ontara-corr:map-weight-StakeholderRelationship-to-ResourceType a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-StakeholderRelationship-to-ResourceType ;
@@ -1482,7 +1482,7 @@ ontara-corr:map-weight-StakeholderRelationship-to-ResourceType a ontara-corr:Wei
     ontara-corr:weightTarget "ResourceType" .
 
 ontara-corr:map-weight-StakeholderRelationship-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-StakeholderRelationship-to-ServiceOffering ;
@@ -1493,7 +1493,7 @@ ontara-corr:map-weight-StakeholderRelationship-to-ServiceOffering a ontara-corr:
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-UnitEconomics-to-FinancialProjection a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-UnitEconomics-to-FinancialProjection ;
@@ -1504,7 +1504,7 @@ ontara-corr:map-weight-UnitEconomics-to-FinancialProjection a ontara-corr:Weight
     ontara-corr:weightTarget "FinancialProjection" .
 
 ontara-corr:map-weight-UnitEconomics-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-UnitEconomics-to-ServiceOffering ;
@@ -1515,7 +1515,7 @@ ontara-corr:map-weight-UnitEconomics-to-ServiceOffering a ontara-corr:WeightMapp
     ontara-corr:weightTarget "ServiceOffering" .
 
 ontara-corr:map-weight-ValueProposition-to-CustomerSegment a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ValueProposition-to-CustomerSegment ;
@@ -1526,7 +1526,7 @@ ontara-corr:map-weight-ValueProposition-to-CustomerSegment a ontara-corr:WeightM
     ontara-corr:weightTarget "CustomerSegment" .
 
 ontara-corr:map-weight-ValueProposition-to-DifferentiationClaim a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ValueProposition-to-DifferentiationClaim ;
@@ -1537,7 +1537,7 @@ ontara-corr:map-weight-ValueProposition-to-DifferentiationClaim a ontara-corr:We
     ontara-corr:weightTarget "DifferentiationClaim" .
 
 ontara-corr:map-weight-ValueProposition-to-ServiceOffering a ontara-corr:WeightMappingRecord ;
-    dcterms:created "2026-10-30T15:17:49.303275+00:00"^^xsd:dateTime ;
+    dcterms:created "2026-10-30T15:20:51.659607+00:00"^^xsd:dateTime ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
     ontara-corr:owlEntity ontara-bmm:weight-ValueProposition-to-ServiceOffering ;

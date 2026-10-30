@@ -302,9 +302,9 @@ def extract_outcome_inventory(knowledge_text):
     return outcomes
 
 
-def extract_metadata_inventory(foundation_text, library_texts, projection_text=""):
+def extract_metadata_inventory(foundation_text, library_texts, projection_text="", smd_clinical_text=""):
     """Extract metadata defs from ProjectionMetadata, the residual
-    Foundation::MetadataLibrary, and TemporalMetadata."""
+    Foundation::MetadataLibrary, SystemMetamodelDomainClinical, and TemporalMetadata."""
     metadata = []
 
     # ProjectionMetadata (S514: the generators' annotation schema, formerly
@@ -331,6 +331,19 @@ def extract_metadata_inventory(foundation_text, library_texts, projection_text="
             metadata.append({
                 'name': block['name'],
                 'package': 'Foundation::MetadataLibrary',
+                'attributes': attrs,
+            })
+
+    # SystemMetamodelDomainClinical (S515 OP-132 step 7: @ClinicalReviewGate)
+    smd_text = find_package_block(smd_clinical_text, "SystemMetamodelDomainClinical") if smd_clinical_text else None
+    if smd_text:
+        for block in extract_blocks(smd_text, "metadata def"):
+            attrs = []
+            for attr_match in re.finditer(r'attribute\s+(\w+)\s*:\s*(\w+)\s*;', block['body']):
+                attrs.append(attr_match.group(1))
+            metadata.append({
+                'name': block['name'],
+                'package': 'SystemMetamodelDomainClinical',
                 'attributes': attrs,
             })
 
@@ -535,7 +548,8 @@ def main():
     pathways = extract_pathway_inventory(sd_text)
     outcomes = extract_outcome_inventory(gsl_knowledge_text)
     projection_text = all_texts.get("projection-metadata.sysml", "")
-    metadata = extract_metadata_inventory(foundation_text, library_texts, projection_text)
+    smd_clinical_text = all_texts.get("system-metamodel-domain-clinical.sysml", "")
+    metadata = extract_metadata_inventory(foundation_text, library_texts, projection_text, smd_clinical_text)
     use_cases = extract_use_case_inventory(all_texts)
     decision_tables = extract_decision_table_inventory(gsl_knowledge_text)
 

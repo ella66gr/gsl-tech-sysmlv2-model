@@ -1,6 +1,6 @@
 {
   "modelVersion": "2026-10-30",
-  "generatedAt": "2026-10-30T15:17:49Z",
+  "generatedAt": "2026-10-30T15:20:51Z",
   "generator": "scripts/gen_system_manifest.py",
   "sourceFiles": [
     "model/architectural-structure.sysml",
@@ -13,6 +13,7 @@
     "model/pattern-catalogue.sysml",
     "model/platform.sysml",
     "model/projection-metadata.sysml",
+    "model/system-metamodel-domain-clinical.sysml",
     "exercises/gendersense/model/gendersense.sysml",
     "exercises/gendersense/model/gsl-business-model.sysml",
     "exercises/gendersense/model/gsl-enterprise.sysml",
@@ -520,14 +521,6 @@
         ]
       },
       {
-        "name": "ClinicalReviewGate",
-        "package": "Foundation::MetadataLibrary",
-        "attributes": [
-          "reviewerRole",
-          "reviewCriteria"
-        ]
-      },
-      {
         "name": "ConsentRequired",
         "package": "Foundation::MetadataLibrary",
         "attributes": [
@@ -594,6 +587,14 @@
           "agencyType",
           "authorityModelVersion",
           "agencyNotes"
+        ]
+      },
+      {
+        "name": "ClinicalReviewGate",
+        "package": "SystemMetamodelDomainClinical",
+        "attributes": [
+          "reviewerRole",
+          "reviewCriteria"
         ]
       },
       {

@@ -116,6 +116,7 @@ BMM_PACKAGES = {
 # Foundation::MetadataLibrary) belongs to no layer and is deliberately absent
 # from every list.
 SMM_PACKAGES = {
+    "SystemMetamodelDomainClinical",  # S515 OP-132 step 7: system-side Domain package (ADR-012)
     "Knowledge", "ClinicalDecisionSupport",
     "ConstraintLibrary", "LogicEngine", "DecisionModels",
     "OutcomeFramework", "LearningCycles", "Analytics",
