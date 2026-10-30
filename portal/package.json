@@ -25,11 +25,6 @@
 		"typescript": "^6.0.2",
 		"vite": "^8.0.7"
 	},
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"better-sqlite3"
-		]
-	},
 	"dependencies": {
 		"@tiptap/core": "^3.22.5",
 		"@tiptap/extension-bold": "^3.22.5",
