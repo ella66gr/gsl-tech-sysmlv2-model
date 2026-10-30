@@ -51,8 +51,8 @@ package BusinessMetamodelGeneral {
          *   These are business meta model concepts — they describe
          *   what any service business offers and what resources it
          *   needs. System meta model concepts (PersistencePolicy,
-         *   AgencyClassification) remain in Foundation pending their
-         *   allocation (S514, ADR-011 §4.7). */
+         *   AgencyClassification) are in SystemMetamodelGenerar
+         *   (OP-132, S515; ADR-012). */
 
     // =================================================================
     // SERVICE CONCEPT — What value is delivered, to whom, and why
@@ -65,7 +65,7 @@ package BusinessMetamodelGeneral {
              * offerings, channels, and differentiation claims. This is
              * the "why does this business exist, and for whom?" package.
              *
-             * Cross-references to ServiceDelivery::ClinicalPathways are
+             * Cross-references to a tenant's clinical pathways (for GSL, the ClinicalPathways package of its service-delivery model) are
              * via String attributes (clinicalPathwayRef) rather than
              * formal SysML ref relationships. This avoids coupling
              * during the exploratory phase. Formal references will be
@@ -231,9 +231,9 @@ package BusinessMetamodelGeneral {
                  * segments. This is the unit at which pricing, resource
                  * requirements, and pathway mapping are defined.
                  *
-                 * Cross-reference: each ServiceOffering maps to one or
-                 * more clinical pathways in
-                 * ServiceDelivery::ClinicalPathways. */
+                 * Cross-reference: in a clinical tenant, each ServiceOffering
+                 * may map to one or more clinical pathways in the tenant's
+                 * own model (for GSL, its ClinicalPathways package). */
             attribute offeringName : String;
             attribute description : String;
             attribute scope : String;
@@ -1134,7 +1134,7 @@ package BusinessMetamodelGeneral {
                  *
                  * Phase 7: regulatorySourceDescription retains the
                  * human-readable reference. Formal ref to
-                 * Enterprise::Regulation requirement defs is deferred
+                 * a tenant's regulation requirement defs (for GSL, the Regulation package of its enterprise model) is deferred
                  * — ref to a requirement def (as opposed to a part
                  * def) requires further investigation of the target
                  * syntax. */
@@ -1263,7 +1263,7 @@ package BusinessMetamodelGeneral {
              * economics look like, and how pricing works. This is
              * the "does this work financially?" package.
              *
-             * Distinct from Operations::Finance which handles
+             * Distinct from a tenant's operational finance (for GSL, the Finance package of its operations model), which handles
              * operational accounting (invoicing, payment processing,
              * Xero integration). FinancialPlanning is structural
              * economics — the bank-manager spreadsheet made explicit.
@@ -2247,14 +2247,14 @@ package BusinessMetamodelGeneral {
              * Formerly BusinessModel::StrategyAndEvolution. Promoted
              * to top-level package in Phase 6A for file size management.
              *
-             * Connects to Enterprise::Strategy (upgrading the
+             * Connects to a tenant's enterprise strategy content (for GSL, the Strategy package of its enterprise model, upgrading the
              * current placeholder) and to BusinessScenarios
              * (each variant has a corresponding ScenarioDefinition
              * with full parameterisation).
              *
              * Phase 7: StrategicObjective is a requirement def.
-             * satisfy relationships are in BusinessModel::
-             * ResourcePlanning (different package from the def,
+             * satisfy relationships are expressed by ObjectiveCapabilityMapping
+             * usages in each tenant's business model (different package from the def,
              * per Syside constraint). relatedScenarios is a typed
              * ref to ScenarioDefinition[0..*].
              *
@@ -2282,8 +2282,8 @@ package BusinessMetamodelGeneral {
                  * subject: the GenderSense service system that must
                  * achieve this objective.
                  *
-                 * satisfy relationships are in BusinessModel::
-                 * ResourcePlanning (different package, per Syside
+                 * satisfy relationships are expressed by ObjectiveCapabilityMapping
+                 * usages in each tenant's business model (different package, per Syside
                  * constraint on satisfy in same package as req def).
                  *
                  * Phase 7 restructuring from part def. */

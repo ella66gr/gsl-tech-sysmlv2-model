@@ -723,7 +723,7 @@ package PawsGovernance {
          *
          * The GovernanceRequirement and AuditEvidenceRecord part
          * defs are General BMM vocabulary from
-         * BusinessModel::GovernanceMapping. No domain-specific
+         * BusinessMetamodelGeneral::GovernanceMapping. No domain-specific
          * constraint defs needed — the obligations are general,
          * not formally testable as Boolean predicates. */
 
@@ -816,7 +816,7 @@ package PawsGovernance {
 //
 // Scope of this package:
 //   - Booking: first canonical runtime type for Paws, specialising
-//     CanonicalRuntime::CanonicalRuntimeType. Declares four tenant axes
+//     BusinessMetamodelGeneral::CanonicalRuntime::CanonicalRuntimeType. Declares four tenant axes
 //     (lifecycle, confirmation, payment, cancellation). No axis is
 //     inherited from the platform (S514, ADR-011).
 //

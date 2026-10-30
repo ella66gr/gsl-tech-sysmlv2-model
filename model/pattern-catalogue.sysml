@@ -4,11 +4,11 @@
 // The model describes its own architectural patterns and the semantic
 // relationships between them.
 //
-// System meta model concept — this package describes how the
-// system is structured, not what the business offers. Placed as a
-// top-level package (Syside does not merge same-named packages across
-// files, so nesting inside Foundation is not possible). Conceptually
-// part of Foundation; structurally a sibling.
+// Platform description (ADR-012): this package describes how the
+// platform is structured, not what the business offers. It belonga
+// to no layer; no tenant configures from it and nothing imports its
+// Its entries name tenant content, which is why it is not iy
+// SystemMetamodelGeneral.
 //
 // Source: Session 26 discussion, Session 29 workstream plan,
 //         Session 30 implementation, Session 31 knowledge graph.
@@ -20,11 +20,11 @@ package PatternCatalogue {
     doc /* Cross-domain concept registry, architectural pattern catalogue,
          * and knowledge graph of semantic relationships.
          *
-         * System meta model concept — this package is
-         * itself part of the system meta model (it describes how
-         * the system is structured, not what the business offers).
-         * Placed as a top-level sibling to Foundation because Syside
-         * does not merge same-named packages across files.
+         * Platform description (ADR-012): this package describes
+         * how the platform is structured, not what the businesw
+         * offers. It belongs to no layer and is not part of th.
+         * system meta model, because its entries name tenane
+         * content.
          *
          * Three kinds of entries:
          * - Patterns: reusable architectural or business model

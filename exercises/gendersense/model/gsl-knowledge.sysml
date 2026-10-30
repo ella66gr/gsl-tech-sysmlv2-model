@@ -7,8 +7,8 @@
 // evaluation spec instances and use cases, the regimen-selection and
 // stability-assessment decision tables, the outcome targets, measurement
 // points and schedule, and the hormone-therapy enums from
-// Foundation's CommonTypes (group F). The General pattern types stay in
-// model/knowledge.sysml until OP-132 step 8 (SystemMetamodelGeneral).
+// Foundation's CommonTypes (group F). The General pattern types are in
+// SystemMetamodelGeneral (model/system-metamodel-general.sysml).
 // =========================================================================
 
 package GslKnowledge {
@@ -133,7 +133,7 @@ package GslKnowledge {
              *
              * Each constraint def has a corresponding constraint usage
              * and a satisfy relationship linking it to the requirement
-             * it fulfils in Enterprise::Regulation. */
+             * it fulfils in GslEnterprise::Regulation. */
 
         // =============================================================
         // Constraint definitions
@@ -209,7 +209,7 @@ package GslKnowledge {
                  *
                  * At runtime, this evaluates the proposed regimen
                  * against the protocol decision table in
-                 * Knowledge::DecisionModels. A regimen is within
+                 * GslKnowledge::DecisionTables. A regimen is within
                  * protocol if all three components match an approved
                  * combination. */
             in medicationApproved : Boolean;

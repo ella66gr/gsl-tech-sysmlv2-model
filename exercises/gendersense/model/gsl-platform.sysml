@@ -96,7 +96,7 @@ package GslPlatform {
                  * Community (presentation in group spaces),
                  * Education::TherapyPathways (guided identity exercises),
                  * SelfManagement (milestone integration),
-                 * Knowledge::OutcomeFramework (progress as lived
+                 * GslKnowledge::OutcomeTargets (progress as lived
                  * experience, not just clinical measures).
                  *
                  * This is NOT gamification. It is externalised identity
@@ -499,7 +499,7 @@ package GslPlatform {
 
         doc /* Electronic prescribing system integration, medication
              * databases, interaction checking. Distinct from the
-             * ServiceDelivery::ClinicalPathways::Prescribing package
+             * GslServiceDelivery::ClinicalPathways::Prescribing package
              * which models the clinical process; this package models
              * the platform integration. */
 

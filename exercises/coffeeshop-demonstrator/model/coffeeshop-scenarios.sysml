@@ -39,7 +39,7 @@ package CoffeeshopScenarios {
          * the operational steering part defs.
          *
          * Phase 6B — VarianceSource enum typing, GoalProjection
-         * and Deficit from Knowledge::LogicEngine validate the
+         * and Deficit from SystemMetamodelGeneral::LogicEngine validate the
          * steering cycle wiring for a non-clinical domain. */
 
     // =================================================================
@@ -358,7 +358,7 @@ package CoffeeshopScenarios {
     // STEERING CYCLE WIRING — Phase 6B demonstrator
     // =================================================================
     //
-    // GoalProjection and Deficit from Knowledge::LogicEngine validate
+    // GoalProjection and Deficit from SystemMetamodelGeneral::LogicEngine validate
     // the steering cycle pattern for a non-clinical domain.
 
     part kioskGoalWeek1Revenue : GoalProjection {

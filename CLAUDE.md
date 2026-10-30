@@ -29,11 +29,21 @@ Claude does not propose `cp` commands that copy vault documents into the SysML r
 ## SysML Repository Layout
 
 ```
-model/                     # Core SysML v2 model (13 .sysml files)
-exercises/
-  coffeeshop-demonstrator/ # Cafe demonstrator: full running app (SvelteKit + Temporal + EHRbase + PostgreSQL)
-  suds-demonstrator/       # Suds (laundry) BMM instance
-  paws-demonstrator/       # Paws (dog grooming) BMM instance
+model/                     # Metamodel and platform apparatus (6 .sysml files; ADR-012)
+  business-metamodel-general.sysml       # BusinessMetamodelGeneral (BMG): six concerns + BusinessScenarios,
+                                         #   BusinessStrategy, CanonicalRuntime, DomainIdentityTypes
+  system-metamodel-general.sysml         # SystemMetamodelGeneral (SMG)
+  system-metamodel-domain-clinical.sysml # SystemMetamodelDomainClinical (SMD, clinical sector)
+  projection-metadata.sysml              # ProjectionMetadata: generators' annotation schema (no layer)
+  architectural-structure.sysml          # ArchitecturalStructure: platform description (no layer)
+  pattern-catalogue.sysml                # PatternCatalogue: platform description (no layer)
+  syntax-tests/                          # Syside syntax tests (not model content)
+exercises/                 # Tenant models (Configured Model layer); a tenant never imports another tenant
+  gendersense/model/       # GenderSense (GSL) tenant model: 10 files, root GenderSense + 9 packages prefixed Gsl
+  coffeeshop-demonstrator/ # Cafe demonstrator: model/ + full running app (SvelteKit + Temporal + EHRbase + PostgreSQL)
+  suds-demonstrator/       # Suds (laundry) tenant model
+  paws-demonstrator/       # Paws (dog grooming) tenant model
+  minds-demonstrator/      # Minds (counselling) tenant model
 console/                   # Ontara Console (SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4)
 portal/                    # Ontara Portal (SvelteKit + Svelte 5 runes + Flowbite Svelte + Tailwind v4 + SQLite)
 scripts/                   # Python generators, shared modules, and shell tools
@@ -54,7 +64,7 @@ tools/                     # External tooling
 documentation/
   reference/               # SysML syntax ref, KerML reserved words
   archive/                 # Historical in-repo material (not for new vault mirroring)
-libraries/                 # Shared libraries
+libraries/                 # Shared libraries (temporal-metadata: TemporalMetadata, apparatus, no layer)
 concept-graph/             # Generated concept graph (Mermaid + Obsidian)
 spikes/                    # Experimental code
 .claude/skills/            # Claude Code skills
@@ -63,8 +73,9 @@ CLAUDE.md                  # this file
 
 ## Key File Paths
 
-- **SysML model files:** `model/*.sysml` (13 files: architectural-structure, business-model, business-scenarios, business-strategy, canonical-runtime, enterprise, foundation, gendersense, knowledge, operations, pattern-catalogue, platform, service-delivery)
-- **Tenant projections:** Paws and Minds projections under `exercises/<tenant>-demonstrator/`. Tenant projections specialise BMM General `part def`s and carry **doc blocks only** — annotations are inherited.
+- **SysML model files:** `model/*.sysml` (6 files: architectural-structure, business-metamodel-general, pattern-catalogue, projection-metadata, system-metamodel-domain-clinical, system-metamodel-general). Package classes, allocation and import rules: ADR-012 in the vault.
+- **Tenant models:** GSL in `exercises/gendersense/model/` (10 files: gendersense, gsl-business-model, gsl-common-types, gsl-domain-registration, gsl-enterprise, gsl-knowledge, gsl-operations, gsl-platform, gsl-scenarios, gsl-service-delivery); Cafe, Suds, Paws and Minds under `exercises/<tenant>-demonstrator/model/`. Tenant models specialise BMM General `part def`s and carry **doc blocks only** — annotations are inherited.
+- **Package-direction check:** `scripts/check_package_direction.sh` runs ADR-012 rules R1 to R8. Run it after any change to a package, an import or a model file; it must end `RESULT: PASS`.
 - **Console app:** `console/` (SvelteKit, uses pnpm)
 - **Console data:** `console/static/data/model-introspection.json` (sync via `pnpm refresh-data`, defined as `cp ../generated/ontara/model-introspection.json static/data/`)
 - **Introspection generator:** `scripts/gen_model_introspection.py`
@@ -244,6 +255,7 @@ python3 scripts/gen_package_hierarchy.py                      # View package hie
 python3 scripts/gen_system_manifest.py                        # Generate manifest
 python3 scripts/gen_constraint_evaluator.py                   # Generate constraint evaluators
 python3 scripts/gen_decision_table_evaluator.py               # Generate decision tables
+scripts/check_package_direction.sh                            # ADR-012 import rules R1-R8 (must PASS)
 ```
 
 ## Marker Regen Commands
@@ -321,11 +333,11 @@ cd console && pnpm refresh-data
 - **Always check** `documentation/reference/KerML-Reserved-Words.md` before naming `part def`s, attributes, or other identifiers. `subject` is NOT KerML-reserved but IS a SysML v2 contextual keyword.
 - **Doc blocks** on every `part def` or `metadata def` must include meta model classification: `/* business meta model concept */` or `/* system meta model concept */`. Under the strengthened A4, the doc block records the layer-and-side locus.
 - **`part def` vs `part`:** A `part def` is a meta model concept (abstract definition). A `part` is an instance (concrete usage). Do not conflate them.
-- **General vs Tailored:** BMM components are classified as General (common across most service businesses, in `business-model.sysml`) or Tailored (sector-specific, in tenant or domain modules).
+- **General vs Domain vs tenant:** metamodel content is General (sector-agnostic, in `BusinessMetamodelGeneral` or `SystemMetamodelGeneral`) or Domain (sector-specific, in a `…MetamodelDomain<Sector>` package; only `SystemMetamodelDomainClinical` exists). Content that belongs to one tenant goes in that tenant's packages under `exercises/`. The business side never imports the system side. See ADR-012.
 - **Annotation placement (Position A):** All six BMM annotation types (`@CatalogueTag`, `@BfoType`, `@UserFacing`, `@PurposiveDescription`, `@Comprehension`, `@WeightedRelationship`) on a BMM General `part def` are placed **before** the `part def` declaration, in standard order. Inline placement parses but is not used.
 - **Tenant projections carry doc blocks only.** No inline annotations on `part` usages or specialising `part def`s — annotation semantics are inherited via `:>` and instantiation. Putting an annotation on a `part` usage produces a "No Feature named '<attribute>' found" error; putting one on a specialising `part def` produces metaclass-binding ambiguity.
 - **Enum value verification.** Before delivering any SysML referencing `EnumName::value`, verify each value against the actual `enum def` in source. Do not infer from semantics. (Discovered S275.)
-- **Multi-package imports.** Each package needs its own `private import` for every enum/type referenced. `Foundation::CommonTypes` hosts shared enums and must be imported in every using package. (Discovered S275 in multi-package tenant projection.)
+- **Multi-package imports.** Each package needs its own `private import` for every enum/type referenced. Shared enums sit with the defs that use them in the General packages (for example `BusinessMetamodelGeneral::StakeholderModel`, `SystemMetamodelGeneral::LogicEngine`) and must be imported in every using package. (Discovered S275 in multi-package tenant projection; `Foundation` retired S515.)
 
 ## Development Principles
 

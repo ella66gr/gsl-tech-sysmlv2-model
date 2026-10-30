@@ -1,8 +1,8 @@
 // =========================================================================
 // Coffee Shop Business Model Extension
 // =========================================================================
-// Validates that the BusinessModel::ServiceConcept and
-// BusinessModel::ActivityModel part defs accommodate a simple service
+// Validates that the BusinessMetamodelGeneral::ServiceConcept and
+// BusinessMetamodelGeneral::ActivityModel part defs accommodate a simple service
 // business. Tests cross-project import from the main model.
 //
 // Phase 1 demonstrator (Session 14, 10 March 2026):
@@ -22,7 +22,7 @@ package CoffeeShopBusinessModel {
     private import CoffeeShop::*;
     private import BusinessMetamodelGeneral::StakeholderModel::*;
 
-    // Import note: Both CoffeeShop and BusinessModel::ServiceConcept
+    // Import note: Both CoffeeShop and BusinessMetamodelGeneral::ServiceConcept
     // export CatalogueEntry and ExternalReference (name collision
     // introduced Session 29 when meta model CatalogueEntry was added).
     // Catalogue entry usages below use fully qualified

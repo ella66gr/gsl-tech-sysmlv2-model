@@ -6,7 +6,7 @@
 // Variant B (Full Platform) usages that lived at package level inside
 // BusinessModel::ServiceConcept, ::ResourcePlanning, ::FinancialPlanning
 // and ::StakeholderModel. Flat package, as PawsBusinessModel is. The
-// General part defs stay in model/business-model.sysml.
+// General part defs are in model/business-metamodel-general.sysml.
 // =========================================================================
 
 package GslBusinessModel {
@@ -350,7 +350,7 @@ package GslBusinessModel {
     part prescribingQualification : ResourceConstraint {
         doc /* Regulatory requirement: the prescribing clinician
              * must hold appropriate qualification for hormone
-             * prescribing. Maps to Enterprise::Regulation. */
+             * prescribing. Maps to GslEnterprise::Regulation. */
         attribute :>> constraintName = "Prescribing qualification";
         attribute :>> constraintType = "regulatory";
         ref :>> affectedResource = prescribingClinician;

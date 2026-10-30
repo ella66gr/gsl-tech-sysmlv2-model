@@ -69,7 +69,7 @@ package GslEnterprise {
         //
         // These are the governance obligations that the pathway must
         // satisfy. Each traces to one or more evaluable constraints
-        // in Knowledge::ConstraintLibrary via satisfy relationships.
+        // in GslKnowledge::ConstraintLibrary via satisfy relationships.
         // =============================================================
 
         // --- Consent and patient information ---
@@ -225,7 +225,7 @@ package GslEnterprise {
 
         part def Partnership {
             doc /* A strategic partnership or collaboration.
-                 * Cross-references BusinessStrategy::
+                 * Cross-references BusinessMetamodelGeneral::BusinessStrategy::
                  * StrategicObjective by name where the
                  * partnership supports a specific objective. */
             attribute partnerName : String;
@@ -246,10 +246,10 @@ package GslEnterprise {
                  * enterprise-level strategic anchor.
                  *
                  * Cross-references (via String, not import):
-                 * - BusinessStrategy::StrategicObjective
-                 * - BusinessStrategy::BusinessModelVariant
-                 * - BusinessStrategy::PivotScenario
-                 * - BusinessScenarios::ScenarioDefinition */
+                 * - BusinessMetamodelGeneral::BusinessStrategy::StrategicObjective
+                 * - BusinessMetamodelGeneral::BusinessStrategy::BusinessModelVariant
+                 * - BusinessMetamodelGeneral::BusinessStrategy::PivotScenario
+                 * - BusinessMetamodelGeneral::BusinessScenarios::ScenarioDefinition */
             attribute contextName : String;
             attribute currentVariant : String;
             attribute strategicHorizonMonths : Integer;

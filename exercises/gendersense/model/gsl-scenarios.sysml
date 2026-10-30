@@ -7,8 +7,8 @@
 // comparison and GoalProjection/Deficit steering usages (formerly
 // BusinessScenarios lines 179 to end), and the GSL strategic objectives,
 // business model variants and pivot (formerly BusinessStrategy lines 114
-// to end). The General part defs stay in model/business-scenarios.sysml
-// and model/business-strategy.sysml.
+// to end). The General part defs are in BusinessMetamodelGeneral
+// (model/business-metamodel-general.sysml).
 // =========================================================================
 
 package GslScenarios {
@@ -810,15 +810,15 @@ package GslScenarios {
     // =================================================================
     //
     // Illustrative GoalProjection and Deficit instantiations using
-    // part defs from Knowledge::LogicEngine. These demonstrate that
+    // part defs from SystemMetamodelGeneral::LogicEngine. These demonstrate that
     // the self-knowledge architecture handles financial goals and
     // variances without modification — a financial forecast is a
     // goal, a revenue shortfall is a deficit.
     //
     // This section establishes the structural connection between
-    // BusinessScenarios and Knowledge::LogicEngine via cross-package
+    // BusinessMetamodelGeneral::BusinessScenarios and SystemMetamodelGeneral::LogicEngine via cross-package
     // import and part usage. The import at the top of this file
-    // (private import Knowledge::LogicEngine::*) is the visible
+    // (private import SystemMetamodelGeneral::LogicEngine::*) is the visible
     // manifestation of this architectural wiring.
 
     part goalMonth6Revenue : GoalProjection {
@@ -883,7 +883,7 @@ package GslScenarios {
     //
     // Note: relatedCapabilities is no longer an attribute here.
     // Traceability from objectives to capabilities is expressed
-    // via satisfy relationships in BusinessModel::ResourcePlanning.
+    // via the ObjectiveCapabilityMapping usages in GslBusinessModel.
 
     requirement objectivePatientCohort : StrategicObjective {
         attribute :>> objectiveName = "Build active patient cohort";

@@ -699,7 +699,7 @@ package SystemMetamodelGeneral {
                  *   workers running, external integrations
                  *   responding
                  * - Financial actuals (accounting, Phase 6B):
-                 *   PeriodActuals from Xero via Operations::Finance.
+                 *   PeriodActuals from the tenant's accounting system (for GSL, Xero via the Finance package of its operations model).
                  *   Revenue by stream, cost by driver, margin,
                  *   active patient count. Compared against the
                  *   active ForecastBaseline's ProjectionOutput
@@ -774,7 +774,7 @@ package SystemMetamodelGeneral {
                  *   query for the period. The projection formula
                  *   output for a given period becomes a goal.
                  *   This is the structural connection between
-                 *   BusinessScenarios::ProjectionFormula and the
+                 *   BusinessMetamodelGeneral::BusinessScenarios::ProjectionFormula and the
                  *   self-knowledge architecture.
                  *
                  * The projector does not evaluate goals — it
@@ -799,13 +799,13 @@ package SystemMetamodelGeneral {
                  * operational dimensions.
                  *
                  * Goal sources:
-                 * - Requirements (Enterprise::Regulation) ->
+                 * - Requirements (a tenant's regulation requirement defs) ->
                  *   expected compliance conditions
-                 * - Constraints (Knowledge::ConstraintLibrary) ->
+                 * - Constraints (a tenant's constraint library) ->
                  *   expected evaluation pass outcomes for all
                  *   active patients
                  * - Outcome definitions
-                 *   (Knowledge::OutcomeFramework) -> expected
+                 *   (OutcomeFramework defs, with each tenant's targets) -> expected
                  *   clinical target achievement
                  * - Projection formulas (BusinessScenarios,
                  *   Phase 6B) -> expected financial and activity
@@ -1040,7 +1040,7 @@ package SystemMetamodelGeneral {
                  * document, Section 1):
                  * - A generator reads ConstraintEvaluationSpec
                  *   part usages from
-                 *   Knowledge::ClinicalDecisionSupport
+                 *   a tenant's clinical decision support package (for GSL, the ClinicalDecisionSupport package of its knowledge model)
                  * - It produces a TypeScript module exporting a
                  *   map from constraint name to spec object
                  * - The registry loads this module at startup
@@ -1209,9 +1209,9 @@ package SystemMetamodelGeneral {
              *
              * Goal-state projection:
              * The GoalProjector (LogicEngine) consumes three goal
-             * sources: requirements (Enterprise::Regulation),
+             * sources: requirements (a tenant's regulation requirement defs),
              * constraint evaluation specs (here), and outcome
-             * definitions (Knowledge::OutcomeFramework). Outcome
+             * definitions (the OutcomeFramework package). Outcome
              * definitions are self-contained — they specify both
              * the target and the evaluation query, so a separate
              * evaluation spec is not needed for them.
@@ -1375,14 +1375,14 @@ package SystemMetamodelGeneral {
              *
              * Architectural role — outcomes are goals:
              * Each OutcomeDefinition implies an expected state. The
-             * GoalProjector (Knowledge::LogicEngine) projects outcome
+             * GoalProjector (LogicEngine) projects outcome
              * definitions into GoalProjections. The GapAnalyser compares
              * actual outcome data (from CDR) against these projections and
              * produces Deficit records for unmet outcomes. This connects
              * OutcomeFramework directly to the five-layer self-knowledge
              * architecture (Phase 1) — outcomes are the third goal source
-             * alongside requirements (Enterprise::Regulation) and
-             * constraints (Knowledge::ConstraintLibrary).
+             * alongside requirements (a tenant's regulation requirement defs) and
+             * constraints (a tenant's constraint library).
              *
              * Data capture — outcomes are CDR compositions:
              * Outcome measurements are captured as openEHR compositions
@@ -1665,8 +1665,8 @@ package SystemMetamodelGeneral {
         // Added Session 29: CSW Extension Phase 10.
         // Source: gsl-spec-catalogue-inventory-v2.1.md §8.3
         // Meta model: Business System (placed in Foundation for
-        // practical cross-cutting access; will migrate when the
-        // system meta model is extracted as a named package).
+        // practical cross-cutting access until the system meta modee
+        // became a named package, SystemMetamodelGeneral, at S515).
 
         enum def PersistenceLayer {
             doc /* The persistence technology layer where a domain

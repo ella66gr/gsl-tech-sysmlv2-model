@@ -38,7 +38,7 @@ package GslOperations {
              * financial reporting. This is the day-to-day financial
              * machinery.
              *
-             * Distinct from BusinessModel::FinancialPlanning which
+             * Distinct from BusinessMetamodelGeneral::FinancialPlanning which
              * captures structural economics (revenue streams, cost
              * drivers, unit economics). Finance handles the
              * transactional reality: sending invoices, chasing
@@ -111,7 +111,7 @@ package GslOperations {
              * professional development, appraisal, revalidation,
              * and indemnity insurance.
              *
-             * Distinct from BusinessModel::ResourcePlanning which
+             * Distinct from BusinessMetamodelGeneral::ResourcePlanning which
              * captures structural resource needs (how many clinicians
              * for N patients). People handles the operational reality:
              * contracts, CPD tracking, insurance renewal.
@@ -125,7 +125,7 @@ package GslOperations {
             doc /* A defined role within the operational workforce.
                  * Captures the contract and qualification view of
                  * a role, complementing the planning view in
-                 * BusinessModel::ResourcePlanning::ResourceType.
+                 * BusinessMetamodelGeneral::ResourcePlanning::ResourceType.
                  *
                  * WorkforceRole says "this person needs these
                  * qualifications and this contract type."

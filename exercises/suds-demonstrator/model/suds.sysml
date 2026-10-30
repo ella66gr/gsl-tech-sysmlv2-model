@@ -571,7 +571,7 @@ package SudsGovernance {
          * requirement → constraint → satisfy → audit evidence.
          *
          * The GovernanceRequirement and AuditEvidenceRecord part defs
-         * are General BMM vocabulary from BusinessModel::GovernanceMapping.
+         * are General BMM vocabulary from BusinessMetamodelGeneral::GovernanceMapping.
          * The constraint defs are domain-specific — COSHH testable
          * conditions that would not apply to a coffee shop or
          * dog grooming service. */
@@ -637,7 +637,7 @@ package SudsGovernance {
     //
     // Formal traceability: requirement → constraint.
     // Named-and-typed form per syntax reference §7.
-    // GovernanceRequirement def is in BusinessModel::GovernanceMapping
+    // GovernanceRequirement def is in BusinessMetamodelGeneral::GovernanceMapping
     // (different package from this satisfy — required by Syside).
 
     satisfy requirement coshhStorageSatisfied : GovernanceRequirement

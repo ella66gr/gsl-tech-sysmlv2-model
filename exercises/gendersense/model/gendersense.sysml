@@ -28,19 +28,21 @@ package GenderSense {
          * Representation layer (this model) is the source of truth.
          * Execution layer consumes it via generation or configuration.
          *
-         * File structure:
-         *   gendersense.sysml          — This root package (imports all domains)
-         *   enterprise.sysml           — Organisation, Regulation, Strategy, Risk
-         *   knowledge.sysml            — CDS, Constraints, Logic, Decisions, Outcomes, Learning, Analytics
-         *   service-delivery.sysml     — PatientJourney, ClinicalPathways, Consent, Coaching, Governance, Entities
-         *   platform.sysml             — Portal, Booking, EHR, Forms, Messaging, Video, Labs, Prescribing, Payments, Docs, Identity, Orchestration, Integration
-         *   operations.sysml           — Finance, People, Marketing, CRM, Reporting, EstatesAndFacilities
-         *   foundation.sysml           — Residual: MetadataLibrary (clinical, governance, openEHR, agency annotations), CommonTypes, DomainRegistry, StatePatterns. Being dissolved by meaning (ADR-011 §4.7, S514)
-         *   projection-metadata.sysml  — ProjectionMetadata: the generators' annotation schema (formerly Foundation's MetadataLibrary)
-         *   business-model.sysml       — ServiceConcept, ActivityModel, ResourcePlanning, FinancialPlanning
-         *   business-scenarios.sysml   — ScenarioDefinitions, ProjectionParameters, Formulas, Outputs, Comparisons, Steering
-         *   business-strategy.sysml    — StrategicObjectives, BusinessModelVariants, PivotScenarios
-         *   pattern-catalogue.sysml    — PatternCatalogue: cross-domain concept registry and pattern catalogue
+         * File structure (GSL tenant model, exercises/gendersense/model/; ADR-012):
+         *   gendersense.sysml              — This root package (imports the GSL packages and the metamodel packages)
+         *   gsl-enterprise.sysml           — GslEnterprise: Organisation, Regulation, Strategy, Risk
+         *   gsl-knowledge.sysml            — GslKnowledge: HormoneTherapyTypes, ConstraintLibrary, ClinicalDecisionSupport, DecisionTables, OutcomeTargets
+         *   gsl-service-delivery.sysml     — GslServiceDelivery: PatientJourney, ClinicalPathways, Consent, CoachingSupport, ClinicalGovernance, ClinicalEntities
+         *   gsl-platform.sysml             — GslPlatform: PatientPortal, Education, Community, Booking, Forms, Messaging, VideoConsulting, LabInterface, PrescribingSystem, Payments, Documents, Identity, Orchestration, Integration
+         *   gsl-operations.sysml           — GslOperations: Finance, People, EstatesAndFacilities, Marketing, CRM, Reporting
+         *   gsl-business-model.sysml       — GslBusinessModel: GSL usages of the six BMM concerns (Variant A and Variant B)
+         *   gsl-scenarios.sysml            — GslScenarios: scenarios, projections, steering usages, objectives, variants, pivot
+         *   gsl-common-types.sysml         — GslCommonTypes: six unconsumed common types (candidates)
+         *   gsl-domain-registration.sysml  — GslDomainRegistration: gslIdentity, gslConfiguration
+         *
+         * Metamodel packages imported from model/: BusinessMetamodelGeneral,
+         * SystemMetamodelGeneral, SystemMetamodelDomainClinical, and the
+         * ProjectionMetadata apparatus.
          *
          * Phase 6A split: BusinessModel was ~1,900 lines. ScenarioModelling
          * promoted to BusinessScenarios, StrategyAndEvolution promoted to
