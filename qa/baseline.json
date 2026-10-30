@@ -1,0 +1,643 @@
+{
+  "baseline": "S0.1 pass 2 QA baseline, after OP-132 (Plan B Stage 0, Session 517)",
+  "date": "2026-10-30",
+  "measuredAtCommit": "7fb149324d1eab8421ddad3a80cd897ffdbdc504",
+  "rerun": "make qa",
+  "graphdb": {
+    "repository": "ontara-dev",
+    "endpoint": "http://localhost:7200",
+    "host": "GraphDB Desktop"
+  },
+  "tools": {
+    "python": "python3 (rdflib 7.6.0)",
+    "java": "openjdk 25.0.2",
+    "robot": "1.9.8",
+    "reasoner": "HermiT"
+  },
+  "overall": "fail",
+  "layers": {
+    "pipeline": {
+      "target": "qa-pipeline",
+      "command": "python3 scripts/gen_owl_pipeline.py --save",
+      "result": "pass",
+      "counts": {
+        "sysmlElementsParsed": 775,
+        "domainClass": 34,
+        "structuralOnly": 741,
+        "objectProperties": 14,
+        "deferredProperties": 2,
+        "weightIndividuals": 98,
+        "domainGraphTriples": 175,
+        "propertyGraphTriples": 99,
+        "weightGraphTriples": 716,
+        "correspondenceGraphTriples": 1398
+      },
+      "deferredProperties": [
+        "ObjectiveCapabilityMapping.strategicObjective -> StrategicObjective (not in DomainClass set)",
+        "FinancialProjection.scenario -> ScenarioDefinition (not in DomainClass set)"
+      ],
+      "outputChange": "timestamps only (146 dcterms:created in ontara-correspondence.ttl, generated_at in mapping-ir.json); no content change"
+    },
+    "validate": {
+      "target": "qa-validate",
+      "command": "python3 scripts/validate_kg.py --load",
+      "result": "fail",
+      "counts": {
+        "queries": 66,
+        "passed": 64,
+        "failed": 2,
+        "filesLoaded": 12,
+        "domainGraphTriples": 30099,
+        "correspondenceGraphTriples": 1398
+      },
+      "byCategory": {
+        "Structural": "4/4",
+        "Correspondence": "3/3",
+        "Inference": "2/2",
+        "Graph-level": "1/1",
+        "Governance": "6/6",
+        "Governance-MVP": "7/7",
+        "Properties": "2/2",
+        "Axioms": "2/2",
+        "Weights": "0/2",
+        "Domain-Identity": "6/6",
+        "Reasoning": "21/21",
+        "Ears Instances": "10/10"
+      },
+      "failures": [
+        {
+          "id": "Q28",
+          "name": "Reified weighted relationship individuals",
+          "count": 98,
+          "expectation": "expected: 96"
+        },
+        {
+          "id": "Q29",
+          "name": "Weighted relationship correspondence records",
+          "count": 98,
+          "expectation": "expected: 96"
+        }
+      ],
+      "q7": {
+        "id": "Q7",
+        "name": "Specific lookup: CustomerSegment",
+        "result": "PASS",
+        "count": 1,
+        "expectation": "expected: 1"
+      },
+      "queries": [
+        {
+          "id": "Q1",
+          "name": "All BMM classes and declared parent",
+          "result": "PASS",
+          "count": 34,
+          "expectation": "expected: 34"
+        },
+        {
+          "id": "Q2",
+          "name": "BMM classes under BFO:Role",
+          "result": "PASS",
+          "count": 2,
+          "expectation": "expected: 2"
+        },
+        {
+          "id": "Q3",
+          "name": "BMM classes with CCO mid-level parent",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q4",
+          "name": "BMM classes with complete annotations",
+          "result": "PASS",
+          "count": 34,
+          "expectation": "expected: 34"
+        },
+        {
+          "id": "Q5",
+          "name": "All mapping records",
+          "result": "PASS",
+          "count": 34,
+          "expectation": "expected: 34"
+        },
+        {
+          "id": "Q6",
+          "name": "Correspondence completeness (no orphan BMM classes)",
+          "result": "PASS",
+          "count": 0,
+          "expectation": "expected: 0"
+        },
+        {
+          "id": "Q7",
+          "name": "Specific lookup: CustomerSegment",
+          "result": "PASS",
+          "count": 1,
+          "expectation": "expected: 1"
+        },
+        {
+          "id": "Q8",
+          "name": "BMM classes that are BFO:Continuant (inferred)",
+          "result": "PASS",
+          "count": 35,
+          "expectation": "threshold: 30, ideal: 34"
+        },
+        {
+          "id": "Q9",
+          "name": "BMM classes that are BFO:Occurrent (inferred)",
+          "result": "PASS",
+          "count": 0,
+          "expectation": "expected: 0"
+        },
+        {
+          "id": "Q10",
+          "name": "Named graph triple counts",
+          "result": "PASS",
+          "count": 2,
+          "expectation": "graphs present: 2"
+        },
+        {
+          "id": "Q11",
+          "name": "All governance classes with labels",
+          "result": "PASS",
+          "count": 156,
+          "expectation": "threshold: 19, ideal: 19"
+        },
+        {
+          "id": "Q12",
+          "name": "Governance enumeration individuals",
+          "result": "PASS",
+          "count": 25,
+          "expectation": "threshold: 24, ideal: 24"
+        },
+        {
+          "id": "Q13",
+          "name": "Governance object properties with domain and range",
+          "result": "PASS",
+          "count": 23,
+          "expectation": "expected: 23"
+        },
+        {
+          "id": "Q14",
+          "name": "Governance data properties with domain and range",
+          "result": "PASS",
+          "count": 17,
+          "expectation": "expected: 17"
+        },
+        {
+          "id": "Q15",
+          "name": "DeonticDirective subclasses grounded in IAO",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q16",
+          "name": "NormativeInstrument subclasses (11 types)",
+          "result": "PASS",
+          "count": 11,
+          "expectation": "expected: 11"
+        },
+        {
+          "id": "Q17",
+          "name": "Obligation decomposition: Reg 12(1) components",
+          "result": "PASS",
+          "count": 9,
+          "expectation": "expected: 9"
+        },
+        {
+          "id": "Q18",
+          "name": "Normative instrument lineage",
+          "result": "PASS",
+          "count": 3,
+          "expectation": "expected: 3"
+        },
+        {
+          "id": "Q19",
+          "name": "Directive provenance completeness (no orphans)",
+          "result": "PASS",
+          "count": 0,
+          "expectation": "expected: 0"
+        },
+        {
+          "id": "Q20",
+          "name": "Structural property completeness",
+          "result": "PASS",
+          "count": 0,
+          "expectation": "expected: 0"
+        },
+        {
+          "id": "Q21",
+          "name": "Evidential specification coverage",
+          "result": "PASS",
+          "count": 0,
+          "expectation": "expected: 0"
+        },
+        {
+          "id": "Q22",
+          "name": "Framework directive containment",
+          "result": "PASS",
+          "count": 15,
+          "expectation": "expected: 15"
+        },
+        {
+          "id": "Q23",
+          "name": "Safe group membership",
+          "result": "PASS",
+          "count": 15,
+          "expectation": "expected: 15"
+        },
+        {
+          "id": "Q24",
+          "name": "BMM object properties with domain and range",
+          "result": "PASS",
+          "count": 14,
+          "expectation": "expected: 14"
+        },
+        {
+          "id": "Q25",
+          "name": "Functional BMM object properties",
+          "result": "PASS",
+          "count": 9,
+          "expectation": "expected: 9"
+        },
+        {
+          "id": "Q26",
+          "name": "BMM concern-group disjointness declarations",
+          "result": "PASS",
+          "count": 45,
+          "expectation": "threshold: 9, ideal: 9"
+        },
+        {
+          "id": "Q27",
+          "name": "Qualified cardinality restrictions on BMM classes",
+          "result": "PASS",
+          "count": 9,
+          "expectation": "expected: 9"
+        },
+        {
+          "id": "Q28",
+          "name": "Reified weighted relationship individuals",
+          "result": "FAIL",
+          "count": 98,
+          "expectation": "expected: 96"
+        },
+        {
+          "id": "Q29",
+          "name": "Weighted relationship correspondence records",
+          "result": "FAIL",
+          "count": 98,
+          "expectation": "expected: 96"
+        },
+        {
+          "id": "Q30",
+          "name": "Domain identity classes with BFO grounding",
+          "result": "PASS",
+          "count": 2,
+          "expectation": "expected: 2"
+        },
+        {
+          "id": "Q31",
+          "name": "Domain identity individuals by regulatory shape",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q32",
+          "name": "Regulated activities for sector-regulated domains",
+          "result": "PASS",
+          "count": 2,
+          "expectation": "expected: 2"
+        },
+        {
+          "id": "Q33",
+          "name": "Horizontal mapping traversal (identity to configuration)",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q34",
+          "name": "Domain enumeration classes with closed membership",
+          "result": "PASS",
+          "count": 7,
+          "expectation": "expected: 7"
+        },
+        {
+          "id": "Q35",
+          "name": "Domain object properties with domain and range",
+          "result": "PASS",
+          "count": 9,
+          "expectation": "expected: 9"
+        },
+        {
+          "id": "Q36",
+          "name": "All reasoning classes with labels",
+          "result": "PASS",
+          "count": 42,
+          "expectation": "expected: 42"
+        },
+        {
+          "id": "Q37",
+          "name": "Reasoning object properties with domain and range (Phase 1+2+3)",
+          "result": "PASS",
+          "count": 40,
+          "expectation": "expected: 40"
+        },
+        {
+          "id": "Q38",
+          "name": "PROV-O dual subclassing (BFO + PROV-O parents, all phases)",
+          "result": "PASS",
+          "count": 7,
+          "expectation": "expected: 7"
+        },
+        {
+          "id": "Q39",
+          "name": "Evidence architecture property chain",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q40",
+          "name": "Constraint subtypes (Hard, Soft, Graded, Safety)",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q41",
+          "name": "Structured probabilistic component subtypes",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q42",
+          "name": "Governance alignment (Obligation/Prohibition as HardConstraint)",
+          "result": "PASS",
+          "count": 2,
+          "expectation": "expected: 2"
+        },
+        {
+          "id": "Q43",
+          "name": "InterpretiveFrame named individuals",
+          "result": "PASS",
+          "count": 3,
+          "expectation": "expected: 3"
+        },
+        {
+          "id": "Q44",
+          "name": "Heuristic subclass hierarchy (6 families)",
+          "result": "PASS",
+          "count": 6,
+          "expectation": "expected: 6"
+        },
+        {
+          "id": "Q45",
+          "name": "HeuristicPack class with hasMember property",
+          "result": "PASS",
+          "count": 1,
+          "expectation": "expected: 1"
+        },
+        {
+          "id": "Q46",
+          "name": "DecisionMode named individuals (4 Cynefin domains)",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q47",
+          "name": "activatesComponent property declaration",
+          "result": "PASS",
+          "count": 1,
+          "expectation": "expected: 1"
+        },
+        {
+          "id": "Q48",
+          "name": "CombinationAlgebra named individuals (4 algebras)",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q49",
+          "name": "hasCombinationAlgebra is functional property",
+          "result": "PASS",
+          "count": 1,
+          "expectation": "expected: 1"
+        },
+        {
+          "id": "Q50",
+          "name": "composedWith is symmetric property",
+          "result": "PASS",
+          "count": 1,
+          "expectation": "expected: 1"
+        },
+        {
+          "id": "Q51",
+          "name": "Phase 3 safety classes declared under correct parents",
+          "result": "PASS",
+          "count": 8,
+          "expectation": "expected: 8"
+        },
+        {
+          "id": "Q52",
+          "name": "Phase 3 object and datatype properties declared",
+          "result": "PASS",
+          "count": 19,
+          "expectation": "expected: 19"
+        },
+        {
+          "id": "Q53",
+          "name": "STAMP UnsafeControlActionType named individuals (4)",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q54",
+          "name": "SafetyConstraint declared as HardConstraint subclass",
+          "result": "PASS",
+          "count": 1,
+          "expectation": "expected: 1"
+        },
+        {
+          "id": "Q55",
+          "name": "FRAM six coupling aspect properties on FRAMFunction",
+          "result": "PASS",
+          "count": 6,
+          "expectation": "expected: 6"
+        },
+        {
+          "id": "Q56",
+          "name": "hasVariabilityProfile is functional linking FRAMFunction to VariabilityProfile",
+          "result": "PASS",
+          "count": 1,
+          "expectation": "expected: 1"
+        },
+        {
+          "id": "Q57",
+          "name": "Ears ReasoningAgent individuals (3)",
+          "result": "PASS",
+          "count": 3,
+          "expectation": "expected: 3"
+        },
+        {
+          "id": "Q58",
+          "name": "Ears KnowledgeSource individuals (6)",
+          "result": "PASS",
+          "count": 9,
+          "expectation": "expected: 9"
+        },
+        {
+          "id": "Q59",
+          "name": "Ears HardConstraint individuals (triage + contraindication + capacity + SafetyConstraints inferred = 17)",
+          "result": "PASS",
+          "count": 17,
+          "expectation": "expected: 17"
+        },
+        {
+          "id": "Q60",
+          "name": "Ears GradedRule individuals (4)",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q61",
+          "name": "Ears ReasoningActivity individuals with PROV-O provenance (3)",
+          "result": "PASS",
+          "count": 3,
+          "expectation": "expected: 3"
+        },
+        {
+          "id": "Q62",
+          "name": "Ears EvidenceLine individuals with at least one EvidenceItem",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q63",
+          "name": "Ears STAMP/STPA instances (ControlStructure + SafetyConstraint + UCA)",
+          "result": "PASS",
+          "count": 7,
+          "expectation": "expected: 7"
+        },
+        {
+          "id": "Q64",
+          "name": "Ears HeuristicPack with members (1 pack, 4 heuristics)",
+          "result": "PASS",
+          "count": 4,
+          "expectation": "expected: 4"
+        },
+        {
+          "id": "Q65",
+          "name": "Ears ConfidenceAssessment individuals with interpretive frames (3)",
+          "result": "PASS",
+          "count": 3,
+          "expectation": "expected: 3"
+        },
+        {
+          "id": "Q66",
+          "name": "Total Ears named individual count (at least 80)",
+          "result": "PASS",
+          "count": 96,
+          "expectation": "threshold: 80, ideal: 80"
+        }
+      ]
+    },
+    "reason": {
+      "target": "qa-reason",
+      "command": "python3 scripts/reason_kg.py --save-summary",
+      "result": "pass",
+      "runs": [
+        {
+          "stack": "full (reason_kg.py as configured)",
+          "files": [
+            "ontology/imports/bfo-core.owl",
+            "ontology/imports/iao.owl",
+            "ontology/imports/CommonCoreOntologiesMerged.ttl",
+            "ontology/imports/prov-core.ttl",
+            "ontology/record/ontara-record.ttl",
+            "generated/ontology/ontara-bmm.ttl",
+            "ontology/axioms/ontara-bmm-axioms.ttl",
+            "generated/ontology/ontara-bmm-properties.ttl",
+            "generated/ontology/ontara-bmm-weights.ttl",
+            "ontology/governance/ontara-governance.ttl",
+            "ontology/governance/cqc-reg12-individuals.ttl",
+            "ontology/domain/ontara-domain.ttl",
+            "ontology/reasoning/ontara-reasoning.ttl",
+            "ontology/reasoning/ears-reasoning-instances.ttl"
+          ],
+          "fileCount": 14,
+          "consistent": true,
+          "unsatisfiableClasses": 0,
+          "wallClock": "included in make qa (11m32s total)"
+        },
+        {
+          "stack": "General-only (H-0320)",
+          "files": [
+            "ontology/imports/bfo-core.owl",
+            "ontology/imports/iao.owl",
+            "ontology/imports/CommonCoreOntologiesMerged.ttl",
+            "ontology/imports/prov-core.ttl",
+            "ontology/record/ontara-record.ttl",
+            "generated/ontology/ontara-bmm.ttl",
+            "ontology/axioms/ontara-bmm-axioms.ttl",
+            "generated/ontology/ontara-bmm-properties.ttl",
+            "generated/ontology/ontara-bmm-weights.ttl",
+            "ontology/governance/ontara-governance.ttl",
+            "ontology/domain/ontara-domain.ttl",
+            "ontology/reasoning/ontara-reasoning.ttl"
+          ],
+          "fileCount": 12,
+          "excluded": [
+            "ontology/governance/cqc-reg12-individuals.ttl",
+            "ontology/reasoning/ears-reasoning-instances.ttl"
+          ],
+          "consistent": true,
+          "unsatisfiableClasses": 0,
+          "wallClock": "7m31s",
+          "command": "java -jar tools/robot.jar merge --catalog ontology/catalog-v001.xml --input <each General-only file> --collapse-import-closure true reason --reasoner HermiT --annotate-inferred-axioms true --exclude-tautologies structural"
+        }
+      ]
+    },
+    "diff": {
+      "target": "qa-diff",
+      "command": "python3 scripts/diff_kg.py --json-only",
+      "result": "pass",
+      "report": "generated/ontara/diff-report.json",
+      "counts": {
+        "units": 292,
+        "added": 0,
+        "removed": 0,
+        "modified": 0,
+        "unchanged": 292
+      },
+      "byType": {
+        "ClassDeclaration": 34,
+        "PropertyDeclaration": 14,
+        "WeightIndividual": 98,
+        "MappingRecord": 146
+      }
+    }
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "layer": "validate",
+      "summary": "Q28 and Q29 fail: 98 weighted relationship individuals and 98 correspondence records against a hard-coded expectation of exactly 96 (validate_kg.py, expect_exactly: 96, set at S117).",
+      "evidence": "The two extra individuals are weight-AuditEvidenceRecord-to-ActivityType and weight-AuditEvidenceRecord-to-GovernanceRequirement, first in generated output at cfa404a (OP-132 S515 step 1 regeneration). The round-trip diff agrees with the store at 98. CLAUDE.md also still says 96 weighted relationships."
+    }
+  ],
+  "observations": [
+    "Q8 returns 35 BMM continuants against an ideal of 34 (threshold 30, passes): the 35th is ontara-bmm:WeightedRelationship, the reification class, which sits in the bmm/ namespace.",
+    "Q11 (156 vs ideal 19) and Q26 (45 vs ideal 9) pass on threshold; both count rows, not distinct classes (one row per inferred parent or per pair).",
+    "ontology/joins/ontara-joins-axioms.ttl and ontara-joins-shapes.ttl (W-161, dormant) are loaded by neither reason_kg.py nor validate_kg.py.",
+    "reason_kg.py --save-summary reports sparqlQueryCount 78; the suite ran 66 queries."
+  ]
+}

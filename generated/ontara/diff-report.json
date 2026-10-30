@@ -1,11 +1,11 @@
 {
-  "generated": "2026-04-04T22:11:42.947201+00:00",
+  "generated": "2026-10-30T20:14:16.032630+00:00",
   "source": "diff_kg.py \u2014 Stage 5 Phase 3 Step 5",
   "summary": {
     "added": 0,
     "removed": 0,
     "modified": 0,
-    "unchanged": 288
+    "unchanged": 292
   },
   "by_type": {
     "ClassDeclaration": {
@@ -24,13 +24,13 @@
       "added": 0,
       "removed": 0,
       "modified": 0,
-      "unchanged": 96
+      "unchanged": 98
     },
     "MappingRecord": {
       "added": 0,
       "removed": 0,
       "modified": 0,
-      "unchanged": 144
+      "unchanged": 146
     }
   },
   "entries": []
