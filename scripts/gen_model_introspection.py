@@ -134,6 +134,7 @@ DOMAIN_PACKAGES = {
     "CoffeeshopScenarios",
     "SudsBusinessModel", "SudsResourceFinancial", "SudsGovernance",
     "PawsBusinessModel", "PawsResourceFinancial", "PawsGovernance",
+    "GslBusinessModel", "GslScenarios",  # S515 OP-132 step 5
 }
 
 

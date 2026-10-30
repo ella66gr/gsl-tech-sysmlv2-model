@@ -2,7 +2,7 @@
 <opml version="2.0">
   <head>
     <title>Ontara Package Hierarchy</title>
-    <dateCreated>2026-10-30 15:03</dateCreated>
+    <dateCreated>2026-10-30 15:10</dateCreated>
   </head>
   <body>
     <outline text="Ontara — Model-driven service system development and delivery platform">
@@ -84,16 +84,18 @@
       </outline>
       <outline text="BusinessModel  — The business model package captures the strategic logic of the" _note="business-model.sysml:6">
         <outline text="ServiceConcept  — Defines the value proposition, customer segments, service  [9 parts]" _note="business-model.sysml:54"/>
-        <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-model.sysml:786"/>
-        <outline text="ResourcePlanning  — Defines the resources required to operate the service  [7 parts]" _note="business-model.sysml:1059"/>
-        <outline text="FinancialPlanning  — Defines the financial structure of the business: how  [5 parts, 1 enums]" _note="business-model.sysml:1685"/>
-        <outline text="GovernanceMapping  — General vocabulary for governance traceability.  [1 parts, 1 requirements]" _note="business-model.sysml:2091"/>
-        <outline text="StakeholderModel  — The relational boundary of the business: how it  [6 parts]" _note="business-model.sysml:2227"/>
+        <outline text="ActivityModel  — Cross-cutting activity taxonomy and costing foundation.  [5 parts, 2 enums]" _note="business-model.sysml:593"/>
+        <outline text="ResourcePlanning  — Defines the resources required to operate the service  [7 parts]" _note="business-model.sysml:866"/>
+        <outline text="FinancialPlanning  — Defines the financial structure of the business: how  [5 parts, 1 enums]" _note="business-model.sysml:1248"/>
+        <outline text="GovernanceMapping  — General vocabulary for governance traceability.  [1 parts, 1 requirements]" _note="business-model.sysml:1493"/>
+        <outline text="StakeholderModel  — The relational boundary of the business: how it  [6 parts]" _note="business-model.sysml:1629"/>
       </outline>
       <outline text="BusinessScenarios  — Provides the mechanics for driving the business model  [11 parts, 2 enums]" _note="business-scenarios.sysml:21"/>
       <outline text="BusinessStrategy  — Strategic direction, business model variants, and  [2 parts, 1 requirements]" _note="business-strategy.sysml:20"/>
       <outline text="PatternCatalogue  — Cross-domain concept registry, architectural pattern catalogue,  [3 parts, 4 enums]" _note="pattern-catalogue.sysml:17"/>
       <outline text="ProjectionMetadata  — The annotation schema the projection and the generators run on:  [1 enums, 6 metadata]" _note="projection-metadata.sysml:18"/>
+      <outline text="GslBusinessModel  — GenderSense Limited business model: concrete customer segments," _note="exercises/gendersense/model/gsl-business-model.sysml:12"/>
+      <outline text="GslScenarios  — GenderSense Limited scenario and strategy content: the Variant A" _note="exercises/gendersense/model/gsl-scenarios.sysml:14"/>
     </outline>
     <outline text="Libraries (separate from main model)">
       <outline text="TemporalMetadata  — Metadata definitions for Temporal workflow generation.  [4 metadata]" _note="libraries/temporal-metadata/temporal-metadata.sysml:1"/>

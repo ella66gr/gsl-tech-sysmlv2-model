@@ -1,8 +1,8 @@
 # Ontara Package Hierarchy (Generated)
 
-**Generated:** 2026-10-30 15:03  
+**Generated:** 2026-10-30 15:10  
 **Source:** `model/*.sysml`, `libraries/**/*.sysml`  
-**Total packages:** 77 (excluding root)  
+**Total packages:** 79 (excluding root)  
 **Generator:** `scripts/gen_package_hierarchy.py --save=markdown`
 
 This document is generated from the SysML model. Do not edit manually.
@@ -11,7 +11,7 @@ This document is generated from the SysML model. Do not edit manually.
 
 ```
 Ontara Package Hierarchy
-Generated 2026-10-30 15:03 from model/*.sysml (77 packages)
+Generated 2026-10-30 15:10 from model/*.sysml (79 packages)
 
 GenderSense
 ├── GslEnterprise                 Defines the organisational, regulatory, strategic, and risk context.
@@ -100,7 +100,11 @@ GenderSense
 │
 ├── PatternCatalogue              Cross-domain concept registry, architectural pattern catalogue, — [3 parts, 4 enums]
 │
-└── ProjectionMetadata            The annotation schema the projection and the generators run on: — [1 enums, 6 metadata]
+├── ProjectionMetadata            The annotation schema the projection and the generators run on: — [1 enums, 6 metadata]
+│
+├── GslBusinessModel              GenderSense Limited business model: concrete customer segments,
+│
+└── GslScenarios                  GenderSense Limited scenario and strategy content: the Variant A
 
 Libraries (separate from main model):
   TemporalMetadata (libraries/temporal-metadata/temporal-metadata.sysml) — Metadata definitions for Temporal workflow generation. — [4 metadata]
@@ -108,4 +112,4 @@ Libraries (separate from main model):
 
 ---
 
-*Generated 2026-10-30 15:03 by `gen_package_hierarchy.py`.*
+*Generated 2026-10-30 15:10 by `gen_package_hierarchy.py`.*
