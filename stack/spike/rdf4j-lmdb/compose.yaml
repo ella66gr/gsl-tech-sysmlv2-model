@@ -1,0 +1,25 @@
+# OP-134 spike, configuration 2b: Eclipse RDF4J Server 6.1.0 (the
+# eclipse/rdf4j-workbench image's 6.1.0-tomcat tag; there is no plain 6.1.0
+# tag), repository = LmdbStore wrapped in ShaclSail, created by the
+# bootstrap from RDF4J's native-shacl.ttl template with the delegate swapped for rdf4j:LmdbStore (lmdb.ttl defaults; RDF4J ships no lmdb-shacl template).
+x-store-env: &store-env
+  STORE_KIND: rdf4j
+  STORE_URL: http://store:8080/rdf4j-server
+  STORE_VERSION: "6.1.0"
+  RDF4J_DELEGATE: lmdb
+
+volumes:
+  store-data:
+
+services:
+  store:
+    image: eclipse/rdf4j-workbench:6.1.0-tomcat@sha256:7a18cecfc879f3143b5a57fe31176a0774fa57e5313f639c6f51756f390f7670
+    environment:
+      # Heap as GraphDB's (2g). The image reads JAVA_OPTS (Tomcat's catalina.sh).
+      JAVA_OPTS: -Xmx2g -Xms2g
+    volumes: [ "store-data:/var/rdf4j", "../graphdb/tools:/opt/stack-tools:ro" ]
+    ports: [ "127.0.0.1:7210:8080" ]
+    healthcheck: { test: ["CMD", "bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/8080"], interval: 5s, timeout: 5s, retries: 60, start_period: 10s }
+  bootstrap: { environment: *store-env, depends_on: { store: { condition: service_healthy } } }
+  gate: { environment: *store-env }
+  worker: { environment: *store-env }

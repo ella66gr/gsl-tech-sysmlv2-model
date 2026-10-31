@@ -1,0 +1,36 @@
+# OP-134 spike, configuration 4: Oxigraph 0.5.13, SHACL validated in the gate
+# (gate/src/store/oxigraph.ts). Three Oxigraph servers, all with
+# --union-default-graph so a query or update WHERE without GRAPH reads every
+# named graph, as RDF4J and GraphDB do:
+#   store     the runtime store, persistent (RocksDB) in a volume
+#   staging   in memory: the gate replays each write here to compute its effect
+#   scratch   in memory: the capability checks' scratch dataset
+# The image has no shell, so there is no healthcheck; the bootstrap waits.
+x-store-env: &store-env
+  STORE_KIND: oxigraph
+  STORE_URL: http://store:7878
+  STORE_VERSION: "0.5.13"
+  OXIGRAPH_STAGING_URL: http://staging:7878
+  OXIGRAPH_SCRATCH_URL: http://scratch:7878
+
+x-oxigraph: &oxigraph
+  image: ghcr.io/oxigraph/oxigraph:0.5.13@sha256:260454ee29c091d2cdb99dd156212594ff3127850627adb4cfdcd9b1e425d480
+
+volumes:
+  store-data:
+
+services:
+  store:
+    <<: *oxigraph
+    command: ["serve", "--location", "/data", "--bind", "0.0.0.0:7878", "--union-default-graph"]
+    volumes: [ "store-data:/data" ]
+    ports: [ "127.0.0.1:7210:7878" ]
+  staging:
+    <<: *oxigraph
+    command: ["serve", "--bind", "0.0.0.0:7878", "--union-default-graph"]
+  scratch:
+    <<: *oxigraph
+    command: ["serve", "--bind", "0.0.0.0:7878", "--union-default-graph"]
+  bootstrap: { environment: *store-env, depends_on: { store: { condition: service_started }, staging: { condition: service_started }, scratch: { condition: service_started } } }
+  gate: { environment: *store-env }
+  worker: { environment: *store-env }

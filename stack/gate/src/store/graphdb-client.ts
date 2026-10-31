@@ -1,5 +1,9 @@
 // Thin GraphDB / RDF4J REST client. Node's built-in fetch only.
-import { config, BULK_SETTING } from "./config";
+// Moved unchanged from src/graphdb.ts (OP-134 spike, B1). The RDF4J
+// transaction protocol (/repositories/{id}/transactions) and the SPARQL and
+// statements calls are standard RDF4J REST, shared by the GraphDB and RDF4J
+// Server adapters; the "management (GraphDB REST)" section is GraphDB-only.
+import { config, BULK_SETTING } from "../config";
 
 export interface HttpResult {
   status: number;

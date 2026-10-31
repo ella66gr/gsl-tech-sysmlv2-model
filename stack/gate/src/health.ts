@@ -6,14 +6,16 @@
 //      a known-bad one comes back as a SHACL rejection naming the shape, and a
 //      write after that commits, which shows the lock was released;
 //   3. Temporal: a no-op workflow starts and completes.
-import { GraphDB, param } from "./graphdb";
+import { runtimeStore } from "./gate";
 import { config, graphs } from "./config";
 import { readFixture, fill, runId } from "./fixtures";
 import { runNoop } from "./temporal";
 
 interface Check { name: string; pass: boolean; ms: number; detail: any }
 
-const db = new GraphDB();
+// OP-134 spike (B1): through the store interface. Check names carry the
+// store's label; for GraphDB they are exactly as before.
+const db = runtimeStore();
 const EXPECTED_SHAPE = "urn:ontara:standin:shapes#RecordModeMethodShape";
 
 async function gateWrite(body: any, timeoutMs = 20_000): Promise<{ http: number; json: any }> {
@@ -42,15 +44,15 @@ export async function runHealth() {
   const checks: Check[] = [];
 
   // 1. GraphDB
-  checks.push(await timed("graphdb: knowledge-graph content", async () => {
+  checks.push(await timed(`${db.label}: knowledge-graph content`, async () => {
     const probes = JSON.parse(readFixture("health/kg-expectations.json")).probes as { name: string; ask: string }[];
     const results = [];
     for (const p of probes) results.push({ probe: p.name, result: await db.ask(p.ask) });
     return { pass: results.every((r) => r.result === true), detail: results };
   }));
-  checks.push(await timed("graphdb: runtime repository has SHACL on", async () => {
-    const cfg = await db.repositoryConfig();
-    const detail = { repository: config.repository, isShacl: param(cfg, "isShacl"), validationEnabled: param(cfg, "validationEnabled") };
+  checks.push(await timed(`${db.label}: runtime repository has SHACL on`, async () => {
+    const rb = await db.readBack();
+    const detail = { repository: config.repository, isShacl: rb.shacl, validationEnabled: rb.validationEnabled, shaclLocus: rb.shaclLocus, inference: rb.inference };
     return { pass: detail.isShacl === "true" && detail.validationEnabled === "true", detail };
   }));
 
@@ -79,5 +81,5 @@ export async function runHealth() {
   }));
 
   const pass = checks.every((c) => c.pass);
-  return { status: pass ? "pass" : "fail", run, started, repository: config.repository, checks, cleanup: { http: cleanup.http, outcome: cleanup.json.outcome } };
+  return { status: pass ? "pass" : "fail", run, started, store: db.kind, repository: config.repository, checks, cleanup: { http: cleanup.http, outcome: cleanup.json.outcome } };
 }

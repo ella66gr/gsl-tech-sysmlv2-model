@@ -1,0 +1,28 @@
+# OP-134 spike, configuration 1 (control): GraphDB 11.3.1 as Part A left it
+# (SHACL on, ruleset empty). The same image, licence handling and settings as
+# stack/compose.yaml, in its own project and data volume.
+x-store-env: &store-env
+  STORE_KIND: graphdb
+  STORE_URL: http://store:7200
+  STORE_VERSION: "11.3.1"
+
+secrets:
+  graphdb_license:
+    file: ${GRAPHDB_LICENSE_FILE:?GRAPHDB_LICENSE_FILE is not set. Follow README step 2.}
+
+volumes:
+  store-data:
+
+services:
+  store:
+    image: ontotext/graphdb:11.3.1@sha256:bb94992347eeea71ea254326709b6cd5964dc9e6803962501d512d1cc045869a
+    secrets: [ graphdb_license ]
+    environment:
+      GDB_HEAP_SIZE: 2g
+      GDB_JAVA_OPTS: -Dgraphdb.license.file=/run/secrets/graphdb_license
+    volumes: [ "store-data:/opt/graphdb/home", "../graphdb/tools:/opt/stack-tools:ro" ]
+    ports: [ "127.0.0.1:7210:7200" ]
+    healthcheck: { test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost:7200/rest/repositories"], interval: 5s, timeout: 5s, retries: 60, start_period: 20s }
+  bootstrap: { environment: *store-env, depends_on: { store: { condition: service_healthy } } }
+  gate: { environment: *store-env }
+  worker: { environment: *store-env }

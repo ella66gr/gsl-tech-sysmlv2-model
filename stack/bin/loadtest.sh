@@ -12,7 +12,9 @@ while [ $# -gt 0 ]; do
 done
 # No hostname in the id: the repository is public.
 id="$(date -u +%Y%m%dT%H%M%SZ)-$(uname -s | tr "[:upper:]" "[:lower:]")-$(uname -m)-$label"
-dir="results/loadtest/$id"
+# OP-134 spike: RESULTS_SUBDIR puts runs under results/spike-op134/<configuration>/loadtest.
+sub="${RESULTS_SUBDIR:-loadtest}"
+dir="results/$sub/$id"
 mkdir -p "$dir"
 {
   echo "run id:        $id"
@@ -32,9 +34,14 @@ mkdir -p "$dir"
   fi
   echo "docker:        $(docker version --format '{{.Server.Version}} {{.Server.Os}}/{{.Server.Arch}}')"
   echo "docker VM/engine sees: $(docker info --format '{{.NCPU}} CPUs, {{.MemTotal}} bytes memory')"
-  echo "graphdb heap:  $(docker compose exec -T graphdb sh -c 'echo ${GDB_HEAP_SIZE:-default}')"
-  echo "graphdb licence: Free (maxCpuCores=1), see bootstrap log"
+  case "${STORE_KIND:-graphdb}" in
+    graphdb)
+      echo "graphdb heap:  $(docker compose exec -T "${STORE_SERVICE:-graphdb}" sh -c 'echo ${GDB_HEAP_SIZE:-default}')"
+      echo "graphdb licence: Free (maxCpuCores=1), see bootstrap log" ;;
+    *)
+      echo "store:         ${STORE_KIND} (${STORE_DESCRIPTION:-see the spike compose file})" ;;
+  esac
   echo "args:          ${args[*]:-(defaults)}"
 } > "$dir/machine.txt"
 cat "$dir/machine.txt"
-docker compose exec -T --user "$(id -u):$(id -g)" gate node dist/cli/loadtest.js --out "loadtest/$id" ${args[@]+"${args[@]}"}
+docker compose exec -T --user "$(id -u):$(id -g)" gate node dist/cli/loadtest.js --out "$sub/$id" ${args[@]+"${args[@]}"}

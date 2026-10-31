@@ -13,7 +13,7 @@ async function main() {
   const h: any = await r.json();
   for (const c of h.checks) console.log(`${c.pass ? "PASS" : "FAIL"}  ${c.name}  (${c.ms} ms)`);
   if (process.argv.includes("--json")) console.log(JSON.stringify(h, null, 2));
-  console.log(`HEALTH: ${h.status.toUpperCase()}  run=${h.run}  repository=${h.repository}`);
+  console.log(`HEALTH: ${h.status.toUpperCase()}  run=${h.run}  repository=${h.repository}${h.store && h.store !== "graphdb" ? `  store=${h.store}` : ""}`);
   process.exit(h.status === "pass" ? 0 : 1);
 }
 main();

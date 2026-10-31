@@ -15,16 +15,20 @@
 // An unsupported component is a result, not a failure (input to S0.6).
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { GraphDB, shaclRepositoryConfig, param } from "../graphdb";
-import { write, WriteOutcome } from "../gate";
+import { write, WriteOutcome, runtimeStore } from "../gate";
+import { isNotApplicable } from "../store";
 import { config, graphs, paths } from "../config";
 import { readFixture, orderWrite, fill } from "../fixtures";
 
 const SCRATCH = "cafe-capability-scratch";
 const SH = "http://www.w3.org/ns/shacl#";
 const G = graphs.capability;
-const base = new GraphDB();
+// OP-134 spike (B1): through the store interface. The scratch repository is
+// created by the adapter (GraphDB: JSON default config; RDF4J: native-shacl
+// template; Fuseki and Oxigraph: a pre-provisioned dataset, cleared).
+const base = runtimeStore();
 const db = base.withRepo(SCRATCH);
+const OUT = path.join(paths.results, config.capabilityOutDir);
 
 const PFX = `@prefix sh: <${SH}> . @prefix ex: <urn:ontara:stack:cap#> . @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n`;
 
@@ -35,8 +39,8 @@ function brief(o: WriteOutcome) {
 }
 
 async function loadShapes(ttl: string) {
-  const r = await db.replaceGraph(graphs.shapes, ttl, "text/turtle");
-  return { status: r.status, body: r.status === 204 ? "" : r.body.slice(0, 600) };
+  const r = await db.replaceGraph(db.shapesGraph, ttl, "text/turtle");
+  return { status: r.status, ok: r.ok, body: r.ok ? "" : r.body.slice(0, 600) };
 }
 
 async function clearData() {
@@ -97,6 +101,34 @@ const componentTests: ComponentTest[] = [
     good: `ex:st2 a ex:StarT .`,
     note: "documented as unsupported (S515 notes 6); recorded for completeness",
   },
+  {
+    predicate: "sh:oneOrMorePath",
+    shape: `ex:PlusShape a sh:NodeShape ; sh:targetClass ex:PlusT ; sh:property [ sh:path [ sh:oneOrMorePath ex:p ] ; sh:maxCount 1 ] .`,
+    bad: `ex:pl1 a ex:PlusT ; ex:p ex:pl1b . ex:pl1b ex:p ex:pl1c .`,
+    good: `ex:pl2 a ex:PlusT ; ex:p ex:pl2b .`,
+    note: "OP-134 spike: absent from GraphDB's declared list",
+  },
+  {
+    predicate: "sh:zeroOrOnePath",
+    shape: `ex:OptShape a sh:NodeShape ; sh:targetClass ex:OptT ; sh:property [ sh:path [ sh:zeroOrOnePath ex:p ] ; sh:maxCount 1 ] .`,
+    bad: `ex:op1 a ex:OptT ; ex:p ex:op1b .`,
+    good: `ex:op2 a ex:OptT .`,
+    note: "OP-134 spike: absent from GraphDB's declared list. The path reaches the node itself plus ex:p, so one ex:p value makes two values",
+  },
+  {
+    predicate: "sh:inversePath",
+    shape: `ex:InvShape a sh:NodeShape ; sh:targetClass ex:InvT ; sh:property [ sh:path [ sh:inversePath ex:p ] ; sh:maxCount 1 ] .`,
+    bad: `ex:in1 a ex:InvT . ex:in1a ex:p ex:in1 . ex:in1b ex:p ex:in1 .`,
+    good: `ex:in2 a ex:InvT . ex:in2a ex:p ex:in2 .`,
+    note: "OP-134 spike: in GraphDB's declared list; tested beside the other paths",
+  },
+  {
+    predicate: "sh:ask",
+    shape: `ex:PositiveComponent a sh:ConstraintComponent ; sh:parameter [ sh:path ex:positive ] ; sh:propertyValidator [ a sh:SPARQLAskValidator ; sh:message "must be positive" ; sh:ask "ASK { FILTER ($value > 0) }" ] . ex:AskShape a sh:NodeShape ; sh:targetClass ex:AskT ; sh:property [ sh:path ex:v ; ex:positive true ] .`,
+    bad: `ex:ak1 a ex:AskT ; ex:v -1 .`,
+    good: `ex:ak2 a ex:AskT ; ex:v 5 .`,
+    note: "OP-134 spike: SHACL-SPARQL custom constraint component with an ASK validator; absent from GraphDB's declared list",
+  },
 ];
 
 async function testComponent(t: ComponentTest, declared: Set<string> | null) {
@@ -104,12 +136,12 @@ async function testComponent(t: ComponentTest, declared: Set<string> | null) {
   const iri = t.predicate.startsWith("sh:") && !t.predicate.includes(" ") ? SH + t.predicate.slice(3) : null;
   const load = await loadShapes(PFX + t.shape);
   let bad: any = null, good: any = null;
-  if (load.status === 204) {
+  if (load.ok) {
     bad = brief(await write({ graph: G, turtle: PFX + t.bad, label: `cap ${t.predicate} bad` }, db));
     good = brief(await write({ graph: G, turtle: PFX + t.good, label: `cap ${t.predicate} good` }, db));
   }
   let verdict: string;
-  if (load.status !== 204) verdict = "shape refused at load";
+  if (!load.ok) verdict = "shape refused at load";
   else if (bad.outcome === "rejected" && good.outcome === "committed") verdict = "supported (enforced)";
   else if (bad.outcome === "committed" && good.outcome === "committed") verdict = "NOT enforced (shape accepted, violation stored)";
   else verdict = `unexpected (bad=${bad.outcome}, good=${good.outcome})`;
@@ -125,7 +157,7 @@ async function testRuleRunner() {
   await clearData();
   const standin = readFixture("shapes/standin-shapes.ttl");
   const load = await loadShapes(standin);
-  if (load.status !== 204) return { error: `stand-in shapes did not load: ${JSON.stringify(load)}` };
+  if (!load.ok) return { error: `stand-in shapes did not load: ${JSON.stringify(load)}` };
 
   const order = (n: string) => `urn:ontara:standin:cafe#cap-order-${n}`;
   const out: any[] = [];
@@ -228,12 +260,84 @@ async function testNamedGraphScope() {
   await clearData();
   await loadShapes(readFixture("shapes/standin-shapes.ttl"));
   const bad = await write({ graph: "urn:ontara:stack:graph:capability-other", turtle: fill(readFixture("writes/known-bad.ttl"), { RUN: "ng" }) }, db);
-  const sparqlVisible = await db.select(`SELECT (COUNT(*) AS ?n) WHERE { GRAPH <${graphs.shapes}> { ?s ?p ?o } }`);
-  const stmts = await db.statements({ graph: graphs.shapes });
+  const sparqlVisible = await db.shapesGraphSparqlCount();
+  const stmts = await db.shapesTriples();
+  // A shape placed in an ordinary named graph (not the store's shapes graph):
+  // is it enforced? Tells whether the shapes graph is the only place shapes live.
+  await clearData();
+  const elsewhere = "urn:ontara:stack:graph:capability-shapes-elsewhere";
+  const placed = await db.replaceGraph(elsewhere, PFX + `ex:ElseShape a sh:NodeShape ; sh:targetClass ex:ElseT ; sh:property [ sh:path ex:a ; sh:minCount 1 ] .`, "text/turtle");
+  const elseBad = await write({ graph: G, turtle: PFX + `ex:else1 a ex:ElseT .`, label: "cap shape elsewhere" }, db);
+  await db.update(`CLEAR SILENT GRAPH <${elsewhere}>`);
   return {
     shapesApplyToDataInAnyNamedGraph: bad.outcome === "rejected",
-    shapesGraphTriplesVisibleToSparqlGraphQuery: Number(sparqlVisible[0]?.n?.value ?? 0),
-    shapesGraphTriplesViaStatementsApi: stmts.length,
+    shapesGraph: db.shapesGraph,
+    shapesGraphTriplesVisibleToSparqlGraphQuery: sparqlVisible,
+    shapesGraphTriplesViaStatementsApi: stmts,
+    shapesGraphReadRoute: db.kind === "graphdb" || db.kind === "rdf4j" ? "RDF4J statements API (getStatements, context=shapes graph)" : "SPARQL GRAPH query on an ordinary named graph",
+    shapeInOrdinaryNamedGraphEnforced: placed.ok ? elseBad.outcome === "rejected" : `shape not placed: HTTP ${placed.status}`,
+  };
+}
+
+// ---- 6. The S515 five-case in-transaction test (S515 step 1 notes §2.2), on
+// the stand-in record shape (the same mode-and-method shape, stand-in names).
+async function testS515FiveCase() {
+  await clearData();
+  const load = await loadShapes(readFixture("shapes/standin-shapes.ttl"));
+  const REC = `@prefix rec: <urn:ontara:standin:rec#> . @prefix c: <urn:ontara:stack:cap:s515#> .\n`;
+  const ask = (q: string) => db.ask(`PREFIX rec: <urn:ontara:standin:rec#> PREFIX c: <urn:ontara:stack:cap:s515#> ${q}`);
+  const cases: any[] = [];
+  const run = async (name: string, req: any, expect: "committed" | "rejected") => {
+    const o = await write({ graph: G, label: `cap s515 ${name}`, ...req }, db);
+    cases.push({ case: name, expect, write: brief(o), pass: o.outcome === expect });
+  };
+  await run("good: record with one mode, one method", { turtle: REC + `c:rec1 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:DirectMethod .` }, "committed");
+  await run("bad A: no method", { turtle: REC + `c:rec2 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode .` }, "rejected");
+  await run("bad B: two modes", { turtle: REC + `c:rec3 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode , rec:SimulatedMode ; rec:hasProvenanceMethod rec:DirectMethod .` }, "rejected");
+  await run("bad C: second method added to an existing good record", { turtle: REC + `c:rec1 rec:hasProvenanceMethod rec:InferredMethod .` }, "rejected");
+  await run("bad D: method outside the allowed list", { turtle: REC + `c:rec4 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:GuessedMethod .` }, "rejected");
+  await run("bad E: deleting the only method of an existing record", { updates: [`PREFIX rec: <urn:ontara:standin:rec#> DELETE DATA { GRAPH <${G}> { <urn:ontara:stack:cap:s515#rec1> rec:hasProvenanceMethod rec:DirectMethod } }`] }, "rejected");
+  await run("mixed F: good rec5 and bad rec6 in one request", { turtle: REC + `c:rec5 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:DirectMethod . c:rec6 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode .` }, "rejected");
+  const after = {
+    rec1IntactWithOriginalModeAndMethod: await ask(`ASK { c:rec1 rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:DirectMethod . FILTER NOT EXISTS { c:rec1 rec:hasProvenanceMethod rec:InferredMethod } }`),
+    anyOfRec2to6Stored: await ask(`ASK { VALUES ?r { c:rec2 c:rec3 c:rec4 c:rec5 c:rec6 } ?r ?p ?o }`),
+  };
+  return { shapesLoad: load.status, cases, after, pass: cases.every((c) => c.pass) && after.rec1IntactWithOriginalModeAndMethod && !after.anyOfRec2to6Stored };
+}
+
+// ---- 7. SHACL-SPARQL re-check when a write does not touch the target (S515 notes §2.4):
+// an existing Ready order has one line set back to InProgress, line triple only.
+async function testSparqlNonTargetChange() {
+  await clearData();
+  await loadShapes(readFixture("shapes/standin-shapes.ttl"));
+  const o = "urn:ontara:standin:cafe#cap-order-N";
+  const setup = await write(orderWrite(o, G), db); // order + rule + labelling: Ready
+  const flip = (bulk: boolean) => write({ graph: G, validation: bulk ? "bulk" : "normal", label: `cap line-only ${bulk ? "bulk" : "normal"}`,
+    updates: [`PREFIX cafe: <urn:ontara:standin:cafe#> DELETE DATA { GRAPH <${G}> { <${o}/line/4> cafe:status cafe:Ready } } ; INSERT DATA { GRAPH <${G}> { <${o}/line/4> cafe:status cafe:InProgress } }`] }, db);
+  const normal = await flip(false);
+  let bulk: WriteOutcome | null = null;
+  if (normal.outcome === "committed") {
+    // put the line back (unchecked direction), then try again under Bulk
+    await write({ graph: G, updates: [`PREFIX cafe: <urn:ontara:standin:cafe#> DELETE DATA { GRAPH <${G}> { <${o}/line/4> cafe:status cafe:InProgress } } ; INSERT DATA { GRAPH <${G}> { <${o}/line/4> cafe:status cafe:Ready } }`] }, db);
+    bulk = await flip(true);
+  }
+  return {
+    setup: brief(setup),
+    lineOnlyChangeNormal: brief(normal), caughtNormal: normal.outcome === "rejected",
+    lineOnlyChangeBulk: bulk ? brief(bulk) : "not run (normal already caught it)", caughtBulk: bulk ? bulk.outcome === "rejected" : null,
+  };
+}
+
+// ---- 8. sh:rule (SHACL Advanced Features): does the store execute a triple rule?
+// If it does, that is store-side derivation, which R4 forbids.
+async function testShRule() {
+  await clearData();
+  const load = await loadShapes(PFX + `ex:RuleShape a sh:NodeShape ; sh:targetClass ex:RuleT ; sh:rule [ a sh:TripleRule ; sh:subject sh:this ; sh:predicate ex:derived ; sh:object true ] .`);
+  const w = load.ok ? await write({ graph: G, turtle: PFX + `ex:ru1 a ex:RuleT .`, label: "cap sh:rule" }, db) : null;
+  const derived = load.ok ? await db.ask(`ASK { { <urn:ontara:stack:cap#ru1> <urn:ontara:stack:cap#derived> ?o } UNION { GRAPH ?g { <urn:ontara:stack:cap#ru1> <urn:ontara:stack:cap#derived> ?o } } }`) : null;
+  return {
+    predicate: "sh:rule", shapeLoad: load, write: w ? brief(w) : null,
+    verdict: !load.ok ? "shape refused at load" : derived ? "EXECUTED (the store derived a triple: store-side derivation)" : "not executed (rule ignored; no triple derived)",
   };
 }
 
@@ -280,12 +384,13 @@ async function testNoInference() {
 
 async function main() {
   const startedAt = new Date().toISOString();
-  const declaredPath = path.join(paths.results, "shacl-supported-predicates.json");
+  fs.mkdirSync(OUT, { recursive: true });
+  const declaredPath = path.join(OUT, "shacl-supported-predicates.json");
   let declaredJson: any = null;
   let declared: Set<string> | null = null;
   if (fs.existsSync(declaredPath)) {
     declaredJson = JSON.parse(fs.readFileSync(declaredPath, "utf8"));
-    declared = new Set(declaredJson.predicates);
+    declared = declaredJson.applicable === false ? null : new Set(declaredJson.predicates);
   } else {
     console.warn(`WARNING: ${declaredPath} missing; run bin/capabilities.sh, not this script directly`);
   }
@@ -293,12 +398,13 @@ async function main() {
   // scratch repository
   const repos = await base.listRepositories();
   if (repos.includes(SCRATCH)) await base.deleteRepository(SCRATCH);
-  const cr = await base.createRepository(await shaclRepositoryConfig(base, SCRATCH, "S0.1 capability checks (scratch, deleted after)"));
-  if (cr.status !== 201) throw new Error(`create ${SCRATCH}: HTTP ${cr.status} ${cr.body}`);
-  const cfg = await base.repositoryConfig(SCRATCH);
-  if (param(cfg, "isShacl") !== "true") throw new Error(`${SCRATCH} isShacl=${param(cfg, "isShacl")}`);
+  const cr = await base.createRepository(SCRATCH, "S0.1 capability checks (scratch, deleted after)");
+  if (!cr.ok) throw new Error(`create ${SCRATCH}: HTTP ${cr.status} ${cr.body}`);
+  const cfg = await base.readBack(SCRATCH);
+  if (cfg.shacl !== "true") throw new Error(`${SCRATCH} isShacl=${cfg.shacl}`);
 
-  const result: any = { startedAt, graphdb: await base.version(), scratchRepository: SCRATCH, runtimeRepositoryTouched: false };
+  const result: any = { startedAt, store: { kind: base.kind, ...(await base.info()) }, scratchRepository: SCRATCH, scratchCreation: cr.note ?? null, scratchReadBack: cfg.line, runtimeRepositoryTouched: false };
+  if (declaredJson?.applicable === false) result.item1_declaredNotApplicable = declaredJson.reason;
   try {
     const asked = ["equals", "disjoint", "lessThan", "closed"].map((p) => SH + p);
     result.item1_declared = declared ? {
@@ -319,18 +425,24 @@ async function main() {
     result.item4_namedGraphs = await testNamedGraphScope();
     console.log(`[cap] named graphs: ${JSON.stringify(result.item4_namedGraphs)}`);
     result.item5_noInference = await testNoInference();
-    result.item5_noInference.runtimeRepositoryRuleset = param(await base.repositoryConfig(config.repository), "ruleset");
-    result.item5_noInference.scratchRepositoryRuleset = param(cfg, "ruleset");
+    result.item5_noInference.runtimeRepositoryRuleset = (await base.readBack()).inference;
+    result.item5_noInference.scratchRepositoryRuleset = cfg.inference;
+    result.item6_s515FiveCase = await testS515FiveCase();
+    console.log(`[cap] ${result.item6_s515FiveCase.pass ? "PASS" : "FAIL"} S515 five-case in-transaction test: ${result.item6_s515FiveCase.cases.map((c: any) => `${c.case.split(":")[0]}=${c.write.outcome}`).join(" ")}; after=${JSON.stringify(result.item6_s515FiveCase.after)}`);
+    result.item7_sparqlNonTargetChange = await testSparqlNonTargetChange();
+    console.log(`[cap] SHACL-SPARQL line-only change caught: normal=${result.item7_sparqlNonTargetChange.caughtNormal} bulk=${result.item7_sparqlNonTargetChange.caughtBulk}`);
+    result.item8_shRule = await testShRule();
+    console.log(`[cap] sh:rule: ${result.item8_shRule.verdict}`);
     console.log(`[cap] ${result.item5_noInference.pass ? "PASS" : "FAIL"} R4 no store-side inference: ruleset=${result.item5_noInference.scratchRepositoryRuleset} (runtime ${result.item5_noInference.runtimeRepositoryRuleset}), delta=${result.item5_noInference.defaultGraphDelta} for ${result.item5_noInference.triplesWritten} written, superclass types=${JSON.stringify(result.item5_noInference.superclassTypeTriplesFound)}`);
   } finally {
     const d = await base.deleteRepository(SCRATCH);
-    result.scratchDeleted = d.status === 200 || d.status === 204;
+    result.scratchDeleted = d.ok;
   }
   result.finishedAt = new Date().toISOString();
 
-  fs.writeFileSync(path.join(paths.results, "shacl-capabilities.json"), JSON.stringify(result, null, 2) + "\n");
-  fs.writeFileSync(path.join(paths.results, "shacl-capabilities.md"), markdown(result));
-  console.log(`[cap] written results/shacl-capabilities.json and results/shacl-capabilities.md`);
+  fs.writeFileSync(path.join(OUT, "shacl-capabilities.json"), JSON.stringify(result, null, 2) + "\n");
+  fs.writeFileSync(path.join(OUT, "shacl-capabilities.md"), markdown(result));
+  console.log(`[cap] written ${path.relative(config.stackDir, OUT)}/shacl-capabilities.json and shacl-capabilities.md`);
   // R4 is a binding requirement, not a component survey: a failure fails the script.
   if (!result.item5_noInference?.pass) { console.error(`[cap] R4 CHECK FAILED: the store added triples a declared writer did not write`); process.exitCode = 1; }
 }
@@ -338,10 +450,11 @@ async function main() {
 function markdown(r: any): string {
   const L: string[] = [];
   L.push(`# SHACL capability checks (S0.1)`, ``);
-  L.push(`Generated by \`stack/bin/capabilities.sh\` at ${r.finishedAt}. GraphDB ${r.graphdb.productVersion} (${r.graphdb.productType}), RDF4J ${r.graphdb.sesame}. Scratch repository \`${r.scratchRepository}\`, deleted after: ${r.scratchDeleted}. Full detail: \`shacl-capabilities.json\`.`, ``);
+  L.push(`Generated by \`stack/bin/capabilities.sh\` at ${r.finishedAt}. Store: ${r.store.product}; SHACL engine: ${r.store.shaclEngine}. Scratch repository \`${r.scratchRepository}\`${r.scratchCreation ? ` (${r.scratchCreation})` : ""}, deleted after: ${r.scratchDeleted}. Full detail: \`shacl-capabilities.json\`.`, ``);
   L.push(`## 1. Components`, ``, `| Component | In getSupportedShaclPredicates() | Tested behaviour |`, `|---|---|---|`);
   for (const t of r.item1_empirical) L.push(`| ${t.predicate} | ${t.declaredSupported === null ? "n/a" : t.declaredSupported ? "yes" : "**no**"} | ${t.verdict} |`);
   if (r.item1_declared) L.push(``, `Also absent from the declared list: ${r.item1_declared.alsoAbsent.join(", ")}.`);
+  if (r.item1_declaredNotApplicable) L.push(``, `Declared list: not applicable (${r.item1_declaredNotApplicable}).`);
   L.push(``, `## 2. Labelling step and inline VALUES binding`, ``, `| Test | Result |`, `|---|---|`);
   for (const t of r.item2_ruleRunner) L.push(`| ${t.test} | ${t.pass ? "pass" : "**FAIL**"} |`);
   const m = r.item3_messages;
@@ -361,6 +474,17 @@ function markdown(r: any): string {
     L.push(`3. Default-graph triple count grew by ${i.defaultGraphDelta} (${i.defaultGraphCountBefore} to ${i.defaultGraphCountAfter}); triples about the instance: ${i.triplesAboutInstance}.`);
     L.push(`4. \`rdf:type\` triples for a superclass found: ${i.superclassTypeTriplesFound.length ? i.superclassTypeTriplesFound.map((s: string) => `\`<${s}>\``).join(", ") : "none"}.`);
   }
+  if (n.shapesGraph) L.push(``, `Named graphs, further (OP-134 spike): shapes graph \`<${n.shapesGraph}>\`, read through ${n.shapesGraphReadRoute}; a shape placed in an ordinary named graph is enforced: ${n.shapeInOrdinaryNamedGraphEnforced}.`);
+  const f = r.item6_s515FiveCase;
+  if (f) {
+    L.push(``, `## 6. The S515 five-case in-transaction test`, ``, `Result: **${f.pass ? "pass" : "FAIL"}**.`, ``, `| Case | Expected | Outcome |`, `|---|---|---|`);
+    for (const c of f.cases) L.push(`| ${c.case} | ${c.expect} | ${c.write.outcome}${c.pass ? "" : " **(unexpected)**"} |`);
+    L.push(``, `After: rec1 intact with its original mode and method = ${f.after.rec1IntactWithOriginalModeAndMethod}; any of rec2 to rec6 stored = ${f.after.anyOfRec2to6Stored}.`);
+  }
+  const x = r.item7_sparqlNonTargetChange;
+  if (x) L.push(``, `## 7. SHACL-SPARQL re-check on a write that does not touch the target`, ``, `An existing Ready order has one line set back to InProgress (line triple only). Caught under normal validation: **${x.caughtNormal}**; under Bulk: **${x.caughtBulk === null ? "not run" : x.caughtBulk}**.`);
+  const ru = r.item8_shRule;
+  if (ru) L.push(``, `## 8. sh:rule (SHACL Advanced Features)`, ``, `${ru.verdict}.`);
   return L.join("\n") + "\n";
 }
 

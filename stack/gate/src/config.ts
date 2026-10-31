@@ -10,6 +10,16 @@ export const config = {
   port: Number(process.env.GATE_PORT_INTERNAL ?? 7220),
   stackDir: process.env.STACK_DIR ?? "/stack",
   healthTaskQueue: "stack-health",
+  // OP-134 spike (B1): which store adapter the gate uses. Unset = graphdb, so
+  // the S0.1 stack (compose.yaml) runs exactly as before.
+  storeKind: (process.env.STORE_KIND ?? "graphdb") as "graphdb" | "rdf4j" | "fuseki" | "oxigraph",
+  storeUrl: process.env.STORE_URL ?? process.env.GRAPHDB_URL ?? "http://graphdb:7200",
+  storeVersion: process.env.STORE_VERSION ?? "",
+  rdf4jDelegate: (process.env.RDF4J_DELEGATE ?? "native") as "native" | "lmdb",
+  oxigraphStagingUrl: process.env.OXIGRAPH_STAGING_URL ?? "http://oxigraph-staging:7878",
+  oxigraphScratchUrl: process.env.OXIGRAPH_SCRATCH_URL ?? "http://oxigraph-scratch:7878",
+  // Results subdirectory for the capability checks (the spike writes per configuration).
+  capabilityOutDir: process.env.CAP_OUT_DIR ?? "",
 };
 
 export const paths = {
