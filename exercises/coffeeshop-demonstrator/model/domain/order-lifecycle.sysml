@@ -1,5 +1,6 @@
 package OrderLifeCycle {
     private import ScalarValues::*;
+    private import ProjectionMetadata::*;
 
     doc /* State machine defining the lifecycle of a customer order,
          * from placement through to collection or cancellation.
@@ -7,11 +8,24 @@ package OrderLifeCycle {
 
     // -- Events that drive transitions -------------------------
 
+    // Each event that a transition accepts carries its action label, the
+    // text a surface shows for the action that raises it (S517, S0.2).
+    // OrderPlaced creates the order and so enters the initial state
+    // `placed`; no transition accepts it and no workflow step triggers it.
+
     attribute def OrderPlaced;
-    attribute def PreparationStarted;
-    attribute def PreparationComplete;
-    attribute def OrderCollected;
-    attribute def CancellationRequested;
+    attribute def PreparationStarted {
+        @UserFacing { friendlyName = "Barista: Start Preparation"; }
+    }
+    attribute def PreparationComplete {
+        @UserFacing { friendlyName = "Barista: Mark Ready"; }
+    }
+    attribute def OrderCollected {
+        @UserFacing { friendlyName = "Customer: Collect Drink"; }
+    }
+    attribute def CancellationRequested {
+        @UserFacing { friendlyName = "Cancel Order"; }
+    }
 
     // -- The state machine -------------------------------------
 

@@ -14,8 +14,8 @@ import {
   drinkCollectedSignal,
   orderStateQuery,
 } from '../workflows/fulfil-drink.js';
-
-const TASK_QUEUE = 'coffeeshop';
+// Task queue from the generated step table (S0.2), not a hand copy.
+import { TASK_QUEUE } from '@coffeeshop/shared/dist/workflow-constants.js';
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));

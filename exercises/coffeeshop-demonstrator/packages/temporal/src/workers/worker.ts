@@ -14,8 +14,9 @@ import { NativeConnection, Worker } from '@temporalio/worker';
 import * as activities from '../activities/barista.js';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+// Task queue from the generated step table (S0.2), not a hand copy.
+import { TASK_QUEUE } from '@coffeeshop/shared/dist/workflow-constants.js';
 
-const TASK_QUEUE = 'coffeeshop';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 

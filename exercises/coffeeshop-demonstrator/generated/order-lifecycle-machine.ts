@@ -1,12 +1,12 @@
-// ==============================================
-// Generated from SysML v2 model — DO NOT EDIT
-// Source: model/domain/order-lifecycle.sysml
-// Generator: gen_state_machines.py
-// ==============================================
+// ============================================================
+// DO NOT EDIT — Generated from CoffeeShop SysML v2 model
+// Source: exercises/coffeeshop-demonstrator/model/domain/order-lifecycle.sysml (OrderLifeCycle::OrderLifecycle); exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop::Order); exercises/coffeeshop-demonstrator/model/domain/fulfil-drink-orchestration.sysml (FulfilDrinkOrchestration)
+// Generator: generation/state_machine.py
+// ============================================================
 
 import { setup } from "xstate";
 
-// Event types derived from SysML attribute defs
+// Event types: the attribute defs beside OrderLifecycle
 export type OrderEvent =
   { type: "OrderPlaced" }
   | { type: "PreparationStarted" }

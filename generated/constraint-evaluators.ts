@@ -1,8 +1,7 @@
 // ============================================================
 // DO NOT EDIT — Generated from GenderSense SysML v2 model
 // Source: exercises/gendersense/model/gsl-knowledge.sysml (GslKnowledge::ConstraintLibrary)
-// Generated: 2026-10-30T15:50:34Z
-// Generator: scripts/gen_constraint_evaluator.py
+// Generator: generation/constraint_evaluator.py
 // ============================================================
 
 import type { EvaluationResult, EvaluationOutcome, Severity } from './evaluation-types';
@@ -204,7 +203,7 @@ export function evaluateClinicalReviewCompleted(
  * Evaluable rule: the proposed medication, route, and dose must fall
  * within the bounds of an approved prescribing protocol. At runtime, this
  * evaluates the proposed regimen against the protocol decision table in
- * Knowledge::DecisionModels. A regimen is within protocol if all three
+ * GslKnowledge::DecisionTables. A regimen is within protocol if all three
  * components match an approved combination.
  *
  * Satisfies: PrescribingProtocolAdherence

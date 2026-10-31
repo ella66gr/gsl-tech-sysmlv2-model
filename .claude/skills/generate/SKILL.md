@@ -27,6 +27,6 @@ If `$ARGUMENTS` is "all", also run:
 python3 scripts/gen_concept_graph.py
 python3 scripts/gen_system_manifest.py --save
 python3 scripts/gen_package_hierarchy.py --save
-python3 scripts/gen_constraint_evaluator.py --save
+make gen-gsl                                   # E6 constraint evaluators (generation/ package, S0.2)
 python3 scripts/gen_decision_table_evaluator.py --save
 ```

@@ -1,54 +1,46 @@
 #!/usr/bin/env python3
 """
-GenderSense Constraint Evaluator Generator
-============================================
+E6 constraint evaluator generator (platform-general)
+====================================================
 
-Reads constraint definitions from GslKnowledge::ConstraintLibrary and
-evaluation specifications from GslKnowledge::ClinicalDecisionSupport
-in the SysML v2 model, and generates:
+Reads a tenant model's constraint library package (``constraint def``
+blocks and the ``satisfy`` relationships to them) and its evaluation-spec
+package (``ConstraintEvaluationSpec`` and ``DecisionTableEvaluationSpec``
+part usages), and writes three files to the output folder:
 
-1. generated/evaluation-types.ts     — TypeScript type definitions
-2. generated/constraint-evaluators.ts — evaluation functions (one per constraint)
-3. generated/constraint-specs.ts     — spec registry (one entry per eval spec)
+1. evaluation-types.ts      type definitions for the platform pattern
+                            (SystemMetamodelGeneral::LogicEngine, ::EvaluationSpecs)
+2. constraint-evaluators.ts one evaluation function per constraint def
+3. constraint-specs.ts      the spec registry, one entry per spec usage
 
-Usage:
-    cd ~/Developer/gsl-tech/gsl-sysml-model
-    python3 scripts/gen_constraint_evaluator.py
+The two tenant package names are arguments; the generator names no tenant.
+The pattern types are platform content, read from the platform model folder.
 
-No dependencies — pure Python standard library.
+Usage (from the repository root):
+    python3 -m generation.constraint_evaluator \\
+        --model <tenant model folder> --out <output folder> \\
+        --constraint-package <package> --spec-package <package> \\
+        [--platform-model model] [--model-name <name>]
 
-Phase 5, Stage 2 of Knowledge Layer Elaboration.
+Generalised at S0.2 (Plan B Stage 0) from scripts/gen_constraint_evaluator.py.
+The parsers, the expression translator and the emitters are carried over
+unchanged, so the output below the header block is byte-identical; the
+header loses its generation timestamp and names this generator.
+No dependencies: Python standard library only.
 """
 
-import pathlib
 import re
 import sys
-import datetime
+from pathlib import Path
 
-# ---------------------------------------------------------------
-# Configuration
-# ---------------------------------------------------------------
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-REPO_ROOT = pathlib.Path(__file__).parent.parent
-MODEL_DIR = REPO_ROOT / "model"
-# S515 (OP-132 step 6): the GSL content (ConstraintLibrary, the evaluation
-# spec instances) lives in the GSL tenant model. The pattern types it
-# instantiates (InputDerivation, ConstraintEvaluationSpec,
-# DecisionTableEvaluationSpec) stay in PATTERN_FILE (SystemMetamodelGeneral since step 8).
-# to the SystemMetamodelGeneral file at step 8. Only the GSL file is parsed.
-GSL_MODEL_DIR = REPO_ROOT / "exercises" / "gendersense" / "model"
-KNOWLEDGE_FILE = GSL_MODEL_DIR / "gsl-knowledge.sysml"
-PATTERN_FILE = MODEL_DIR / "system-metamodel-general.sysml"  # SystemMetamodelGeneral::EvaluationSpecs
-GENERATED_DIR = REPO_ROOT / "generated"
+from generation.output import base_parser, header as make_header, write
+from generation.sysml_text import ModelError, enclosing_packages, load_model, mask_comments
 
-HEADER_TEMPLATE = """\
-// ============================================================
-// DO NOT EDIT — Generated from GenderSense SysML v2 model
-// Source: {source}
-// Generated: {timestamp}
-// Generator: scripts/gen_constraint_evaluator.py
-// ============================================================
-"""
+# Platform pattern packages the evaluation types reflect (SystemMetamodelGeneral).
+PATTERN_PACKAGES = ("LogicEngine", "EvaluationSpecs")
 
 # SysML → TypeScript type mapping
 TYPE_MAP = {
@@ -347,12 +339,8 @@ def translate_expression(expression, inputs):
 # TypeScript emitters
 # ---------------------------------------------------------------
 
-def emit_types(timestamp):
+def emit_types(header):
     """Generate evaluation-types.ts — shared type definitions."""
-    header = HEADER_TEMPLATE.format(
-        source="model/system-metamodel-general.sysml (SystemMetamodelGeneral::LogicEngine, ::EvaluationSpecs)",
-        timestamp=timestamp,
-    )
 
     return f"""{header}
 // ---------------------------------------------------------------
@@ -437,12 +425,8 @@ export interface ConstraintEvaluationSpec {{
 """
 
 
-def emit_evaluators(constraints, timestamp):
+def emit_evaluators(constraints, header):
     """Generate constraint-evaluators.ts — one evaluation function per constraint."""
-    header = HEADER_TEMPLATE.format(
-        source="exercises/gendersense/model/gsl-knowledge.sysml (GslKnowledge::ConstraintLibrary)",
-        timestamp=timestamp,
-    )
 
     lines = [header]
     lines.append("import type { EvaluationResult, EvaluationOutcome, Severity } from './evaluation-types';")
@@ -558,12 +542,8 @@ def emit_evaluators(constraints, timestamp):
     return "\n".join(lines)
 
 
-def emit_specs(constraint_specs, decision_table_specs, timestamp):
+def emit_specs(constraint_specs, decision_table_specs, header):
     """Generate constraint-specs.ts — evaluation spec registry."""
-    header = HEADER_TEMPLATE.format(
-        source="exercises/gendersense/model/gsl-knowledge.sysml (GslKnowledge::ClinicalDecisionSupport)",
-        timestamp=timestamp,
-    )
 
     lines = [header]
     lines.append("import type { ConstraintEvaluationSpec, Severity } from './evaluation-types';")
@@ -615,28 +595,49 @@ def emit_specs(constraint_specs, decision_table_specs, timestamp):
 
 
 # ---------------------------------------------------------------
-# Main
+# Model location (generalised at S0.2)
 # ---------------------------------------------------------------
 
-def main():
-    if not KNOWLEDGE_FILE.exists():
-        print(f"ERROR: {KNOWLEDGE_FILE} not found.", file=sys.stderr)
-        print(f"Run from the repository root: cd ~/Developer/gsl-tech/gsl-sysml-model", file=sys.stderr)
-        sys.exit(1)
+def locate_package(files, package_name):
+    """Return (model_file, qualified_name) for the one file declaring the package."""
+    hits = []
+    for f in files:
+        masked = mask_comments(f.text)
+        m = re.search(rf'\bpackage\s+{re.escape(package_name)}\s*\{{', masked)
+        if m:
+            qualified = "::".join(enclosing_packages(masked, m.start()) + [package_name])
+            hits.append((f, qualified))
+    if not hits:
+        raise ModelError(f"package {package_name!r} not found in the model folder")
+    if len(hits) > 1:
+        raise ModelError(f"package {package_name!r} is declared in more than one file: "
+                         + ", ".join(h[0].rel for h in hits))
+    return hits[0]
 
-    # Read the model file
-    text = KNOWLEDGE_FILE.read_text(encoding="utf-8")
 
-    # Extract package blocks
-    constraint_lib_text = find_package_block(text, "ConstraintLibrary")
-    cds_text = find_package_block(text, "ClinicalDecisionSupport")
+def pattern_source(platform_files):
+    """Header source for evaluation-types.ts: the platform pattern packages."""
+    located = [locate_package(platform_files, name) for name in PATTERN_PACKAGES]
+    paths = {f.rel for f, _ in located}
+    if len(paths) != 1:
+        raise ModelError("pattern packages are expected in one platform file: " + ", ".join(sorted(paths)))
+    first_q = located[0][1]
+    parent = first_q.rsplit("::", 1)[0]
+    parts = [first_q]
+    for _, q in located[1:]:
+        parts.append("::" + q.rsplit("::", 1)[1] if q.rsplit("::", 1)[0] == parent else q)
+    return f"{located[0][0].rel} ({', '.join(parts)})"
 
-    if not constraint_lib_text:
-        print("ERROR: Could not find ConstraintLibrary package.", file=sys.stderr)
-        sys.exit(1)
-    if not cds_text:
-        print("ERROR: Could not find ClinicalDecisionSupport package.", file=sys.stderr)
-        sys.exit(1)
+
+def generate(model_dir, out_dir, root, constraint_package, spec_package, platform_dir, model_name, verbose=True):
+    files = load_model(model_dir, root)
+    platform_files = load_model(platform_dir, root)
+
+    lib_file, lib_q = locate_package(files, constraint_package)
+    spec_file, spec_q = locate_package(files, spec_package)
+
+    constraint_lib_text = find_package_block(lib_file.text, constraint_package)
+    cds_text = find_package_block(spec_file.text, spec_package)
 
     # Parse
     constraints = parse_constraint_defs(constraint_lib_text)
@@ -651,44 +652,47 @@ def main():
             c["severity"] = spec["severity"]
             c["specUsageName"] = spec["usageName"]
 
-    # Report
-    print(f"Parsed {len(constraints)} constraint defs from ConstraintLibrary:")
-    for c in constraints:
-        inputs_str = ", ".join(f"{i['name']}: {i['type']}" for i in c["inputs"])
-        print(f"  {c['name']}({inputs_str}) → satisfies {c.get('satisfies', '?')}")
-        ts_expr, ok = translate_expression(c.get("expression", ""), c["inputs"])
-        status = "✓" if ok else "⚠ needs manual implementation"
-        print(f"    expression: {c.get('expression', '(none)')} → {status}")
+    if verbose:
+        print(f"Parsed {len(constraints)} constraint defs from {lib_q}:")
+        for c in constraints:
+            inputs_str = ", ".join(f"{i['name']}: {i['type']}" for i in c["inputs"])
+            _, ok = translate_expression(c.get("expression", ""), c["inputs"])
+            status = "translated" if ok else "needs manual implementation"
+            print(f"  {c['name']}({inputs_str}) -> satisfies {c.get('satisfies', '?')} [{status}]")
+        print(f"Parsed {len(constraint_specs)} constraint evaluation specs and "
+              f"{len(dt_specs)} decision table evaluation specs from {spec_q}")
 
-    print(f"\nParsed {len(constraint_specs)} constraint evaluation specs from CDS:")
-    for s in constraint_specs:
-        print(f"  {s['usageName']}: {s['constraintName']} (severity: {s['severity']})")
+    types_header = make_header(__file__, [pattern_source(platform_files)], model_name)
+    evaluators_header = make_header(__file__, [f"{lib_file.rel} ({lib_q})"], model_name)
+    specs_header = make_header(__file__, [f"{spec_file.rel} ({spec_q})"], model_name)
 
-    print(f"\nParsed {len(dt_specs)} decision table evaluation specs from CDS:")
-    for s in dt_specs:
-        print(f"  {s['usageName']}: {s['tableName']}")
+    written = [
+        write(out_dir, "evaluation-types.ts", emit_types(types_header)),
+        write(out_dir, "constraint-evaluators.ts", emit_evaluators(constraints, evaluators_header)),
+        write(out_dir, "constraint-specs.ts", emit_specs(constraint_specs, dt_specs, specs_header)),
+    ]
+    if verbose:
+        for p in written:
+            print(f"  wrote {p}")
+    return written
 
-    # Generate
-    timestamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    GENERATED_DIR.mkdir(parents=True, exist_ok=True)
 
-    types_content = emit_types(timestamp)
-    evaluators_content = emit_evaluators(constraints, timestamp)
-    specs_content = emit_specs(constraint_specs, dt_specs, timestamp)
-
-    types_path = GENERATED_DIR / "evaluation-types.ts"
-    evaluators_path = GENERATED_DIR / "constraint-evaluators.ts"
-    specs_path = GENERATED_DIR / "constraint-specs.ts"
-
-    types_path.write_text(types_content, encoding="utf-8")
-    evaluators_path.write_text(evaluators_content, encoding="utf-8")
-    specs_path.write_text(specs_content, encoding="utf-8")
-
-    print(f"\nGenerated:")
-    print(f"  {types_path.relative_to(REPO_ROOT)}")
-    print(f"  {evaluators_path.relative_to(REPO_ROOT)}")
-    print(f"  {specs_path.relative_to(REPO_ROOT)}")
+def main(argv=None):
+    p = base_parser("Generate E6 constraint evaluators from a tenant model.")
+    p.add_argument("--constraint-package", required=True, help="package holding the constraint defs")
+    p.add_argument("--spec-package", required=True, help="package holding the evaluation spec usages")
+    p.add_argument("--platform-model", type=Path, default=Path("model"),
+                   help="platform model folder holding the pattern packages (default: model)")
+    p.add_argument("--quiet", action="store_true")
+    a = p.parse_args(argv)
+    try:
+        generate(a.model, a.out, a.root, a.constraint_package, a.spec_package,
+                 a.platform_model, a.model_name, verbose=not a.quiet)
+    except ModelError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

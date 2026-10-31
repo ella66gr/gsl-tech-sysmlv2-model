@@ -40,7 +40,6 @@ package FulfilDrinkOrchestration {
         action validateOrder {
             doc /* Validate order details before processing. */
             @TemporalActivity { activityName = "validateOrder"; }
-            @StateTransitionTrigger { eventName = "OrderPlaced"; }
         }
         then waitBaristaStart;
 

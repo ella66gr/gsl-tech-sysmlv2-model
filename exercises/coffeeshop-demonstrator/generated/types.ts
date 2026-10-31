@@ -1,9 +1,8 @@
-// ==============================================
-// Generated from SysML v2 model — DO NOT EDIT
-// Source: model/domain/coffeeshop.sysml
-// Generator: gen_typescript_types.py
-// Hand-fixed: enum doc block parsing, externalRefs
-// ==============================================
+// ============================================================
+// DO NOT EDIT — Generated from CoffeeShop SysML v2 model
+// Source: exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop)
+// Generator: generation/ts_types.py
+// ============================================================
 
 export enum DrinkSize {
   small = "small",

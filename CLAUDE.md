@@ -98,7 +98,8 @@ CLAUDE.md                  # this file
 - **PROV-O core subset:** `ontology/imports/prov-core.ttl`
 - **Robot JAR:** `tools/robot.jar`
 - **XML catalog:** `ontology/catalog-v001.xml`
-- **Other generators:** `scripts/gen_concept_graph.py`, `scripts/gen_package_hierarchy.py`, `scripts/gen_system_manifest.py`, `scripts/gen_constraint_evaluator.py`, `scripts/gen_decision_table_evaluator.py`, `scripts/projection_engine.py`, `scripts/diff_kg.py`, `scripts/validate_kg.py`
+- **Other generators:** `scripts/gen_concept_graph.py`, `scripts/gen_package_hierarchy.py`, `scripts/gen_system_manifest.py`, `scripts/gen_decision_table_evaluator.py`, `scripts/projection_engine.py`, `scripts/diff_kg.py`, `scripts/validate_kg.py`
+- **Platform generation package:** `generation/` (tenant-free generators for the Cafe's types, XState machine and lifecycle guard, Temporal workflow, Mermaid pathway, and the E6 constraint evaluators; tests on fixture models in `generation/tests/`; A3 exception list in `generation/A3-EXCEPTIONS.md`). Generated files are never edited by hand.
 - **Mapping rules:** `ontology/config/mapping-rules.yaml`
 - **CCO IRI lookup:** `ontology/config/cco-iri-lookup.json`
 - **SysML syntax reference:** `documentation/reference/gsl-sysml-v2-syntax-reference.md` (stable filename — versioned snapshots in `documentation/reference/syntax-versions/`)
@@ -263,7 +264,9 @@ python3 scripts/gen_model_introspection.py --save --pretty   # Generate console 
 python3 scripts/gen_concept_graph.py                          # Generate concept graph
 python3 scripts/gen_package_hierarchy.py                      # View package hierarchy
 python3 scripts/gen_system_manifest.py                        # Generate manifest
-python3 scripts/gen_constraint_evaluator.py                   # Generate constraint evaluators
+make gen                                                      # Regenerate all generation/ output in place (Cafe + GenderSense E6)
+make gen-check                                                # Regenerate into scratch; fail on any difference from committed output
+make gen-test                                                 # generation/ tests on fixtures + Cafe lifecycle guard refusal check (Node 23.6+)
 python3 scripts/gen_decision_table_evaluator.py               # Generate decision tables
 scripts/check_package_direction.sh                            # ADR-012 import rules R1-R8 (must PASS)
 ```
@@ -326,7 +329,7 @@ cd exercises/coffeeshop-demonstrator/
 docker compose -f docker-compose.ehrbase.yml up -d  # Start EHRbase + PostgreSQL
 pnpm dev:temporal                                     # Start Temporal worker
 pnpm dev:web                                          # Start web frontend
-pnpm generate                                         # Regenerate from SysML model
+pnpm generate                                         # Regenerate from SysML model (runs make gen-cafe)
 ```
 
 ## Critical Data Sync Rule

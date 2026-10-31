@@ -1,20 +1,24 @@
-// ==============================================
-// Generated from SysML v2 model — DO NOT EDIT
-// Source: model/domain/fulfil-drink-orchestration.sysml
-// Generator: gen_temporal_workflow.py
-// ==============================================
+// ============================================================
+// DO NOT EDIT — Generated from CoffeeShop SysML v2 model
+// Source: exercises/coffeeshop-demonstrator/model/domain/fulfil-drink-orchestration.sysml (FulfilDrinkOrchestration::FulfilDrinkWorkflow); exercises/coffeeshop-demonstrator/model/domain/order-lifecycle.sysml (OrderLifeCycle::OrderLifecycle); exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop::Order)
+// Generator: generation/temporal_workflow.py
+// ============================================================
 
 import {
-  proxyActivities,
-  defineSignal,
-  setHandler,
+  ApplicationFailure,
   condition,
+  defineQuery,
+  defineSignal,
   log,
+  proxyActivities,
+  setHandler,
+  workflowInfo,
 } from '@temporalio/workflow';
 
 import type * as activities from '../activities/barista.js';
+import { nextOrderLifecycleState, orderLifecycleInitialState, type OrderLifecycleState } from '@coffeeshop/shared/dist/generated/order-lifecycle-guard.js';
 
-// -- Activity proxy --
+// -- Activity proxy (platform defaults: the model sets no activity timeout) --
 
 const {
   validateOrder,
@@ -27,71 +31,92 @@ const {
   },
 });
 
-// -- Signal definitions --
+// -- Signals: one per @TemporalSignal step --
 
 export const baristaStartedSignal = defineSignal('baristaStarted');
 export const drinkReadySignal = defineSignal('drinkReady');
 export const drinkCollectedSignal = defineSignal('drinkCollected');
 
+// -- Query: the current OrderLifecycle state --
+
+export const orderStateQuery = defineQuery<string>('orderState');
+
 // -- Workflow function --
 
-export async function fulfilDrink(order: activities.OrderDetails): Promise<string> {
-  // Mutable state that signal handlers will update.
+export async function fulfilDrink(orderDetails: activities.OrderDetails): Promise<string> {
+  const ids = { workflowId: workflowInfo().workflowId };
+  let state: OrderLifecycleState = orderLifecycleInitialState;
+
+  // Raise a lifecycle event. The guard refuses an event OrderLifecycle has no transition for.
+  const raise = (event: string): void => {
+    const next = nextOrderLifecycleState(state, event);
+    if (next === null) {
+      throw ApplicationFailure.nonRetryable(
+        `OrderLifecycle refuses ${event} in state ${state}`,
+        'IllegalLifecycleTransition',
+      );
+    }
+    log.info('Lifecycle transition', { ...ids, event, from: state, to: next });
+    state = next;
+  };
+
+  setHandler(orderStateQuery, () => state);
+
+  // Set by the signal handlers.
   let baristaStarted = false;
   let drinkReady = false;
   let drinkCollected = false;
 
-  // Register signal handlers
   setHandler(baristaStartedSignal, () => {
-    log.info('Signal received: baristaStarted', { orderId: order.orderId });
+    log.info('Signal received: baristaStarted', ids);
     baristaStarted = true;
   });
-
   setHandler(drinkReadySignal, () => {
-    log.info('Signal received: drinkReady', { orderId: order.orderId });
+    log.info('Signal received: drinkReady', ids);
     drinkReady = true;
   });
-
   setHandler(drinkCollectedSignal, () => {
-    log.info('Signal received: drinkCollected', { orderId: order.orderId });
+    log.info('Signal received: drinkCollected', ids);
     drinkCollected = true;
   });
 
-  // -- Step 1: validateOrder --
-  log.info('Workflow started: fulfilDrink', { orderId: order.orderId });
-  const validationResult = await validateOrder(order);
-  log.info('Order validated', {
-    orderId: order.orderId,
-    result: validationResult.status,
-  });
+  log.info('Workflow started: fulfilDrink', ids);
 
-  // -- Step 2: waitBaristaStart --
-  log.info('Waiting for barista started', { orderId: order.orderId });
-  await condition(() => baristaStarted);
+  // -- Step 1: validateOrder (activity validateOrder) --
+  await validateOrder(orderDetails);
+  log.info('Activity completed: validateOrder', ids);
 
-  // -- Step 3: prepareDrink --
-  log.info('prepare drink', { orderId: order.orderId });
-  const prepareDrinkResult = await prepareDrink(order);
-  log.info('prepare drink recorded', {
-    orderId: order.orderId,
-    result: prepareDrinkResult.status,
-  });
+  // -- Step 2: waitBaristaStart (signal baristaStarted, timer 30 minutes) --
+  log.info('Waiting for signal: baristaStarted', ids);
+  if (!(await condition(() => baristaStarted, '30 minutes'))) {
+    log.warn('Timer expired: waitBaristaStart, 30 minutes without baristaStarted', ids);
+    await condition(() => baristaStarted);
+  }
+  raise('PreparationStarted');
 
-  // -- Step 4: waitDrinkReady --
-  log.info('Waiting for drink ready', { orderId: order.orderId });
-  await condition(() => drinkReady);
+  // -- Step 3: prepareDrink (activity prepareDrink) --
+  await prepareDrink(orderDetails);
+  log.info('Activity completed: prepareDrink', ids);
 
-  // -- Step 5: waitCollected --
-  log.info('Waiting for drink collected', { orderId: order.orderId });
-  await condition(() => drinkCollected);
+  // -- Step 4: waitDrinkReady (signal drinkReady, timer 15 minutes) --
+  log.info('Waiting for signal: drinkReady', ids);
+  if (!(await condition(() => drinkReady, '15 minutes'))) {
+    log.warn('Timer expired: waitDrinkReady, 15 minutes without drinkReady', ids);
+    await condition(() => drinkReady);
+  }
+  raise('PreparationComplete');
 
-  // -- Step 6: completeOrder --
-  log.info('complete order', { orderId: order.orderId });
-  const completionResult = await completeOrder(order);
-  log.info('Order completed', {
-    orderId: order.orderId,
-    result: completionResult.status,
-  });
+  // -- Step 5: waitCollected (signal drinkCollected, timer 60 minutes) --
+  log.info('Waiting for signal: drinkCollected', ids);
+  if (!(await condition(() => drinkCollected, '60 minutes'))) {
+    log.warn('Timer expired: waitCollected, 60 minutes without drinkCollected', ids);
+    await condition(() => drinkCollected);
+  }
+  raise('OrderCollected');
 
-  return `Order ${order.orderId} fulfilled successfully`;
+  // -- Step 6: completeOrder (activity completeOrder) --
+  await completeOrder(orderDetails);
+  log.info('Activity completed: completeOrder', ids);
+
+  return 'fulfilDrink completed';
 }
