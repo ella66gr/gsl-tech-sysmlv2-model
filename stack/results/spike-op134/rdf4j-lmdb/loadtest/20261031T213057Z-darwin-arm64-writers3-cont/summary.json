@@ -1,0 +1,266 @@
+{
+  "kind": "development run (Mac runs do not count as the S0.1 pass figure; specification 2.5 item 8.4)",
+  "run": "4d4ceeda",
+  "startedUtc": "2026-10-31T21:36:08.247Z",
+  "elapsedSeconds": 1269,
+  "config": {
+    "orders": 500,
+    "writers": 3,
+    "writerGraphs": [
+      "urn:ontara:stack:graph:loadtest",
+      "urn:ontara:stack:graph:loadtest-w2",
+      "urn:ontara:stack:graph:loadtest-w3"
+    ],
+    "store": "rdf4j",
+    "readers": "continuous",
+    "readerCadenceMs": null,
+    "validation": "normal",
+    "graph": "urn:ontara:stack:graph:loadtest",
+    "repository": "cafe-runtime",
+    "rule": "fixtures/rules/order-readiness.rq + fixtures/rules/labelling.rq",
+    "write": "fixtures/writes/order-53.ttl",
+    "shapes": "fixtures/shapes/standin-shapes.ttl",
+    "shapesGraph": "http://rdf4j.org/schema/rdf4j#SHACLShapeGraph"
+  },
+  "percentileMethod": "nearest rank, over committed writes; latency = HTTP round trip to the gate's /write as the caller sees it",
+  "writeLatencyMs": {
+    "n": 1500,
+    "p50": 1699.9,
+    "p95": 7098,
+    "max": 8018,
+    "mean": 2477.8
+  },
+  "gatePhaseMs": {
+    "commit": {
+      "n": 1500,
+      "p50": 1676,
+      "p95": 7054.1,
+      "max": 7966.2,
+      "mean": 2454.5
+    },
+    "updates": {
+      "n": 1500,
+      "p50": 11.4,
+      "p95": 25.1,
+      "max": 36.7,
+      "mean": 12.3
+    },
+    "add": {
+      "n": 1500,
+      "p50": 7.1,
+      "p95": 16.9,
+      "max": 25.5,
+      "mean": 7.8
+    },
+    "begin": {
+      "n": 1500,
+      "p50": 1.9,
+      "p95": 3.4,
+      "max": 13,
+      "mean": 2
+    }
+  },
+  "writeLatencyMsByWriter": {
+    "w1": {
+      "n": 500,
+      "p50": 1699.9,
+      "p95": 7098,
+      "max": 7993.7,
+      "mean": 2482.5
+    },
+    "w2": {
+      "n": 500,
+      "p50": 1673.9,
+      "p95": 7083.7,
+      "max": 8018,
+      "mean": 2468.1
+    },
+    "w3": {
+      "n": 500,
+      "p50": 1720.1,
+      "p95": 7095,
+      "max": 7970.7,
+      "mean": 2482.9
+    }
+  },
+  "throughputWritesPerSecond": 1.18,
+  "concurrency": {
+    "writers": 3,
+    "sumOfWriteLatencyOverWallTime": 2.93,
+    "shareOfWritingTimeWithTwoOrMoreInFlight": 0.983,
+    "maxWritesInFlight": 3,
+    "note": "client-side view: a write is in flight from request to reply. With one gate and a store that serialises, latency rises with writers and throughput stays flat."
+  },
+  "passThresholdMs": 500,
+  "p95WithinThreshold": false,
+  "failures": 0,
+  "failureSamples": [],
+  "readers": {
+    "counter-queue": {
+      "n": 8605,
+      "p50": 50.1,
+      "p95": 545.5,
+      "max": 840.1,
+      "mean": 147.5
+    },
+    "kds-stream": {
+      "n": 4587,
+      "p50": 6.1,
+      "p95": 1395.9,
+      "max": 1804.9,
+      "mean": 276.9
+    },
+    "operator-board": {
+      "n": 2089,
+      "p50": 4.5,
+      "p95": 4420.3,
+      "max": 60001.7,
+      "mean": 634.2
+    }
+  },
+  "readerErrors": 1,
+  "growthPer100Writes": [
+    {
+      "writes": "1-100",
+      "graphTriplesAtStart": 0,
+      "latency": {
+        "n": 100,
+        "p50": 67.3,
+        "p95": 88.8,
+        "max": 101.7,
+        "mean": 68.3
+      },
+      "commit": {
+        "n": 100,
+        "p50": 59,
+        "p95": 81,
+        "max": 94.5,
+        "mean": 60.6
+      }
+    },
+    {
+      "writes": "101-200",
+      "graphTriplesAtStart": 6435,
+      "latency": {
+        "n": 100,
+        "p50": 457.5,
+        "p95": 873.6,
+        "max": 943,
+        "mean": 474.8
+      },
+      "commit": {
+        "n": 100,
+        "p50": 441.7,
+        "p95": 857.7,
+        "max": 927.5,
+        "mean": 463.4
+      }
+    },
+    {
+      "writes": "201-300",
+      "graphTriplesAtStart": 12935,
+      "latency": {
+        "n": 100,
+        "p50": 1699.9,
+        "p95": 2495,
+        "max": 2577,
+        "mean": 1728.5
+      },
+      "commit": {
+        "n": 100,
+        "p50": 1676,
+        "p95": 2468.5,
+        "max": 2550.8,
+        "mean": 1706.8
+      }
+    },
+    {
+      "writes": "301-400",
+      "graphTriplesAtStart": 19435,
+      "latency": {
+        "n": 100,
+        "p50": 3661.4,
+        "p95": 4834.9,
+        "max": 5024.5,
+        "mean": 3713.3
+      },
+      "commit": {
+        "n": 100,
+        "p50": 3629.2,
+        "p95": 4800.3,
+        "max": 4986.1,
+        "mean": 3680.8
+      }
+    },
+    {
+      "writes": "401-500",
+      "graphTriplesAtStart": 25935,
+      "latency": {
+        "n": 100,
+        "p50": 6363.8,
+        "p95": 7885.2,
+        "max": 7993.7,
+        "mean": 6427.4
+      },
+      "commit": {
+        "n": 100,
+        "p50": 6320.9,
+        "p95": 7833.8,
+        "max": 7937.1,
+        "mean": 6383.8
+      }
+    }
+  ],
+  "repository": {
+    "explicitStatementsBefore": 23625,
+    "explicitStatementsAfter": -1,
+    "loadtestGraphBefore": 0,
+    "loadtestGraphAfter": -1
+  },
+  "storeErrors": [
+    {
+      "at": "correctness check",
+      "error": "SELECT failed: HTTP 503: Query rejected by global memory circuit breaker (state=CRITICAL, freeMb=95, rollingGcMs=2064)"
+    },
+    {
+      "at": "correctness check w1",
+      "error": "SELECT failed: HTTP 500: <!doctype html><html lang=\"en\"><head><title>HTTP Status 500 – Internal Server Error</title><style type=\"text/css\">body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} "
+    },
+    {
+      "at": "correctness check w2",
+      "error": "The operation was aborted due to timeout"
+    },
+    {
+      "at": "correctness check w3",
+      "error": "The operation was aborted due to timeout"
+    }
+  ],
+  "correctness": {
+    "orders": -1,
+    "ordersReady": -1,
+    "derivedRecordsLabelled": -1
+  },
+  "correctnessByWriter": {
+    "w1": {
+      "orders": -1,
+      "ordersReady": -1,
+      "derivedRecordsLabelled": -1
+    },
+    "w2": {
+      "orders": -1,
+      "ordersReady": -1,
+      "derivedRecordsLabelled": -1
+    },
+    "w3": {
+      "orders": -1,
+      "ordersReady": -1,
+      "derivedRecordsLabelled": -1
+    }
+  },
+  "containerView": {
+    "cpus": 10,
+    "cpuModel": "unknown",
+    "totalMemGiB": 7.75,
+    "note": "as seen inside the gate container (the Docker VM on a Mac); host figures are in machine.txt"
+  }
+}
