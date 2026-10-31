@@ -1,5 +1,5 @@
 {
-  "modelDigest": "43f020f727b090f5e03f2d6147271db6da47b72185c3120198e3723cb2b8b977",
+  "modelDigest": "bd663295312a7da1c4f034a6c4a166ea7d0fea9573f33c5e6b9a0aed843996d8",
   "generator": "reason_kg.py",
   "reasoner": "HermiT (via Robot)",
   "consistent": true,
@@ -74,7 +74,7 @@
     {
       "name": "Ontara Domain Identity Vocabulary (hand-authored, Session 144)",
       "file": "ontara-domain.ttl",
-      "sizeBytes": 44957,
+      "sizeBytes": 45171,
       "present": true
     },
     {

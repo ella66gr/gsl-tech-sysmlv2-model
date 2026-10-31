@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-07T20:13:02.713808",
+  "modelDigest": "bd663295312a7da1c4f034a6c4a166ea7d0fea9573f33c5e6b9a0aed843996d8",
   "generator": "reason_kg.py",
   "reasoner": "HermiT (via Robot)",
   "consistent": true,
@@ -26,7 +26,13 @@
     {
       "name": "PROV-O Core Subset (W3C, Session 150)",
       "file": "prov-core.ttl",
-      "sizeBytes": 6790,
+      "sizeBytes": 7465,
+      "present": true
+    },
+    {
+      "name": "Ontara Platform Record Module (hand-authored, Session 514)",
+      "file": "ontara-record.ttl",
+      "sizeBytes": 22548,
       "present": true
     },
     {
@@ -50,7 +56,7 @@
     {
       "name": "Ontara BMM Weighted Relationships (pipeline-generated)",
       "file": "ontara-bmm-weights.ttl",
-      "sizeBytes": 57678,
+      "sizeBytes": 59164,
       "present": true
     },
     {
@@ -68,7 +74,7 @@
     {
       "name": "Ontara Domain Identity Vocabulary (hand-authored, Session 144)",
       "file": "ontara-domain.ttl",
-      "sizeBytes": 32732,
+      "sizeBytes": 45171,
       "present": true
     },
     {
@@ -199,14 +205,14 @@
     }
   ],
   "stats": {
-    "ontologyFileCount": 13,
+    "ontologyFileCount": 14,
     "objectPropertyCount": 14,
-    "reifiedWeightCount": 96,
-    "domainClassCount": 109,
+    "reifiedWeightCount": 98,
+    "domainClassCount": 119,
     "axiomFilePresent": true,
     "namedIndividualCount": 15,
     "datatypePropertyCount": 11,
-    "sparqlQueryCount": 77
+    "sparqlQueryCount": 78
   },
   "violationTest": {
     "ran": false,
@@ -1053,7 +1059,7 @@
       {
         "iri": "ontara-rsn:hasHazardDescription",
         "label": "has hazard description",
-        "domain": "n88fc351687f44ddc87f889a766e79bcdb1",
+        "domain": "(ontara-rsn:SafetyConstraint or ontara-rsn:UnsafeControlAction)",
         "range": "string",
         "comment": "A natural-language description of the hazard associated with a\nSafetyConstraint or UnsafeControlAction. For SafetyConstraint: describes\nwhat harm results from violating the constraint. For UnsafeControlAction:\ndescribes the hazard the unsafe action caused or could cause."
       },

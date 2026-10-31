@@ -85,7 +85,10 @@ at Session 278; the previous four-value intensity scale
 muddled kind and intensity. partiallyRegulated removed; mixed-services
 cases are now expressed by a non-empty regulatedActivities list on a tenant
 whose principal shape is one of the other values. lightlyRegulated has been
-replaced by locallyLicensed for vocabulary precision."""@en ;
+replaced by locallyLicensed for vocabulary precision. The shape follows
+authorisation, not registration (S518): a statutory duty or a mandatory
+registration that the authority cannot refuse does not, by itself, move a
+business off generallyGoverned; it is recorded on regulatedActivities."""@en ;
     owl:equivalentClass [
         a owl:Class ;
         owl:oneOf (
@@ -260,7 +263,7 @@ ontara-domain:BmmVocabularyScope a owl:Class ;
 
 ontara-domain:generalOnly a owl:NamedIndividual, ontara-domain:BmmVocabularyScope ;
     rdfs:label "General Only"@en ;
-    rdfs:comment "Domain instantiates only General BMM vocabulary — no Tailored elements."@en .
+    rdfs:comment "Domain instantiates only General-level BMM elements."@en .
 
 ontara-domain:full a owl:NamedIndividual, ontara-domain:BmmVocabularyScope ;
     rdfs:label "Full"@en ;

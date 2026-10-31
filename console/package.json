@@ -7,7 +7,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "refresh-data": "cp ../generated/ontara/model-introspection.json static/data/"
+    "refresh-data": "cp ../generated/ontara/model-introspection.json ../generated/ontara/reasoning-summary.json static/data/"
   },
   "dependencies": {
     "3d-force-graph": "^1.79.1",

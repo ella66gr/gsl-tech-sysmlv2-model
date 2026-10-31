@@ -114,3 +114,5 @@ Run `make qa` and compare these with `qa/baseline.json`:
 - the validation summary's `OVERALL` line (66/66, with no failing query ids);
 - the `REASONING SUMMARY` block (14 files, consistency PASS);
 - `generated/ontara/diff-report.json` `summary` (292 unchanged, 0 otherwise).
+
+`generated/ontara/reasoning-summary.json` is stamped with `modelDigest`, a SHA-256 over the model files, not with a run time (S518). A re-run on an unchanged model therefore leaves the tree clean.
