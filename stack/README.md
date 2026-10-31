@@ -163,7 +163,7 @@ sed "s/{{RUN}}/curl-$(date +%s)/g" fixtures/writes/known-bad.ttl | \
 | `GET /health` | | 200 pass, 503 fail, JSON with each check |
 | `GET /live` | | 200 (liveness only; used by the container healthcheck) |
 
-A write opens an RDF4J transaction, adds the triples to the named graph, runs the updates in order, and commits. GraphDB answers both a SHACL rejection and a server fault with HTTP 500; the gate tells them apart by the reply's media type (`application/shacl-validation-report+n-quads`), falling back to the report body. After any failure once the transaction is open it rolls back explicitly (`DELETE` on the transaction), because a rejected commit can leave the repository lock held. `validation: "bulk"` sends RDF4J's Bulk setting under its full name, `transaction-setting__org.eclipse.rdf4j.sail.shacl.ShaclSail.TransactionSettings.ValidationApproach=Bulk`; the short form is silently ignored. The gate does not consult the Access Decision Evaluator; that arrives at S0.7.
+A write opens an RDF4J transaction, adds the triples to the named graph, runs the updates in order, and commits. GraphDB answers both a SHACL rejection and a server fault with HTTP 500; the gate tells them apart by the reply's media type (`application/shacl-validation-report+n-quads`), falling back to the report body. After any failure once the transaction is open it rolls back explicitly (`DELETE` on the transaction), because a rejected commit can leave the repository lock held. The rollback comes before the gate reads the report, so a report it cannot read still releases the lock and comes back as a `fault` (`bin/gate-check.sh` checks this). `validation: "bulk"` sends RDF4J's Bulk setting under its full name, `transaction-setting__org.eclipse.rdf4j.sail.shacl.ShaclSail.TransactionSettings.ValidationApproach=Bulk`; the short form is silently ignored. The gate does not consult the Access Decision Evaluator; that arrives at S0.7.
 
 ## 4. Repository decision: one repository
 
@@ -199,6 +199,7 @@ Graph IRIs used now, all provisional until S0.5:
 | `bin/capabilities.sh` | Step 7 |
 | `bin/loadtest.sh` | Step 8 |
 | `bin/write.sh` | One write through the gate |
+| `bin/gate-check.sh` | Checks the gate's write path against a stand-in store: a rejection the gate cannot read is rolled back and becomes a `fault`, and a write never fails without an outcome. Needs the gate image (step 4), not a running stack. Expected last line `GATE CHECK: PASS (3 of 3)` |
 | `gate/` | The gate, bootstrap, worker, health check, capability checks and load harness (TypeScript, Node 22). `package-lock.json` pins every dependency |
 | `graphdb/tools/SupportedShaclPredicates.java` | Calls `ShaclSail.getSupportedShaclPredicates()` with the GraphDB image's own jars |
 | `temporal/scripts/`, `temporal/dynamicconfig/` | Temporal schema setup and namespace scripts, from `temporalio/samples-server` (MIT) |

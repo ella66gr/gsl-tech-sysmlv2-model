@@ -126,7 +126,9 @@ async function main() {
   await Promise.all(readerLoops);
 
   // Correctness spot-check: every order Ready and its derived record labelled.
-  const check = await db.select(`${PFX} SELECT (COUNT(DISTINCT ?o) AS ?orders) (COUNT(DISTINCT ?ready) AS ?ready) (COUNT(DISTINCT ?lab) AS ?labelled) WHERE { GRAPH <${G}> { ?o a cafe:Order . OPTIONAL { ?o cafe:status cafe:Ready . BIND(?o AS ?ready) } OPTIONAL { ?rr rec:recordOf ?o ; rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm . FILTER(STRENDS(STR(?rr), "/ready-record")) BIND(?rr AS ?lab) } } }`, 120_000);
+  // No aggregate alias reuses an in-scope variable, which SPARQL 1.1 forbids
+  // (18.2.4.1): GraphDB accepts it, Jena rejects it (OP-134 spike, S518).
+  const check = await db.select(`${PFX} SELECT (COUNT(DISTINCT ?o) AS ?orders) (COUNT(DISTINCT ?readyOrder) AS ?ready) (COUNT(DISTINCT ?labRecord) AS ?labelled) WHERE { GRAPH <${G}> { ?o a cafe:Order . OPTIONAL { ?o cafe:status cafe:Ready . BIND(?o AS ?readyOrder) } OPTIONAL { ?rr rec:recordOf ?o ; rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm . FILTER(STRENDS(STR(?rr), "/ready-record")) BIND(?rr AS ?labRecord) } } }`, 120_000);
 
   // Per-100 buckets (growth).
   const rows = writeRows.slice(1).map((l) => l.split(","));

@@ -6,10 +6,14 @@
 // the body's media type tells them apart. After any failure once the
 // transaction is open, the gate rolls back explicitly (DELETE on the
 // transaction), because a rejected commit can leave the repository lock held
-// (S515 notes 2.7). The Access Decision Evaluator is consulted from S0.7, not here.
+// (S515 notes 2.7). The rollback comes first, before the report is read or
+// anything else that could throw, and write() never rejects: every failure
+// becomes an outcome (S519; the OP-134 spike saw a report that failed to parse
+// skip the rollback and leave the lock held). The Access Decision Evaluator is
+// consulted from S0.7, not here.
 import { GraphDB, HttpResult } from "./graphdb";
 import { config, graphs } from "./config";
-import { looksLikeShaclRejection, parseReport, ShaclResult } from "./report";
+import { looksLikeShaclRejection, parseReport, ShaclReport, ShaclResult } from "./report";
 
 export interface WriteRequest {
   graph?: string;            // named graph for `turtle`; default: the manual graph
@@ -70,11 +74,14 @@ export async function write(req: WriteRequest, db: GraphDB = defaultDb): Promise
 
   const finish = () => { t.total = now() - t0; return t; };
 
+  // Never throws. Runs at most once per write: the location is cleared first.
   const rollback = async (): Promise<number | null> => {
     if (!location) return null;
+    const txn = location;
+    location = null;
     const r0 = now();
     try {
-      const r = await db.txnRollback(location);
+      const r = await db.txnRollback(txn);
       return r.status;
     } catch {
       return null;
@@ -83,23 +90,28 @@ export async function write(req: WriteRequest, db: GraphDB = defaultDb): Promise
     }
   };
 
+  // Never throws: rolls back first, then reads the reply.
   const failed = async (r: HttpResult): Promise<WriteOutcome> => {
-    if (looksLikeShaclRejection(r.contentType, r.body)) {
-      const report = parseReport(r.body);
-      const rollbackStatus = await rollback();
-      const results = await Promise.all(
-        report.results.map(async (x) => ({ ...x, nodeShape: await nodeShapeOf(db, x.sourceShape) })),
-      );
-      const nodeShapes = [...new Set(results.map((x) => x.nodeShape).filter((s): s is string => !!s))];
-      return {
-        outcome: "rejected", stage, shapes: report.shapes, nodeShapes, results,
-        rolledBack: rollbackStatus === 204 || rollbackStatus === 200, rollbackStatus, timings: finish(),
-      };
-    }
     const rollbackStatus = await rollback();
+    const rolledBack = rollbackStatus === 204 || rollbackStatus === 200;
+    const fault = (detail: string): WriteOutcome => ({
+      outcome: "fault", stage, httpStatus: r.status, detail, rolledBack, rollbackStatus, timings: finish(),
+    });
+    const body = String(r.body ?? "");
+    if (!looksLikeShaclRejection(r.contentType, body)) return fault(body.slice(0, 2000));
+    let report: ShaclReport;
+    try {
+      report = parseReport(body);
+    } catch (e: any) {
+      return fault(`SHACL rejection report unreadable (${String(e?.message ?? e)}); body starts: ${body.slice(0, 2000)}`);
+    }
+    const results = await Promise.all(
+      report.results.map(async (x) => ({ ...x, nodeShape: await nodeShapeOf(db, x.sourceShape) })),
+    );
+    const nodeShapes = [...new Set(results.map((x) => x.nodeShape).filter((s): s is string => !!s))];
     return {
-      outcome: "fault", stage, httpStatus: r.status, detail: r.body.slice(0, 2000),
-      rolledBack: rollbackStatus === 204 || rollbackStatus === 200, rollbackStatus, timings: finish(),
+      outcome: "rejected", stage, shapes: report.shapes, nodeShapes, results,
+      rolledBack, rollbackStatus, timings: finish(),
     };
   };
 
@@ -114,14 +126,14 @@ export async function write(req: WriteRequest, db: GraphDB = defaultDb): Promise
       s = now();
       const r = await db.txnAdd(location, req.turtle, req.graph ?? graphs.manual);
       t.add = now() - s;
-      if (r.status >= 300) return failed(r);
+      if (r.status >= 300) return await failed(r);
     }
 
     stage = "update";
     s = now();
     for (const u of req.updates ?? []) {
       const r = await db.txnUpdate(location, u);
-      if (r.status >= 300) { t.updates = now() - s; return failed(r); }
+      if (r.status >= 300) { t.updates = now() - s; return await failed(r); }
     }
     t.updates = now() - s;
 
@@ -129,12 +141,12 @@ export async function write(req: WriteRequest, db: GraphDB = defaultDb): Promise
     s = now();
     const c = await db.txnCommit(location);
     t.commit = now() - s;
-    if (c.status >= 300) return failed(c);
+    if (c.status >= 300) return await failed(c);
     location = null; // committed: nothing to roll back
     return { outcome: "committed", timings: finish() };
   } catch (e: any) {
     const httpResult: HttpResult | undefined = e?.result;
-    if (httpResult) return failed(httpResult);
+    if (httpResult) return await failed(httpResult);
     const rollbackStatus = await rollback();
     return {
       outcome: "fault", stage, httpStatus: null, detail: String(e?.message ?? e),
