@@ -1,0 +1,21 @@
+{
+  "name": "ontara-cafe-gate",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Ontara Cafe constraint gate (Plan B Stage 0, S0.1): writes to GraphDB in a transaction, reports SHACL rejections and faults, health check, capability checks and load harness.",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node dist/build/bundle-workflows.js"
+  },
+  "dependencies": {
+    "@temporalio/client": "1.25.0",
+    "@temporalio/worker": "1.25.0",
+    "@temporalio/workflow": "1.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "typescript": "5.9.3"
+  }
+}

@@ -1,0 +1,31 @@
+# DIAGNOSTIC ONLY: the stand-in shapes with the SHACL-SPARQL constraint removed
+# (core shape 1 only). Used at S517 to attribute load-test growth to the
+# SPARQL constraint. Never loaded by the bootstrap.
+# Stand-in shapes for S0.1 (rebuilt from Hugo's S515 notes, sections 1.3 and 2.4).
+# NOT canon. Saskia's real shapes replace these at S0.6. The vocabulary is a
+# stand-in namespace (urn:ontara:standin:...), deliberately not ontara-rec:.
+# Loaded into rdf4j:SHACLShapeGraph by the bootstrap service.
+
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix rec:  <urn:ontara:standin:rec#> .
+@prefix cafe: <urn:ontara:standin:cafe#> .
+@prefix sis:  <urn:ontara:standin:shapes#> .
+
+# 1. Core shape: every record has exactly one reality mode and exactly one
+#    provenance method, each from a closed list (after igf:EvidenceModeMethodShape).
+#    Property shapes are named, so a rejection names a findable shape.
+sis:RecordModeMethodShape a sh:NodeShape ;
+  sh:targetClass rec:PlatformRecord ;
+  sh:property sis:RecordModeMethodShape-mode , sis:RecordModeMethodShape-method .
+
+sis:RecordModeMethodShape-mode a sh:PropertyShape ;
+  sh:path rec:hasRealityMode ;
+  sh:minCount 1 ; sh:maxCount 1 ;
+  sh:in ( rec:RealMode rec:SimulatedMode ) ;
+  sh:message "A record has exactly one reality mode: RealMode or SimulatedMode."@en .
+
+sis:RecordModeMethodShape-method a sh:PropertyShape ;
+  sh:path rec:hasProvenanceMethod ;
+  sh:minCount 1 ; sh:maxCount 1 ;
+  sh:in ( rec:DirectMethod rec:InferredMethod rec:PredictedMethod ) ;
+  sh:message "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod."@en .

@@ -1,0 +1,21 @@
+{
+  "_comment": "The health check's knowledge-graph probes (specification 2.5 item 6.1). Each ASK must return true. If the BMM gains or loses a class, update the count here deliberately.",
+  "probes": [
+    {
+      "name": "BMM metamodel has its 34 classes",
+      "ask": "PREFIX owl: <http://www.w3.org/2002/07/owl#> ASK { { SELECT (COUNT(DISTINCT ?c) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:ontara-bmm> { ?c a owl:Class . FILTER (STRSTARTS(STR(?c), \"https://ontara.dev/ontology/bmm/\")) } } } FILTER (?n = 34) }"
+    },
+    {
+      "name": "BMM class ServiceOffering sits under a BFO parent",
+      "ask": "PREFIX owl: <http://www.w3.org/2002/07/owl#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ASK { GRAPH <urn:ontara:stack:kg:ontara-bmm> { <https://ontara.dev/ontology/bmm/ServiceOffering> a owl:Class ; rdfs:subClassOf ?parent . FILTER (STRSTARTS(STR(?parent), \"http://purl.obolibrary.org/obo/\")) } }"
+    },
+    {
+      "name": "Platform record module defines PlatformRecord",
+      "ask": "PREFIX owl: <http://www.w3.org/2002/07/owl#> ASK { GRAPH <urn:ontara:stack:kg:ontara-record> { <https://ontara.dev/ontology/record/PlatformRecord> a owl:Class } }"
+    },
+    {
+      "name": "BFO 2020 entity is present",
+      "ask": "ASK { GRAPH <urn:ontara:stack:kg:bfo-core> { <http://purl.obolibrary.org/obo/BFO_0000001> ?p ?o } }"
+    }
+  ]
+}

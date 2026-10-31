@@ -1,0 +1,31 @@
+# Readiness rule (stand-in MRB mapping rule), rebuilt from Hugo's S515 notes 2.6.
+# "An order is Ready when all its lines are Ready." SPARQL Update, run in the
+# same transaction as the write that triggers it, and validated at commit.
+#
+# Two changes from the S515 proof, both from the S515 paper's joint
+# recommendation (sections 3.2 and 5.1):
+#   1. bound to the changed order by an inline VALUES clause (the S515 harness
+#      scanned every order);
+#   2. it does NOT set mode or method: the platform labelling step does
+#      (labelling.rq), and the record shape rejects the write if it does not.
+# The gate supplies the graph ({{G}}); the runner supplies {{O}} and {{EXEC}}.
+PREFIX rec:  <urn:ontara:standin:rec#>
+PREFIX cafe: <urn:ontara:standin:cafe#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+DELETE { GRAPH <{{G}}> { ?order cafe:status ?old } }
+INSERT { GRAPH <{{G}}> {
+  ?order cafe:status cafe:Ready .
+  ?exec a prov:Activity ; prov:used rec:OrderReadiness-v1 .
+  ?rr a rec:PlatformRecord ; rec:recordOf ?order ; rec:recordedAt ?now ;
+      prov:wasGeneratedBy ?exec ; prov:wasDerivedFrom ?lineRecord .
+} }
+WHERE {
+  VALUES (?order ?exec) { (<{{O}}> <{{EXEC}}>) }
+  ?order a cafe:Order ; cafe:status ?old .
+  FILTER (?old != cafe:Ready)
+  FILTER NOT EXISTS { ?order cafe:hasLine ?l . FILTER NOT EXISTS { ?l cafe:status cafe:Ready } }
+  ?order cafe:hasLine ?line .
+  ?lineRecord rec:recordOf ?line .
+  BIND (IRI(CONCAT(STR(?order), "/ready-record")) AS ?rr)
+  BIND (NOW() AS ?now)
+}

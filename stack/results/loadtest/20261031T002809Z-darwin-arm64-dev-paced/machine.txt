@@ -1,0 +1,12 @@
+run id:        20261031T002809Z-darwin-arm64-dev-paced
+recorded at:   2026-10-31T00:28:09Z
+host:          Darwin 25.6.0 arm64
+cpu:           Apple M1 Max
+cores:         10 logical (8 performance + 2 efficiency)
+memory:        32 GiB
+os:            macOS 26.6.2
+docker:        29.9.2 linux/arm64
+docker VM/engine sees: 10 CPUs, 8319504384 bytes memory
+graphdb heap:  2g
+graphdb licence: Free (maxCpuCores=1), see bootstrap log
+args:          --orders 500

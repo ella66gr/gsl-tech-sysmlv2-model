@@ -1,0 +1,66 @@
+{
+  "_comment": "Knowledge-graph content the bootstrap loads into the runtime repository, one named graph per file: the 12-file General-only stack as assembled by S0.1 pass 2 (session-517-s01-pass2-qa-baseline-return section 4). Paths are relative to /stack/kg-source inside the container, where compose.yaml mounts the repository's ontology/ (as ontology/) and generated/ontology/ (as generated-ontology/), read-only. Graph IRIs are provisional; S0.5 sets the named-graph scheme.",
+  "graphPrefix": "urn:ontara:stack:kg:",
+  "files": [
+    {
+      "path": "ontology/imports/bfo-core.owl",
+      "graph": "bfo-core",
+      "contentType": "application/rdf+xml"
+    },
+    {
+      "path": "ontology/imports/iao.owl",
+      "graph": "iao",
+      "contentType": "application/rdf+xml"
+    },
+    {
+      "path": "ontology/imports/CommonCoreOntologiesMerged.ttl",
+      "graph": "cco-merged",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "ontology/imports/prov-core.ttl",
+      "graph": "prov-core",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "ontology/record/ontara-record.ttl",
+      "graph": "ontara-record",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "generated-ontology/ontara-bmm.ttl",
+      "graph": "ontara-bmm",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "ontology/axioms/ontara-bmm-axioms.ttl",
+      "graph": "ontara-bmm-axioms",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "generated-ontology/ontara-bmm-properties.ttl",
+      "graph": "ontara-bmm-properties",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "generated-ontology/ontara-bmm-weights.ttl",
+      "graph": "ontara-bmm-weights",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "ontology/governance/ontara-governance.ttl",
+      "graph": "ontara-governance",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "ontology/domain/ontara-domain.ttl",
+      "graph": "ontara-domain",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "ontology/reasoning/ontara-reasoning.ttl",
+      "graph": "ontara-reasoning",
+      "contentType": "text/turtle"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+# Platform labelling step (stand-in), after the S515 paper section 3.2 items 3-5.
+# Runs after every rule, in the same transaction, the same for every rule.
+# For each record the rule run {{EXEC}} generated and left unlabelled:
+#   mode   = the inputs' shared mode (none written if they differ, so the
+#            record shape rejects the write and the transaction rolls back);
+#   method = the weakest input method (direct > inferred > predicted).
+PREFIX rec:  <urn:ontara:standin:rec#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+INSERT { GRAPH <{{G}}> { ?r rec:hasRealityMode ?mode ; rec:hasProvenanceMethod ?method } }
+WHERE {
+  {
+    SELECT ?r (COUNT(DISTINCT ?m) AS ?modes) (SAMPLE(?m) AS ?mode) (MAX(?rank) AS ?worst) WHERE {
+      VALUES ?exec { <{{EXEC}}> }
+      ?r prov:wasGeneratedBy ?exec ; prov:wasDerivedFrom ?in .
+      FILTER NOT EXISTS { ?r rec:hasRealityMode ?any }
+      ?in rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm .
+      BIND (IF(?pm = rec:DirectMethod, 1, IF(?pm = rec:InferredMethod, 2, 3)) AS ?rank)
+    } GROUP BY ?r
+  }
+  FILTER (?modes = 1)
+  BIND (IF(?worst = 1, rec:DirectMethod, IF(?worst = 2, rec:InferredMethod, rec:PredictedMethod)) AS ?method)
+}
