@@ -42,7 +42,7 @@ export function toNQuads(quads: Iterable<any>): string {
 export function termNT(t: any): string {
   const s = new ox.Store();
   s.add(ox.quad(ox.namedNode("urn:x:s"), ox.namedNode("urn:x:p"), ox.fromTerm(t)));
-  const line = s.dump({ format: "application/n-triples" }).trim();
+  const line = s.dump({ format: "application/n-triples", from_graph_name: ox.defaultGraph() }).trim();
   return line.slice("<urn:x:s> <urn:x:p> ".length, -2).trim();
 }
 
@@ -59,7 +59,7 @@ export function dataBlock(quads: any[]): string {
   }
   const parts: string[] = [];
   for (const [g, st] of byGraph) {
-    const body = st.dump({ format: "application/n-triples" }).trim();
+    const body = st.dump({ format: "application/n-triples", from_graph_name: ox.defaultGraph() }).trim();
     parts.push(g ? `GRAPH <${g}> {\n${body}\n}` : body);
   }
   return parts.join("\n");
