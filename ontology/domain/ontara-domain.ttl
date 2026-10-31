@@ -99,11 +99,11 @@ replaced by locallyLicensed for vocabulary precision."""@en ;
 
 ontara-domain:generallyGoverned a owl:NamedIndividual, ontara-domain:RegulatoryShape ;
     rdfs:label "Generally Governed"@en ;
-    rdfs:comment "Subject only to general business law (consumer, contract, H&S, employment, GDPR). No sector regulator, no licensing regime, no role-binding professional body."@en .
+    rdfs:comment "No sector regulator, no licence or permit that an authority can refuse or withdraw, and no role-binding professional body. General business law applies (consumer, contract, H&S, employment, GDPR). Statutory duties and registrations the business carries (for example food business registration and the HACCP duty) are recorded on regulatedActivities: the shape follows authorisation, not registration (S518)."@en .
 
 ontara-domain:locallyLicensed a owl:NamedIndividual, ontara-domain:RegulatoryShape ;
     rdfs:label "Locally Licensed"@en ;
-    rdfs:comment "No sector regulator, but provision requires a local-authority licence, environmental permit, or sector-specific statutory duty (animal welfare, COSHH, premises licence) beyond general law."@en .
+    rdfs:comment "No sector regulator, but provision needs a local-authority licence or permit that can be refused or withdrawn (a premises licence, an environmental permit, an animal activity licence) (S518)."@en .
 
 ontara-domain:professionalBodyRegulated a owl:NamedIndividual, ontara-domain:RegulatoryShape ;
     rdfs:label "Professional-Body Regulated"@en ;
@@ -115,7 +115,7 @@ ontara-domain:statutoryProfessionRegulated a owl:NamedIndividual, ontara-domain:
 
 ontara-domain:sectorRegulated a owl:NamedIndividual, ontara-domain:RegulatoryShape ;
     rdfs:label "Sector Regulated"@en ;
-    rdfs:comment "The business itself sits within a sector regulator's perimeter (CQC, FCA, Ofsted, SRA, Ofcom, EA). Authorisation/registration is required to lawfully provide the core service."@en .
+    rdfs:comment "The business itself sits within a sector regulator's perimeter (CQC, FCA, Ofsted, SRA, Ofcom, EA). An authorisation that the regulator can refuse or withdraw is required to lawfully provide the core service (S518)."@en .
 
 ontara-domain:generallyGoverned owl:differentFrom ontara-domain:locallyLicensed ,
     ontara-domain:professionalBodyRegulated , ontara-domain:statutoryProfessionRegulated ,
@@ -264,7 +264,7 @@ ontara-domain:generalOnly a owl:NamedIndividual, ontara-domain:BmmVocabularyScop
 
 ontara-domain:full a owl:NamedIndividual, ontara-domain:BmmVocabularyScope ;
     rdfs:label "Full"@en ;
-    rdfs:comment "Domain instantiates both General and Tailored BMM vocabulary."@en .
+    rdfs:comment "Domain instantiates both General and Domain BMM vocabulary (Tailored was retired at S517)."@en .
 
 ontara-domain:production a owl:NamedIndividual, ontara-domain:BmmVocabularyScope ;
     rdfs:label "Production"@en ;
@@ -361,8 +361,13 @@ ontara-domain:northernIreland owl:differentFrom ontara-domain:unitedKingdom .
 
 ontara-domain:RegulatedActivity a owl:Class ;
     rdfs:label "Regulated Activity"@en ;
-    rdfs:comment """Activities regulated by CQC under the Health and Social Care Act 2008.
-Source: HSCA 2008 (Regulated Activities) Regulations 2014, Schedule 1."""@en ;
+    rdfs:comment """Activities regulated or registered under any regime (S518). Each value
+names its regime and whether it needs an authorisation (one the authority
+can refuse or withdraw; it sets authorisationRequiredToTrade true) or a
+registration (a notification duty that cannot be refused; it leaves the
+attribute false). CQC values (authorisation), personalCare to nursingCare:
+source HSCA 2008 (Regulated Activities) Regulations 2014 (SI 2014/2936),
+Schedule 1; CQC can refuse the registration (HSCA 2008 s.12(2))."""@en ;
     owl:equivalentClass [
         a owl:Class ;
         owl:oneOf (
@@ -379,6 +384,7 @@ Source: HSCA 2008 (Regulated Activities) Regulations 2014, Schedule 1."""@en ;
             ontara-domain:terminationOfPregnancies
             ontara-domain:familyPlanning
             ontara-domain:nursingCare
+            ontara-domain:foodBusinessOperation
         )
     ] .
 
@@ -434,6 +440,20 @@ ontara-domain:nursingCare a owl:NamedIndividual, ontara-domain:RegulatedActivity
     rdfs:label "Nursing Care"@en ;
     rdfs:comment "Provision of nursing care by a registered nurse."@en .
 
+ontara-domain:foodBusinessOperation a owl:NamedIndividual, ontara-domain:RegulatedActivity ;
+    rdfs:label "Food Business Operation"@en ;
+    rdfs:comment """Food business operation in England (registration, S518). Regime:
+Regulation (EC) No 852/2004 on the hygiene of foodstuffs (assimilated law),
+enforced by the Food Safety and Hygiene (England) Regulations 2013
+(SI 2013/2996), reg 19 and Sch 2. The operator notifies the local authority
+with a view to registration under Article 6(2), and the authority cannot
+refuse it. GOV.UK/FSA guidance asks for registration at least 28 days before
+trading; the period is guidance, not statute. The operator must also put in
+place and maintain procedures based on HACCP principles, under Article 5(1).
+Approval under Article 6(3), which can be refused, is separate: it applies
+only to establishments under Regulation (EC) No 853/2004, and an
+approved-establishment case needs its own value."""@en .
+
 # RegulatedActivity pairwise differentFrom
 ontara-domain:personalCare owl:differentFrom ontara-domain:accommodationNursingPersonalCare ,
     ontara-domain:accommodationSubstanceMisuse , ontara-domain:treatment ,
@@ -485,6 +505,14 @@ ontara-domain:maternity owl:differentFrom ontara-domain:terminationOfPregnancies
 ontara-domain:terminationOfPregnancies owl:differentFrom ontara-domain:familyPlanning ,
     ontara-domain:nursingCare .
 ontara-domain:familyPlanning owl:differentFrom ontara-domain:nursingCare .
+ontara-domain:foodBusinessOperation owl:differentFrom ontara-domain:personalCare ,
+    ontara-domain:accommodationNursingPersonalCare ,
+    ontara-domain:accommodationSubstanceMisuse , ontara-domain:treatment ,
+    ontara-domain:assessmentMentalHealthAct , ontara-domain:surgicalProcedures ,
+    ontara-domain:diagnosticAndScreeningProcedures , ontara-domain:bloodManagement ,
+    ontara-domain:transportServices , ontara-domain:maternity ,
+    ontara-domain:terminationOfPregnancies , ontara-domain:familyPlanning ,
+    ontara-domain:nursingCare .
 
 
 # --- OrganisationalForm -----------------------------------------------------

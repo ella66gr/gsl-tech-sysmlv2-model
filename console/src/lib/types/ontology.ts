@@ -122,7 +122,10 @@ export interface ReasoningVocabulary {
 }
 
 export interface ReasoningSummary {
-  generatedAt: string;
+  /** SHA-256 of the model the summary was reasoned from (S518) */
+  modelDigest?: string;
+  /** Older summaries carry a timestamp instead */
+  generatedAt?: string;
   generator: string;
   reasoner: string;
   consistent: boolean;

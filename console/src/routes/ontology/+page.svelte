@@ -512,7 +512,7 @@
           </table>
         </div>
         <p class="mt-2 text-xs text-secondary-400 dark:text-secondary-500">
-          Reasoning summary generated {new Date(reasoning.generatedAt).toLocaleString()} by {reasoning.generator}
+          {#if reasoning.modelDigest}Reasoning summary from model {reasoning.modelDigest.slice(0, 12)}{:else}Reasoning summary generated {reasoning.generatedAt ? new Date(reasoning.generatedAt).toLocaleString() : 'unknown'}{/if} by {reasoning.generator}
         </p>
       </div>
     {/if}

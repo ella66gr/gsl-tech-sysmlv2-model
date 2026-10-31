@@ -812,27 +812,46 @@ def test_violation(verbose=False, reasoner="hermit"):
 # Reporting
 # ---------------------------------------------------------------
 
-# The files the summary's generatedAt is dated from: the model and the
-# hand-authored ontology the reasoned stack is built from.
-MODEL_PATHSPECS = ["model", "libraries", "ontology", ":(glob)exercises/*/model/**"]
+# The files the summary's modelDigest is taken over: the model and the
+# hand-authored ontology the reasoned stack is built from. Each entry is a
+# directory, or a glob relative to REPO_ROOT.
+MODEL_ROOTS = ["model", "libraries", "ontology", "exercises/*/model"]
 
 
-def model_date():
-    """Author date of the last commit touching the model's files (S518, F1).
+def model_files():
+    """The model's files, as sorted POSIX paths relative to REPO_ROOT.
 
-    Taken from the model, not the run, so that --save-summary is
-    deterministic: rerunning it on the same commit writes the same file. The
-    author date is used because an amend keeps it. Falls back to "unknown"
-    outside a git checkout.
+    Every regular file under MODEL_ROOTS, skipping any path with a component
+    that starts with "." (.DS_Store and the like), which matches the files
+    git tracks there.
     """
-    try:
-        out = subprocess.run(
-            ["git", "log", "-1", "--format=%aI", "--", *MODEL_PATHSPECS],
-            cwd=REPO_ROOT, capture_output=True, text=True, check=True,
-        ).stdout.strip()
-    except (OSError, subprocess.CalledProcessError):
-        return "unknown"
-    return out or "unknown"
+    paths = set()
+    for root in MODEL_ROOTS:
+        for base in sorted(REPO_ROOT.glob(root)):
+            for f in base.rglob("*"):
+                rel = f.relative_to(REPO_ROOT)
+                if f.is_file() and not any(part.startswith(".") for part in rel.parts):
+                    paths.add(rel.as_posix())
+    return sorted(paths)
+
+
+def model_digest():
+    """SHA-256 over the model's files (S518, D3), as 64 hex characters.
+
+    Stamps --save-summary with the model it was reasoned from, so the same
+    model always writes the same file, with no git and no amend. The files
+    are fed in model_files() order; for each one the hash takes, in turn,
+    its relative path in UTF-8, a NUL byte, its length in bytes as 8
+    big-endian bytes, and its bytes.
+    """
+    h = hashlib.sha256()
+    for rel in model_files():
+        data = (REPO_ROOT / rel).read_bytes()
+        h.update(rel.encode("utf-8"))
+        h.update(b"\0")
+        h.update(len(data).to_bytes(8, "big"))
+        h.update(data)
+    return h.hexdigest()
 
 
 def print_summary(consistent, unsatisfiable, test_result=None, reasoner="hermit"):
@@ -933,7 +952,7 @@ def main():
         sparql_query_count = count_sparql_queries()
 
         summary = {
-            "generatedAt": model_date(),
+            "modelDigest": model_digest(),
             "generator": "reason_kg.py",
             "reasoner": f"{reasoner_label(args.reasoner)} (via Robot)",
             "consistent": consistent,
