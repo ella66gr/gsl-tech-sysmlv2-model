@@ -155,7 +155,10 @@ async function main() {
   await Promise.all(readerLoops);
 
   // Correctness spot-check: every order Ready and its derived record labelled.
-  const checkGraph = (g: string) => db.select(`${PFX} SELECT (COUNT(DISTINCT ?o) AS ?orders) (COUNT(DISTINCT ?ready) AS ?ready) (COUNT(DISTINCT ?lab) AS ?labelled) WHERE { GRAPH <${g}> { ?o a cafe:Order . OPTIONAL { ?o cafe:status cafe:Ready . BIND(?o AS ?ready) } OPTIONAL { ?rr rec:recordOf ?o ; rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm . FILTER(STRENDS(STR(?rr), "/ready-record")) BIND(?rr AS ?lab) } } }`, 120_000);
+  // OP-134 spike: the S0.1 query bound ?ready and ?lab and then reused them as
+  // aggregate aliases, which SPARQL 1.1 forbids (18.2.4.1). GraphDB and RDF4J
+  // accept it; Jena rejects it. Aliases renamed; the counts are unchanged.
+  const checkGraph = (g: string) => db.select(`${PFX} SELECT (COUNT(DISTINCT ?o) AS ?orders) (COUNT(DISTINCT ?readyOrder) AS ?ready) (COUNT(DISTINCT ?labRecord) AS ?labelled) WHERE { GRAPH <${g}> { ?o a cafe:Order . OPTIONAL { ?o cafe:status cafe:Ready . BIND(?o AS ?readyOrder) } OPTIONAL { ?rr rec:recordOf ?o ; rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm . FILTER(STRENDS(STR(?rr), "/ready-record")) BIND(?rr AS ?labRecord) } } }`, 120_000);
   const failedCheck = (e: any, at: string) => { storeErrors.push({ at, error: String(e?.message ?? e).slice(0, 300) }); return [{ orders: { value: "-1" }, ready: { value: "-1" }, labelled: { value: "-1" } }]; };
   const check = await checkGraph(G).catch((e) => failedCheck(e, "correctness check"));
   const checkByWriter: any = {};
