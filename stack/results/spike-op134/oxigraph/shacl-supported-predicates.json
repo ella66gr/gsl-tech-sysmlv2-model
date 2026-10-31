@@ -1,0 +1,4 @@
+{
+  "applicable": false,
+  "reason": "getSupportedShaclPredicates() is an RDF4J ShaclSail call; oxigraph does not use ShaclSail"
+}

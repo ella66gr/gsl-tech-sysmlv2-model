@@ -1,0 +1,118 @@
+{
+  "status": "pass",
+  "run": "e3dc40c0",
+  "started": "2026-10-31T22:28:15.717Z",
+  "store": "oxigraph",
+  "repository": "cafe-runtime",
+  "checks": [
+    {
+      "name": "oxigraph: knowledge-graph content",
+      "pass": true,
+      "ms": 27,
+      "detail": [
+        {
+          "probe": "BMM metamodel has its 34 classes",
+          "result": true
+        },
+        {
+          "probe": "BMM class ServiceOffering sits under a BFO parent",
+          "result": true
+        },
+        {
+          "probe": "Platform record module defines PlatformRecord",
+          "result": true
+        },
+        {
+          "probe": "BFO 2020 entity is present",
+          "result": true
+        }
+      ]
+    },
+    {
+      "name": "oxigraph: runtime repository has SHACL on",
+      "pass": true,
+      "ms": 2,
+      "detail": {
+        "repository": "cafe-runtime",
+        "isShacl": "true",
+        "validationEnabled": "true",
+        "shaclLocus": "gate",
+        "inference": "none"
+      }
+    },
+    {
+      "name": "gate: known-good write commits",
+      "pass": true,
+      "ms": 324,
+      "detail": {
+        "http": 200,
+        "outcome": "committed",
+        "timings": {
+          "begin": 0,
+          "add": 9.758082999999715,
+          "updates": 0.002124999999978172,
+          "commit": 7.0761249999995925,
+          "rollback": 0,
+          "total": 320.8122509999994,
+          "lockWait": 0.043124999999236024,
+          "readSet": 3.0456249999997453,
+          "effect": 9.070666999999958,
+          "validate": 291.7180420000004
+        }
+      }
+    },
+    {
+      "name": "gate: known-bad write is a SHACL rejection naming the shape",
+      "pass": true,
+      "ms": 10,
+      "detail": {
+        "http": 422,
+        "outcome": "rejected",
+        "shapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape-method"
+        ],
+        "nodeShapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape"
+        ],
+        "components": [
+          "http://www.w3.org/ns/shacl#MinCountConstraintComponent"
+        ],
+        "rolledBack": true
+      }
+    },
+    {
+      "name": "gate: write after the rejection commits (lock released)",
+      "pass": true,
+      "ms": 7,
+      "detail": {
+        "http": 200,
+        "outcome": "committed",
+        "timings": {
+          "begin": 0,
+          "add": 0.13112499999988358,
+          "updates": 0.0011249999997744453,
+          "commit": 1.072917000000416,
+          "rollback": 0,
+          "total": 5.600792000000183,
+          "lockWait": 0.003875000000334694,
+          "readSet": 1.2885829999995622,
+          "effect": 1.721332999999504,
+          "validate": 1.3762079999996786
+        }
+      }
+    },
+    {
+      "name": "temporal: no-op workflow starts and completes",
+      "pass": true,
+      "ms": 106,
+      "detail": {
+        "workflowId": "stack-health-noop-e3dc40c0",
+        "result": "noop:e3dc40c0"
+      }
+    }
+  ],
+  "cleanup": {
+    "http": 200,
+    "outcome": "committed"
+  }
+}

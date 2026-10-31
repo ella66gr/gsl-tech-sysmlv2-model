@@ -10,17 +10,19 @@
 //                write is about to change. (A second gate process would not
 //                share it: there is no check-and-commit.)
 //   2. read set  quads the write may read: the write's subjects and the IRIs its
-//                updates bind (VALUES), expanded HOPS times along outgoing
+//                updates name, expanded HOPS times along outgoing
 //                edges, and along incoming edges for nodes with at most
 //                FANIN_CAP incoming non-type edges. A heuristic, stated here and
 //                in the spike report: a rule or shape that reaches further
-//                computes or validates on partial data.
+//                computes or validates on partial data. Blank-node quads and
+//                the shapes graph are left out.
 //   3. effect    the read set goes into an in-memory staging Oxigraph started
 //                with --union-default-graph (the same semantics as the store);
 //                the write's triples and updates run there, in order; the diff
 //                of staging before and after is the write's effect.
 //   4. validate  shacl-engine (SHACL Core + SHACL-SPARQL via Comunica) over the
-//                staging result, focus nodes = every IRI in the effect. Graphs
+//                staging result (targets resolved there); a violation counts
+//                only if its focus node is an IRI the effect touched. Graphs
 //                are merged for validation, so shapes apply in every graph.
 //   5. commit    only if it conforms: one update request, DELETE DATA + INSERT
 //                DATA of the effect. Nothing reaches the store on a rejection.
@@ -52,12 +54,13 @@ class Mutex {
 const locks = new Map<string, Mutex>();
 const lockFor = (url: string) => { if (!locks.has(url)) locks.set(url, new Mutex()); return locks.get(url)!; };
 
-// IRIs a SPARQL Update binds: inside VALUES blocks only (not PREFIX, GRAPH or USING IRIs).
-function valuesIris(update: string): string[] {
-  const out: string[] = [];
-  const re = /VALUES[^{]*\{([\s\S]*?)\}/gi;
-  for (let m = re.exec(update); m; m = re.exec(update)) for (const i of m[1].matchAll(/<([^>\s]+)>/g)) out.push(i[1]);
-  return out;
+// IRIs a SPARQL Update names, as read-set seeds: every <IRI> in the text
+// except PREFIX/BASE declarations and the graph names after GRAPH, USING,
+// WITH, INTO, FROM. (The first spike version used VALUES IRIs only, and a
+// DELETE DATA without VALUES then had an empty read set: committed, no effect.)
+function updateIris(update: string): string[] {
+  const text = update.replace(/\b(PREFIX\s+[A-Za-z0-9_.-]*:\s*<[^>]*>|BASE\s*<[^>]*>)/gi, " ").replace(/\b(GRAPH|USING(\s+NAMED)?|WITH|INTO(\s+GRAPH)?|FROM(\s+NAMED)?)\s*<[^>\s]+>/gi, " ");
+  return [...text.matchAll(/<([^>\s]+)>/g)].map((m) => m[1]);
 }
 
 export class OxigraphStore implements Store {
@@ -108,6 +111,9 @@ export class OxigraphStore implements Store {
     const skippedHubs: string[] = [];
     let frontier = [...new Set(seeds)];
     const values = (xs: string[]) => xs.map((x) => `<${x}>`).join(" ");
+    // Blank nodes cannot be named again in a later request or in DELETE DATA,
+    // and the shapes are held by the gate, so neither enters the read set.
+    const keep = (b: any) => b.s.type !== "bnode" && b.o.type !== "bnode" && b.g.value !== this.shapesGraph;
     const add = (b: any) => {
       const term = (t: any) => t.type === "uri" ? ox.namedNode(t.value) : t.type === "bnode" ? ox.blankNode(t.value) : t["xml:lang"] ? ox.literal(t.value, t["xml:lang"]) : ox.literal(t.value, ox.namedNode(t.datatype ?? "http://www.w3.org/2001/XMLSchema#string"));
       const q = ox.quad(term(b.s), term(b.p), term(b.o), ox.namedNode(b.g.value));
@@ -117,13 +123,13 @@ export class OxigraphStore implements Store {
     for (let hop = 0; hop < HOPS && frontier.length; hop++) {
       const next: string[] = [];
       const out = await this.sparql.select(`SELECT ?s ?p ?o ?g WHERE { VALUES ?s { ${values(frontier)} } GRAPH ?g { ?s ?p ?o } }`, 60_000);
-      for (const b of out) { add(b); if (b.o.type === "uri" && b.p.value !== RDF_TYPE && !seen.has(b.o.value)) { seen.add(b.o.value); next.push(b.o.value); } }
+      for (const b of out.filter(keep)) { add(b); if (b.o.type === "uri" && b.p.value !== RDF_TYPE && !seen.has(b.o.value)) { seen.add(b.o.value); next.push(b.o.value); } }
       const fan = await this.sparql.select(`SELECT ?o (COUNT(*) AS ?n) WHERE { VALUES ?o { ${values(frontier)} } GRAPH ?g { ?s ?p ?o } FILTER (?p != <${RDF_TYPE}>) } GROUP BY ?o`, 60_000);
       const small = fan.filter((b) => Number(b.n.value) <= FANIN_CAP).map((b) => b.o.value);
       skippedHubs.push(...fan.filter((b) => Number(b.n.value) > FANIN_CAP).map((b) => b.o.value));
       if (small.length) {
         const inc = await this.sparql.select(`SELECT ?s ?p ?o ?g WHERE { VALUES ?o { ${values(small)} } GRAPH ?g { ?s ?p ?o } FILTER (?p != <${RDF_TYPE}>) }`, 60_000);
-        for (const b of inc) { add(b); if (b.s.type === "uri" && !seen.has(b.s.value)) { seen.add(b.s.value); next.push(b.s.value); } }
+        for (const b of inc.filter(keep)) { add(b); if (b.s.type === "uri" && !seen.has(b.s.value)) { seen.add(b.s.value); next.push(b.s.value); } }
       }
       frontier = next;
     }
@@ -167,7 +173,7 @@ export class OxigraphStore implements Store {
 
       // 2. Read set.
       s = performance.now();
-      const seeds = [...new Set([...own.filter((q) => q.subject.termType === "NamedNode").map((q) => q.subject.value), ...updates.flatMap(valuesIris)])];
+      const seeds = [...new Set([...own.filter((q) => q.subject.termType === "NamedNode").map((q) => q.subject.value), ...updates.flatMap(updateIris)])];
       const rs = await this.readSet(seeds);
       t.readSet = performance.now() - s;
 
@@ -206,10 +212,17 @@ export class OxigraphStore implements Store {
       for (const q of afterQuads) data.add(rdf.quad(q.subject, q.predicate, q.object));
       const focus = new Map<string, any>();
       for (const q of [...added, ...removed]) for (const term of [q.subject, q.object]) if (term.termType === "NamedNode") focus.set(`N:${term.value}`, rdf.namedNode(term.value)); else if (term.termType === "BlankNode") focus.set(`B:${term.value}`, rdf.blankNode(term.value));
-      const report = await validator.validate({ dataset: data, terms: [...focus.values()] });
+      // Targets are resolved by shacl-engine over the local data (read set +
+      // effect); `terms` is NOT used, because shacl-engine applies every shape
+      // to every given term, ignoring targets (found in the spike). Only
+      // results whose focus node the write touched are kept.
+      const report = await validator.validate({ dataset: data });
+      const parsedAll = report.conforms ? null : parseReport(toNQuads(report.dataset));
+      const touched = new Set([...focus.keys()].map((k) => k.slice(2)));
+      const kept = parsedAll ? parsedAll.results.filter((x) => x.focusNode !== null && touched.has(x.focusNode.replace(/^_:/, ""))) : [];
       t.validate = performance.now() - s;
-      if (!report.conforms) {
-        const parsed = parseReport(toNQuads(report.dataset));
+      if (kept.length) {
+        const parsed = { results: kept, shapes: [...new Set(kept.map((r) => r.sourceShape).filter((x): x is string => !!x))] };
         const results = await Promise.all(parsed.results.map(async (x) => ({ ...x, nodeShape: await this.nodeShapeOf(shapes, x.sourceShape) })));
         const nodeShapes = [...new Set(results.map((x) => x.nodeShape).filter((x): x is string => !!x))];
         return { outcome: "rejected", stage: "validate", shapes: parsed.shapes, nodeShapes, results, rolledBack: true, rollbackStatus: null, timings: finish(), note: `nothing was sent to the store; read set ${rs.quads.length} quads, effect +${added.length}/-${removed.length}, ${focus.size} focus nodes` };
@@ -221,9 +234,10 @@ export class OxigraphStore implements Store {
       if (removed.length) ops.push(`DELETE DATA {\n${dataBlock(removed)}\n}`);
       if (added.length) ops.push(`INSERT DATA {\n${dataBlock(added)}\n}`);
       if (ops.length) {
-        r = await this.sparql.update(ops.join(" ;\n"), 120_000);
+        const text = ops.join(" ;\n");
+        r = await this.sparql.update(text, 120_000);
         t.commit = performance.now() - s;
-        if (r.status >= 300) return fault("commit", r.status, r.body);
+        if (r.status >= 300) return fault("commit", r.status, `${r.body}\n--- request (first 1200 chars) ---\n${text.slice(0, 1200)}`);
       }
       return { outcome: "committed", timings: finish(), note: `read set ${rs.quads.length} quads (hubs skipped: ${rs.skippedHubs.length}), effect +${added.length}/-${removed.length}, ${focus.size} focus nodes` };
     } catch (e: any) {
