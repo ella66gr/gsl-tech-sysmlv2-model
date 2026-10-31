@@ -813,7 +813,7 @@ package PatternCatalogue {
     part cswMetadataDrivenGeneration : DomainInstantiation {
         attribute :>> domain = "CSW";
         attribute :>> maturity = PatternMaturity::validated;
-        attribute :>> implementationRef = "@TemporalWorkflow, @TemporalActivity, @TemporalSignal, @StateTransitionTrigger on orchestration actions. gen_temporal_workflow.py and gen_state_machines.py read these.";
+        attribute :>> implementationRef = "@TemporalWorkflow, @TemporalActivity, @TemporalSignal, @StateTransitionTrigger on orchestration actions. generation/temporal_workflow.py and generation/state_machine.py read these.";
         attribute :>> sessionRef = "Sessions 2-3";
         attribute :>> notes = "Metadata annotations drive TypeScript workflow scaffold and XState machine generation.";
     }

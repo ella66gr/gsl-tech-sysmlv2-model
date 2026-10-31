@@ -23,13 +23,16 @@ package FixtureTenant {
         constraint staffPresentCheck : StaffPresentConstraint;
         constraint capacityCheck : WithinCapacityConstraint;
 
-        satisfy requirement FixtureRequirements::StaffPresent
+        satisfy requirement StaffPresent
             by staffPresentCheck;
-        satisfy requirement FixtureRequirements::WithinCapacity
+        satisfy requirement WithinCapacity
             by capacityCheck;
     }
 
     package RuleSpecs {
+        private import SystemMetamodelGeneral::EvaluationSpecs::*;
+        private import SystemMetamodelGeneral::LogicEngine::*;
+
         part staffSpec : ConstraintEvaluationSpec {
             doc /* Evaluate staff presence. */
             attribute :>> constraintName = "StaffPresentConstraint";

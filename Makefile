@@ -111,3 +111,62 @@ gen-check:
 gen-test:
 	$(PYTHON) -m unittest discover -s generation/tests -t . -v
 	$(NODE) --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test exercises/coffeeshop-demonstrator/tests/order-lifecycle-guard.test.mts
+
+# ---------------------------------------------------------------------------
+# SysML parse check (OP-123, Session 517).
+#
+# OpenSysML `sysml -validate` over every .sysml file in the repository, with
+# no skip-list. Each exercise and each generation test fixture is loaded with
+# model/ and libraries/ only, so one exercise cannot hide another's fault; then
+# the whole repository is loaded as one model. The check fails on:
+#
+#   - any sysml version other than SYSML_VERSION;
+#   - any error (syntax, unresolved name, unreadable file) in any load;
+#   - any warning set that differs from SYSML_BASELINE, one line per warning,
+#     "file: warning[code]: message", sorted (line and column are left out,
+#     so an unrelated edit above a known warning does not fail the check).
+#
+# The version is pinned (brew pin opensysml). To upgrade: brew unpin, upgrade,
+# change SYSML_VERSION, re-run, review any baseline change, brew pin again.
+# The Syside Editor stays Ella's check.
+
+SYSML          ?= sysml
+SYSML_VERSION  := 0.11.0
+SYSML_BASELINE := qa/parse-warnings-baseline.txt
+SYSML_SCOPES   := $(sort $(wildcard exercises/*/) $(wildcard generation/tests/fixtures/*/))
+
+.PHONY: parse-check
+
+parse-check:
+	@found=$$($(SYSML) -version 2>/dev/null | head -1); \
+	if [ "$$found" != "sysml v$(SYSML_VERSION)" ]; then \
+		echo "=== PARSE-CHECK FAILED: needs sysml v$(SYSML_VERSION), found '$${found:-no sysml on PATH}'."; \
+		echo "    Upgrades are deliberate: change SYSML_VERSION in the Makefile, re-run, and review $(SYSML_BASELINE)."; \
+		exit 2; \
+	fi; \
+	tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/ontara-parse-check.XXXXXX") || exit 2; \
+	trap 'rm -rf "$$tmp"' EXIT; \
+	report='import json, sys; d = json.load(open(sys.argv[1])); want = sys.argv[2]; \
+	[print("%s:%s:%s: error[%s]: %s" % (x["file"], x["line"], x["column"], x.get("code"), x["message"]) if want == "error" else "%s: warning[%s]: %s" % (x["file"], x.get("code"), x["message"])) \
+	 for x in d.get("diagnostics") or [] if x["severity"] == want]; \
+	[print(e) for e in d.get("errors") or [] if want == "error"]'; \
+	status=0; n=0; \
+	for scope in $(SYSML_SCOPES) .; do \
+		n=$$((n + 1)); \
+		if [ "$$scope" = . ]; then label="whole repository"; set -- .; else label="$$scope"; set -- model libraries "$$scope"; fi; \
+		$(SYSML) -validate -no-record-cache -json "$$@" >"$$tmp/$$n.json" 2>"$$tmp/$$n.err"; rc=$$?; \
+		if ! $(PYTHON) -c "$$report" "$$tmp/$$n.json" warning >>"$$tmp/warnings" 2>>"$$tmp/$$n.err"; then \
+			echo "FAILED ($$label): no readable report from sysml (exit $$rc)"; cat "$$tmp/$$n.err"; status=1; continue; \
+		fi; \
+		if [ $$rc -ne 0 ]; then \
+			echo "FAILED ($$label): sysml exit $$rc"; $(PYTHON) -c "$$report" "$$tmp/$$n.json" error; status=1; \
+		else \
+			echo "ok   ($$label)"; \
+		fi; \
+	done; \
+	LC_ALL=C sort -u "$$tmp/warnings" >"$$tmp/warnings.sorted"; \
+	if ! diff -u --label "baseline: $(SYSML_BASELINE)" --label "found" "$(SYSML_BASELINE)" "$$tmp/warnings.sorted"; then \
+		echo "FAILED: the warnings differ from $(SYSML_BASELINE) (lines with + are new; lines with - are no longer reported)"; status=1; \
+	fi; \
+	if [ $$status -ne 0 ]; then echo "=== PARSE-CHECK FAILED"; exit 1; fi; \
+	echo "=== PARSE-CHECK PASSED: sysml v$(SYSML_VERSION), $$n loads, no errors, $$(wc -l <"$$tmp/warnings.sorted" | tr -d ' ') baseline warnings"

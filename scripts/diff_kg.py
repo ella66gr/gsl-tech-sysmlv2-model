@@ -44,7 +44,6 @@ import json
 import pathlib
 import sys
 from dataclasses import dataclass, field, asdict
-from datetime import datetime, timezone
 from typing import Optional
 
 from kg_utils import (
@@ -723,7 +722,6 @@ def build_report(all_diffs):
         by_type[entry.unit_type][entry.category] += 1
 
     report = {
-        "generated": datetime.now(timezone.utc).isoformat(),
         "source": "diff_kg.py — Stage 5 Phase 3 Step 5",
         "summary": summary,
         "by_type": by_type,
@@ -759,7 +757,6 @@ def print_summary(report, verbose=False):
     total = s["added"] + s["removed"] + s["modified"] + s["unchanged"]
 
     print("\n=== ONTARA ROUND-TRIP DIFF REPORT ===")
-    print(f"Generated: {report['generated']}")
     print(f"Total semantic units compared: {total}")
     print()
 

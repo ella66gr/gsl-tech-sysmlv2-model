@@ -25,7 +25,7 @@ package TemporalMetadata {
          *
          * Originally at: gsl-tech/sysml-metadata-lib/temporal/
          * Consolidated to: gsl-sysml-model/libraries/temporal-metadata/
-         * Consumed by:   gen_temporal_workflow.py
+         * Consumed by:   generation/temporal_workflow.py
          */
 
     // -- Workflow-level metadata --------------------------------
