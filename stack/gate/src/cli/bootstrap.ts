@@ -3,8 +3,9 @@
 //
 //  1. the licence is loaded and valid (Free, 11.3);
 //  2. the runtime repository exists, created from GraphDB's own JSON default
-//     config with isShacl=true (never from Turtle);
-//  3. the configuration is read back and isShacl must be "true";
+//     config with isShacl=true and ruleset=empty (never from Turtle);
+//  3. the configuration is read back: isShacl must be "true" and the ruleset
+//     "empty" (no store-side inference, OP-134 R4);
 //  4. the stand-in shapes are loaded into rdf4j:SHACLShapeGraph;
 //  5. the knowledge-graph files are (re)loaded, one named graph per file.
 import * as fs from "node:fs";
@@ -55,6 +56,10 @@ async function main() {
         `Fix the repository config (JSON, isShacl=true), delete the repository (README "Recovery") and run again. Do not continue.`);
   }
   if (param(cfg, "validationEnabled") !== "true") die(`validationEnabled is ${param(cfg, "validationEnabled")}`);
+  if (param(cfg, "ruleset") !== "empty") {
+    die(`repository ${config.repository} reads back ruleset=${param(cfg, "ruleset")}; the runtime repository must have no ` +
+        `store-side inference (ruleset=empty, OP-134 R4). A ruleset cannot be changed after creation: delete the repository (README "Recovery") and run again.`);
+  }
 
   // 4. shapes (replace the shapes graph)
   const shapes = readFixture("shapes/standin-shapes.ttl");

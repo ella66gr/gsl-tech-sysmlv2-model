@@ -168,7 +168,8 @@ export class GraphDB {
 }
 
 // Builds a SHACL-enabled repository config from GraphDB's own JSON default
-// config (never Turtle: a Turtle config silently gave isShacl false at S515).
+// config (never Turtle: a Turtle config silently gave isShacl false at S515),
+// with SHACL on, the context index on and the empty ruleset.
 export async function shaclRepositoryConfig(db: GraphDB, id: string, title: string): Promise<any> {
   const cfg = await db.defaultConfig();
   cfg.id = id;
@@ -179,6 +180,12 @@ export async function shaclRepositoryConfig(db: GraphDB, id: string, title: stri
   // Named graphs carry the stack's separation of KG and runtime state (one
   // repository; see README "Repository decision"), so index contexts.
   cfg.params.enableContextIndex.value = "true";
+  // No store-side inference on runtime content (OP-134 requirements paper R4;
+  // ADR-013): every triple is a declared writer's and carries its mode and
+  // method. GraphDB's default ruleset (rdfsplus-optimized) materialises
+  // inferences at ingest, so use the empty ruleset. A ruleset is fixed when a
+  // repository is created; changing it means recreating the repository.
+  cfg.params.ruleset.value = "empty";
   return cfg;
 }
 

@@ -237,6 +237,47 @@ async function testNamedGraphScope() {
   };
 }
 
+// ---- 5. R4: no store-side inference (OP-134 requirements paper, R4; ADR-013)
+// Loads a real knowledge-graph module (the platform record module) into a KG
+// graph in the scratch repository, writes an instance of a class that has a
+// superclass there, and checks that the store added nothing: no rdf:type
+// triple for any superclass, and the default graph grows by exactly the
+// triples written. The scratch repository is built from the same config as
+// the runtime repository, so this tests the runtime repository's ruleset.
+async function testNoInference() {
+  const RDFS = "http://www.w3.org/2000/01/rdf-schema#";
+  const kgGraph = "urn:ontara:stack:kg:ontara-record";
+  const cls = "https://ontara.dev/ontology/record/PlatformRecord";
+  const inst = "urn:ontara:stack:cap#r4-instance";
+  await clearData();
+  const kgFile = path.join(paths.kgSource, "ontology/record/ontara-record.ttl");
+  const kgLoad = await db.replaceGraph(kgGraph, fs.readFileSync(kgFile, "utf8"), "text/turtle");
+  const supers = (await db.select(`SELECT DISTINCT ?sup WHERE { GRAPH <${kgGraph}> { <${cls}> <${RDFS}subClassOf> ?sup . FILTER (isIRI(?sup)) } }`)).map((b) => b.sup.value as string);
+  const count = async () => Number((await db.select(`SELECT (COUNT(*) AS ?n) WHERE { ?s ?p ?o }`))[0].n.value);
+  const before = await count();
+  const turtle = `<${inst}> a <${cls}> ; <${RDFS}label> "R4 check instance" .`;
+  const written = 2;
+  const w = await write({ graph: G, turtle, label: "cap R4 no inference" }, db);
+  const after = await count();
+  const values = supers.map((s) => `<${s}>`).join(" ");
+  const superTypeTriples = supers.length
+    ? (await db.select(`SELECT DISTINCT ?sup WHERE { VALUES ?sup { ${values} } { <${inst}> a ?sup } UNION { GRAPH ?g { <${inst}> a ?sup } } }`)).map((b) => b.sup.value)
+    : [];
+  const aboutInstance = (await db.select(`SELECT DISTINCT ?p ?o WHERE { { <${inst}> ?p ?o } UNION { GRAPH ?g { <${inst}> ?p ?o } } }`)).length;
+  // Clean the KG graph out of the scratch repository again.
+  await db.update(`CLEAR SILENT GRAPH <${kgGraph}>`);
+  const pass = w.outcome === "committed" && supers.length > 0 && superTypeTriples.length === 0 && after - before === written && aboutInstance === written;
+  return {
+    test: "R4: a write of an instance of a class with a superclass in the knowledge graph produces no extra triples",
+    kgModule: "ontology/record/ontara-record.ttl", kgLoadStatus: kgLoad.status,
+    class: cls, superclassesInKg: supers,
+    write: brief(w), triplesWritten: written,
+    defaultGraphCountBefore: before, defaultGraphCountAfter: after, defaultGraphDelta: after - before,
+    triplesAboutInstance: aboutInstance, superclassTypeTriplesFound: superTypeTriples,
+    pass,
+  };
+}
+
 async function main() {
   const startedAt = new Date().toISOString();
   const declaredPath = path.join(paths.results, "shacl-supported-predicates.json");
@@ -277,6 +318,10 @@ async function main() {
     console.log(`[cap] sh:message returned: core=${result.item3_messages.coreShape.messageReturned} sparql=${result.item3_messages.sparqlConstraint.messageReturned}`);
     result.item4_namedGraphs = await testNamedGraphScope();
     console.log(`[cap] named graphs: ${JSON.stringify(result.item4_namedGraphs)}`);
+    result.item5_noInference = await testNoInference();
+    result.item5_noInference.runtimeRepositoryRuleset = param(await base.repositoryConfig(config.repository), "ruleset");
+    result.item5_noInference.scratchRepositoryRuleset = param(cfg, "ruleset");
+    console.log(`[cap] ${result.item5_noInference.pass ? "PASS" : "FAIL"} R4 no store-side inference: ruleset=${result.item5_noInference.scratchRepositoryRuleset} (runtime ${result.item5_noInference.runtimeRepositoryRuleset}), delta=${result.item5_noInference.defaultGraphDelta} for ${result.item5_noInference.triplesWritten} written, superclass types=${JSON.stringify(result.item5_noInference.superclassTypeTriplesFound)}`);
   } finally {
     const d = await base.deleteRepository(SCRATCH);
     result.scratchDeleted = d.status === 200 || d.status === 204;
@@ -286,6 +331,8 @@ async function main() {
   fs.writeFileSync(path.join(paths.results, "shacl-capabilities.json"), JSON.stringify(result, null, 2) + "\n");
   fs.writeFileSync(path.join(paths.results, "shacl-capabilities.md"), markdown(result));
   console.log(`[cap] written results/shacl-capabilities.json and results/shacl-capabilities.md`);
+  // R4 is a binding requirement, not a component survey: a failure fails the script.
+  if (!result.item5_noInference?.pass) { console.error(`[cap] R4 CHECK FAILED: the store added triples a declared writer did not write`); process.exitCode = 1; }
 }
 
 function markdown(r: any): string {
@@ -305,6 +352,15 @@ function markdown(r: any): string {
   L.push(``, `## 4. Named graphs (observed, for S0.5)`, ``);
   L.push(`1. Shapes apply to data written into any named graph: ${n.shapesApplyToDataInAnyNamedGraph}.`);
   L.push(`2. The shapes graph is visible to a SPARQL \`GRAPH\` query: ${n.shapesGraphTriplesVisibleToSparqlGraphQuery} triples; through the RDF4J statements API: ${n.shapesGraphTriplesViaStatementsApi} triples.`);
+  const i = r.item5_noInference;
+  if (i) {
+    L.push(``, `## 5. R4: no store-side inference`, ``);
+    L.push(`Result: **${i.pass ? "pass" : "FAIL"}**. Scratch repository ruleset \`${i.scratchRepositoryRuleset}\`; runtime repository ruleset \`${i.runtimeRepositoryRuleset}\`.`, ``);
+    L.push(`1. Knowledge-graph module loaded: \`${i.kgModule}\`; \`<${i.class}>\` has superclasses ${i.superclassesInKg.map((s: string) => `\`<${s}>\``).join(", ")}.`);
+    L.push(`2. Written: ${i.triplesWritten} triples (the instance's type and label), outcome ${i.write.outcome}.`);
+    L.push(`3. Default-graph triple count grew by ${i.defaultGraphDelta} (${i.defaultGraphCountBefore} to ${i.defaultGraphCountAfter}); triples about the instance: ${i.triplesAboutInstance}.`);
+    L.push(`4. \`rdf:type\` triples for a superclass found: ${i.superclassTypeTriplesFound.length ? i.superclassTypeTriplesFound.map((s: string) => `\`<${s}>\``).join(", ") : "none"}.`);
+  }
   return L.join("\n") + "\n";
 }
 

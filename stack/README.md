@@ -83,13 +83,15 @@ docker compose logs bootstrap
 ```
 [bootstrap] licence: valid=true product=free version=11.3 ...
 [bootstrap] created repository cafe-runtime from GraphDB's JSON default config      (first start only)
-[bootstrap] read back: isShacl=true validationEnabled=true ruleset=rdfsplus-optimized enableContextIndex=true ...
+[bootstrap] read back: isShacl=true validationEnabled=true ruleset=empty enableContextIndex=true ...
 [bootstrap] shapes loaded into <http://rdf4j.org/schema/rdf4j#SHACLShapeGraph>: 32 triples (read back via getStatements)
 [bootstrap] kg <urn:ontara:stack:kg:...> ... (12 lines)
 [bootstrap] OK in ... s
 ```
 
-If the repository reads back `isShacl` as anything but `true`, the bootstrap prints a `BOOTSTRAP FAILED` banner and exits 2. Do not continue: see section 6, "Recovery".
+If the repository reads back `isShacl` as anything but `true`, or a ruleset other than `empty`, the bootstrap prints a `BOOTSTRAP FAILED` banner and exits 2. Do not continue: see section 6, "Recovery".
+
+**Why `ruleset=empty`.** The runtime repository does no store-side inference (OP-134 requirements paper, R4, S518). Under ADR-013 every triple in the runtime store is written by a declared writer and carries its mode and method. GraphDB's default ruleset, `rdfsplus-optimized`, materialises inferences at ingest, such as an `rdf:type` triple for every superclass of a written instance, and those triples have no writer, mode or method. Derived content is the Substrate Reasoners' to write, as a declared writer. Up to S518 the repository was created with GraphDB's default; a repository's ruleset is fixed when it is created, so a data volume from before S518 must be recreated (section 6, "Recovery", or `docker compose down -v`).
 
 ### Step 6. Health check
 
@@ -111,7 +113,9 @@ Steps 3 to 6 can be run, and timed, in one go with `bin/rebuild.sh` (prints `PRO
 bin/capabilities.sh
 ```
 
-Writes `results/shacl-supported-predicates.json`, `results/shacl-capabilities.json` and `results/shacl-capabilities.md`. It runs in a scratch SHACL repository (`cafe-capability-scratch`), created and deleted by the script; the runtime repository is not touched. An unsupported component is a result, not a failure.
+Writes `results/shacl-supported-predicates.json`, `results/shacl-capabilities.json` and `results/shacl-capabilities.md`. It runs in a scratch SHACL repository (`cafe-capability-scratch`), created from the same config as the runtime repository and deleted by the script; the runtime repository is not touched (its ruleset is read, not changed). An unsupported component is a result, not a failure.
+
+Section 5 of the results is the R4 check (no store-side inference): it loads the platform record module, writes an instance of `PlatformRecord` (which has two superclasses there), and confirms that no `rdf:type` triple for a superclass appears and that the triple count grows by exactly the triples written. R4 is a binding requirement, so a failure there makes the script exit 1.
 
 ### Step 8. Load test
 
@@ -220,7 +224,7 @@ docker image rm ontara-cafe-stack/gate:local    # also remove the built image
 
 After `down -v`, start again at step 4. GraphDB Desktop and the stack must not run at the same time (specification 2.4): stop the stack before starting Desktop.
 
-**Recovery: `isShacl` reads false.** SHACL cannot be switched on after a repository is created. Delete the repository and let the bootstrap recreate it from the JSON config:
+**Recovery: `isShacl` reads false, or the ruleset is not `empty`.** Neither SHACL nor the ruleset can be changed after a repository is created. Delete the repository and let the bootstrap recreate it from the JSON config:
 
 ```bash
 docker compose exec graphdb curl -s -X DELETE http://localhost:7200/rest/repositories/cafe-runtime

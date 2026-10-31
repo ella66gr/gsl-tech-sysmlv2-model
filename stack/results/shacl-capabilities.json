@@ -1,5 +1,5 @@
 {
-  "startedAt": "2026-10-31T00:44:27.605Z",
+  "startedAt": "2026-10-31T19:33:17.137Z",
   "graphdb": {
     "productType": "free",
     "productVersion": "11.3.1",
@@ -39,7 +39,7 @@
       "badWrite": {
         "outcome": "rejected",
         "shapes": [
-          "_:ee4a767a-3ddc-4504-9339-6e7a5d9f1608-1"
+          "_:a6de2de7-5300-4cdf-a021-2ae98055d70f-1"
         ],
         "nodeShapes": [],
         "components": [
@@ -68,7 +68,7 @@
       "badWrite": {
         "outcome": "rejected",
         "shapes": [
-          "_:f6f44b7c-403a-4e7e-b04c-29ea3bddabf1-1"
+          "_:9b6c71d4-d259-4cac-82d2-b66de500608e-1"
         ],
         "nodeShapes": [],
         "components": [
@@ -95,7 +95,7 @@
       "badWrite": {
         "outcome": "rejected",
         "shapes": [
-          "_:d7619569-1f48-4f06-9dba-4e43ccff1fa3-1"
+          "_:74d2f3d2-708d-4e28-86d2-ee72a0be96a0-1"
         ],
         "nodeShapes": [],
         "components": [
@@ -122,7 +122,7 @@
       "badWrite": {
         "outcome": "rejected",
         "shapes": [
-          "_:7f5eec66-9a8c-4d3b-bc11-19eeb1ff6d90-1"
+          "_:8c78ebd6-5772-489e-8d92-261e9d47b609-1"
         ],
         "nodeShapes": [],
         "components": [
@@ -194,7 +194,7 @@
       "badWrite": {
         "outcome": "rejected",
         "shapes": [
-          "_:ffab256e-c77e-4b7d-bcad-09864aa32938-1"
+          "_:90a55fd9-7bd6-43d4-8d96-fdf928172152-1"
         ],
         "nodeShapes": [],
         "components": [
@@ -382,6 +382,28 @@
     "shapesGraphTriplesVisibleToSparqlGraphQuery": 0,
     "shapesGraphTriplesViaStatementsApi": 32
   },
+  "item5_noInference": {
+    "test": "R4: a write of an instance of a class with a superclass in the knowledge graph produces no extra triples",
+    "kgModule": "ontology/record/ontara-record.ttl",
+    "kgLoadStatus": 204,
+    "class": "https://ontara.dev/ontology/record/PlatformRecord",
+    "superclassesInKg": [
+      "http://purl.obolibrary.org/obo/IAO_0000030",
+      "http://www.w3.org/ns/prov#Entity"
+    ],
+    "write": {
+      "outcome": "committed"
+    },
+    "triplesWritten": 2,
+    "defaultGraphCountBefore": 169,
+    "defaultGraphCountAfter": 171,
+    "defaultGraphDelta": 2,
+    "triplesAboutInstance": 2,
+    "superclassTypeTriplesFound": [],
+    "pass": true,
+    "runtimeRepositoryRuleset": "empty",
+    "scratchRepositoryRuleset": "empty"
+  },
   "scratchDeleted": true,
-  "finishedAt": "2026-10-31T00:44:29.614Z"
+  "finishedAt": "2026-10-31T19:33:19.023Z"
 }
