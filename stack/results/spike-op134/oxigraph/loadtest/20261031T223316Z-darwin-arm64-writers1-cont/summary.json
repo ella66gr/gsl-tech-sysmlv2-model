@@ -1,0 +1,223 @@
+{
+  "kind": "development run (Mac runs do not count as the S0.1 pass figure; specification 2.5 item 8.4)",
+  "run": "9de55a0d",
+  "startedUtc": "2026-10-31T22:33:20.924Z",
+  "elapsedSeconds": 38.3,
+  "config": {
+    "orders": 500,
+    "writers": 1,
+    "writerGraphs": [
+      "urn:ontara:stack:graph:loadtest"
+    ],
+    "store": "oxigraph",
+    "readers": "continuous",
+    "readerCadenceMs": null,
+    "validation": "normal",
+    "graph": "urn:ontara:stack:graph:loadtest",
+    "repository": "cafe-runtime",
+    "rule": "fixtures/rules/order-readiness.rq + fixtures/rules/labelling.rq",
+    "write": "fixtures/writes/order-53.ttl",
+    "shapes": "fixtures/shapes/standin-shapes.ttl",
+    "shapesGraph": "urn:ontara:stack:shapes"
+  },
+  "percentileMethod": "nearest rank, over committed writes; latency = HTTP round trip to the gate's /write as the caller sees it",
+  "writeLatencyMs": {
+    "n": 500,
+    "p50": 72,
+    "p95": 82,
+    "max": 322.5,
+    "mean": 74.8
+  },
+  "gatePhaseMs": {
+    "commit": {
+      "n": 500,
+      "p50": 4.5,
+      "p95": 5.7,
+      "max": 158.6,
+      "mean": 5
+    },
+    "updates": {
+      "n": 500,
+      "p50": 1.2,
+      "p95": 1.9,
+      "max": 22.6,
+      "mean": 1.6
+    },
+    "add": {
+      "n": 500,
+      "p50": 0.3,
+      "p95": 0.4,
+      "max": 0.9,
+      "mean": 0.3
+    },
+    "begin": {
+      "n": 500,
+      "p50": 0,
+      "p95": 0,
+      "max": 0,
+      "mean": 0
+    }
+  },
+  "writeLatencyMsByWriter": {
+    "w1": {
+      "n": 500,
+      "p50": 72,
+      "p95": 82,
+      "max": 322.5,
+      "mean": 74.8
+    }
+  },
+  "throughputWritesPerSecond": 13.05,
+  "concurrency": {
+    "writers": 1,
+    "sumOfWriteLatencyOverWallTime": 0.98,
+    "shareOfWritingTimeWithTwoOrMoreInFlight": 0,
+    "maxWritesInFlight": 1,
+    "note": "client-side view: a write is in flight from request to reply. With one gate and a store that serialises, latency rises with writers and throughput stays flat."
+  },
+  "passThresholdMs": 500,
+  "p95WithinThreshold": true,
+  "failures": 0,
+  "failureSamples": [],
+  "readers": {
+    "counter-queue": {
+      "n": 11234,
+      "p50": 3.2,
+      "p95": 5.2,
+      "max": 133.1,
+      "mean": 3.4
+    },
+    "kds-stream": {
+      "n": 13000,
+      "p50": 2.9,
+      "p95": 4.1,
+      "max": 131.5,
+      "mean": 2.9
+    },
+    "operator-board": {
+      "n": 3868,
+      "p50": 7.5,
+      "p95": 24.7,
+      "max": 155.2,
+      "mean": 9.9
+    }
+  },
+  "readerErrors": 0,
+  "growthPer100Writes": [
+    {
+      "writes": "1-100",
+      "graphTriplesAtStart": 0,
+      "latency": {
+        "n": 100,
+        "p50": 74.8,
+        "p95": 111,
+        "max": 322.5,
+        "mean": 81.9
+      },
+      "commit": {
+        "n": 100,
+        "p50": 5.1,
+        "p95": 8.9,
+        "max": 158.6,
+        "mean": 6.9
+      }
+    },
+    {
+      "writes": "101-200",
+      "graphTriplesAtStart": 6435,
+      "latency": {
+        "n": 100,
+        "p50": 71.7,
+        "p95": 77.1,
+        "max": 132.7,
+        "mean": 73.1
+      },
+      "commit": {
+        "n": 100,
+        "p50": 4.5,
+        "p95": 5.3,
+        "max": 6.2,
+        "mean": 4.6
+      }
+    },
+    {
+      "writes": "201-300",
+      "graphTriplesAtStart": 12935,
+      "latency": {
+        "n": 100,
+        "p50": 70.9,
+        "p95": 75,
+        "max": 126.8,
+        "mean": 72.2
+      },
+      "commit": {
+        "n": 100,
+        "p50": 4.3,
+        "p95": 5.4,
+        "max": 6,
+        "mean": 4.4
+      }
+    },
+    {
+      "writes": "301-400",
+      "graphTriplesAtStart": 19435,
+      "latency": {
+        "n": 100,
+        "p50": 71.6,
+        "p95": 76.7,
+        "max": 163.5,
+        "mean": 73.7
+      },
+      "commit": {
+        "n": 100,
+        "p50": 4.4,
+        "p95": 5.4,
+        "max": 6.8,
+        "mean": 4.5
+      }
+    },
+    {
+      "writes": "401-500",
+      "graphTriplesAtStart": 25935,
+      "latency": {
+        "n": 100,
+        "p50": 71.9,
+        "p95": 77.7,
+        "max": 125.5,
+        "mean": 73.2
+      },
+      "commit": {
+        "n": 100,
+        "p50": 4.4,
+        "p95": 5.1,
+        "max": 6.5,
+        "mean": 4.5
+      }
+    }
+  ],
+  "repository": {
+    "explicitStatementsBefore": 23710,
+    "explicitStatementsAfter": 56210,
+    "loadtestGraphBefore": 0,
+    "loadtestGraphAfter": 32500
+  },
+  "storeErrors": [],
+  "correctness": {
+    "orders": 500,
+    "ordersReady": 500,
+    "derivedRecordsLabelled": 500
+  },
+  "correctnessByWriter": {
+    "w1": {
+      "orders": 500,
+      "ordersReady": 500,
+      "derivedRecordsLabelled": 500
+    }
+  },
+  "containerView": {
+    "cpus": 10,
+    "cpuModel": "unknown",
+    "totalMemGiB": 7.75,
+    "note": "as seen inside the gate container (the Docker VM on a Mac); host figures are in machine.txt"
+  }
+}

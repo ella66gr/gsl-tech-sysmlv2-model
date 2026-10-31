@@ -1,0 +1,11 @@
+run id:        20261031T223122Z-darwin-arm64-growth3000-core
+recorded at:   2026-10-31T22:31:22Z
+host:          Darwin 25.6.0 arm64
+cpu:           Apple M1 Max
+cores:         10 logical (8 performance + 2 efficiency)
+memory:        32 GiB
+os:            macOS 26.6.2
+docker:        29.9.2 linux/arm64
+docker VM/engine sees: 10 CPUs, 8319504384 bytes memory
+store:         oxigraph (Oxigraph 0.5.13, SHACL in the gate (shacl-engine 1.1.3))
+args:          --orders 3000 --shapes core-only
