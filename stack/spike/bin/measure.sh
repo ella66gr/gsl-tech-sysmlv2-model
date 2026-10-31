@@ -11,7 +11,7 @@ set -u
 cd "$(dirname "$0")/../.."
 cfg="${1:?configuration}"
 S=spike/bin/spike.sh
-run() { echo; echo "=== $cfg $*  ($(date -u +%H:%M:%SZ))"; "$S" "$cfg" loadtest "$@" 2>&1 | grep -E '^\[load\] (run|done|results)|Error|error' ; }
+run() { echo; echo "=== $cfg $*  ($(date -u +%H:%M:%SZ))"; "$S" "$cfg" loadtest "$@" 2>&1 | grep --line-buffered -E '^\[load\] (run|done|results)|Error|error' ; }
 run --label stage0
 run --orders 3000 --label growth3000-sparql
 run --orders 3000 --shapes core-only --label growth3000-core

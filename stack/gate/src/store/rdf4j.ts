@@ -19,6 +19,31 @@ import { rdf4jTransactionWrite } from "./rdf4j-txn-write";
 import { Store, WriteRequest, WriteOutcome, RepoReadBack, StoreInfo, GraphLoad, RDF4J_SHAPES_GRAPH, notApplicable } from "./types";
 import { config, graphs } from "../config";
 
+// RDF4J Server rejects a commit with HTTP 409 and the SHACL report as
+// application/shacl-validation-report+rdf+json, whatever Accept asks for
+// (found in the spike; GraphDB answers 500 with N-Quads). The shared report
+// parser reads N-Triples, so this client translates RDF/JSON on commit. The
+// moved write path itself is unchanged.
+function rdfJsonToNTriples(json: string): string {
+  const esc = (v: string) => v.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, "\\n").replace(/\r/g, "\\r");
+  const node = (v: string) => (v.startsWith("_:") ? v : `<${v}>`);
+  const obj = (o: any) => o.type === "uri" ? `<${o.value}>` : o.type === "bnode" ? o.value : `"${esc(o.value)}"${o.lang ? `@${o.lang}` : o.datatype ? `^^<${o.datatype}>` : ""}`;
+  const lines: string[] = [];
+  const d = JSON.parse(json);
+  for (const [s, preds] of Object.entries<any>(d)) for (const [p, objs] of Object.entries<any>(preds)) for (const o of objs) lines.push(`${node(s)} <${p}> ${obj(o)} .`);
+  return lines.join("\n") + "\n";
+}
+class Rdf4jServerClient extends GraphDB {
+  withRepo(repo: string) { return new Rdf4jServerClient(this.base, repo); }
+  async txnCommit(location: string): Promise<HttpResult> {
+    const r = await super.txnCommit(location);
+    if (r.status >= 300 && (r.contentType ?? "").includes("rdf+json")) {
+      try { return { ...r, body: rdfJsonToNTriples(r.body), contentType: "application/shacl-validation-report+n-triples (translated from RDF/JSON)" }; } catch { return r; }
+    }
+    return r;
+  }
+}
+
 const INFERENCER_TYPES = ["SchemaCachingRDFSInferencer", "ForwardChainingRDFSInferencer", "DirectTypeHierarchyInferencer", "CustomGraphQueryInferencer", "RDFSInferencer"];
 
 export function rdf4jShaclConfig(id: string, title: string, delegate: "native" | "lmdb"): string {
@@ -63,7 +88,8 @@ export class Rdf4jStore implements Store {
   readonly kind = "rdf4j" as const;
   readonly label = "rdf4j";
   readonly shapesGraph = RDF4J_SHAPES_GRAPH;
-  constructor(readonly client: GraphDB, readonly delegate: "native" | "lmdb") {}
+  readonly client: GraphDB;
+  constructor(client: GraphDB, readonly delegate: "native" | "lmdb") { this.client = client instanceof Rdf4jServerClient ? client : new Rdf4jServerClient(client.base, client.repo); }
   get repository() { return this.client.repo; }
   withRepo(id: string) { return new Rdf4jStore(this.client.withRepo(id), this.delegate); }
 

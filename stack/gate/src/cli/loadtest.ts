@@ -126,13 +126,14 @@ async function main() {
   const latBy: Record<number, number[]> = {};
   const failures: any[] = [];
   const intervals: [number, number][] = [];
+  const storeErrors: { at: string; error: string }[] = [];
   const tRun = performance.now();
   const writer = async (w: number) => {
     const g = writerGraph(w);
     latBy[w] = [];
     let graphTriples = w === 1 ? startGraph : 0;
     for (let i = 1; i <= N; i++) {
-      if (i === 1 || i % 50 === 0) graphTriples = await db.size(g); // outside the timed section
+      if (i === 1 || i % 50 === 0) graphTriples = await db.size(g).catch((e: any) => { storeErrors.push({ at: `w${w} write ${i} size`, error: String(e?.message ?? e).slice(0, 300) }); return -1; }); // outside the timed section
       const order = `urn:ontara:standin:cafe#order-${run}-w${w}-${String(i).padStart(5, "0")}`;
       const body = JSON.stringify({ ...orderWrite(order, g), validation: VALIDATION, label: `load w${w} ${i}` });
       const started = new Date().toISOString();
@@ -155,9 +156,10 @@ async function main() {
 
   // Correctness spot-check: every order Ready and its derived record labelled.
   const checkGraph = (g: string) => db.select(`${PFX} SELECT (COUNT(DISTINCT ?o) AS ?orders) (COUNT(DISTINCT ?ready) AS ?ready) (COUNT(DISTINCT ?lab) AS ?labelled) WHERE { GRAPH <${g}> { ?o a cafe:Order . OPTIONAL { ?o cafe:status cafe:Ready . BIND(?o AS ?ready) } OPTIONAL { ?rr rec:recordOf ?o ; rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm . FILTER(STRENDS(STR(?rr), "/ready-record")) BIND(?rr AS ?lab) } } }`, 120_000);
-  const check = await checkGraph(G);
+  const failedCheck = (e: any, at: string) => { storeErrors.push({ at, error: String(e?.message ?? e).slice(0, 300) }); return [{ orders: { value: "-1" }, ready: { value: "-1" }, labelled: { value: "-1" } }]; };
+  const check = await checkGraph(G).catch((e) => failedCheck(e, "correctness check"));
   const checkByWriter: any = {};
-  for (let w = 1; w <= WRITERS; w++) { const c = (await checkGraph(writerGraph(w)))[0]; checkByWriter[`w${w}`] = { orders: Number(c.orders.value), ordersReady: Number(c.ready.value), derivedRecordsLabelled: Number(c.labelled.value) }; }
+  for (let w = 1; w <= WRITERS; w++) { const c = (await checkGraph(writerGraph(w)).catch((e) => failedCheck(e, `correctness check w${w}`)))[0]; checkByWriter[`w${w}`] = { orders: Number(c.orders.value), ordersReady: Number(c.ready.value), derivedRecordsLabelled: Number(c.labelled.value) }; }
   // Restore the stand-in shapes (the bootstrap's) if this run loaded others.
   if (SHAPES !== "standin") await db.replaceGraph(db.shapesGraph, readFixture("shapes/standin-shapes.ttl"), "text/turtle");
 
@@ -196,7 +198,8 @@ async function main() {
     readers: Object.fromEntries(Object.entries(readerLat).map(([k, v]) => [k, stats(v)])),
     readerErrors: readerRows.filter((l) => l.split(",")[4] === "false").length,
     growthPer100Writes: buckets,
-    repository: { explicitStatementsBefore: startSize, explicitStatementsAfter: await db.size(), loadtestGraphBefore: startGraph, loadtestGraphAfter: await db.size(G) },
+    repository: { explicitStatementsBefore: startSize, explicitStatementsAfter: await db.size().catch(() => -1), loadtestGraphBefore: startGraph, loadtestGraphAfter: await db.size(G).catch(() => -1) },
+    storeErrors,
     correctness: { orders: Number(check[0].orders.value), ordersReady: Number(check[0].ready.value), derivedRecordsLabelled: Number(check[0].labelled.value) },
     correctnessByWriter: checkByWriter,
     containerView: { cpus: os.cpus().length, cpuModel: os.cpus()[0]?.model, totalMemGiB: Math.round((os.totalmem() / 2 ** 30) * 100) / 100, note: "as seen inside the gate container (the Docker VM on a Mac); host figures are in machine.txt" },
