@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T15:51:45.458904",
+  "generatedAt": "2026-10-31T15:44:39.159295",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
@@ -10,7 +10,7 @@
     "cafe": {
       "label": "Cafe",
       "description": "Cafe demonstrator \u2014 reference validation domain",
-      "elementCount": 127
+      "elementCount": 112
     },
     "suds": {
       "label": "Suds",
@@ -29,12 +29,12 @@
     }
   },
   "summary": {
-    "totalElements": 805,
+    "totalElements": 790,
     "byKind": {
-      "enum_def": 67,
+      "enum_def": 62,
       "metadata_def": 17,
-      "part_def": 133,
-      "part": 540,
+      "part_def": 126,
+      "part": 537,
       "requirement_def": 15,
       "requirement": 7,
       "constraint_def": 14,
@@ -45,11 +45,11 @@
       "unknown": 108,
       "bmm": 73,
       "smm": 82,
-      "domain": 542
+      "domain": 527
     },
     "byDomain": {
       "core": 263,
-      "cafe": 127,
+      "cafe": 112,
       "suds": 69,
       "paws": 82,
       "gsl": 264
@@ -398,7 +398,7 @@
         "name": "RegimenWithinProtocolConstraint",
         "package": "ConstraintLibrary",
         "sourceDomain": "gsl",
-        "doc": "Evaluable rule: the proposed medication, route, and\ndose must fall within the bounds of an approved\nprescribing protocol.\nAt runtime, this evaluates the proposed regimen\nagainst the protocol decision table in\nKnowledge::DecisionModels. A regimen is within\nprotocol if all three components match an ap",
+        "doc": "Evaluable rule: the proposed medication, route, and\ndose must fall within the bounds of an approved\nprescribing protocol.\nAt runtime, this evaluates the proposed regimen\nagainst the protocol decision table in\nGslKnowledge::DecisionTables. A regimen is within\nprotocol if all three components match an",
         "attributes": []
       },
       {
@@ -9598,8 +9598,8 @@
       "purposiveDescription": "The right-stack counterpart of the BMM General vocabulary. Defines what a business system is \u2014 the domain-neutral system concepts any Ontara tenant would need. Organised into six capability groups (B25): Persistence and Data Management, Process Orchestration, Evaluation and Reasoning, Observation and Self-Knowledge, Integration and Communication, Identity and Access. Horizontal mappings to the BMM are many-to-many.",
       "friendlyName": "SMM General Vocabulary",
       "shortDescription": "Domain-neutral system concepts organised into six capability groups \u2014 the right-stack counterpart of the BMM vocabulary.",
-      "representationalModalitySummary": "SysML v2 part defs. Designed (Session 76 discussion paper) but not yet implemented. Individual concepts exist scattered across Foundation, Knowledge, ServiceDelivery, Platform, and Operations.",
-      "persistenceSummary": "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: distributed across existing SysML packages without explicit SMM organisation.",
+      "representationalModalitySummary": "SysML v2 package SystemMetamodelGeneral (SMG), eleven sub-packages, with one clinical annotation in SystemMetamodelDomainClinical (ADR-012).",
+      "persistenceSummary": "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: the SystemMetamodelGeneral package in model/system-metamodel-general.sysml.",
       "interfacesSummary": "Vertical downward: instantiated by the system instance. Vertical upward: traces to system ontological categories. Horizontal leftward: explicit many-to-many mappings to BMM General vocabulary.",
       "domainIllustrationSummary": "For Paws: PersistencePolicy for data storage, ProcessSpecification for workflow shapes, ConstraintEvaluationSpec for scheduling rules, ExternalServiceBinding for payment integration, CommunicationChannel for notifications.",
       "docKey": "bsmm-general-vocabulary"
@@ -10205,11 +10205,12 @@
       {
         "identity": {
           "regulatoryShape": "generallyGoverned",
-          "bmmVocabularyScope": "full",
+          "bmmVocabularyScope": "generalOnly",
           "domainPurpose": "referenceValidation",
           "jurisdiction": "england",
           "organisationalForm": "registeredIndividual",
           "authorisationRequiredToTrade": false,
+          "regulatedActivities": "foodBusinessOperation",
           "description": "Reference validation domain \u2014 original demonstrator. Immediate retail service with walk-in customers and 2-minute fulfilment cycle.",
           "introducedSession": 1,
           "_partName": "cafeIdentity"
@@ -11147,8 +11148,8 @@
         {
           "name": "ArchitecturalLocation",
           "attrs": {
-            "representationalModalitySummary": "SysML v2 part defs. Designed (Session 76 discussion paper) but not yet implemented. Individual concepts exist scattered across Foundation, Knowledge, ServiceDelivery, Platform, and Operations.",
-            "persistenceSummary": "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: distributed across existing SysML packages without explicit SMM organisation.",
+            "representationalModalitySummary": "SysML v2 package SystemMetamodelGeneral (SMG), eleven sub-packages, with one clinical annotation in SystemMetamodelDomainClinical (ADR-012).",
+            "persistenceSummary": "Target: knowledge graph (canonical) with SysML v2 as projection. Currently: the SystemMetamodelGeneral package in model/system-metamodel-general.sysml.",
             "interfacesSummary": "Vertical downward: instantiated by the system instance. Vertical upward: traces to system ontological categories. Horizontal leftward: explicit many-to-many mappings to BMM General vocabulary.",
             "domainIllustrationSummary": "For Paws: PersistencePolicy for data storage, ProcessSpecification for workflow shapes, ConstraintEvaluationSpec for scheduling rules, ExternalServiceBinding for payment integration, CommunicationChannel for notifications."
           }
@@ -12460,7 +12461,7 @@
       "name": "ServiceOffering",
       "parentPackage": "ServiceConcept",
       "topLevelPackage": "BusinessMetamodelGeneral",
-      "doc": "A packaged, deliverable unit of service that realises\none or more value propositions for one or more\nsegments. This is the unit at which pricing, resource\nrequirements, and pathway mapping are defined.\nCross-reference: each ServiceOffering maps to one or\nmore clinical pathways in\nServiceDelivery::Cl",
+      "doc": "A packaged, deliverable unit of service that realises\none or more value propositions for one or more\nsegments. This is the unit at which pricing, resource\nrequirements, and pathway mapping are defined.\nCross-reference: in a clinical tenant, each ServiceOffering\nmay map to one or more clinical pathwa",
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
@@ -14822,7 +14823,7 @@
       "name": "ResourceConstraint",
       "parentPackage": "ResourcePlanning",
       "topLevelPackage": "BusinessMetamodelGeneral",
-      "doc": "A constraint on resource availability or use that\naffects service delivery. May be regulatory,\nfinancial, temporal, or contractual.\nPhase 7: regulatorySourceDescription retains the\nhuman-readable reference. Formal ref to\nEnterprise::Regulation requirement defs is deferred\n\u2014 ref to a requirement def ",
+      "doc": "A constraint on resource availability or use that\naffects service delivery. May be regulatory,\nfinancial, temporal, or contractual.\nPhase 7: regulatorySourceDescription retains the\nhuman-readable reference. Formal ref to\na tenant's regulation requirement defs (for GSL, the Regulation package of its ",
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
@@ -18412,7 +18413,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2821,
+      "lineNumber": 2836,
       "attributes": [
         {
           "name": "gmc"
@@ -18460,11 +18461,11 @@
       "name": "BmmVocabularyScope",
       "parentPackage": "DomainIdentityTypes",
       "topLevelPackage": "BusinessMetamodelGeneral",
-      "doc": "Which subset of the Business Meta Model vocabulary\na domain instantiates.\ngeneralOnly: uses only General-level BMM elements.\nfull: uses both General and Tailored elements.\nproduction: full vocabulary plus production-grade\n  governance, audit, and operational requirements.\nBusiness meta model concept",
+      "doc": "Which subset of the Business Meta Model vocabulary\na domain instantiates.\ngeneralOnly: uses only General-level BMM elements.\nfull: uses both General and Domain elements (Tailored\n  was retired at S517).\nproduction: full vocabulary plus production-grade\n  governance, audit, and operational requiremen",
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2874,
+      "lineNumber": 2889,
       "attributes": [
         {
           "name": "generalOnly"
@@ -18486,7 +18487,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2889,
+      "lineNumber": 2905,
       "attributes": [
         {
           "name": "referenceValidation"
@@ -18511,7 +18512,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2911,
+      "lineNumber": 2927,
       "attributes": [
         {
           "name": "england"
@@ -18535,11 +18536,11 @@
       "name": "RegulatedActivity",
       "parentPackage": "DomainIdentityTypes",
       "topLevelPackage": "BusinessMetamodelGeneral",
-      "doc": "Activities regulated by CQC under the Health and Social\nCare Act 2008. A service providing any of these must be\nregistered with CQC. Used during governance framework\nactivation to determine directive applicability.\nSource: HSCA 2008 (Regulated Activities) Regulations 2014,\nSchedule 1.\nBusiness meta ",
+      "doc": "Activities regulated or registered under any regime\n(S518). Each value names its regime and whether it needs\nan authorisation (one the authority can refuse or\nwithdraw; it sets authorisationRequiredToTrade true) or\na registration (a notification duty that cannot be\nrefused; it leaves the attribute f",
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2927,
+      "lineNumber": 2943,
       "attributes": [
         {
           "name": "personalCare"
@@ -18579,6 +18580,9 @@
         },
         {
           "name": "nursingCare"
+        },
+        {
+          "name": "foodBusinessOperation"
         }
       ]
     },
@@ -18591,7 +18595,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2953,
+      "lineNumber": 2996,
       "attributes": [
         {
           "name": "registeredIndividual"
@@ -18616,7 +18620,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2968,
+      "lineNumber": 3011,
       "attributes": [
         {
           "name": "regulatoryShape",
@@ -21326,7 +21330,7 @@
         },
         {
           "name": "implementationRef",
-          "value": "@TemporalWorkflow, @TemporalActivity, @TemporalSignal, @StateTransitionTrigger on orchestration actions. gen_temporal_workflow.py and gen_state_machines.py read these.",
+          "value": "@TemporalWorkflow, @TemporalActivity, @TemporalSignal, @StateTransitionTrigger on orchestration actions. generation/temporal_workflow.py and generation/state_machine.py read these.",
           "isRedefinition": true
         },
         {
@@ -24036,6 +24040,9 @@
         },
         {
           "name": "externalReference"
+        },
+        {
+          "name": "knowledgeGraph"
         }
       ]
     },
@@ -24048,7 +24055,7 @@
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1691,
+      "lineNumber": 1696,
       "attributes": [
         {
           "name": "clinicalSignificance"
@@ -24094,7 +24101,7 @@
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1711,
+      "lineNumber": 1716,
       "attributes": [
         {
           "name": "domainConcept",
@@ -24127,7 +24134,7 @@
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1768,
+      "lineNumber": 1773,
       "attributes": [
         {
           "name": "baseUrl",
@@ -24155,7 +24162,7 @@
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1783,
+      "lineNumber": 1788,
       "attributes": [
         {
           "name": "ehrId",
@@ -24188,7 +24195,7 @@
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1801,
+      "lineNumber": 1806,
       "attributes": [
         {
           "name": "templateId",
@@ -24211,7 +24218,7 @@
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1818,
+      "lineNumber": 1823,
       "attributes": [
         {
           "name": "compositionUid",
@@ -24244,7 +24251,7 @@
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1846,
+      "lineNumber": 1851,
       "attributes": [
         {
           "name": "queryName",
@@ -24267,7 +24274,7 @@
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1926,
+      "lineNumber": 1931,
       "attributes": [
         {
           "name": "archetypeId",
@@ -24290,7 +24297,7 @@
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1949,
+      "lineNumber": 1954,
       "attributes": [
         {
           "name": "nodeId",
@@ -24313,7 +24320,7 @@
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1973,
+      "lineNumber": 1978,
       "attributes": [
         {
           "name": "templateId",
@@ -24331,7 +24338,7 @@
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "smm",
-      "lineNumber": 1999,
+      "lineNumber": 2004,
       "attributes": [
         {
           "name": "canonicalKey",
@@ -24371,316 +24378,6 @@
       ]
     },
     {
-      "kind": "enum_def",
-      "name": "DrinkName",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "Drink types \u2014 matches ORDER_RECORD at0010/at0011.",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 49,
-      "attributes": [
-        {
-          "name": "coffee"
-        },
-        {
-          "name": "tea"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "DrinkSize",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "Drink sizes \u2014 matches ORDER_RECORD at0007/at0008/at0009.",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 55,
-      "attributes": [
-        {
-          "name": "small"
-        },
-        {
-          "name": "medium"
-        },
-        {
-          "name": "large"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "MilkChoice",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "Milk options \u2014 matches ORDER_RECORD at0013-at0017.",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 62,
-      "attributes": [
-        {
-          "name": "none"
-        },
-        {
-          "name": "whole"
-        },
-        {
-          "name": "semiSkimmed"
-        },
-        {
-          "name": "oat"
-        },
-        {
-          "name": "soy"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "DrinkPrice",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "Fixed price points \u2014 matches ORDER_RECORD at0020-at0023.",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 71,
-      "attributes": [
-        {
-          "name": "small125"
-        },
-        {
-          "name": "medium175"
-        },
-        {
-          "name": "large230"
-        },
-        {
-          "name": "premium285"
-        }
-      ]
-    },
-    {
-      "kind": "enum_def",
-      "name": "PreparationMethod",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "Preparation methods \u2014 matches PREPARATION_EVENT at0003/at0004.",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 79,
-      "attributes": [
-        {
-          "name": "hotPath"
-        },
-        {
-          "name": "coldPath"
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "OrderRecord",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "Models the ORDER_RECORD archetype: what was ordered.\nopenEHR RM class: OBSERVATION\nData path: OBSERVATION > data (HISTORY) > events (POINT_EVENT)\n           > data (ITEM_TREE) > items (ELEMENT)\nValidated in CDR Exercise Phases A-B: archetype designed\nin Archetype Designer, OPT exported, compositions",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 89,
-      "attributes": [
-        {
-          "name": "drinkName",
-          "type": "DrinkName",
-          "isRedefinition": false
-        },
-        {
-          "name": "drinkSize",
-          "type": "DrinkSize",
-          "isRedefinition": false
-        },
-        {
-          "name": "milkChoice",
-          "type": "MilkChoice",
-          "isRedefinition": false
-        },
-        {
-          "name": "extras",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "price",
-          "type": "DrinkPrice",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "CustomerFeedback",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "Models the CUSTOMER_FEEDBACK archetype: customer satisfaction.\nopenEHR RM class: EVALUATION\nData path: EVALUATION > data (ITEM_TREE) > items (ELEMENT)\nValidated in CDR Exercise Phase C: archetype designed,\ncompositions committed via form-driven data entry (no\nworkflow), AQL queries working.",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 112,
-      "attributes": [
-        {
-          "name": "rating",
-          "type": "Integer",
-          "isRedefinition": false
-        },
-        {
-          "name": "feedbackComment",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "orderReference",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "PreparationEvent",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "Models the PREPARATION_EVENT archetype: what happened\nduring drink preparation.\nopenEHR RM class: ACTION\nData path: ACTION > description (ITEM_TREE) > items (ELEMENT)\nAlso requires: time (DV_DATE_TIME), ism_transition\nACTION uses 'description' not 'data' for its ITEM_TREE.\nISM transition codes: plan",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 132,
-      "attributes": [
-        {
-          "name": "preparationMethod",
-          "type": "PreparationMethod",
-          "isRedefinition": false
-        },
-        {
-          "name": "baristaName",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "startTime",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "endTime",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "preparationNotes",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "OrderComposition",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "Composition template for order recording.\nCommitted by the validateOrder Temporal activity.",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 164
-    },
-    {
-      "kind": "part",
-      "name": "orderRecord",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 172,
-      "specialises": "OrderRecord",
-      "annotations": [
-        {
-          "name": "OpenEhrTemplate",
-          "attrs": {
-            "templateId": "coffeeshop-order-composition.v1"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "PreparationComposition",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "Composition template for preparation events.\nCommitted by the seeding script (and in future by\nthe prepareDrink Temporal activity).",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 175
-    },
-    {
-      "kind": "part",
-      "name": "preparationEvent",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 184,
-      "specialises": "PreparationEvent",
-      "annotations": [
-        {
-          "name": "OpenEhrTemplate",
-          "attrs": {
-            "templateId": "coffeeshop-preparation-composition.v1"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
-      "name": "FeedbackComposition",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "Composition template for customer feedback.\nCommitted via form-driven data entry (no workflow).",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 187
-    },
-    {
-      "kind": "part",
-      "name": "customerFeedback",
-      "parentPackage": "CoffeeShopArchetypes",
-      "topLevelPackage": "CoffeeShopArchetypes",
-      "doc": "",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 195,
-      "specialises": "CustomerFeedback",
-      "annotations": [
-        {
-          "name": "OpenEhrTemplate",
-          "attrs": {
-            "templateId": "coffeeshop-feedback-composition.v1"
-          }
-        }
-      ]
-    },
-    {
       "kind": "part",
       "name": "walkInCustomers",
       "parentPackage": "CoffeeShopBusinessModel",
@@ -24689,7 +24386,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 42,
+      "lineNumber": 45,
       "specialises": "CustomerSegment",
       "attributes": [
         {
@@ -24728,7 +24425,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 50,
+      "lineNumber": 53,
       "specialises": "ServiceOffering",
       "attributes": [
         {
@@ -24772,7 +24469,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 61,
+      "lineNumber": 64,
       "specialises": "Channel",
       "attributes": [
         {
@@ -24816,7 +24513,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 75,
+      "lineNumber": 78,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24855,7 +24552,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 86,
+      "lineNumber": 89,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24894,7 +24591,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 96,
+      "lineNumber": 99,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24933,7 +24630,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 104,
+      "lineNumber": 107,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -24972,7 +24669,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 112,
+      "lineNumber": 115,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -25011,7 +24708,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 120,
+      "lineNumber": 123,
       "specialises": "ActivityType",
       "attributes": [
         {
@@ -25050,7 +24747,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 133,
+      "lineNumber": 136,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -25084,7 +24781,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 143,
+      "lineNumber": 146,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -25118,7 +24815,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 150,
+      "lineNumber": 153,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -25152,7 +24849,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 157,
+      "lineNumber": 160,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -25186,7 +24883,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 164,
+      "lineNumber": 167,
       "specialises": "ActivityGranularity",
       "attributes": [
         {
@@ -25220,7 +24917,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 181,
+      "lineNumber": 184,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25239,7 +24936,7 @@
           "isRedefinition": true
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "value": "ProvisionType::prepared",
           "isRedefinition": true
         },
@@ -25264,7 +24961,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 191,
+      "lineNumber": 194,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25283,7 +24980,7 @@
           "isRedefinition": true
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "value": "ProvisionType::prepared",
           "isRedefinition": true
         },
@@ -25308,7 +25005,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 200,
+      "lineNumber": 203,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25327,7 +25024,7 @@
           "isRedefinition": true
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "value": "ProvisionType::prepared",
           "isRedefinition": true
         },
@@ -25352,7 +25049,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 209,
+      "lineNumber": 212,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25371,7 +25068,7 @@
           "isRedefinition": true
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "value": "ProvisionType::prepared",
           "isRedefinition": true
         },
@@ -25396,7 +25093,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 218,
+      "lineNumber": 221,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25415,7 +25112,7 @@
           "isRedefinition": true
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "value": "ProvisionType::prepared",
           "isRedefinition": true
         },
@@ -25440,7 +25137,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 229,
+      "lineNumber": 232,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25459,7 +25156,7 @@
           "isRedefinition": true
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "value": "ProvisionType::prepared",
           "isRedefinition": true
         },
@@ -25484,7 +25181,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 238,
+      "lineNumber": 241,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25503,7 +25200,7 @@
           "isRedefinition": true
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "value": "ProvisionType::prepared",
           "isRedefinition": true
         },
@@ -25528,7 +25225,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 249,
+      "lineNumber": 252,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25547,7 +25244,7 @@
           "isRedefinition": true
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "value": "ProvisionType::prepared",
           "isRedefinition": true
         },
@@ -25572,7 +25269,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 259,
+      "lineNumber": 262,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25591,7 +25288,7 @@
           "isRedefinition": true
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "value": "ProvisionType::prepared",
           "isRedefinition": true
         },
@@ -25616,7 +25313,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 271,
+      "lineNumber": 274,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25635,7 +25332,7 @@
           "isRedefinition": true
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "value": "ProvisionType::boughtIn",
           "isRedefinition": true
         },
@@ -25660,7 +25357,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 282,
+      "lineNumber": 285,
       "specialises": "CoffeeShop::CatalogueEntry",
       "attributes": [
         {
@@ -25679,7 +25376,7 @@
           "isRedefinition": true
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "value": "ProvisionType::boughtIn",
           "isRedefinition": true
         },
@@ -25700,11 +25397,11 @@
       "name": "catalogueEntryPolicy",
       "parentPackage": "CoffeeShopBusinessModel",
       "topLevelPackage": "CoffeeShopBusinessModel",
-      "doc": "Business reference data. Simple CRUD, relational\njoins to menu items and inventory. No clinical\nsignificance.",
+      "doc": "Runtime content: the catalogue, prices and availability\nare held as triples in the knowledge graph (H-0264;\nS515 D1).",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 303,
+      "lineNumber": 308,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -25714,12 +25411,12 @@
         },
         {
           "name": "targetLayer",
-          "value": "PersistenceLayer::businessDatabase",
+          "value": "PersistenceLayer::knowledgeGraph",
           "isRedefinition": true
         },
         {
           "name": "rationale",
-          "value": "Business reference data. Simple CRUD, relational joins. No clinical significance.",
+          "value": "The catalogue, prices and availability are runtime content, held in the knowledge graph (H-0264).",
           "isRedefinition": true
         }
       ]
@@ -25729,11 +25426,11 @@
       "name": "inventoryRecordPolicy",
       "parentPackage": "CoffeeShopBusinessModel",
       "topLevelPackage": "CoffeeShopBusinessModel",
-      "doc": "Operational state. Atomic decrement on sale. No\narchetype validation needed.",
+      "doc": "Runtime operational state, held as triples in the knowledge\ngraph with the catalogue entry it counts (S515 D1).",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 312,
+      "lineNumber": 317,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -25743,12 +25440,12 @@
         },
         {
           "name": "targetLayer",
-          "value": "PersistenceLayer::businessDatabase",
+          "value": "PersistenceLayer::knowledgeGraph",
           "isRedefinition": true
         },
         {
           "name": "rationale",
-          "value": "Operational state. Atomic decrement on sale. No archetype validation needed.",
+          "value": "Stock levels are runtime operational state, held in the knowledge graph beside the catalogue (S515 D1).",
           "isRedefinition": true
         }
       ]
@@ -25758,11 +25455,11 @@
       "name": "orderRecordPolicy",
       "parentPackage": "CoffeeShopBusinessModel",
       "topLevelPackage": "CoffeeShopBusinessModel",
-      "doc": "Clinical analogue. Benefits from archetype validation,\nimmutable versioning, audit trail.",
+      "doc": "Orders are DBR content: the record of the business's own\ntransactions, held in the knowledge graph (S515 D1).",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 320,
+      "lineNumber": 325,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -25772,12 +25469,12 @@
         },
         {
           "name": "targetLayer",
-          "value": "PersistenceLayer::clinicalDataRepository",
+          "value": "PersistenceLayer::knowledgeGraph",
           "isRedefinition": true
         },
         {
           "name": "rationale",
-          "value": "Clinical analogue. Archetype validation, immutable versioning, audit trail.",
+          "value": "Orders are DBR content, held in the knowledge graph (S515 D1).",
           "isRedefinition": true
         }
       ]
@@ -25787,11 +25484,11 @@
       "name": "feedbackRecordPolicy",
       "parentPackage": "CoffeeShopBusinessModel",
       "topLevelPackage": "CoffeeShopBusinessModel",
-      "doc": "Qualitative assessment. Archetype-validated, versioned,\nqueryable via AQL.",
+      "doc": "Feedback is DSR content: a record about the service delivered,\nheld in the knowledge graph (S515 D1).",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 328,
+      "lineNumber": 333,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -25801,12 +25498,12 @@
         },
         {
           "name": "targetLayer",
-          "value": "PersistenceLayer::clinicalDataRepository",
+          "value": "PersistenceLayer::knowledgeGraph",
           "isRedefinition": true
         },
         {
           "name": "rationale",
-          "value": "Qualitative assessment. Archetype-validated, versioned, queryable via AQL.",
+          "value": "Feedback is DSR content, held in the knowledge graph (S515 D1).",
           "isRedefinition": true
         }
       ]
@@ -25816,11 +25513,11 @@
       "name": "orderWorkflowPolicy",
       "parentPackage": "CoffeeShopBusinessModel",
       "topLevelPackage": "CoffeeShopBusinessModel",
-      "doc": "Stateful process. Durable execution, signal handling,\nactivity orchestration.",
+      "doc": "Stateful process: durable execution, signal handling,\nactivity orchestration. Temporal's store is private\nrealiser storage, never a source of truth: anything with\nmeaning beyond the workflow is written to DSR through its\nbinding (H-0462).",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 336,
+      "lineNumber": 341,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -25835,7 +25532,7 @@
         },
         {
           "name": "rationale",
-          "value": "Stateful process. Durable execution, signal handling, activity orchestration.",
+          "value": "Temporal's store is private realiser storage, never a source of truth",
           "isRedefinition": true
         }
       ]
@@ -25849,7 +25546,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 344,
+      "lineNumber": 352,
       "specialises": "PersistencePolicy",
       "attributes": [
         {
@@ -25878,7 +25575,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 358,
+      "lineNumber": 366,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -25937,7 +25634,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 372,
+      "lineNumber": 380,
       "specialises": "StakeholderRelationship",
       "attributes": [
         {
@@ -25996,7 +25693,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 384,
+      "lineNumber": 392,
       "specialises": "CooperativeArrangement",
       "attributes": [
         {
@@ -26050,7 +25747,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 398,
+      "lineNumber": 406,
       "specialises": "ExternalDependency",
       "attributes": [
         {
@@ -26104,7 +25801,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 409,
+      "lineNumber": 417,
       "specialises": "CommunityRelationship",
       "attributes": [
         {
@@ -26148,7 +25845,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 418,
+      "lineNumber": 426,
       "specialises": "ParticipationModel",
       "attributes": [
         {
@@ -26193,7 +25890,7 @@
       "name": "cafeIdentity",
       "parentPackage": "CoffeeShopDomainRegistration",
       "topLevelPackage": "CoffeeShopDomainRegistration",
-      "doc": "Reference validation domain \u2014 the original demonstrator\nagainst which all meta model patterns were first\ndeveloped. Immediate retail, walk-in, 2-minute cycle.\nGenerally governed (no sector-specific regulation,\nno licensing regime, no role-binding professional\nbody). Subject only to general business ",
+      "doc": "Reference validation domain \u2014 the original demonstrator\nagainst which all meta model patterns were first\ndeveloped. Immediate retail, walk-in, 2-minute cycle.\nShape: generallyGoverned. No sector regulator, no\nlicence or permit that an authority can refuse or\nwithdraw, and no role-binding professiona",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-domain-registration.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
@@ -26207,7 +25904,7 @@
         },
         {
           "name": "bmmVocabularyScope",
-          "value": "BmmVocabularyScope::full",
+          "value": "BmmVocabularyScope::generalOnly",
           "isRedefinition": true
         },
         {
@@ -26231,6 +25928,11 @@
           "isRedefinition": true
         },
         {
+          "name": "regulatedActivities",
+          "value": "RegulatedActivity::foodBusinessOperation",
+          "isRedefinition": true
+        },
+        {
           "name": "description",
           "value": "Reference validation domain \u2014 original demonstrator. Immediate retail service with walk-in customers and 2-minute fulfilment cycle.",
           "isRedefinition": true
@@ -26251,7 +25953,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-domain-registration.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 42,
+      "lineNumber": 59,
       "specialises": "DomainConfiguration",
       "attributes": [
         {
@@ -28458,39 +28160,6 @@
     },
     {
       "kind": "part_def",
-      "name": "ExternalReference",
-      "parentPackage": "CoffeeShop",
-      "topLevelPackage": "CoffeeShop",
-      "doc": "A link to knowledge that lives outside the system.\nThe system does not own this data; it points to it.\nExamples: SPC, BNF entry, NICE guidance, supplier\ndatasheet, origin certification.",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 63,
-      "attributes": [
-        {
-          "name": "referenceType",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "referenceId",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "referenceSource",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "referenceNotes",
-          "type": "String",
-          "isRedefinition": false
-        }
-      ]
-    },
-    {
-      "kind": "part_def",
       "name": "MenuItem",
       "parentPackage": "CoffeeShop",
       "topLevelPackage": "CoffeeShop",
@@ -28498,7 +28167,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 74,
+      "lineNumber": 63,
       "attributes": [
         {
           "name": "name",
@@ -28531,8 +28200,8 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 83,
-      "specialises": "ExternalReference"
+      "lineNumber": 72,
+      "specialises": "BusinessMetamodelGeneral::ServiceConcept::ExternalReference"
     },
     {
       "kind": "part_def",
@@ -28543,7 +28212,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 86,
+      "lineNumber": 75,
       "specialises": "MenuItem",
       "attributes": [
         {
@@ -28572,7 +28241,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 94,
+      "lineNumber": 83,
       "specialises": "MenuItem",
       "attributes": [
         {
@@ -28592,11 +28261,12 @@
       "name": "CatalogueEntry",
       "parentPackage": "CoffeeShop",
       "topLevelPackage": "CoffeeShop",
-      "doc": "The business decision to offer an item for sale.\nReferences an item definition (MenuItem or specialisation)\nand adds business-context properties: price, availability,\nprovision type. A single item may appear in multiple\ncatalogues at different prices or terms.",
+      "doc": "The business decision to offer an item for sale.\nSpecialises the General CatalogueEntry (S518, S0.3):\nreferences an item definition (MenuItem or specialisation)\nand adds typed business-context properties: price,\navailability, provision kind. A single item may appear in\nmultiple catalogues at differe",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 103,
+      "lineNumber": 92,
+      "specialises": "BusinessMetamodelGeneral::ServiceConcept::CatalogueEntry",
       "attributes": [
         {
           "name": "item",
@@ -28619,18 +28289,8 @@
           "isRedefinition": false
         },
         {
-          "name": "provisionType",
+          "name": "provisionKind",
           "type": "ProvisionType",
-          "isRedefinition": false
-        },
-        {
-          "name": "effectiveDate",
-          "type": "String",
-          "isRedefinition": false
-        },
-        {
-          "name": "statusNotes",
-          "type": "String",
           "isRedefinition": false
         }
       ]
@@ -28644,7 +28304,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 118,
+      "lineNumber": 111,
       "attributes": [
         {
           "name": "catalogueEntry",
@@ -28687,7 +28347,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 133,
+      "lineNumber": 126,
       "attributes": [
         {
           "name": "barista"
@@ -28709,7 +28369,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 139,
+      "lineNumber": 132,
       "attributes": [
         {
           "name": "firstName",
@@ -28732,7 +28392,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 146,
+      "lineNumber": 139,
       "specialises": "Person",
       "attributes": [
         {
@@ -28756,7 +28416,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 153,
+      "lineNumber": 146,
       "specialises": "Person",
       "attributes": [
         {
@@ -28780,7 +28440,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 162,
+      "lineNumber": 155,
       "attributes": [
         {
           "name": "placed"
@@ -28804,11 +28464,11 @@
       "name": "OrderLine",
       "parentPackage": "CoffeeShop",
       "topLevelPackage": "CoffeeShop",
-      "doc": "A single line on an order - one item with its quantity",
+      "doc": "A single line on an order - one item with its quantity.\nA line may name who it is for (H-0486): a free-text\nbeneficiary label, with an optional contact reference.\nBoth are optional; most lines carry neither.",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 170,
+      "lineNumber": 163,
       "attributes": [
         {
           "name": "quantity",
@@ -28819,6 +28479,16 @@
           "name": "item",
           "type": "MenuItem",
           "isRef": true
+        },
+        {
+          "name": "beneficiaryLabel",
+          "type": "String[0..1]",
+          "isRedefinition": false
+        },
+        {
+          "name": "beneficiaryContactRef",
+          "type": "String[0..1]",
+          "isRedefinition": false
         }
       ]
     },
@@ -28827,11 +28497,11 @@
       "name": "Order",
       "parentPackage": "CoffeeShop",
       "topLevelPackage": "CoffeeShop",
-      "doc": "A customer order, containing one or more order lines",
+      "doc": "A customer order, containing one or more order lines.\nThe participant placing the order (orderingParty) and the\nservice subject are carried as separate fields, both typed\nby the General defs. For a walk-in Cafe the two coincide;\nboth are carried so that surface work generalises (H-0630).",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 177,
+      "lineNumber": 175,
       "attributes": [
         {
           "name": "orderNumber",
@@ -28849,9 +28519,16 @@
           "isRedefinition": false
         },
         {
-          "name": "customer",
-          "type": "Customer",
-          "isRef": true
+          "name": "orderingParty",
+          "type": "ServiceParticipant",
+          "isRef": true,
+          "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::ServiceParticipant"
+        },
+        {
+          "name": "serviceSubject",
+          "type": "ServiceSubject",
+          "isRef": true,
+          "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::ServiceSubject"
         }
       ]
     },
@@ -28864,7 +28541,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 185,
+      "lineNumber": 188,
       "specialises": "OrderLine"
     },
     {
@@ -35368,7 +35045,7 @@
       "name": "prescribingQualification",
       "parentPackage": "GslBusinessModel",
       "topLevelPackage": "GslBusinessModel",
-      "doc": "Regulatory requirement: the prescribing clinician\nmust hold appropriate qualification for hormone\nprescribing. Maps to Enterprise::Regulation.",
+      "doc": "Regulatory requirement: the prescribing clinician\nmust hold appropriate qualification for hormone\nprescribing. Maps to GslEnterprise::Regulation.",
       "sourceFile": "exercises/gendersense/model/gsl-business-model.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
@@ -37310,7 +36987,7 @@
       "name": "Partnership",
       "parentPackage": "Strategy",
       "topLevelPackage": "GslEnterprise",
-      "doc": "A strategic partnership or collaboration.\nCross-references BusinessStrategy::\nStrategicObjective by name where the\npartnership supports a specific objective.",
+      "doc": "A strategic partnership or collaboration.\nCross-references BusinessMetamodelGeneral::BusinessStrategy::\nStrategicObjective by name where the\npartnership supports a specific objective.",
       "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
@@ -37680,7 +37357,7 @@
       "name": "RegimenWithinProtocolConstraint",
       "parentPackage": "ConstraintLibrary",
       "topLevelPackage": "GslKnowledge",
-      "doc": "Evaluable rule: the proposed medication, route, and\ndose must fall within the bounds of an approved\nprescribing protocol.\nAt runtime, this evaluates the proposed regimen\nagainst the protocol decision table in\nKnowledge::DecisionModels. A regimen is within\nprotocol if all three components match an ap",
+      "doc": "Evaluable rule: the proposed medication, route, and\ndose must fall within the bounds of an approved\nprescribing protocol.\nAt runtime, this evaluates the proposed regimen\nagainst the protocol decision table in\nGslKnowledge::DecisionTables. A regimen is within\nprotocol if all three components match an",
       "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",
@@ -40538,7 +40215,7 @@
       "name": "WorkforceRole",
       "parentPackage": "People",
       "topLevelPackage": "GslOperations",
-      "doc": "A defined role within the operational workforce.\nCaptures the contract and qualification view of\na role, complementing the planning view in\nBusinessModel::ResourcePlanning::ResourceType.\nWorkforceRole says \"this person needs these\nqualifications and this contract type.\"\nResourceType says \"this categ",
+      "doc": "A defined role within the operational workforce.\nCaptures the contract and qualification view of\na role, complementing the planning view in\nBusinessMetamodelGeneral::ResourcePlanning::ResourceType.\nWorkforceRole says \"this person needs these\nqualifications and this contract type.\"\nResourceType says ",
       "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
       "sourceDomain": "gsl",
       "metaModelLayer": "domain",

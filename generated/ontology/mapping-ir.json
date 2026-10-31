@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "session": 116,
   "summary": {
-    "StructuralOnly": 741,
+    "StructuralOnly": 727,
     "DomainClass": 34,
     "ObjectProperty": 14,
     "DeferredProperty": 2,
@@ -2597,132 +2597,6 @@
       "parentPackage": "DomainConfigurationTypes",
       "sourceFile": "model/system-metamodel-general.sysml",
       "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DrinkName",
-      "kind": "enum_def",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DrinkSize",
-      "kind": "enum_def",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "MilkChoice",
-      "kind": "enum_def",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "DrinkPrice",
-      "kind": "enum_def",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "PreparationMethod",
-      "kind": "enum_def",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OrderRecord",
-      "kind": "part_def",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "CustomerFeedback",
-      "kind": "part_def",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "PreparationEvent",
-      "kind": "part_def",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "OrderComposition",
-      "kind": "part_def",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "orderRecord",
-      "kind": "part",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "PreparationComposition",
-      "kind": "part_def",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "preparationEvent",
-      "kind": "part",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "FeedbackComposition",
-      "kind": "part_def",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
-      "classification": "StructuralOnly",
-      "targetGraph": null
-    },
-    {
-      "name": "customerFeedback",
-      "kind": "part",
-      "parentPackage": "CoffeeShopArchetypes",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-archetypes.sysml",
-      "sourceDomain": "cafe",
       "classification": "StructuralOnly",
       "targetGraph": null
     },

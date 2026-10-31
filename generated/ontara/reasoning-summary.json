@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T20:14:15.591103",
+  "generatedAt": "2026-10-31T15:57:07Z",
   "generator": "reason_kg.py",
   "reasoner": "HermiT (via Robot)",
   "consistent": true,
@@ -1059,7 +1059,7 @@
       {
         "iri": "ontara-rsn:hasHazardDescription",
         "label": "has hazard description",
-        "domain": "n024b8eddad67455c9a18d8dccfe0d919b1",
+        "domain": "(ontara-rsn:SafetyConstraint or ontara-rsn:UnsafeControlAction)",
         "range": "string",
         "comment": "A natural-language description of the hazard associated with a\nSafetyConstraint or UnsafeControlAction. For SafetyConstraint: describes\nwhat harm results from violating the constraint. For UnsafeControlAction:\ndescribes the hazard the unsafe action caused or could cause."
       },

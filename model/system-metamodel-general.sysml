@@ -1680,12 +1680,17 @@ package SystemMetamodelGeneral {
                  *   (Temporal)
                  * - externalReference: knowledge the system links to
                  *   but does not own
+                 * - knowledgeGraph: runtime SRS content held as triples
+                 *   in the knowledge graph (B56); the default runtime
+                 *   store (S197); the Cafe's store from S515 decision D1
                  *
-                 * System meta model concept. */
+                 * System meta model concept. knowledgeGraph added
+                 * Session 518 (S0.3). */
             clinicalDataRepository;
             businessDatabase;
             processEngine;
             externalReference;
+            knowledgeGraph;
         }
 
         enum def DataCharacteristic {
@@ -1918,8 +1923,8 @@ package SystemMetamodelGeneral {
         }
 
         // -- openEHR annotation metadata ----------------------------
-        // Formerly in Foundation's MetadataLibrary (group C). Used by both the
-        // Cafe (coffeeshop-archetypes) and GSL.
+        // Formerly in Foundation's MetadataLibrary (group C). Used by GSL; the
+        // Cafe's archetype package was deleted at S518 (S0.3, H-0434).
 
         // -- openEHR CDR integration metadata -------------------
 

@@ -60,17 +60,6 @@ package CoffeeShop {
 
     // -- Core domain definitions ---------------
 
-    part def ExternalReference {
-        doc /* A link to knowledge that lives outside the system.
-             * The system does not own this data; it points to it.
-             * Examples: SPC, BNF entry, NICE guidance, supplier
-             * datasheet, origin certification. */
-        attribute referenceType : String;
-        attribute referenceId : String;
-        attribute referenceSource : String;
-        attribute referenceNotes : String;
-    }
-
     part def MenuItem {
         doc /* Something the shop sells. Describes intrinsic product
              * characteristics only. Price and availability are
@@ -80,7 +69,7 @@ package CoffeeShop {
         attribute category : ItemCategory;
         attribute isVegan : Boolean;
         attribute description : String;
-        part externalRefs : ExternalReference [0..*];
+        part externalRefs : BusinessMetamodelGeneral::ServiceConcept::ExternalReference [0..*];
     }
 
     part def Drink :> MenuItem {
@@ -100,19 +89,23 @@ package CoffeeShop {
 
     // -- Catalogue and inventory ----------------
 
-    part def CatalogueEntry {
+    part def CatalogueEntry :> BusinessMetamodelGeneral::ServiceConcept::CatalogueEntry {
         doc /* The business decision to offer an item for sale.
-             * References an item definition (MenuItem or specialisation)
-             * and adds business-context properties: price, availability,
-             * provision type. A single item may appear in multiple
-             * catalogues at different prices or terms. */
+             * Specialises the General CatalogueEntry (S518, S0.3):
+             * references an item definition (MenuItem or specialisation)
+             * and adds typed business-context properties: price,
+             * availability, provision kind. A single item may appear in
+             * multiple catalogues at different prices or terms.
+             *
+             * effectiveDate and statusNotes are inherited. The typed
+             * attributes are the ones the Cafe uses; the inherited
+             * untyped pricingDescription, availabilityStatus and
+             * provisionType are left unset. */
         ref item : MenuItem;
         attribute pricePence : Integer;
         attribute priceDisplay : String;
         attribute availability : AvailabilityStatus;
-        attribute provisionType : ProvisionType;
-        attribute effectiveDate : String;
-        attribute statusNotes : String;
+        attribute provisionKind : ProvisionType;
     }
 
     part def InventoryRecord {
@@ -168,20 +161,30 @@ package CoffeeShop {
     }
 
     part def OrderLine {
-        doc /* A single line on an order - one item with its quantity */
+        doc /* A single line on an order - one item with its quantity.
+             * A line may name who it is for (H-0486): a free-text
+             * beneficiary label, with an optional contact reference.
+             * Both are optional; most lines carry neither. */
         
         attribute quantity : Integer;
         ref item : MenuItem;
+        attribute beneficiaryLabel : String[0..1];
+        attribute beneficiaryContactRef : String[0..1];
     }
 
     part def Order {
-        doc /* A customer order, containing one or more order lines */
+        doc /* A customer order, containing one or more order lines.
+             * The participant placing the order (orderingParty) and the
+             * service subject are carried as separate fields, both typed
+             * by the General defs. For a walk-in Cafe the two coincide;
+             * both are carried so that surface work generalises (H-0630). */
 
         attribute orderNumber : Integer;
         attribute status : OrderStatus;
         attribute totalPrice : Real;            // ScalarValue::Real
 
-        ref customer : Customer;
+        ref orderingParty : BusinessMetamodelGeneral::ServiceConcept::ServiceParticipant;
+        ref serviceSubject : BusinessMetamodelGeneral::ServiceConcept::ServiceSubject;
         part lines : OrderLine[1..*];  // An order must have at least one line
 
         exhibit state orderLifecycle : OrderLifecycle; // The `exhibit` keyword says that this part performs (exhibits) this behaviour. Each Order has its own instance of the OrderLifecycle state machine, which tracks the state of that order.

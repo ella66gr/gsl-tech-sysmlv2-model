@@ -58,16 +58,17 @@ CAFE_OUT   := exercises/coffeeshop-demonstrator/generated
 GSL_MODEL  := exercises/gendersense/model
 GSL_OUT    := generated
 NODE       ?= node
+GENERAL_PACKAGES := --general-package BusinessMetamodelGeneral --general-package SystemMetamodelGeneral
 
 .PHONY: gen gen-cafe gen-gsl gen-check gen-test
 
 gen: gen-cafe gen-gsl
 
 # Cafe: types, XState machine + lifecycle guard + next-action map, Temporal
-# workflow + step table, Mermaid pathway.
+# workflow + step table, Mermaid pathway, General element list.
 gen-cafe:
 	$(PYTHON) -m generation.ts_types --model $(CAFE_MODEL) --out $(CAFE_OUT) \
-		--model-name CoffeeShop --package CoffeeShop
+		--model-name CoffeeShop --package CoffeeShop --platform-model model
 	$(PYTHON) -m generation.state_machine --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop
 	$(PYTHON) -m generation.temporal_workflow --model $(CAFE_MODEL) --out $(CAFE_OUT) \
@@ -76,12 +77,17 @@ gen-cafe:
 		--lifecycle-import @coffeeshop/shared/dist/generated/order-lifecycle-guard.js
 	$(PYTHON) -m generation.mermaid_pathway --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop --action-def FulfilDrink
+	$(PYTHON) -m generation.element_list --model $(CAFE_MODEL) --out $(CAFE_OUT) \
+		--model-name CoffeeShop --platform-model model $(GENERAL_PACKAGES)
 
-# GenderSense: E6 constraint evaluators.
+# GenderSense: E6 constraint evaluators, General element list.
 gen-gsl:
 	$(PYTHON) -m generation.constraint_evaluator --model $(GSL_MODEL) --out $(GSL_OUT) \
 		--model-name GenderSense --platform-model model \
 		--constraint-package ConstraintLibrary --spec-package ClinicalDecisionSupport --quiet
+	$(PYTHON) -m generation.element_list --model $(GSL_MODEL) --out $(GSL_OUT) \
+		--model-name GenderSense --platform-model model $(GENERAL_PACKAGES) \
+		--filename gsl-general-elements.txt
 
 gen-check:
 	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/ontara-gen-check.XXXXXX") || exit 2; \

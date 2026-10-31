@@ -2770,15 +2770,26 @@ package BusinessMetamodelGeneral {
                  * supporting attributes (authorisationRequiredToTrade,
                  * professionalRegistrations, regulatedActivities).
                  *
-                 * generallyGoverned: only general business law (consumer,
-                 *   contract, H&S, employment, GDPR). No sector regulator,
-                 *   no licensing regime, no role-binding professional body.
-                 *   Example: Cafe.
+                 * The shape follows authorisation, not registration
+                 * (S518): a statutory duty or a mandatory registration
+                 * that the authority cannot refuse does not, by itself,
+                 * move a business off generallyGoverned. It is recorded
+                 * on regulatedActivities.
+                 *
+                 * generallyGoverned: no sector regulator, no licence or
+                 *   permit that an authority can refuse or withdraw, and
+                 *   no role-binding professional body. General business
+                 *   law applies (consumer, contract, H&S, employment,
+                 *   GDPR). Statutory duties and registrations the
+                 *   business carries (for example food business
+                 *   registration and the HACCP duty) are recorded on
+                 *   regulatedActivities. Example: Cafe.
                  * locallyLicensed: no sector regulator, but provision
-                 *   requires a local-authority licence, environmental
-                 *   permit, or sector-specific statutory duty (animal
-                 *   welfare, COSHH, premises licence) beyond general law.
-                 *   Example: Suds, Paws.
+                 *   needs a local-authority licence or permit that can be
+                 *   refused or withdrawn (a premises licence, an
+                 *   environmental permit, an animal activity licence).
+                 *   Example: Suds, Paws (their review is deferred to
+                 *   their landing, S518).
                  * professionalBodyRegulated: no sector regulator, but
                  *   practitioners are bound by membership-based
                  *   professional bodies (BACP, UKCP, ICF, BPS) whose
@@ -2792,8 +2803,9 @@ package BusinessMetamodelGeneral {
                  *   below CQC threshold.
                  * sectorRegulated: the business itself sits within a
                  *   sector regulator's perimeter (CQC, FCA, Ofsted, SRA,
-                 *   Ofcom, EA). Authorisation/registration is required
-                 *   to lawfully provide the core service.
+                 *   Ofcom, EA). An authorisation that the regulator can
+                 *   refuse or withdraw is required to lawfully provide the
+                 *   core service.
                  *   Example: Ears, GSL.
                  *
                  * Renamed from RegulatoryTier and rebuilt at S278:
@@ -2810,7 +2822,10 @@ package BusinessMetamodelGeneral {
                  * by sectorRegulated for the Ears-shaped case.
                  *
                  * Business meta model concept. Domain identity (B15).
-                 * Session 59, confirmed Session 142, rebuilt Session 278. */
+                 * Session 59, confirmed Session 142, rebuilt Session 278.
+                 * Session 518: the shape follows authorisation, not
+                 * registration (generallyGoverned and locallyLicensed
+                 * restated). */
             generallyGoverned;
             locallyLicensed;
             professionalBodyRegulated;
@@ -2875,7 +2890,8 @@ package BusinessMetamodelGeneral {
             doc /* Which subset of the Business Meta Model vocabulary
                  * a domain instantiates.
                  * generalOnly: uses only General-level BMM elements.
-                 * full: uses both General and Tailored elements.
+                 * full: uses both General and Domain elements (Tailored
+                 *   was retired at S517).
                  * production: full vocabulary plus production-grade
                  *   governance, audit, and operational requirements.
                  *
@@ -2925,16 +2941,42 @@ package BusinessMetamodelGeneral {
         }
 
         enum def RegulatedActivity {
-            doc /* Activities regulated by CQC under the Health and Social
-                 * Care Act 2008. A service providing any of these must be
-                 * registered with CQC. Used during governance framework
-                 * activation to determine directive applicability.
+            doc /* Activities regulated or registered under any regime
+                 * (S518). Each value names its regime and whether it needs
+                 * an authorisation (one the authority can refuse or
+                 * withdraw; it sets authorisationRequiredToTrade true) or
+                 * a registration (a notification duty that cannot be
+                 * refused; it leaves the attribute false). Used during
+                 * governance framework activation to determine directive
+                 * applicability.
                  *
-                 * Source: HSCA 2008 (Regulated Activities) Regulations 2014,
-                 * Schedule 1.
+                 * CQC values (authorisation), personalCare to nursingCare:
+                 *   activities regulated by the Care Quality Commission.
+                 *   Source: Health and Social Care Act 2008 (Regulated
+                 *   Activities) Regulations 2014 (SI 2014/2936),
+                 *   Schedule 1. A provider must be registered with CQC,
+                 *   and CQC can refuse the registration (HSCA 2008
+                 *   s.12(2)).
+                 *
+                 * foodBusinessOperation (registration): food business
+                 *   operation in England. Regime: Regulation (EC) No
+                 *   852/2004 on the hygiene of foodstuffs (assimilated
+                 *   law), enforced by the Food Safety and Hygiene
+                 *   (England) Regulations 2013 (SI 2013/2996), reg 19 and
+                 *   Sch 2. The operator notifies the local authority with
+                 *   a view to registration under Article 6(2), and the
+                 *   authority cannot refuse it. GOV.UK/FSA guidance asks
+                 *   for registration at least 28 days before trading; the
+                 *   period is guidance, not statute. The operator must
+                 *   also put in place and maintain procedures based on
+                 *   HACCP principles, under Article 5(1). Approval under
+                 *   Article 6(3), which can be refused, is separate: it
+                 *   applies only to establishments under Regulation (EC)
+                 *   No 853/2004, and an approved-establishment case needs
+                 *   its own value.
                  *
                  * Business meta model concept. Domain identity (B15).
-                 * Session 142 (S142-D7). */
+                 * Session 142 (S142-D7); widened beyond CQC at S518. */
             personalCare;
             accommodationForPersonsRequiringNursingOrPersonalCare;
             accommodationForPersonsRequiringTreatmentForSubstanceMisuse;
@@ -2948,6 +2990,7 @@ package BusinessMetamodelGeneral {
             terminationOfPregnancies;
             familyPlanning;
             nursingCare;
+            foodBusinessOperation;
         }
 
         enum def OrganisationalForm {
@@ -2990,6 +3033,10 @@ package BusinessMetamodelGeneral {
                  * is now also the carrier of the
                  * mixed-services-with-regulated-components case (the
                  * old partiallyRegulated tier).
+                 * Session 518: regulatoryShape follows authorisation, not
+                 * registration, and regulatedActivities covers activities
+                 * regulated or registered under any regime, not only CQC
+                 * Schedule 1.
                  *
                  * authorisationRequiredToTrade (canon definition, S515):
                  * True where the business cannot lawfully offer its core

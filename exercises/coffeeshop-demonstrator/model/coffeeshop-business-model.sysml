@@ -16,17 +16,20 @@
 
 package CoffeeShopBusinessModel {
     private import ScalarValues::*;
-    private import BusinessMetamodelGeneral::ServiceConcept::*;
+    private import BusinessMetamodelGeneral::ServiceConcept::CustomerSegment;
+    private import BusinessMetamodelGeneral::ServiceConcept::ServiceOffering;
+    private import BusinessMetamodelGeneral::ServiceConcept::Channel;
     private import BusinessMetamodelGeneral::ActivityModel::*;
     private import SystemMetamodelGeneral::Persistence::*;        // PersistenceLayer, PersistencePolicy
     private import CoffeeShop::*;
     private import BusinessMetamodelGeneral::StakeholderModel::*;
 
-    // Import note: Both CoffeeShop and BusinessMetamodelGeneral::ServiceConcept
-    // export CatalogueEntry and ExternalReference (name collision
-    // introduced Session 29 when meta model CatalogueEntry was added).
-    // Catalogue entry usages below use fully qualified
-    // CoffeeShop::CatalogueEntry to resolve the ambiguity.
+    // Import note: ServiceConcept is imported by name, not by wildcard
+    // (S518, S0.3). CoffeeShop::CatalogueEntry specialises the General
+    // CatalogueEntry and keeps its name, so a wildcard import of
+    // ServiceConcept would bring a second CatalogueEntry into this
+    // namespace (the name collision first introduced at Session 29).
+    // Catalogue entry usages below still write CoffeeShop::CatalogueEntry.
 
     doc /* Coffee shop business model extension. Instantiates the
          * ServiceConcept and ActivityModel part defs from the main
@@ -183,7 +186,7 @@ package CoffeeShopBusinessModel {
         attribute :>> pricePence = 280;
         attribute :>> priceDisplay = "£2.80";
         attribute :>> availability = AvailabilityStatus::active;
-        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> provisionKind = ProvisionType::prepared;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "Core menu item";
     }
@@ -192,7 +195,7 @@ package CoffeeShopBusinessModel {
         attribute :>> pricePence = 280;
         attribute :>> priceDisplay = "£2.80";
         attribute :>> availability = AvailabilityStatus::active;
-        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> provisionKind = ProvisionType::prepared;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "Core menu item";
     }
@@ -201,7 +204,7 @@ package CoffeeShopBusinessModel {
         attribute :>> pricePence = 250;
         attribute :>> priceDisplay = "£2.50";
         attribute :>> availability = AvailabilityStatus::active;
-        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> provisionKind = ProvisionType::prepared;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "Core menu item";
     }
@@ -210,7 +213,7 @@ package CoffeeShopBusinessModel {
         attribute :>> pricePence = 280;
         attribute :>> priceDisplay = "£2.80";
         attribute :>> availability = AvailabilityStatus::active;
-        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> provisionKind = ProvisionType::prepared;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "Core menu item";
     }
@@ -219,7 +222,7 @@ package CoffeeShopBusinessModel {
         attribute :>> pricePence = 200;
         attribute :>> priceDisplay = "£2.00";
         attribute :>> availability = AvailabilityStatus::active;
-        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> provisionKind = ProvisionType::prepared;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "Core menu item — single size only";
     }
@@ -230,7 +233,7 @@ package CoffeeShopBusinessModel {
         attribute :>> pricePence = 320;
         attribute :>> priceDisplay = "£3.20";
         attribute :>> availability = AvailabilityStatus::active;
-        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> provisionKind = ProvisionType::prepared;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "Seasonal favourite";
     }
@@ -239,7 +242,7 @@ package CoffeeShopBusinessModel {
         attribute :>> pricePence = 300;
         attribute :>> priceDisplay = "£3.00";
         attribute :>> availability = AvailabilityStatus::active;
-        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> provisionKind = ProvisionType::prepared;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "Slow-steeped — 12hr preparation";
     }
@@ -251,7 +254,7 @@ package CoffeeShopBusinessModel {
         attribute :>> pricePence = 380;
         attribute :>> priceDisplay = "£3.80";
         attribute :>> availability = AvailabilityStatus::active;
-        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> provisionKind = ProvisionType::prepared;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "New menu item — espresso with chocolate and steamed milk";
     }
@@ -261,7 +264,7 @@ package CoffeeShopBusinessModel {
         attribute :>> pricePence = 420;
         attribute :>> priceDisplay = "£4.20";
         attribute :>> availability = AvailabilityStatus::active;
-        attribute :>> provisionType = ProvisionType::prepared;
+        attribute :>> provisionKind = ProvisionType::prepared;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "New menu item — blended iced coffee";
     }
@@ -274,7 +277,7 @@ package CoffeeShopBusinessModel {
         attribute :>> pricePence = 180;
         attribute :>> priceDisplay = "£1.80";
         attribute :>> availability = AvailabilityStatus::active;
-        attribute :>> provisionType = ProvisionType::boughtIn;
+        attribute :>> provisionKind = ProvisionType::boughtIn;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "New menu item — bought-in, stock tracked";
     }
@@ -285,7 +288,7 @@ package CoffeeShopBusinessModel {
         attribute :>> pricePence = 220;
         attribute :>> priceDisplay = "£2.20";
         attribute :>> availability = AvailabilityStatus::active;
-        attribute :>> provisionType = ProvisionType::boughtIn;
+        attribute :>> provisionKind = ProvisionType::boughtIn;
         attribute :>> effectiveDate = "2026-03-12";
         attribute :>> statusNotes = "New menu item — bought-in, vegan, GF, stock tracked";
     }
@@ -294,51 +297,56 @@ package CoffeeShopBusinessModel {
     //
     // System meta model instantiation: explicit
     // architectural reasoning for where each CSW domain concept
-    // is persisted and why. Makes the three-persistence-layer
-    // architecture queryable and auditable.
+    // is persisted and why. Rewritten at S518 (S0.3) for S515 D1:
+    // runtime content is held in the knowledge graph; the process
+    // engine holds only private workflow state. No Cafe policy
+    // targets businessDatabase or clinicalDataRepository.
     //
     // Added Session 29: CSW Extension Phase 10 (item 8.3).
     // Source: gsl-spec-catalogue-inventory-v2.1.md §8.3
 
     part catalogueEntryPolicy : PersistencePolicy {
-        doc /* Business reference data. Simple CRUD, relational
-             * joins to menu items and inventory. No clinical
-             * significance. */
+        doc /* Runtime content: the catalogue, prices and availability
+             * are held as triples in the knowledge graph (H-0264;
+             * S515 D1). */
         attribute :>> domainConcept = "CatalogueEntry";
-        attribute :>> targetLayer = PersistenceLayer::businessDatabase;
-        attribute :>> rationale = "Business reference data. Simple CRUD, relational joins. No clinical significance.";
+        attribute :>> targetLayer = PersistenceLayer::knowledgeGraph;
+        attribute :>> rationale = "The catalogue, prices and availability are runtime content, held in the knowledge graph (H-0264).";
     }
 
     part inventoryRecordPolicy : PersistencePolicy {
-        doc /* Operational state. Atomic decrement on sale. No
-             * archetype validation needed. */
+        doc /* Runtime operational state, held as triples in the knowledge
+             * graph with the catalogue entry it counts (S515 D1). */
         attribute :>> domainConcept = "InventoryRecord";
-        attribute :>> targetLayer = PersistenceLayer::businessDatabase;
-        attribute :>> rationale = "Operational state. Atomic decrement on sale. No archetype validation needed.";
+        attribute :>> targetLayer = PersistenceLayer::knowledgeGraph;
+        attribute :>> rationale = "Stock levels are runtime operational state, held in the knowledge graph beside the catalogue (S515 D1).";
     }
 
     part orderRecordPolicy : PersistencePolicy {
-        doc /* Clinical analogue. Benefits from archetype validation,
-             * immutable versioning, audit trail. */
+        doc /* Orders are DBR content: the record of the business's own
+             * transactions, held in the knowledge graph (S515 D1). */
         attribute :>> domainConcept = "OrderRecord";
-        attribute :>> targetLayer = PersistenceLayer::clinicalDataRepository;
-        attribute :>> rationale = "Clinical analogue. Archetype validation, immutable versioning, audit trail.";
+        attribute :>> targetLayer = PersistenceLayer::knowledgeGraph;
+        attribute :>> rationale = "Orders are DBR content, held in the knowledge graph (S515 D1).";
     }
 
     part feedbackRecordPolicy : PersistencePolicy {
-        doc /* Qualitative assessment. Archetype-validated, versioned,
-             * queryable via AQL. */
+        doc /* Feedback is DSR content: a record about the service delivered,
+             * held in the knowledge graph (S515 D1). */
         attribute :>> domainConcept = "FeedbackRecord";
-        attribute :>> targetLayer = PersistenceLayer::clinicalDataRepository;
-        attribute :>> rationale = "Qualitative assessment. Archetype-validated, versioned, queryable via AQL.";
+        attribute :>> targetLayer = PersistenceLayer::knowledgeGraph;
+        attribute :>> rationale = "Feedback is DSR content, held in the knowledge graph (S515 D1).";
     }
 
     part orderWorkflowPolicy : PersistencePolicy {
-        doc /* Stateful process. Durable execution, signal handling,
-             * activity orchestration. */
+        doc /* Stateful process: durable execution, signal handling,
+             * activity orchestration. Temporal's store is private
+             * realiser storage, never a source of truth: anything with
+             * meaning beyond the workflow is written to DSR through its
+             * binding (H-0462). */
         attribute :>> domainConcept = "OrderWorkflow";
         attribute :>> targetLayer = PersistenceLayer::processEngine;
-        attribute :>> rationale = "Stateful process. Durable execution, signal handling, activity orchestration.";
+        attribute :>> rationale = "Temporal's store is private realiser storage, never a source of truth; anything with meaning beyond the workflow is written to DSR through its binding (H-0462).";
     }
 
     part externalKnowledgePolicy : PersistencePolicy {

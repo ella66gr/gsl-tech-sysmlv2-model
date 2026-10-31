@@ -24,9 +24,15 @@ package FixtureShop {
         part lines : Tag[1..*];
     }
 
+    part def Badge :> ShopPlatformFixture::Concepts::Tag {
+        attribute shown : Boolean;
+    }
+
     part def Ticket :> Item {
         attribute count : Integer;
+        attribute note : String[0..1];
         ref owner : Item;
+        ref payer : ShopPlatformFixture::Concepts::Party;
         exhibit state lifecycle : TicketLifecycle;
     }
 }

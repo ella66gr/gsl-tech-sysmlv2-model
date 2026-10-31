@@ -11,6 +11,7 @@ Generators:
     generation.temporal_workflow     Temporal workflow and its step table
     generation.mermaid_pathway       Mermaid flowchart of an action flow
     generation.constraint_evaluator  E6 constraint evaluators
+    generation.element_list          General elements a tenant instantiates (S0.3)
 
 Run any of them as ``python3 -m generation.<name> --help``.
 """

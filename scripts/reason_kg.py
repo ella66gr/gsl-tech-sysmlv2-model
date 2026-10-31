@@ -29,6 +29,7 @@ C1 (2026-05-10): ELK added as daily classifier; HermiT remains release-gate.
 """
 
 import argparse
+import hashlib
 import json
 import os
 import pathlib
@@ -36,7 +37,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-from datetime import datetime
 
 # ---------------------------------------------------------------
 # Configuration
@@ -335,7 +335,8 @@ def extract_reasoning_vocabulary():
         return None
 
     try:
-        from rdflib import Graph, Namespace, URIRef, Literal
+        from rdflib import BNode, Graph, Namespace, URIRef, Literal
+        from rdflib.collection import Collection
         from rdflib.namespace import RDF, RDFS, OWL, XSD
     except ImportError:
         print("  WARNING: rdflib not available — reasoning vocabulary not extracted.", file=sys.stderr)
@@ -350,7 +351,20 @@ def extract_reasoning_vocabulary():
     BFO = Namespace("http://purl.obolibrary.org/obo/")
 
     def short_iri(uri):
-        """Convert full IRI to short display form."""
+        """Convert full IRI to short display form.
+
+        A blank node gets a stable label derived from its content, never
+        rdflib's per-run id (S518, F1): an owl:unionOf or owl:intersectionOf
+        class becomes "(A or B)" / "(A and B)" with its members sorted, and
+        any other blank node becomes "_:" plus a hash of its sorted triples.
+        """
+        if isinstance(uri, BNode):
+            for op, word in ((OWL.unionOf, " or "), (OWL.intersectionOf, " and ")):
+                members = g.value(uri, op)
+                if members is not None:
+                    return "(" + word.join(sorted(short_iri(m) for m in Collection(g, members))) + ")"
+            triples = sorted(f"{short_iri(p)} {short_iri(o)}" for p, o in g.predicate_objects(uri))
+            return "_:" + hashlib.sha256("\n".join(triples).encode("utf-8")).hexdigest()[:12]
         uri_str = str(uri)
         prefixes = {
             "https://ontara.dev/ontology/reasoning/": "ontara-rsn:",
@@ -798,6 +812,29 @@ def test_violation(verbose=False, reasoner="hermit"):
 # Reporting
 # ---------------------------------------------------------------
 
+# The files the summary's generatedAt is dated from: the model and the
+# hand-authored ontology the reasoned stack is built from.
+MODEL_PATHSPECS = ["model", "libraries", "ontology", ":(glob)exercises/*/model/**"]
+
+
+def model_date():
+    """Author date of the last commit touching the model's files (S518, F1).
+
+    Taken from the model, not the run, so that --save-summary is
+    deterministic: rerunning it on the same commit writes the same file. The
+    author date is used because an amend keeps it. Falls back to "unknown"
+    outside a git checkout.
+    """
+    try:
+        out = subprocess.run(
+            ["git", "log", "-1", "--format=%aI", "--", *MODEL_PATHSPECS],
+            cwd=REPO_ROOT, capture_output=True, text=True, check=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
+    return out or "unknown"
+
+
 def print_summary(consistent, unsatisfiable, test_result=None, reasoner="hermit"):
     """Print a final summary."""
     print("\n=== REASONING SUMMARY ===")
@@ -896,7 +933,7 @@ def main():
         sparql_query_count = count_sparql_queries()
 
         summary = {
-            "generatedAt": datetime.now().isoformat(),
+            "generatedAt": model_date(),
             "generator": "reason_kg.py",
             "reasoner": f"{reasoner_label(args.reasoner)} (via Robot)",
             "consistent": consistent,

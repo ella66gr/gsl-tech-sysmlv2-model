@@ -1,0 +1,232 @@
+# ============================================================
+# DO NOT EDIT — Generated from GenderSense SysML v2 model
+# Source: exercises/gendersense/model/; General packages: BusinessMetamodelGeneral, SystemMetamodelGeneral
+# Generator: generation/element_list.py
+# ============================================================
+
+BusinessMetamodelGeneral::BusinessScenarios::ForecastBaseline
+  part GslScenarios::fullPlatformBaselineV1
+  part GslScenarios::leanClinicalBaselineV1
+BusinessMetamodelGeneral::BusinessScenarios::GrowthAssumption
+  part GslScenarios::fpGrowthClinicianFTE
+  part GslScenarios::fpGrowthPatientAcquisition
+  part GslScenarios::fpGrowthSubscriptionBase
+  part GslScenarios::growthChurnRate
+  part GslScenarios::growthClinicianFTE
+  part GslScenarios::growthConversionRate
+  part GslScenarios::growthPatientAcquisitionYear1
+  part GslScenarios::growthPatientAcquisitionYear2
+BusinessMetamodelGeneral::BusinessScenarios::ProjectionFormula
+  part GslScenarios::formulaCumulativeCash
+  part GslScenarios::formulaDirectCost
+  part GslScenarios::formulaFullPlatformDirectCost
+  part GslScenarios::formulaFullPlatformTotalRevenue
+  part GslScenarios::formulaMargin
+  part GslScenarios::formulaMonthlyAssessmentRevenue
+  part GslScenarios::formulaMonthlyMonitoringRevenue
+  part GslScenarios::formulaOverhead
+  part GslScenarios::formulaSubscriptionRevenue
+  part GslScenarios::formulaTotalRevenue
+  part GslScenarios::formulaUtilisation
+BusinessMetamodelGeneral::BusinessScenarios::ProjectionOutput
+  part GslScenarios::fpOutputMonth1
+  part GslScenarios::fpOutputMonth12
+  part GslScenarios::fpOutputMonth18
+  part GslScenarios::fpOutputMonth24
+  part GslScenarios::fpOutputMonth6
+  part GslScenarios::outputMonth1
+  part GslScenarios::outputMonth12
+  part GslScenarios::outputMonth18
+  part GslScenarios::outputMonth24
+  part GslScenarios::outputMonth6
+BusinessMetamodelGeneral::BusinessScenarios::ProjectionParameter
+  part GslScenarios::fpParamClinician1FTEEarly
+  part GslScenarios::fpParamClinician1FTELater
+  part GslScenarios::fpParamClinician2FTEEarly
+  part GslScenarios::fpParamClinician2FTELater
+  part GslScenarios::fpParamCoachCost
+  part GslScenarios::fpParamCoachFTE
+  part GslScenarios::fpParamModeratorCost
+  part GslScenarios::fpParamModeratorFTE
+  part GslScenarios::fpParamPlatformCost
+  part GslScenarios::fpParamSubscriptionFee
+  part GslScenarios::fpParamSubscriptionUptake
+  part GslScenarios::paramAdminCost
+  part GslScenarios::paramAdminFTE
+  part GslScenarios::paramAssessmentConversion
+  part GslScenarios::paramAssessmentFee
+  part GslScenarios::paramBloodPanelsInitiation
+  part GslScenarios::paramBloodPanelsMonitoring
+  part GslScenarios::paramChurnRate
+  part GslScenarios::paramClinicianCost
+  part GslScenarios::paramClinicianFTEEarly
+  part GslScenarios::paramClinicianFTELater
+  part GslScenarios::paramInitiationConversion
+  part GslScenarios::paramInsuranceCost
+  part GslScenarios::paramLabCost
+  part GslScenarios::paramMonitoringFee
+  part GslScenarios::paramNewPatientsYear1
+  part GslScenarios::paramNewPatientsYear2
+  part GslScenarios::paramOverheadPercentage
+  part GslScenarios::paramPlatformCost
+BusinessMetamodelGeneral::BusinessScenarios::ProjectionTimeline
+  part GslScenarios::leanClinicalTimeline
+BusinessMetamodelGeneral::BusinessScenarios::ScenarioComparison
+  part GslScenarios::leanVsFullComparison
+BusinessMetamodelGeneral::BusinessScenarios::ScenarioDefinition
+  part GslScenarios::fullPlatformScenario
+  part GslScenarios::leanClinicalScenario
+BusinessMetamodelGeneral::BusinessScenarios::SensitivityParameter
+  part GslScenarios::fpSensitivitySubscriptionPrice
+  part GslScenarios::fpSensitivitySubscriptionUptake
+  part GslScenarios::sensitivityAssessmentFee
+  part GslScenarios::sensitivityClinicianCost
+  part GslScenarios::sensitivityOverhead
+  part GslScenarios::sensitivityPatientGrowth
+BusinessMetamodelGeneral::BusinessStrategy::BusinessModelVariant
+  part GslScenarios::variantConsultancyLicence
+  part GslScenarios::variantFullPlatform
+  part GslScenarios::variantLeanClinical
+BusinessMetamodelGeneral::BusinessStrategy::PivotScenario
+  part GslScenarios::pivotLeanToFull
+BusinessMetamodelGeneral::BusinessStrategy::StrategicObjective
+  requirement GslScenarios::objectiveBreakEven
+  requirement GslScenarios::objectivePatientCohort
+  requirement GslScenarios::objectivePlatformLaunch
+  requirement GslScenarios::objectiveSharedCare
+BusinessMetamodelGeneral::DomainIdentityTypes::DomainIdentity
+  part GslDomainRegistration::gslIdentity
+BusinessMetamodelGeneral::FinancialPlanning::CostDriver
+  part GslBusinessModel::adminCost
+  part GslBusinessModel::clinicianCost
+  part GslBusinessModel::coachCost
+  part GslBusinessModel::insuranceCost
+  part GslBusinessModel::labCost
+  part GslBusinessModel::moderatorCost
+  part GslBusinessModel::overheadCost
+  part GslBusinessModel::platformCost
+BusinessMetamodelGeneral::FinancialPlanning::FinancialProjection
+  part GslBusinessModel::fullPlatformProjection
+  part GslBusinessModel::leanClinicalProjection
+BusinessMetamodelGeneral::FinancialPlanning::PricingModel
+  part GslBusinessModel::perEpisodePricing
+  part GslBusinessModel::subscriptionPricing
+BusinessMetamodelGeneral::FinancialPlanning::RevenueStream
+  part GslBusinessModel::assessmentRevenue
+  part GslBusinessModel::monitoringRevenue
+  part GslBusinessModel::subscriptionRevenue
+BusinessMetamodelGeneral::FinancialPlanning::UnitEconomics
+  part GslBusinessModel::assessmentUnitEconomics
+  part GslBusinessModel::monitoringUnitEconomics
+  part GslBusinessModel::subscriptionUnitEconomics
+BusinessMetamodelGeneral::ResourcePlanning::Capability
+  part GslBusinessModel::assessmentCapability
+  part GslBusinessModel::coachingCapability
+  part GslBusinessModel::communityCapability
+  part GslBusinessModel::monitoringCapability
+  part GslBusinessModel::prescribingCapability
+BusinessMetamodelGeneral::ResourcePlanning::CapacityModel
+  part GslBusinessModel::fullPlatformCapacity
+  part GslBusinessModel::leanClinicalCapacity
+BusinessMetamodelGeneral::ResourcePlanning::ObjectiveCapabilityMapping
+  part GslBusinessModel::breakEvenMapping
+  part GslBusinessModel::patientCohortMapping
+  part GslBusinessModel::platformLaunchMapping
+  part GslBusinessModel::sharedCareMapping
+BusinessMetamodelGeneral::ResourcePlanning::ResourceConstraint
+  part GslBusinessModel::maxPatientsPerClinician
+  part GslBusinessModel::prescribingQualification
+BusinessMetamodelGeneral::ResourcePlanning::ResourceInstance
+  part GslBusinessModel::adminInstance
+  part GslBusinessModel::clinicianMonth10to24
+  part GslBusinessModel::clinicianMonth1to9
+  part GslBusinessModel::coachInstance
+  part GslBusinessModel::moderatorInstance
+  part GslBusinessModel::secondClinicianMonth6to24
+BusinessMetamodelGeneral::ResourcePlanning::ResourceType
+  part GslBusinessModel::administrativeSupport
+  part GslBusinessModel::clinicalPremises
+  part GslBusinessModel::communityModerator
+  part GslBusinessModel::genderCoach
+  part GslBusinessModel::laboratoryServices
+  part GslBusinessModel::prescribingClinician
+  part GslBusinessModel::professionalIndemnity
+  part GslBusinessModel::technologyPlatform
+BusinessMetamodelGeneral::ServiceConcept::Channel
+  part GslBusinessModel::gpReferralNetwork
+  part GslBusinessModel::websiteSeo
+BusinessMetamodelGeneral::ServiceConcept::CustomerSegment
+  part GslBusinessModel::gpReferredPatients
+  part GslBusinessModel::selfReferringIndividuals
+BusinessMetamodelGeneral::ServiceConcept::DifferentiationClaim
+  part GslBusinessModel::modelDrivenSafety
+  part GslBusinessModel::patientPortalVisibility
+BusinessMetamodelGeneral::ServiceConcept::ServiceOffering
+  part GslBusinessModel::coachingService
+  part GslBusinessModel::communityAccess
+  part GslBusinessModel::educationService
+  part GslBusinessModel::hormoneTherapyInitiation
+  part GslBusinessModel::initialAssessment
+  part GslBusinessModel::ongoingMonitoring
+  part GslBusinessModel::subscriptionBundle
+BusinessMetamodelGeneral::ServiceConcept::ValueProposition
+  part GslBusinessModel::fasterAccess
+  part GslBusinessModel::holisticCareModel
+  part GslBusinessModel::integratedDigitalClinical
+  part GslBusinessModel::specialistExpertise
+BusinessMetamodelGeneral::StakeholderModel::CommunityRelationship
+  part GslBusinessModel::transCommunityCommunity
+BusinessMetamodelGeneral::StakeholderModel::CooperativeArrangement
+  part GslBusinessModel::sharedCareProtocol
+BusinessMetamodelGeneral::StakeholderModel::ExternalDependency
+  part GslBusinessModel::laboratoryDependency
+  part GslBusinessModel::pharmaceuticalSupply
+BusinessMetamodelGeneral::StakeholderModel::ParticipationModel
+  part GslBusinessModel::sharedDecisionParticipation
+BusinessMetamodelGeneral::StakeholderModel::ReferralPathway
+  part GslBusinessModel::gpReferralPathway
+  part GslBusinessModel::specialistReferralPathway
+BusinessMetamodelGeneral::StakeholderModel::StakeholderRelationship
+  part GslBusinessModel::cqcRelationship
+  part GslBusinessModel::icbRelationship
+SystemMetamodelGeneral::DecisionModels::DecisionTableDef
+  def GslKnowledge::DecisionTables::RegimenSelectionTable
+  def GslKnowledge::DecisionTables::StabilityAssessmentTable
+SystemMetamodelGeneral::DomainConfigurationTypes::DomainConfiguration
+  part GslDomainRegistration::gslConfiguration
+SystemMetamodelGeneral::EvaluationSpecs::ConstraintEvaluationSpec
+  part GslKnowledge::ClinicalDecisionSupport::baselineBloodsSpec
+  part GslKnowledge::ClinicalDecisionSupport::bloodMonitoringSpec
+  part GslKnowledge::ClinicalDecisionSupport::clinicalReviewSpec
+  part GslKnowledge::ClinicalDecisionSupport::consentSpec
+  part GslKnowledge::ClinicalDecisionSupport::doseAdjustmentSpec
+  part GslKnowledge::ClinicalDecisionSupport::informationSpec
+  part GslKnowledge::ClinicalDecisionSupport::regimenProtocolSpec
+  part GslKnowledge::ClinicalDecisionSupport::sharedCareSpec
+SystemMetamodelGeneral::EvaluationSpecs::DecisionTableEvaluationSpec
+  part GslKnowledge::ClinicalDecisionSupport::regimenSelectionSpec
+  part GslKnowledge::ClinicalDecisionSupport::stabilityAssessmentSpec
+SystemMetamodelGeneral::LogicEngine::Deficit
+  part GslScenarios::deficitMonth6Revenue
+SystemMetamodelGeneral::LogicEngine::GoalProjection
+  part GslScenarios::goalMonth6PatientCount
+  part GslScenarios::goalMonth6Revenue
+SystemMetamodelGeneral::OutcomeFramework::MeasurementPoint
+  part GslKnowledge::OutcomeTargets::annualMonitoringPoint
+  part GslKnowledge::OutcomeTargets::baselinePoint
+  part GslKnowledge::OutcomeTargets::sixMonthPoint
+  part GslKnowledge::OutcomeTargets::threeMonthPoint
+  part GslKnowledge::OutcomeTargets::twelveMonthPoint
+SystemMetamodelGeneral::OutcomeFramework::MeasurementSchedule
+  part GslKnowledge::OutcomeTargets::hormoneTherapySchedule
+SystemMetamodelGeneral::OutcomeFramework::OutcomeDefinition
+  part GslKnowledge::OutcomeTargets::adverseEventTracking
+  part GslKnowledge::OutcomeTargets::appointmentAdherence
+  part GslKnowledge::OutcomeTargets::goalAttainment
+  part GslKnowledge::OutcomeTargets::haematologySafety
+  part GslKnowledge::OutcomeTargets::metabolicSafety
+  part GslKnowledge::OutcomeTargets::monitoringAdherence
+  part GslKnowledge::OutcomeTargets::oestradiolTarget
+  part GslKnowledge::OutcomeTargets::testosteroneMascTarget
+  part GslKnowledge::OutcomeTargets::testosteroneSuppressionTarget
+  part GslKnowledge::OutcomeTargets::treatmentSatisfaction

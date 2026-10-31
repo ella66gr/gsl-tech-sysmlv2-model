@@ -1,6 +1,6 @@
 // ============================================================
 // DO NOT EDIT — Generated from CoffeeShop SysML v2 model
-// Source: exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop)
+// Source: exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop); model/business-metamodel-general.sysml
 // Generator: generation/ts_types.py
 // ============================================================
 
@@ -59,13 +59,6 @@ export enum OrderStatus {
   cancelled = "cancelled",
 }
 
-export interface ExternalReference {
-  referenceType: string;
-  referenceId: string;
-  referenceSource: string;
-  referenceNotes: string;
-}
-
 export interface MenuItem {
   name: string;
   category: ItemCategory;
@@ -85,13 +78,11 @@ export interface FoodItem extends MenuItem {
   servedWarm: boolean;
 }
 
-export interface CatalogueEntry {
+export interface CatalogueEntry extends ServiceConceptCatalogueEntry {
   pricePence: number;
   priceDisplay: string;
   availability: AvailabilityStatus;
-  provisionType: ProvisionType;
-  effectiveDate: string;
-  statusNotes: string;
+  provisionKind: ProvisionType;
   item: MenuItem;
 }
 
@@ -121,6 +112,8 @@ export interface StaffMember extends Person {
 
 export interface OrderLine {
   quantity: number;
+  beneficiaryLabel?: string;
+  beneficiaryContactRef?: string;
   item: MenuItem;
 }
 
@@ -128,6 +121,46 @@ export interface Order {
   orderNumber: number;
   status: OrderStatus;
   totalPrice: number;
-  customer: Customer;
+  orderingParty: ServiceParticipant;
+  serviceSubject: ServiceSubject;
   lines: OrderLine[];
+}
+
+// Platform defs used by this package (from the platform model)
+
+/** BusinessMetamodelGeneral::ServiceConcept::CatalogueEntry */
+export interface ServiceConceptCatalogueEntry {
+  entryName: string;
+  itemReference: string;
+  pricingDescription: string;
+  availabilityStatus: string;
+  provisionType: string;
+  effectiveDate: string;
+  statusNotes: string;
+}
+
+/** BusinessMetamodelGeneral::ServiceConcept::ExternalReference */
+export interface ExternalReference {
+  referenceType: string;
+  referenceId: string;
+  referenceSource: string;
+  referenceNotes: string;
+}
+
+/** BusinessMetamodelGeneral::ServiceConcept::ServiceParticipant */
+export interface ServiceParticipant {
+  participantName: string;
+  participantRole: string;
+  entityDescription: string;
+  relationshipToEngagement: string;
+  statusNotes: string;
+}
+
+/** BusinessMetamodelGeneral::ServiceConcept::ServiceSubject */
+export interface ServiceSubject {
+  subjectName: string;
+  entityDescription: string;
+  independentNeeds: string;
+  conditionNotes: string;
+  statusNotes: string;
 }

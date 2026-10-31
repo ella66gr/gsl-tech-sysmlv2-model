@@ -1,0 +1,132 @@
+# ============================================================
+# DO NOT EDIT — Generated from CoffeeShop SysML v2 model
+# Source: exercises/coffeeshop-demonstrator/model/; General packages: BusinessMetamodelGeneral, SystemMetamodelGeneral
+# Generator: generation/element_list.py
+# ============================================================
+
+BusinessMetamodelGeneral::ActivityModel::ActivityGranularity
+  part CoffeeShopBusinessModel::developmentGranularity
+  part CoffeeShopBusinessModel::enablingGranularity
+  part CoffeeShopBusinessModel::governanceGranularity
+  part CoffeeShopBusinessModel::overheadGranularity
+  part CoffeeShopBusinessModel::serviceDeliveryGranularity
+BusinessMetamodelGeneral::ActivityModel::ActivityType
+  part CoffeeShopBusinessModel::baristaTraining
+  part CoffeeShopBusinessModel::catalogueMaintenance
+  part CoffeeShopBusinessModel::healthSafetyChecks
+  part CoffeeShopBusinessModel::makeDrink
+  part CoffeeShopBusinessModel::prepAndClean
+  part CoffeeShopBusinessModel::tillReconciliation
+BusinessMetamodelGeneral::BusinessScenarios::GrowthAssumption
+  part CoffeeshopScenarios::cafeGrowth
+  part CoffeeshopScenarios::kioskGrowth
+  part CoffeeshopScenarios::subMemberGrowth
+BusinessMetamodelGeneral::BusinessScenarios::PeriodActuals
+  part CoffeeshopScenarios::kioskWeek1Actuals
+BusinessMetamodelGeneral::BusinessScenarios::ProjectionFormula
+  part CoffeeshopScenarios::formulaCafeSubscriptionRevenue
+  part CoffeeshopScenarios::formulaCafeSubscriptionTotalRevenue
+BusinessMetamodelGeneral::BusinessScenarios::ProjectionOutput
+  part CoffeeshopScenarios::cafeMonth6
+  part CoffeeshopScenarios::cafeSubMonth6
+  part CoffeeshopScenarios::kioskMonth6
+BusinessMetamodelGeneral::BusinessScenarios::ProjectionParameter
+  part CoffeeshopScenarios::cafeBaristaCost
+  part CoffeeshopScenarios::cafeDailyDrinks
+  part CoffeeshopScenarios::cafePricePerDrink
+  part CoffeeshopScenarios::cafeRent
+  part CoffeeshopScenarios::kioskBaristaCost
+  part CoffeeshopScenarios::kioskDailyDrinks
+  part CoffeeshopScenarios::kioskPricePerDrink
+  part CoffeeshopScenarios::kioskRent
+  part CoffeeshopScenarios::subMemberCount
+  part CoffeeshopScenarios::subMonthlyFee
+BusinessMetamodelGeneral::BusinessScenarios::ScenarioDefinition
+  part CoffeeshopScenarios::cafeSubscriptionScenario
+  part CoffeeshopScenarios::fullCafeScenario
+  part CoffeeshopScenarios::smallKioskScenario
+BusinessMetamodelGeneral::BusinessScenarios::VarianceAnalysis
+  part CoffeeshopScenarios::kioskWeek1Variance
+BusinessMetamodelGeneral::BusinessStrategy::BusinessModelVariant
+  part CoffeeshopScenarios::variantCafe
+  part CoffeeshopScenarios::variantCafeSubscription
+  part CoffeeshopScenarios::variantKiosk
+BusinessMetamodelGeneral::BusinessStrategy::PivotScenario
+  part CoffeeshopScenarios::pivotKioskToCafe
+BusinessMetamodelGeneral::BusinessStrategy::StrategicObjective
+  requirement CoffeeshopScenarios::kioskProfitability
+BusinessMetamodelGeneral::DomainIdentityTypes::DomainIdentity
+  part CoffeeShopDomainRegistration::cafeIdentity
+BusinessMetamodelGeneral::FinancialPlanning::CostDriver
+  part CoffeeshopResourceFinancial::baristaCost
+  part CoffeeshopResourceFinancial::ingredientCost
+  part CoffeeshopResourceFinancial::rentCost
+BusinessMetamodelGeneral::FinancialPlanning::PricingModel
+  part CoffeeshopResourceFinancial::perDrinkPricing
+BusinessMetamodelGeneral::FinancialPlanning::RevenueStream
+  part CoffeeshopResourceFinancial::drinkSales
+BusinessMetamodelGeneral::FinancialPlanning::UnitEconomics
+  part CoffeeshopResourceFinancial::drinkUnitEconomics
+BusinessMetamodelGeneral::ResourcePlanning::Capability
+  part CoffeeshopResourceFinancial::serveDrink
+BusinessMetamodelGeneral::ResourcePlanning::CapacityModel
+  part CoffeeshopResourceFinancial::singleBaristaCapacity
+BusinessMetamodelGeneral::ResourcePlanning::ObjectiveCapabilityMapping
+  part CoffeeshopScenarios::kioskProfitabilityMapping
+BusinessMetamodelGeneral::ResourcePlanning::ResourceConstraint
+  part CoffeeshopResourceFinancial::foodHygiene
+BusinessMetamodelGeneral::ResourcePlanning::ResourceType
+  part CoffeeshopResourceFinancial::barista
+  part CoffeeshopResourceFinancial::counterSpace
+  part CoffeeshopResourceFinancial::espressoMachine
+  part CoffeeshopResourceFinancial::ingredientStock
+BusinessMetamodelGeneral::ServiceConcept::CatalogueEntry
+  def CoffeeShop::CatalogueEntry
+  part CoffeeShopBusinessModel::americanoCatalogue (via CoffeeShop::CatalogueEntry)
+  part CoffeeShopBusinessModel::cappuccinoCatalogue (via CoffeeShop::CatalogueEntry)
+  part CoffeeShopBusinessModel::coldBrewCatalogue (via CoffeeShop::CatalogueEntry)
+  part CoffeeShopBusinessModel::espressoCatalogue (via CoffeeShop::CatalogueEntry)
+  part CoffeeShopBusinessModel::flatWhiteCatalogue (via CoffeeShop::CatalogueEntry)
+  part CoffeeShopBusinessModel::frappeCatalogue (via CoffeeShop::CatalogueEntry)
+  part CoffeeShopBusinessModel::gingerBiscuitCatalogue (via CoffeeShop::CatalogueEntry)
+  part CoffeeShopBusinessModel::icedLatteCatalogue (via CoffeeShop::CatalogueEntry)
+  part CoffeeShopBusinessModel::latteCatalogue (via CoffeeShop::CatalogueEntry)
+  part CoffeeShopBusinessModel::mochaLatteCatalogue (via CoffeeShop::CatalogueEntry)
+  part CoffeeShopBusinessModel::oatBarCatalogue (via CoffeeShop::CatalogueEntry)
+  ref CoffeeShop::InventoryRecord::catalogueEntry (via CoffeeShop::CatalogueEntry)
+BusinessMetamodelGeneral::ServiceConcept::Channel
+  part CoffeeShopBusinessModel::counterService
+BusinessMetamodelGeneral::ServiceConcept::CustomerSegment
+  part CoffeeShopBusinessModel::walkInCustomers
+BusinessMetamodelGeneral::ServiceConcept::ExternalReference
+  part CoffeeShop::MenuItem::externalRefs
+BusinessMetamodelGeneral::ServiceConcept::ServiceOffering
+  part CoffeeShopBusinessModel::drinkOrder
+BusinessMetamodelGeneral::ServiceConcept::ServiceParticipant
+  ref CoffeeShop::Order::orderingParty
+BusinessMetamodelGeneral::ServiceConcept::ServiceSubject
+  ref CoffeeShop::Order::serviceSubject
+BusinessMetamodelGeneral::StakeholderModel::CommunityRelationship
+  part CoffeeShopBusinessModel::localNeighbourhood
+BusinessMetamodelGeneral::StakeholderModel::CooperativeArrangement
+  part CoffeeShopBusinessModel::deliveryPlatformPartnership
+BusinessMetamodelGeneral::StakeholderModel::ExternalDependency
+  part CoffeeShopBusinessModel::coffeeBeanSupply
+BusinessMetamodelGeneral::StakeholderModel::ParticipationModel
+  part CoffeeShopBusinessModel::cafeParticipation
+BusinessMetamodelGeneral::StakeholderModel::StakeholderRelationship
+  part CoffeeShopBusinessModel::landlordRelationship
+  part CoffeeShopBusinessModel::localAuthorityRelationship
+SystemMetamodelGeneral::DomainConfigurationTypes::DomainConfiguration
+  part CoffeeShopDomainRegistration::cafeConfiguration
+SystemMetamodelGeneral::LogicEngine::Deficit
+  part CoffeeshopScenarios::kioskDeficitWeek1Revenue
+SystemMetamodelGeneral::LogicEngine::GoalProjection
+  part CoffeeshopScenarios::kioskGoalWeek1Revenue
+SystemMetamodelGeneral::Persistence::PersistencePolicy
+  part CoffeeShopBusinessModel::catalogueEntryPolicy
+  part CoffeeShopBusinessModel::externalKnowledgePolicy
+  part CoffeeShopBusinessModel::feedbackRecordPolicy
+  part CoffeeShopBusinessModel::inventoryRecordPolicy
+  part CoffeeShopBusinessModel::orderRecordPolicy
+  part CoffeeShopBusinessModel::orderWorkflowPolicy
