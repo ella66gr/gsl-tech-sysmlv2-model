@@ -1,0 +1,7 @@
+[load] run 43f8b41c: 300 orders x 1 writer(s), readers=none, shapes=fixtures/shapes/standin-shapes-core-only.ttl + fixtures/shapes/spike-two-sided-readiness.ttl, reject-every=off, store: Apache Jena Fuseki 6.2.0 (Jena 6.2.0, image built for 6.2.0), ontara-fuseki-validated-update 0.2.0, TDB2, validation mode whole, graph <urn:ontara:stack:graph:loadtest>, out fuseki-2026-11-01/regression/20261101T203335Z-jena-6.2.0-whole-s522-chat-verify/preload
+[load] w1 100/300  last=74 ms  p95 so far=52.8 ms
+[load] w1 200/300  last=48 ms  p95 so far=88.3 ms
+[load] w1 300/300  last=53 ms  p95 so far=85.3 ms
+[load] done in 15.3 s: write latency p50=46.9 p95=85.3 max=105 ms; failures=0; faults=0; correctness={"orders":300,"ordersReady":300,"derivedRecordsLabelled":300}
+[load] store: Apache Jena Fuseki 6.2.0 (Jena 6.2.0, image built for 6.2.0), ontara-fuseki-validated-update 0.2.0, TDB2, validation mode whole; writes by validation mode: {"whole":300}; not whole: 0
+[load] results in results/fuseki-2026-11-01/regression/20261101T203335Z-jena-6.2.0-whole-s522-chat-verify/preload/ (writes.csv, readers.csv, summary.json)

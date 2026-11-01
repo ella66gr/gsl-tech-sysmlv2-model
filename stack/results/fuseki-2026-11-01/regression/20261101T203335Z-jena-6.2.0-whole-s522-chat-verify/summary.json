@@ -1,0 +1,133 @@
+{
+  "result": "PASS",
+  "kind": "regression check",
+  "runId": "20261101T203335Z-jena-6.2.0-whole-s522-chat-verify",
+  "storeImage": "ontara-cafe-stack/store:local",
+  "storeImageId": "sha256:3e9c39cd543c2cb5f56062d2c4ba5bc3b316e0b3886fff186c5f99632e86682f",
+  "imageJenaVersion": "6.2.0",
+  "mode": "whole",
+  "preloadOrders": 300,
+  "coldCachesBeforeFirstWrite": true,
+  "bad": 1,
+  "good": 60,
+  "freshStoreDirectory": "/fuseki/databases/run-20261101T203335Z-jena-6.2.0-whole-s522-chat-verify",
+  "graph": "urn:ontara:stack:graph:regression-20261101T203335Z-jena-6.2.0-whole-s522-chat-verify",
+  "host": "Darwin arm64",
+  "startedUtc": "2026-11-01T20:33:35Z",
+  "sequence": "1 known-bad write(s), then 60 known-good writes, one at a time through the gate",
+  "checks": [
+    {
+      "name": "module status: validating, the run's mode",
+      "pass": true,
+      "detail": {
+        "jenaVersion": "6.2.0",
+        "jenaBuildVersion": "6.2.0",
+        "module": "ontara-fuseki-validated-update 0.2.0",
+        "validationMode": "whole"
+      }
+    },
+    {
+      "name": "the 1 known-bad write(s) rejected",
+      "pass": true,
+      "detail": {
+        "rejected": 1,
+        "committed": 0,
+        "fault": 0
+      }
+    },
+    {
+      "name": "all 60 known-good writes committed",
+      "pass": true,
+      "detail": {
+        "committed": 60,
+        "rejected": 0,
+        "fault": 0
+      }
+    },
+    {
+      "name": "every write validated in the run's mode",
+      "pass": true,
+      "detail": {
+        "whole": 61
+      }
+    },
+    {
+      "name": "good records stored before the restart",
+      "pass": true,
+      "detail": {
+        "goodRecordsStored": 60,
+        "badRecordsStored": 0
+      }
+    },
+    {
+      "name": "good records stored after the restart",
+      "pass": true,
+      "detail": {
+        "goodRecordsStored": 60,
+        "badRecordsStored": 0,
+        "countError": null
+      }
+    },
+    {
+      "name": "full read-back after the restart complete, and equal to the read-back before it",
+      "pass": true,
+      "detail": {
+        "before": {
+          "http": 200,
+          "quads": 43558,
+          "goodRecordQuads": 180,
+          "complete": true,
+          "error": null
+        },
+        "after": {
+          "http": 200,
+          "quads": 43558,
+          "goodRecordQuads": 180,
+          "complete": true,
+          "error": null
+        }
+      }
+    },
+    {
+      "name": "no fault stack trace in the store log",
+      "pass": true,
+      "detail": {
+        "faultTraces": 0,
+        "storeLogBytes": 158751
+      }
+    },
+    {
+      "name": "offline node-table check: no zero-filled run in nodes-data.obj",
+      "pass": true,
+      "detail": [
+        "PHYSICAL Data-0001/nodes-data.obj: 1249663 bytes; zero runs >= 32: 0, 0 bytes in all"
+      ]
+    },
+    {
+      "name": "offline node-table check: every quad read",
+      "pass": true,
+      "detail": "LOGICAL read every quad: 43558 quads, no error"
+    },
+    {
+      "name": "Jena file-layer check (BdfTruncateCheck): sound",
+      "pass": true,
+      "detail": [
+        "Jena 6.2.0 BinaryDataFileRandomAccess truncate-read-write: write returned position 102400; file 102500 bytes; zero bytes 0 -> SOUND (writePosition reset by truncate)"
+      ]
+    }
+  ],
+  "expectedUnderASoundStore": "bad rejected; every good write committed; zero faults; every good record stored and readable after the restart; node table clean",
+  "files": [
+    "params.json",
+    "bootstrap.log",
+    "preload/ (load harness run)",
+    "module-status-*.json",
+    "outcomes.csv",
+    "writes.jsonl",
+    "readback-before-restart.json",
+    "readback-after-restart.json",
+    "store.log",
+    "nodetable-check.txt",
+    "bdf-truncate-check.txt"
+  ]
+}
