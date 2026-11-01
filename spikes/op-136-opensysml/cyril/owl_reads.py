@@ -353,7 +353,7 @@ def run_pipeline(elements, rules, cco):
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", type=Path, default=Path(__file__).resolve().parent / "results")
+    ap.add_argument("--out", type=Path, default=Path(__file__).resolve().parent / "results" / "owl-reads")
     args = ap.parse_args()
     out = args.out
     out.mkdir(parents=True, exist_ok=True)
@@ -397,6 +397,7 @@ def main() -> int:
             for s, p, o in sorted(b)[:20]:
                 report.append(f"      + resolved only: {s.n3()} {p.n3()} {o.n3()[:120]}")
         gr[name].serialize(str(out / f"{name}.resolved.ttl"), format="turtle")
+        gt[name].serialize(str(out / f"{name}.text.ttl"), format="turtle")
     # The committed outputs on main, for reference: the text route must reproduce them.
     committed = {"3a-domain": "ontara-bmm.ttl", "3c-properties": "ontara-bmm-properties.ttl",
                  "3e-weights": "ontara-bmm-weights.ttl", "3g-tenant-types": "ontara-tenant-types.ttl",

@@ -1,0 +1,23 @@
+## 1. sysml -convert ttl (pinned v0.11.0) on model/business-metamodel-general.sysml model/projection-metadata.sysml
+   exit 0, 9528729 bytes; note printed: note: RDF conversion — Turtle and the API's JSON element form alike — is experimental: the mapping covers model structure and the behavior its bodies state, ref
+   second run byte-identical: True
+   sha256 db8e4c1f44a6cf6ab2efa6ea5a0d6fa110e3cd06d543ac3fefd352df97bf65cd (kept in scratch: /private/tmp/claude-501/-Users-ellagreen-Obsidian-GenderSense-02-ONTARA-08-Ontara-AGENTS/4cadd1a0-0561-4d64-80b4-1a2ade812a07/scratchpad/cyril-exp/rdf/bmm-general.sysml-convert.ttl)
+## 2-3. canonical-runtime family rebuilt by SPARQL CONSTRUCT from the export (103389 triples)
+   classes rebuilt: ['AxisPrecondition', 'AxisTransition', 'CanonicalRuntimeType', 'StatusAxis', 'ValueSpace']
+   rebuilt from export (95 triples) vs committed OWL slice (95 triples): ISOMORPHIC
+## 4. fault: StatusAxis's @UserFacing with its opening brace on the next line (valid SysML; export exit 0)
+   rebuilt from faulted export (95 triples) vs committed OWL slice (95 triples): ISOMORPHIC
+   rebuilt from faulted export (95 triples) vs text-route pipeline on the faulted model (41 triples): DIFFERENT
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/StatusAxis> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/StatusAxis> <http://www.w3.org/2000/01/rdf-schema#comment> "A single named dimension of status on a canonical runtime type — its values, transitions, default, 
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/StatusAxis> <http://www.w3.org/2000/01/rdf-schema#label> "Status Axis"@en
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/StatusAxis> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://purl.obolibrary.org/obo/IAO_0000030>
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/StatusAxis> <http://www.w3.org/2004/02/skos/core#definition> "A single named dimension of status that a canonical runtime instance carries. A canonical runtime t
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/weight-AxisPrecondition-to-StatusAxis> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual>
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/weight-AxisPrecondition-to-StatusAxis> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://ontara.dev/ontology/bmm/WeightedRelationship>
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/weight-AxisPrecondition-to-StatusAxis> <http://www.w3.org/2000/01/rdf-schema#label> "AxisPrecondition → StatusAxis (moderate)"@en
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/weight-AxisPrecondition-to-StatusAxis> <https://ontara.dev/ontology/bmm/weightRationale> "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/weight-AxisPrecondition-to-StatusAxis> <https://ontara.dev/ontology/bmm/weightSource> <https://ontara.dev/ontology/bmm/AxisPrecondition>
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/weight-AxisPrecondition-to-StatusAxis> <https://ontara.dev/ontology/bmm/weightStrength> "moderate"^^<http://www.w3.org/2001/XMLSchema#string>
+      only in rebuilt from faulted export: <https://ontara.dev/ontology/bmm/weight-AxisPrecondition-to-StatusAxis> <https://ontara.dev/ontology/bmm/weightTarget> <https://ontara.dev/ontology/bmm/StatusAxis>
+VERDICT: export rebuild ISOMORPHIC with the committed OWL slice

@@ -1,0 +1,116 @@
+@prefix ns1: <https://ontara.dev/ontology/bmm/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns1:weight-AxisPrecondition-to-AxisTransition a owl:NamedIndividual,
+        ns1:WeightedRelationship ;
+    rdfs:label "AxisPrecondition → AxisTransition (strong)"@en ;
+    ns1:weightRationale "Every AxisPrecondition guards one AxisTransition and is declared inside it. A change to the transition (its endpoints, its authority, its removal) requires reassessing the preconditions that guard it."^^xsd:string ;
+    ns1:weightSource ns1:AxisPrecondition ;
+    ns1:weightStrength "strong"^^xsd:string ;
+    ns1:weightTarget ns1:AxisTransition .
+
+ns1:weight-AxisPrecondition-to-StatusAxis a owl:NamedIndividual,
+        ns1:WeightedRelationship ;
+    rdfs:label "AxisPrecondition → StatusAxis (moderate)"@en ;
+    ns1:weightRationale "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to that axis (its name, its value space) can invalidate the precondition's required axis or required values."^^xsd:string ;
+    ns1:weightSource ns1:AxisPrecondition ;
+    ns1:weightStrength "moderate"^^xsd:string ;
+    ns1:weightTarget ns1:StatusAxis .
+
+ns1:weight-AxisTransition-to-StatusAxis a owl:NamedIndividual,
+        ns1:WeightedRelationship ;
+    rdfs:label "AxisTransition → StatusAxis (strong)"@en ;
+    ns1:weightRationale "Every AxisTransition is declared on a specific StatusAxis. A change to a transition (its endpoints, its required authority) requires reassessing the axis whose transition rules it defines — the axis's runtime behaviour changes when its transitions change."^^xsd:string ;
+    ns1:weightSource ns1:AxisTransition ;
+    ns1:weightStrength "strong"^^xsd:string ;
+    ns1:weightTarget ns1:StatusAxis .
+
+ns1:weight-AxisTransition-to-ValueSpace a owl:NamedIndividual,
+        ns1:WeightedRelationship ;
+    rdfs:label "AxisTransition → ValueSpace (strong)"@en ;
+    ns1:weightRationale "A transition's from-value and to-value must be drawn from the axis's value space. A change to the transition (especially endpoint changes) requires reassessing the value space — and conversely a change to the value space may invalidate existing transitions."^^xsd:string ;
+    ns1:weightSource ns1:AxisTransition ;
+    ns1:weightStrength "strong"^^xsd:string ;
+    ns1:weightTarget ns1:ValueSpace .
+
+ns1:weight-CanonicalRuntimeType-to-StatusAxis a owl:NamedIndividual,
+        ns1:WeightedRelationship ;
+    rdfs:label "CanonicalRuntimeType → StatusAxis (strong)"@en ;
+    ns1:weightRationale "A CanonicalRuntimeType declares the set of StatusAxes its runtime instances carry. A change to the canonical type's structural definition (especially to its declared axes) directly affects every instance — runtime tuple shape, substrate triple structure, and comprehension all flow from the axis declarations."^^xsd:string ;
+    ns1:weightSource ns1:CanonicalRuntimeType ;
+    ns1:weightStrength "strong"^^xsd:string ;
+    ns1:weightTarget ns1:StatusAxis .
+
+ns1:weight-StatusAxis-to-AxisTransition a owl:NamedIndividual,
+        ns1:WeightedRelationship ;
+    rdfs:label "StatusAxis → AxisTransition (strong)"@en ;
+    ns1:weightRationale "A StatusAxis declares its set of permitted AxisTransitions. A change to the axis (especially to its value space or authority) requires reassessing the transitions — they may need to be added, removed, or have their required authority adjusted."^^xsd:string ;
+    ns1:weightSource ns1:StatusAxis ;
+    ns1:weightStrength "strong"^^xsd:string ;
+    ns1:weightTarget ns1:AxisTransition .
+
+ns1:weight-StatusAxis-to-CanonicalRuntimeType a owl:NamedIndividual,
+        ns1:WeightedRelationship ;
+    rdfs:label "StatusAxis → CanonicalRuntimeType (strong)"@en ;
+    ns1:weightRationale "A StatusAxis is declared on a CanonicalRuntimeType — it has no independent existence. A change to an axis (its value space, its transitions, its authority) requires reassessing the canonical type whose runtime instances carry it."^^xsd:string ;
+    ns1:weightSource ns1:StatusAxis ;
+    ns1:weightStrength "strong"^^xsd:string ;
+    ns1:weightTarget ns1:CanonicalRuntimeType .
+
+ns1:weight-StatusAxis-to-ValueSpace a owl:NamedIndividual,
+        ns1:WeightedRelationship ;
+    rdfs:label "StatusAxis → ValueSpace (strong)"@en ;
+    ns1:weightRationale "Every StatusAxis has a ValueSpace. A change to the axis (its meaning, its purpose) typically requires reassessing the value space that defines its permitted values."^^xsd:string ;
+    ns1:weightSource ns1:StatusAxis ;
+    ns1:weightStrength "strong"^^xsd:string ;
+    ns1:weightTarget ns1:ValueSpace .
+
+ns1:weight-ValueSpace-to-AxisTransition a owl:NamedIndividual,
+        ns1:WeightedRelationship ;
+    rdfs:label "ValueSpace → AxisTransition (strong)"@en ;
+    ns1:weightRationale "Permitted transitions reference values from the value space. A change to the value space (e.g. removing a value, adding a value, changing the shape from unordered to ordered) directly affects which transitions are well-formed."^^xsd:string ;
+    ns1:weightSource ns1:ValueSpace ;
+    ns1:weightStrength "strong"^^xsd:string ;
+    ns1:weightTarget ns1:AxisTransition .
+
+ns1:weight-ValueSpace-to-StatusAxis a owl:NamedIndividual,
+        ns1:WeightedRelationship ;
+    rdfs:label "ValueSpace → StatusAxis (strong)"@en ;
+    ns1:weightRationale "Every ValueSpace exists to describe a StatusAxis. A change to the value space (its shape, its permitted values) requires reassessing the axis it belongs to — the axis's permitted transitions and authority interpretation may need adjustment."^^xsd:string ;
+    ns1:weightSource ns1:ValueSpace ;
+    ns1:weightStrength "strong"^^xsd:string ;
+    ns1:weightTarget ns1:StatusAxis .
+
+ns1:AxisPrecondition a owl:Class ;
+    rdfs:label "Axis Precondition"@en ;
+    rdfs:comment "A condition on another status axis, of the same instance or of a related one, that must hold before a move is permitted."@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> ;
+    skos:definition "A condition that must hold before a permitted move on a status axis may be made. It names an axis, either on the same instance or on one related instance reached through a single reference, and the values that axis must hold. While the condition does not hold, the move is refused with a stated reason, never ignored. For example, a line on an order may not start preparation until the order is paid."@en .
+
+ns1:CanonicalRuntimeType a owl:Class ;
+    rdfs:label "Canonical Runtime Type"@en ;
+    rdfs:comment "The base type for every canonical runtime type — the things whose runtime instances live in DBR or DSR."@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/BFO_0000001> ;
+    skos:definition "The structural parent for every canonical runtime type — the things whose runtime instances are persisted in the substrate as model-grounded content. A booking, a clinical encounter, a laundry batch, an order: each is a canonical runtime type, and each runtime instance carries a tuple of status axes describing where it is along each independent dimension of progress. No axis is built in: every axis is declared by the tenant on the canonical type. Whether a record of an instance is real or simulated, and whether it was direct, inferred or predicted, is carried by the platform's record of the write (the platform record module, ADR-011), not by the instance."@en .
+
+ns1:ValueSpace a owl:Class ;
+    rdfs:label "Value Space"@en ;
+    rdfs:comment "The permitted values for a status axis, plus the shape (ordered, unordered, or structured) that determines how the values relate."@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> ;
+    skos:definition "The permitted values for a single status axis, and how those values relate to one another. For ordered axes (like a lifecycle), the values progress in a sequence. For unordered axes (like a cancellation reason), the values are a set with no implicit order. The system uses the value space to decide which transitions are permitted and how to display the axis to readers."@en .
+
+ns1:AxisTransition a owl:Class ;
+    rdfs:label "Axis Transition"@en ;
+    rdfs:comment "A permitted value-to-value transition on a status axis, with the authority required to perform it."@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> ;
+    skos:definition "A permitted move from one value to another on a single status axis. Declared transitions are exhaustive — any value-to-value pair not represented by an axis transition is a prohibited transition, and the system rejects attempts to make it. Each transition records what authority is required to perform it (which binding class), so the canonical-edge contract can enforce the rule uniformly."@en .
+
+ns1:StatusAxis a owl:Class ;
+    rdfs:label "Status Axis"@en ;
+    rdfs:comment "A single named dimension of status on a canonical runtime type — its values, transitions, default, authority, and scope."@en ;
+    rdfs:subClassOf <http://purl.obolibrary.org/obo/IAO_0000030> ;
+    skos:definition "A single named dimension of status that a canonical runtime instance carries. A canonical runtime type can declare several status axes — for example a booking might have a lifecycle axis, a confirmation axis, a payment axis, a cancellation axis. Each axis advances independently, with its own value space, permitted transitions, default value, and authority. The system tracks each axis as a separate triple in the substrate, so axes can be queried and reasoned over individually."@en .
+

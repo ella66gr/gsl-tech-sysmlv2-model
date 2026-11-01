@@ -1,17 +1,17 @@
-## core: 6 files; parse 0.12s, api-json 1.59s
+## core: 6 files; parse 0.12s, api-json 1.58s
    @BfoType 39, @CatalogueTag 39, @Comprehension 39, @PurposiveDescription 39, @UserFacing 39, @WeightedRelationship 108, annotations bound owned-by-element 1, annotations bound positional 303, elements 96
    element fields: IDENTICAL
-## cafe: 8 files; parse 0.15s, api-json 1.95s
+## cafe: 8 files; parse 0.16s, api-json 2.05s
    @BfoType 2, @PurposiveDescription 2, @UserFacing 2, annotations bound positional 6, elements 15
    DIFF CatalogueEntry (CoffeeShop): refs: text=[('item', 'MenuItem', '1')] resolved=[]
    DIFF OrderLine (CoffeeShop): refs: text=[('item', 'MenuItem', '1'), ('order', 'Order', '1')] resolved=[('order', 'Order', '1')]
-## suds: 1 files; parse 0.12s, api-json 1.70s
+## suds: 1 files; parse 0.13s, api-json 1.72s
    
    element fields: IDENTICAL
-## paws: 1 files; parse 0.12s, api-json 1.78s
+## paws: 1 files; parse 0.12s, api-json 1.82s
    elements 1
    element fields: IDENTICAL
-## gsl: 10 files; parse 0.19s, api-json 2.52s
+## gsl: 10 files; parse 0.19s, api-json 2.63s
    elements 30
    element fields: IDENTICAL
 ## pipeline stages 2-3 on all domains

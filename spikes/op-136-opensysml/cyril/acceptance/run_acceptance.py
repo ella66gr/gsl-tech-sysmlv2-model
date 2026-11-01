@@ -197,7 +197,8 @@ def main() -> int:
     out = Path(sys.argv[sys.argv.index("--out") + 1]).resolve() if "--out" in sys.argv else HERE.parent / "results" / "acceptance"
     out.mkdir(parents=True, exist_ok=True)
     base = (REPO / CAFE / DOMAIN).read_text()
-    report, table = [], ["| Case | Acceptance (sysml -satisfy) | E6 test, regenerated |", "|---|---|---|"]
+    report, table = [], ["| Case | Acceptance (sysml -satisfy) | E6 test, regenerated | Guard test (context) |",
+                         "|---|---|---|---|"]
     for label, fault, mem in CASES:
         edited = FAULTS[fault](base)
         a = acceptance(copy_model(scratch / f"acc-{label}", members(edited) if mem else edited))
