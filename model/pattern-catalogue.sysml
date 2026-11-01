@@ -823,9 +823,9 @@ package PatternCatalogue {
     part cswXstateInTemporal : DomainInstantiation {
         attribute :>> domain = "CSW";
         attribute :>> maturity = PatternMaturity::validated;
-        attribute :>> implementationRef = "FulfilDrink Temporal workflow with XState v5 OrderLifecycle state machine. State machine guards transitions; Temporal provides durability.";
-        attribute :>> sessionRef = "Session 3 (CSW Phase C)";
-        attribute :>> notes = "Single workflow operational. State machine generated from SysML state def.";
+        attribute :>> implementationRef = "FulfilDrink Temporal workflow, one per order line, with the generated axis guard (axis-guard.ts) and XState v5 machine (axis-machine.ts, one parallel region per axis). The workflow traces each move through the guard; Temporal provides durability.";
+        attribute :>> sessionRef = "Session 3 (CSW Phase C); regenerated from status axes at Session 519 (Plan B S0.4)";
+        attribute :>> notes = "Single workflow operational. Guard and machine generated from the StatusAxis declarations since Session 519; the OrderLifecycle state def was removed. The workflow does not yet check authority on its moves: S0.6 settles which writer makes them.";
     }
 
     // -- Split-view management layout instantiation --------------
