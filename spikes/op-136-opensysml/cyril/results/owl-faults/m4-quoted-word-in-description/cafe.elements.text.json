@@ -1,0 +1,441 @@
+[
+ {
+  "kind": "requirement_def",
+  "name": "LoyaltyDiscountRequired",
+  "parentPackage": "BusinessRules",
+  "topLevelPackage": "BusinessRules",
+  "doc": "Members of the loyalty scheme must receive\na minimum 10% discount on every order.",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 9
+ },
+ {
+  "kind": "requirement_def",
+  "name": "MinimumOrderSize",
+  "parentPackage": "BusinessRules",
+  "topLevelPackage": "BusinessRules",
+  "doc": "Orders must contain at least one item.",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 16
+ },
+ {
+  "kind": "requirement_def",
+  "name": "MaximumOrderSize",
+  "parentPackage": "BusinessRules",
+  "topLevelPackage": "BusinessRules",
+  "doc": "Orders must contain no more than 10 items\nto avoid barista overload.",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 22
+ },
+ {
+  "kind": "requirement_def",
+  "name": "veganMilkDrinkRule",
+  "parentPackage": "BusinessRules",
+  "topLevelPackage": "BusinessRules",
+  "doc": "Any drink marked as vegan must not use\ndairy milk — only oat, soy, or almond.",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 29
+ },
+ {
+  "kind": "requirement_def",
+  "name": "BaristaMinimumHours",
+  "parentPackage": "BusinessRules",
+  "topLevelPackage": "BusinessRules",
+  "doc": "Staff members in the barista role must be\ncontracted for at least 12 hours per week.",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 36
+ },
+ {
+  "kind": "part_def",
+  "name": "MenuItem",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "Something the shop sells. Describes intrinsic product\ncharacteristics only. Price and availability are\nbusiness decisions that live on CatalogueEntry.",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 64,
+  "attributes": [
+   {
+    "name": "name",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "category",
+    "type": "ItemCategory",
+    "isRedefinition": false
+   },
+   {
+    "name": "isVegan",
+    "type": "Boolean",
+    "isRedefinition": false
+   },
+   {
+    "name": "description",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Drink",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "A drink, extending MenuItem with drink-specific attributes",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 76,
+  "specialises": "MenuItem",
+  "attributes": [
+   {
+    "name": "size",
+    "type": "DrinkSize",
+    "isRedefinition": false
+   },
+   {
+    "name": "milkChoice",
+    "type": "MilkOption",
+    "isRedefinition": false
+   },
+   {
+    "name": "isCaffeinated",
+    "type": "Boolean",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "FoodItem",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "A food item, extending MenuItem",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 84,
+  "specialises": "MenuItem",
+  "attributes": [
+   {
+    "name": "isGlutenFree",
+    "type": "Boolean",
+    "isRedefinition": false
+   },
+   {
+    "name": "servedWarm",
+    "type": "Boolean",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "CatalogueEntry",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "The business decision to offer an item for sale.\nSpecialises the General CatalogueEntry (S518, S0.3):\nreferences an item definition (MenuItem or specialisation)\nand adds typed business-context properties: price,\navailability, provision kind. A single item may appear in\nmultiple catalogues at differe",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 93,
+  "specialises": "BusinessMetamodelGeneral::ServiceConcept::CatalogueEntry",
+  "attributes": [
+   {
+    "name": "item",
+    "type": "MenuItem",
+    "isRef": true
+   },
+   {
+    "name": "pricePence",
+    "type": "Integer",
+    "isRedefinition": false
+   },
+   {
+    "name": "priceDisplay",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "availability",
+    "type": "AvailabilityStatus",
+    "isRedefinition": false
+   },
+   {
+    "name": "provisionKind",
+    "type": "ProvisionType",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "InventoryRecord",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "A point-in-time record of stock level for a catalogue\nitem. References a catalogue entry (not the item\ndefinition directly) because inventory is scoped to\nwhat the business currently offers.",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 112,
+  "attributes": [
+   {
+    "name": "catalogueEntry",
+    "type": "CatalogueEntry",
+    "isRef": true
+   },
+   {
+    "name": "quantityOnHand",
+    "type": "Integer",
+    "isRedefinition": false
+   },
+   {
+    "name": "stockStatus",
+    "type": "StockStatus",
+    "isRedefinition": false
+   },
+   {
+    "name": "lowStockThreshold",
+    "type": "Integer",
+    "isRedefinition": false
+   },
+   {
+    "name": "lastRestocked",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "quantityNotes",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Person",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "A person who interacts with the coffee shop",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 133,
+  "attributes": [
+   {
+    "name": "firstName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "lastName",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Customer",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "Someone who buys from the shop",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 140,
+  "specialises": "Person",
+  "attributes": [
+   {
+    "name": "loyaltyPoints",
+    "type": "Integer",
+    "isRedefinition": false
+   },
+   {
+    "name": "isMember",
+    "type": "Boolean",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "StaffMember",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "Someone who works in the shop",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 147,
+  "specialises": "Person",
+  "attributes": [
+   {
+    "name": "role",
+    "type": "StaffRole",
+    "isRedefinition": false
+   },
+   {
+    "name": "hoursPerWeek",
+    "type": "Real",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "OrderLine",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "A single line on an order - one item with its quantity.\nA line may name who it is for (H-0486): a free-text\nbeneficiary label, with an optional contact reference.\nBoth are optional; most lines carry neither.\nCanonical runtime type (S518, S0.4) with one axis,\npreparation. Lines are prepared and colle",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 184,
+  "specialises": "CanonicalRuntimeType",
+  "attributes": [
+   {
+    "name": "quantity",
+    "type": "Integer",
+    "isRedefinition": false
+   },
+   {
+    "name": "item",
+    "type": "MenuItem",
+    "isRef": true
+   },
+   {
+    "name": "order",
+    "type": "Order",
+    "isRef": true
+   },
+   {
+    "name": "beneficiaryLabel",
+    "type": "String[0..1]",
+    "isRedefinition": false
+   },
+   {
+    "name": "beneficiaryContactRef",
+    "type": "String[0..1]",
+    "isRedefinition": false
+   }
+  ],
+  "userFacing": {
+   "friendlyName": "Order Line",
+   "shortDescription": "One item asked for on an order, with its quantity and its own preparation status."
+  },
+  "purposiveDescription": {
+   "description": "One item on a customer order, with its quantity and, optionally, who it is for. Each line is prepared and collected on its own, so it carries its own preparation status: queued, in preparation, ready, collected, or cancelled if its order is cancelled. A line cannot start preparation until its order is paid."
+  },
+  "annotations": [
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "An order line is a record of one item asked for on an order: information content, part of the order's record. The preparation of the item is a process in the fulfilment workflow; the line's preparation axis records where that process has reached."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Order Line",
+     "shortDescription": "One item asked for on an order, with its quantity and its own preparation status."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "One item on a customer order, with its quantity and, optionally, who it is for. Each line is prepared and collected on its own, so it carries its own preparation status: queued, in preparation, ready, collected, or cancelled if its order is cancelled. A line cannot start preparation until its order is paid."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "An order line is a record of one item asked for on an order: information content, part of the order's record. The preparation of the item is a process in the fulfilment workflow; the line's preparation axis records where that process has reached."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "Order",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "A customer order, containing one or more order lines.\nThe participant placing the order (orderingParty) and the\nservice subject are carried as separate fields, both typed\nby the General defs. For a walk-in Cafe the two coincide;\nboth are carried so that surface work generalises (H-0630).\nCanonical r",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 293,
+  "specialises": "CanonicalRuntimeType",
+  "attributes": [
+   {
+    "name": "orderNumber",
+    "type": "Integer",
+    "isRedefinition": false
+   },
+   {
+    "name": "totalPrice",
+    "type": "Real",
+    "isRedefinition": false
+   },
+   {
+    "name": "orderingParty",
+    "type": "ServiceParticipant",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::ServiceParticipant"
+   },
+   {
+    "name": "serviceSubject",
+    "type": "ServiceSubject",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::ServiceSubject"
+   }
+  ],
+  "userFacing": {
+   "friendlyName": "Order",
+   "shortDescription": "A customer's order of one or more items, with its lifecycle and payment status."
+  },
+  "purposiveDescription": {
+   "description": "What a customer asked for, as one or more order lines. An order carries two independent statuses. Its lifecycle runs from placed through in preparation and ready to collected, and follows its lines: it is never moved to ready or collected directly. It can be cancelled at the counter before it is ready. Its payment runs from unpaid to paid, taken at the till."
+  },
+  "annotations": [
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "An order is a record of what a customer asked for: information content, as the Paws Booking is (Ella, S518, decision 6). The fulfilment is the process, and it sits in the workflow; the order's axes record where it has reached."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Order",
+     "shortDescription": "A customer's order of one or more items, with its lifecycle and payment status."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "What a customer asked for, as one or more order lines. An order carries two independent statuses. Its lifecycle runs from placed through in preparation and ready to collected, and follows its lines: it is never moved to ready or collected directly. It can be cancelled at the counter before it is ready. Its payment runs from unpaid to paid, taken at the till."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "An order is a record of what a customer asked for: information content, as the Paws Booking is (Ella, S518, decision 6). The fulfilment is the process, and it sits in the workflow; the order's axes record where it has reached."
+  }
+ }
+]

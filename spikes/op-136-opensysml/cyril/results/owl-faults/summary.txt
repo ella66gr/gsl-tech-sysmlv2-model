@@ -1,0 +1,66 @@
+## m1-ref-multiplicity-spaced: a space before a ref's multiplicity: `ResourceType [0..*]`
+   meaning-preserving: True; sysml -validate: passes
+   committed ontara-bmm.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-bmm-properties.ttl: text route DIFFERENT, resolved route ISOMORPHIC
+   committed ontara-bmm-weights.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-tenant-types.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-correspondence.ttl: text route DIFFERENT, resolved route ISOMORPHIC
+   DIFF CostDriver (FinancialPlanning): refs: text=[('linkedResource', 'ResourceType', '1')] resolved=[('linkedResource', 'ResourceType', '0..*')]
+   DIFF CatalogueEntry (CoffeeShop): refs: text=[('item', 'MenuItem', '1')] resolved=[]
+   DIFF OrderLine (CoffeeShop): refs: text=[('item', 'MenuItem', '1'), ('order', 'Order', '1')] resolved=[('order', 'Order', '1')]
+   - text only: <https://ontara.dev/ontology/correspondence/map-prop-hasLinkedResource> <https://ontara.dev/ontology/correspondence/isFunctional> "true"^^<http://www.w3.org/2001/XMLSchema#boolean>
+   - text only: <https://ontara.dev/ontology/correspondence/map-prop-hasLinkedResource> <https://ontara.dev/ontology/correspondence/multiplicity> "1"
+   + resolved only: <https://ontara.dev/ontology/correspondence/map-prop-hasLinkedResource> <https://ontara.dev/ontology/correspondence/isFunctional> "false"^^<http://www.w3.org/2001/XMLSchema#boolean>
+   + resolved only: <https://ontara.dev/ontology/correspondence/map-prop-hasLinkedResource> <https://ontara.dev/ontology/correspondence/multiplicity> "0..*"
+   - text only: <https://ontara.dev/ontology/bmm/axioms#hasLinkedResource> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty>
+   - text only: <https://ontara.dev/ontology/bmm/axioms#hasLinkedResource> <http://www.w3.org/2000/01/rdf-schema#comment> "SysML: CostDriver.linkedResource [1]. Pipeline-generated from typed ref attribute."@en
+   + resolved only: <https://ontara.dev/ontology/bmm/axioms#hasLinkedResource> <http://www.w3.org/2000/01/rdf-schema#comment> "SysML: CostDriver.linkedResource [0..*]. Pipeline-generated from typed ref attribute."@en
+   owl_reads exit 1
+## m2-comment-after-closing-brace: a trailing comment after the closing brace of CustomerSegment's @BfoType
+   meaning-preserving: True; sysml -validate: passes
+   committed ontara-bmm.ttl: text route DIFFERENT, resolved route ISOMORPHIC
+   committed ontara-bmm-properties.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-bmm-weights.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-tenant-types.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-correspondence.ttl: text route DIFFERENT, resolved route ISOMORPHIC
+   DIFF CustomerSegment (ServiceConcept): bfo_type: text={"bfoClass": "GenericallyDependentContinuant", "midLevelClass": "CCO:GroupOfAgents", "mappingNotes": "A segment characterises a class of agents. GDC because the grouping pattern migrates between popul resolved={"bfoClass": "GenericallyDependentCo
+   DIFF CustomerSegment (ServiceConcept): user_facing: text={} resolved={"friendlyName": "Customer Segment", "shortDescription": "A defined group of customers with shared needs and willingness to pay."}
+   DIFF CatalogueEntry (CoffeeShop): refs: text=[('item', 'MenuItem', '1')] resolved=[]
+   DIFF OrderLine (CoffeeShop): refs: text=[('item', 'MenuItem', '1'), ('order', 'Order', '1')] resolved=[('order', 'Order', '1')]
+   + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2000/01/rdf-schema#comment> "A defined group of customers with shared needs and willingness to pay."@en
+   + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2000/01/rdf-schema#label> "Customer Segment"@en
+   - text only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <https://ontara.dev/ontology/correspondence/sourceHash> "70c700ca22d50038"
+   + resolved only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <https://ontara.dev/ontology/correspondence/sourceHash> "46895d4d0307172d"
+   owl_reads exit 1
+## m3-brace-on-next-line: CustomerSegment's @UserFacing with its opening brace on the next line
+   meaning-preserving: True; sysml -validate: passes
+   committed ontara-bmm.ttl: text route DIFFERENT, resolved route ISOMORPHIC
+   committed ontara-bmm-properties.ttl: text route DIFFERENT, resolved route ISOMORPHIC
+   committed ontara-bmm-weights.ttl: text route DIFFERENT, resolved route ISOMORPHIC
+   committed ontara-tenant-types.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-correspondence.ttl: text route DIFFERENT, resolved route DIFFERENT
+   DIFF CustomerSegment (ServiceConcept): bfo_type: text={} resolved={"bfoClass": "GenericallyDependentContinuant", "midLevelClass": "CCO:GroupOfAgents", "mappingNotes": "A segment characterises a class of agents. GDC because the grouping pattern migrates between popul
+   DIFF CustomerSegment (ServiceConcept): user_facing: text={} resolved={"friendlyName": "Customer Segment", "shortDescription": "A defined group of customers with shared needs and willingness to pay."}
+   DIFF CustomerSegment (ServiceConcept): catalogue_tag: text={} resolved={"bmmConcern": "ServiceConcept", "classification": "General"}
+   DIFF CatalogueEntry (CoffeeShop): refs: text=[('item', 'MenuItem', '1')] resolved=[]
+   DIFF OrderLine (CoffeeShop): refs: text=[('item', 'MenuItem', '1'), ('order', 'Order', '1')] resolved=[('order', 'Order', '1')]
+   + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>
+   + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2000/01/rdf-schema#comment> "A defined group of customers with shared needs and willingness to pay."@en
+   + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2000/01/rdf-schema#label> "Customer Segment"@en
+   + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://www.commoncoreontologies.org/ont00000300>
+   + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2004/02/skos/core#definition> "A group of people your service is designed for — people who share similar needs and reasons for choosing you. When you
+   + resolved only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://ontara.dev/ontology/correspondence/MappingRecord>
+   + resolved only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <https://ontara.dev/ontology/correspondence/authorityZone> "shared-constrained"
+   owl_reads exit 1
+## m4-quoted-word-in-description: a quoted word inside CustomerSegment's @PurposiveDescription (content change; both routes should change, identically)
+   meaning-preserving: False; sysml -validate: passes
+   committed ontara-bmm.ttl: text route DIFFERENT, resolved route DIFFERENT
+   committed ontara-bmm-properties.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-bmm-weights.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-tenant-types.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-correspondence.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   DIFF CustomerSegment (ServiceConcept): purposive_description: text={} resolved={"description": "A group of \"people\" your service is designed for — people who share similar needs and reasons for choosing you. When you define your customer segments, the system uses them to conne
+   DIFF CatalogueEntry (CoffeeShop): refs: text=[('item', 'MenuItem', '1')] resolved=[]
+   DIFF OrderLine (CoffeeShop): refs: text=[('item', 'MenuItem', '1'), ('order', 'Order', '1')] resolved=[('order', 'Order', '1')]
+   + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2004/02/skos/core#definition> "A group of \"people\" your service is designed for — people who share similar needs and reasons for choosing you. When
+   owl_reads exit 1

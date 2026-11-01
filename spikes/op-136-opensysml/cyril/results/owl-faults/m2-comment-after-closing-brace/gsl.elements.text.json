@@ -1,0 +1,1416 @@
+[
+ {
+  "kind": "part_def",
+  "name": "Address",
+  "parentPackage": "GslCommonTypes",
+  "topLevelPackage": "GslCommonTypes",
+  "doc": "A postal address.",
+  "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 57,
+  "attributes": [
+   {
+    "name": "line1",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "line2",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "city",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "postcode",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "country",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "ContactDetails",
+  "parentPackage": "GslCommonTypes",
+  "topLevelPackage": "GslCommonTypes",
+  "doc": "Contact information for a person or organisation.",
+  "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 66,
+  "attributes": [
+   {
+    "name": "email",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "phone",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "preferredMethod",
+    "type": "ContactMethod",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Role",
+  "parentPackage": "Organisation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "A named role within the organisation.",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 18,
+  "attributes": [
+   {
+    "name": "roleName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "description",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Team",
+  "parentPackage": "Organisation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "An organisational unit composed of roles.",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 24,
+  "attributes": [
+   {
+    "name": "teamName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "roles",
+    "type": "Role",
+    "isRef": true,
+    "multiplicity": "1..*"
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "GovernanceBody",
+  "parentPackage": "Organisation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "A governance or oversight body (e.g. clinical governance\ncommittee, board, advisory group).",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 30,
+  "attributes": [
+   {
+    "name": "bodyName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "remit",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "requirement_def",
+  "name": "ConsentBeforeTreatment",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "Informed consent must be obtained and recorded\nbefore any treatment is initiated. Consent must\nbe specific to the proposed treatment, documented\nin the clinical record, and include evidence that\nthe patient had capacity at the time of consent.\nRegulatory basis: GMC Good Medical Practice,\nMontgomery ",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 77
+ },
+ {
+  "kind": "requirement_def",
+  "name": "InformedConsentRequiresInformation",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "Before consent can be considered informed, the patient\nmust have received and had opportunity to consider\nrelevant information about the proposed treatment,\nincluding expected effects, potential risks, alternative\noptions, and the consequences of not proceeding.\nThis is a precondition of ConsentBefo",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 89
+ },
+ {
+  "kind": "requirement_def",
+  "name": "BaselineInvestigationsBeforePrescribing",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "Baseline blood tests must be completed, resulted,\nand reviewed by a clinician before a hormone therapy\nprescription is authorised. The required baseline\npanel includes FBC, U&Es, LFTs, lipid profile,\nfasting glucose, prolactin, and baseline hormone\nlevels (testosterone, oestradiol).\n'Reviewed' means",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 107
+ },
+ {
+  "kind": "requirement_def",
+  "name": "ClinicalReviewBeforePrescribing",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "A clinician with appropriate competence must conduct\na clinical review before authorising a hormone therapy\nprescription. The review must consider baseline\ninvestigations, patient history, contraindications,\nand the proposed regimen.\nThis applies to both initial prescribing and any\nsubsequent dose a",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 126
+ },
+ {
+  "kind": "requirement_def",
+  "name": "PrescribingProtocolAdherence",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "Prescribing must follow an approved clinical protocol.\nThe protocol defines eligible medications, routes of\nadministration, starting doses, titration schedules,\nand therapeutic target ranges.\nDeviations from protocol must be clinically justified\nand documented in the clinical record.\nRegulatory basi",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 141
+ },
+ {
+  "kind": "requirement_def",
+  "name": "BloodMonitoringRequired",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "Patients on hormone therapy must have blood tests\nperformed at defined monitoring intervals. The\nmonitoring schedule is determined by the prescribing\nprotocol and the patient's clinical stability.\nInitial monitoring is typically at 3 months post-\ninitiation, then at intervals determined by clinical\n",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 157,
+  "attributes": [
+   {
+    "name": "monitoringIntervalWeeks",
+    "type": "Integer",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "requirement_def",
+  "name": "ClinicalReviewBeforeDoseAdjustment",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "Any change to hormone therapy dosage must be preceded\nby a clinical review that considers current blood\nresults, symptom assessment, side effect evaluation,\nand the patient's overall clinical picture.\nDose adjustments without clinical review are not\npermitted, even when blood results suggest a chang",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 173
+ },
+ {
+  "kind": "requirement_def",
+  "name": "SharedCareCommunication",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "When hormone therapy monitoring is transitioned to\nshared care with the patient's GP, the GP must receive\na shared care protocol document that includes the\ncurrent regimen, monitoring schedule, therapeutic\ntarget ranges, action thresholds, and clear guidance\non when to refer back.\nShared care must n",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 190
+ },
+ {
+  "kind": "part_def",
+  "name": "Partnership",
+  "parentPackage": "Strategy",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "A strategic partnership or collaboration.\nCross-references BusinessMetamodelGeneral::BusinessStrategy::\nStrategicObjective by name where the\npartnership supports a specific objective.",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 226,
+  "attributes": [
+   {
+    "name": "partnerName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "nature",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "strategicObjectiveRef",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "StrategicContext",
+  "parentPackage": "Strategy",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "Connects the enterprise-level strategic context\nto the detailed business strategy and scenario\nmodelling. This is the structural bridge between\nthe outer ring (Enterprise) and the business\nmodel layer.\nRenamed from BusinessModel (Phase 7) to avoid\ncollision with the top-level BusinessModel\npackage a",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 236,
+  "attributes": [
+   {
+    "name": "contextName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "currentVariant",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "strategicHorizonMonths",
+    "type": "Integer",
+    "isRedefinition": false
+   },
+   {
+    "name": "governanceNotes",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "RegimenSelectionRow",
+  "parentPackage": "DecisionTables",
+  "topLevelPackage": "GslKnowledge",
+  "doc": "A single row in the regimen selection decision\ntable. Each row maps a combination of input\nconditions to a recommended regimen.\nConcrete rows redefine all attributes with\nspecific values using :>> redefinition.",
+  "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 465,
+  "attributes": [
+   {
+    "name": "baselineTestosterone",
+    "type": "HormoneLevel",
+    "isRedefinition": false
+   },
+   {
+    "name": "baselineOestradiol",
+    "type": "HormoneLevel",
+    "isRedefinition": false
+   },
+   {
+    "name": "therapyPreference",
+    "type": "TherapyPreference",
+    "isRedefinition": false
+   },
+   {
+    "name": "contraindication",
+    "type": "ContraindicationCategory",
+    "isRedefinition": false
+   },
+   {
+    "name": "medication",
+    "type": "HormoneMedication",
+    "isRedefinition": false
+   },
+   {
+    "name": "administrationRoute",
+    "type": "AdministrationRoute",
+    "isRedefinition": false
+   },
+   {
+    "name": "startingDose",
+    "type": "DoseCategory",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "RegimenSelectionTable",
+  "parentPackage": "DecisionTables",
+  "topLevelPackage": "GslKnowledge",
+  "doc": "Regimen selection decision table for hormone\ntherapy initiation.\nHit policy: Unique — exactly one row should match\nfor any valid combination of inputs. If no row\nmatches, the evaluation returns indeterminate\nwith a recommendation for clinician judgement.\nClinical source: GenderSense Prescribing Prot",
+  "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 485,
+  "specialises": "DecisionTableDef",
+  "attributes": [
+   {
+    "name": "tableName",
+    "value": "regimenSelection",
+    "isRedefinition": true
+   },
+   {
+    "name": "hitPolicy",
+    "value": "HitPolicy::unique",
+    "isRedefinition": true
+   },
+   {
+    "name": "tableDescription",
+    "value": "Maps baseline hormones, patient preference, and contraindications to recommended regimen",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineTestosterone",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineOestradiol",
+    "value": "HormoneLevel::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "therapyPreference",
+    "value": "TherapyPreference::oestrogen",
+    "isRedefinition": true
+   },
+   {
+    "name": "contraindication",
+    "value": "ContraindicationCategory::noContraindication",
+    "isRedefinition": true
+   },
+   {
+    "name": "medication",
+    "value": "HormoneMedication::estradiolPatch",
+    "isRedefinition": true
+   },
+   {
+    "name": "administrationRoute",
+    "value": "AdministrationRoute::transdermal",
+    "isRedefinition": true
+   },
+   {
+    "name": "startingDose",
+    "value": "DoseCategory::standardDose",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineTestosterone",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineOestradiol",
+    "value": "HormoneLevel::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "therapyPreference",
+    "value": "TherapyPreference::oestrogen",
+    "isRedefinition": true
+   },
+   {
+    "name": "contraindication",
+    "value": "ContraindicationCategory::vteRisk",
+    "isRedefinition": true
+   },
+   {
+    "name": "medication",
+    "value": "HormoneMedication::estradiolPatch",
+    "isRedefinition": true
+   },
+   {
+    "name": "administrationRoute",
+    "value": "AdministrationRoute::transdermal",
+    "isRedefinition": true
+   },
+   {
+    "name": "startingDose",
+    "value": "DoseCategory::reduced",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineTestosterone",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineOestradiol",
+    "value": "HormoneLevel::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "therapyPreference",
+    "value": "TherapyPreference::oestrogen",
+    "isRedefinition": true
+   },
+   {
+    "name": "contraindication",
+    "value": "ContraindicationCategory::liverDisease",
+    "isRedefinition": true
+   },
+   {
+    "name": "medication",
+    "value": "HormoneMedication::estradiolGel",
+    "isRedefinition": true
+   },
+   {
+    "name": "administrationRoute",
+    "value": "AdministrationRoute::transdermal",
+    "isRedefinition": true
+   },
+   {
+    "name": "startingDose",
+    "value": "DoseCategory::reduced",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineTestosterone",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineOestradiol",
+    "value": "HormoneLevel::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "therapyPreference",
+    "value": "TherapyPreference::oestrogen",
+    "isRedefinition": true
+   },
+   {
+    "name": "contraindication",
+    "value": "ContraindicationCategory::cardiacRisk",
+    "isRedefinition": true
+   },
+   {
+    "name": "medication",
+    "value": "HormoneMedication::estradiolPatch",
+    "isRedefinition": true
+   },
+   {
+    "name": "administrationRoute",
+    "value": "AdministrationRoute::transdermal",
+    "isRedefinition": true
+   },
+   {
+    "name": "startingDose",
+    "value": "DoseCategory::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineTestosterone",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineOestradiol",
+    "value": "HormoneLevel::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "therapyPreference",
+    "value": "TherapyPreference::oestrogen",
+    "isRedefinition": true
+   },
+   {
+    "name": "contraindication",
+    "value": "ContraindicationCategory::multiple",
+    "isRedefinition": true
+   },
+   {
+    "name": "medication",
+    "value": "HormoneMedication::estradiolGel",
+    "isRedefinition": true
+   },
+   {
+    "name": "administrationRoute",
+    "value": "AdministrationRoute::transdermal",
+    "isRedefinition": true
+   },
+   {
+    "name": "startingDose",
+    "value": "DoseCategory::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineTestosterone",
+    "value": "HormoneLevel::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineOestradiol",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "therapyPreference",
+    "value": "TherapyPreference::testosterone",
+    "isRedefinition": true
+   },
+   {
+    "name": "contraindication",
+    "value": "ContraindicationCategory::noContraindication",
+    "isRedefinition": true
+   },
+   {
+    "name": "medication",
+    "value": "HormoneMedication::testosteroneUndecanoate",
+    "isRedefinition": true
+   },
+   {
+    "name": "administrationRoute",
+    "value": "AdministrationRoute::intramuscular",
+    "isRedefinition": true
+   },
+   {
+    "name": "startingDose",
+    "value": "DoseCategory::standardDose",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineTestosterone",
+    "value": "HormoneLevel::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineOestradiol",
+    "value": "HormoneLevel::high",
+    "isRedefinition": true
+   },
+   {
+    "name": "therapyPreference",
+    "value": "TherapyPreference::testosterone",
+    "isRedefinition": true
+   },
+   {
+    "name": "contraindication",
+    "value": "ContraindicationCategory::noContraindication",
+    "isRedefinition": true
+   },
+   {
+    "name": "medication",
+    "value": "HormoneMedication::testosteroneGel",
+    "isRedefinition": true
+   },
+   {
+    "name": "administrationRoute",
+    "value": "AdministrationRoute::transdermal",
+    "isRedefinition": true
+   },
+   {
+    "name": "startingDose",
+    "value": "DoseCategory::standardDose",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineTestosterone",
+    "value": "HormoneLevel::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineOestradiol",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "therapyPreference",
+    "value": "TherapyPreference::testosterone",
+    "isRedefinition": true
+   },
+   {
+    "name": "contraindication",
+    "value": "ContraindicationCategory::cardiacRisk",
+    "isRedefinition": true
+   },
+   {
+    "name": "medication",
+    "value": "HormoneMedication::testosteroneGel",
+    "isRedefinition": true
+   },
+   {
+    "name": "administrationRoute",
+    "value": "AdministrationRoute::transdermal",
+    "isRedefinition": true
+   },
+   {
+    "name": "startingDose",
+    "value": "DoseCategory::reduced",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineTestosterone",
+    "value": "HormoneLevel::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "baselineOestradiol",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "therapyPreference",
+    "value": "TherapyPreference::testosterone",
+    "isRedefinition": true
+   },
+   {
+    "name": "contraindication",
+    "value": "ContraindicationCategory::liverDisease",
+    "isRedefinition": true
+   },
+   {
+    "name": "medication",
+    "value": "HormoneMedication::testosteroneGel",
+    "isRedefinition": true
+   },
+   {
+    "name": "administrationRoute",
+    "value": "AdministrationRoute::transdermal",
+    "isRedefinition": true
+   },
+   {
+    "name": "startingDose",
+    "value": "DoseCategory::standardDose",
+    "isRedefinition": true
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "StabilityAssessmentRow",
+  "parentPackage": "DecisionTables",
+  "topLevelPackage": "GslKnowledge",
+  "doc": "A single row in the stability assessment decision\ntable. Each row maps monitoring indicators to a\nstability classification and recommended action.",
+  "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 632,
+  "attributes": [
+   {
+    "name": "hormoneLevel",
+    "type": "HormoneLevel",
+    "isRedefinition": false
+   },
+   {
+    "name": "minimumWeeksOnTreatment",
+    "type": "Integer",
+    "isRedefinition": false
+   },
+   {
+    "name": "sideEffectSeverity",
+    "type": "Severity",
+    "isRedefinition": false
+   },
+   {
+    "name": "satisfaction",
+    "type": "PatientSatisfaction",
+    "isRedefinition": false
+   },
+   {
+    "name": "classification",
+    "type": "StabilityClassification",
+    "isRedefinition": false
+   },
+   {
+    "name": "monitoringAction",
+    "type": "MonitoringAction",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "StabilityAssessmentTable",
+  "parentPackage": "DecisionTables",
+  "topLevelPackage": "GslKnowledge",
+  "doc": "Stability assessment decision table for hormone\ntherapy monitoring.\nHit policy: Unique — exactly one classification\nshould result from any valid input combination.\nThe table is evaluated at each monitoring review\npoint (typically every 3 months during titration,\nevery 6-12 months once stable).\nNote:",
+  "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 648,
+  "specialises": "DecisionTableDef",
+  "attributes": [
+   {
+    "name": "tableName",
+    "value": "stabilityAssessment",
+    "isRedefinition": true
+   },
+   {
+    "name": "hitPolicy",
+    "value": "HitPolicy::unique",
+    "isRedefinition": true
+   },
+   {
+    "name": "tableDescription",
+    "value": "Maps monitoring indicators to stability classification and monitoring action",
+    "isRedefinition": true
+   },
+   {
+    "name": "hormoneLevel",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "minimumWeeksOnTreatment",
+    "value": "12",
+    "isRedefinition": true
+   },
+   {
+    "name": "sideEffectSeverity",
+    "value": "Severity::informational",
+    "isRedefinition": true
+   },
+   {
+    "name": "satisfaction",
+    "value": "PatientSatisfaction::satisfied",
+    "isRedefinition": true
+   },
+   {
+    "name": "classification",
+    "value": "StabilityClassification::stable",
+    "isRedefinition": true
+   },
+   {
+    "name": "monitoringAction",
+    "value": "MonitoringAction::continueCurrentRegimen",
+    "isRedefinition": true
+   },
+   {
+    "name": "hormoneLevel",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "minimumWeeksOnTreatment",
+    "value": "12",
+    "isRedefinition": true
+   },
+   {
+    "name": "sideEffectSeverity",
+    "value": "Severity::informational",
+    "isRedefinition": true
+   },
+   {
+    "name": "satisfaction",
+    "value": "PatientSatisfaction::neutral",
+    "isRedefinition": true
+   },
+   {
+    "name": "classification",
+    "value": "StabilityClassification::stable",
+    "isRedefinition": true
+   },
+   {
+    "name": "monitoringAction",
+    "value": "MonitoringAction::reduceMonitoringInterval",
+    "isRedefinition": true
+   },
+   {
+    "name": "hormoneLevel",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "minimumWeeksOnTreatment",
+    "value": "0",
+    "isRedefinition": true
+   },
+   {
+    "name": "sideEffectSeverity",
+    "value": "Severity::informational",
+    "isRedefinition": true
+   },
+   {
+    "name": "satisfaction",
+    "value": "PatientSatisfaction::satisfied",
+    "isRedefinition": true
+   },
+   {
+    "name": "classification",
+    "value": "StabilityClassification::improving",
+    "isRedefinition": true
+   },
+   {
+    "name": "monitoringAction",
+    "value": "MonitoringAction::continueCurrentRegimen",
+    "isRedefinition": true
+   },
+   {
+    "name": "hormoneLevel",
+    "value": "HormoneLevel::low",
+    "isRedefinition": true
+   },
+   {
+    "name": "minimumWeeksOnTreatment",
+    "value": "12",
+    "isRedefinition": true
+   },
+   {
+    "name": "sideEffectSeverity",
+    "value": "Severity::informational",
+    "isRedefinition": true
+   },
+   {
+    "name": "satisfaction",
+    "value": "PatientSatisfaction::dissatisfied",
+    "isRedefinition": true
+   },
+   {
+    "name": "classification",
+    "value": "StabilityClassification::adjustmentNeeded",
+    "isRedefinition": true
+   },
+   {
+    "name": "monitoringAction",
+    "value": "MonitoringAction::adjustDose",
+    "isRedefinition": true
+   },
+   {
+    "name": "hormoneLevel",
+    "value": "HormoneLevel::high",
+    "isRedefinition": true
+   },
+   {
+    "name": "minimumWeeksOnTreatment",
+    "value": "12",
+    "isRedefinition": true
+   },
+   {
+    "name": "sideEffectSeverity",
+    "value": "Severity::informational",
+    "isRedefinition": true
+   },
+   {
+    "name": "satisfaction",
+    "value": "PatientSatisfaction::satisfied",
+    "isRedefinition": true
+   },
+   {
+    "name": "classification",
+    "value": "StabilityClassification::adjustmentNeeded",
+    "isRedefinition": true
+   },
+   {
+    "name": "monitoringAction",
+    "value": "MonitoringAction::adjustDose",
+    "isRedefinition": true
+   },
+   {
+    "name": "hormoneLevel",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "minimumWeeksOnTreatment",
+    "value": "0",
+    "isRedefinition": true
+   },
+   {
+    "name": "sideEffectSeverity",
+    "value": "Severity::warning",
+    "isRedefinition": true
+   },
+   {
+    "name": "satisfaction",
+    "value": "PatientSatisfaction::dissatisfied",
+    "isRedefinition": true
+   },
+   {
+    "name": "classification",
+    "value": "StabilityClassification::adjustmentNeeded",
+    "isRedefinition": true
+   },
+   {
+    "name": "monitoringAction",
+    "value": "MonitoringAction::increaseMonitoringInterval",
+    "isRedefinition": true
+   },
+   {
+    "name": "hormoneLevel",
+    "value": "HormoneLevel::normal",
+    "isRedefinition": true
+   },
+   {
+    "name": "minimumWeeksOnTreatment",
+    "value": "0",
+    "isRedefinition": true
+   },
+   {
+    "name": "sideEffectSeverity",
+    "value": "Severity::critical",
+    "isRedefinition": true
+   },
+   {
+    "name": "satisfaction",
+    "value": "PatientSatisfaction::dissatisfied",
+    "isRedefinition": true
+   },
+   {
+    "name": "classification",
+    "value": "StabilityClassification::concerning",
+    "isRedefinition": true
+   },
+   {
+    "name": "monitoringAction",
+    "value": "MonitoringAction::clinicalReviewUrgent",
+    "isRedefinition": true
+   },
+   {
+    "name": "hormoneLevel",
+    "value": "HormoneLevel::suppressed",
+    "isRedefinition": true
+   },
+   {
+    "name": "minimumWeeksOnTreatment",
+    "value": "0",
+    "isRedefinition": true
+   },
+   {
+    "name": "sideEffectSeverity",
+    "value": "Severity::informational",
+    "isRedefinition": true
+   },
+   {
+    "name": "satisfaction",
+    "value": "PatientSatisfaction::neutral",
+    "isRedefinition": true
+   },
+   {
+    "name": "classification",
+    "value": "StabilityClassification::concerning",
+    "isRedefinition": true
+   },
+   {
+    "name": "monitoringAction",
+    "value": "MonitoringAction::clinicalReviewUrgent",
+    "isRedefinition": true
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "AccountingIntegration",
+  "parentPackage": "Finance",
+  "topLevelPackage": "GslOperations",
+  "doc": "Describes an integration point with an external\naccounting system. Currently Xero; the part def\nis system-agnostic.",
+  "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 50,
+  "attributes": [
+   {
+    "name": "integrationName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "targetSystem",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "syncFrequency",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "dataFlows",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "notes",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "WorkforceRole",
+  "parentPackage": "People",
+  "topLevelPackage": "GslOperations",
+  "doc": "A defined role within the operational workforce.\nCaptures the contract and qualification view of\na role, complementing the planning view in\nBusinessMetamodelGeneral::ResourcePlanning::ResourceType.\nWorkforceRole says \"this person needs these\nqualifications and this contract type.\"\nResourceType says ",
+  "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 124,
+  "attributes": [
+   {
+    "name": "roleName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "contractType",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "requiredQualifications",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "regulatoryRequirements",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "fteAllocation",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "appraisalCycle",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "resourceTypeRef",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "PremisesArrangement",
+  "parentPackage": "EstatesAndFacilities",
+  "topLevelPackage": "GslOperations",
+  "doc": "Describes a premises arrangement — the physical\nspace used for clinical or administrative work.\nMay be rented, shared, or virtual.",
+  "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 219,
+  "attributes": [
+   {
+    "name": "premisesName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "locationType",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "tenureType",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "monthlyCost",
+    "type": "Real",
+    "isRedefinition": false
+   },
+   {
+    "name": "capacityNotes",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "availabilityNotes",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "EquipmentInventory",
+  "parentPackage": "EstatesAndFacilities",
+  "topLevelPackage": "GslOperations",
+  "doc": "A category of equipment used in service delivery\nor operations. Tracks what exists, not individual\nasset management.",
+  "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 231,
+  "attributes": [
+   {
+    "name": "equipmentCategory",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "items",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "maintenanceSchedule",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "replacementCycle",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "notes",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "UserAccount",
+  "parentPackage": "Identity",
+  "topLevelPackage": "GslPlatform",
+  "doc": "A user account for authentication and authorisation.",
+  "sourceFile": "exercises/gendersense/model/gsl-platform.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 561,
+  "attributes": [
+   {
+    "name": "accountId",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "email",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "accountType",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Patient",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "A patient registered with GenderSense.",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 867,
+  "attributes": [
+   {
+    "name": "nhsNumber",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "familyName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "givenName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "dateOfBirth",
+    "type": "String",
+    "isRedefinition": false
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Episode",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "A bounded episode of care with a defined start, end,\nand clinical context. A patient may have multiple\nconcurrent or sequential episodes.",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 942,
+  "attributes": [
+   {
+    "name": "episodeId",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "episodeType",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "patient",
+    "type": "Patient",
+    "isRef": true
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Consultation",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "A single clinical consultation (face-to-face, video,\ntelephone, or asynchronous).",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 957,
+  "attributes": [
+   {
+    "name": "consultationId",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "consultationType",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "episode",
+    "type": "Episode",
+    "isRef": true
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Prescription",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "A medication prescription. Each prescription represents\na single authorised medication at a specific dose. Dose\nadjustments create a new prescription; the previous one\nis completed.",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 1045,
+  "attributes": [
+   {
+    "name": "prescriptionId",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "medicationName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "dose",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "route",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "patient",
+    "type": "Patient",
+    "isRef": true
+   },
+   {
+    "name": "episode",
+    "type": "Episode",
+    "isRef": true
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "LabResult",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "A laboratory test result, tracking the full lifecycle\nfrom order through collection, reporting, clinical\nreview, and action.",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 1132,
+  "attributes": [
+   {
+    "name": "resultId",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "testName",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "value",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "units",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "referenceRange",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "patient",
+    "type": "Patient",
+    "isRef": true
+   },
+   {
+    "name": "episode",
+    "type": "Episode",
+    "isRef": true
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Referral",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "A referral to or from an external service. Each referral\nis a distinct entity with its own lifecycle. If a referral\nis declined, a new Referral is created for any re-referral\nrather than reusing the declined one.",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 1226,
+  "attributes": [
+   {
+    "name": "referralId",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "direction",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "destination",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "reason",
+    "type": "String",
+    "isRedefinition": false
+   },
+   {
+    "name": "patient",
+    "type": "Patient",
+    "isRef": true
+   },
+   {
+    "name": "episode",
+    "type": "Episode",
+    "isRef": true
+   }
+  ]
+ }
+]

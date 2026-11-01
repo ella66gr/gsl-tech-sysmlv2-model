@@ -1,0 +1,401 @@
+[
+ {
+  "kind": "part_def",
+  "name": "Address",
+  "parentPackage": "GslCommonTypes",
+  "topLevelPackage": "GslCommonTypes",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 57
+ },
+ {
+  "kind": "part_def",
+  "name": "ContactDetails",
+  "parentPackage": "GslCommonTypes",
+  "topLevelPackage": "GslCommonTypes",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-common-types.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 66
+ },
+ {
+  "kind": "part_def",
+  "name": "Role",
+  "parentPackage": "Organisation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 18
+ },
+ {
+  "kind": "part_def",
+  "name": "Team",
+  "parentPackage": "Organisation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 24,
+  "attributes": [
+   {
+    "name": "roles",
+    "type": "Role",
+    "isRef": true,
+    "qualifiedType": "GslEnterprise::Organisation::Role",
+    "multiplicity": "1..*"
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "GovernanceBody",
+  "parentPackage": "Organisation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 30
+ },
+ {
+  "kind": "requirement_def",
+  "name": "ConsentBeforeTreatment",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 77
+ },
+ {
+  "kind": "requirement_def",
+  "name": "InformedConsentRequiresInformation",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 89
+ },
+ {
+  "kind": "requirement_def",
+  "name": "BaselineInvestigationsBeforePrescribing",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 107
+ },
+ {
+  "kind": "requirement_def",
+  "name": "ClinicalReviewBeforePrescribing",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 126
+ },
+ {
+  "kind": "requirement_def",
+  "name": "PrescribingProtocolAdherence",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 141
+ },
+ {
+  "kind": "requirement_def",
+  "name": "BloodMonitoringRequired",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 157
+ },
+ {
+  "kind": "requirement_def",
+  "name": "ClinicalReviewBeforeDoseAdjustment",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 173
+ },
+ {
+  "kind": "requirement_def",
+  "name": "SharedCareCommunication",
+  "parentPackage": "Regulation",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 190
+ },
+ {
+  "kind": "part_def",
+  "name": "Partnership",
+  "parentPackage": "Strategy",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 226
+ },
+ {
+  "kind": "part_def",
+  "name": "StrategicContext",
+  "parentPackage": "Strategy",
+  "topLevelPackage": "GslEnterprise",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-enterprise.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 236
+ },
+ {
+  "kind": "part_def",
+  "name": "RegimenSelectionRow",
+  "parentPackage": "DecisionTables",
+  "topLevelPackage": "GslKnowledge",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 465
+ },
+ {
+  "kind": "part_def",
+  "name": "RegimenSelectionTable",
+  "parentPackage": "DecisionTables",
+  "topLevelPackage": "GslKnowledge",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 485,
+  "specialises": "SystemMetamodelGeneral::DecisionModels::DecisionTableDef"
+ },
+ {
+  "kind": "part_def",
+  "name": "StabilityAssessmentRow",
+  "parentPackage": "DecisionTables",
+  "topLevelPackage": "GslKnowledge",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 632
+ },
+ {
+  "kind": "part_def",
+  "name": "StabilityAssessmentTable",
+  "parentPackage": "DecisionTables",
+  "topLevelPackage": "GslKnowledge",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-knowledge.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 648,
+  "specialises": "SystemMetamodelGeneral::DecisionModels::DecisionTableDef"
+ },
+ {
+  "kind": "part_def",
+  "name": "AccountingIntegration",
+  "parentPackage": "Finance",
+  "topLevelPackage": "GslOperations",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 50
+ },
+ {
+  "kind": "part_def",
+  "name": "WorkforceRole",
+  "parentPackage": "People",
+  "topLevelPackage": "GslOperations",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 124
+ },
+ {
+  "kind": "part_def",
+  "name": "PremisesArrangement",
+  "parentPackage": "EstatesAndFacilities",
+  "topLevelPackage": "GslOperations",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 219
+ },
+ {
+  "kind": "part_def",
+  "name": "EquipmentInventory",
+  "parentPackage": "EstatesAndFacilities",
+  "topLevelPackage": "GslOperations",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-operations.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 231
+ },
+ {
+  "kind": "part_def",
+  "name": "UserAccount",
+  "parentPackage": "Identity",
+  "topLevelPackage": "GslPlatform",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-platform.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 561
+ },
+ {
+  "kind": "part_def",
+  "name": "Patient",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 867
+ },
+ {
+  "kind": "part_def",
+  "name": "Episode",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 942,
+  "attributes": [
+   {
+    "name": "patient",
+    "type": "Patient",
+    "isRef": true,
+    "qualifiedType": "GslServiceDelivery::ClinicalEntities::Patient"
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Consultation",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 957,
+  "attributes": [
+   {
+    "name": "episode",
+    "type": "Episode",
+    "isRef": true,
+    "qualifiedType": "GslServiceDelivery::ClinicalEntities::Episode"
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Prescription",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 1045,
+  "attributes": [
+   {
+    "name": "patient",
+    "type": "Patient",
+    "isRef": true,
+    "qualifiedType": "GslServiceDelivery::ClinicalEntities::Patient"
+   },
+   {
+    "name": "episode",
+    "type": "Episode",
+    "isRef": true,
+    "qualifiedType": "GslServiceDelivery::ClinicalEntities::Episode"
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "LabResult",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 1132,
+  "attributes": [
+   {
+    "name": "patient",
+    "type": "Patient",
+    "isRef": true,
+    "qualifiedType": "GslServiceDelivery::ClinicalEntities::Patient"
+   },
+   {
+    "name": "episode",
+    "type": "Episode",
+    "isRef": true,
+    "qualifiedType": "GslServiceDelivery::ClinicalEntities::Episode"
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Referral",
+  "parentPackage": "ClinicalEntities",
+  "topLevelPackage": "GslServiceDelivery",
+  "doc": "",
+  "sourceFile": "exercises/gendersense/model/gsl-service-delivery.sysml",
+  "sourceDomain": "gsl",
+  "metaModelLayer": "",
+  "lineNumber": 1226,
+  "attributes": [
+   {
+    "name": "patient",
+    "type": "Patient",
+    "isRef": true,
+    "qualifiedType": "GslServiceDelivery::ClinicalEntities::Patient"
+   },
+   {
+    "name": "episode",
+    "type": "Episode",
+    "isRef": true,
+    "qualifiedType": "GslServiceDelivery::ClinicalEntities::Episode"
+   }
+  ]
+ }
+]

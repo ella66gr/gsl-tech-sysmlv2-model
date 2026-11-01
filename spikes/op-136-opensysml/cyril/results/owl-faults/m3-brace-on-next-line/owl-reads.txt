@@ -1,0 +1,82 @@
+## core: 6 files; parse 0.13s, api-json 1.58s
+   @BfoType 38, @CatalogueTag 38, @Comprehension 39, @PurposiveDescription 39, @UserFacing 38, @WeightedRelationship 108, annotations bound owned-by-element 1, annotations bound positional 303, elements 96
+   DIFF CustomerSegment (ServiceConcept): bfo_type: text={} resolved={"bfoClass": "GenericallyDependentContinuant", "midLevelClass": "CCO:GroupOfAgents", "mappingNotes": "A segment characterises a class of agents. GDC because the grouping pattern migrates between popul
+   DIFF CustomerSegment (ServiceConcept): user_facing: text={} resolved={"friendlyName": "Customer Segment", "shortDescription": "A defined group of customers with shared needs and willingness to pay."}
+   DIFF CustomerSegment (ServiceConcept): catalogue_tag: text={} resolved={"bmmConcern": "ServiceConcept", "classification": "General"}
+## cafe: 8 files; parse 0.15s, api-json 2.20s
+   @BfoType 2, @PurposiveDescription 2, @UserFacing 2, annotations bound positional 6, elements 15
+   DIFF CatalogueEntry (CoffeeShop): refs: text=[('item', 'MenuItem', '1')] resolved=[]
+   DIFF OrderLine (CoffeeShop): refs: text=[('item', 'MenuItem', '1'), ('order', 'Order', '1')] resolved=[('order', 'Order', '1')]
+## suds: no model files (skipped, as the pipeline does)
+## paws: 1 files; parse 0.12s, api-json 1.76s
+   elements 1
+   element fields: IDENTICAL
+## gsl: 10 files; parse 0.22s, api-json 2.60s
+   elements 30
+   element fields: IDENTICAL
+## pipeline stages 2-3 on all domains
+   counts text     {"DomainClass": 38, "TenantRuntimeType": 2, "classes": 38, "deferred": 3, "properties": 13, "tenantTypes": 2, "weights": 99}
+   counts resolved {"DomainClass": 39, "TenantRuntimeType": 2, "classes": 39, "deferred": 2, "properties": 14, "tenantTypes": 2, "weights": 108}
+   3a-domain: 195 triples text, 200 resolved: DIFFERENT
+      + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class>
+      + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2000/01/rdf-schema#comment> "A defined group of customers with shared needs and willingness to pay."@en
+      + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2000/01/rdf-schema#label> "Customer Segment"@en
+      + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://www.commoncoreontologies.org/ont00000300>
+      + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2004/02/skos/core#definition> "A group of people your service is designed for — people who share similar needs and reasons for choosing you. When you 
+   3b-correspondence: 1286 triples text, 1382 resolved: DIFFERENT
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://ontara.dev/ontology/correspondence/MappingRecord>
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <https://ontara.dev/ontology/correspondence/authorityZone> "shared-constrained"
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <https://ontara.dev/ontology/correspondence/classification> "DomainClass"
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <https://ontara.dev/ontology/correspondence/owlEntity> <https://ontara.dev/ontology/bmm/CustomerSegment>
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <https://ontara.dev/ontology/correspondence/sourceHash> "46895d4d0307172d"
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <https://ontara.dev/ontology/correspondence/sysmlElementName> "CustomerSegment"
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <https://ontara.dev/ontology/correspondence/sysmlLineNumber> "113"^^<http://www.w3.org/2001/XMLSchema#integer>
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-CustomerSegment> <https://ontara.dev/ontology/correspondence/sysmlSourceFile> "model/business-metamodel-general.sysml"
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-prop-hasTargetSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://ontara.dev/ontology/correspondence/PropertyMappingRecord>
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-prop-hasTargetSegment> <https://ontara.dev/ontology/correspondence/authorityZone> "shared-constrained"
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-prop-hasTargetSegment> <https://ontara.dev/ontology/correspondence/classification> "ObjectProperty"
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-prop-hasTargetSegment> <https://ontara.dev/ontology/correspondence/isFunctional> "true"^^<http://www.w3.org/2001/XMLSchema#boolean>
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-prop-hasTargetSegment> <https://ontara.dev/ontology/correspondence/multiplicity> "1"
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-prop-hasTargetSegment> <https://ontara.dev/ontology/correspondence/owlEntity> <https://ontara.dev/ontology/bmm/axioms#hasTargetSegment>
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-prop-hasTargetSegment> <https://ontara.dev/ontology/correspondence/sysmlElementName> "ValueProposition.targetSegment"
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-weight-Channel-to-CustomerSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://ontara.dev/ontology/correspondence/WeightMappingRecord>
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-weight-Channel-to-CustomerSegment> <https://ontara.dev/ontology/correspondence/authorityZone> "shared-constrained"
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-weight-Channel-to-CustomerSegment> <https://ontara.dev/ontology/correspondence/classification> "WeightedRelationship"
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-weight-Channel-to-CustomerSegment> <https://ontara.dev/ontology/correspondence/owlEntity> <https://ontara.dev/ontology/bmm/weight-Channel-to-CustomerSegment>
+      + resolved only: <https://ontara.dev/ontology/correspondence/map-weight-Channel-to-CustomerSegment> <https://ontara.dev/ontology/correspondence/sysmlElementName> "Channel"
+   3c-properties: 92 triples text, 99 resolved: DIFFERENT
+      + resolved only: <https://ontara.dev/ontology/bmm/axioms#hasTargetSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#FunctionalProperty>
+      + resolved only: <https://ontara.dev/ontology/bmm/axioms#hasTargetSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#ObjectProperty>
+      + resolved only: <https://ontara.dev/ontology/bmm/axioms#hasTargetSegment> <http://www.w3.org/2000/01/rdf-schema#comment> "SysML: ValueProposition.targetSegment [1]. Pipeline-generated from typed ref attribute."@en
+      + resolved only: <https://ontara.dev/ontology/bmm/axioms#hasTargetSegment> <http://www.w3.org/2000/01/rdf-schema#domain> <https://ontara.dev/ontology/bmm/ValueProposition>
+      + resolved only: <https://ontara.dev/ontology/bmm/axioms#hasTargetSegment> <http://www.w3.org/2000/01/rdf-schema#label> "has target segment"@en
+      + resolved only: <https://ontara.dev/ontology/bmm/axioms#hasTargetSegment> <http://www.w3.org/2000/01/rdf-schema#range> <https://ontara.dev/ontology/bmm/CustomerSegment>
+      + resolved only: <https://ontara.dev/ontology/bmm/axioms#hasTargetSegment> <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> <http://www.w3.org/2002/07/owl#topObjectProperty>
+   3e-weights: 723 triples text, 786 resolved: DIFFERENT
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-Channel-to-CustomerSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-Channel-to-CustomerSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://ontara.dev/ontology/bmm/WeightedRelationship>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-Channel-to-CustomerSegment> <http://www.w3.org/2000/01/rdf-schema#label> "Channel → CustomerSegment (moderate)"@en
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-Channel-to-CustomerSegment> <https://ontara.dev/ontology/bmm/weightRationale> "Channels serve customer segments. A change to a channel may require reviewing which segments it reaches, but the coupli
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-Channel-to-CustomerSegment> <https://ontara.dev/ontology/bmm/weightSource> <https://ontara.dev/ontology/bmm/Channel>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-Channel-to-CustomerSegment> <https://ontara.dev/ontology/bmm/weightStrength> "moderate"^^<http://www.w3.org/2001/XMLSchema#string>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-Channel-to-CustomerSegment> <https://ontara.dev/ontology/bmm/weightTarget> <https://ontara.dev/ontology/bmm/CustomerSegment>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CommunityRelationship-to-CustomerSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CommunityRelationship-to-CustomerSegment> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://ontara.dev/ontology/bmm/WeightedRelationship>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CommunityRelationship-to-CustomerSegment> <http://www.w3.org/2000/01/rdf-schema#label> "CommunityRelationship → CustomerSegment (moderate)"@en
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CommunityRelationship-to-CustomerSegment> <https://ontara.dev/ontology/bmm/weightRationale> "Communities overlap with customer segments, but they are not the same thing — a community relationship may serve non-cu
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CommunityRelationship-to-CustomerSegment> <https://ontara.dev/ontology/bmm/weightSource> <https://ontara.dev/ontology/bmm/CommunityRelationship>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CommunityRelationship-to-CustomerSegment> <https://ontara.dev/ontology/bmm/weightStrength> "moderate"^^<http://www.w3.org/2001/XMLSchema#string>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CommunityRelationship-to-CustomerSegment> <https://ontara.dev/ontology/bmm/weightTarget> <https://ontara.dev/ontology/bmm/CustomerSegment>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CustomerSegment-to-Channel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#NamedIndividual>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CustomerSegment-to-Channel> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <https://ontara.dev/ontology/bmm/WeightedRelationship>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CustomerSegment-to-Channel> <http://www.w3.org/2000/01/rdf-schema#label> "CustomerSegment → Channel (moderate)"@en
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CustomerSegment-to-Channel> <https://ontara.dev/ontology/bmm/weightRationale> "Channels are how segments are reached. A change to the target segment may require reviewing acquisition and delivery ch
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CustomerSegment-to-Channel> <https://ontara.dev/ontology/bmm/weightSource> <https://ontara.dev/ontology/bmm/CustomerSegment>
+      + resolved only: <https://ontara.dev/ontology/bmm/weight-CustomerSegment-to-Channel> <https://ontara.dev/ontology/bmm/weightStrength> "moderate"^^<http://www.w3.org/2001/XMLSchema#string>
+   3g-tenant-types: 15 triples text, 15 resolved: ISOMORPHIC
+   committed ontara-bmm.ttl: text route DIFFERENT, resolved route ISOMORPHIC
+   committed ontara-bmm-properties.ttl: text route DIFFERENT, resolved route ISOMORPHIC
+   committed ontara-bmm-weights.ttl: text route DIFFERENT, resolved route ISOMORPHIC
+   committed ontara-tenant-types.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-correspondence.ttl: text route DIFFERENT, resolved route DIFFERENT
+VERDICT: DIFFERENT

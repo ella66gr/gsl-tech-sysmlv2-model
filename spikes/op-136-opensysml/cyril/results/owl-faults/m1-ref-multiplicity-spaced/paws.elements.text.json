@@ -1,0 +1,14 @@
+[
+ {
+  "kind": "part_def",
+  "name": "Booking",
+  "parentPackage": "PawsCanonicalRuntime",
+  "topLevelPackage": "PawsCanonicalRuntime",
+  "doc": "Paws Booking canonical runtime type.\nA Booking represents a scheduled grooming appointment —\nits existence begins when the owner books (online or\nwalk-in) and ends when the engagement closes post-\ngrooming. The runtime instance carries a four-axis\nstatus tuple at all times:\n- lifecycle (ordered): sc",
+  "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+  "sourceDomain": "paws",
+  "metaModelLayer": "",
+  "lineNumber": 860,
+  "specialises": "CanonicalRuntimeType"
+ }
+]

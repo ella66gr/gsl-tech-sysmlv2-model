@@ -1,0 +1,29 @@
+## core: 6 files; parse 0.12s, api-json 1.58s
+   @BfoType 39, @CatalogueTag 39, @Comprehension 39, @PurposiveDescription 39, @UserFacing 39, @WeightedRelationship 108, annotations bound owned-by-element 1, annotations bound positional 303, elements 96
+   DIFF CustomerSegment (ServiceConcept): purposive_description: text={} resolved={"description": "A group of \"people\" your service is designed for — people who share similar needs and reasons for choosing you. When you define your customer segments, the system uses them to conne
+## cafe: 8 files; parse 0.14s, api-json 1.91s
+   @BfoType 2, @PurposiveDescription 2, @UserFacing 2, annotations bound positional 6, elements 15
+   DIFF CatalogueEntry (CoffeeShop): refs: text=[('item', 'MenuItem', '1')] resolved=[]
+   DIFF OrderLine (CoffeeShop): refs: text=[('item', 'MenuItem', '1'), ('order', 'Order', '1')] resolved=[('order', 'Order', '1')]
+## suds: no model files (skipped, as the pipeline does)
+## paws: 1 files; parse 0.12s, api-json 1.75s
+   elements 1
+   element fields: IDENTICAL
+## gsl: 10 files; parse 0.19s, api-json 2.59s
+   elements 30
+   element fields: IDENTICAL
+## pipeline stages 2-3 on all domains
+   counts text     {"DomainClass": 39, "TenantRuntimeType": 2, "classes": 39, "deferred": 2, "properties": 14, "tenantTypes": 2, "weights": 108}
+   counts resolved {"DomainClass": 39, "TenantRuntimeType": 2, "classes": 39, "deferred": 2, "properties": 14, "tenantTypes": 2, "weights": 108}
+   3a-domain: 199 triples text, 200 resolved: DIFFERENT
+      + resolved only: <https://ontara.dev/ontology/bmm/CustomerSegment> <http://www.w3.org/2004/02/skos/core#definition> "A group of \"people\" your service is designed for — people who share similar needs and reasons for choosing you. When 
+   3b-correspondence: 1382 triples text, 1382 resolved: ISOMORPHIC
+   3c-properties: 99 triples text, 99 resolved: ISOMORPHIC
+   3e-weights: 786 triples text, 786 resolved: ISOMORPHIC
+   3g-tenant-types: 15 triples text, 15 resolved: ISOMORPHIC
+   committed ontara-bmm.ttl: text route DIFFERENT, resolved route DIFFERENT
+   committed ontara-bmm-properties.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-bmm-weights.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-tenant-types.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+   committed ontara-correspondence.ttl: text route ISOMORPHIC, resolved route ISOMORPHIC
+VERDICT: DIFFERENT

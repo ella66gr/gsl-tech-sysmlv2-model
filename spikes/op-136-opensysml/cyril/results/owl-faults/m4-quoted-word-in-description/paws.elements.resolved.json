@@ -1,0 +1,14 @@
+[
+ {
+  "kind": "part_def",
+  "name": "Booking",
+  "parentPackage": "PawsCanonicalRuntime",
+  "topLevelPackage": "PawsCanonicalRuntime",
+  "doc": "",
+  "sourceFile": "exercises/paws-demonstrator/model/paws.sysml",
+  "sourceDomain": "paws",
+  "metaModelLayer": "",
+  "lineNumber": 860,
+  "specialises": "BusinessMetamodelGeneral::CanonicalRuntime::CanonicalRuntimeType"
+ }
+]

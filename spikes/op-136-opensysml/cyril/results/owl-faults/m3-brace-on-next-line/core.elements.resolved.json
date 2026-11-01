@@ -1,0 +1,5169 @@
+[
+ {
+  "kind": "part_def",
+  "name": "ArchitecturalSection",
+  "parentPackage": "ArchitecturalStructure",
+  "topLevelPackage": "ArchitecturalStructure",
+  "doc": "",
+  "sourceFile": "model/architectural-structure.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 121
+ },
+ {
+  "kind": "part_def",
+  "name": "CustomerSegment",
+  "parentPackage": "ServiceConcept",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 113,
+  "catalogueTag": {
+   "bmmConcern": "ServiceConcept",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Customer Segment",
+   "shortDescription": "A defined group of customers with shared needs and willingness to pay."
+  },
+  "purposiveDescription": {
+   "description": "A group of people your service is designed for — people who share similar needs and reasons for choosing you. When you define your customer segments, the system uses them to connect your value propositions, pricing, and channels to the right audiences."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ValueProposition",
+    "strength": "strong",
+    "rationale": "Each segment has one or more propositions designed for it. A change to the target segment requires reassessing the value promises made to it."
+   },
+   {
+    "target": "ServiceOffering",
+    "strength": "strong",
+    "rationale": "Offerings are what the segment actually receives. A change to the target audience requires reassessing what is offered to them."
+   },
+   {
+    "target": "Channel",
+    "strength": "moderate",
+    "rationale": "Channels are how segments are reached. A change to the target segment may require reviewing acquisition and delivery channels, but the relationship is many-to-many."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ServiceConcept",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "CCO:GroupOfAgents",
+     "mappingNotes": "A segment characterises a class of agents. GDC because the grouping pattern migrates between populations."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Customer Segment",
+     "shortDescription": "A defined group of customers with shared needs and willingness to pay."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A group of people your service is designed for — people who share similar needs and reasons for choosing you. When you define your customer segments, the system uses them to connect your value propositions, pricing, and channels to the right audiences."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ValueProposition",
+     "strength": "strong",
+     "rationale": "Each segment has one or more propositions designed for it. A change to the target segment requires reassessing the value promises made to it."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "strong",
+     "rationale": "Offerings are what the segment actually receives. A change to the target audience requires reassessing what is offered to them."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "Channel",
+     "strength": "moderate",
+     "rationale": "Channels are how segments are reached. A change to the target segment may require reviewing acquisition and delivery channels, but the relationship is many-to-many."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "CCO:GroupOfAgents",
+   "mappingNotes": "A segment characterises a class of agents. GDC because the grouping pattern migrates between populations."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ValueProposition",
+  "parentPackage": "ServiceConcept",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 159,
+  "attributes": [
+   {
+    "name": "targetSegment",
+    "type": "CustomerSegment",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::CustomerSegment"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "ServiceConcept",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Value Proposition",
+   "shortDescription": "A promise of value to a customer segment — what they get and why it matters."
+  },
+  "purposiveDescription": {
+   "description": "The core promise your service makes to a particular group of customers — what they get from you and why they'd choose you over the alternatives. When you define a value proposition, the system holds it as the anchor that your activities, resources, and pricing all exist to deliver."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ServiceOffering",
+    "strength": "strong",
+    "rationale": "The offering is the concrete realisation of the proposition. A change to the value promise requires reassessing what is offered to deliver it."
+   },
+   {
+    "target": "CustomerSegment",
+    "strength": "strong",
+    "rationale": "Every value proposition is made to a specific segment. A change to the promise of value requires reassessing the audience it addresses."
+   },
+   {
+    "target": "DifferentiationClaim",
+    "strength": "moderate",
+    "rationale": "Claims articulate how the proposition differs from alternatives. A change to the proposition may require reviewing its supporting claims, but a proposition can exist before claims are formalised."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ServiceConcept",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "A specification of promised value. Migrates between bearers (documents, conversations)."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Value Proposition",
+     "shortDescription": "A promise of value to a customer segment — what they get and why it matters."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "The core promise your service makes to a particular group of customers — what they get from you and why they'd choose you over the alternatives. When you define a value proposition, the system holds it as the anchor that your activities, resources, and pricing all exist to deliver."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "strong",
+     "rationale": "The offering is the concrete realisation of the proposition. A change to the value promise requires reassessing what is offered to deliver it."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CustomerSegment",
+     "strength": "strong",
+     "rationale": "Every value proposition is made to a specific segment. A change to the promise of value requires reassessing the audience it addresses."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "DifferentiationClaim",
+     "strength": "moderate",
+     "rationale": "Claims articulate how the proposition differs from alternatives. A change to the proposition may require reviewing its supporting claims, but a proposition can exist before claims are formalised."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "A specification of promised value. Migrates between bearers (documents, conversations)."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ServiceOffering",
+  "parentPackage": "ServiceConcept",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 229,
+  "catalogueTag": {
+   "bmmConcern": "ServiceConcept",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Service Offering",
+   "shortDescription": "A packaged unit of service that can be priced, resourced, and delivered to customers."
+  },
+  "purposiveDescription": {
+   "description": "A distinct service that your business offers — something a customer can choose, pay for, and receive. When you define a service offering, the system connects it to the activities required to deliver it, the resources it consumes, and the price the customer pays."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ValueProposition",
+    "strength": "strong",
+    "rationale": "A service offering is the concrete realisation of a value proposition. A change to what is offered requires reassessing the promise of value it delivers."
+   },
+   {
+    "target": "CustomerSegment",
+    "strength": "strong",
+    "rationale": "Every service offering exists for defined customer segments. A change to what is offered requires reassessing who it is for."
+   },
+   {
+    "target": "PricingModel",
+    "strength": "strong",
+    "rationale": "Each offering has a pricing basis. A change to the offering directly affects how it is priced."
+   },
+   {
+    "target": "ActivityType",
+    "strength": "strong",
+    "rationale": "Every service offering requires activities to deliver it. A change to the offering requires reassessing the activity types involved."
+   },
+   {
+    "target": "Channel",
+    "strength": "moderate",
+    "rationale": "Channels deliver service offerings to customers. A change to the offering may require reviewing delivery channels, but the coupling is not definitional."
+   },
+   {
+    "target": "CatalogueEntry",
+    "strength": "moderate",
+    "rationale": "The catalogue records the business decision to offer something. A change to the offering may require updating catalogue entries, but the catalogue is operational, not definitional."
+   },
+   {
+    "target": "DifferentiationClaim",
+    "strength": "moderate",
+    "rationale": "Claims support the value proposition which the offering delivers. A change to the offering may require reviewing claims, but the link is mediated through the value proposition."
+   },
+   {
+    "target": "ResourceType",
+    "strength": "moderate",
+    "rationale": "Resources are consumed by activities which deliver offerings. A change to the offering may affect resource requirements, but the relationship is indirect — mediated through activity types and capabilities."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ServiceConcept",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "A packaged specification of what can be delivered — the plan/template, not the delivery itself."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Service Offering",
+     "shortDescription": "A packaged unit of service that can be priced, resourced, and delivered to customers."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A distinct service that your business offers — something a customer can choose, pay for, and receive. When you define a service offering, the system connects it to the activities required to deliver it, the resources it consumes, and the price the customer pays."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ValueProposition",
+     "strength": "strong",
+     "rationale": "A service offering is the concrete realisation of a value proposition. A change to what is offered requires reassessing the promise of value it delivers."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CustomerSegment",
+     "strength": "strong",
+     "rationale": "Every service offering exists for defined customer segments. A change to what is offered requires reassessing who it is for."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "PricingModel",
+     "strength": "strong",
+     "rationale": "Each offering has a pricing basis. A change to the offering directly affects how it is priced."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityType",
+     "strength": "strong",
+     "rationale": "Every service offering requires activities to deliver it. A change to the offering requires reassessing the activity types involved."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "Channel",
+     "strength": "moderate",
+     "rationale": "Channels deliver service offerings to customers. A change to the offering may require reviewing delivery channels, but the coupling is not definitional."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CatalogueEntry",
+     "strength": "moderate",
+     "rationale": "The catalogue records the business decision to offer something. A change to the offering may require updating catalogue entries, but the catalogue is operational, not definitional."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "DifferentiationClaim",
+     "strength": "moderate",
+     "rationale": "Claims support the value proposition which the offering delivers. A change to the offering may require reviewing claims, but the link is mediated through the value proposition."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceType",
+     "strength": "moderate",
+     "rationale": "Resources are consumed by activities which deliver offerings. A change to the offering may affect resource requirements, but the relationship is indirect — mediated through activity types and capabilities."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "A packaged specification of what can be delivered — the plan/template, not the delivery itself."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "Channel",
+  "parentPackage": "ServiceConcept",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 275,
+  "catalogueTag": {
+   "bmmConcern": "ServiceConcept",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Channel",
+   "shortDescription": "A way that customers find, reach, or receive your service."
+  },
+  "purposiveDescription": {
+   "description": "A way that customers find you, reach you, or receive your service — your website, a referral network, a walk-in counter, an app. When you define your channels, the system tracks which customer segments each channel serves and how your service offerings are delivered through them."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "CustomerSegment",
+    "strength": "moderate",
+    "rationale": "Channels serve customer segments. A change to a channel may require reviewing which segments it reaches, but the coupling is operational and many-to-many."
+   },
+   {
+    "target": "ServiceOffering",
+    "strength": "moderate",
+    "rationale": "Channels deliver service offerings. A change to a channel may require reviewing which offerings flow through it, but the coupling is loose."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ServiceConcept",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "Role",
+     "midLevelClass": "CCO:ArtifactFunction",
+     "mappingNotes": "A role played by a medium/platform in connecting business to customers. Extrinsic — same entity can be different channels."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Channel",
+     "shortDescription": "A way that customers find, reach, or receive your service."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A way that customers find you, reach you, or receive your service — your website, a referral network, a walk-in counter, an app. When you define your channels, the system tracks which customer segments each channel serves and how your service offerings are delivered through them."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CustomerSegment",
+     "strength": "moderate",
+     "rationale": "Channels serve customer segments. A change to a channel may require reviewing which segments it reaches, but the coupling is operational and many-to-many."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "moderate",
+     "rationale": "Channels deliver service offerings. A change to a channel may require reviewing which offerings flow through it, but the coupling is loose."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "Role",
+   "midLevelClass": "CCO:ArtifactFunction",
+   "mappingNotes": "A role played by a medium/platform in connecting business to customers. Extrinsic — same entity can be different channels."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "DifferentiationClaim",
+  "parentPackage": "ServiceConcept",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 316,
+  "catalogueTag": {
+   "bmmConcern": "ServiceConcept",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Differentiation Claim",
+   "shortDescription": "An explicit, testable statement of how your service differs from alternatives."
+  },
+  "purposiveDescription": {
+   "description": "An explicit statement of how your service differs from the alternatives, from the customer's perspective. Each claim should be testable — something you can back up with evidence. When you define differentiation claims, the system records them as commitments your service is designed to fulfil."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ValueProposition",
+    "strength": "strong",
+    "rationale": "Claims exist to substantiate a value proposition. A change to a claim requires reassessing the proposition it supports — a claim without a proposition is orphaned."
+   },
+   {
+    "target": "ServiceOffering",
+    "strength": "weak",
+    "rationale": "Claims relate to offerings indirectly, via the value proposition. A change to a claim has a distant effect on offerings — mediated through the proposition."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ServiceConcept",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "An assertion with truth conditions and evidence basis."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Differentiation Claim",
+     "shortDescription": "An explicit, testable statement of how your service differs from alternatives."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "An explicit statement of how your service differs from the alternatives, from the customer's perspective. Each claim should be testable — something you can back up with evidence. When you define differentiation claims, the system records them as commitments your service is designed to fulfil."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ValueProposition",
+     "strength": "strong",
+     "rationale": "Claims exist to substantiate a value proposition. A change to a claim requires reassessing the proposition it supports — a claim without a proposition is orphaned."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "weak",
+     "rationale": "Claims relate to offerings indirectly, via the value proposition. A change to a claim has a distant effect on offerings — mediated through the proposition."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "An assertion with truth conditions and evidence basis."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ServiceSubject",
+  "parentPackage": "ServiceConcept",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 377,
+  "catalogueTag": {
+   "bmmConcern": "ServiceConcept",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Service Subject",
+   "shortDescription": "The entity upon which a service is performed — a person, animal, object, or organisation that receives the service."
+  },
+  "purposiveDescription": {
+   "description": "The thing your service acts on — the dog being groomed, the patient receiving care, the garment being cleaned, the item being repaired. A service subject may have needs independent of whoever commissioned the service, and governance obligations may attach to the subject directly. When you identify your service subjects, the system tracks what is being served, in what condition, and with what independent requirements — separately from who is paying or making decisions."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ServiceOffering",
+    "strength": "strong",
+    "rationale": "What is offered depends directly on the nature of the subject. A different breed, clinical condition, or item type requires reassessing the offering."
+   },
+   {
+    "target": "GovernanceRequirement",
+    "strength": "strong",
+    "rationale": "Governance obligations attach to the subject independently of the customer. Duty of care is to the dog, the patient, the object in custody."
+   },
+   {
+    "target": "ActivityType",
+    "strength": "strong",
+    "rationale": "The subject's characteristics directly determine the activities required — breed-specific grooming, patient-specific procedures, item-specific repair."
+   },
+   {
+    "target": "ServiceParticipant",
+    "strength": "moderate",
+    "rationale": "Subject and participants are related — participants commission, fund, or authorise services on or for the subject — but they are independently defined."
+   },
+   {
+    "target": "CustomerSegment",
+    "strength": "moderate",
+    "rationale": "Different customer segments may involve different subject types, but the segment is defined by its needs and willingness to pay, not by the subject."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ServiceConcept",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "Role",
+     "midLevelClass": "",
+     "mappingNotes": "The entity upon which a service is performed. Role because subject status is extrinsic and context-dependent. Candidate: ontara:ServiceSubjectRole."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Service Subject",
+     "shortDescription": "The entity upon which a service is performed — a person, animal, object, or organisation that receives the service."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "The thing your service acts on — the dog being groomed, the patient receiving care, the garment being cleaned, the item being repaired. A service subject may have needs independent of whoever commissioned the service, and governance obligations may attach to the subject directly. When you identify your service subjects, the system tracks what is being served, in what condition, and with what independent requirements — separately from who is paying or making decisions."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "strong",
+     "rationale": "What is offered depends directly on the nature of the subject. A different breed, clinical condition, or item type requires reassessing the offering."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "GovernanceRequirement",
+     "strength": "strong",
+     "rationale": "Governance obligations attach to the subject independently of the customer. Duty of care is to the dog, the patient, the object in custody."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityType",
+     "strength": "strong",
+     "rationale": "The subject's characteristics directly determine the activities required — breed-specific grooming, patient-specific procedures, item-specific repair."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceParticipant",
+     "strength": "moderate",
+     "rationale": "Subject and participants are related — participants commission, fund, or authorise services on or for the subject — but they are independently defined."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CustomerSegment",
+     "strength": "moderate",
+     "rationale": "Different customer segments may involve different subject types, but the segment is defined by its needs and willingness to pay, not by the subject."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "Role",
+   "midLevelClass": "",
+   "mappingNotes": "The entity upon which a service is performed. Role because subject status is extrinsic and context-dependent. Candidate: ontara:ServiceSubjectRole."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ServiceParticipant",
+  "parentPackage": "ServiceConcept",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 451,
+  "catalogueTag": {
+   "bmmConcern": "ServiceConcept",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Service Participant",
+   "shortDescription": "An entity involved in a service engagement in a defined role — customer, payer, commissioner, decision-maker, or any other role."
+  },
+  "purposiveDescription": {
+   "description": "Any person or organisation involved in a service engagement in a defined role. The person who pays, the organisation that commissions, the carer who makes decisions, the expert called in for assessment — any entity with influence on how the service proceeds. When you identify your service participants, the system tracks who is involved, in what capacity, and how their status affects the service workflow. The set of possible roles is open — the model does not constrain what kinds of participation your service may involve."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ServiceSubject",
+    "strength": "strong",
+    "rationale": "The participant's role is defined in relation to the subject — they commission, fund, authorise, or contribute to the service on or for the subject."
+   },
+   {
+    "target": "ServiceOffering",
+    "strength": "moderate",
+    "rationale": "The participant influences the offering — a commissioner may constrain scope, a payer may limit options — but the offering is primarily shaped by the subject's needs."
+   },
+   {
+    "target": "CustomerSegment",
+    "strength": "moderate",
+    "rationale": "Participants often belong to or represent a customer segment, but the mapping is characterising — a segment is not defined by its participants."
+   },
+   {
+    "target": "GovernanceRequirement",
+    "strength": "moderate",
+    "rationale": "Governance requirements may apply to participants (commissioner must approve, payer must authorise), but the primary governance binding is to the subject."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ServiceConcept",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "Role",
+     "midLevelClass": "",
+     "mappingNotes": "An entity involved in a service in a defined role. Same person can hold multiple roles simultaneously. Candidate: ontara:ServiceParticipantRole."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Service Participant",
+     "shortDescription": "An entity involved in a service engagement in a defined role — customer, payer, commissioner, decision-maker, or any other role."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "Any person or organisation involved in a service engagement in a defined role. The person who pays, the organisation that commissions, the carer who makes decisions, the expert called in for assessment — any entity with influence on how the service proceeds. When you identify your service participants, the system tracks who is involved, in what capacity, and how their status affects the service workflow. The set of possible roles is open — the model does not constrain what kinds of participation your service may involve."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceSubject",
+     "strength": "strong",
+     "rationale": "The participant's role is defined in relation to the subject — they commission, fund, authorise, or contribute to the service on or for the subject."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "moderate",
+     "rationale": "The participant influences the offering — a commissioner may constrain scope, a payer may limit options — but the offering is primarily shaped by the subject's needs."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CustomerSegment",
+     "strength": "moderate",
+     "rationale": "Participants often belong to or represent a customer segment, but the mapping is characterising — a segment is not defined by its participants."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "GovernanceRequirement",
+     "strength": "moderate",
+     "rationale": "Governance requirements may apply to participants (commissioner must approve, payer must authorise), but the primary governance binding is to the subject."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "Role",
+   "midLevelClass": "",
+   "mappingNotes": "An entity involved in a service in a defined role. Same person can hold multiple roles simultaneously. Candidate: ontara:ServiceParticipantRole."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "CatalogueEntry",
+  "parentPackage": "ServiceConcept",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 531,
+  "catalogueTag": {
+   "bmmConcern": "ServiceConcept",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Catalogue Entry",
+   "shortDescription": "A record of something your business has decided to offer, with its price and status."
+  },
+  "purposiveDescription": {
+   "description": "A record of something your business has decided to offer — whether that's a menu item, a treatment, a course, or any other unit you sell or provide. The catalogue entry connects what the thing intrinsically is to how your business offers it: its price, availability, and status. When you add a catalogue entry, the system tracks it as part of your active offering."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ServiceOffering",
+    "strength": "moderate",
+    "rationale": "The catalogue records what is offered. A change to a catalogue entry may require reviewing the offering it represents, but the catalogue is the operational wrapper, not the strategic definition."
+   },
+   {
+    "target": "ExternalReference",
+    "strength": "moderate",
+    "rationale": "Catalogue entries link to external knowledge sources. A change to a catalogue entry may require reviewing its external references — the four-layer item model connects them."
+   },
+   {
+    "target": "InventoryRecord",
+    "strength": "moderate",
+    "rationale": "Inventory tracks stock of catalogue items. A change to a catalogue entry may require updating its associated inventory records."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ServiceConcept",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A record linking item definition to business-context properties (price, availability, status)."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Catalogue Entry",
+     "shortDescription": "A record of something your business has decided to offer, with its price and status."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A record of something your business has decided to offer — whether that's a menu item, a treatment, a course, or any other unit you sell or provide. The catalogue entry connects what the thing intrinsically is to how your business offers it: its price, availability, and status. When you add a catalogue entry, the system tracks it as part of your active offering."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "moderate",
+     "rationale": "The catalogue records what is offered. A change to a catalogue entry may require reviewing the offering it represents, but the catalogue is the operational wrapper, not the strategic definition."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ExternalReference",
+     "strength": "moderate",
+     "rationale": "Catalogue entries link to external knowledge sources. A change to a catalogue entry may require reviewing its external references — the four-layer item model connects them."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "InventoryRecord",
+     "strength": "moderate",
+     "rationale": "Inventory tracks stock of catalogue items. A change to a catalogue entry may require updating its associated inventory records."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A record linking item definition to business-context properties (price, availability, status)."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ExternalReference",
+  "parentPackage": "ServiceConcept",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 580,
+  "catalogueTag": {
+   "bmmConcern": "ServiceConcept",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "External Reference",
+   "shortDescription": "A link to authoritative knowledge that lives outside your system."
+  },
+  "purposiveDescription": {
+   "description": "A link to knowledge that lives outside your system — a supplier datasheet, a regulatory standard, a clinical guideline, an accreditation body. The system doesn't own this information; it points to it, so you always know where authoritative external knowledge sits in relation to your service."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "CatalogueEntry",
+    "strength": "moderate",
+    "rationale": "External references attach to catalogue items. A change to an external reference may require reviewing the catalogue entries that depend on it."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ServiceConcept",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A referential pointer to external knowledge. Information content whose purpose is denotation."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "External Reference",
+     "shortDescription": "A link to authoritative knowledge that lives outside your system."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A link to knowledge that lives outside your system — a supplier datasheet, a regulatory standard, a clinical guideline, an accreditation body. The system doesn't own this information; it points to it, so you always know where authoritative external knowledge sits in relation to your service."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CatalogueEntry",
+     "strength": "moderate",
+     "rationale": "External references attach to catalogue items. A change to an external reference may require reviewing the catalogue entries that depend on it."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A referential pointer to external knowledge. Information content whose purpose is denotation."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ActivityType",
+  "parentPackage": "ActivityModel",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 700,
+  "catalogueTag": {
+   "bmmConcern": "ActivityModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Activity Type",
+   "shortDescription": "A defined kind of business activity, classified into one of five categories."
+  },
+  "purposiveDescription": {
+   "description": "Something your business does — an identifiable unit of work that the system holds, tracks, and uses. In this system, every activity is an activity of one of the following types: service delivery, enabling, governance, development, or overhead. When you assign one of these types to an activity, the system will use that information to plan resources, allocate costs, and verify that governance requirements are being met for each kind of work."
+  },
+  "comprehension": {
+   "surfaceEnumValues": true,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ActivityCostAllocation",
+    "strength": "strong",
+    "rationale": "Cost allocation is structurally determined by activity type — every cost line traces back to an activity category."
+   },
+   {
+    "target": "ActivityGranularity",
+    "strength": "strong",
+    "rationale": "Granularity level directly governs how an activity type is tracked and costed — envelope vs category vs tracked."
+   },
+   {
+    "target": "ActivityBudget",
+    "strength": "moderate",
+    "rationale": "Budgets aggregate by activity type but the relationship is indirect — mediated through cost allocation."
+   },
+   {
+    "target": "ActivityRecord",
+    "strength": "moderate",
+    "rationale": "Activity records are typed by activity type but the record is an operational artefact, not a structural dependency."
+   },
+   {
+    "target": "ResourceType",
+    "strength": "moderate",
+    "rationale": "Resources are consumed by activities but the mapping is many-to-many and context-dependent."
+   },
+   {
+    "target": "Channel",
+    "strength": "weak",
+    "rationale": "Channels deliver services which contain activities, but the relationship is distant — mediated through service offerings."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ActivityModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "A template for a kind of activity — the specification, not the doing. Actual activities are Processes."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Activity Type",
+     "shortDescription": "A defined kind of business activity, classified into one of five categories."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "Something your business does — an identifiable unit of work that the system holds, tracks, and uses. In this system, every activity is an activity of one of the following types: service delivery, enabling, governance, development, or overhead. When you assign one of these types to an activity, the system will use that information to plan resources, allocate costs, and verify that governance requirements are being met for each kind of work."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": true,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityCostAllocation",
+     "strength": "strong",
+     "rationale": "Cost allocation is structurally determined by activity type — every cost line traces back to an activity category."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityGranularity",
+     "strength": "strong",
+     "rationale": "Granularity level directly governs how an activity type is tracked and costed — envelope vs category vs tracked."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityBudget",
+     "strength": "moderate",
+     "rationale": "Budgets aggregate by activity type but the relationship is indirect — mediated through cost allocation."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityRecord",
+     "strength": "moderate",
+     "rationale": "Activity records are typed by activity type but the record is an operational artefact, not a structural dependency."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceType",
+     "strength": "moderate",
+     "rationale": "Resources are consumed by activities but the mapping is many-to-many and context-dependent."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "Channel",
+     "strength": "weak",
+     "rationale": "Channels deliver services which contain activities, but the relationship is distant — mediated through service offerings."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "A template for a kind of activity — the specification, not the doing. Actual activities are Processes."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ActivityRecord",
+  "parentPackage": "ActivityModel",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 735,
+  "attributes": [
+   {
+    "name": "activityType",
+    "type": "ActivityType",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ActivityModel::ActivityType"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "ActivityModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Activity Record",
+   "shortDescription": "A recorded instance of an activity that actually happened."
+  },
+  "purposiveDescription": {
+   "description": "A recorded instance of an activity that actually happened — the system's record that a specific piece of work was done, by whom, for how long, and using what resources. At the most detailed tracking level, the system creates one of these for every observable activity. At coarser levels, they are estimated aggregates."
+  },
+  "comprehension": {
+   "surfaceEnumValues": true,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ActivityType",
+    "strength": "moderate",
+    "rationale": "Every record is typed by an activity type. If the record format or granularity changes, the activity type may need reviewing — but an operational change to how records are produced does not redefine what the activity type is."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ActivityModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A record documenting what happened. The activity was a Process; the record is information about it."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Activity Record",
+     "shortDescription": "A recorded instance of an activity that actually happened."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A recorded instance of an activity that actually happened — the system's record that a specific piece of work was done, by whom, for how long, and using what resources. At the most detailed tracking level, the system creates one of these for every observable activity. At coarser levels, they are estimated aggregates."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": true,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityType",
+     "strength": "moderate",
+     "rationale": "Every record is typed by an activity type. If the record format or granularity changes, the activity type may need reviewing — but an operational change to how records are produced does not redefine what the activity type is."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A record documenting what happened. The activity was a Process; the record is information about it."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ActivityBudget",
+  "parentPackage": "ActivityModel",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 776,
+  "attributes": [
+   {
+    "name": "activityType",
+    "type": "ActivityType",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ActivityModel::ActivityType"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "ActivityModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Activity Budget",
+   "shortDescription": "A planned allocation of activity volume by type and period."
+  },
+  "purposiveDescription": {
+   "description": "A planned allocation of how much activity of each type your business expects in a given period — the activity-level equivalent of a financial budget. When you define an activity budget, the system can compare what actually happened against what was planned, and surface gaps."
+  },
+  "comprehension": {
+   "surfaceEnumValues": true,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ActivityType",
+    "strength": "moderate",
+    "rationale": "Budgets are structured by activity type. If the budget changes (e.g. planned volumes revised), the activity type may need reviewing — but a quantitative change to volume does not redefine what the activity type is."
+   },
+   {
+    "target": "FinancialProjection",
+    "strength": "moderate",
+    "rationale": "Activity budgets feed into financial projections as volume inputs. If the budget changes, the projection may need updating — but the projection aggregates many inputs beyond activity volumes."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ActivityModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "A forward-looking allocation of activity volume. Specifies desired future states."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Activity Budget",
+     "shortDescription": "A planned allocation of activity volume by type and period."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A planned allocation of how much activity of each type your business expects in a given period — the activity-level equivalent of a financial budget. When you define an activity budget, the system can compare what actually happened against what was planned, and surface gaps."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": true,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityType",
+     "strength": "moderate",
+     "rationale": "Budgets are structured by activity type. If the budget changes (e.g. planned volumes revised), the activity type may need reviewing — but a quantitative change to volume does not redefine what the activity type is."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "FinancialProjection",
+     "strength": "moderate",
+     "rationale": "Activity budgets feed into financial projections as volume inputs. If the budget changes, the projection may need updating — but the projection aggregates many inputs beyond activity volumes."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "A forward-looking allocation of activity volume. Specifies desired future states."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ActivityGranularity",
+  "parentPackage": "ActivityModel",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 816,
+  "catalogueTag": {
+   "bmmConcern": "ActivityModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Activity Granularity",
+   "shortDescription": "A policy declaration of how precisely activity is tracked in a given area."
+  },
+  "purposiveDescription": {
+   "description": "A policy declaration: how precisely does your business track activity in a given area? The system supports three levels — envelope (a rough total), category (broken down by type), and tracked (every individual activity recorded). Different parts of your business can operate at different levels at the same time, and you can refine the level as your needs evolve."
+  },
+  "comprehension": {
+   "surfaceEnumValues": true,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ActivityType",
+    "strength": "moderate",
+    "rationale": "Granularity governs how activity types are tracked. If the granularity policy changes, the activity types in that area may need reviewing — but a policy change about tracking precision does not redefine what the activity type is."
+   },
+   {
+    "target": "ActivityRecord",
+    "strength": "moderate",
+    "rationale": "Granularity determines the detail level of records. If the granularity changes, the record format may need adjustment — but records are produced by the tracking system, not directly defined by the policy declaration."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ActivityModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "A policy declaration about tracking precision — governs how the system observes and records."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Activity Granularity",
+     "shortDescription": "A policy declaration of how precisely activity is tracked in a given area."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A policy declaration: how precisely does your business track activity in a given area? The system supports three levels — envelope (a rough total), category (broken down by type), and tracked (every individual activity recorded). Different parts of your business can operate at different levels at the same time, and you can refine the level as your needs evolve."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": true,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityType",
+     "strength": "moderate",
+     "rationale": "Granularity governs how activity types are tracked. If the granularity policy changes, the activity types in that area may need reviewing — but a policy change about tracking precision does not redefine what the activity type is."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityRecord",
+     "strength": "moderate",
+     "rationale": "Granularity determines the detail level of records. If the granularity changes, the record format may need adjustment — but records are produced by the tracking system, not directly defined by the policy declaration."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "A policy declaration about tracking precision — governs how the system observes and records."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ActivityCostAllocation",
+  "parentPackage": "ActivityModel",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 859,
+  "attributes": [
+   {
+    "name": "activityType",
+    "type": "ActivityType",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ActivityModel::ActivityType"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "ActivityModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Activity Cost Allocation",
+   "shortDescription": "The mapping from an activity type to its financial cost."
+  },
+  "purposiveDescription": {
+   "description": "The mapping from an activity to its financial cost — how much does it cost each time this kind of work is done? When you define cost allocations, the system can connect your activity model to your financial model, making resource consumption visible in financial terms."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ActivityType",
+    "strength": "moderate",
+    "rationale": "Cost allocations are defined per activity type. If the allocation changes (method, estimated cost), the activity type may need reviewing — but a financial change to how the activity is costed does not redefine what the activity type is."
+   },
+   {
+    "target": "CostDriver",
+    "strength": "moderate",
+    "rationale": "Cost allocations use cost driver rates to compute per-activity costs. If the allocation method changes, the cost driver may need reviewing — but the driver describes the resource's cost behaviour independently of how individual activities are costed against it."
+   },
+   {
+    "target": "UnitEconomics",
+    "strength": "moderate",
+    "rationale": "Cost allocations ultimately feed unit economics through cost drivers. If an allocation changes, unit economics may need updating — but the relationship is mediated through cost drivers, not direct."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ActivityModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A mapping from activity to financial cost. Characterising, not process-like."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Activity Cost Allocation",
+     "shortDescription": "The mapping from an activity type to its financial cost."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "The mapping from an activity to its financial cost — how much does it cost each time this kind of work is done? When you define cost allocations, the system can connect your activity model to your financial model, making resource consumption visible in financial terms."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityType",
+     "strength": "moderate",
+     "rationale": "Cost allocations are defined per activity type. If the allocation changes (method, estimated cost), the activity type may need reviewing — but a financial change to how the activity is costed does not redefine what the activity type is."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CostDriver",
+     "strength": "moderate",
+     "rationale": "Cost allocations use cost driver rates to compute per-activity costs. If the allocation method changes, the cost driver may need reviewing — but the driver describes the resource's cost behaviour independently of how individual activities are costed against it."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "UnitEconomics",
+     "strength": "moderate",
+     "rationale": "Cost allocations ultimately feed unit economics through cost drivers. If an allocation changes, unit economics may need updating — but the relationship is mediated through cost drivers, not direct."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A mapping from activity to financial cost. Characterising, not process-like."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ResourceType",
+  "parentPackage": "ResourcePlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 944,
+  "catalogueTag": {
+   "bmmConcern": "ResourceCapability",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Resource Type",
+   "shortDescription": "A category of resource needed to run the service — people, equipment, premises, or external services."
+  },
+  "purposiveDescription": {
+   "description": "A kind of thing your business needs in order to operate — staff, equipment, premises, technology, or external services such as a laboratory or a contractor. The system holds each resource type as a tracked concept. When you define your resource types, the system uses them to plan capacity, understand your cost base, and identify where you might be constrained."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ResourceInstance",
+    "strength": "strong",
+    "rationale": "Instances are typed by ResourceType. If the type definition changes (category, cost profile, capacity unit), every instance of that type needs reassessment."
+   },
+   {
+    "target": "ResourceConstraint",
+    "strength": "strong",
+    "rationale": "Constraints are scoped to specific resource types. If the resource type changes, the constraints that limit its availability need reassessment — a constraint on a specific resource assumes specific properties of that type."
+   },
+   {
+    "target": "Capability",
+    "strength": "moderate",
+    "rationale": "Capabilities combine resources into service functions. A change to a resource type may require reviewing the capabilities that use it, but capabilities are resilient to substitution within a resource category."
+   },
+   {
+    "target": "CapacityModel",
+    "strength": "moderate",
+    "rationale": "Capacity models describe throughput given a resource configuration. A change to a resource type may affect throughput calculations, but the relationship is mediated through the specific configuration."
+   },
+   {
+    "target": "CostDriver",
+    "strength": "moderate",
+    "rationale": "Cost drivers are linked to resources. A change to a resource type (especially its cost profile) may require reviewing the associated cost driver, but the link is structural rather than definitional."
+   },
+   {
+    "target": "ActivityType",
+    "strength": "moderate",
+    "rationale": "Activities consume resources. A change to a resource type may affect which activities can be performed, but the coupling is many-to-many and context-dependent."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ResourceCapability",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "A category specification defining what a kind of resource is. The actual resource is an IndependentContinuant; the type is the specification."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Resource Type",
+     "shortDescription": "A category of resource needed to run the service — people, equipment, premises, or external services."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A kind of thing your business needs in order to operate — staff, equipment, premises, technology, or external services such as a laboratory or a contractor. The system holds each resource type as a tracked concept. When you define your resource types, the system uses them to plan capacity, understand your cost base, and identify where you might be constrained."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceInstance",
+     "strength": "strong",
+     "rationale": "Instances are typed by ResourceType. If the type definition changes (category, cost profile, capacity unit), every instance of that type needs reassessment."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceConstraint",
+     "strength": "strong",
+     "rationale": "Constraints are scoped to specific resource types. If the resource type changes, the constraints that limit its availability need reassessment — a constraint on a specific resource assumes specific properties of that type."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "Capability",
+     "strength": "moderate",
+     "rationale": "Capabilities combine resources into service functions. A change to a resource type may require reviewing the capabilities that use it, but capabilities are resilient to substitution within a resource category."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CapacityModel",
+     "strength": "moderate",
+     "rationale": "Capacity models describe throughput given a resource configuration. A change to a resource type may affect throughput calculations, but the relationship is mediated through the specific configuration."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CostDriver",
+     "strength": "moderate",
+     "rationale": "Cost drivers are linked to resources. A change to a resource type (especially its cost profile) may require reviewing the associated cost driver, but the link is structural rather than definitional."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityType",
+     "strength": "moderate",
+     "rationale": "Activities consume resources. A change to a resource type may affect which activities can be performed, but the coupling is many-to-many and context-dependent."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "A category specification defining what a kind of resource is. The actual resource is an IndependentContinuant; the type is the specification."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ResourceInstance",
+  "parentPackage": "ResourcePlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 985,
+  "attributes": [
+   {
+    "name": "resourceType",
+    "type": "ResourceType",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ResourcePlanning::ResourceType"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "ResourceCapability",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Resource Instance",
+   "shortDescription": "A specific resource available at a defined capacity and cost."
+  },
+  "purposiveDescription": {
+   "description": "A specific resource available to your business at a defined capacity and cost — not a named individual, but a planning-level description like 'a prescribing clinician at 0.5 FTE' or 'one licensed copy of the booking system'. When you define resource instances, the system uses them to model your actual operating capacity."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ResourceType",
+    "strength": "moderate",
+    "rationale": "An instance is a concrete realisation of its type. If the instance changes (capacity, cost, availability), the type may need reviewing — but an operational change to one instance does not redefine the resource type's category, acquisition method, or capacity unit."
+   },
+   {
+    "target": "CapacityModel",
+    "strength": "moderate",
+    "rationale": "Capacity models are built from resource configurations. A change to an instance (e.g. clinician drops from 0.8 to 0.5 FTE) may require reviewing the throughput calculation, but the capacity model aggregates across instances."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ResourceCapability",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "Role",
+     "midLevelClass": "CCO:Agent",
+     "mappingNotes": "A planning-level archetype — a role. Same person can be different ResourceInstances. CCO:Agent for personnel; pipeline specialises by category attribute."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Resource Instance",
+     "shortDescription": "A specific resource available at a defined capacity and cost."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A specific resource available to your business at a defined capacity and cost — not a named individual, but a planning-level description like 'a prescribing clinician at 0.5 FTE' or 'one licensed copy of the booking system'. When you define resource instances, the system uses them to model your actual operating capacity."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceType",
+     "strength": "moderate",
+     "rationale": "An instance is a concrete realisation of its type. If the instance changes (capacity, cost, availability), the type may need reviewing — but an operational change to one instance does not redefine the resource type's category, acquisition method, or capacity unit."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CapacityModel",
+     "strength": "moderate",
+     "rationale": "Capacity models are built from resource configurations. A change to an instance (e.g. clinician drops from 0.8 to 0.5 FTE) may require reviewing the throughput calculation, but the capacity model aggregates across instances."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "Role",
+   "midLevelClass": "CCO:Agent",
+   "mappingNotes": "A planning-level archetype — a role. Same person can be different ResourceInstances. CCO:Agent for personnel; pipeline specialises by category attribute."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "Capability",
+  "parentPackage": "ResourcePlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1037,
+  "attributes": [
+   {
+    "name": "enabledServiceOfferings",
+    "type": "ServiceOffering",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::ServiceOffering",
+    "multiplicity": "0..*"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "ResourceCapability",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Capability",
+   "shortDescription": "An organised combination of resources that produces a defined service function."
+  },
+  "purposiveDescription": {
+   "description": "An organised combination of resources that together produce a defined service function — like 'the ability to conduct a monitoring review' (which requires a clinician, a lab interface, and a clinical record system). You don't deliver services with individual resources; you deliver them with capabilities. When you define capabilities, the system connects your resources to the service offerings they enable."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ServiceOffering",
+    "strength": "strong",
+    "rationale": "Capabilities enable service offerings. If a capability changes, the offerings it enables need reassessment — you can't offer what you can't deliver."
+   },
+   {
+    "target": "ResourceType",
+    "strength": "strong",
+    "rationale": "Capabilities are defined by the resources they combine. If a capability changes (e.g. a new resource requirement is added), the resource types involved need reassessment."
+   },
+   {
+    "target": "ObjectiveCapabilityMapping",
+    "strength": "moderate",
+    "rationale": "Capabilities are the downstream end of strategy-to-operations traceability. If a capability changes, the mapping from strategic objectives to that capability may need reviewing, but the mapping is a declared connection, not a definitional dependency."
+   },
+   {
+    "target": "CapacityModel",
+    "strength": "moderate",
+    "rationale": "Capacity models describe throughput for a resource configuration that delivers a capability. If the capability changes, the throughput model may need recalibrating, but the relationship is indirect."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ResourceCapability",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "Disposition",
+     "midLevelClass": "CCO:ArtifactFunction",
+     "mappingNotes": "An organised ability — what the business can do given resources. Disposition because it describes potential, not actuality. CCO:ArtifactFunction because designed."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Capability",
+     "shortDescription": "An organised combination of resources that produces a defined service function."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "An organised combination of resources that together produce a defined service function — like 'the ability to conduct a monitoring review' (which requires a clinician, a lab interface, and a clinical record system). You don't deliver services with individual resources; you deliver them with capabilities. When you define capabilities, the system connects your resources to the service offerings they enable."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "strong",
+     "rationale": "Capabilities enable service offerings. If a capability changes, the offerings it enables need reassessment — you can't offer what you can't deliver."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceType",
+     "strength": "strong",
+     "rationale": "Capabilities are defined by the resources they combine. If a capability changes (e.g. a new resource requirement is added), the resource types involved need reassessment."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ObjectiveCapabilityMapping",
+     "strength": "moderate",
+     "rationale": "Capabilities are the downstream end of strategy-to-operations traceability. If a capability changes, the mapping from strategic objectives to that capability may need reviewing, but the mapping is a declared connection, not a definitional dependency."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CapacityModel",
+     "strength": "moderate",
+     "rationale": "Capacity models describe throughput for a resource configuration that delivers a capability. If the capability changes, the throughput model may need recalibrating, but the relationship is indirect."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "Disposition",
+   "midLevelClass": "CCO:ArtifactFunction",
+   "mappingNotes": "An organised ability — what the business can do given resources. Disposition because it describes potential, not actuality. CCO:ArtifactFunction because designed."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "CapacityModel",
+  "parentPackage": "ResourcePlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1085,
+  "catalogueTag": {
+   "bmmConcern": "ResourceCapability",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Capacity Model",
+   "shortDescription": "The relationship between your resource configuration and service throughput."
+  },
+  "purposiveDescription": {
+   "description": "The relationship between your resource configuration and how much service you can deliver — for example, 'with one clinician at 0.5 FTE, we can support 20 active patients.' This is a planning assertion that the system holds, not a computed formula. When you define a capacity model, the system knows your throughput limits and can surface when you're approaching them."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ResourceType",
+    "strength": "moderate",
+    "rationale": "A capacity model makes claims about throughput given a resource configuration. If the capacity model changes, the resource types it references may need reassessment — but the resource type exists independently of any one capacity model."
+   },
+   {
+    "target": "ResourceConstraint",
+    "strength": "moderate",
+    "rationale": "Capacity models and constraints are complementary planning concepts. If the capacity model changes (e.g. higher throughput targets), the constraints that limit resource availability may need reviewing."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ResourceCapability",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A planning assertion relating resource configuration to throughput. A claim about the system."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Capacity Model",
+     "shortDescription": "The relationship between your resource configuration and service throughput."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "The relationship between your resource configuration and how much service you can deliver — for example, 'with one clinician at 0.5 FTE, we can support 20 active patients.' This is a planning assertion that the system holds, not a computed formula. When you define a capacity model, the system knows your throughput limits and can surface when you're approaching them."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceType",
+     "strength": "moderate",
+     "rationale": "A capacity model makes claims about throughput given a resource configuration. If the capacity model changes, the resource types it references may need reassessment — but the resource type exists independently of any one capacity model."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceConstraint",
+     "strength": "moderate",
+     "rationale": "Capacity models and constraints are complementary planning concepts. If the capacity model changes (e.g. higher throughput targets), the constraints that limit resource availability may need reviewing."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A planning assertion relating resource configuration to throughput. A claim about the system."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ResourceConstraint",
+  "parentPackage": "ResourcePlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1131,
+  "attributes": [
+   {
+    "name": "affectedResource",
+    "type": "ResourceType",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ResourcePlanning::ResourceType"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "ResourceCapability",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Resource Constraint",
+   "shortDescription": "A limit on resource availability that affects service delivery."
+  },
+  "purposiveDescription": {
+   "description": "A limit on the availability or use of a resource that affects your ability to deliver services — regulatory, financial, temporal, or contractual. When you define resource constraints, the system tracks them alongside your resources so that capacity planning reflects real-world limits, not just theoretical availability."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ResourceType",
+    "strength": "strong",
+    "rationale": "Constraints are defined against specific resource types. If a constraint changes (e.g. a regulatory limit is tightened or lifted), the resource type it governs needs reassessment — the type's effective availability and cost profile may have changed."
+   },
+   {
+    "target": "CapacityModel",
+    "strength": "moderate",
+    "rationale": "Constraints limit what a resource configuration can deliver. If a constraint changes, the throughput assumptions in the capacity model may need reviewing."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ResourceCapability",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A recorded limit on resource availability. The constraint is information; its effect is felt through processes."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Resource Constraint",
+     "shortDescription": "A limit on resource availability that affects service delivery."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A limit on the availability or use of a resource that affects your ability to deliver services — regulatory, financial, temporal, or contractual. When you define resource constraints, the system tracks them alongside your resources so that capacity planning reflects real-world limits, not just theoretical availability."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceType",
+     "strength": "strong",
+     "rationale": "Constraints are defined against specific resource types. If a constraint changes (e.g. a regulatory limit is tightened or lifted), the resource type it governs needs reassessment — the type's effective availability and cost profile may have changed."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CapacityModel",
+     "strength": "moderate",
+     "rationale": "Constraints limit what a resource configuration can deliver. If a constraint changes, the throughput assumptions in the capacity model may need reviewing."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A recorded limit on resource availability. The constraint is information; its effect is felt through processes."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "InventoryRecord",
+  "parentPackage": "ResourcePlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1179,
+  "attributes": [
+   {
+    "name": "catalogueEntry",
+    "type": "CatalogueEntry",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::CatalogueEntry"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "ResourceCapability",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Inventory Record",
+   "shortDescription": "A point-in-time record of stock level for a catalogue item."
+  },
+  "purposiveDescription": {
+   "description": "A point-in-time record of how much stock you have of something in your catalogue — how many tablets, how many bags of coffee beans, how many bottles of cleaning product. This is operational tracking: it tells the system what you have right now, so it can flag when you're running low. Distinct from resource planning, which is about strategic capacity."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "CatalogueEntry",
+    "strength": "strong",
+    "rationale": "Inventory tracks stock of catalogue items. If the inventory record changes (e.g. stock level drops below threshold), the catalogue entry's availability status needs reassessment — the catalogue promises what inventory must deliver."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ResourceCapability",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:MeasurementDatum",
+     "mappingNotes": "A point-in-time stock measurement. IAO:MeasurementDatum because it captures a quantity at a specific time."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Inventory Record",
+     "shortDescription": "A point-in-time record of stock level for a catalogue item."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A point-in-time record of how much stock you have of something in your catalogue — how many tablets, how many bags of coffee beans, how many bottles of cleaning product. This is operational tracking: it tells the system what you have right now, so it can flag when you're running low. Distinct from resource planning, which is about strategic capacity."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CatalogueEntry",
+     "strength": "strong",
+     "rationale": "Inventory tracks stock of catalogue items. If the inventory record changes (e.g. stock level drops below threshold), the catalogue entry's availability status needs reassessment — the catalogue promises what inventory must deliver."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:MeasurementDatum",
+   "mappingNotes": "A point-in-time stock measurement. IAO:MeasurementDatum because it captures a quantity at a specific time."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ObjectiveCapabilityMapping",
+  "parentPackage": "ResourcePlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1243,
+  "attributes": [
+   {
+    "name": "strategicObjective",
+    "type": "StrategicObjective",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::BusinessStrategy::StrategicObjective"
+   },
+   {
+    "name": "supportingCapabilities",
+    "type": "Capability",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ResourcePlanning::Capability",
+    "multiplicity": "1..*"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "ResourceCapability",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Objective–Capability Mapping",
+   "shortDescription": "A declared connection between a strategic objective and the capabilities that support it."
+  },
+  "purposiveDescription": {
+   "description": "A declared connection between a strategic objective and the capabilities that contribute to achieving it. When you map objectives to capabilities, the system can trace from 'what are we trying to achieve?' down to 'what resources and service functions make that possible?' — closing the loop between strategy and operations."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "Capability",
+    "strength": "strong",
+    "rationale": "The mapping declares which capabilities support a strategic objective. If the mapping changes, the capabilities involved need reassessment — they may gain or lose strategic justification."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "ResourceCapability",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A declared traceability connection — an assertion linking strategy to operations."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Objective–Capability Mapping",
+     "shortDescription": "A declared connection between a strategic objective and the capabilities that support it."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A declared connection between a strategic objective and the capabilities that contribute to achieving it. When you map objectives to capabilities, the system can trace from 'what are we trying to achieve?' down to 'what resources and service functions make that possible?' — closing the loop between strategy and operations."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "Capability",
+     "strength": "strong",
+     "rationale": "The mapping declares which capabilities support a strategic objective. If the mapping changes, the capabilities involved need reassessment — they may gain or lose strategic justification."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A declared traceability connection — an assertion linking strategy to operations."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "RevenueStream",
+  "parentPackage": "FinancialPlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1317,
+  "attributes": [
+   {
+    "name": "pricingModel",
+    "type": "PricingModel",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::FinancialPlanning::PricingModel"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "FinancialModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Revenue Stream",
+   "shortDescription": "A mechanism by which the business generates income from its services."
+  },
+  "purposiveDescription": {
+   "description": "A way your business earns money — each revenue stream connects a customer segment, a triggering event (like completing an assessment or renewing a subscription), and a pricing model. When you define your revenue streams, the system can project income and connect it to the services that generate it."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "PricingModel",
+    "strength": "strong",
+    "rationale": "Each revenue stream references a pricing model. If the revenue stream changes (e.g. new trigger event, different source segment), the pricing model may need reassessment to match."
+   },
+   {
+    "target": "FinancialProjection",
+    "strength": "strong",
+    "rationale": "Financial projections aggregate revenue streams. If a revenue stream changes, the projection that depends on it needs reassessment."
+   },
+   {
+    "target": "UnitEconomics",
+    "strength": "moderate",
+    "rationale": "Revenue streams inform the revenue side of unit economics. If a stream changes, revenue-per-unit may need reviewing — but unit economics are per-offering, not per-stream."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "FinancialModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "A specification of how money flows in. The stream is the structural specification; actual transactions are Processes."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Revenue Stream",
+     "shortDescription": "A mechanism by which the business generates income from its services."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A way your business earns money — each revenue stream connects a customer segment, a triggering event (like completing an assessment or renewing a subscription), and a pricing model. When you define your revenue streams, the system can project income and connect it to the services that generate it."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "PricingModel",
+     "strength": "strong",
+     "rationale": "Each revenue stream references a pricing model. If the revenue stream changes (e.g. new trigger event, different source segment), the pricing model may need reassessment to match."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "FinancialProjection",
+     "strength": "strong",
+     "rationale": "Financial projections aggregate revenue streams. If a revenue stream changes, the projection that depends on it needs reassessment."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "UnitEconomics",
+     "strength": "moderate",
+     "rationale": "Revenue streams inform the revenue side of unit economics. If a stream changes, revenue-per-unit may need reviewing — but unit economics are per-offering, not per-stream."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "A specification of how money flows in. The stream is the structural specification; actual transactions are Processes."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "CostDriver",
+  "parentPackage": "FinancialPlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1365,
+  "attributes": [
+   {
+    "name": "linkedResource",
+    "type": "ResourceType",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ResourcePlanning::ResourceType",
+    "multiplicity": "0..*"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "FinancialModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Cost Driver",
+   "shortDescription": "A structural factor that generates cost in the business — linked to a resource or activity."
+  },
+  "purposiveDescription": {
+   "description": "A structural factor that generates cost in your business — something that, as it scales or recurs, drives your expenditure. Each cost driver is linked to a resource or an activity. When you define your cost drivers, the system connects your cost structure to the resources and activities that produce it, so you can see where money goes and why."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ResourceType",
+    "strength": "moderate",
+    "rationale": "Cost drivers characterise resources financially. If a cost driver changes (e.g. unit cost revised), the resource type's cost profile may need updating — but the resource type's category, acquisition method, and structural definition are independent of its cost behaviour."
+   },
+   {
+    "target": "UnitEconomics",
+    "strength": "strong",
+    "rationale": "Unit economics aggregate costs per service unit. If a cost driver changes, the cost-per-unit calculation needs reassessment — cost drivers are the input to that calculation."
+   },
+   {
+    "target": "ActivityCostAllocation",
+    "strength": "moderate",
+    "rationale": "Cost allocations map activities to costs. If a cost driver changes, the allocation method may need reviewing — but the allocation is a mapping mechanism, not directly defined by the cost driver."
+   },
+   {
+    "target": "RevenueStream",
+    "strength": "moderate",
+    "rationale": "Revenue streams and cost drivers together determine profitability. If a cost driver changes significantly, revenue assumptions may need reviewing — but the relationship is indirect, mediated through unit economics and financial projections."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "FinancialModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A characterisation of a resource's cost behaviour. About the resource, not the resource itself."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Cost Driver",
+     "shortDescription": "A structural factor that generates cost in the business — linked to a resource or activity."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A structural factor that generates cost in your business — something that, as it scales or recurs, drives your expenditure. Each cost driver is linked to a resource or an activity. When you define your cost drivers, the system connects your cost structure to the resources and activities that produce it, so you can see where money goes and why."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceType",
+     "strength": "moderate",
+     "rationale": "Cost drivers characterise resources financially. If a cost driver changes (e.g. unit cost revised), the resource type's cost profile may need updating — but the resource type's category, acquisition method, and structural definition are independent of its cost behaviour."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "UnitEconomics",
+     "strength": "strong",
+     "rationale": "Unit economics aggregate costs per service unit. If a cost driver changes, the cost-per-unit calculation needs reassessment — cost drivers are the input to that calculation."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityCostAllocation",
+     "strength": "moderate",
+     "rationale": "Cost allocations map activities to costs. If a cost driver changes, the allocation method may need reviewing — but the allocation is a mapping mechanism, not directly defined by the cost driver."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "RevenueStream",
+     "strength": "moderate",
+     "rationale": "Revenue streams and cost drivers together determine profitability. If a cost driver changes significantly, revenue assumptions may need reviewing — but the relationship is indirect, mediated through unit economics and financial projections."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A characterisation of a resource's cost behaviour. About the resource, not the resource itself."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "UnitEconomics",
+  "parentPackage": "FinancialPlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1403,
+  "attributes": [
+   {
+    "name": "offering",
+    "type": "ServiceOffering",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::ServiceOffering"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "FinancialModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Unit Economics",
+   "shortDescription": "The revenue, cost, and margin for a single unit of service delivery."
+  },
+  "purposiveDescription": {
+   "description": "The financial profile of delivering one unit of a service — what you earn, what it costs, and the margin between them. When you define unit economics for each service offering, the system can assess whether individual services are financially viable and how changes to pricing or costs would affect the picture."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ServiceOffering",
+    "strength": "moderate",
+    "rationale": "Unit economics characterise an offering's financial viability. If the unit economics change (e.g. margin drops below zero), the offering itself needs reassessment — but the offering's definition doesn't depend on its economics."
+   },
+   {
+    "target": "FinancialProjection",
+    "strength": "moderate",
+    "rationale": "Financial projections aggregate unit-level economics. If unit economics change, the projection may need updating — but the projection also depends on volume assumptions and other inputs."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "FinancialModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "Computed/declared financial profile per service unit. Revenue, cost, and margin figures."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Unit Economics",
+     "shortDescription": "The revenue, cost, and margin for a single unit of service delivery."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "The financial profile of delivering one unit of a service — what you earn, what it costs, and the margin between them. When you define unit economics for each service offering, the system can assess whether individual services are financially viable and how changes to pricing or costs would affect the picture."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "moderate",
+     "rationale": "Unit economics characterise an offering's financial viability. If the unit economics change (e.g. margin drops below zero), the offering itself needs reassessment — but the offering's definition doesn't depend on its economics."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "FinancialProjection",
+     "strength": "moderate",
+     "rationale": "Financial projections aggregate unit-level economics. If unit economics change, the projection may need updating — but the projection also depends on volume assumptions and other inputs."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "Computed/declared financial profile per service unit. Revenue, cost, and margin figures."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "PricingModel",
+  "parentPackage": "FinancialPlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1446,
+  "catalogueTag": {
+   "bmmConcern": "FinancialModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Pricing Model",
+   "shortDescription": "How prices are set for services — per-episode, subscription, tiered, or other basis."
+  },
+  "purposiveDescription": {
+   "description": "The logic that determines what a customer pays for a service — per-episode, subscription, tiered, sliding scale, or flat fee. When you define a pricing model, the system applies it to the relevant service offerings and uses it in revenue projections and unit economics calculations."
+  },
+  "comprehension": {
+   "surfaceEnumValues": true,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "RevenueStream",
+    "strength": "strong",
+    "rationale": "Revenue streams reference a pricing model as their revenue mechanism. If the pricing model changes, the revenue projections that depend on it need reassessment."
+   },
+   {
+    "target": "ServiceOffering",
+    "strength": "moderate",
+    "rationale": "Pricing models define how offerings are charged for. If the pricing logic changes, the offering's commercial packaging may need reviewing — but the offering itself (what is delivered, to whom, using what resources) is defined independently of how it is priced."
+   },
+   {
+    "target": "UnitEconomics",
+    "strength": "moderate",
+    "rationale": "Unit economics calculate margin per unit of service. If the pricing model changes, the revenue-per-unit figure needs reviewing — but unit economics also depend on cost factors that are independent of pricing."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "FinancialModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "Pricing rules governing future commercial exchanges."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Pricing Model",
+     "shortDescription": "How prices are set for services — per-episode, subscription, tiered, or other basis."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "The logic that determines what a customer pays for a service — per-episode, subscription, tiered, sliding scale, or flat fee. When you define a pricing model, the system applies it to the relevant service offerings and uses it in revenue projections and unit economics calculations."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": true,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "RevenueStream",
+     "strength": "strong",
+     "rationale": "Revenue streams reference a pricing model as their revenue mechanism. If the pricing model changes, the revenue projections that depend on it need reassessment."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "moderate",
+     "rationale": "Pricing models define how offerings are charged for. If the pricing logic changes, the offering's commercial packaging may need reviewing — but the offering itself (what is delivered, to whom, using what resources) is defined independently of how it is priced."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "UnitEconomics",
+     "strength": "moderate",
+     "rationale": "Unit economics calculate margin per unit of service. If the pricing model changes, the revenue-per-unit figure needs reviewing — but unit economics also depend on cost factors that are independent of pricing."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "Pricing rules governing future commercial exchanges."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "FinancialProjection",
+  "parentPackage": "FinancialPlanning",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1484,
+  "attributes": [
+   {
+    "name": "scenario",
+    "type": "ScenarioDefinition",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::BusinessScenarios::ScenarioDefinition"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "FinancialModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Financial Projection",
+   "shortDescription": "A forward-looking financial picture combining revenues, costs, and growth assumptions."
+  },
+  "purposiveDescription": {
+   "description": "A named projection of your business's financial future over a defined period — combining your revenue streams, cost drivers, and growth assumptions into a forward-looking picture. When you define a financial projection, the system links it to a scenario so you can compare different versions of the future side by side."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "RevenueStream",
+    "strength": "moderate",
+    "rationale": "A projection aggregates revenue streams. If the projection changes (e.g. revised timeline, different scenario), the revenue streams feeding it may need reviewing — but revenue streams exist independently of any one projection."
+   },
+   {
+    "target": "CostDriver",
+    "strength": "moderate",
+    "rationale": "A projection aggregates cost drivers. If the projection changes, the cost assumptions may need reviewing — but cost drivers exist independently of any one projection."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "FinancialModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "A forward-looking financial picture. Explicitly a planning instrument combining assumptions."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Financial Projection",
+     "shortDescription": "A forward-looking financial picture combining revenues, costs, and growth assumptions."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A named projection of your business's financial future over a defined period — combining your revenue streams, cost drivers, and growth assumptions into a forward-looking picture. When you define a financial projection, the system links it to a scenario so you can compare different versions of the future side by side."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "RevenueStream",
+     "strength": "moderate",
+     "rationale": "A projection aggregates revenue streams. If the projection changes (e.g. revised timeline, different scenario), the revenue streams feeding it may need reviewing — but revenue streams exist independently of any one projection."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CostDriver",
+     "strength": "moderate",
+     "rationale": "A projection aggregates cost drivers. If the projection changes, the cost assumptions may need reviewing — but cost drivers exist independently of any one projection."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "A forward-looking financial picture. Explicitly a planning instrument combining assumptions."
+  }
+ },
+ {
+  "kind": "requirement_def",
+  "name": "GovernanceRequirement",
+  "parentPackage": "GovernanceMapping",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1562,
+  "catalogueTag": {
+   "bmmConcern": "Governance",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Governance Requirement",
+   "shortDescription": "A regulatory or standards obligation that the business must satisfy, with defined evidence."
+  },
+  "purposiveDescription": {
+   "description": "A regulatory, legal, or standards obligation that your business must satisfy — and the system tracks it as a concrete, testable commitment, not just a policy statement. Each governance requirement is connected to the evidence that demonstrates compliance and, where formalised, to the constraint rules that the system can check. When you define governance requirements, the system builds a traceability chain from obligation through to proof."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "AuditEvidenceRecord",
+    "strength": "strong",
+    "rationale": "Each governance requirement defines what evidence must be produced. If the requirement changes, the evidence records need reassessment — you may need different proof, different frequency, or different responsible roles."
+   },
+   {
+    "target": "ResourceConstraint",
+    "strength": "moderate",
+    "rationale": "Governance requirements often impose resource constraints (regulatory qualification requirements, capacity limits). If a requirement changes, associated resource constraints may need reviewing — but not all requirements produce resource constraints."
+   },
+   {
+    "target": "StakeholderRelationship",
+    "strength": "moderate",
+    "rationale": "A change to a governance requirement may require reviewing the relationship through which it is enforced, but the relationship exists independently of any single requirement (H1, H5)."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "Governance",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:ObjectiveSpecification",
+     "mappingNotes": "A governance obligation — specifies a required state of affairs. The requirement is about the obligation; compliance is a Process."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Governance Requirement",
+     "shortDescription": "A regulatory or standards obligation that the business must satisfy, with defined evidence."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A regulatory, legal, or standards obligation that your business must satisfy — and the system tracks it as a concrete, testable commitment, not just a policy statement. Each governance requirement is connected to the evidence that demonstrates compliance and, where formalised, to the constraint rules that the system can check. When you define governance requirements, the system builds a traceability chain from obligation through to proof."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "AuditEvidenceRecord",
+     "strength": "strong",
+     "rationale": "Each governance requirement defines what evidence must be produced. If the requirement changes, the evidence records need reassessment — you may need different proof, different frequency, or different responsible roles."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceConstraint",
+     "strength": "moderate",
+     "rationale": "Governance requirements often impose resource constraints (regulatory qualification requirements, capacity limits). If a requirement changes, associated resource constraints may need reviewing — but not all requirements produce resource constraints."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "StakeholderRelationship",
+     "strength": "moderate",
+     "rationale": "A change to a governance requirement may require reviewing the relationship through which it is enforced, but the relationship exists independently of any single requirement (H1, H5)."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:ObjectiveSpecification",
+   "mappingNotes": "A governance obligation — specifies a required state of affairs. The requirement is about the obligation; compliance is a Process."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "AuditEvidenceRecord",
+  "parentPackage": "GovernanceMapping",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1612,
+  "catalogueTag": {
+   "bmmConcern": "Governance",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Audit Evidence Record",
+   "shortDescription": "A record that demonstrates compliance with a governance requirement — the proof that obligations are met."
+  },
+  "purposiveDescription": {
+   "description": "A record that proves your business is meeting a governance requirement — what was checked, when, by whom, and how often. The system tracks these as concrete evidence items tied to specific obligations. When you define audit evidence records, the system knows what proof exists and can surface gaps where evidence is missing or overdue."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "GovernanceRequirement",
+    "strength": "strong",
+    "rationale": "An evidence record exists to demonstrate compliance with a governance requirement — the requirement defines what evidence must be produced. A change to the requirement (its compliance description, its evidence specification, its frequency expectations) requires reassessing the evidence records that demonstrate it."
+   },
+   {
+    "target": "ActivityType",
+    "strength": "moderate",
+    "rationale": "Evidence records are produced by activities — typically governance-category activities such as inspections, reviews, or assessments. A change to the evidence specification (format, retention, frequency) may require reassessing which activities produce it, but activities exist independently of any single evidence specification."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "Governance",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A record demonstrating compliance. Evidence about a process, not the process itself."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Audit Evidence Record",
+     "shortDescription": "A record that demonstrates compliance with a governance requirement — the proof that obligations are met."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A record that proves your business is meeting a governance requirement — what was checked, when, by whom, and how often. The system tracks these as concrete evidence items tied to specific obligations. When you define audit evidence records, the system knows what proof exists and can surface gaps where evidence is missing or overdue."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "GovernanceRequirement",
+     "strength": "strong",
+     "rationale": "An evidence record exists to demonstrate compliance with a governance requirement — the requirement defines what evidence must be produced. A change to the requirement (its compliance description, its evidence specification, its frequency expectations) requires reassessing the evidence records that demonstrate it."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityType",
+     "strength": "moderate",
+     "rationale": "Evidence records are produced by activities — typically governance-category activities such as inspections, reviews, or assessments. A change to the evidence specification (format, retention, frequency) may require reassessing which activities produce it, but activities exist independently of any single evidence specification."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A record demonstrating compliance. Evidence about a process, not the process itself."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "StakeholderRelationship",
+  "parentPackage": "StakeholderModel",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1746,
+  "attributes": [
+   {
+    "name": "relatedGovernanceRequirements",
+    "type": "GovernanceRequirement",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::GovernanceMapping::GovernanceRequirement",
+    "multiplicity": "0..*"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "StakeholderModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Stakeholder Relationship",
+   "shortDescription": "A typed, ongoing, structured relationship between the business and an external entity."
+  },
+  "purposiveDescription": {
+   "description": "A relationship your business has with an external entity — a regulator, a commissioning body, a professional organisation, a contractual partner, an advisory body, or a peer. Each relationship has a defined nature, mutual obligations, and a health profile. When you define stakeholder relationships, the system tracks who you interact with, what you owe each other, and whether the relationship is working well."
+  },
+  "comprehension": {
+   "surfaceEnumValues": true,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "GovernanceRequirement",
+    "strength": "strong",
+    "rationale": "A change to the regulatory relationship (e.g. new regulator, changed inspection regime) directly affects what governance requirements apply. Definitional for regulatory-natured relationships (H1)."
+   },
+   {
+    "target": "ServiceOffering",
+    "strength": "moderate",
+    "rationale": "A change to a stakeholder relationship may affect what services can be offered (e.g. loss of a commissioning relationship), but the offering's identity is defined independently in ServiceConcept (H1, H4)."
+   },
+   {
+    "target": "ResourceType",
+    "strength": "moderate",
+    "rationale": "Some stakeholder relationships involve resource implications (e.g. regulatory requirements for qualified staff), but the link is mediated through GovernanceRequirement and ResourceConstraint (H4)."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "StakeholderModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "",
+     "mappingNotes": "A relational entity depending on both parties. GDC because the pattern migrates. Not Role (between entities, not played by one). Candidate: ontara:StakeholderRelation."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Stakeholder Relationship",
+     "shortDescription": "A typed, ongoing, structured relationship between the business and an external entity."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A relationship your business has with an external entity — a regulator, a commissioning body, a professional organisation, a contractual partner, an advisory body, or a peer. Each relationship has a defined nature, mutual obligations, and a health profile. When you define stakeholder relationships, the system tracks who you interact with, what you owe each other, and whether the relationship is working well."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": true,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "GovernanceRequirement",
+     "strength": "strong",
+     "rationale": "A change to the regulatory relationship (e.g. new regulator, changed inspection regime) directly affects what governance requirements apply. Definitional for regulatory-natured relationships (H1)."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "moderate",
+     "rationale": "A change to a stakeholder relationship may affect what services can be offered (e.g. loss of a commissioning relationship), but the offering's identity is defined independently in ServiceConcept (H1, H4)."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceType",
+     "strength": "moderate",
+     "rationale": "Some stakeholder relationships involve resource implications (e.g. regulatory requirements for qualified staff), but the link is mediated through GovernanceRequirement and ResourceConstraint (H4)."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "",
+   "mappingNotes": "A relational entity depending on both parties. GDC because the pattern migrates. Not Role (between entities, not played by one). Candidate: ontara:StakeholderRelation."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "CooperativeArrangement",
+  "parentPackage": "StakeholderModel",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1804,
+  "catalogueTag": {
+   "bmmConcern": "StakeholderModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Cooperative Arrangement",
+   "shortDescription": "A formalised agreement to jointly deliver or manage something — neither party can deliver independently."
+  },
+  "purposiveDescription": {
+   "description": "A formalised arrangement where your business and another entity jointly deliver or manage something that neither could do alone — a shared care protocol, a delivery partnership, a joint training programme. When you define cooperative arrangements, the system tracks what is jointly produced, how responsibility is divided, and how the arrangement's effectiveness is assessed."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ActivityType",
+    "strength": "strong",
+    "rationale": "A cooperative arrangement defines shared activities. A change to the arrangement directly affects what activities are performed and by whom (H1)."
+   },
+   {
+    "target": "ServiceOffering",
+    "strength": "strong",
+    "rationale": "Some cooperative arrangements define jointly-delivered services. A change to the arrangement may fundamentally alter what can be offered (H1)."
+   },
+   {
+    "target": "ResourceType",
+    "strength": "moderate",
+    "rationale": "Cooperative arrangements may involve shared resources, but the resource types exist independently (H4)."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "StakeholderModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "A formalised agreement specifying shared responsibilities and protocols. The arrangement is informational; joint delivery is a Process."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Cooperative Arrangement",
+     "shortDescription": "A formalised agreement to jointly deliver or manage something — neither party can deliver independently."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A formalised arrangement where your business and another entity jointly deliver or manage something that neither could do alone — a shared care protocol, a delivery partnership, a joint training programme. When you define cooperative arrangements, the system tracks what is jointly produced, how responsibility is divided, and how the arrangement's effectiveness is assessed."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityType",
+     "strength": "strong",
+     "rationale": "A cooperative arrangement defines shared activities. A change to the arrangement directly affects what activities are performed and by whom (H1)."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "strong",
+     "rationale": "Some cooperative arrangements define jointly-delivered services. A change to the arrangement may fundamentally alter what can be offered (H1)."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceType",
+     "strength": "moderate",
+     "rationale": "Cooperative arrangements may involve shared resources, but the resource types exist independently (H4)."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "A formalised agreement specifying shared responsibilities and protocols. The arrangement is informational; joint delivery is a Process."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ReferralPathway",
+  "parentPackage": "StakeholderModel",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1856,
+  "catalogueTag": {
+   "bmmConcern": "StakeholderModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Referral Pathway",
+   "shortDescription": "A structured route for directing or receiving work between organisations."
+  },
+  "purposiveDescription": {
+   "description": "A structured route for directing or receiving work between your business and another organisation — GP referrals coming in, specialist referrals going out, or bidirectional pathways where both directions operate. When you define referral pathways, the system tracks where work comes from and goes to, what criteria trigger referrals, and how volumes and outcomes are monitored."
+  },
+  "comprehension": {
+   "surfaceEnumValues": true,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ServiceOffering",
+    "strength": "moderate",
+    "rationale": "Referral pathways channel demand to specific offerings, but the offerings exist independently. A change to a referral pathway affects volume and flow, not the offering's identity (H1, H2)."
+   },
+   {
+    "target": "ActivityType",
+    "strength": "moderate",
+    "rationale": "Referral pathways generate activities (intake, triage, acknowledgement), but these activities are typed independently (H4)."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "StakeholderModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "A structured route specification. The pathway as concept is a plan; actual referrals are Processes."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Referral Pathway",
+     "shortDescription": "A structured route for directing or receiving work between organisations."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A structured route for directing or receiving work between your business and another organisation — GP referrals coming in, specialist referrals going out, or bidirectional pathways where both directions operate. When you define referral pathways, the system tracks where work comes from and goes to, what criteria trigger referrals, and how volumes and outcomes are monitored."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": true,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "moderate",
+     "rationale": "Referral pathways channel demand to specific offerings, but the offerings exist independently. A change to a referral pathway affects volume and flow, not the offering's identity (H1, H2)."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityType",
+     "strength": "moderate",
+     "rationale": "Referral pathways generate activities (intake, triage, acknowledgement), but these activities are typed independently (H4)."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "A structured route specification. The pathway as concept is a plan; actual referrals are Processes."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ExternalDependency",
+  "parentPackage": "StakeholderModel",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1907,
+  "catalogueTag": {
+   "bmmConcern": "StakeholderModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "External Dependency",
+   "shortDescription": "Something the business depends on that it does not control — characterised by asymmetric reliance."
+  },
+  "purposiveDescription": {
+   "description": "Something your business depends on that you do not control — a pharmaceutical supplier, a laboratory service, an equipment provider, a software platform. When you define external dependencies, the system tracks what you depend on, how critical each dependency is, what contingency plans exist, and what risks threaten continuity of supply."
+  },
+  "comprehension": {
+   "surfaceEnumValues": true,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ResourceType",
+    "strength": "strong",
+    "rationale": "An external dependency is something the business depends on — often a resource it cannot provide itself. A change to the dependency (e.g. supplier withdrawal) directly affects resource availability (H1)."
+   },
+   {
+    "target": "ServiceOffering",
+    "strength": "moderate",
+    "rationale": "Loss of a critical dependency may affect what can be offered, but the link is mediated through resources (H4)."
+   },
+   {
+    "target": "CostDriver",
+    "strength": "moderate",
+    "rationale": "Dependencies have cost implications (supplier pricing, contractual terms), but cost drivers are characterising, not definitional (H1, H2)."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "StakeholderModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A record of asymmetric reliance. The dependency is informational; consequences are felt through resource availability."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "External Dependency",
+     "shortDescription": "Something the business depends on that it does not control — characterised by asymmetric reliance."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "Something your business depends on that you do not control — a pharmaceutical supplier, a laboratory service, an equipment provider, a software platform. When you define external dependencies, the system tracks what you depend on, how critical each dependency is, what contingency plans exist, and what risks threaten continuity of supply."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": true,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ResourceType",
+     "strength": "strong",
+     "rationale": "An external dependency is something the business depends on — often a resource it cannot provide itself. A change to the dependency (e.g. supplier withdrawal) directly affects resource availability (H1)."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "moderate",
+     "rationale": "Loss of a critical dependency may affect what can be offered, but the link is mediated through resources (H4)."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CostDriver",
+     "strength": "moderate",
+     "rationale": "Dependencies have cost implications (supplier pricing, contractual terms), but cost drivers are characterising, not definitional (H1, H2)."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A record of asymmetric reliance. The dependency is informational; consequences are felt through resource availability."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "CommunityRelationship",
+  "parentPackage": "StakeholderModel",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1963,
+  "catalogueTag": {
+   "bmmConcern": "StakeholderModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Community Relationship",
+   "shortDescription": "The business's connection to its broader community of interest — constitutive, not transactional."
+  },
+  "purposiveDescription": {
+   "description": "Your business's connection to its broader community of interest — the people, organisations, and networks that share your purpose or are affected by your work. Community relationships are constitutive of your identity, not transactional. When you define community relationships, the system tracks how communities shape your service and how you engage with them."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ServiceOffering",
+    "strength": "moderate",
+    "rationale": "Community relationships shape what the business offers (community needs influence service design), but the link is characterising, not definitional (H1)."
+   },
+   {
+    "target": "CustomerSegment",
+    "strength": "moderate",
+    "rationale": "Communities overlap with customer segments, but they are not the same thing — a community relationship may serve non-customers (H4)."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "StakeholderModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "",
+     "mappingNotes": "Constitutive connection to community. GDC — relational, depends on both parties. Candidate: ontara:CommunityRelation."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Community Relationship",
+     "shortDescription": "The business's connection to its broader community of interest — constitutive, not transactional."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "Your business's connection to its broader community of interest — the people, organisations, and networks that share your purpose or are affected by your work. Community relationships are constitutive of your identity, not transactional. When you define community relationships, the system tracks how communities shape your service and how you engage with them."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "moderate",
+     "rationale": "Community relationships shape what the business offers (community needs influence service design), but the link is characterising, not definitional (H1)."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CustomerSegment",
+     "strength": "moderate",
+     "rationale": "Communities overlap with customer segments, but they are not the same thing — a community relationship may serve non-customers (H4)."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "",
+   "mappingNotes": "Constitutive connection to community. GDC — relational, depends on both parties. Candidate: ontara:CommunityRelation."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ParticipationModel",
+  "parentPackage": "StakeholderModel",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2012,
+  "attributes": [
+   {
+    "name": "relatedServiceOffering",
+    "type": "ServiceOffering",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::ServiceOffering",
+    "multiplicity": "0..*"
+   }
+  ],
+  "catalogueTag": {
+   "bmmConcern": "StakeholderModel",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Participation Model",
+   "shortDescription": "How the customer or patient participates as co-producer, not merely recipient, of the service."
+  },
+  "purposiveDescription": {
+   "description": "How your customer or patient participates in the service as a co-producer, not merely a recipient — the spectrum from passive recipient to active self-manager. When you define participation models, the system tracks what role participants play, how they contribute information and decisions, what they can do independently, and what support they need."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "ServiceOffering",
+    "strength": "strong",
+    "rationale": "Participation patterns are defined for specific service offerings — the ref relationship is typed. A change to how customers participate directly affects the offering's delivery model (H1)."
+   },
+   {
+    "target": "ActivityType",
+    "strength": "moderate",
+    "rationale": "Participation generates activities (self-service actions, shared decision-making), but the activity types exist independently (H4)."
+   },
+   {
+    "target": "Channel",
+    "strength": "moderate",
+    "rationale": "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4)."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "StakeholderModel",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:PlanSpecification",
+     "mappingNotes": "A specification of how customers/patients participate. The model is a plan; actual participation is a Process."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Participation Model",
+     "shortDescription": "How the customer or patient participates as co-producer, not merely recipient, of the service."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "How your customer or patient participates in the service as a co-producer, not merely a recipient — the spectrum from passive recipient to active self-manager. When you define participation models, the system tracks what role participants play, how they contribute information and decisions, what they can do independently, and what support they need."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ServiceOffering",
+     "strength": "strong",
+     "rationale": "Participation patterns are defined for specific service offerings — the ref relationship is typed. A change to how customers participate directly affects the offering's delivery model (H1)."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ActivityType",
+     "strength": "moderate",
+     "rationale": "Participation generates activities (self-service actions, shared decision-making), but the activity types exist independently (H4)."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "Channel",
+     "strength": "moderate",
+     "rationale": "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4)."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:PlanSpecification",
+   "mappingNotes": "A specification of how customers/patients participate. The model is a plan; actual participation is a Process."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "ScenarioDefinition",
+  "parentPackage": "BusinessScenarios",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2102,
+  "attributes": [
+   {
+    "name": "activeServiceOfferings",
+    "type": "ServiceOffering",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::ServiceOffering",
+    "multiplicity": "0..*"
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "ProjectionParameter",
+  "parentPackage": "BusinessScenarios",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2121
+ },
+ {
+  "kind": "part_def",
+  "name": "GrowthAssumption",
+  "parentPackage": "BusinessScenarios",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2130
+ },
+ {
+  "kind": "part_def",
+  "name": "ProjectionFormula",
+  "parentPackage": "BusinessScenarios",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2141
+ },
+ {
+  "kind": "part_def",
+  "name": "ProjectionTimeline",
+  "parentPackage": "BusinessScenarios",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2150
+ },
+ {
+  "kind": "part_def",
+  "name": "ProjectionOutput",
+  "parentPackage": "BusinessScenarios",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2157
+ },
+ {
+  "kind": "part_def",
+  "name": "SensitivityParameter",
+  "parentPackage": "BusinessScenarios",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2168
+ },
+ {
+  "kind": "part_def",
+  "name": "ScenarioComparison",
+  "parentPackage": "BusinessScenarios",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2176
+ },
+ {
+  "kind": "part_def",
+  "name": "PeriodActuals",
+  "parentPackage": "BusinessScenarios",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2185
+ },
+ {
+  "kind": "part_def",
+  "name": "VarianceAnalysis",
+  "parentPackage": "BusinessScenarios",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2195
+ },
+ {
+  "kind": "part_def",
+  "name": "ForecastBaseline",
+  "parentPackage": "BusinessScenarios",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2208
+ },
+ {
+  "kind": "requirement_def",
+  "name": "StrategicObjective",
+  "parentPackage": "BusinessStrategy",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2270,
+  "attributes": [
+   {
+    "name": "relatedScenarios",
+    "type": "ScenarioDefinition",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::BusinessScenarios::ScenarioDefinition",
+    "multiplicity": "0..*"
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "BusinessModelVariant",
+  "parentPackage": "BusinessStrategy",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2302
+ },
+ {
+  "kind": "part_def",
+  "name": "PivotScenario",
+  "parentPackage": "BusinessStrategy",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2318
+ },
+ {
+  "kind": "part_def",
+  "name": "ValueSpace",
+  "parentPackage": "CanonicalRuntime",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2535,
+  "catalogueTag": {
+   "bmmConcern": "CanonicalRuntime",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Value Space",
+   "shortDescription": "The permitted values for a status axis, plus the shape (ordered, unordered, or structured) that determines how the values relate."
+  },
+  "purposiveDescription": {
+   "description": "The permitted values for a single status axis, and how those values relate to one another. For ordered axes (like a lifecycle), the values progress in a sequence. For unordered axes (like a cancellation reason), the values are a set with no implicit order. The system uses the value space to decide which transitions are permitted and how to display the axis to readers."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "StatusAxis",
+    "strength": "strong",
+    "rationale": "Every ValueSpace exists to describe a StatusAxis. A change to the value space (its shape, its permitted values) requires reassessing the axis it belongs to — the axis's permitted transitions and authority interpretation may need adjustment."
+   },
+   {
+    "target": "AxisTransition",
+    "strength": "strong",
+    "rationale": "Permitted transitions reference values from the value space. A change to the value space (e.g. removing a value, adding a value, changing the shape from unordered to ordered) directly affects which transitions are well-formed."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "CanonicalRuntime",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A ValueSpace specifies the permitted values and ordering shape of a single status axis. Information content — a specification depending on the StatusAxis it describes; not the values themselves but the description of what values are permitted."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Value Space",
+     "shortDescription": "The permitted values for a status axis, plus the shape (ordered, unordered, or structured) that determines how the values relate."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "The permitted values for a single status axis, and how those values relate to one another. For ordered axes (like a lifecycle), the values progress in a sequence. For unordered axes (like a cancellation reason), the values are a set with no implicit order. The system uses the value space to decide which transitions are permitted and how to display the axis to readers."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "StatusAxis",
+     "strength": "strong",
+     "rationale": "Every ValueSpace exists to describe a StatusAxis. A change to the value space (its shape, its permitted values) requires reassessing the axis it belongs to — the axis's permitted transitions and authority interpretation may need adjustment."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "AxisTransition",
+     "strength": "strong",
+     "rationale": "Permitted transitions reference values from the value space. A change to the value space (e.g. removing a value, adding a value, changing the shape from unordered to ordered) directly affects which transitions are well-formed."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A ValueSpace specifies the permitted values and ordering shape of a single status axis. Information content — a specification depending on the StatusAxis it describes; not the values themselves but the description of what values are permitted."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "AxisTransition",
+  "parentPackage": "CanonicalRuntime",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2586,
+  "catalogueTag": {
+   "bmmConcern": "CanonicalRuntime",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Axis Transition",
+   "shortDescription": "A permitted value-to-value transition on a status axis, with the authority required to perform it."
+  },
+  "purposiveDescription": {
+   "description": "A permitted move from one value to another on a single status axis. Declared transitions are exhaustive — any value-to-value pair not represented by an axis transition is a prohibited transition, and the system rejects attempts to make it. Each transition records what authority is required to perform it (which binding class), so the canonical-edge contract can enforce the rule uniformly."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "StatusAxis",
+    "strength": "strong",
+    "rationale": "Every AxisTransition is declared on a specific StatusAxis. A change to a transition (its endpoints, its required authority) requires reassessing the axis whose transition rules it defines — the axis's runtime behaviour changes when its transitions change."
+   },
+   {
+    "target": "ValueSpace",
+    "strength": "strong",
+    "rationale": "A transition's from-value and to-value must be drawn from the axis's value space. A change to the transition (especially endpoint changes) requires reassessing the value space — and conversely a change to the value space may invalidate existing transitions."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "CanonicalRuntime",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "An AxisTransition specifies a permitted from-value to-value pair on a single axis, with the authority required to write it. Information content — a rule, not the act of transitioning. The transitioning itself, when it occurs, is a Process."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Axis Transition",
+     "shortDescription": "A permitted value-to-value transition on a status axis, with the authority required to perform it."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A permitted move from one value to another on a single status axis. Declared transitions are exhaustive — any value-to-value pair not represented by an axis transition is a prohibited transition, and the system rejects attempts to make it. Each transition records what authority is required to perform it (which binding class), so the canonical-edge contract can enforce the rule uniformly."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "StatusAxis",
+     "strength": "strong",
+     "rationale": "Every AxisTransition is declared on a specific StatusAxis. A change to a transition (its endpoints, its required authority) requires reassessing the axis whose transition rules it defines — the axis's runtime behaviour changes when its transitions change."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ValueSpace",
+     "strength": "strong",
+     "rationale": "A transition's from-value and to-value must be drawn from the axis's value space. A change to the transition (especially endpoint changes) requires reassessing the value space — and conversely a change to the value space may invalidate existing transitions."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "An AxisTransition specifies a permitted from-value to-value pair on a single axis, with the authority required to write it. Information content — a rule, not the act of transitioning. The transitioning itself, when it occurs, is a Process."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "AxisPrecondition",
+  "parentPackage": "CanonicalRuntime",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2658,
+  "catalogueTag": {
+   "bmmConcern": "CanonicalRuntime",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Axis Precondition",
+   "shortDescription": "A condition on another status axis, of the same instance or of a related one, that must hold before a move is permitted."
+  },
+  "purposiveDescription": {
+   "description": "A condition that must hold before a permitted move on a status axis may be made. It names an axis, either on the same instance or on one related instance reached through a single reference, and the values that axis must hold. While the condition does not hold, the move is refused with a stated reason, never ignored. For example, a line on an order may not start preparation until the order is paid."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "AxisTransition",
+    "strength": "strong",
+    "rationale": "Every AxisPrecondition guards one AxisTransition and is declared inside it. A change to the transition (its endpoints, its authority, its removal) requires reassessing the preconditions that guard it."
+   },
+   {
+    "target": "StatusAxis",
+    "strength": "moderate",
+    "rationale": "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to that axis (its name, its value space) can invalidate the precondition's required axis or required values."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "CanonicalRuntime",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "An AxisPrecondition specifies a condition that must hold on an axis, of the same instance or of one related instance, before a declared transition is permitted. Information content: a rule about moves, not the check made at runtime. The check, when it is made, is part of a process."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Axis Precondition",
+     "shortDescription": "A condition on another status axis, of the same instance or of a related one, that must hold before a move is permitted."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A condition that must hold before a permitted move on a status axis may be made. It names an axis, either on the same instance or on one related instance reached through a single reference, and the values that axis must hold. While the condition does not hold, the move is refused with a stated reason, never ignored. For example, a line on an order may not start preparation until the order is paid."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "AxisTransition",
+     "strength": "strong",
+     "rationale": "Every AxisPrecondition guards one AxisTransition and is declared inside it. A change to the transition (its endpoints, its authority, its removal) requires reassessing the preconditions that guard it."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "StatusAxis",
+     "strength": "moderate",
+     "rationale": "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to that axis (its name, its value space) can invalidate the precondition's required axis or required values."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "An AxisPrecondition specifies a condition that must hold on an axis, of the same instance or of one related instance, before a declared transition is permitted. Information content: a rule about moves, not the check made at runtime. The check, when it is made, is part of a process."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "StatusAxis",
+  "parentPackage": "CanonicalRuntime",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2730,
+  "catalogueTag": {
+   "bmmConcern": "CanonicalRuntime",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Status Axis",
+   "shortDescription": "A single named dimension of status on a canonical runtime type — its values, transitions, default, authority, and scope."
+  },
+  "purposiveDescription": {
+   "description": "A single named dimension of status that a canonical runtime instance carries. A canonical runtime type can declare several status axes — for example a booking might have a lifecycle axis, a confirmation axis, a payment axis, a cancellation axis. Each axis advances independently, with its own value space, permitted transitions, default value, and authority. The system tracks each axis as a separate triple in the substrate, so axes can be queried and reasoned over individually."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "CanonicalRuntimeType",
+    "strength": "strong",
+    "rationale": "A StatusAxis is declared on a CanonicalRuntimeType — it has no independent existence. A change to an axis (its value space, its transitions, its authority) requires reassessing the canonical type whose runtime instances carry it."
+   },
+   {
+    "target": "ValueSpace",
+    "strength": "strong",
+    "rationale": "Every StatusAxis has a ValueSpace. A change to the axis (its meaning, its purpose) typically requires reassessing the value space that defines its permitted values."
+   },
+   {
+    "target": "AxisTransition",
+    "strength": "strong",
+    "rationale": "A StatusAxis declares its set of permitted AxisTransitions. A change to the axis (especially to its value space or authority) requires reassessing the transitions — they may need to be added, removed, or have their required authority adjusted."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "CanonicalRuntime",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "A StatusAxis is a structural information artefact specifying a dimension of runtime status; it is generically dependent on the canonical runtime type that declares it."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Status Axis",
+     "shortDescription": "A single named dimension of status on a canonical runtime type — its values, transitions, default, authority, and scope."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "A single named dimension of status that a canonical runtime instance carries. A canonical runtime type can declare several status axes — for example a booking might have a lifecycle axis, a confirmation axis, a payment axis, a cancellation axis. Each axis advances independently, with its own value space, permitted transitions, default value, and authority. The system tracks each axis as a separate triple in the substrate, so axes can be queried and reasoned over individually."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "CanonicalRuntimeType",
+     "strength": "strong",
+     "rationale": "A StatusAxis is declared on a CanonicalRuntimeType — it has no independent existence. A change to an axis (its value space, its transitions, its authority) requires reassessing the canonical type whose runtime instances carry it."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "ValueSpace",
+     "strength": "strong",
+     "rationale": "Every StatusAxis has a ValueSpace. A change to the axis (its meaning, its purpose) typically requires reassessing the value space that defines its permitted values."
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "AxisTransition",
+     "strength": "strong",
+     "rationale": "A StatusAxis declares its set of permitted AxisTransitions. A change to the axis (especially to its value space or authority) requires reassessing the transitions — they may need to be added, removed, or have their required authority adjusted."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "A StatusAxis is a structural information artefact specifying a dimension of runtime status; it is generically dependent on the canonical runtime type that declares it."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "CanonicalRuntimeType",
+  "parentPackage": "CanonicalRuntime",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2803,
+  "catalogueTag": {
+   "bmmConcern": "CanonicalRuntime",
+   "classification": "General"
+  },
+  "userFacing": {
+   "friendlyName": "Canonical Runtime Type",
+   "shortDescription": "The base type for every canonical runtime type — the things whose runtime instances live in DBR or DSR."
+  },
+  "purposiveDescription": {
+   "description": "The structural parent for every canonical runtime type — the things whose runtime instances are persisted in the substrate as model-grounded content. A booking, a clinical encounter, a laundry batch, an order: each is a canonical runtime type, and each runtime instance carries a tuple of status axes describing where it is along each independent dimension of progress. No axis is built in: every axis is declared by the tenant on the canonical type. Whether a record of an instance is real or simulated, and whether it was direct, inferred or predicted, is carried by the platform's record of the write (the platform record module, ADR-011), not by the instance."
+  },
+  "comprehension": {
+   "surfaceEnumValues": false,
+   "surfaceDomainInstantiations": true,
+   "surfaceRelatedConcepts": true,
+   "surfaceAttributes": true
+  },
+  "weightedRelationships": [
+   {
+    "target": "StatusAxis",
+    "strength": "strong",
+    "rationale": "A CanonicalRuntimeType declares the set of StatusAxes its runtime instances carry. A change to the canonical type's structural definition (especially to its declared axes) directly affects every instance — runtime tuple shape, substrate triple structure, and comprehension all flow from the axis declarations."
+   }
+  ],
+  "annotations": [
+   {
+    "name": "CatalogueTag",
+    "attrs": {
+     "bmmConcern": "CanonicalRuntime",
+     "classification": "General"
+    }
+   },
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "Entity",
+     "midLevelClass": "",
+     "mappingNotes": "CanonicalRuntimeType is the structural parent for types whose runtime instances live in DBR (business-side continuant trajectories) or DSR (system-side occurrent log). Anchored at BFO entity (S514, ADR-011): it defines a shape, not a kind of thing, and its concrete types have different BFO kinds. The BFO classification of a concrete canonical type is carried by its own @BfoType annotation; this parent establishes only the platform-level shape."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Canonical Runtime Type",
+     "shortDescription": "The base type for every canonical runtime type — the things whose runtime instances live in DBR or DSR."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "The structural parent for every canonical runtime type — the things whose runtime instances are persisted in the substrate as model-grounded content. A booking, a clinical encounter, a laundry batch, an order: each is a canonical runtime type, and each runtime instance carries a tuple of status axes describing where it is along each independent dimension of progress. No axis is built in: every axis is declared by the tenant on the canonical type. Whether a record of an instance is real or simulated, and whether it was direct, inferred or predicted, is carried by the platform's record of the write (the platform record module, ADR-011), not by the instance."
+    }
+   },
+   {
+    "name": "Comprehension",
+    "attrs": {
+     "surfaceEnumValues": false,
+     "surfaceDomainInstantiations": true,
+     "surfaceRelatedConcepts": true,
+     "surfaceAttributes": true
+    }
+   },
+   {
+    "name": "WeightedRelationship",
+    "attrs": {
+     "target": "StatusAxis",
+     "strength": "strong",
+     "rationale": "A CanonicalRuntimeType declares the set of StatusAxes its runtime instances carry. A change to the canonical type's structural definition (especially to its declared axes) directly affects every instance — runtime tuple shape, substrate triple structure, and comprehension all flow from the axis declarations."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "Entity",
+   "midLevelClass": "",
+   "mappingNotes": "CanonicalRuntimeType is the structural parent for types whose runtime instances live in DBR (business-side continuant trajectories) or DSR (system-side occurrent log). Anchored at BFO entity (S514, ADR-011): it defines a shape, not a kind of thing, and its concrete types have different BFO kinds. The BFO classification of a concrete canonical type is carried by its own @BfoType annotation; this parent establishes only the platform-level shape."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "DomainIdentity",
+  "parentPackage": "DomainIdentityTypes",
+  "topLevelPackage": "BusinessMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/business-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 3102
+ },
+ {
+  "kind": "part_def",
+  "name": "ArchitecturalPrinciple",
+  "parentPackage": "PatternCatalogue",
+  "topLevelPackage": "PatternCatalogue",
+  "doc": "",
+  "sourceFile": "model/pattern-catalogue.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 88
+ },
+ {
+  "kind": "part_def",
+  "name": "Pattern",
+  "parentPackage": "PatternCatalogue",
+  "topLevelPackage": "PatternCatalogue",
+  "doc": "",
+  "sourceFile": "model/pattern-catalogue.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 102,
+  "attributes": [
+   {
+    "name": "dependsOn",
+    "type": "Pattern",
+    "isRef": true,
+    "qualifiedType": "PatternCatalogue::Pattern",
+    "multiplicity": "0..*"
+   },
+   {
+    "name": "enables",
+    "type": "Pattern",
+    "isRef": true,
+    "qualifiedType": "PatternCatalogue::Pattern",
+    "multiplicity": "0..*"
+   },
+   {
+    "name": "motivatedBy",
+    "type": "ArchitecturalPrinciple",
+    "isRef": true,
+    "qualifiedType": "PatternCatalogue::ArchitecturalPrinciple",
+    "multiplicity": "0..*"
+   },
+   {
+    "name": "generalises",
+    "type": "Pattern",
+    "isRef": true,
+    "qualifiedType": "PatternCatalogue::Pattern",
+    "multiplicity": "0..*"
+   },
+   {
+    "name": "constrains",
+    "type": "Pattern",
+    "isRef": true,
+    "qualifiedType": "PatternCatalogue::Pattern",
+    "multiplicity": "0..*"
+   },
+   {
+    "name": "extends",
+    "type": "Pattern",
+    "isRef": true,
+    "qualifiedType": "PatternCatalogue::Pattern",
+    "multiplicity": "0..*"
+   },
+   {
+    "name": "validatedBy",
+    "type": "Pattern",
+    "isRef": true,
+    "qualifiedType": "PatternCatalogue::Pattern",
+    "multiplicity": "0..*"
+   },
+   {
+    "name": "composedWith",
+    "type": "Pattern",
+    "isRef": true,
+    "qualifiedType": "PatternCatalogue::Pattern",
+    "multiplicity": "0..*"
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "DomainInstantiation",
+  "parentPackage": "PatternCatalogue",
+  "topLevelPackage": "PatternCatalogue",
+  "doc": "",
+  "sourceFile": "model/pattern-catalogue.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 139
+ },
+ {
+  "kind": "part_def",
+  "name": "EvaluatedInput",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 340
+ },
+ {
+  "kind": "part_def",
+  "name": "ExplanationTrace",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 353
+ },
+ {
+  "kind": "part_def",
+  "name": "EvaluationResult",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 367
+ },
+ {
+  "kind": "part_def",
+  "name": "Deficit",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 393
+ },
+ {
+  "kind": "part_def",
+  "name": "SystemStateAssessment",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 430
+ },
+ {
+  "kind": "part_def",
+  "name": "InputResolver",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 495
+ },
+ {
+  "kind": "part_def",
+  "name": "ExpressionEvaluator",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 518
+ },
+ {
+  "kind": "part_def",
+  "name": "ExplanationBuilder",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 539
+ },
+ {
+  "kind": "part_def",
+  "name": "ConstraintEvaluator",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 564
+ },
+ {
+  "kind": "part_def",
+  "name": "OperationalQuery",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 602
+ },
+ {
+  "kind": "part_def",
+  "name": "OperationalSnapshot",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 623
+ },
+ {
+  "kind": "part_def",
+  "name": "OperationalStateAggregator",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 672
+ },
+ {
+  "kind": "part_def",
+  "name": "GoalProjection",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 722
+ },
+ {
+  "kind": "part_def",
+  "name": "GoalProjector",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 751
+ },
+ {
+  "kind": "part_def",
+  "name": "GapAnalyser",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 786
+ },
+ {
+  "kind": "part_def",
+  "name": "InferenceEvaluator",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 832
+ },
+ {
+  "kind": "part_def",
+  "name": "AdvisoryInterface",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 883
+ },
+ {
+  "kind": "part_def",
+  "name": "SelfExplanationService",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 925
+ },
+ {
+  "kind": "part_def",
+  "name": "AssessmentOrchestrator",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 966,
+  "attributes": [
+   {
+    "name": "constraintEvaluator",
+    "type": "ConstraintEvaluator",
+    "isRef": true,
+    "qualifiedType": "SystemMetamodelGeneral::LogicEngine::ConstraintEvaluator"
+   },
+   {
+    "name": "operationalAggregator",
+    "type": "OperationalStateAggregator",
+    "isRef": true,
+    "qualifiedType": "SystemMetamodelGeneral::LogicEngine::OperationalStateAggregator"
+   },
+   {
+    "name": "gapAnalyser",
+    "type": "GapAnalyser",
+    "isRef": true,
+    "qualifiedType": "SystemMetamodelGeneral::LogicEngine::GapAnalyser"
+   },
+   {
+    "name": "explanationService",
+    "type": "SelfExplanationService",
+    "isRef": true,
+    "qualifiedType": "SystemMetamodelGeneral::LogicEngine::SelfExplanationService"
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "EvaluationSpecRegistry",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1027
+ },
+ {
+  "kind": "part_def",
+  "name": "EvaluationContext",
+  "parentPackage": "LogicEngine",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1057
+ },
+ {
+  "kind": "part_def",
+  "name": "InputDerivation",
+  "parentPackage": "EvaluationSpecs",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1227
+ },
+ {
+  "kind": "part_def",
+  "name": "ConstraintEvaluationSpec",
+  "parentPackage": "EvaluationSpecs",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1247
+ },
+ {
+  "kind": "part_def",
+  "name": "DecisionTableEvaluationSpec",
+  "parentPackage": "EvaluationSpecs",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1271
+ },
+ {
+  "kind": "part_def",
+  "name": "DecisionTableDef",
+  "parentPackage": "DecisionModels",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1342
+ },
+ {
+  "kind": "part_def",
+  "name": "OutcomeDefinition",
+  "parentPackage": "OutcomeFramework",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1469
+ },
+ {
+  "kind": "part_def",
+  "name": "MeasurementPoint",
+  "parentPackage": "OutcomeFramework",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1500
+ },
+ {
+  "kind": "part_def",
+  "name": "MeasurementSchedule",
+  "parentPackage": "OutcomeFramework",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1518
+ },
+ {
+  "kind": "part_def",
+  "name": "OutcomeEvaluationResult",
+  "parentPackage": "OutcomeFramework",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1534,
+  "annotations": [
+   {
+    "name": "OpenEhrArchetype",
+    "attrs": {
+     "archetypeId": "openEHR-EHR-EVALUATION.outcome_assessment.v0",
+     "rmClass": "EVALUATION"
+    }
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "OutcomeFeedbackRecord",
+  "parentPackage": "OutcomeFramework",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1569
+ },
+ {
+  "kind": "part_def",
+  "name": "DataContract",
+  "parentPackage": "Analytics",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1647
+ },
+ {
+  "kind": "part_def",
+  "name": "PersistencePolicy",
+  "parentPackage": "Persistence",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1716
+ },
+ {
+  "kind": "part_def",
+  "name": "CdrConnection",
+  "parentPackage": "OpenEhrIntegration",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1773
+ },
+ {
+  "kind": "part_def",
+  "name": "EhrRecord",
+  "parentPackage": "OpenEhrIntegration",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1788
+ },
+ {
+  "kind": "part_def",
+  "name": "RegisteredTemplate",
+  "parentPackage": "OpenEhrIntegration",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1806
+ },
+ {
+  "kind": "part_def",
+  "name": "Composition",
+  "parentPackage": "OpenEhrIntegration",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1823
+ },
+ {
+  "kind": "part_def",
+  "name": "AqlQuery",
+  "parentPackage": "OpenEhrIntegration",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 1851
+ },
+ {
+  "kind": "part_def",
+  "name": "DomainConfiguration",
+  "parentPackage": "DomainConfigurationTypes",
+  "topLevelPackage": "SystemMetamodelGeneral",
+  "doc": "",
+  "sourceFile": "model/system-metamodel-general.sysml",
+  "sourceDomain": "core",
+  "metaModelLayer": "",
+  "lineNumber": 2004,
+  "attributes": [
+   {
+    "name": "domainIdentity",
+    "type": "DomainIdentity",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::DomainIdentityTypes::DomainIdentity"
+   }
+  ]
+ }
+]
