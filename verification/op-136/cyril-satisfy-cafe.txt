@@ -1,0 +1,37 @@
+✓ package ArchitecturalStructure
+✓ package BusinessMetamodelGeneral
+✓ package PatternCatalogue
+✓ package ProjectionMetadata
+✓ package SyntaxTestDecideMerge
+✓ package SyntaxTestForkJoin
+✓ package SyntaxTestInlineVsPrefixAnnotation
+✓ package TestPackageAnnotation
+✓ package SyntaxTestMultipleSameMetaclassAnnotations
+✓ package SyntaxTestNestedConsumer
+✓ package SyntaxTestNestedOuter
+✓ package TestNestedRedefinition
+✓ package SyntaxTestRefInsideMetadataDef
+✓ package SyntaxTestRefMultiplicityCrossPackage
+✓ package SyntaxTestStateSpecialisation
+✓ package CrossPackageViewTests
+✓ package ViewDefTests
+✓ package ExposeTests
+✓ package FilterTests
+✓ package ViewRenderingTests
+✓ package ViewpointTests
+✓ package SystemMetamodelDomainClinical
+✓ package SystemMetamodelGeneral
+✓ package TemporalMetadata
+✓ package CoffeeShopBusinessModel
+✓ package CoffeeShopDomainRegistration
+✓ package CoffeeshopResourceFinancial
+✓ package CoffeeshopScenarios
+✓ package BusinessRules
+✓ package CoffeeShop
+✓ package DrinkFulfilment
+✓ package FulfilDrinkOrchestration
+✓ package CafeS04Acceptance
+✗ satisfy cafeLinePreparation by CoffeeShop::OrderLine::preparationAxis fails (on CoffeeShop::OrderLine::preparationAxis ID: 1)
+  Required condition evaluated to false: exists(body)
+  standing: violated (witnessed: 1 run under reverse)
+exit 1

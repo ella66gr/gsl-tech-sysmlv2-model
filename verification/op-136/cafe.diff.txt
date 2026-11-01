@@ -1,0 +1,15 @@
+--- cafe.text.json (generation/status_axes.py)
++++ cafe.opensysml.json (opensysml_axes.py)
+@@ -6,10 +6,6 @@
+       "qualified": "CoffeeShop::OrderLine",
+       "source": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop::OrderLine)",
+       "refs": {
+-        "item": [
+-          "MenuItem",
+-          null
+-        ],
+         "order": [
+           "Order",
+           null
+
+cafe: DIFFERENT; text 2 types, 3 axes, 12 transitions, 1 preconditions in 0.031 s; opensysml 2 types, 3 axes, 12 transitions, 1 preconditions in 1.297 s (opensysml 0.11.0)

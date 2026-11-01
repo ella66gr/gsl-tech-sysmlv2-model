@@ -1,0 +1,92 @@
+| Case | Acceptance (sysml -satisfy) | E6 test, regenerated | Guard test (context) |
+|---|---|---|---|
+| as-is | fails | green | green |
+| members | holds | green | green |
+| members+unpaid | fails | red | green |
+| members+remake | fails | green | red |
+| members+express | fails | GENERATION FAILED | not run |
+| members+reinstate | fails | green | red |
+| members+removed | fails | GENERATION FAILED | not run |
+
+## as-is
+   acceptance: fails (exit 1)
+      ✗ satisfy cafeLinePreparation by CoffeeShop::OrderLine::preparationAxis fails (on CoffeeShop::OrderLine::preparationAxis ID: 1)
+        Required condition evaluated to false: exists(body)
+        standing: violated (witnessed: 1 run under reverse)
+   E6 test on the same edit without the membership convention: green (exit 0)
+      ✔ a line cannot start preparation while its order is unpaid (0.823542ms)
+      ✔ a line can start preparation once its order is paid (0.084667ms)
+      ✔ an order whose payment is not known is refused, not passed (0.445125ms)
+      ✔ moves without preconditions pass (0.05975ms)
+      ℹ pass 4
+      ℹ fail 0
+      guard test (axis-guard.test.mts, for context): green
+      regenerated guard and evaluator equal the committed files: True
+## members
+   acceptance: holds (exit 0)
+      ✓ satisfy cafeLinePreparation by CoffeeShop::OrderLine::preparationAxis holds (on CoffeeShop::OrderLine::preparationAxis ID: 1)
+        standing: holds (observed: 1 run under reverse)
+   E6 test on the same edit without the membership convention: green (exit 0)
+      ✔ a line cannot start preparation while its order is unpaid (0.89075ms)
+      ✔ a line can start preparation once its order is paid (0.088417ms)
+      ✔ an order whose payment is not known is refused, not passed (0.530709ms)
+      ✔ moves without preconditions pass (0.068958ms)
+      ℹ pass 4
+      ℹ fail 0
+      guard test (axis-guard.test.mts, for context): green
+      regenerated guard and evaluator equal the committed files: True
+## members+unpaid
+   acceptance: fails (exit 1)
+      ✗ satisfy cafeLinePreparation by CoffeeShop::OrderLine::preparationAxis fails (on CoffeeShop::OrderLine::preparationAxis ID: 1)
+        Required condition evaluated to false: forAll(body)
+        standing: violated (witnessed: 1 run under reverse)
+   E6 test on the same edit without the membership convention: red (exit 1)
+      ✖ a line cannot start preparation while its order is unpaid (0.880584ms)
+      ✔ a line can start preparation once its order is paid (0.110375ms)
+      ✔ an order whose payment is not known is refused, not passed (0.122708ms)
+      ✔ moves without preconditions pass (0.066584ms)
+      ✖ failing tests:
+      ✖ a line cannot start preparation while its order is unpaid (0.880584ms)
+      ℹ pass 3
+      ℹ fail 1
+      guard test (axis-guard.test.mts, for context): green
+## members+remake
+   acceptance: fails (exit 1)
+      ✗ satisfy cafeLinePreparation by CoffeeShop::OrderLine::preparationAxis fails (on CoffeeShop::OrderLine::preparationAxis ID: 1)
+        Required condition evaluated to false: forAll(body)
+        standing: violated (witnessed: 1 run under reverse)
+   E6 test on the same edit without the membership convention: green (exit 0)
+      ✔ a line cannot start preparation while its order is unpaid (0.833417ms)
+      ✔ a line can start preparation once its order is paid (0.474583ms)
+      ✔ an order whose payment is not known is refused, not passed (0.068542ms)
+      ✔ moves without preconditions pass (0.062042ms)
+      ℹ pass 4
+      ℹ fail 0
+      guard test (axis-guard.test.mts, for context): red; failing: ['✖ next actions offer only operator moves, labelled from the model (0.641875ms)']
+## members+express
+   acceptance: fails (exit 1)
+      ✗ satisfy cafeLinePreparation by CoffeeShop::OrderLine::preparationAxis fails (on CoffeeShop::OrderLine::preparationAxis ID: 1)
+        Required condition evaluated to false: forAll(body)
+        standing: violated (witnessed: 1 run under reverse)
+   E6 test on the same edit without the membership convention: GENERATION FAILED (exit 1)
+      ERROR: axis OrderLine::preparationAxis declares the move queued -> inPreparation twice
+## members+reinstate
+   acceptance: fails (exit 1)
+      ✗ satisfy cafeLinePreparation by CoffeeShop::OrderLine::preparationAxis fails (on CoffeeShop::OrderLine::preparationAxis ID: 1)
+        Required condition evaluated to false: forAll(body)
+        standing: violated (witnessed: 1 run under reverse)
+   E6 test on the same edit without the membership convention: green (exit 0)
+      ✔ a line cannot start preparation while its order is unpaid (0.883208ms)
+      ✔ a line can start preparation once its order is paid (0.116958ms)
+      ✔ an order whose payment is not known is refused, not passed (0.074583ms)
+      ✔ moves without preconditions pass (0.061916ms)
+      ℹ pass 4
+      ℹ fail 0
+      guard test (axis-guard.test.mts, for context): red; failing: ['✖ next actions offer only operator moves, labelled from the model (0.414083ms)', '✖ refuses a move from a terminal value, including a line moving out of cancelled (0.494667ms)']
+## members+removed
+   acceptance: fails (exit 1)
+      ✗ satisfy cafeLinePreparation by CoffeeShop::OrderLine::preparationAxis fails (on CoffeeShop::OrderLine::preparationAxis ID: 1)
+        Required condition evaluated to false: forAll(body)
+        standing: violated (witnessed: 1 run under reverse)
+   E6 test on the same edit without the membership convention: GENERATION FAILED (exit 1)
+      ERROR: nothing to generate: no constraint packages given and no AxisPrecondition declared

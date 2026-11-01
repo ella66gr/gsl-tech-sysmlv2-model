@@ -1,0 +1,224 @@
+--- inherit.text.json (generation/status_axes.py)
++++ inherit.opensysml.json (opensysml_axes.py)
+@@ -115,6 +115,219 @@
+           ]
+         }
+       ]
++    },
++    {
++      "type": "UrgentTicket",
++      "qualified": "InheritFixture::UrgentTicket",
++      "source": "spikes/op-136-opensysml/fixtures/inherit/inherit.sysml (InheritFixture::UrgentTicket)",
++      "refs": {
++        "desk": [
++          "Desk",
++          null
++        ]
++      },
++      "axes": [
++        {
++          "usage": "progressAxis",
++          "name": "progress",
++          "ident": "UrgentTicketProgress",
++          "values": [
++            "open",
++            "working",
++            "done"
++          ],
++          "default": "open",
++          "authority": [
++            "operatorSide",
++            "systemSide"
++          ],
++          "shape": "orderedEnum",
++          "terminal": [
++            "done"
++          ],
++          "transitions": [
++            {
++              "name": "openToWorking",
++              "from": "open",
++              "to": "working",
++              "label": "work starts",
++              "event": "WorkStarted",
++              "requiredAuthority": [
++                "operatorSide"
++              ],
++              "preconditions": [
++                {
++                  "name": "deskStaffed",
++                  "relatedVia": "desk",
++                  "relatedType": "Desk",
++                  "requiredAxis": "staffing",
++                  "requiredValues": [
++                    "staffed"
++                  ],
++                  "rejectionReason": "Work cannot start at an unstaffed desk."
++                }
++              ]
++            },
++            {
++              "name": "workingToDone",
++              "from": "working",
++              "to": "done",
++              "label": "work finishes",
++              "event": null,
++              "requiredAuthority": [
++                "operatorSide",
++                "systemSide"
++              ],
++              "preconditions": []
++            }
++          ]
++        }
++      ]
++    },
++    {
++      "type": "EscalatedTicket",
++      "qualified": "InheritFixture::EscalatedTicket",
++      "source": "spikes/op-136-opensysml/fixtures/inherit/inherit.sysml (InheritFixture::EscalatedTicket)",
++      "refs": {
++        "desk": [
++          "Desk",
++          null
++        ]
++      },
++      "axes": [
++        {
++          "usage": "progressAxis",
++          "name": "progress",
++          "ident": "EscalatedTicketProgress",
++          "values": [
++            "open",
++            "working",
++            "done"
++          ],
++          "default": "open",
++          "authority": [
++            "operatorSide",
++            "systemSide"
++          ],
++          "shape": "orderedEnum",
++          "terminal": [
++            "done"
++          ],
++          "transitions": [
++            {
++              "name": "openToWorking",
++              "from": "open",
++              "to": "working",
++              "label": "work starts",
++              "event": "WorkStarted",
++              "requiredAuthority": [
++                "operatorSide"
++              ],
++              "preconditions": [
++                {
++                  "name": "deskStaffed",
++                  "relatedVia": "desk",
++                  "relatedType": "Desk",
++                  "requiredAxis": "staffing",
++                  "requiredValues": [
++                    "staffed"
++                  ],
++                  "rejectionReason": "Work cannot start at an unstaffed desk."
++                }
++              ]
++            },
++            {
++              "name": "workingToDone",
++              "from": "working",
++              "to": "done",
++              "label": "work finishes",
++              "event": null,
++              "requiredAuthority": [
++                "operatorSide",
++                "systemSide"
++              ],
++              "preconditions": []
++            }
++          ]
++        }
++      ]
++    },
++    {
++      "type": "ReopenableTicket",
++      "qualified": "InheritFixture::ReopenableTicket",
++      "source": "spikes/op-136-opensysml/fixtures/inherit/inherit.sysml (InheritFixture::ReopenableTicket)",
++      "refs": {
++        "desk": [
++          "Desk",
++          null
++        ]
++      },
++      "axes": [
++        {
++          "usage": "progressAxis",
++          "name": "progress",
++          "ident": "ReopenableTicketProgress",
++          "values": [
++            "open",
++            "working",
++            "done"
++          ],
++          "default": "open",
++          "authority": [
++            "operatorSide",
++            "systemSide"
++          ],
++          "shape": "orderedEnum",
++          "terminal": [],
++          "transitions": [
++            {
++              "name": "openToWorking",
++              "from": "open",
++              "to": "working",
++              "label": "work starts",
++              "event": "WorkStarted",
++              "requiredAuthority": [
++                "operatorSide"
++              ],
++              "preconditions": [
++                {
++                  "name": "deskStaffed",
++                  "relatedVia": "desk",
++                  "relatedType": "Desk",
++                  "requiredAxis": "staffing",
++                  "requiredValues": [
++                    "staffed"
++                  ],
++                  "rejectionReason": "Work cannot start at an unstaffed desk."
++                }
++              ]
++            },
++            {
++              "name": "workingToDone",
++              "from": "working",
++              "to": "done",
++              "label": "work finishes",
++              "event": null,
++              "requiredAuthority": [
++                "operatorSide",
++                "systemSide"
++              ],
++              "preconditions": []
++            },
++            {
++              "name": "doneToWorking",
++              "from": "done",
++              "to": "working",
++              "label": "work is reopened",
++              "event": "WorkReopened",
++              "requiredAuthority": [
++                "operatorSide"
++              ],
++              "preconditions": []
++            }
++          ]
++        }
++      ]
+     }
+   ]
+ }
+
+inherit: DIFFERENT; text 2 types, 2 axes, 4 transitions, 1 preconditions in 0.006 s; opensysml 5 types, 5 axes, 11 transitions, 4 preconditions in 0.714 s (opensysml 0.11.0)

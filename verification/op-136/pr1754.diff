@@ -1,0 +1,1207 @@
+diff --git a/.agents/skills/testing-doc-pdf/SKILL.md b/.agents/skills/testing-doc-pdf/SKILL.md
+index 062f483eff..4c5c409bf2 100644
+--- a/.agents/skills/testing-doc-pdf/SKILL.md
++++ b/.agents/skills/testing-doc-pdf/SKILL.md
+@@ -20,7 +20,7 @@ description: How to end-to-end test the sysml PDF document backend (internal/doc
+ - Diagram forms: render the worked example with `-diagram-form dot`, `-diagram-form plantuml` and `-diagram-form d2` too; the PDF must contain no "did not draw" notice (pypdf `extract_text`) and the page's XObjects grow by one per diagram. With `OPENSYSML_DOT=/nonexistent` the render still succeeds and the notice names `OPENSYSML_DOT`; the same with `OPENSYSML_D2`. A `// layout: neato -n` block (the DOT writer emits one for a positioned diagram) must run neato: `dot -Kneato` failing with "no layout engine support" means the GTS library is missing.
+ 
+ ## Rendering
+-- Worked example: `bin/sysml docs/manual/examples/observatory.sysml -render-document Observatory::MassReport -doc-form pdf -pdf-title-page -pdf-toc -pdf-number-sections -o /tmp/observatory.pdf`. It exercises emphasis, code span, external Link, Ref (`#breakdown`), a standalone `<a id="breakdown"></a>` anchor line, grouped table (`**zone: ...**` headings), numbered list and two mermaid diagrams.
++- Worked example: `bin/sysml docs/manual/examples/observatory.sysml -render-document Observatory::MassReport -doc-form pdf -doc-title-page -doc-toc -doc-number-sections -o /tmp/observatory.pdf`. It exercises emphasis, code span, external Link, Ref (`#breakdown`), a standalone `<a id="breakdown"></a>` anchor line, grouped table (`**zone: ...**` headings), numbered list and two mermaid diagrams.
+ - Richest input: `internal/doc/docrender/testdata/telescope_report.sysml` → `Observatory::MassReport` covers every inline construct including escaped `\*`/`\|`/`` \` `` prose and reference links; `internal/doc/docpdf/fixture_test.go` evaluates it into a `*docir.Document`, which is what `docpdf.Render(document, "weasyprint", docpdf.Options{...})` takes (not Markdown).
+ - Markdown regression: `-o foo.md` must diff-equal `docs/manual/examples/observatory.md`. Note `-doc-form` takes `markdown`, `html` or `pdf` (not `md`).
+ - WeasyPrint and Prince read the HTML backend's page (`docrender.HTML`, the same markup as `-doc-form html`) under `internal/doc/docpdf/print.css`, so `-html-theme`, `-html-css` and `-html-no-default-css` change the PDF; pandoc reads the Markdown and refuses the theme flags with a typed error. Inspect the prepared input with `docpdf.Render`'s fake-tool tests (`TestRenderHTMLIsTheBackendsPage`) or a fake `OPENSYSML_WEASYPRINT` script that copies its input file aside.
+diff --git a/.agents/skills/testing-sysml-repl/SKILL.md b/.agents/skills/testing-sysml-repl/SKILL.md
+index 6e5d365fe8..e7e15b3665 100644
+--- a/.agents/skills/testing-sysml-repl/SKILL.md
++++ b/.agents/skills/testing-sysml-repl/SKILL.md
+@@ -1831,7 +1831,7 @@ to A/B the two surfaces on the same model. The call shapes are **not** the ones
+ suggest: there is no `parse_file` on `Connection` — use `c.load_from_content(src)` (or `c.load(path)`),
+ which returns a `Model` whose hash is `model.hash` (not `.model_hash`). Then
+ `c.execute_action("Pkg::action", model.hash)` returns a plain `{name: value}` dict, and a runtime
+-failure raises `opensysml.errors.RuntimeError` with the executor's message
++failure raises `opensysml.ExecutionError` with the executor's message
+ (`action execution failed: execute action: …`). If you must attach to a service you started
+ yourself, `opensysml.connect("localhost", 50551, auto_start=False)` avoids the
+ `Binary not found at ~/.opensysml/bin/sysml-grpc` error — but prefer the auto-start path per above.
+@@ -3447,8 +3447,8 @@ number rather than quoting the table.
+   `m.eval('mass', subject='Demo::sedan')` must be `1200.0`. Without the redefinition both paths
+   return the same number and the test proves nothing.
+   - On `Model` the kwarg is `subject=`; on `Connection.eval` it is `subject_symbol_id=` and the
+-    model hash comes **second**. Module-level `opensysml.evaluate` also takes `subject=`; the
+-    deprecated `opensysml.eval` forwards to it and warns `DeprecationWarning`.
++    model hash comes **second**. Module-level `opensysml.evaluate` also takes `subject=` (the
++    `opensysml.eval` alias was removed in 0.12.0).
+   - A `subject=` plus an explicit `context_symbol_id=` still reads the object, and derived slots
+     (`attribute doubled = mass * 2.0`) follow the object too.
+   - A *definition* as subject is accepted (it is instantiated and reads its own redefinition), and an
+@@ -3951,19 +3951,18 @@ tests skip rather than fail.
+ 
+ ## The evaluate/eval split and generated-base planning (PR #218)
+ 
+-- **Since the rename, `opensysml.evaluate` is the real module-level evaluator and `opensysml.eval` is a
+-  forwarder that emits `DeprecationWarning` and is out of `opensysml.__all__`.** Test both sides:
+-  `evaluate(...)` must produce **zero** DeprecationWarnings (catch them with
+-  `warnings.catch_warnings(record=True)` + `simplefilter("always")`), `eval(...)` must return the
+-  identical value and warn exactly once with a message naming `opensysml.evaluate`, and
+-  `from opensysml import *` must bind `evaluate` but not `eval`. `subject` is the **last** parameter of
+-  `evaluate` precisely so a pre-rename positional call
+-  `eval(expr, None, hash, None, host, port)` still binds host/port — prove that argument really is the
+-  host by also calling it with a bogus address (`"203.0.113.9", 59999`) and requiring a
++- **`opensysml.evaluate` is the module-level evaluator; the `opensysml.eval` forwarder and the
++  `opensysml.RuntimeError` / `opensysml.errors.RuntimeError` aliases were removed in 0.12.0** (they
++  warned `DeprecationWarning` from 0.9.0). Test that `evaluate(...)` produces **zero** warnings (catch
++  them with `warnings.catch_warnings(record=True)` + `simplefilter("always")`), that
++  `from opensysml import *` binds `evaluate` and `ExecutionError` but neither `eval` nor
++  `RuntimeError`, and that `opensysml.eval` / `opensysml.errors.RuntimeError` raise `AttributeError`.
++  `subject` is the **last** parameter of `evaluate`, so a pre-rename positional call
++  `evaluate(expr, None, hash, None, host, port)` still binds host/port — prove that argument really is
++  the host by also calling it with a bogus address (`"203.0.113.9", 59999`) and requiring a
+   `ConnectionError`; that call takes ~30-60s to time out, so give the runner a generous timeout.
+-- **`opensysml.errors.RuntimeError` is a warn-on-access alias of `ExecutionError`** served by the module
+-  `__getattr__` and absent from `errors.__all__`. Check it by *catching a real failure* with it
+-  (`except opensysml.errors.RuntimeError` around a cyclic-slot eval), not just by identity.
++- **`opensysml.ExecutionError` is also a built-in `RuntimeError`**, so `except RuntimeError` catches a
++  real failure (a cyclic-slot eval) — check it by catching, not just by identity.
+ - **`generate.py` elides a base that another declared base already specializes, silently and by design**
+   (`_without_implied`): `part def Backwards :> Vehicle, Hybrid` where `Hybrid :> Vehicle` emits
+   `class Backwards(Hybrid):` with **no** comment, because `Vehicle` is still in the MRO. Only a base the
+diff --git a/changes/unreleased/cli-former-flag-names.removed.md b/changes/unreleased/cli-former-flag-names.removed.md
+new file mode 100644
+index 0000000000..55cd6b08fc
+--- /dev/null
++++ b/changes/unreleased/cli-former-flag-names.removed.md
+@@ -0,0 +1 @@
++- The `sysml` CLI's former flag names: `-to`, replaced by `-convert` in 0.0.7, and `-pdf-title-page`, `-pdf-toc` and `-pdf-number-sections`, replaced by `-doc-title-page`, `-doc-toc` and `-doc-number-sections` in 0.9.0. Only the replacements are declared.
+diff --git a/changes/unreleased/go-edit-result-content.removed.md b/changes/unreleased/go-edit-result-content.removed.md
+new file mode 100644
+index 0000000000..e8f74f580f
+--- /dev/null
++++ b/changes/unreleased/go-edit-result-content.removed.md
+@@ -0,0 +1 @@
++- The Go client's `EditResult.Content`, deprecated in 0.9.0 in favour of `EditResult.Documents`, which carries the edited notation of a model of one document as well as of several. `ApplyEdits` and `ApplyDocumentEdits` now require the `edit_documents` capability every service since 0.9.0 advertises, and are refused with `CodeUnimplemented` by one without it.
+diff --git a/changes/unreleased/node-strict-alias.removed.md b/changes/unreleased/node-strict-alias.removed.md
+new file mode 100644
+index 0000000000..3ea6359dca
+--- /dev/null
++++ b/changes/unreleased/node-strict-alias.removed.md
+@@ -0,0 +1 @@
++- The Node client's deprecated `strict` parse option, an alias of `strictConformance` since 0.10.0; pass `strictConformance`.
+diff --git a/changes/unreleased/python-deprecated-aliases.removed.md b/changes/unreleased/python-deprecated-aliases.removed.md
+new file mode 100644
+index 0000000000..2d3711b366
+--- /dev/null
++++ b/changes/unreleased/python-deprecated-aliases.removed.md
+@@ -0,0 +1 @@
++- The Python client's deprecated aliases `opensysml.eval`, `opensysml.RuntimeError` and `opensysml.errors.RuntimeError`, which warned and answered `opensysml.evaluate` and `opensysml.ExecutionError` since 0.9.0; write the replacements.
+diff --git a/client/node/conformance/runner.ts b/client/node/conformance/runner.ts
+index fbe72c6615..bf2579e675 100644
+--- a/client/node/conformance/runner.ts
++++ b/client/node/conformance/runner.ts
+@@ -513,7 +513,7 @@ export class Runner {
+   private async parseFile(request: Record<string, unknown>): Promise<void> {
+     const options = {
+       ...stringOption(request, "language", "language"),
+-      ...flagOption(request, "strict_conformance", "strict"),
++      ...flagOption(request, "strict_conformance", "strictConformance"),
+     };
+     const content = request["content"];
+     if (typeof content === "string") {
+@@ -577,7 +577,7 @@ export class Runner {
+       model.fixtures === undefined
+         ? await this.connection.loads(this.fixture(model.fixture ?? ""), {
+             ...(model.language === undefined ? {} : { language: model.language }),
+-            ...(model.strict_conformance === undefined ? {} : { strict: model.strict_conformance }),
++            ...(model.strict_conformance === undefined ? {} : { strictConformance: model.strict_conformance }),
+           })
+         : await this.connection.parseSources(
+             model.fixtures.map((name) => SourceDocument.inline(name, this.fixture(name))),
+diff --git a/client/node/src/core/connection.ts b/client/node/src/core/connection.ts
+index a2eaa31045..f0a2473497 100644
+--- a/client/node/src/core/connection.ts
++++ b/client/node/src/core/connection.ts
+@@ -112,7 +112,6 @@ import {
+   decodeDiagnostic,
+   Instance,
+   Model,
+-  strictConformanceOf,
+   type ParseOptions,
+   type ParseSourcesOptions,
+ } from "./model.js";
+@@ -390,7 +389,7 @@ export class Connection {
+       );
+       capabilities.push(CAPABILITY_INLINE_LANGUAGE);
+     }
+-    const strictConformance = strictConformanceOf(options);
++    const { strictConformance } = options;
+     if (strictConformance === true) {
+       this.requireStrictConformance();
+       capabilities.push(CAPABILITY_STRICT_CONFORMANCE);
+diff --git a/client/node/src/core/conversion.ts b/client/node/src/core/conversion.ts
+index 6f7e2a35c4..c8db45ca73 100644
+--- a/client/node/src/core/conversion.ts
++++ b/client/node/src/core/conversion.ts
+@@ -1,5 +1,5 @@
+ // Writing a model back out, in SysML notation or RDF Turtle. The formats are
+-// named as the `sysml` CLI's -from/-to name them.
++// named as the `sysml` CLI's -from/-convert name them.
+ 
+ import { byCodeUnit } from "./capabilities.js";
+ import type { ModelDiagnostic } from "./errors.js";
+diff --git a/client/node/src/core/model.ts b/client/node/src/core/model.ts
+index dfc8ae383d..9347347624 100644
+--- a/client/node/src/core/model.ts
++++ b/client/node/src/core/model.ts
+@@ -82,11 +82,6 @@ export interface ParseOptions {
+   language?: string;
+   /** Reject the OpenSysML notation extensions; requires `strict_conformance`. */
+   strictConformance?: boolean;
+-  /**
+-   * @deprecated Use `strictConformance`; `strict` is its alias. Passing both
+-   * with different values is refused.
+-   */
+-  strict?: boolean;
+ }
+ 
+ /** How several documents are parsed as one model. */
+@@ -100,24 +95,6 @@ export interface ParseSourcesOptions extends ParseOptions {
+   baseModelHash?: string;
+ }
+ 
+-/** Resolves `strictConformance` and its `strict` alias; differing values refuse. */
+-export function strictConformanceOf(options: {
+-  strict?: boolean;
+-  strictConformance?: boolean;
+-}): boolean | undefined {
+-  if (
+-    options.strict !== undefined &&
+-    options.strictConformance !== undefined &&
+-    options.strict !== options.strictConformance
+-  ) {
+-    throw new RangeError(
+-      `strict (${options.strict}) and strictConformance (${options.strictConformance}) disagree; ` +
+-        "pass only strictConformance",
+-    );
+-  }
+-  return options.strictConformance ?? options.strict;
+-}
+-
+ /** Where an expression is evaluated. */
+ export interface EvalOptions {
+   /** FQN of the symbol whose scope the expression's names resolve in. */
+@@ -301,7 +278,7 @@ export class Model {
+       requireLanguage(options.language);
+       requireCapability(connection.info, CAPABILITY_INLINE_LANGUAGE, upgradeRemedy(CAPABILITY_INLINE_LANGUAGE));
+     }
+-    const strictConformance = strictConformanceOf(options);
++    const { strictConformance } = options;
+     if (strictConformance === true) {
+       requireCapability(
+         connection.info,
+diff --git a/client/node/test/sources.test.ts b/client/node/test/sources.test.ts
+index 667083a745..af888f9bbf 100644
+--- a/client/node/test/sources.test.ts
++++ b/client/node/test/sources.test.ts
+@@ -45,6 +45,19 @@ const BROKEN = `package Broken {
+ }
+ `;
+ 
++// An OpenSysML notation extension (`choice`), a warning by default and an error under strict conformance.
++const EXTENDED = `package P {
++  state def S {
++    entry; then a;
++    state a;
++    state b;
++    choice c;
++    transition a_c first a then c;
++    transition c_b first c then b;
++  }
++}
++`;
++
+ test("several documents parse as one model resolving imports across them", async () => {
+   await using connection = await connect();
+   const model = await connection.parseSources([
+@@ -165,18 +178,16 @@ test("a broken document reports diagnostics naming it", async () => {
+   assert.ok(model.diagnostics.every((diagnostic) => diagnostic.file === "broken"));
+ });
+ 
+-test("strict is a deprecated alias of strictConformance; disagreeing values refuse", async () => {
++test("strictConformance makes an OpenSysML-only notation the error the default parse reports as a warning", async () => {
+   await using connection = await connect();
+-  await assert.rejects(
+-    () => connection.parseSources([["top", TOP]], { strict: true, strictConformance: false }),
+-    RangeError,
+-  );
+-  await assert.rejects(
+-    () => connection.loads(TOP, { strict: false, strictConformance: true }),
+-    RangeError,
+-  );
+-  const model = await connection.parseSources([["broken", BROKEN]], { strict: true });
+-  assert.throws(() => model.raiseForErrors(), ParseError);
++  const lenient = await connection.parseSources([["extended", EXTENDED]]);
++  assert.equal(lenient.errors.length, 0);
++  assert.ok(lenient.diagnostics.some((diagnostic) => diagnostic.severity === "warning"));
++  const strict = await connection.parseSources([["extended", EXTENDED]], { strictConformance: true });
++  assert.ok(strict.errors.length > 0);
++  assert.throws(() => strict.raiseForErrors(), ParseError);
++  const loaded = await connection.loads(EXTENDED, { strictConformance: true });
++  assert.ok(loaded.errors.length > 0);
+ });
+ 
+ test("a document whose name another takes is refused before it is sent", async () => {
+diff --git a/client/opensysml/README.md b/client/opensysml/README.md
+index 66c173f2e7..ebad79e79a 100644
+--- a/client/opensysml/README.md
++++ b/client/opensysml/README.md
+@@ -316,10 +316,8 @@ a new or an existing declaration and require `authoring` and
+ `authoring` and `comment_authoring`.
+ 
+ The edited source is `result.Documents`, one `EditedDocument` per document the
+-batch reached, under the name the model was parsed with; `result.Content` is the
+-same notation for a model of one document and empty for a model of several, kept
+-for callers of the sole-document contract. Each `AppliedEdit` names the
+-`Document` its bytes belong to.
++batch reached, under the name the model was parsed with — for a model of one
++document, that one. Each `AppliedEdit` names the `Document` its bytes belong to.
+ 
+ ## What a model is here
+ 
+@@ -385,16 +383,17 @@ another, and a name that is not one of the model's is `CodeInvalidArgument`. A
+ rename or a cascade delete follows its references into the other documents, every
+ document touched is re-parsed and re-analysed together, and `result.Documents`
+ lists exactly the documents rewritten — so a batch that reaches one document of
+-three answers one `EditedDocument`, and `result.Content` is empty. The client marks
+-every request as accepting documents; the service refuses a request that does not on a
+-model of several, as it did before, so a program reading `Content` alone through an
+-earlier client is never handed an empty one. A reference from
+-a document the edit cannot rewrite, such as a bundled library file, refuses the
+-edit as `EditFailureReferencedElsewhere`, naming it in `Referrers`. All of this is the
+-`CapabilityEditDocuments` capability: a service without it edits a model of one
+-document alone, answering `Content` with `Documents` empty, refuses a model of several
+-with `CodeFailedPrecondition`, and refuses `ApplyDocumentEdits` with `CodeUnimplemented`
+-— so a program reading `Documents` checks `ServerInfo` for the capability first.
++three answers one `EditedDocument`. The client marks every request as accepting
++documents; the service refuses a request that does not on a model of several, as
++it did before, so a program reading the sole-document `content` through an earlier
++client is never handed an empty one. A reference from a document the edit cannot
++rewrite, such as a bundled library file, refuses the edit as
++`EditFailureReferencedElsewhere`, naming it in `Referrers`. All of this is the
++`CapabilityEditDocuments` capability, which every service since 0.9.0 advertises:
++`ApplyEdits` and `ApplyDocumentEdits` require it and are refused with
++`CodeUnimplemented` by a service without it, whose answer carried the notation in
++the sole-document `content` alone — the `EditResult.Content` field that read it,
++deprecated in 0.9.0, was removed in 0.12.0.
+ 
+ ## Concurrency, contexts and lifetime
+ 
+diff --git a/client/opensysml/authoring.go b/client/opensysml/authoring.go
+index 7c74590664..cddc61a1f8 100644
+--- a/client/opensysml/authoring.go
++++ b/client/opensysml/authoring.go
+@@ -786,19 +786,10 @@ func (f EditFailure) String() string {
+ 
+ // EditResult is a model's source with every edit applied.
+ type EditResult struct {
+-	// Content is the edited notation of a single-document model, byte-identical
+-	// to the source outside the edited spans. Empty for a model of several
+-	// documents, whose notation is in Documents alone.
+-	//
+-	// Deprecated: read Documents, which carries the same notation for a model of
+-	// one document and every rewritten document of a model of several, from a
+-	// service advertising the edit_documents capability.
+-	Content string
+ 	// Documents is the edited notation of every document the edits rewrote: the
+ 	// edited document first when it is among them, then the others in name order.
+ 	// A single-document model's one document is always listed; a document of
+-	// several the edits left as parsed is not. Empty, with Content filled, from a
+-	// service without the edit_documents capability, which edits one document alone.
++	// several the edits left as parsed is not.
+ 	Documents []EditedDocument
+ 	// Applied says what each edit changed, grouped by document in the order
+ 	// Documents lists them and in request order within a document.
+@@ -846,25 +837,6 @@ func (c *client) ApplyEdits(ctx context.Context, model *Model, edits ...Edit) (*
+ 	return c.ApplyDocumentEdits(ctx, model, "", edits...)
+ }
+ 
+-// requireEditDocuments refuses to send a document name to a service without
+-// the edit_documents capability, which would ignore it and edit its sole document.
+-func (c *client) requireEditDocuments(ctx context.Context, document string) error {
+-	if document == "" {
+-		return nil
+-	}
+-	info, err := c.serverInfo(ctx)
+-	if err != nil {
+-		return err
+-	}
+-	if !info.Has(CapabilityEditDocuments) {
+-		return &StatusError{
+-			Code:    CodeUnimplemented,
+-			Message: fmt.Sprintf("capability %q is unavailable", CapabilityEditDocuments),
+-		}
+-	}
+-	return nil
+-}
+-
+ func (c *client) requireCapabilities(ctx context.Context, capabilities ...string) error {
+ 	info, err := c.serverInfo(ctx)
+ 	if err != nil {
+@@ -886,15 +858,11 @@ func (c *client) ApplyDocumentEdits(ctx context.Context, model *Model, document
+ 	if err != nil {
+ 		return nil, err
+ 	}
+-	if err := c.requireEditDocuments(ctx, document); err != nil {
++	// The notation is read from Documents, which only a service with the
++	// edit_documents capability answers (one without it ignores a document name).
++	if err := c.requireCapabilities(ctx, append(requiredCapabilities(edits), CapabilityEditDocuments)...); err != nil {
+ 		return nil, err
+ 	}
+-	if names := requiredCapabilities(edits); len(names) > 0 {
+-		if err := c.requireCapabilities(ctx, names...); err != nil {
+-			return nil, err
+-		}
+-	}
+-	// This client reads Documents, so a model of several documents may be edited.
+ 	req := &pb.ApplyEditsRequest{ModelHash: hash, Document: document, AcceptDocuments: true}
+ 	for _, edit := range edits {
+ 		operation, err := editToProto(edit)
+@@ -916,7 +884,7 @@ func (c *client) ApplyDocumentEdits(ctx context.Context, model *Model, document
+ 			Referrers:    referrersFromProto(resp.Referrers),
+ 		}
+ 	}
+-	result := &EditResult{Content: resp.Content, Diagnostics: diagnostics}
++	result := &EditResult{Diagnostics: diagnostics}
+ 	for _, doc := range resp.Documents {
+ 		result.Documents = append(result.Documents, EditedDocument{Name: doc.Name, Content: doc.Content})
+ 	}
+diff --git a/client/opensysml/client.go b/client/opensysml/client.go
+index 132b687d3b..a6122e2aec 100644
+--- a/client/opensysml/client.go
++++ b/client/opensysml/client.go
+@@ -232,9 +232,8 @@ type Client interface {
+ 	// them all with an EditError. The edits target the model's first document —
+ 	// its only one when parsed from a file or source — and a rename or cascade
+ 	// delete follows references into every other document of the model, whose
+-	// rewritten notation the result lists. Requires the apply_edits capability;
+-	// a model of several documents, and a result listing Documents, the
+-	// edit_documents capability too.
++	// rewritten notation the result lists. Requires the apply_edits and
++	// edit_documents capabilities.
+ 	ApplyEdits(ctx context.Context, model *Model, edits ...Edit) (*EditResult, error)
+ 
+ 	// ApplyDocumentEdits is ApplyEdits with the edits targeting the document
+diff --git a/client/opensysml/surface_test.go b/client/opensysml/surface_test.go
+index 8e2e23dbac..0bac31d4c1 100644
+--- a/client/opensysml/surface_test.go
++++ b/client/opensysml/surface_test.go
+@@ -1160,8 +1160,8 @@ func TestApplyEditsAnswersTheEditedSource(t *testing.T) {
+ 	if err != nil {
+ 		t.Fatalf("ApplyEdits: %v", err)
+ 	}
+-	if !strings.Contains(result.Content, "1050.0") {
+-		t.Errorf("edited source does not carry the new value:\n%s", result.Content)
++	if len(result.Documents) != 1 || !strings.Contains(result.Documents[0].Content, "1050.0") {
++		t.Errorf("edited source does not carry the new value:\n%+v", result.Documents)
+ 	}
+ 	if len(result.Applied) != 1 {
+ 		t.Fatalf("applied = %d edits, want 1", len(result.Applied))
+@@ -1186,8 +1186,8 @@ func TestApplyEditsListsTheOneDocumentUnderTheParsesName(t *testing.T) {
+ 	if len(result.Documents) != 1 || result.Documents[0].Name != "demo.sysml" {
+ 		t.Fatalf("documents = %+v, want the one document named demo.sysml", result.Documents)
+ 	}
+-	if result.Documents[0].Content != result.Content || result.Content == "" {
+-		t.Errorf("content = %q, documents[0].content = %q, want the same notation", result.Content, result.Documents[0].Content)
++	if !strings.Contains(result.Documents[0].Content, "1050.0") {
++		t.Errorf("documents[0].content = %q, want the edited notation", result.Documents[0].Content)
+ 	}
+ 	if len(result.Applied) != 1 || result.Applied[0].Document != "demo.sysml" {
+ 		t.Errorf("applied = %+v, want one edit in demo.sysml", result.Applied)
+@@ -1219,9 +1219,6 @@ func TestApplyEditsRenamesAcrossDocumentsAndLeavesContentEmpty(t *testing.T) {
+ 	if err != nil {
+ 		t.Fatalf("ApplyEdits: %v", err)
+ 	}
+-	if result.Content != "" {
+-		t.Errorf("content = %q, want empty for a model of two documents", result.Content)
+-	}
+ 	if len(result.Documents) != 2 || result.Documents[0].Name != "lib.sysml" || result.Documents[1].Name != "car.sysml" {
+ 		t.Fatalf("documents = %+v, want lib.sysml then car.sysml", result.Documents)
+ 	}
+@@ -1247,9 +1244,6 @@ func TestApplyDocumentEditsTargetsTheNamedDocument(t *testing.T) {
+ 	if len(result.Documents) != 1 || result.Documents[0].Name != "car.sysml" {
+ 		t.Fatalf("documents = %+v, want car.sysml alone", result.Documents)
+ 	}
+-	if result.Content != "" {
+-		t.Errorf("content = %q, want empty for a model of two documents", result.Content)
+-	}
+ 	_, err = client.ApplyDocumentEdits(context.Background(), model, "nope.sysml",
+ 		opensysml.Rename{Target: "Car::wheel", NewName: "tyre"})
+ 	if !errors.Is(err, opensysml.CodeInvalidArgument) {
+@@ -1281,7 +1275,7 @@ func TestApplyEditsRefusalNamesReferrersByDocument(t *testing.T) {
+ // A service without edit_documents edits one document alone and answers Content
+ // alone, so a client checks the capability before reading Documents, before
+ // editing a model of several documents, and before naming a document.
+-func TestApplyEditsWithoutEditDocumentsAnswersContentAlone(t *testing.T) {
++func TestApplyEditsRequiresEditDocuments(t *testing.T) {
+ 	svc, err := sysmlgrpc.NewServiceWithUnavailableCapabilitiesForTesting(16, "test", []string{opensysml.CapabilityEditDocuments})
+ 	if err != nil {
+ 		t.Fatalf("NewServiceWithUnavailableCapabilitiesForTesting: %v", err)
+@@ -1302,23 +1296,14 @@ func TestApplyEditsWithoutEditDocumentsAnswersContentAlone(t *testing.T) {
+ 		t.Fatalf("capabilities = %v, want apply_edits without edit_documents", info.Capabilities)
+ 	}
+ 
++	// Such a service answers the sole-document `content` alone, which this
++	// client no longer reads, so the edit is refused before it is sent.
+ 	one := parse(t, client, editableSource)
+-	result, err := client.ApplyEdits(ctx, one, opensysml.SetValue{Target: "Demo::SC::unitMass", Value: "1050.0"})
+-	if err != nil {
+-		t.Fatalf("ApplyEdits: %v", err)
+-	}
+-	if !strings.Contains(result.Content, "1050.0") || len(result.Documents) != 0 {
+-		t.Errorf("content=%q documents=%+v, want the notation in Content alone", result.Content, result.Documents)
+-	}
+-	if len(result.Applied) != 1 || result.Applied[0].Document != "" {
+-		t.Errorf("applied = %+v, want one edit naming no document", result.Applied)
++	_, err = client.ApplyEdits(ctx, one, opensysml.SetValue{Target: "Demo::SC::unitMass", Value: "1050.0"})
++	if !errors.Is(err, opensysml.CodeUnimplemented) || !strings.Contains(err.Error(), opensysml.CapabilityEditDocuments) {
++		t.Errorf("a model of one: err = %v, want CodeUnimplemented naming edit_documents", err)
+ 	}
+-
+ 	two := parseTwo(t, client)
+-	_, err = client.ApplyEdits(ctx, two, opensysml.Rename{Target: "Lib::Engine", NewName: "Motor"})
+-	if !errors.Is(err, opensysml.CodeFailedPrecondition) || !strings.Contains(err.Error(), opensysml.CapabilityEditDocuments) {
+-		t.Errorf("a model of two: err = %v, want CodeFailedPrecondition naming edit_documents", err)
+-	}
+ 	_, err = client.ApplyDocumentEdits(ctx, two, "car.sysml", opensysml.Rename{Target: "Car::wheel", NewName: "tyre"})
+ 	if !errors.Is(err, opensysml.CodeUnimplemented) || !strings.Contains(err.Error(), opensysml.CapabilityEditDocuments) {
+ 		t.Errorf("naming a document: err = %v, want CodeUnimplemented naming edit_documents", err)
+@@ -1348,11 +1333,15 @@ func TestApplyEditsRenamesAndRewritesTheReferences(t *testing.T) {
+ 	if err != nil {
+ 		t.Fatalf("ApplyEdits: %v", err)
+ 	}
+-	if strings.Contains(result.Content, ": SC") {
+-		t.Errorf("the reference to the renamed element still reads SC:\n%s", result.Content)
++	if len(result.Documents) != 1 {
++		t.Fatalf("documents = %+v, want the one edited document", result.Documents)
+ 	}
+-	if !strings.Contains(result.Content, "part sc : Spacecraft") {
+-		t.Errorf("the reference was not rewritten:\n%s", result.Content)
++	edited := result.Documents[0].Content
++	if strings.Contains(edited, ": SC") {
++		t.Errorf("the reference to the renamed element still reads SC:\n%s", edited)
++	}
++	if !strings.Contains(edited, "part sc : Spacecraft") {
++		t.Errorf("the reference was not rewritten:\n%s", edited)
+ 	}
+ }
+ 
+@@ -1373,6 +1362,15 @@ func TestApplyEditsRefusesDeletingAReferencedElement(t *testing.T) {
+ 	}
+ }
+ 
++// editedNotation is the edited notation of a model of one document.
++func editedNotation(t *testing.T, result *opensysml.EditResult) string {
++	t.Helper()
++	if len(result.Documents) != 1 {
++		t.Fatalf("documents = %+v, want the one edited document", result.Documents)
++	}
++	return result.Documents[0].Content
++}
++
+ func TestApplyEditsAddsAMember(t *testing.T) {
+ 	client := newClient(t)
+ 	model := parse(t, client, editableSource)
+@@ -1381,8 +1379,8 @@ func TestApplyEditsAddsAMember(t *testing.T) {
+ 	if err != nil {
+ 		t.Fatalf("ApplyEdits: %v", err)
+ 	}
+-	if !strings.Contains(result.Content, "attribute margin") {
+-		t.Errorf("the member was not added:\n%s", result.Content)
++	if edited := editedNotation(t, result); !strings.Contains(edited, "attribute margin") {
++		t.Errorf("the member was not added:\n%s", edited)
+ 	}
+ }
+ 
+@@ -1396,8 +1394,8 @@ func TestApplyEditsAddsAConnection(t *testing.T) {
+ 	if err != nil {
+ 		t.Fatalf("ApplyEdits: %v", err)
+ 	}
+-	if !strings.Contains(result.Content, "allocation alloc1 allocate a to b;") {
+-		t.Errorf("the connection was not added:\n%s", result.Content)
++	if edited := editedNotation(t, result); !strings.Contains(edited, "allocation alloc1 allocate a to b;") {
++		t.Errorf("the connection was not added:\n%s", edited)
+ 	}
+ }
+ 
+@@ -1422,8 +1420,8 @@ func TestApplyEditsAddsATypedConnection(t *testing.T) {
+ 	if err != nil {
+ 		t.Fatalf("ApplyEdits: %v", err)
+ 	}
+-	if !strings.Contains(result.Content, "connection cable : Cable connect left.p to right.p;") {
+-		t.Errorf("the typed connection was not added:\n%s", result.Content)
++	if edited := editedNotation(t, result); !strings.Contains(edited, "connection cable : Cable connect left.p to right.p;") {
++		t.Errorf("the typed connection was not added:\n%s", edited)
+ 	}
+ }
+ 
+diff --git a/client/python/opensysml/__init__.py b/client/python/opensysml/__init__.py
+index 538902b28a..13f3291ade 100644
+--- a/client/python/opensysml/__init__.py
++++ b/client/python/opensysml/__init__.py
+@@ -1,6 +1,5 @@
+ """opensysml - Python client library for OpenSysML SysML v2 parser."""
+ 
+-import warnings
+ 
+ from opensysml._version import VERSION as _declared_version
+ from opensysml.connection import (
+@@ -179,7 +178,6 @@
+     "UnsupportedOperationError", "UnsupportedValueError",
+     "WrongKindError",
+     "load", "loads", "parse_sources", "connect", "convert", "migrate", "read_json",
+-    # "eval" is deprecated in favour of "evaluate", so it is not exported.
+     "evaluate", "instantiate",
+     "DEFAULT_PORT", "split_target",
+     "__version__"
+@@ -596,24 +594,3 @@ def instantiate(symbol_id, file_path=None, model_hash=None, host='localhost',
+     
+     return conn.instantiate(symbol_id, model_hash)
+ 
+-
+-#: Names that shadowed a built-in, and what each is called now. Served through
+-#: __getattr__ so a star-import no longer binds over the built-in.
+-_RENAMED_NAMES = {"eval": "evaluate", "RuntimeError": "ExecutionError"}
+-
+-
+-def __getattr__(name):
+-    """Serve a renamed name with the object it became, warning about its use.
+-
+-    ``opensysml.eval`` is :func:`evaluate` and ``opensysml.RuntimeError`` is
+-    :class:`~opensysml.errors.ExecutionError`, so existing snippets keep working.
+-    """
+-    replacement = _RENAMED_NAMES.get(name)
+-    if replacement is None:
+-        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+-    warnings.warn(
+-        f"opensysml.{name} is deprecated; use opensysml.{replacement} instead",
+-        DeprecationWarning,
+-        stacklevel=2,
+-    )
+-    return globals()[replacement]
+diff --git a/client/python/opensysml/errors.py b/client/python/opensysml/errors.py
+index 3fed0a4f84..1cb8053148 100644
+--- a/client/python/opensysml/errors.py
++++ b/client/python/opensysml/errors.py
+@@ -8,7 +8,6 @@
+ """
+ 
+ import builtins
+-import warnings
+ from contextlib import contextmanager
+ from typing import TYPE_CHECKING
+ 
+@@ -237,7 +236,7 @@ class ExecutionError(OpenSysMLError, builtins.RuntimeError):
+ 
+     Also a built-in :class:`RuntimeError`, so ``except RuntimeError`` catches it
+     — which is what the traceback's ``opensysml.errors.RuntimeError`` used to
+-    promise and not deliver. That old name is a deprecated alias of this class.
++    promise and not deliver; that old name was an alias of this class until 0.12.0.
+ 
+     Attributes:
+         message (str): Error description
+@@ -642,29 +641,6 @@ def translate_rpc_errors(not_found=ModelNotFoundError, unimplemented=None):
+         ) from exc
+ 
+ 
+-#: Names kept for callers of older versions, and what they are now.
+-_DEPRECATED_NAMES = {"RuntimeError": ExecutionError}
+-
+-
+-def __getattr__(name):
+-    """Serve the deprecated ``RuntimeError`` alias, warning about its use.
+-
+-    It is the same class as :class:`ExecutionError`, so ``except
+-    opensysml.errors.RuntimeError`` keeps working; it is gone from ``__all__`` so
+-    that a star-import no longer shadows the built-in with it.
+-    """
+-    replacement = _DEPRECATED_NAMES.get(name)
+-    if replacement is None:
+-        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+-    warnings.warn(
+-        f"opensysml.errors.{name} is deprecated; use "
+-        f"opensysml.errors.{replacement.__name__} instead",
+-        DeprecationWarning,
+-        stacklevel=2,
+-    )
+-    return replacement
+-
+-
+ __all__ = [
+     "OpenSysMLError",
+     "ChecksumMismatchError",
+diff --git a/client/python/tests/test_api.py b/client/python/tests/test_api.py
+index 1d1252d0c8..6af106e8a3 100644
+--- a/client/python/tests/test_api.py
++++ b/client/python/tests/test_api.py
+@@ -1,6 +1,5 @@
+ """Tests for opensysml module-level convenience API."""
+ 
+-import warnings
+ 
+ import pytest
+ from unittest.mock import patch, MagicMock, Mock
+@@ -204,22 +203,6 @@ def test_opensysml_evaluate_with_file(self):
+                 "6 * 7", "model-abc", context_symbol_id=None, subject_symbol_id=None
+             )
+     
+-    @pytest.mark.usefixtures("no_default_connection")
+-    def test_opensysml_eval_still_works_and_warns(self):
+-        """The deprecated name evaluates the same way, warning about itself."""
+-        with patch('opensysml.Connection') as MockConnection:
+-            mock_conn = Mock()
+-            MockConnection.return_value = mock_conn
+-            mock_conn.eval.return_value = 42
+-
+-            with pytest.warns(DeprecationWarning, match="opensysml.evaluate"):
+-                result = opensysml.eval("6 * 7", model_hash="model-abc")
+-
+-            assert result == 42
+-        # The name to write is exported; the deprecated one is not.
+-        assert "evaluate" in opensysml.__all__
+-        assert "eval" not in opensysml.__all__
+-
+     @pytest.mark.usefixtures("no_default_connection")
+     def test_opensysml_evaluate_takes_the_address_positionally(self):
+         """subject comes last, so a positional call still binds host and port."""
+@@ -335,34 +318,7 @@ def test_opensysml_instantiate_with_both_params(self):
+ 
+ 
+ class TestRenamedNames:
+-    """The two names that shadowed a built-in, and the aliases left behind."""
+-
+-    def test_the_old_names_resolve_to_the_new_objects(self):
+-        """`opensysml.eval` is `evaluate` and `opensysml.RuntimeError` is `ExecutionError`."""
+-        for old, new in (("eval", opensysml.evaluate), ("RuntimeError", opensysml.ExecutionError)):
+-            with warnings.catch_warnings(record=True) as caught:
+-                warnings.simplefilter("always")
+-                alias = getattr(opensysml, old)
+-            assert alias is new
+-            assert len(caught) == 1
+-            assert issubclass(caught[0].category, DeprecationWarning)
+-            assert new.__name__ in str(caught[0].message)
+-
+-    @pytest.mark.usefixtures("no_default_connection")
+-    def test_an_old_snippet_still_runs_through_the_alias(self):
+-        """A script written against `opensysml.eval` keeps working, warning included."""
+-        with patch('opensysml.Connection') as MockConnection:
+-            mock_conn = Mock()
+-            MockConnection.return_value = mock_conn
+-            mock_conn.eval.return_value = 4
+-
+-            with warnings.catch_warnings():
+-                warnings.simplefilter("ignore", DeprecationWarning)
+-                assert opensysml.eval("2 + 2", model_hash="h") == 4
+-
+-            mock_conn.eval.assert_called_once_with(
+-                "2 + 2", "h", context_symbol_id=None, subject_symbol_id=None
+-            )
++    """The two names that shadowed a built-in are gone, not aliased."""
+ 
+     def test_the_old_names_no_longer_shadow_a_builtin_on_star_import(self):
+         """Which is the point of the rename: `import *` binds neither name."""
+diff --git a/client/python/tests/test_errors.py b/client/python/tests/test_errors.py
+index 7929af8974..5f11a57e85 100644
+--- a/client/python/tests/test_errors.py
++++ b/client/python/tests/test_errors.py
+@@ -1,7 +1,6 @@
+ """Tests for translating gRPC failures into the opensysml exception hierarchy."""
+ 
+ import builtins
+-import warnings
+ 
+ import grpc
+ import pytest
+@@ -176,15 +175,6 @@ def test_it_carries_the_diagnostics_behind_the_failure(self):
+         assert exc.message == "evaluation failed"
+         assert exc.diagnostics == ["d"]
+ 
+-    def test_the_old_name_is_a_deprecated_alias(self):
+-        with warnings.catch_warnings(record=True) as caught:
+-            warnings.simplefilter("always")
+-            alias = errors.RuntimeError
+-        assert alias is ExecutionError
+-        assert len(caught) == 1
+-        assert issubclass(caught[0].category, DeprecationWarning)
+-        assert "ExecutionError" in str(caught[0].message)
+-
+     def test_the_old_name_is_gone_from_the_star_import_surface(self):
+         # Which is the point: `from opensysml.errors import *` no longer shadows
+         # the built-in RuntimeError.
+diff --git a/cmd/sysml/convert.go b/cmd/sysml/convert.go
+index b76d4c7ab3..644a84afbf 100644
+--- a/cmd/sysml/convert.go
++++ b/cmd/sysml/convert.go
+@@ -16,14 +16,6 @@ import (
+ 	"github.com/Open-MBEE/OpenSysML/internal/workspace/project"
+ )
+ 
+-// deprecatedFlag rejects a flag that has been replaced, so the old spelling
+-// reports what to write instead of "flag provided but not defined".
+-type deprecatedFlag struct{ instead string }
+-
+-func (f *deprecatedFlag) String() string { return "" }
+-
+-func (f *deprecatedFlag) Set(string) error { return errors.New(f.instead) }
+-
+ // runConvert converts the model named on the command line to the format
+ // -convert asks for, writing to -o or to stdout.
+ //
+diff --git a/cmd/sysml/convert_test.go b/cmd/sysml/convert_test.go
+index 84ffd20dd4..25f05b67f5 100644
+--- a/cmd/sysml/convert_test.go
++++ b/cmd/sysml/convert_test.go
+@@ -265,7 +265,6 @@ func TestConvertErrors(t *testing.T) {
+ 		"file as format":      {[]string{"-convert", model}, "-convert names the format"},
+ 		"several to notation": {[]string{model, model, "-convert", "sysml"}, "converts to ttl or api-json"},
+ 		"several to a branch": {[]string{model, model, "-convert", "ttl", "-o", "flexo://p/main"}, "is written to a file"},
+-		"replaced -to flag":   {[]string{model, "-convert", "ttl", "-to", "sysml"}, "-to has been replaced by -convert"},
+ 		"forgotten value":     {[]string{model, "-convert", "ttl", "-o"}, "flag needs an argument: -o"},
+ 		"syntax error":        {[]string{broken, "-convert", "ttl"}, "syntax error"},
+ 		"unsupported rdf":     {[]string{badTurtle, "-convert", "sysml"}, "blank node"},
+diff --git a/cmd/sysml/features.go b/cmd/sysml/features.go
+index 0b7335bc89..f4efbaf596 100644
+--- a/cmd/sysml/features.go
++++ b/cmd/sysml/features.go
+@@ -74,8 +74,7 @@ var (
+ 		name: "docpdf",
+ 		flags: append(flags("pdf-engine", "html-theme", "html-css", "html-mermaid", "html-math"),
+ 			boolFlags("doc-title-page", "doc-toc", "doc-number-sections",
+-				"html-no-default-css", "html-fragment", "html-default-css",
+-				"pdf-title-page", "pdf-toc", "pdf-number-sections")...),
++				"html-no-default-css", "html-fragment", "html-default-css")...),
+ 		values:  map[string][]string{"doc-form": {"html", "pdf"}},
+ 		markers: []string{"-doc-form html", "-doc-form pdf"},
+ 	}
+diff --git a/cmd/sysml/mcp_catalog_test.go b/cmd/sysml/mcp_catalog_test.go
+index ab0cc49813..1471ab8b51 100644
+--- a/cmd/sysml/mcp_catalog_test.go
++++ b/cmd/sysml/mcp_catalog_test.go
+@@ -9,9 +9,9 @@ import (
+ 
+ // Drift gate: every sysml flag that is an operation or one of its arguments
+ // is classified exactly once in the sysml-mcp tool catalog, as the tool that
+-// performs it, as unserved by the service, or as CLI-only. The General and
+-// Deprecated option groups are the process's own and are not operations;
+-// an alias is classified under its long spelling.
++// performs it, as unserved by the service, or as CLI-only. The General option
++// group is the process's own and is not an operation; an alias is classified
++// under its long spelling.
+ func TestEverySysmlFlagIsClassifiedForMCP(t *testing.T) {
+ 	process := map[string]bool{}
+ 	for _, group := range doc().Options {
+@@ -20,13 +20,13 @@ func TestEverySysmlFlagIsClassifiedForMCP(t *testing.T) {
+ 			for _, alias := range opt.Aliases {
+ 				process[alias] = true
+ 			}
+-			if group.Title == "General" || group.Title == "Deprecated" {
++			if group.Title == "General" {
+ 				process[opt.Name] = true
+ 			}
+ 		}
+ 	}
+ 	if len(process) == 0 {
+-		t.Fatal("the General and Deprecated option groups were not found")
++		t.Fatal("the General option group was not found")
+ 	}
+ 	var classified int
+ 	docFlags().VisitAll(func(f *flag.Flag) {
+diff --git a/cmd/sysml/render_document_pdf_test.go b/cmd/sysml/render_document_pdf_test.go
+index 6acba7d4e5..783358b304 100644
+--- a/cmd/sysml/render_document_pdf_test.go
++++ b/cmd/sysml/render_document_pdf_test.go
+@@ -44,7 +44,7 @@ printf '<svg xmlns="http://www.w3.org/2000/svg"/>' > "$out"
+ 	out := filepath.Join(dir, "report.pdf")
+ 
+ 	cmd := exec.Command(binary, fixture, "-render-document", "Observatory::MassReport",
+-		"-doc-form", "pdf", "-pdf-title-page", "-pdf-toc", "-pdf-number-sections", "-o", out)
++		"-doc-form", "pdf", "-doc-title-page", "-doc-toc", "-doc-number-sections", "-o", out)
+ 	cmd.Env = append(os.Environ(), docpdf.WeasyPrintEnv+"="+weasyprint, docpdf.MermaidEnv+"="+mmdc)
+ 	if output, err := cmd.CombinedOutput(); err != nil {
+ 		t.Fatalf("render: %v\n%s", err, output)
+@@ -393,7 +393,7 @@ func TestRenderDocumentPDFFlagConflicts(t *testing.T) {
+ 		2, "name the file to write with -o")
+ 	wantReport(t, check(t, binary, documentModel, "-render-document", "Reports::MassReport", "-doc-form", "latex"),
+ 		2, "unknown document form", "markdown, asciidoc, html or pdf")
+-	wantReport(t, check(t, binary, documentModel, "-render-document", "Reports::MassReport", "-pdf-toc"),
++	wantReport(t, check(t, binary, documentModel, "-render-document", "Reports::MassReport", "-doc-toc"),
+ 		2, "-doc-form pdf")
+ 	wantReport(t, check(t, binary, documentModel, "-render-document", "Reports::MassReport", "-doc-form", "pdf", "-o", "x.pdf", "-pdf-engine", "latex"),
+ 		2, "unknown PDF engine", "weasyprint, pandoc, prince")
+diff --git a/cmd/sysml/render_pdf.go b/cmd/sysml/render_pdf.go
+index bf6e3e294f..585da758af 100644
+--- a/cmd/sysml/render_pdf.go
++++ b/cmd/sysml/render_pdf.go
+@@ -24,9 +24,6 @@ func init() {
+ 		fs.BoolVar(&htmlShowCSS, "html-default-css", false, "Write the default document stylesheet, or with -html-theme that theme's whole sheet, and exit")
+ 		fs.StringVar(&htmlMermaid, "html-mermaid", "", "Have the page load Mermaid to draw its diagrams: cdn loads a pinned release from jsDelivr, a URL the script it names")
+ 		fs.StringVar(&htmlMath, "html-math", "", "Have the page load MathJax to typeset its formulas: cdn loads a pinned release from jsDelivr, a URL the script it names")
+-		fs.BoolVar(&pdfTitlePage, "pdf-title-page", false, "Former name of -doc-title-page, which also shapes HTML")
+-		fs.BoolVar(&pdfTOC, "pdf-toc", false, "Former name of -doc-toc, which also shapes HTML")
+-		fs.BoolVar(&pdfNumbering, "pdf-number-sections", false, "Former name of -doc-number-sections, which also shapes HTML")
+ 	})
+ }
+ 
+diff --git a/cmd/sysml/usage.go b/cmd/sysml/usage.go
+index eed94ab8d8..795835dac8 100644
+--- a/cmd/sysml/usage.go
++++ b/cmd/sysml/usage.go
+@@ -770,8 +770,6 @@ func registerFlags(fs *flag.FlagSet) {
+ 	fs.Var(&renderRuns, "render-run", "Render the trace of a run as timeline or sequence into path (`-` is stdout); form comes from -render-form or the path extension")
+ 	fs.BoolVar(&memStats, "memstats", false, "Report on stderr what the run cost: wall time, memory allocated, memory taken from the OS")
+ 
+-	fs.Var(&deprecatedFlag{instead: "-to has been replaced by -convert, as `sysml model.sysml -convert ttl`"}, "to", "Replaced by -convert, which names the output format")
+-
+ 	declareFeatureFlags(fs)
+ }
+ 
+@@ -962,14 +960,6 @@ func optionGroups() []usage.OptionGroup {
+ 			usage.Opt("memprofile", fileArg),
+ 			usage.Opt("memstats", ""),
+ 		},
+-	}, {
+-		Title: "Deprecated",
+-		Options: []usage.Option{
+-			usage.Opt("to", formatArg),
+-			usage.Opt("pdf-title-page", ""),
+-			usage.Opt("pdf-toc", ""),
+-			usage.Opt("pdf-number-sections", ""),
+-		},
+ 	}}
+ }
+ 
+diff --git a/conformance/fixtures/nonstandard_notation.sysml b/conformance/fixtures/nonstandard_notation.sysml
+new file mode 100644
+index 0000000000..d28e1cce24
+--- /dev/null
++++ b/conformance/fixtures/nonstandard_notation.sysml
+@@ -0,0 +1,10 @@
++package P {
++  state def S {
++    entry; then a;
++    state a;
++    state b;
++    choice c;
++    transition a_c first a then c;
++    transition c_b first c then b;
++  }
++}
+diff --git a/conformance/scenarios/02-parse.json b/conformance/scenarios/02-parse.json
+index 1bbd85582a..2e58b3ac48 100644
+--- a/conformance/scenarios/02-parse.json
++++ b/conformance/scenarios/02-parse.json
+@@ -88,6 +88,60 @@
+         "status_message_contains": "strict_conformance"
+       }
+     },
++    {
++      "id": "parse/strict_conformance_refuses_an_extension",
++      "description": "Under strict conformance an OpenSysML-only notation is an error, where the default parse reports it as a warning; a runner that drops the field answers the warning and fails here.",
++      "rpc": "ParseFile",
++      "requires_capabilities": [
++        "strict_conformance"
++      ],
++      "request": {
++        "content": "${fixture:nonstandard_notation.sysml}",
++        "strict_conformance": true
++      },
++      "expect": {
++        "non_empty": [
++          "model_hash"
++        ],
++        "counts": {
++          "diagnostics": 1
++        },
++        "response": {
++          "diagnostics": [
++            {
++              "severity": "error"
++            }
++          ]
++        }
++      },
++      "expect_without_capability": {
++        "status": "UNIMPLEMENTED",
++        "status_message_contains": "strict_conformance"
++      }
++    },
++    {
++      "id": "parse/an_extension_is_a_warning_by_default",
++      "description": "The same OpenSysML-only notation parses with one warning when strict conformance is not asked for.",
++      "rpc": "ParseFile",
++      "request": {
++        "content": "${fixture:nonstandard_notation.sysml}"
++      },
++      "expect": {
++        "non_empty": [
++          "model_hash"
++        ],
++        "counts": {
++          "diagnostics": 1
++        },
++        "response": {
++          "diagnostics": [
++            {
++              "severity": "warning"
++            }
++          ]
++        }
++      }
++    },
+     {
+       "id": "parse_sources/several_documents_are_one_model",
+       "description": "Two documents parse as one model, so the import between them resolves and each document answers with its own root.",
+diff --git a/docs/clients/python/errors.md b/docs/clients/python/errors.md
+index 82b513d7ae..1a7416d192 100644
+--- a/docs/clients/python/errors.md
++++ b/docs/clients/python/errors.md
+@@ -42,15 +42,15 @@ or a condition that could not be evaluated is represented separately; see
+ 
+ ## Names that shadowed builtins
+ 
+-Neither historical builtin-like name is part of the public API any more:
+-the module-level evaluation function is `opensysml.evaluate`, and the
+-execution exception is `opensysml.ExecutionError`. Deprecated aliases remain
+-available and warn when accessed, but they are excluded from `__all__`.
++Neither historical builtin-like name is part of the public API: the
++module-level evaluation function is `opensysml.evaluate`, and the execution
++exception is `opensysml.ExecutionError`. The deprecated aliases that warned
++and answered the new object were removed in 0.12.0.
+ 
+-| Deprecated name | Use instead |
++| Removed name | Use instead |
+ | --- | --- |
+ | `opensysml.eval` | `opensysml.evaluate` |
+-| `opensysml.errors.RuntimeError` | `opensysml.ExecutionError` |
++| `opensysml.RuntimeError`, `opensysml.errors.RuntimeError` | `opensysml.ExecutionError` |
+ 
+ Import the package rather than star-importing names that might shadow builtins.
+ The `Model.eval` and `Connection.eval` methods keep their name; object
+diff --git a/docs/guide/07-saving-and-rdf.md b/docs/guide/07-saving-and-rdf.md
+index d1d9658064..affccbca76 100644
+--- a/docs/guide/07-saving-and-rdf.md
++++ b/docs/guide/07-saving-and-rdf.md
+@@ -135,7 +135,7 @@ outside the mapping. It never writes a partial model.
+ 
+ The same conversion is available as the service method `Convert`, which `GetServerInfo` reports as
+ the `convert` capability. It accepts either a `file_path` that the service opens or `content`
+-passed inline, takes the same format names as `-from` and `-to`, and returns the written text
++passed inline, takes the same format names as `-from` and `-convert`, and returns the written text
+ with its formats, or an `error` together with the diagnostics that explain it.
+ `tolerate_syntax_errors` writes notation despite syntax errors; it is rejected for any direction
+ that builds a graph, where an unparsed declaration would be silently dropped.
+diff --git a/docs/internals/design/api-surface-parity.md b/docs/internals/design/api-surface-parity.md
+index a8ccc08a39..b90f305c1f 100644
+--- a/docs/internals/design/api-surface-parity.md
++++ b/docs/internals/design/api-surface-parity.md
+@@ -63,7 +63,7 @@ surface reimplements the assembly around the core call.
+ | Engine listing and selection | `%engines`, `%engine`, `-engines`, `-engine` | — | `ListEngines`, the `engine` field | `ListEngines`, the option | yes — `engines.Default` |
+ | Model query | `%query`, `-query` (OSLC); `%run-query`, `-run-query` (document query) | — | `Query`, `RunDocumentQuery` | `Query`, `QueryOSLC`, `RunDocumentQuery` | yes — `query`, `queryplan`, `queryexec` |
+ | Document rendering | `%render-document`, `-render-document(s)`, `-doc-form` | `opensysml/renderDocument` | `RenderDocument` | `RenderDocument` | yes — `docir`, `docplan`, `docrender` |
+-| Convert (notation, RDF, element JSON) | `%save` (`.ttl`), `-convert`, `-from`, `-to` | — | `Convert` | `Convert`, `ConvertFile`, `ConvertSource` | yes — `export` |
++| Convert (notation, RDF, element JSON) | `%save` (`.ttl`), `-convert`, `-from` | — | `Convert` | `Convert`, `ConvertFile`, `ConvertSource` | yes — `export` |
+ | Model edits | — | `opensysml/applyModelEdit`, rename, code actions | `ApplyEdits` | `ApplyEdits` | yes — `edit`; the editor's rename and quick fixes are their own assembly over it |
+ | Strict conformance | `%strict`, `-strict` | editor setting | `strict_conformance` request field | option | yes — `conformance` |
+ | Server / build identity | `-version` | `initialize` result | `GetServerInfo` | `ServerInfo` | yes |
+diff --git a/docs/manual/outputs.md b/docs/manual/outputs.md
+index 1135db7099..8f9c8a981d 100644
+--- a/docs/manual/outputs.md
++++ b/docs/manual/outputs.md
+@@ -412,8 +412,7 @@ own.
+ | `-doc-toc` | A table of contents built from the section headings |
+ | `-doc-number-sections` | Hierarchical section numbers (1, 1.1, ...) |
+ 
+-All three are off by default and shape HTML and PDF alike; `-pdf-title-page`,
+-`-pdf-toc` and `-pdf-number-sections` are aliases of them.
++All three are off by default and shape HTML and PDF alike.
+ 
+ ### Wide tables
+ 
+diff --git a/docs/project/demo.md b/docs/project/demo.md
+index 6588af16aa..9110da9d98 100644
+--- a/docs/project/demo.md
++++ b/docs/project/demo.md
+@@ -524,7 +524,7 @@ And back — this direction is a real print of the parsed tree, so it is the can
+ model that was loaded:
+ 
+ ```console
+-$ sysml -convert structure.ttl -to sysml
++$ sysml structure.ttl -convert sysml
+ package Structure {
+     private import ScalarValues::*;
+     part def Wheel {
+@@ -587,7 +587,7 @@ echoes it, `%clear` resets it, and `%verbosity quiet|normal|debug` sets how much
+   namespace they came from drops them, with a note naming the submission that ended them.
+ - **`clear` is not a REPL command.** At the `sysml> ` prompt it is parsed as SysML and leaves an
+   unresolved session error that is then reported under later commands. `%clear` is the command.
+-- **`-convert … -to ttl` covers structure and the behavior a body states.** A model with a
++- **`-convert ttl` covers structure and the behavior a body states.** A model with a
+   construct the notation could not be rebuilt from — a name declared twice in one body, a
+   `perform` with neither a name nor an action to refer to — is rejected (`cannot convert the … at …`) rather
+   than silently exported, so use a model that converts for the RDF demo, as in §10.
+diff --git a/docs/project/html-document-backend.md b/docs/project/html-document-backend.md
+index 4b0eaa6355..8bfb4b9dc7 100644
+--- a/docs/project/html-document-backend.md
++++ b/docs/project/html-document-backend.md
+@@ -362,11 +362,12 @@ fallback, not an error.
+   for the other forms the way the `-pdf-*` flags already are, except `-html-css`, which the
+   PDF form accepts too since its converters read the same HTML.
+ - **The shared deliverable options.** A title page, a contents list and section numbering are
+-  not PDF-specific — they are exactly what an HTML deliverable wants too — but they are
+-  spelled `-pdf-title-page`, `-pdf-toc` and `-pdf-number-sections` today. The proposal is to
++  not PDF-specific — they are exactly what an HTML deliverable wants too — but they
++  were spelled `-pdf-title-page`, `-pdf-toc` and `-pdf-number-sections`. The proposal was to
+   accept `-doc-title-page`, `-doc-toc` and `-doc-number-sections` for both forms and keep the
+-  `-pdf-*` spellings working as documented aliases, so no existing script breaks. **Open
+-  decision:** whether to keep the aliases indefinitely or deprecate them for 1.0.
++  `-pdf-*` spellings working as documented aliases, so no existing script breaks. **Decided:**
++  the aliases were listed as deprecated from 0.9.0 and removed in 0.12.0; only the `-doc-*`
++  spellings remain.
+ - **REPL and service.** `%render-document` keeps printing Markdown; a terminal has no use for
+   markup. The gRPC `RenderDocument` request grows a form field defaulting to Markdown, so the
+   Python client can ask for HTML, and the LSP's document preview keeps its Markdown, which is
+diff --git a/docs/project/spec-compliance.md b/docs/project/spec-compliance.md
+index 23975324f4..0c4a61f9dd 100644
+--- a/docs/project/spec-compliance.md
++++ b/docs/project/spec-compliance.md
+@@ -3220,7 +3220,7 @@ the `@type` mapping and the comparison choices.
+   client/python/tests/test_lifecycle.py, test_stale_service.py)
+ - an `instance_id` outside an `Instantiate` response (an `Evaluate` result, say)
+   is still a bare int64: those responses carry no instance graph to resolve it
+-- `opensysml.eval` and `opensysml.RuntimeError` are deprecated aliases of `evaluate` and `ExecutionError`, served by a module `__getattr__` with a warning
++- `opensysml.eval` and `opensysml.RuntimeError`, the deprecated aliases of `evaluate` and `ExecutionError`, were removed in 0.12.0; neither name is an attribute of the package
+ - a downloaded binary is verified against the digest the shipped `release-digests.json`
+   (`binary.py:PINNED_SHA256`) pins for its
+   release, independent of the origin that served it; a version with no pin fails rather than
+diff --git a/docs/reference/api.md b/docs/reference/api.md
+index 9ebd403874..1088119a99 100644
+--- a/docs/reference/api.md
++++ b/docs/reference/api.md
+@@ -120,10 +120,9 @@ fmt.Println(exploration.Status()) // complete (6 runs)
+ ```
+ 
+ `ApplyEdits` rewrites a model's source and answers an `EditResult`: `Documents` is the edited
+-notation of every document the batch reached, each under the name the parse gave it, and
+-`Content` is the same notation for a model of exactly one document — the field the sole-document
+-contract answered first, kept so a caller written against it is unchanged; it is empty for a model
+-of several, even when the batch rewrote only one of them. The operations name elements declared
++notation of every document the batch reached, each under the name the parse gave it — for a
++model of one document, that one. (`EditResult.Content`, the sole-document notation the contract
++answered first, was deprecated in 0.9.0 and removed in 0.12.0.) The operations name elements declared
+ in the model's first document; `ApplyDocumentEdits` names another. A rename or cascade delete
+ follows its references into the model's other documents, every touched document is re-parsed
+ and re-analysed together, and either all of them are answered or the refusal — an `*EditError`
+@@ -132,8 +131,8 @@ request's `accept_documents`, which is what lets a model of several documents be
+ request without it, as every earlier client sends, is refused on such a model with
+ `FAILED_PRECONDITION` as before, so a caller reading `content` alone is never handed an empty one.
+ A service advertising `apply_edits` without `edit_documents` (`CapabilityEditDocuments`) predates
+-`Documents`: it edits a model of one document and answers `Content` alone, so a caller checks the
+-capability before reading `Documents`, `Referrers` or an applied edit's `Document`.
++`Documents` and answers `content` alone, which this client no longer reads: `ApplyEdits` and
++`ApplyDocumentEdits` require the capability and are refused with `CodeUnimplemented` without it.
+ 
+ `add_member` accepts the existing `specializes`, type, multiplicity and value fields, plus
+ `body_expression`, `is_abstract`, `redefines`, `is_default` and `direction`. `body_expression`
+diff --git a/docs/reference/cli.md b/docs/reference/cli.md
+index f4c789719f..275c74617c 100644
+--- a/docs/reference/cli.md
++++ b/docs/reference/cli.md
+@@ -292,9 +292,6 @@ the same member-path parser as `Project` and `OrderBy`.
+ | `-html-mermaid <cdn\|url>` | | Have the HTML page load Mermaid to draw its diagrams: `cdn` loads a pinned release from jsDelivr, a URL loads the script it names (default: diagrams stay Mermaid source) |
+ | `-html-math <cdn\|url>` | | Have the HTML page load MathJax to typeset its formulas: `cdn` loads a pinned release from jsDelivr, a URL loads the script it names (default: formulas stay LaTeX source) |
+ | `-pdf-engine <engine>` | | Converter `-doc-form pdf` drives: `weasyprint` (default), `pandoc` or `prince` |
+-| `-pdf-title-page` | | Former name of `-doc-title-page` |
+-| `-pdf-toc` | | Former name of `-doc-toc` |
+-| `-pdf-number-sections` | | Former name of `-doc-number-sections` |
+ | `-output <file>` | `-o` | Write the conversion, the rendering, the rendered document or a `-validate` report in a `-format` other than text to a file instead of stdout, or name what `-bundle` and `-unbundle` write; with `-convert ttl` a branch URL (the same two forms) replaces the branch's model graph with the converted Turtle — see [Reading and pushing a repository branch](#reading-and-pushing-a-repository-branch) |
+ | `-version` | `-v` | Show version information |
+ | `-help` | `-h` | Show usage information |
+@@ -367,7 +364,6 @@ Other modes, each described in full by `sysml -help` and the manual page:
+ | `-sync-apply <url>` | Applies the change set to the model's project branch at the SysML v2 API endpoint, refusing one the dry run would have flagged, then records the commit in the sync state (`-sync-state <file>`, default `<model>.sync.json` beside the model). The token comes from `FLEXO_INTEROP_TOKEN` |
+ | `-sync-state <file>` | The sync state file a live sync or a `-convert` over a branch URL reads and records the last-seen commit in; the defaults are `<model>.sync.json` on `-sync-apply` and a push, and `<output>.sync.json` on a branch read written to `-o`. A stdout branch read records nothing unless `-sync-state` names a file |
+ | `-memstats`, `-cpuprofile <file>`, `-memprofile <file>` | Report on stderr what the run cost — wall time, memory allocated, memory taken from the OS — or write a CPU or heap profile for `go tool pprof` |
+-| `-to <format>` | Replaced by `-convert`, which names the output format |
+ 
+ **Arguments:**
+ - `[file...]` - SysML files to load (loaded in order)
+diff --git a/docs/reference/node-api.md b/docs/reference/node-api.md
+index b1ea08b96b..83fca35568 100644
+--- a/docs/reference/node-api.md
++++ b/docs/reference/node-api.md
+@@ -93,9 +93,8 @@ directly, reporting a miss with no suggestions.
+ 
+ `ParseOptions` are `language` (`"sysml"` or `"kerml"`, for inline content) and
+ `strictConformance`; both are capability-gated, and the client checks before it
+-calls. `strict` remains as a deprecated alias of `strictConformance`; passing
+-both with different values is refused. To raise on parse errors, call
+-`model.raiseForErrors()` on the returned model.
++calls. The `strict` alias of `strictConformance` was removed in 0.12.0. To raise
++on parse errors, call `model.raiseForErrors()` on the returned model.
+ 
+ ## Values are discriminated unions
+ 
+diff --git a/internal/frontend/usage/usage.go b/internal/frontend/usage/usage.go
+index fa18269b8e..7bed66853d 100644
+--- a/internal/frontend/usage/usage.go
++++ b/internal/frontend/usage/usage.go
+@@ -35,7 +35,7 @@ type Doc struct {
+ 
+ // OptionGroup is one titled block of the option list.
+ type OptionGroup struct {
+-	// Title heads the block: "Checking a model", "Deprecated".
++	// Title heads the block: "Checking a model", "General".
+ 	Title   string
+ 	Options []Option
+ }
+diff --git a/packaging/man/man1/sysml.1 b/packaging/man/man1/sysml.1
+index 62fd6bb96f..5e0d26579a 100644
+--- a/packaging/man/man1/sysml.1
++++ b/packaging/man/man1/sysml.1
+@@ -596,19 +596,6 @@ Write a heap profile of the run to this file, for go tool pprof
+ .B \-memstats
+ Report on stderr what the run cost: wall time, memory allocated, memory taken
+ from the OS
+-.SS Deprecated
+-.TP
+-.BR \-to " \fIformat\fP"
+-Replaced by \-convert, which names the output format
+-.TP
+-.B \-pdf\-title\-page
+-Former name of \-doc\-title\-page, which also shapes HTML
+-.TP
+-.B \-pdf\-toc
+-Former name of \-doc\-toc, which also shapes HTML
+-.TP
+-.B \-pdf\-number\-sections
+-Former name of \-doc\-number\-sections, which also shapes HTML
+ .SH EXAMPLES
+ .RS 2
+ .nf
+diff --git a/tools/cmd/conformance/pkgclient.go b/tools/cmd/conformance/pkgclient.go
+index ca23279d60..d8dec6e48e 100644
+--- a/tools/cmd/conformance/pkgclient.go
++++ b/tools/cmd/conformance/pkgclient.go
+@@ -1447,10 +1447,11 @@ func (c *pkgClient) applyEdits(ctx context.Context, request protoreflect.Message
+ 	if err != nil {
+ 		return nil, apiError(err)
+ 	}
+-	response := &pb.ApplyEditsResponse{
+-		//lint:ignore SA1019 the scenarios pin the deprecated field's compatibility
+-		Content:     result.Content,
+-		Diagnostics: diagnosticsToProto(result.Diagnostics),
++	response := &pb.ApplyEditsResponse{Diagnostics: diagnosticsToProto(result.Diagnostics)}
++	// The wire fills the sole-document content for a model of one document,
++	// which the public API carries in Documents alone.
++	if len(model.Roots) == 1 && len(result.Documents) == 1 {
++		response.Content = result.Documents[0].Content
+ 	}
+ 	for _, document := range result.Documents {
+ 		response.Documents = append(response.Documents, &pb.EditedDocument{
