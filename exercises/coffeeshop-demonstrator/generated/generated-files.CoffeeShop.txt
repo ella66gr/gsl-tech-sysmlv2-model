@@ -1,0 +1,13 @@
+# ============================================================
+# DO NOT EDIT — Generated from CoffeeShop SysML v2 model
+# Source: exercises/coffeeshop-demonstrator/model
+# Generator: generation/record.py
+# ============================================================
+axis-guard.ts
+axis-machine.ts
+axis-preconditions.ts
+fulfil-drink-pathway.mmd
+fulfil-drink-steps.ts
+fulfil-drink.ts
+general-elements.txt
+types.ts

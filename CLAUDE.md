@@ -265,7 +265,7 @@ python3 scripts/gen_concept_graph.py                          # Generate concept
 python3 scripts/gen_package_hierarchy.py                      # View package hierarchy
 python3 scripts/gen_system_manifest.py                        # Generate manifest
 make gen                                                      # Regenerate all generation/ output in place (Cafe + GenderSense E6, General element lists)
-make gen-check                                                # Regenerate into scratch; fail on any difference from committed output
+make gen-check                                                # Regenerate into scratch; fail on any difference from committed output, and on orphaned outputs (no longer generated)
 make gen-test                                                 # generation/ tests on fixtures + Cafe lifecycle guard refusal check (Node 23.6+)
 python3 scripts/gen_decision_table_evaluator.py               # Generate decision tables
 scripts/check_package_direction.sh                            # ADR-012 import rules R1-R8 (must PASS)

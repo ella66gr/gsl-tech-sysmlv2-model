@@ -3,9 +3,15 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
 RULE = "=" * 60
+
+# When set, every write() appends the written file's name (relative to its
+# output folder) to the file this names. `generation.record` reads it to
+# write the output folder's record of generated files.
+WRITTEN_LOG = "ONTARA_GEN_WRITTEN"
 
 
 def header(generator_file: str, sources: list[str], model_name: str | None, comment: str = "//") -> str:
@@ -28,11 +34,19 @@ def header(generator_file: str, sources: list[str], model_name: str | None, comm
 
 
 def write(out_dir: Path, filename: str, content: str) -> Path:
-    """Write ``content`` to ``out_dir/filename`` exactly, with LF endings."""
+    """Write ``content`` to ``out_dir/filename`` exactly, with LF endings.
+
+    If ``WRITTEN_LOG`` is set in the environment, ``filename`` is also
+    appended to the file it names.
+    """
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / filename
     with path.open("w", encoding="utf-8", newline="\n") as fh:
         fh.write(content)
+    log = os.environ.get(WRITTEN_LOG)
+    if log:
+        with open(log, "a", encoding="utf-8", newline="\n") as fh:
+            fh.write(filename + "\n")
     return path
 
 

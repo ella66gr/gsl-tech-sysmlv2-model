@@ -1,0 +1,9 @@
+# ============================================================
+# DO NOT EDIT — Generated from GenderSense SysML v2 model
+# Source: exercises/gendersense/model
+# Generator: generation/record.py
+# ============================================================
+constraint-evaluators.ts
+constraint-specs.ts
+evaluation-types.ts
+gsl-general-elements.txt

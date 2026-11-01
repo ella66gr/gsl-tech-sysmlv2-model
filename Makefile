@@ -47,7 +47,8 @@ qa:
 #
 #   make gen        regenerate every tenant's committed output
 #   make gen-check  regenerate into a scratch folder and fail, with a diff,
-#                   on any difference from the files at the target paths
+#                   on any difference from the files at the target paths,
+#                   and on any orphaned generated file (below)
 #   make gen-test   the generation package's tests (fixture models only),
 #                   then the Cafe's generated axis guard and precondition
 #                   checks
@@ -56,6 +57,18 @@ qa:
 #   make gen-test-preconditions  Stage 0 test path 5: the generated E6
 #                                cross-axis evaluator (fixture model, then the
 #                                Cafe's rule)
+#
+# The record of generated files (S520, OP-131). Each tenant's run ends with
+# generation.record, which writes generated-files.<Model>.txt in the output
+# folder: every file the generators wrote in that run, sorted. The record is
+# itself generated, so gen-check compares it like any other file. Before
+# writing it, gen deletes, and prints, each file the previous record lists
+# that the run no longer writes; it deletes nothing the record does not list.
+# gen-check fails, naming the file, on an ORPHANED file (a committed record
+# lists it, no generator writes it now) and on an UNRECORDED one (it carries
+# the generation/ header, but no generator writes it and no record lists it:
+# delete it by hand). Files from other producers carry no generation/ header
+# and are never reported, so the shared GenderSense folder is safe.
 #
 # gen-test needs Node 23.6 or later (runs TypeScript by type stripping).
 
@@ -72,8 +85,10 @@ gen: gen-cafe gen-gsl
 
 # Cafe: types with axis tuples, axis guard + next-action maps + XState
 # machines, E6 axis-precondition evaluator, Temporal workflow + step table,
-# Mermaid pathway, General element list.
+# Mermaid pathway, General element list; then the record.
+gen-cafe: export ONTARA_GEN_WRITTEN = $(CAFE_OUT)/.generation-run.CoffeeShop
 gen-cafe:
+	@rm -f "$$ONTARA_GEN_WRITTEN"
 	$(PYTHON) -m generation.ts_types --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop --package CoffeeShop --platform-model model
 	$(PYTHON) -m generation.state_machine --model $(CAFE_MODEL) --out $(CAFE_OUT) \
@@ -88,40 +103,29 @@ gen-cafe:
 		--model-name CoffeeShop --action-def FulfilDrink
 	$(PYTHON) -m generation.element_list --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop --platform-model model $(GENERAL_PACKAGES)
+	$(PYTHON) -m generation.record write --model $(CAFE_MODEL) --out $(CAFE_OUT) --model-name CoffeeShop
 
-# GenderSense: E6 constraint evaluators, General element list.
+# GenderSense: E6 constraint evaluators, General element list; then the record.
+gen-gsl: export ONTARA_GEN_WRITTEN = $(GSL_OUT)/.generation-run.GenderSense
 gen-gsl:
+	@rm -f "$$ONTARA_GEN_WRITTEN"
 	$(PYTHON) -m generation.constraint_evaluator --model $(GSL_MODEL) --out $(GSL_OUT) \
 		--model-name GenderSense --platform-model model \
 		--constraint-package ConstraintLibrary --spec-package ClinicalDecisionSupport --quiet
 	$(PYTHON) -m generation.element_list --model $(GSL_MODEL) --out $(GSL_OUT) \
 		--model-name GenderSense --platform-model model $(GENERAL_PACKAGES) \
 		--filename gsl-general-elements.txt
+	$(PYTHON) -m generation.record write --model $(GSL_MODEL) --out $(GSL_OUT) --model-name GenderSense
 
+# The comparison, the orphan report and the summary line are in
+# generation/record.py (check).
 gen-check:
 	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/ontara-gen-check.XXXXXX") || exit 2; \
 	trap 'rm -rf "$$tmp"' EXIT; \
 	if ! $(MAKE) --no-print-directory gen CAFE_OUT="$$tmp/cafe" GSL_OUT="$$tmp/gsl" >"$$tmp/gen.log" 2>&1; then \
 		cat "$$tmp/gen.log"; echo "=== GEN-CHECK FAILED: generation itself failed"; exit 1; \
 	fi; \
-	status=0; checked=0; \
-	for pair in "cafe:$(CAFE_OUT)" "gsl:$(GSL_OUT)"; do \
-		name=$${pair%%:*}; dir=$${pair#*:}; \
-		for f in $$(cd "$$tmp/$$name" && ls | sort); do \
-			checked=$$((checked + 1)); \
-			if [ ! -f "$$dir/$$f" ]; then \
-				echo "MISSING: $$dir/$$f is generated but not present"; status=1; \
-			elif ! diff -u --label "committed: $$dir/$$f" --label "regenerated: $$dir/$$f" \
-					"$$dir/$$f" "$$tmp/$$name/$$f"; then \
-				status=1; \
-			fi; \
-		done; \
-	done; \
-	if [ $$status -ne 0 ]; then \
-		echo "=== GEN-CHECK FAILED: generated files differ from the model (edited by hand, or not regenerated). Run 'make gen'."; \
-		exit 1; \
-	fi; \
-	echo "=== GEN-CHECK PASSED: $$checked generated files match the model"
+	$(PYTHON) -m generation.record check --folder "$$tmp/cafe" $(CAFE_OUT) --folder "$$tmp/gsl" $(GSL_OUT)
 
 CAFE_TESTS := exercises/coffeeshop-demonstrator/tests
 NODE_TEST  := $(NODE) --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test
