@@ -1,0 +1,685 @@
+{
+  "kind": "development run (Mac runs do not count as the S0.1 pass figure; specification 2.5 item 8.4)",
+  "run": "41d86085",
+  "startedUtc": "2026-11-01T10:40:12.846Z",
+  "elapsedSeconds": 96.5,
+  "config": {
+    "orders": 3000,
+    "rejectEvery": null,
+    "writers": 1,
+    "writerGraphs": [
+      "urn:ontara:stack:graph:loadtest"
+    ],
+    "store": "fuseki",
+    "readers": "paced",
+    "readerCadenceMs": {
+      "counter-queue": 1000,
+      "kds-stream": 500,
+      "operator-board": 2000
+    },
+    "validation": "normal",
+    "graph": "urn:ontara:stack:graph:loadtest",
+    "repository": "cafe-runtime",
+    "rule": "fixtures/rules/order-readiness.rq + fixtures/rules/labelling.rq",
+    "write": "fixtures/writes/order-53.ttl",
+    "shapes": "fixtures/shapes/standin-shapes-core-only.ttl",
+    "shapesGraph": "urn:ontara:stack:shapes"
+  },
+  "percentileMethod": "nearest rank, over committed writes; latency = HTTP round trip to the gate's /write as the caller sees it",
+  "writeLatencyMs": {
+    "n": 3000,
+    "p50": 29.2,
+    "p95": 41.4,
+    "max": 240.1,
+    "mean": 30.9
+  },
+  "gatePhaseMs": {
+    "commit": {
+      "n": 3000,
+      "p50": 26.5,
+      "p95": 37.9,
+      "max": 237.1,
+      "mean": 28.1
+    },
+    "updates": {
+      "n": 3000,
+      "p50": 0,
+      "p95": 0,
+      "max": 0,
+      "mean": 0
+    },
+    "add": {
+      "n": 3000,
+      "p50": 1.8,
+      "p95": 2.9,
+      "max": 22.4,
+      "mean": 1.9
+    },
+    "begin": {
+      "n": 3000,
+      "p50": 0,
+      "p95": 0,
+      "max": 0,
+      "mean": 0
+    }
+  },
+  "writeLatencyMsByWriter": {
+    "w1": {
+      "n": 3000,
+      "p50": 29.2,
+      "p95": 41.4,
+      "max": 240.1,
+      "mean": 30.9
+    }
+  },
+  "throughputWritesPerSecond": 31.09,
+  "concurrency": {
+    "writers": 1,
+    "sumOfWriteLatencyOverWallTime": 0.96,
+    "shareOfWritingTimeWithTwoOrMoreInFlight": 0,
+    "maxWritesInFlight": 1,
+    "note": "client-side view: a write is in flight from request to reply. With one gate and a store that serialises, latency rises with writers and throughput stays flat."
+  },
+  "passThresholdMs": 500,
+  "p95WithinThreshold": true,
+  "failures": 0,
+  "failureSamples": [],
+  "orderOutcomes": {
+    "committed": 3000,
+    "rejected": 0,
+    "fault": 0
+  },
+  "rejectedWritesInMix": null,
+  "faultsTotal": 0,
+  "readers": {
+    "counter-queue": {
+      "n": 97,
+      "p50": 16.8,
+      "p95": 40.6,
+      "max": 60.8,
+      "mean": 19.2
+    },
+    "kds-stream": {
+      "n": 194,
+      "p50": 14.1,
+      "p95": 26.8,
+      "max": 64.3,
+      "mean": 15.4
+    },
+    "operator-board": {
+      "n": 49,
+      "p50": 106.2,
+      "p95": 293.6,
+      "max": 371.5,
+      "mean": 121.3
+    }
+  },
+  "readerErrors": 0,
+  "growthPer100Writes": [
+    {
+      "writes": "1-100",
+      "graphTriplesAtStart": 0,
+      "latency": {
+        "n": 100,
+        "p50": 26.7,
+        "p95": 35.1,
+        "max": 56.3,
+        "mean": 28
+      },
+      "commit": {
+        "n": 100,
+        "p50": 23.9,
+        "p95": 32.2,
+        "max": 52.9,
+        "mean": 25.1
+      }
+    },
+    {
+      "writes": "101-200",
+      "graphTriplesAtStart": 6435,
+      "latency": {
+        "n": 100,
+        "p50": 32.9,
+        "p95": 50.2,
+        "max": 75.2,
+        "mean": 35.7
+      },
+      "commit": {
+        "n": 100,
+        "p50": 30.3,
+        "p95": 47,
+        "max": 70.2,
+        "mean": 32.6
+      }
+    },
+    {
+      "writes": "201-300",
+      "graphTriplesAtStart": 12935,
+      "latency": {
+        "n": 100,
+        "p50": 33.1,
+        "p95": 42.9,
+        "max": 58.6,
+        "mean": 34.5
+      },
+      "commit": {
+        "n": 100,
+        "p50": 30.2,
+        "p95": 39.6,
+        "max": 53.5,
+        "mean": 31.5
+      }
+    },
+    {
+      "writes": "301-400",
+      "graphTriplesAtStart": 19435,
+      "latency": {
+        "n": 100,
+        "p50": 29.6,
+        "p95": 39.3,
+        "max": 57.6,
+        "mean": 30.7
+      },
+      "commit": {
+        "n": 100,
+        "p50": 26.8,
+        "p95": 36.2,
+        "max": 53.1,
+        "mean": 27.9
+      }
+    },
+    {
+      "writes": "401-500",
+      "graphTriplesAtStart": 25935,
+      "latency": {
+        "n": 100,
+        "p50": 31,
+        "p95": 41,
+        "max": 52.4,
+        "mean": 31.8
+      },
+      "commit": {
+        "n": 100,
+        "p50": 28,
+        "p95": 37.8,
+        "max": 49.4,
+        "mean": 28.9
+      }
+    },
+    {
+      "writes": "501-600",
+      "graphTriplesAtStart": 32435,
+      "latency": {
+        "n": 100,
+        "p50": 33.8,
+        "p95": 43.2,
+        "max": 53,
+        "mean": 35
+      },
+      "commit": {
+        "n": 100,
+        "p50": 31.2,
+        "p95": 39.4,
+        "max": 49,
+        "mean": 32.2
+      }
+    },
+    {
+      "writes": "601-700",
+      "graphTriplesAtStart": 38935,
+      "latency": {
+        "n": 100,
+        "p50": 30.4,
+        "p95": 43.3,
+        "max": 59.6,
+        "mean": 31.9
+      },
+      "commit": {
+        "n": 100,
+        "p50": 27,
+        "p95": 39.2,
+        "max": 56.8,
+        "mean": 29.1
+      }
+    },
+    {
+      "writes": "701-800",
+      "graphTriplesAtStart": 45435,
+      "latency": {
+        "n": 100,
+        "p50": 28.2,
+        "p95": 39,
+        "max": 48.6,
+        "mean": 29.4
+      },
+      "commit": {
+        "n": 100,
+        "p50": 25.6,
+        "p95": 35.7,
+        "max": 45.7,
+        "mean": 26.6
+      }
+    },
+    {
+      "writes": "801-900",
+      "graphTriplesAtStart": 51935,
+      "latency": {
+        "n": 100,
+        "p50": 26.8,
+        "p95": 31.4,
+        "max": 35.7,
+        "mean": 27.3
+      },
+      "commit": {
+        "n": 100,
+        "p50": 24.3,
+        "p95": 28.7,
+        "max": 33.2,
+        "mean": 24.7
+      }
+    },
+    {
+      "writes": "901-1000",
+      "graphTriplesAtStart": 58435,
+      "latency": {
+        "n": 100,
+        "p50": 29.1,
+        "p95": 54.3,
+        "max": 240.1,
+        "mean": 34.5
+      },
+      "commit": {
+        "n": 100,
+        "p50": 26.6,
+        "p95": 51.5,
+        "max": 237.1,
+        "mean": 31.8
+      }
+    },
+    {
+      "writes": "1001-1100",
+      "graphTriplesAtStart": 64935,
+      "latency": {
+        "n": 100,
+        "p50": 29,
+        "p95": 37.5,
+        "max": 94.8,
+        "mean": 30.8
+      },
+      "commit": {
+        "n": 100,
+        "p50": 26.2,
+        "p95": 34.4,
+        "max": 92.2,
+        "mean": 28.1
+      }
+    },
+    {
+      "writes": "1101-1200",
+      "graphTriplesAtStart": 71435,
+      "latency": {
+        "n": 100,
+        "p50": 29.2,
+        "p95": 38.4,
+        "max": 43.2,
+        "mean": 30.2
+      },
+      "commit": {
+        "n": 100,
+        "p50": 26.4,
+        "p95": 34.4,
+        "max": 39.2,
+        "mean": 27.4
+      }
+    },
+    {
+      "writes": "1201-1300",
+      "graphTriplesAtStart": 77935,
+      "latency": {
+        "n": 100,
+        "p50": 27,
+        "p95": 30.3,
+        "max": 34,
+        "mean": 27.3
+      },
+      "commit": {
+        "n": 100,
+        "p50": 24.8,
+        "p95": 27.7,
+        "max": 31.2,
+        "mean": 24.9
+      }
+    },
+    {
+      "writes": "1301-1400",
+      "graphTriplesAtStart": 84435,
+      "latency": {
+        "n": 100,
+        "p50": 29.8,
+        "p95": 49,
+        "max": 113.6,
+        "mean": 33.1
+      },
+      "commit": {
+        "n": 100,
+        "p50": 27.2,
+        "p95": 45.9,
+        "max": 109.7,
+        "mean": 30.4
+      }
+    },
+    {
+      "writes": "1401-1500",
+      "graphTriplesAtStart": 90935,
+      "latency": {
+        "n": 100,
+        "p50": 30.5,
+        "p95": 42.7,
+        "max": 49.9,
+        "mean": 32.1
+      },
+      "commit": {
+        "n": 100,
+        "p50": 28.1,
+        "p95": 38.9,
+        "max": 45.6,
+        "mean": 29.3
+      }
+    },
+    {
+      "writes": "1501-1600",
+      "graphTriplesAtStart": 97435,
+      "latency": {
+        "n": 100,
+        "p50": 29.8,
+        "p95": 40.9,
+        "max": 59.4,
+        "mean": 31.7
+      },
+      "commit": {
+        "n": 100,
+        "p50": 27.2,
+        "p95": 37.2,
+        "max": 54,
+        "mean": 28.9
+      }
+    },
+    {
+      "writes": "1601-1700",
+      "graphTriplesAtStart": 103935,
+      "latency": {
+        "n": 100,
+        "p50": 27.5,
+        "p95": 33.5,
+        "max": 71.6,
+        "mean": 28.6
+      },
+      "commit": {
+        "n": 100,
+        "p50": 25,
+        "p95": 30.6,
+        "max": 68.8,
+        "mean": 26.1
+      }
+    },
+    {
+      "writes": "1701-1800",
+      "graphTriplesAtStart": 110435,
+      "latency": {
+        "n": 100,
+        "p50": 28.3,
+        "p95": 35.8,
+        "max": 97.3,
+        "mean": 29.7
+      },
+      "commit": {
+        "n": 100,
+        "p50": 25.8,
+        "p95": 32.1,
+        "max": 94.8,
+        "mean": 27
+      }
+    },
+    {
+      "writes": "1801-1900",
+      "graphTriplesAtStart": 116935,
+      "latency": {
+        "n": 100,
+        "p50": 29.8,
+        "p95": 37.8,
+        "max": 80.2,
+        "mean": 31.1
+      },
+      "commit": {
+        "n": 100,
+        "p50": 27,
+        "p95": 34.5,
+        "max": 76.1,
+        "mean": 28.2
+      }
+    },
+    {
+      "writes": "1901-2000",
+      "graphTriplesAtStart": 123435,
+      "latency": {
+        "n": 100,
+        "p50": 27.3,
+        "p95": 36.2,
+        "max": 65.4,
+        "mean": 28.6
+      },
+      "commit": {
+        "n": 100,
+        "p50": 24.6,
+        "p95": 32.7,
+        "max": 62.9,
+        "mean": 26
+      }
+    },
+    {
+      "writes": "2001-2100",
+      "graphTriplesAtStart": 129935,
+      "latency": {
+        "n": 100,
+        "p50": 28,
+        "p95": 40.4,
+        "max": 51.9,
+        "mean": 29.9
+      },
+      "commit": {
+        "n": 100,
+        "p50": 25.7,
+        "p95": 36.5,
+        "max": 49.4,
+        "mean": 27.4
+      }
+    },
+    {
+      "writes": "2101-2200",
+      "graphTriplesAtStart": 136435,
+      "latency": {
+        "n": 100,
+        "p50": 29.7,
+        "p95": 42,
+        "max": 49.1,
+        "mean": 31.5
+      },
+      "commit": {
+        "n": 100,
+        "p50": 26.7,
+        "p95": 37.5,
+        "max": 42.1,
+        "mean": 28.3
+      }
+    },
+    {
+      "writes": "2201-2300",
+      "graphTriplesAtStart": 142935,
+      "latency": {
+        "n": 100,
+        "p50": 27.2,
+        "p95": 42.7,
+        "max": 51.2,
+        "mean": 29.1
+      },
+      "commit": {
+        "n": 100,
+        "p50": 24.7,
+        "p95": 38.7,
+        "max": 43.4,
+        "mean": 26.4
+      }
+    },
+    {
+      "writes": "2301-2400",
+      "graphTriplesAtStart": 149435,
+      "latency": {
+        "n": 100,
+        "p50": 27.7,
+        "p95": 40.4,
+        "max": 43.7,
+        "mean": 29.7
+      },
+      "commit": {
+        "n": 100,
+        "p50": 25,
+        "p95": 37.4,
+        "max": 41.1,
+        "mean": 27.2
+      }
+    },
+    {
+      "writes": "2401-2500",
+      "graphTriplesAtStart": 155935,
+      "latency": {
+        "n": 100,
+        "p50": 28.1,
+        "p95": 38.9,
+        "max": 47.4,
+        "mean": 29.7
+      },
+      "commit": {
+        "n": 100,
+        "p50": 25.4,
+        "p95": 36.1,
+        "max": 44.3,
+        "mean": 26.9
+      }
+    },
+    {
+      "writes": "2501-2600",
+      "graphTriplesAtStart": 162435,
+      "latency": {
+        "n": 100,
+        "p50": 28.5,
+        "p95": 34.3,
+        "max": 45.9,
+        "mean": 29
+      },
+      "commit": {
+        "n": 100,
+        "p50": 25.8,
+        "p95": 31.7,
+        "max": 43.5,
+        "mean": 26.4
+      }
+    },
+    {
+      "writes": "2601-2700",
+      "graphTriplesAtStart": 168935,
+      "latency": {
+        "n": 100,
+        "p50": 28.7,
+        "p95": 39.1,
+        "max": 55.8,
+        "mean": 30.4
+      },
+      "commit": {
+        "n": 100,
+        "p50": 25.8,
+        "p95": 35.2,
+        "max": 45.9,
+        "mean": 27.3
+      }
+    },
+    {
+      "writes": "2701-2800",
+      "graphTriplesAtStart": 175435,
+      "latency": {
+        "n": 100,
+        "p50": 31,
+        "p95": 56.1,
+        "max": 105,
+        "mean": 35.2
+      },
+      "commit": {
+        "n": 100,
+        "p50": 27.9,
+        "p95": 53.3,
+        "max": 97.5,
+        "mean": 32
+      }
+    },
+    {
+      "writes": "2801-2900",
+      "graphTriplesAtStart": 181935,
+      "latency": {
+        "n": 100,
+        "p50": 30.6,
+        "p95": 41.2,
+        "max": 53.6,
+        "mean": 31.8
+      },
+      "commit": {
+        "n": 100,
+        "p50": 27.8,
+        "p95": 37.4,
+        "max": 48.2,
+        "mean": 28.8
+      }
+    },
+    {
+      "writes": "2901-3000",
+      "graphTriplesAtStart": 188435,
+      "latency": {
+        "n": 100,
+        "p50": 28.7,
+        "p95": 35,
+        "max": 88.9,
+        "mean": 29.6
+      },
+      "commit": {
+        "n": 100,
+        "p50": 26,
+        "p95": 30.5,
+        "max": 81.8,
+        "mean": 26.8
+      }
+    }
+  ],
+  "repository": {
+    "explicitStatementsBefore": 23651,
+    "explicitStatementsAfter": 218657,
+    "loadtestGraphBefore": 0,
+    "loadtestGraphAfter": 195000
+  },
+  "storeErrors": [],
+  "correctness": {
+    "orders": 3000,
+    "ordersReady": 3000,
+    "derivedRecordsLabelled": 3000
+  },
+  "correctnessByWriter": {
+    "w1": {
+      "orders": 3000,
+      "ordersReady": 3000,
+      "derivedRecordsLabelled": 3000
+    }
+  },
+  "containerView": {
+    "cpus": 10,
+    "cpuModel": "unknown",
+    "totalMemGiB": 7.75,
+    "note": "as seen inside the gate container (the Docker VM on a Mac); host figures are in machine.txt"
+  }
+}
