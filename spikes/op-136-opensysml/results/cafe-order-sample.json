@@ -1,0 +1,155 @@
+{
+  "type": "CoffeeShop::Order",
+  "kind": "partDef",
+  "documentation": "A customer order, containing one or more order lines.\nThe participant placing the order (orderingParty) and the\nservice subject are carried as separate fields, both typed\nby the General defs. For a walk-in Cafe the two coincide;\nboth are carried so that surface work generalises (H-0630).\n\nCanonical runtime type (S518, S0.4) with two axes:\nlifecycle and payment.\n\n- The moves to in preparation, ready and collected are\nderived by MRB from the lines, never written directly:\nin preparation when the first line enters preparation,\nready by the readiness rule (S515, D2; S0.5 and S0.6\nbuild it), collected once every line is collected.\n- Cancellation is at the counter, by staff, before the\norder is ready (H-0498): there is no move from ready to\ncancelled. The same transaction sets every line that is\nnot collected to cancelled (MRB).\n- A paid order cancelled at the counter keeps payment at\npaid. No refund is modelled at Stage 0.\n- The lines are fixed once the order is placed (Ella,\nS519): an add-on is a new order.",
+  "specializations": [
+    {
+      "kind": "specializes",
+      "target": "BusinessMetamodelGeneral::CanonicalRuntime::CanonicalRuntimeType"
+    }
+  ],
+  "features": [
+    {
+      "name": "orderNumber",
+      "kind": "attributeUsage",
+      "type": "ScalarValues::Integer",
+      "multiplicity": null
+    },
+    {
+      "name": "totalPrice",
+      "kind": "attributeUsage",
+      "type": "ScalarValues::Real",
+      "multiplicity": null
+    },
+    {
+      "name": "orderingParty",
+      "kind": "referenceUsage",
+      "type": "BusinessMetamodelGeneral::ServiceConcept::ServiceParticipant",
+      "multiplicity": null
+    },
+    {
+      "name": "serviceSubject",
+      "kind": "referenceUsage",
+      "type": "BusinessMetamodelGeneral::ServiceConcept::ServiceSubject",
+      "multiplicity": null
+    },
+    {
+      "name": "lines",
+      "kind": "partUsage",
+      "type": "CoffeeShop::OrderLine",
+      "multiplicity": "1..*"
+    },
+    {
+      "name": "lifecycleAxis",
+      "kind": "partUsage",
+      "type": "BusinessMetamodelGeneral::CanonicalRuntime::StatusAxis",
+      "multiplicity": null
+    },
+    {
+      "name": "paymentAxis",
+      "kind": "partUsage",
+      "type": "BusinessMetamodelGeneral::CanonicalRuntime::StatusAxis",
+      "multiplicity": null
+    }
+  ],
+  "unnamed_members": [],
+  "package_metadata_usages": [
+    {
+      "id": "CoffeeShop___4019",
+      "metadataDefinition": [
+        "ProjectionMetadata__BfoType"
+      ],
+      "annotatedElement": null,
+      "owner": "CoffeeShop",
+      "sourceLines": [
+        172,
+        176
+      ],
+      "values": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An order line is a record of one item asked for on an order: information content, part of the order's record. The preparation of the item is a process in the fulfilment workflow; the line's preparation axis records where that process has reached."
+      }
+    },
+    {
+      "id": "CoffeeShop___4020",
+      "metadataDefinition": [
+        "ProjectionMetadata__UserFacing"
+      ],
+      "annotatedElement": null,
+      "owner": "CoffeeShop",
+      "sourceLines": [
+        177,
+        180
+      ],
+      "values": {
+        "friendlyName": "Order Line",
+        "shortDescription": "One item asked for on an order, with its quantity and its own preparation status."
+      }
+    },
+    {
+      "id": "CoffeeShop___4021",
+      "metadataDefinition": [
+        "ProjectionMetadata__PurposiveDescription"
+      ],
+      "annotatedElement": null,
+      "owner": "CoffeeShop",
+      "sourceLines": [
+        181,
+        183
+      ],
+      "values": {
+        "description": "One item on a customer order, with its quantity and, optionally, who it is for. Each line is prepared and collected on its own, so it carries its own preparation status: queued, in preparation, ready, collected, or cancelled if its order is cancelled. A line cannot start preparation until its order is paid."
+      }
+    },
+    {
+      "id": "CoffeeShop___4023",
+      "metadataDefinition": [
+        "ProjectionMetadata__BfoType"
+      ],
+      "annotatedElement": null,
+      "owner": "CoffeeShop",
+      "sourceLines": [
+        281,
+        285
+      ],
+      "values": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An order is a record of what a customer asked for: information content, as the Paws Booking is (Ella, S518, decision 6). The fulfilment is the process, and it sits in the workflow; the order's axes record where it has reached."
+      }
+    },
+    {
+      "id": "CoffeeShop___4024",
+      "metadataDefinition": [
+        "ProjectionMetadata__UserFacing"
+      ],
+      "annotatedElement": null,
+      "owner": "CoffeeShop",
+      "sourceLines": [
+        286,
+        289
+      ],
+      "values": {
+        "friendlyName": "Order",
+        "shortDescription": "A customer's order of one or more items, with its lifecycle and payment status."
+      }
+    },
+    {
+      "id": "CoffeeShop___4025",
+      "metadataDefinition": [
+        "ProjectionMetadata__PurposiveDescription"
+      ],
+      "annotatedElement": null,
+      "owner": "CoffeeShop",
+      "sourceLines": [
+        290,
+        292
+      ],
+      "values": {
+        "description": "What a customer asked for, as one or more order lines. An order carries two independent statuses. Its lifecycle runs from placed through in preparation and ready to collected, and follows its lines: it is never moved to ready or collected directly. It can be cancelled at the counter before it is ready. Its payment runs from unpaid to paid, taken at the till."
+      }
+    }
+  ],
+  "type_source_line": 293
+}

@@ -1,0 +1,714 @@
+---
+config:
+  fontFamily: "Helvetica, Arial, sans-serif"
+  theme: base
+  themeCSS: ".edgeLabel rect { opacity: 1 !important; } .cluster-label .nodeLabel { text-align: center; }"
+  themeVariables:
+    fontFamily: "Helvetica, Arial, sans-serif"
+    fontSize: "14px"
+    primaryColor: "#FFFFFF"
+    secondaryColor: "#FFFFFF"
+    tertiaryColor: "#FFFFFF"
+    background: "#FFFFFF"
+    primaryBorderColor: "#181818"
+    primaryTextColor: "#000000"
+    lineColor: "#181818"
+    textColor: "#000000"
+    noteBkgColor: "#FEFFDD"
+    noteBorderColor: "#181818"
+    noteTextColor: "#000000"
+    clusterBkg: "#FFFFFF"
+    clusterBorder: "#181818"
+    edgeLabelBackground: "#FFFFFF"
+---
+%% tree rendering (no view declared; rendering CoffeeShop::Order directly)
+flowchart TD
+  n0["`*«part def»*
+**Order**`"]
+    n1("`*«attribute»*
+**orderNumber**`")
+  n0 --- n1
+    n2("`*«attribute»*
+**totalPrice**`")
+  n0 --- n2
+    n3("`*«attribute»*
+**orderingParty**`")
+      n4("`*«attribute»*
+**participantName**`")
+  n3 --- n4
+      n5("`*«attribute»*
+**participantRole**`")
+  n3 --- n5
+      n6("`*«attribute»*
+**entityDescription**`")
+  n3 --- n6
+      n7("`*«attribute»*
+**relationshipToEngagement**`")
+  n3 --- n7
+      n8("`*«attribute»*
+**statusNotes**`")
+  n3 --- n8
+  n0 --- n3
+    n9("`*«attribute»*
+**serviceSubject**`")
+      n10("`*«attribute»*
+**subjectName**`")
+  n9 --- n10
+      n11("`*«attribute»*
+**entityDescription**`")
+  n9 --- n11
+      n12("`*«attribute»*
+**independentNeeds**`")
+  n9 --- n12
+      n13("`*«attribute»*
+**conditionNotes**`")
+  n9 --- n13
+      n14("`*«attribute»*
+**statusNotes**`")
+  n9 --- n14
+  n0 --- n9
+    n15("`*«part»*
+**lines**`")
+      n16("`*«attribute»*
+**quantity**`")
+  n15 --- n16
+      n17("`**item**`")
+        n18("`*«attribute»*
+**name**`")
+  n17 --- n18
+        n19("`*«attribute»*
+**category**`")
+  n17 --- n19
+        n20("`*«attribute»*
+**isVegan**`")
+  n17 --- n20
+        n21("`*«attribute»*
+**description**`")
+  n17 --- n21
+        n22("`*«part»*
+**externalRefs**`")
+          n23("`*«attribute»*
+**referenceType**`")
+  n22 --- n23
+          n24("`*«attribute»*
+**referenceId**`")
+  n22 --- n24
+          n25("`*«attribute»*
+**referenceSource**`")
+  n22 --- n25
+          n26("`*«attribute»*
+**referenceNotes**`")
+  n22 --- n26
+  n17 --- n22
+  n15 --- n17
+      n27("`*«attribute»*
+**order**
+recursive through Order; inherited members not shown`")
+  n15 --- n27
+      n28("`*«attribute»*
+**beneficiaryLabel**`")
+  n15 --- n28
+      n29("`*«attribute»*
+**beneficiaryContactRef**`")
+  n15 --- n29
+      n30("`*«part»*
+**preparationAxis**`")
+        n31("`*«attribute»*
+**axisName**`")
+  n30 --- n31
+        n32("`*«attribute»*
+**axisDescription**`")
+  n30 --- n32
+        n33("`*«attribute»*
+**axisScope**`")
+  n30 --- n33
+        n34("`*«attribute»*
+**axisAuthority**`")
+  n30 --- n34
+        n35("`*«attribute»*
+**defaultValue**`")
+  n30 --- n35
+        n36("`*«part»*
+**valueSpace**`")
+          n37("`*«attribute»*
+**valueShape**`")
+  n36 --- n37
+          n38("`*«attribute»*
+**enumValues**`")
+  n36 --- n38
+          n39("`*«attribute»*
+**structuredSpec**`")
+  n36 --- n39
+  n30 --- n36
+        n40("`*«part»*
+**queuedToInPreparation**`")
+          n41("`*«attribute»*
+**fromValue**`")
+  n40 --- n41
+          n42("`*«attribute»*
+**toValue**`")
+  n40 --- n42
+          n43("`*«attribute»*
+**transitionLabel**`")
+  n40 --- n43
+          n44("`*«attribute»*
+**triggerEvent**`")
+  n40 --- n44
+          n45("`*«attribute»*
+**requiredAuthority**`")
+  n40 --- n45
+          n46("`*«part»*
+**orderPaid**`")
+            n47("`*«attribute»*
+**relatedVia**`")
+  n46 --- n47
+            n48("`*«attribute»*
+**requiredAxis**`")
+  n46 --- n48
+            n49("`*«attribute»*
+**requiredValues**`")
+  n46 --- n49
+            n50("`*«attribute»*
+**rejectionReason**`")
+  n46 --- n50
+  n40 --- n46
+          n51("`*«part»*
+**preconditions**`")
+            n52("`*«attribute»*
+**relatedVia**`")
+  n51 --- n52
+            n53("`*«attribute»*
+**requiredAxis**`")
+  n51 --- n53
+            n54("`*«attribute»*
+**requiredValues**`")
+  n51 --- n54
+            n55("`*«attribute»*
+**rejectionReason**`")
+  n51 --- n55
+  n40 --- n51
+  n30 --- n40
+        n56("`*«part»*
+**inPreparationToReady**`")
+          n57("`*«attribute»*
+**fromValue**`")
+  n56 --- n57
+          n58("`*«attribute»*
+**toValue**`")
+  n56 --- n58
+          n59("`*«attribute»*
+**transitionLabel**`")
+  n56 --- n59
+          n60("`*«attribute»*
+**triggerEvent**`")
+  n56 --- n60
+          n61("`*«attribute»*
+**requiredAuthority**`")
+  n56 --- n61
+          n62("`*«part»*
+**preconditions**`")
+            n63("`*«attribute»*
+**relatedVia**`")
+  n62 --- n63
+            n64("`*«attribute»*
+**requiredAxis**`")
+  n62 --- n64
+            n65("`*«attribute»*
+**requiredValues**`")
+  n62 --- n65
+            n66("`*«attribute»*
+**rejectionReason**`")
+  n62 --- n66
+  n56 --- n62
+  n30 --- n56
+        n67("`*«part»*
+**readyToCollected**`")
+          n68("`*«attribute»*
+**fromValue**`")
+  n67 --- n68
+          n69("`*«attribute»*
+**toValue**`")
+  n67 --- n69
+          n70("`*«attribute»*
+**transitionLabel**`")
+  n67 --- n70
+          n71("`*«attribute»*
+**triggerEvent**`")
+  n67 --- n71
+          n72("`*«attribute»*
+**requiredAuthority**`")
+  n67 --- n72
+          n73("`*«part»*
+**preconditions**`")
+            n74("`*«attribute»*
+**relatedVia**`")
+  n73 --- n74
+            n75("`*«attribute»*
+**requiredAxis**`")
+  n73 --- n75
+            n76("`*«attribute»*
+**requiredValues**`")
+  n73 --- n76
+            n77("`*«attribute»*
+**rejectionReason**`")
+  n73 --- n77
+  n67 --- n73
+  n30 --- n67
+        n78("`*«part»*
+**queuedToCancelled**`")
+          n79("`*«attribute»*
+**fromValue**`")
+  n78 --- n79
+          n80("`*«attribute»*
+**toValue**`")
+  n78 --- n80
+          n81("`*«attribute»*
+**transitionLabel**`")
+  n78 --- n81
+          n82("`*«attribute»*
+**triggerEvent**`")
+  n78 --- n82
+          n83("`*«attribute»*
+**requiredAuthority**`")
+  n78 --- n83
+          n84("`*«part»*
+**preconditions**`")
+            n85("`*«attribute»*
+**relatedVia**`")
+  n84 --- n85
+            n86("`*«attribute»*
+**requiredAxis**`")
+  n84 --- n86
+            n87("`*«attribute»*
+**requiredValues**`")
+  n84 --- n87
+            n88("`*«attribute»*
+**rejectionReason**`")
+  n84 --- n88
+  n78 --- n84
+  n30 --- n78
+        n89("`*«part»*
+**inPreparationToCancelled**`")
+          n90("`*«attribute»*
+**fromValue**`")
+  n89 --- n90
+          n91("`*«attribute»*
+**toValue**`")
+  n89 --- n91
+          n92("`*«attribute»*
+**transitionLabel**`")
+  n89 --- n92
+          n93("`*«attribute»*
+**triggerEvent**`")
+  n89 --- n93
+          n94("`*«attribute»*
+**requiredAuthority**`")
+  n89 --- n94
+          n95("`*«part»*
+**preconditions**`")
+            n96("`*«attribute»*
+**relatedVia**`")
+  n95 --- n96
+            n97("`*«attribute»*
+**requiredAxis**`")
+  n95 --- n97
+            n98("`*«attribute»*
+**requiredValues**`")
+  n95 --- n98
+            n99("`*«attribute»*
+**rejectionReason**`")
+  n95 --- n99
+  n89 --- n95
+  n30 --- n89
+        n100("`*«part»*
+**readyToCancelled**`")
+          n101("`*«attribute»*
+**fromValue**`")
+  n100 --- n101
+          n102("`*«attribute»*
+**toValue**`")
+  n100 --- n102
+          n103("`*«attribute»*
+**transitionLabel**`")
+  n100 --- n103
+          n104("`*«attribute»*
+**triggerEvent**`")
+  n100 --- n104
+          n105("`*«attribute»*
+**requiredAuthority**`")
+  n100 --- n105
+          n106("`*«part»*
+**preconditions**`")
+            n107("`*«attribute»*
+**relatedVia**`")
+  n106 --- n107
+            n108("`*«attribute»*
+**requiredAxis**`")
+  n106 --- n108
+            n109("`*«attribute»*
+**requiredValues**`")
+  n106 --- n109
+            n110("`*«attribute»*
+**rejectionReason**`")
+  n106 --- n110
+  n100 --- n106
+  n30 --- n100
+        n111("`*«part»*
+**permittedTransitions**`")
+          n112("`*«attribute»*
+**fromValue**`")
+  n111 --- n112
+          n113("`*«attribute»*
+**toValue**`")
+  n111 --- n113
+          n114("`*«attribute»*
+**transitionLabel**`")
+  n111 --- n114
+          n115("`*«attribute»*
+**triggerEvent**`")
+  n111 --- n115
+          n116("`*«attribute»*
+**requiredAuthority**`")
+  n111 --- n116
+          n117("`*«part»*
+**preconditions**`")
+            n118("`*«attribute»*
+**relatedVia**`")
+  n117 --- n118
+            n119("`*«attribute»*
+**requiredAxis**`")
+  n117 --- n119
+            n120("`*«attribute»*
+**requiredValues**`")
+  n117 --- n120
+            n121("`*«attribute»*
+**rejectionReason**`")
+  n117 --- n121
+  n111 --- n117
+  n30 --- n111
+  n15 --- n30
+  n0 --- n15
+    n122("`*«part»*
+**lifecycleAxis**`")
+      n123("`*«attribute»*
+**axisName**`")
+  n122 --- n123
+      n124("`*«attribute»*
+**axisDescription**`")
+  n122 --- n124
+      n125("`*«attribute»*
+**axisScope**`")
+  n122 --- n125
+      n126("`*«attribute»*
+**axisAuthority**`")
+  n122 --- n126
+      n127("`*«attribute»*
+**defaultValue**`")
+  n122 --- n127
+      n128("`*«part»*
+**valueSpace**`")
+        n129("`*«attribute»*
+**valueShape**`")
+  n128 --- n129
+        n130("`*«attribute»*
+**enumValues**`")
+  n128 --- n130
+        n131("`*«attribute»*
+**structuredSpec**`")
+  n128 --- n131
+  n122 --- n128
+      n132("`*«part»*
+**placedToInPreparation**`")
+        n133("`*«attribute»*
+**fromValue**`")
+  n132 --- n133
+        n134("`*«attribute»*
+**toValue**`")
+  n132 --- n134
+        n135("`*«attribute»*
+**transitionLabel**`")
+  n132 --- n135
+        n136("`*«attribute»*
+**triggerEvent**`")
+  n132 --- n136
+        n137("`*«attribute»*
+**requiredAuthority**`")
+  n132 --- n137
+        n138("`*«part»*
+**preconditions**`")
+          n139("`*«attribute»*
+**relatedVia**`")
+  n138 --- n139
+          n140("`*«attribute»*
+**requiredAxis**`")
+  n138 --- n140
+          n141("`*«attribute»*
+**requiredValues**`")
+  n138 --- n141
+          n142("`*«attribute»*
+**rejectionReason**`")
+  n138 --- n142
+  n132 --- n138
+  n122 --- n132
+      n143("`*«part»*
+**inPreparationToReady**`")
+        n144("`*«attribute»*
+**fromValue**`")
+  n143 --- n144
+        n145("`*«attribute»*
+**toValue**`")
+  n143 --- n145
+        n146("`*«attribute»*
+**transitionLabel**`")
+  n143 --- n146
+        n147("`*«attribute»*
+**triggerEvent**`")
+  n143 --- n147
+        n148("`*«attribute»*
+**requiredAuthority**`")
+  n143 --- n148
+        n149("`*«part»*
+**preconditions**`")
+          n150("`*«attribute»*
+**relatedVia**`")
+  n149 --- n150
+          n151("`*«attribute»*
+**requiredAxis**`")
+  n149 --- n151
+          n152("`*«attribute»*
+**requiredValues**`")
+  n149 --- n152
+          n153("`*«attribute»*
+**rejectionReason**`")
+  n149 --- n153
+  n143 --- n149
+  n122 --- n143
+      n154("`*«part»*
+**readyToCollected**`")
+        n155("`*«attribute»*
+**fromValue**`")
+  n154 --- n155
+        n156("`*«attribute»*
+**toValue**`")
+  n154 --- n156
+        n157("`*«attribute»*
+**transitionLabel**`")
+  n154 --- n157
+        n158("`*«attribute»*
+**triggerEvent**`")
+  n154 --- n158
+        n159("`*«attribute»*
+**requiredAuthority**`")
+  n154 --- n159
+        n160("`*«part»*
+**preconditions**`")
+          n161("`*«attribute»*
+**relatedVia**`")
+  n160 --- n161
+          n162("`*«attribute»*
+**requiredAxis**`")
+  n160 --- n162
+          n163("`*«attribute»*
+**requiredValues**`")
+  n160 --- n163
+          n164("`*«attribute»*
+**rejectionReason**`")
+  n160 --- n164
+  n154 --- n160
+  n122 --- n154
+      n165("`*«part»*
+**placedToCancelled**`")
+        n166("`*«attribute»*
+**fromValue**`")
+  n165 --- n166
+        n167("`*«attribute»*
+**toValue**`")
+  n165 --- n167
+        n168("`*«attribute»*
+**transitionLabel**`")
+  n165 --- n168
+        n169("`*«attribute»*
+**triggerEvent**`")
+  n165 --- n169
+        n170("`*«attribute»*
+**requiredAuthority**`")
+  n165 --- n170
+        n171("`*«part»*
+**preconditions**`")
+          n172("`*«attribute»*
+**relatedVia**`")
+  n171 --- n172
+          n173("`*«attribute»*
+**requiredAxis**`")
+  n171 --- n173
+          n174("`*«attribute»*
+**requiredValues**`")
+  n171 --- n174
+          n175("`*«attribute»*
+**rejectionReason**`")
+  n171 --- n175
+  n165 --- n171
+  n122 --- n165
+      n176("`*«part»*
+**inPreparationToCancelled**`")
+        n177("`*«attribute»*
+**fromValue**`")
+  n176 --- n177
+        n178("`*«attribute»*
+**toValue**`")
+  n176 --- n178
+        n179("`*«attribute»*
+**transitionLabel**`")
+  n176 --- n179
+        n180("`*«attribute»*
+**triggerEvent**`")
+  n176 --- n180
+        n181("`*«attribute»*
+**requiredAuthority**`")
+  n176 --- n181
+        n182("`*«part»*
+**preconditions**`")
+          n183("`*«attribute»*
+**relatedVia**`")
+  n182 --- n183
+          n184("`*«attribute»*
+**requiredAxis**`")
+  n182 --- n184
+          n185("`*«attribute»*
+**requiredValues**`")
+  n182 --- n185
+          n186("`*«attribute»*
+**rejectionReason**`")
+  n182 --- n186
+  n176 --- n182
+  n122 --- n176
+      n187("`*«part»*
+**permittedTransitions**`")
+        n188("`*«attribute»*
+**fromValue**`")
+  n187 --- n188
+        n189("`*«attribute»*
+**toValue**`")
+  n187 --- n189
+        n190("`*«attribute»*
+**transitionLabel**`")
+  n187 --- n190
+        n191("`*«attribute»*
+**triggerEvent**`")
+  n187 --- n191
+        n192("`*«attribute»*
+**requiredAuthority**`")
+  n187 --- n192
+        n193("`*«part»*
+**preconditions**`")
+          n194("`*«attribute»*
+**relatedVia**`")
+  n193 --- n194
+          n195("`*«attribute»*
+**requiredAxis**`")
+  n193 --- n195
+          n196("`*«attribute»*
+**requiredValues**`")
+  n193 --- n196
+          n197("`*«attribute»*
+**rejectionReason**`")
+  n193 --- n197
+  n187 --- n193
+  n122 --- n187
+  n0 --- n122
+    n198("`*«part»*
+**paymentAxis**`")
+      n199("`*«attribute»*
+**axisName**`")
+  n198 --- n199
+      n200("`*«attribute»*
+**axisDescription**`")
+  n198 --- n200
+      n201("`*«attribute»*
+**axisScope**`")
+  n198 --- n201
+      n202("`*«attribute»*
+**axisAuthority**`")
+  n198 --- n202
+      n203("`*«attribute»*
+**defaultValue**`")
+  n198 --- n203
+      n204("`*«part»*
+**valueSpace**`")
+        n205("`*«attribute»*
+**valueShape**`")
+  n204 --- n205
+        n206("`*«attribute»*
+**enumValues**`")
+  n204 --- n206
+        n207("`*«attribute»*
+**structuredSpec**`")
+  n204 --- n207
+  n198 --- n204
+      n208("`*«part»*
+**unpaidToPaid**`")
+        n209("`*«attribute»*
+**fromValue**`")
+  n208 --- n209
+        n210("`*«attribute»*
+**toValue**`")
+  n208 --- n210
+        n211("`*«attribute»*
+**transitionLabel**`")
+  n208 --- n211
+        n212("`*«attribute»*
+**triggerEvent**`")
+  n208 --- n212
+        n213("`*«attribute»*
+**requiredAuthority**`")
+  n208 --- n213
+        n214("`*«part»*
+**preconditions**`")
+          n215("`*«attribute»*
+**relatedVia**`")
+  n214 --- n215
+          n216("`*«attribute»*
+**requiredAxis**`")
+  n214 --- n216
+          n217("`*«attribute»*
+**requiredValues**`")
+  n214 --- n217
+          n218("`*«attribute»*
+**rejectionReason**`")
+  n214 --- n218
+  n208 --- n214
+  n198 --- n208
+      n219("`*«part»*
+**permittedTransitions**`")
+        n220("`*«attribute»*
+**fromValue**`")
+  n219 --- n220
+        n221("`*«attribute»*
+**toValue**`")
+  n219 --- n221
+        n222("`*«attribute»*
+**transitionLabel**`")
+  n219 --- n222
+        n223("`*«attribute»*
+**triggerEvent**`")
+  n219 --- n223
+        n224("`*«attribute»*
+**requiredAuthority**`")
+  n219 --- n224
+        n225("`*«part»*
+**preconditions**`")
+          n226("`*«attribute»*
+**relatedVia**`")
+  n225 --- n226
+          n227("`*«attribute»*
+**requiredAxis**`")
+  n225 --- n227
+          n228("`*«attribute»*
+**requiredValues**`")
+  n225 --- n228
+          n229("`*«attribute»*
+**rejectionReason**`")
+  n225 --- n229
+  n219 --- n225
+  n198 --- n219
+  n0 --- n198
