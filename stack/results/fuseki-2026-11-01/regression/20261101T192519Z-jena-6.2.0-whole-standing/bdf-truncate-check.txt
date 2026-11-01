@@ -1,0 +1,3 @@
+ Container ontara-cafe-regression-store-run-39d73a87e21e Creating 
+ Container ontara-cafe-regression-store-run-39d73a87e21e Created 
+Jena 6.2.0 BinaryDataFileRandomAccess truncate-read-write: write returned position 102400; file 102500 bytes; zero bytes 0 -> SOUND (writePosition reset by truncate)

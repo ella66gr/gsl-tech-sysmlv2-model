@@ -1,0 +1,16 @@
+{
+  "label": "before-restart",
+  "at": "2026-11-01T19:28:20.885Z",
+  "goodRecordsStored": 60,
+  "badRecordsStored": 0,
+  "readBack": {
+    "url": "http://store:3030/cafe-runtime/data",
+    "http": 200,
+    "quads": 43558,
+    "goodRecordQuads": 180,
+    "badRecordQuads": 0,
+    "complete": true,
+    "error": null,
+    "lastBytes": "1101T192753Z-jena-5.6.0-targeted-positive-control-targeted> .\n<urn:ontara:standin:cafe#good-rg061-20261101T192753Z> <urn:ontara:standin:rec#hasProvenanceMethod> <urn:ontara:standin:rec#DirectMethod> <urn:ontara:stack:graph:regression-20261101T192753Z-jena-5.6.0-targeted-positive-control-targeted> .\n"
+  }
+}

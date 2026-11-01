@@ -1,5 +1,5 @@
-// Minimal N-Triples / N-Quads line parser: enough to read GraphDB's SHACL
-// validation report (application/shacl-validation-report+n-quads).
+// Minimal N-Triples / N-Quads line parser: enough to read the store's SHACL
+// validation report.
 
 export type Term =
   | { kind: "iri"; value: string }

@@ -1,0 +1,16 @@
+{
+  "label": "after-restart",
+  "at": "2026-11-01T19:42:41.686Z",
+  "goodRecordsStored": 60,
+  "badRecordsStored": 0,
+  "readBack": {
+    "url": "http://store:3030/cafe-runtime/data",
+    "http": 200,
+    "quads": 43558,
+    "goodRecordQuads": 180,
+    "badRecordQuads": 0,
+    "complete": true,
+    "error": null,
+    "lastBytes": "ontara:stack:graph:regression-20261101T194203Z-jena-6.2.0-whole-code-verify> .\n<urn:ontara:standin:cafe#good-rg061-20261101T194203Z> <urn:ontara:standin:rec#hasProvenanceMethod> <urn:ontara:standin:rec#DirectMethod> <urn:ontara:stack:graph:regression-20261101T194203Z-jena-6.2.0-whole-code-verify> .\n"
+  }
+}

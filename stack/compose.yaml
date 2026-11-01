@@ -1,30 +1,34 @@
-# Ontara Cafe runtime stack (Plan B Stage 0, step S0.1).
+# Ontara Cafe runtime stack (Plan B Stage 0, step S0.1; pass 3, S521).
 #
-# GraphDB 11.3.1 (SHACL in the write transaction), a thin TypeScript
+# Apache Jena Fuseki on Jena 6.2.0 with Ontara's validated-update module
+# (SHACL in the write transaction, targeted mode; ADR-014), a thin TypeScript
 # constraint gate, and Temporal in its documented single-machine form
 # (temporalio/samples-server, compose/docker-compose-postgres.yml).
 #
-# The stack depends on nothing on the host except Docker, Compose, git and the
-# GraphDB licence file named by GRAPHDB_LICENSE_FILE (see README, step 2).
-# All published ports bind to 127.0.0.1 only.
+# The stack depends on nothing on the host except Docker, Compose and git
+# (README step 2). It needs no licence. All published ports bind to
+# 127.0.0.1 only.
 #
-# Images are pinned by tag and multi-arch index digest, so the same line
-# resolves to arm64 on the Mac and amd64 on the Linux laptop. The only image
-# the stack builds (the gate) is built on the machine that runs it (S0.1
-# image rule, specification section 2.5 item 10).
+# Pulled images are pinned by tag and multi-arch index digest, so the same
+# line resolves to arm64 on the Mac and amd64 on an x86_64 machine. The two
+# images the stack builds (the store and the gate) are built on the machine
+# that runs them (S0.1 image rule, specification section 2.5 item 10).
 
 name: ontara-cafe-stack
+
+# The Jena version: the store image's build argument and what the bootstrap
+# and the health check require the running module to report. Pinned; never
+# below 6.1.0 (ADR-014). The store's Dockerfile refuses to build below 6.1.0.
+x-jena-version: &jena-version "6.2.0"
+# The validation mode the module runs in and the bootstrap requires.
+x-validation-mode: &validation-mode targeted
 
 x-gate-image: &gate-image
   image: ontara-cafe-stack/gate:local
   pull_policy: never
 
-secrets:
-  graphdb_license:
-    file: ${GRAPHDB_LICENSE_FILE:?GRAPHDB_LICENSE_FILE is not set. Follow README step 2.}
-
 volumes:
-  graphdb-data:
+  store-data:
   temporal-postgres-data:
 
 networks:
@@ -33,31 +37,34 @@ networks:
 
 services:
 
-  # ---------------------------------------------------------------- GraphDB
-  graphdb:
-    image: ontotext/graphdb:11.3.1@sha256:bb94992347eeea71ea254326709b6cd5964dc9e6803962501d512d1cc045869a
-    secrets:
-      - graphdb_license
+  # ------------------------------------------------------------ The store
+  # Two TDB2 datasets, declared in the module's own configuration
+  # (stack/store/module, OntaraFuseki.java): /cafe-runtime (knowledge graph
+  # and runtime state; README section 4) and /cafe-capability-scratch. Each
+  # has its union graph as the default graph, and the module's
+  # validated-update endpoint. Fuseki's standard update and data endpoints do
+  # NOT validate: only the gate's write path uses validated-update.
+  store:
+    image: ontara-cafe-stack/store:local
+    pull_policy: never
+    build:
+      context: ./store
+      args:
+        JENA_VERSION: *jena-version
     environment:
-      GDB_HEAP_SIZE: ${GRAPHDB_HEAP:-2g}
-      # The licence is read in place from the read-only secret mount; it is
-      # never copied into the data volume or the repository.
-      GDB_JAVA_OPTS: >-
-        -Dgraphdb.license.file=/run/secrets/graphdb_license
+      ONTARA_VALIDATION: *validation-mode
+      JAVA_OPTS: -Xmx${STORE_HEAP:-2g} -Xms${STORE_HEAP:-2g}
     volumes:
-      - graphdb-data:/opt/graphdb/home
-      - ./graphdb/tools:/opt/stack-tools:ro
+      - store-data:/fuseki/databases
     ports:
-      - "127.0.0.1:${GRAPHDB_PORT:-7210}:7200"
+      - "127.0.0.1:${STORE_PORT:-7210}:3030"
     networks: [stack]
     healthcheck:
-      # Without a licence every REST call returns 500, so a 200 here also
-      # shows the licence loaded.
-      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost:7200/rest/repositories"]
+      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost:3030/cafe-runtime/validated-update"]
       interval: 5s
       timeout: 5s
       retries: 60
-      start_period: 20s
+      start_period: 10s
 
   # ------------------------------------------------------- Temporal (store)
   temporal-postgresql:
@@ -135,20 +142,22 @@ services:
     command: /scripts/create-namespace.sh
 
   # ------------------------------------------------- Bootstrap (one-shot)
-  # Creates the runtime repository from GraphDB's own JSON default config,
-  # reads the configuration back and exits non-zero unless isShacl is true,
-  # then loads the stand-in shapes and the knowledge-graph content.
+  # Reads the module's status on both datasets and exits non-zero, loudly,
+  # unless it reports validating on, targeted mode, Jena 6.2.0 and (after
+  # loading) the shapes; loads the runtime shapes and the knowledge graph.
   bootstrap:
     <<: *gate-image
     build:
       context: ./gate
     command: ["node", "dist/cli/bootstrap.js"]
     depends_on:
-      graphdb:
+      store:
         condition: service_healthy
     environment: &gate-env
-      GRAPHDB_URL: http://graphdb:7200
-      GRAPHDB_REPOSITORY: ${GRAPHDB_REPOSITORY:-cafe-runtime}
+      STORE_URL: http://store:3030
+      STORE_DATASET: cafe-runtime
+      EXPECTED_JENA_VERSION: *jena-version
+      EXPECTED_VALIDATION_MODE: *validation-mode
       TEMPORAL_ADDRESS: temporal:7233
       TEMPORAL_NAMESPACE: default
       GATE_URL: http://gate:7220

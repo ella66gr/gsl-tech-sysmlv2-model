@@ -1,0 +1,16 @@
+{
+  "runId": "20261101T192753Z-jena-5.6.0-targeted-positive-control-targeted",
+  "kind": "POSITIVE CONTROL (not the stack's image): ontara-spike/fuseki:5.6.0",
+  "storeImage": "ontara-spike/fuseki:5.6.0",
+  "storeImageId": "sha256:6016b2bb5e657bda592836d265c8f07307f93c5f19cbf5238cc081adc5d00311",
+  "imageJenaVersion": "5.6.0",
+  "mode": "targeted",
+  "preloadOrders": 300,
+  "coldCachesBeforeFirstWrite": true,
+  "bad": 1,
+  "good": 60,
+  "freshStoreDirectory": "/fuseki/databases/run-20261101T192753Z-jena-5.6.0-targeted-positive-control-targeted",
+  "graph": "urn:ontara:stack:graph:regression-20261101T192753Z-jena-5.6.0-targeted-positive-control-targeted",
+  "host": "Darwin arm64",
+  "startedUtc": "2026-11-01T19:27:53Z"
+}

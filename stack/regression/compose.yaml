@@ -1,0 +1,34 @@
+# The abort-defect regression check's own stack (specification 2.5 item 11).
+# Used only by bin/regression-check.sh, always together with ../compose.yaml,
+# as its own Compose project (ontara-cafe-regression), so it never touches
+# the runtime stack's data, network or ports and can run while the stack is up:
+#   COMPOSE_FILE=compose.yaml:regression/compose.yaml COMPOSE_PROJECT_NAME=ontara-cafe-regression
+#
+# It runs the stack's own store and gate images (built by README step 4).
+# Only the store, the bootstrap and the gate run here: no Temporal.
+#
+# Set by bin/regression-check.sh:
+#   REGRESSION_VALIDATION   whole (default: the S519 corrupting condition) or targeted
+#   REGRESSION_FUSEKI_DATA  a new, empty TDB2 location in this project's
+#                           volume, one per run, so every run starts fresh
+#                           and nothing is deleted
+#   REGRESSION_STORE_IMAGE  the store image; the stack's own unless a positive
+#                           control names another (bin/regression-check.sh --image)
+networks:
+  stack:
+    name: ontara-cafe-regression
+
+services:
+  store:
+    image: ${REGRESSION_STORE_IMAGE:-ontara-cafe-stack/store:local}
+    environment:
+      ONTARA_VALIDATION: ${REGRESSION_VALIDATION:-whole}
+      FUSEKI_DATA: ${REGRESSION_FUSEKI_DATA:-/fuseki/databases/unset}
+    ports: !reset []
+  bootstrap:
+    environment:
+      EXPECTED_VALIDATION_MODE: ${REGRESSION_VALIDATION:-whole}
+  gate:
+    environment:
+      EXPECTED_VALIDATION_MODE: ${REGRESSION_VALIDATION:-whole}
+    ports: !reset []

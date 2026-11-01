@@ -1,0 +1,952 @@
+{
+  "startedAt": "2026-11-01T19:25:05.181Z",
+  "mode": "whole",
+  "storeUrl": "http://ontara-cafe-stack-capabilities-whole:3030",
+  "store": {
+    "product": "Apache Jena Fuseki 6.2.0",
+    "jenaVersion": "6.2.0",
+    "jenaBuildVersion": "6.2.0",
+    "module": "ontara-fuseki-validated-update 0.2.0",
+    "validationMode": "whole",
+    "engine": "jena-shacl GraphValidation.update (whole union graph)"
+  },
+  "scratchDataset": "cafe-capability-scratch",
+  "scratchCleared": true,
+  "runtimeDatasetTouched": false,
+  "item1_empirical": [
+    {
+      "predicate": "sh:equals",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 201,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "_:B920a276aa5ac8ff3e6ef99a27228fbba"
+        ],
+        "nodeShapes": [],
+        "components": [
+          "http://www.w3.org/ns/shacl#EqualsConstraintComponent",
+          "http://www.w3.org/ns/shacl#EqualsConstraintComponent"
+        ],
+        "messages": [
+          "Equals[<urn:ontara:stack:cap#b>]: not equal: value node 1 is not in [\"2\"^^xsd:integer]",
+          "Equals[<urn:ontara:stack:cap#b>]: not equal: value 2 is not in [\"1\"^^xsd:integer]"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": null
+    },
+    {
+      "predicate": "sh:disjoint",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 200,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "_:B86524c95ce6f76f61468e5b875d77691"
+        ],
+        "nodeShapes": [],
+        "components": [
+          "http://www.w3.org/ns/shacl#DisjointConstraintComponent"
+        ],
+        "messages": [
+          "Disjoint[<urn:ontara:stack:cap#b>]: not disjoint: 1 is in [\"1\"^^xsd:integer]"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": null
+    },
+    {
+      "predicate": "sh:lessThan",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 200,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "_:B68f8940659376cf76c3f0d389714ebff"
+        ],
+        "nodeShapes": [],
+        "components": [
+          "http://www.w3.org/ns/shacl#LessThanConstraintComponent"
+        ],
+        "messages": [
+          "LessThan[<urn:ontara:stack:cap#end>]: value node \"2026-10-31T10:00:00Z\"^^xsd:dateTime is not less than \"2026-10-31T09:00:00Z\"^^xsd:dateTime"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": null
+    },
+    {
+      "predicate": "sh:lessThanOrEquals",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 200,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "_:B517e07f076103f3253612f9a6dfcd226"
+        ],
+        "nodeShapes": [],
+        "components": [
+          "http://www.w3.org/ns/shacl#LessThanOrEqualsConstraintComponent"
+        ],
+        "messages": [
+          "LessThanOrEquals[<urn:ontara:stack:cap#end>]: value node 5 is not less than or equal to 3"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": null
+    },
+    {
+      "predicate": "sh:closed",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 200,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "urn:ontara:stack:cap#ClosedShape"
+        ],
+        "nodeShapes": [
+          "urn:ontara:stack:cap#ClosedShape"
+        ],
+        "components": [
+          "http://www.w3.org/ns/shacl#ClosedConstraintComponent"
+        ],
+        "messages": [
+          "Closed[urn:ontara:stack:cap#a][http://www.w3.org/1999/02/22-rdf-syntax-ns#type] Property = <urn:ontara:stack:cap#extra> : Object = 2"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": null
+    },
+    {
+      "predicate": "sh:xone",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 200,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "urn:ontara:stack:cap#XoneShape"
+        ],
+        "nodeShapes": [
+          "urn:ontara:stack:cap#XoneShape"
+        ],
+        "components": [
+          "http://www.w3.org/ns/shacl#XoneConstraintComponent"
+        ],
+        "messages": [
+          "Xone has 2 conforming shapes at focusNode <urn:ontara:stack:cap#x1>"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": "not in the S515 paper's list; tested because GraphDB's ShaclSail did not enforce it (S517)"
+    },
+    {
+      "predicate": "sh:alternativePath inside sh:path sequence",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 200,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "_:B79182de23573fd91a1ea892793a3d0b6"
+        ],
+        "nodeShapes": [],
+        "components": [
+          "http://www.w3.org/ns/shacl#MinCountConstraintComponent"
+        ],
+        "messages": [
+          "minCount[1]: Invalid cardinality: expected min 1: Got count = 0"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": "Saskia's shape 6 needs this (S515 paper 7 item 4)"
+    },
+    {
+      "predicate": "sh:zeroOrMorePath",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 200,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "_:B6f7a8a7bea6e8e7f3864e58cfe267f0a"
+        ],
+        "nodeShapes": [],
+        "components": [
+          "http://www.w3.org/ns/shacl#MaxCountConstraintComponent"
+        ],
+        "messages": [
+          "maxCount[2]: Invalid cardinality: expected max 2: Got count = 3"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": "documented as unsupported by GraphDB (S515 notes 6); recorded for completeness"
+    },
+    {
+      "predicate": "sh:oneOrMorePath",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 200,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "_:B82ad136de8d0fa82966120bc2bd13981"
+        ],
+        "nodeShapes": [],
+        "components": [
+          "http://www.w3.org/ns/shacl#MaxCountConstraintComponent"
+        ],
+        "messages": [
+          "maxCount[1]: Invalid cardinality: expected max 1: Got count = 2"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": "OP-134 spike: GraphDB's ShaclSail did not enforce it"
+    },
+    {
+      "predicate": "sh:zeroOrOnePath",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 200,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "_:B859385b4f115af7609b4df52ae3bc81d"
+        ],
+        "nodeShapes": [],
+        "components": [
+          "http://www.w3.org/ns/shacl#MaxCountConstraintComponent"
+        ],
+        "messages": [
+          "maxCount[1]: Invalid cardinality: expected max 1: Got count = 2"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": "OP-134 spike: GraphDB's ShaclSail did not enforce it. The path reaches the node itself plus ex:p, so one ex:p value makes two values"
+    },
+    {
+      "predicate": "sh:inversePath",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 200,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "_:B4d22b7104ca5e34c1c2032dc7526ba79"
+        ],
+        "nodeShapes": [],
+        "components": [
+          "http://www.w3.org/ns/shacl#MaxCountConstraintComponent"
+        ],
+        "messages": [
+          "maxCount[1]: Invalid cardinality: expected max 1: Got count = 2"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": "OP-134 spike: tested beside the other paths"
+    },
+    {
+      "predicate": "sh:ask",
+      "verdict": "supported (enforced)",
+      "shapeLoad": {
+        "status": 200,
+        "ok": true,
+        "body": ""
+      },
+      "badWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "_:B4e49d8ba68e9062bc54a1f690fbe9589"
+        ],
+        "nodeShapes": [],
+        "components": [
+          "urn:ontara:stack:cap#PositiveComponent"
+        ],
+        "messages": [
+          "must be positive"
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "goodWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "note": "OP-134 spike: SHACL-SPARQL custom constraint component with an ASK validator; GraphDB's ShaclSail did not enforce it"
+    }
+  ],
+  "item2_ruleRunner": [
+    {
+      "test": "2a inline VALUES binding: rule bound to order A, order B also eligible",
+      "setup": [
+        {
+          "outcome": "committed",
+          "validation": "whole"
+        },
+        {
+          "outcome": "committed",
+          "validation": "whole"
+        }
+      ],
+      "ruleWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "orderA_Ready": true,
+      "orderB_Ready": false,
+      "derivedRecordLabel": [
+        {
+          "mode": "urn:ontara:standin:rec#RealMode",
+          "method": "urn:ontara:standin:rec#DirectMethod"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "test": "2b labelling: inputs Direct, Inferred, Predicted -> derived record gets PredictedMethod",
+      "setup": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "ruleWrite": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "derivedRecordLabel": [
+        {
+          "mode": "urn:ontara:standin:rec#RealMode",
+          "method": "urn:ontara:standin:rec#PredictedMethod"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "test": "2c labelling: inputs Real and Simulated -> no mode written -> SHACL rejection, rule output rolled back",
+      "setup": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "ruleWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape-method",
+          "urn:ontara:standin:shapes#RecordModeMethodShape-mode"
+        ],
+        "nodeShapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape"
+        ],
+        "components": [
+          "http://www.w3.org/ns/shacl#MinCountConstraintComponent",
+          "http://www.w3.org/ns/shacl#MinCountConstraintComponent"
+        ],
+        "messages": [
+          "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod.",
+          "A record has exactly one reality mode: RealMode or SimulatedMode."
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "orderD_Ready_after": false,
+      "derivedRecordExists_after": false,
+      "pass": true
+    },
+    {
+      "test": "2d rule run without the labelling step -> SHACL rejection (derived record has no mode or method)",
+      "setup": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "ruleWrite": {
+        "outcome": "rejected",
+        "shapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape-method",
+          "urn:ontara:standin:shapes#RecordModeMethodShape-mode"
+        ],
+        "nodeShapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape"
+        ],
+        "components": [
+          "http://www.w3.org/ns/shacl#MinCountConstraintComponent",
+          "http://www.w3.org/ns/shacl#MinCountConstraintComponent"
+        ],
+        "messages": [
+          "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod.",
+          "A record has exactly one reality mode: RealMode or SimulatedMode."
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "pass": true
+    },
+    {
+      "test": "2e order write + readiness rule + labelling in one transaction (the load harness write)",
+      "write": {
+        "outcome": "committed",
+        "validation": "whole"
+      },
+      "orderF_ReadyAndLabelled": true,
+      "pass": true
+    }
+  ],
+  "item3_messages": {
+    "shapesLoad": 200,
+    "coreShape": {
+      "write": {
+        "outcome": "rejected",
+        "shapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape-method"
+        ],
+        "nodeShapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape"
+        ],
+        "components": [
+          "http://www.w3.org/ns/shacl#MinCountConstraintComponent"
+        ],
+        "messages": [
+          "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod."
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "messages": [
+        "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod."
+      ],
+      "messageReturned": true
+    },
+    "sparqlConstraint": {
+      "write": {
+        "outcome": "rejected",
+        "shapes": [
+          "urn:ontara:standin:shapes#OrderReadinessShape"
+        ],
+        "nodeShapes": [
+          "urn:ontara:standin:shapes#OrderReadinessShape"
+        ],
+        "components": [
+          "http://www.w3.org/ns/shacl#SPARQLConstraintComponent"
+        ],
+        "messages": [
+          "An order is Ready only when every line is Ready."
+        ],
+        "rolledBack": true,
+        "validation": "whole"
+      },
+      "messages": [
+        "An order is Ready only when every line is Ready."
+      ],
+      "messageReturned": true
+    }
+  },
+  "item4_namedGraphs": {
+    "shapesApplyToDataInAnyNamedGraph": true,
+    "shapesGraph": "urn:ontara:stack:shapes",
+    "shapesGraphTriplesVisibleToSparqlGraphQuery": 32,
+    "shapesGraphReadRoute": "SPARQL GRAPH query on an ordinary named graph",
+    "shapeInOrdinaryNamedGraphEnforced": false
+  },
+  "item5_noInference": {
+    "test": "R4: a write of an instance of a class with a superclass in the knowledge graph produces no extra triples",
+    "kgModule": "ontology/record/ontara-record.ttl",
+    "kgLoadStatus": 201,
+    "class": "https://ontara.dev/ontology/record/PlatformRecord",
+    "superclassesInKg": [
+      "http://purl.obolibrary.org/obo/IAO_0000030",
+      "http://www.w3.org/ns/prov#Entity"
+    ],
+    "write": {
+      "outcome": "committed",
+      "validation": "whole"
+    },
+    "triplesWritten": 2,
+    "defaultGraphCountBefore": 201,
+    "defaultGraphCountAfter": 203,
+    "defaultGraphDelta": 2,
+    "triplesAboutInstance": 2,
+    "superclassTypeTriplesFound": [],
+    "pass": true,
+    "runtimeDatasetInference": "none",
+    "scratchDatasetInference": "none"
+  },
+  "item6_s515FiveCase": {
+    "shapesLoad": 200,
+    "cases": [
+      {
+        "case": "good: record with one mode, one method",
+        "expect": "committed",
+        "write": {
+          "outcome": "committed",
+          "validation": "whole"
+        },
+        "pass": true
+      },
+      {
+        "case": "bad A: no method",
+        "expect": "rejected",
+        "write": {
+          "outcome": "rejected",
+          "shapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape-method"
+          ],
+          "nodeShapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape"
+          ],
+          "components": [
+            "http://www.w3.org/ns/shacl#MinCountConstraintComponent"
+          ],
+          "messages": [
+            "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod."
+          ],
+          "rolledBack": true,
+          "validation": "whole"
+        },
+        "pass": true
+      },
+      {
+        "case": "bad B: two modes",
+        "expect": "rejected",
+        "write": {
+          "outcome": "rejected",
+          "shapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape-mode"
+          ],
+          "nodeShapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape"
+          ],
+          "components": [
+            "http://www.w3.org/ns/shacl#MaxCountConstraintComponent"
+          ],
+          "messages": [
+            "A record has exactly one reality mode: RealMode or SimulatedMode."
+          ],
+          "rolledBack": true,
+          "validation": "whole"
+        },
+        "pass": true
+      },
+      {
+        "case": "bad C: second method added to an existing good record",
+        "expect": "rejected",
+        "write": {
+          "outcome": "rejected",
+          "shapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape-method"
+          ],
+          "nodeShapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape"
+          ],
+          "components": [
+            "http://www.w3.org/ns/shacl#MaxCountConstraintComponent"
+          ],
+          "messages": [
+            "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod."
+          ],
+          "rolledBack": true,
+          "validation": "whole"
+        },
+        "pass": true
+      },
+      {
+        "case": "bad D: method outside the allowed list",
+        "expect": "rejected",
+        "write": {
+          "outcome": "rejected",
+          "shapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape-method"
+          ],
+          "nodeShapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape"
+          ],
+          "components": [
+            "http://www.w3.org/ns/shacl#InConstraintComponent"
+          ],
+          "messages": [
+            "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod."
+          ],
+          "rolledBack": true,
+          "validation": "whole"
+        },
+        "pass": true
+      },
+      {
+        "case": "bad E: deleting the only method of an existing record",
+        "expect": "rejected",
+        "write": {
+          "outcome": "rejected",
+          "shapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape-method"
+          ],
+          "nodeShapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape"
+          ],
+          "components": [
+            "http://www.w3.org/ns/shacl#MinCountConstraintComponent"
+          ],
+          "messages": [
+            "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod."
+          ],
+          "rolledBack": true,
+          "validation": "whole"
+        },
+        "pass": true
+      },
+      {
+        "case": "mixed F: good rec5 and bad rec6 in one request",
+        "expect": "rejected",
+        "write": {
+          "outcome": "rejected",
+          "shapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape-method"
+          ],
+          "nodeShapes": [
+            "urn:ontara:standin:shapes#RecordModeMethodShape"
+          ],
+          "components": [
+            "http://www.w3.org/ns/shacl#MinCountConstraintComponent"
+          ],
+          "messages": [
+            "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod."
+          ],
+          "rolledBack": true,
+          "validation": "whole"
+        },
+        "pass": true
+      }
+    ],
+    "after": {
+      "rec1IntactWithOriginalModeAndMethod": true,
+      "anyOfRec2to6Stored": false
+    },
+    "pass": true
+  },
+  "item7_sparqlNonTargetChange": {
+    "setup": {
+      "outcome": "committed",
+      "validation": "whole"
+    },
+    "lineOnlyChange": {
+      "outcome": "rejected",
+      "shapes": [
+        "urn:ontara:standin:shapes#OrderReadinessShape"
+      ],
+      "nodeShapes": [
+        "urn:ontara:standin:shapes#OrderReadinessShape"
+      ],
+      "components": [
+        "http://www.w3.org/ns/shacl#SPARQLConstraintComponent"
+      ],
+      "messages": [
+        "An order is Ready only when every line is Ready."
+      ],
+      "rolledBack": true,
+      "validation": "whole"
+    },
+    "caught": true
+  },
+  "item9_twoSidedReadiness": {
+    "shapesFile": "fixtures/shapes/spike-two-sided-readiness.ttl (+ standin-shapes-core-only.ttl)",
+    "cases": [
+      {
+        "case": "A: line-only write against a ready order (line/4 Ready -> InProgress)",
+        "shapes": "two-sided",
+        "shapesLoad": 200,
+        "setup": [
+          {
+            "outcome": "committed",
+            "validation": "whole"
+          }
+        ],
+        "statusBefore": {
+          "<order>": [
+            "Ready"
+          ],
+          "<order>/line/4": [
+            "Ready"
+          ]
+        },
+        "write": {
+          "outcome": "rejected",
+          "shapes": [
+            "urn:ontara:standin:shapes#OrderReadinessTwoSidedShape",
+            "urn:ontara:standin:shapes#LineReadinessTwoSidedShape"
+          ],
+          "nodeShapes": [
+            "urn:ontara:standin:shapes#OrderReadinessTwoSidedShape",
+            "urn:ontara:standin:shapes#LineReadinessTwoSidedShape"
+          ],
+          "components": [
+            "http://www.w3.org/ns/shacl#OrConstraintComponent",
+            "http://www.w3.org/ns/shacl#OrConstraintComponent"
+          ],
+          "messages": [
+            "An order is Ready or Collected only when every line is Ready or Collected.",
+            "A line of an order that is Ready or Collected is itself Ready or Collected."
+          ],
+          "rolledBack": true,
+          "validation": "whole"
+        },
+        "statusAfter": {
+          "<order>": [
+            "Ready"
+          ],
+          "<order>/line/4": [
+            "Ready"
+          ]
+        },
+        "expect": "rejected",
+        "pass": true
+      },
+      {
+        "case": "B: legitimate per-line collection (line/1 Ready -> Collected, lines 2-4 Ready)",
+        "shapes": "two-sided",
+        "shapesLoad": 200,
+        "setup": [
+          {
+            "outcome": "committed",
+            "validation": "whole"
+          }
+        ],
+        "statusBefore": {
+          "<order>": [
+            "Ready"
+          ],
+          "<order>/line/1": [
+            "Ready"
+          ]
+        },
+        "write": {
+          "outcome": "committed",
+          "validation": "whole"
+        },
+        "statusAfter": {
+          "<order>": [
+            "Ready"
+          ],
+          "<order>/line/1": [
+            "Collected"
+          ]
+        },
+        "expect": "committed",
+        "pass": true
+      },
+      {
+        "case": "C: order-only write: order with line/4 InProgress set Placed -> Ready",
+        "shapes": "two-sided",
+        "shapesLoad": 200,
+        "setup": [
+          {
+            "outcome": "committed",
+            "validation": "whole"
+          },
+          {
+            "outcome": "committed",
+            "validation": "whole"
+          }
+        ],
+        "statusBefore": {
+          "<order>": [
+            "Placed"
+          ],
+          "<order>/line/4": [
+            "InProgress"
+          ]
+        },
+        "write": {
+          "outcome": "rejected",
+          "shapes": [
+            "urn:ontara:standin:shapes#LineReadinessTwoSidedShape",
+            "urn:ontara:standin:shapes#OrderReadinessTwoSidedShape"
+          ],
+          "nodeShapes": [
+            "urn:ontara:standin:shapes#LineReadinessTwoSidedShape",
+            "urn:ontara:standin:shapes#OrderReadinessTwoSidedShape"
+          ],
+          "components": [
+            "http://www.w3.org/ns/shacl#OrConstraintComponent",
+            "http://www.w3.org/ns/shacl#OrConstraintComponent"
+          ],
+          "messages": [
+            "A line of an order that is Ready or Collected is itself Ready or Collected.",
+            "An order is Ready or Collected only when every line is Ready or Collected."
+          ],
+          "rolledBack": true,
+          "validation": "whole"
+        },
+        "statusAfter": {
+          "<order>": [
+            "Placed"
+          ],
+          "<order>/line/4": [
+            "InProgress"
+          ]
+        },
+        "expect": "rejected",
+        "pass": true
+      },
+      {
+        "case": "D: case B against the stand-in shapes (SPARQL constraint)",
+        "shapes": "standin",
+        "shapesLoad": 200,
+        "setup": [
+          {
+            "outcome": "committed",
+            "validation": "whole"
+          }
+        ],
+        "statusBefore": {
+          "<order>": [
+            "Ready"
+          ],
+          "<order>/line/1": [
+            "Ready"
+          ]
+        },
+        "write": {
+          "outcome": "rejected",
+          "shapes": [
+            "urn:ontara:standin:shapes#OrderReadinessShape"
+          ],
+          "nodeShapes": [
+            "urn:ontara:standin:shapes#OrderReadinessShape"
+          ],
+          "components": [
+            "http://www.w3.org/ns/shacl#SPARQLConstraintComponent"
+          ],
+          "messages": [
+            "An order is Ready only when every line is Ready."
+          ],
+          "rolledBack": true,
+          "validation": "whole"
+        },
+        "statusAfter": {
+          "<order>": [
+            "Ready"
+          ],
+          "<order>/line/1": [
+            "Ready"
+          ]
+        },
+        "expect": null,
+        "pass": null
+      }
+    ],
+    "pass": true
+  },
+  "item8_shRule": {
+    "predicate": "sh:rule",
+    "shapeLoad": {
+      "status": 200,
+      "ok": true,
+      "body": ""
+    },
+    "write": {
+      "outcome": "committed",
+      "validation": "whole"
+    },
+    "verdict": "not executed (rule ignored; no triple derived)"
+  },
+  "scratchClearedAfter": true,
+  "validation": {
+    "expectedMode": "whole",
+    "validatedWrites": 58,
+    "byMode": {
+      "whole": 58
+    },
+    "notInExpectedMode": 0,
+    "samplesNotInExpectedMode": []
+  },
+  "finishedAt": "2026-11-01T19:25:08.222Z"
+}

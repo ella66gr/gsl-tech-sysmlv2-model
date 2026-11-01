@@ -1,4 +1,5 @@
-// Reads a SHACL validation report returned by GraphDB on a rejected write.
+// Reads a SHACL validation report returned by the store on a rejected write
+// (the Fuseki module sends N-Triples, application/shacl-validation-report+n-triples).
 import { parseNQuads, Quad, Term, termText } from "./nquads";
 
 const SH = "http://www.w3.org/ns/shacl#";
@@ -23,9 +24,8 @@ export interface ShaclReport {
   shapes: string[];
 }
 
-// A SHACL rejection is recognised by GraphDB's report media type, or failing
-// that by a report body (sh:ValidationReport with sh:conforms false). Any
-// other HTTP 500 is a server fault.
+// A SHACL rejection is recognised by the report media type, or failing that
+// by a report body (sh:ValidationReport with sh:conforms false).
 export function looksLikeShaclRejection(contentType: string | null, body: string): boolean {
   if (contentType && contentType.toLowerCase().includes(REPORT_CONTENT_TYPE)) return true;
   return body.includes(`<${SH}ValidationReport>`) && body.includes(`<${SH}conforms> "false"`);

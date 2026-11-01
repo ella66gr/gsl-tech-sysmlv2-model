@@ -1,0 +1,16 @@
+{
+  "label": "before-restart",
+  "at": "2026-11-01T19:26:45.313Z",
+  "goodRecordsStored": 0,
+  "badRecordsStored": 0,
+  "readBack": {
+    "url": "http://store:3030/cafe-runtime/data",
+    "http": 200,
+    "quads": 43378,
+    "goodRecordQuads": 0,
+    "badRecordQuads": 0,
+    "complete": true,
+    "error": null,
+    "lastBytes": "> <urn:ontara:standin:cafe#order-18cba53a-w1-00300> <urn:ontara:stack:graph:loadtest> .\n<urn:ontara:standin:cafe#order-18cba53a-w1-00300/ready-record> <urn:ontara:standin:rec#recordedAt> \"2026-11-01T19:26:39.068+00:00\"^^<http://www.w3.org/2001/XMLSchema#dateTime> <urn:ontara:stack:graph:loadtest> .\n"
+  }
+}

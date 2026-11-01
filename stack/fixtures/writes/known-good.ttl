@@ -1,6 +1,6 @@
 # Known-good stand-in write: one record with one mode and one method.
 # {{RUN}} is replaced with a fresh id by the gate's write command and the health check.
-# Posting this file raw (e.g. with curl) is a fault, HTTP 502 "Invalid IRI value": substitute {{RUN}} first (README §3).
+# Posting this file raw (e.g. with curl) is a fault before the store is reached, HTTP 502 ("Invalid IRI code point '{'"): substitute {{RUN}} first (README §3).
 @prefix rec: <urn:ontara:standin:rec#> .
 <urn:ontara:standin:cafe#good-{{RUN}}> a rec:PlatformRecord ;
   rec:hasRealityMode rec:RealMode ;

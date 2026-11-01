@@ -1,0 +1,209 @@
+{
+  "kind": "development run (Mac runs do not count as the S0.1 pass figure; specification 2.5 item 8.4)",
+  "run": "0ee9db2d",
+  "startedUtc": "2026-11-01T19:27:29.640Z",
+  "elapsedSeconds": 10.9,
+  "store": {
+    "product": "Apache Jena Fuseki 6.2.0",
+    "jenaVersion": "6.2.0",
+    "jenaBuildVersion": "6.2.0",
+    "module": "ontara-fuseki-validated-update 0.2.0",
+    "storage": "TDB2",
+    "validationMode": "targeted",
+    "engine": "jena-shacl targeted (nodes the update touched, VLib.isFocusNode + VLib.validateShape; whole graph for other update forms)",
+    "statusReadBeforeRun": {
+      "module": "ontara-fuseki-validated-update 0.2.0",
+      "jenaVersion": "6.2.0",
+      "jenaBuildVersion": "6.2.0",
+      "fusekiVersion": "6.2.0",
+      "store": "TDB2",
+      "unionDefaultGraph": true,
+      "validating": true,
+      "validationMode": "targeted",
+      "engine": "jena-shacl targeted (nodes the update touched, VLib.isFocusNode + VLib.validateShape; whole graph for other update forms)",
+      "shapesGraph": "urn:ontara:stack:shapes",
+      "shapesTriples": 84,
+      "inference": "none"
+    }
+  },
+  "validation": {
+    "expectedMode": "targeted",
+    "orderWritesByMode": {
+      "targeted": 300
+    },
+    "knownBadWritesByMode": null,
+    "orderWritesNotInExpectedMode": 0,
+    "knownBadWritesNotInExpectedMode": 0,
+    "missingHeader": 0,
+    "samplesNotInExpectedMode": [],
+    "note": "the per-run reset (CLEAR SILENT GRAPH, outside the timed writes) is validated whole by the module's fall-back rule and is not counted"
+  },
+  "validAsMeasure": true,
+  "configurationFault": null,
+  "config": {
+    "orders": 300,
+    "rejectEvery": null,
+    "writers": 1,
+    "writerGraphs": [
+      "urn:ontara:stack:graph:loadtest"
+    ],
+    "store": "fuseki",
+    "readers": "none",
+    "readerCadenceMs": null,
+    "graph": "urn:ontara:stack:graph:loadtest",
+    "dataset": "cafe-runtime",
+    "rule": "fixtures/rules/order-readiness.rq + fixtures/rules/labelling.rq",
+    "write": "fixtures/writes/order-53.ttl",
+    "shapes": "fixtures/shapes/standin-shapes-core-only.ttl + fixtures/shapes/spike-two-sided-readiness.ttl",
+    "shapesGraph": "urn:ontara:stack:shapes"
+  },
+  "percentileMethod": "nearest rank, over committed order writes; latency = HTTP round trip to the gate's /write as the caller sees it (writes.csv column latency_ms, rows with kind=order and outcome=committed)",
+  "writeLatencyMs": {
+    "n": 300,
+    "p50": 34.4,
+    "p95": 41.5,
+    "max": 99.9,
+    "mean": 35.3
+  },
+  "gatePhaseMs": {
+    "commit": {
+      "n": 300,
+      "p50": 31.6,
+      "p95": 38.2,
+      "max": 78.8,
+      "mean": 32.4
+    },
+    "updates": {
+      "n": 300,
+      "p50": 0,
+      "p95": 0,
+      "max": 0,
+      "mean": 0
+    },
+    "add": {
+      "n": 300,
+      "p50": 1.8,
+      "p95": 2.4,
+      "max": 19,
+      "mean": 1.9
+    },
+    "begin": {
+      "n": 300,
+      "p50": 0,
+      "p95": 0,
+      "max": 0,
+      "mean": 0
+    }
+  },
+  "writeLatencyMsByWriter": {
+    "w1": {
+      "n": 300,
+      "p50": 34.4,
+      "p95": 41.5,
+      "max": 99.9,
+      "mean": 35.3
+    }
+  },
+  "throughputWritesPerSecond": 27.6,
+  "concurrency": {
+    "writers": 1,
+    "sumOfWriteLatencyOverWallTime": 0.98,
+    "shareOfWritingTimeWithTwoOrMoreInFlight": 0,
+    "maxWritesInFlight": 1,
+    "note": "client-side view: a write is in flight from request to reply. With one gate and a store that serialises, latency rises with writers and throughput stays flat."
+  },
+  "passThresholdMs": 500,
+  "p95WithinThreshold": true,
+  "failures": 0,
+  "failureSamples": [],
+  "orderOutcomes": {
+    "committed": 300,
+    "rejected": 0,
+    "fault": 0
+  },
+  "rejectedWritesInMix": null,
+  "faultsTotal": 0,
+  "readers": {},
+  "readerErrors": 0,
+  "growthPer100Writes": [
+    {
+      "writes": "1-100",
+      "graphTriplesAtStart": 0,
+      "latency": {
+        "n": 100,
+        "p50": 32.8,
+        "p95": 39.8,
+        "max": 99.9,
+        "mean": 34.6
+      },
+      "commit": {
+        "n": 100,
+        "p50": 29.9,
+        "p95": 35.9,
+        "max": 78.8,
+        "mean": 31.3
+      }
+    },
+    {
+      "writes": "101-200",
+      "graphTriplesAtStart": 6435,
+      "latency": {
+        "n": 100,
+        "p50": 35.2,
+        "p95": 43.7,
+        "max": 51,
+        "mean": 35.9
+      },
+      "commit": {
+        "n": 100,
+        "p50": 32.4,
+        "p95": 40.9,
+        "max": 48.4,
+        "mean": 33.1
+      }
+    },
+    {
+      "writes": "201-300",
+      "graphTriplesAtStart": 12935,
+      "latency": {
+        "n": 100,
+        "p50": 34.6,
+        "p95": 40.3,
+        "max": 47,
+        "mean": 35.5
+      },
+      "commit": {
+        "n": 100,
+        "p50": 31.8,
+        "p95": 37.4,
+        "max": 41.6,
+        "mean": 32.7
+      }
+    }
+  ],
+  "dataset": {
+    "triplesBefore": 23878,
+    "triplesAfter": 43378,
+    "loadtestGraphBefore": 0,
+    "loadtestGraphAfter": 19500
+  },
+  "storeErrors": [],
+  "correctness": {
+    "orders": 300,
+    "ordersReady": 300,
+    "derivedRecordsLabelled": 300
+  },
+  "correctnessByWriter": {
+    "w1": {
+      "orders": 300,
+      "ordersReady": 300,
+      "derivedRecordsLabelled": 300
+    }
+  },
+  "containerView": {
+    "cpus": 10,
+    "cpuModel": "unknown",
+    "totalMemGiB": 7.75,
+    "note": "as seen inside the gate container (the Docker VM on a Mac); host figures are in machine.txt"
+  }
+}

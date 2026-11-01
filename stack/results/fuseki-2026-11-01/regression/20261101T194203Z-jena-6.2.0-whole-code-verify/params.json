@@ -1,0 +1,16 @@
+{
+  "runId": "20261101T194203Z-jena-6.2.0-whole-code-verify",
+  "kind": "regression check",
+  "storeImage": "ontara-cafe-stack/store:local",
+  "storeImageId": "sha256:3e9c39cd543c2cb5f56062d2c4ba5bc3b316e0b3886fff186c5f99632e86682f",
+  "imageJenaVersion": "6.2.0",
+  "mode": "whole",
+  "preloadOrders": 300,
+  "coldCachesBeforeFirstWrite": true,
+  "bad": 1,
+  "good": 60,
+  "freshStoreDirectory": "/fuseki/databases/run-20261101T194203Z-jena-6.2.0-whole-code-verify",
+  "graph": "urn:ontara:stack:graph:regression-20261101T194203Z-jena-6.2.0-whole-code-verify",
+  "host": "Darwin arm64",
+  "startedUtc": "2026-11-01T19:42:03Z"
+}

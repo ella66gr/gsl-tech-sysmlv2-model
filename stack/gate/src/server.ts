@@ -1,5 +1,5 @@
 // The constraint gate's HTTP service.
-//   POST /write   JSON WriteRequest, or text/turtle with ?graph=<iri>[&validation=bulk]
+//   POST /write   JSON WriteRequest, or text/turtle with ?graph=<iri>
 //                 200 committed | 422 rejected (SHACL) | 502 fault | 400 bad request
 //   GET  /health  the S0.1 health check: 200 pass | 503 fail
 //   GET  /live    liveness only (used by the container healthcheck)
@@ -38,13 +38,13 @@ const server = http.createServer(async (req, res) => {
       const ct = (req.headers["content-type"] ?? "").toLowerCase();
       let wr: WriteRequest;
       if (ct.includes("text/turtle")) {
-        wr = { turtle: raw, graph: url.searchParams.get("graph") ?? undefined, validation: url.searchParams.get("validation") === "bulk" ? "bulk" : "normal" };
+        wr = { turtle: raw, graph: url.searchParams.get("graph") ?? undefined };
       } else {
         try { wr = JSON.parse(raw); } catch { return send(res, 400, { outcome: "bad-request", detail: "body is not JSON or text/turtle" }); }
       }
       if (!wr.turtle && !(wr.updates && wr.updates.length)) return send(res, 400, { outcome: "bad-request", detail: "nothing to write: give turtle and/or updates" });
       const out = await write(wr);
-      if (out.outcome !== "committed") console.log(`[gate] ${out.outcome} at ${out.stage}${wr.label ? ` (${wr.label})` : ""}`);
+      if (out.outcome !== "committed") console.log(`[gate] ${out.outcome} at ${out.stage}${wr.label ? ` (${wr.label})` : ""}; validation: ${out.validation ?? "(no X-Ontara-Validation header)"}`);
       return send(res, STATUS[out.outcome], out);
     }
     send(res, 404, { error: "not found" });
@@ -53,4 +53,4 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(config.port, "0.0.0.0", () => console.log(`[gate] listening on :${config.port}, repository ${config.repository} at ${config.graphdbUrl}`));
+server.listen(config.port, "0.0.0.0", () => console.log(`[gate] listening on :${config.port}, dataset ${config.dataset} at ${config.storeUrl} (Fuseki, validated-update)`));

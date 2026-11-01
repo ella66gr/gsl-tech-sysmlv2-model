@@ -1,6 +1,2 @@
-# Local settings: holds the licence path. Never commit.
+# Local settings (optional overrides; .env.example). Never commit.
 .env
-# The GraphDB licence must never enter the repository, under any name.
-*.license
-*.licence
-graphdb.license*

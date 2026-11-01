@@ -1,42 +1,69 @@
 // SHACL capability checks (S0.1, specification 2.5 item 7; S515 paper 7 item 3).
-// Run by stack/bin/capabilities.sh, which first writes
-// results/shacl-supported-predicates.json from getSupportedShaclPredicates().
+// Run by stack/bin/capabilities.sh, once per validation mode: against the
+// stack's store (targeted) and against a second, short-lived container of the
+// same image started with ONTARA_VALIDATION=whole (whole). Then
+// `--combine` writes one table of both.
 //
-// Everything runs in a scratch SHACL repository (created from GraphDB's JSON
-// default config, deleted at the end), never in the runtime repository.
-// Writes go through the gate's own write path (in-process).
+// Everything runs in the capability scratch dataset (cafe-capability-scratch,
+// emptied before and after), never in the runtime dataset. Writes go through
+// the gate's own write path (in-process), and so through the module's
+// validated-update endpoint. Every validated write's X-Ontara-Validation
+// header is checked against the mode expected (--mode).
 //
-//   1. sh:equals, sh:disjoint, sh:lessThan, sh:closed (and a few neighbours):
-//      the declared list, plus an empirical test of each (bad write rejected,
-//      good write committed).
+//   1. per SHACL component a Stage 0 shape may use: a shape, a violating write
+//      (rejected expected) and a conforming one (committed expected). Fuseki
+//      has no counterpart to GraphDB's getSupportedShaclPredicates(), and an
+//      enforcement test is the stronger check (specification 2.5 item 7.1).
 //   2. the labelling step and the inline VALUES binding a mapping rule needs.
 //   3. whether a core shape's sh:message (and a SPARQL constraint's) comes back
-//      in GraphDB's rejection report.
-// An unsupported component is a result, not a failure (input to S0.6).
+//      in the module's rejection report.
+//   4. named-graph observations, for S0.5.  5. R4, no store-side inference.
+//   6. the S515 five-case in-transaction test.  7. the stand-in SPARQL
+//      constraint's line-only case.  8. sh:rule.  9. Cyril's two-sided
+//      readiness shapes (S519).
+// An unenforced component is a result, not a failure (input to S0.6).
+//
+//   node dist/cli/capabilities.js --out <dir under results/> --mode targeted|whole
+//   node dist/cli/capabilities.js --combine <dir under results/>
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { GraphDB, shaclRepositoryConfig, param } from "../graphdb";
-import { write, WriteOutcome } from "../gate";
-import { config, graphs, paths } from "../config";
+import { write as gateWrite, WriteOutcome } from "../gate";
+import { openStore, SCRATCH_DATASET, WriteRequest, Store } from "../store";
+import { config, graphs, paths, validatedAs } from "../config";
 import { readFixture, orderWrite, fill } from "../fixtures";
 
-const SCRATCH = "cafe-capability-scratch";
+const args = process.argv.slice(2);
+const opt = (n: string, d: string) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d; };
+const MODE = opt("--mode", config.expectedValidationMode);
+const SCRATCH = SCRATCH_DATASET;
 const SH = "http://www.w3.org/ns/shacl#";
 const G = graphs.capability;
-const base = new GraphDB();
-const db = base.withRepo(SCRATCH);
+const base = openStore();
+const db = base.withDataset(SCRATCH);
+const OUT = path.join(paths.results, opt("--out", "capabilities"));
+
+// Every validated write, with how the module validated it.
+const seen: { label: string; outcome: string; validation: string | null }[] = [];
+async function write(req: WriteRequest, s: Store): Promise<WriteOutcome> {
+  const o = await gateWrite(req, s);
+  seen.push({ label: req.label ?? "", outcome: o.outcome, validation: o.validation });
+  return o;
+}
 
 const PFX = `@prefix sh: <${SH}> . @prefix ex: <urn:ontara:stack:cap#> . @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n`;
 
+// `validation`: how the store validated the write, where the adapter says
+// (the Fuseki module's X-Ontara-Validation header, S519); absent otherwise.
 function brief(o: WriteOutcome) {
-  if (o.outcome === "committed") return { outcome: o.outcome };
-  if (o.outcome === "rejected") return { outcome: o.outcome, shapes: o.shapes, nodeShapes: o.nodeShapes, components: o.results.map((r) => r.component), messages: o.results.map((r) => r.message), rolledBack: o.rolledBack };
-  return { outcome: o.outcome, stage: o.stage, httpStatus: o.httpStatus, detail: o.detail.slice(0, 400) };
+  const v = { validation: o.validation };
+  if (o.outcome === "committed") return { outcome: o.outcome, ...v };
+  if (o.outcome === "rejected") return { outcome: o.outcome, shapes: o.shapes, nodeShapes: o.nodeShapes, components: o.results.map((r) => r.component), messages: o.results.map((r) => r.message), rolledBack: o.rolledBack, ...v };
+  return { outcome: o.outcome, stage: o.stage, httpStatus: o.httpStatus, detail: o.detail.slice(0, 400), ...v };
 }
 
 async function loadShapes(ttl: string) {
-  const r = await db.replaceGraph(graphs.shapes, ttl, "text/turtle");
-  return { status: r.status, body: r.status === 204 ? "" : r.body.slice(0, 600) };
+  const r = await db.replaceGraph(db.shapesGraph, ttl, "text/turtle");
+  return { status: r.status, ok: r.ok, body: r.ok ? "" : r.body.slice(0, 600) };
 }
 
 async function clearData() {
@@ -81,7 +108,7 @@ const componentTests: ComponentTest[] = [
     shape: `ex:XoneShape a sh:NodeShape ; sh:targetClass ex:XoneT ; sh:xone ( [ sh:path ex:a ; sh:minCount 1 ] [ sh:path ex:b ; sh:minCount 1 ] ) .`,
     bad: `ex:x1 a ex:XoneT ; ex:a 1 ; ex:b 1 .`,
     good: `ex:x2 a ex:XoneT ; ex:a 1 .`,
-    note: "not in the S515 paper's list; tested because it is absent from getSupportedShaclPredicates()",
+    note: "not in the S515 paper's list; tested because GraphDB's ShaclSail did not enforce it (S517)",
   },
   {
     predicate: "sh:alternativePath inside sh:path sequence",
@@ -95,27 +122,53 @@ const componentTests: ComponentTest[] = [
     shape: `ex:StarShape a sh:NodeShape ; sh:targetClass ex:StarT ; sh:property [ sh:path [ sh:zeroOrMorePath ex:p ] ; sh:maxCount 2 ] .`,
     bad: `ex:st1 a ex:StarT ; ex:p ex:st1b . ex:st1b ex:p ex:st1c .`,
     good: `ex:st2 a ex:StarT .`,
-    note: "documented as unsupported (S515 notes 6); recorded for completeness",
+    note: "documented as unsupported by GraphDB (S515 notes 6); recorded for completeness",
+  },
+  {
+    predicate: "sh:oneOrMorePath",
+    shape: `ex:PlusShape a sh:NodeShape ; sh:targetClass ex:PlusT ; sh:property [ sh:path [ sh:oneOrMorePath ex:p ] ; sh:maxCount 1 ] .`,
+    bad: `ex:pl1 a ex:PlusT ; ex:p ex:pl1b . ex:pl1b ex:p ex:pl1c .`,
+    good: `ex:pl2 a ex:PlusT ; ex:p ex:pl2b .`,
+    note: "OP-134 spike: GraphDB's ShaclSail did not enforce it",
+  },
+  {
+    predicate: "sh:zeroOrOnePath",
+    shape: `ex:OptShape a sh:NodeShape ; sh:targetClass ex:OptT ; sh:property [ sh:path [ sh:zeroOrOnePath ex:p ] ; sh:maxCount 1 ] .`,
+    bad: `ex:op1 a ex:OptT ; ex:p ex:op1b .`,
+    good: `ex:op2 a ex:OptT .`,
+    note: "OP-134 spike: GraphDB's ShaclSail did not enforce it. The path reaches the node itself plus ex:p, so one ex:p value makes two values",
+  },
+  {
+    predicate: "sh:inversePath",
+    shape: `ex:InvShape a sh:NodeShape ; sh:targetClass ex:InvT ; sh:property [ sh:path [ sh:inversePath ex:p ] ; sh:maxCount 1 ] .`,
+    bad: `ex:in1 a ex:InvT . ex:in1a ex:p ex:in1 . ex:in1b ex:p ex:in1 .`,
+    good: `ex:in2 a ex:InvT . ex:in2a ex:p ex:in2 .`,
+    note: "OP-134 spike: tested beside the other paths",
+  },
+  {
+    predicate: "sh:ask",
+    shape: `ex:PositiveComponent a sh:ConstraintComponent ; sh:parameter [ sh:path ex:positive ] ; sh:propertyValidator [ a sh:SPARQLAskValidator ; sh:message "must be positive" ; sh:ask "ASK { FILTER ($value > 0) }" ] . ex:AskShape a sh:NodeShape ; sh:targetClass ex:AskT ; sh:property [ sh:path ex:v ; ex:positive true ] .`,
+    bad: `ex:ak1 a ex:AskT ; ex:v -1 .`,
+    good: `ex:ak2 a ex:AskT ; ex:v 5 .`,
+    note: "OP-134 spike: SHACL-SPARQL custom constraint component with an ASK validator; GraphDB's ShaclSail did not enforce it",
   },
 ];
 
-async function testComponent(t: ComponentTest, declared: Set<string> | null) {
+async function testComponent(t: ComponentTest) {
   await clearData();
-  const iri = t.predicate.startsWith("sh:") && !t.predicate.includes(" ") ? SH + t.predicate.slice(3) : null;
   const load = await loadShapes(PFX + t.shape);
   let bad: any = null, good: any = null;
-  if (load.status === 204) {
+  if (load.ok) {
     bad = brief(await write({ graph: G, turtle: PFX + t.bad, label: `cap ${t.predicate} bad` }, db));
     good = brief(await write({ graph: G, turtle: PFX + t.good, label: `cap ${t.predicate} good` }, db));
   }
   let verdict: string;
-  if (load.status !== 204) verdict = "shape refused at load";
+  if (!load.ok) verdict = "shape refused at load";
   else if (bad.outcome === "rejected" && good.outcome === "committed") verdict = "supported (enforced)";
   else if (bad.outcome === "committed" && good.outcome === "committed") verdict = "NOT enforced (shape accepted, violation stored)";
   else verdict = `unexpected (bad=${bad.outcome}, good=${good.outcome})`;
   return {
     predicate: t.predicate,
-    declaredSupported: iri && declared ? declared.has(iri) : null,
     verdict, shapeLoad: load, badWrite: bad, goodWrite: good, note: t.note ?? null,
   };
 }
@@ -125,7 +178,7 @@ async function testRuleRunner() {
   await clearData();
   const standin = readFixture("shapes/standin-shapes.ttl");
   const load = await loadShapes(standin);
-  if (load.status !== 204) return { error: `stand-in shapes did not load: ${JSON.stringify(load)}` };
+  if (!load.ok) return { error: `stand-in shapes did not load: ${JSON.stringify(load)}` };
 
   const order = (n: string) => `urn:ontara:standin:cafe#cap-order-${n}`;
   const out: any[] = [];
@@ -228,22 +281,126 @@ async function testNamedGraphScope() {
   await clearData();
   await loadShapes(readFixture("shapes/standin-shapes.ttl"));
   const bad = await write({ graph: "urn:ontara:stack:graph:capability-other", turtle: fill(readFixture("writes/known-bad.ttl"), { RUN: "ng" }) }, db);
-  const sparqlVisible = await db.select(`SELECT (COUNT(*) AS ?n) WHERE { GRAPH <${graphs.shapes}> { ?s ?p ?o } }`);
-  const stmts = await db.statements({ graph: graphs.shapes });
+  const sparqlVisible = await db.shapesTriples();
+  // A shape placed in an ordinary named graph (not the store's shapes graph):
+  // is it enforced? Tells whether the shapes graph is the only place shapes live.
+  await clearData();
+  const elsewhere = "urn:ontara:stack:graph:capability-shapes-elsewhere";
+  const placed = await db.replaceGraph(elsewhere, PFX + `ex:ElseShape a sh:NodeShape ; sh:targetClass ex:ElseT ; sh:property [ sh:path ex:a ; sh:minCount 1 ] .`, "text/turtle");
+  const elseBad = await write({ graph: G, turtle: PFX + `ex:else1 a ex:ElseT .`, label: "cap shape elsewhere" }, db);
+  await db.update(`CLEAR SILENT GRAPH <${elsewhere}>`);
   return {
     shapesApplyToDataInAnyNamedGraph: bad.outcome === "rejected",
-    shapesGraphTriplesVisibleToSparqlGraphQuery: Number(sparqlVisible[0]?.n?.value ?? 0),
-    shapesGraphTriplesViaStatementsApi: stmts.length,
+    shapesGraph: db.shapesGraph,
+    shapesGraphTriplesVisibleToSparqlGraphQuery: sparqlVisible,
+    shapesGraphReadRoute: "SPARQL GRAPH query on an ordinary named graph",
+    shapeInOrdinaryNamedGraphEnforced: placed.ok ? elseBad.outcome === "rejected" : `shape not placed: HTTP ${placed.status}`,
+  };
+}
+
+// ---- 6. The S515 five-case in-transaction test (S515 step 1 notes §2.2), on
+// the stand-in record shape (the same mode-and-method shape, stand-in names).
+async function testS515FiveCase() {
+  await clearData();
+  const load = await loadShapes(readFixture("shapes/standin-shapes.ttl"));
+  const REC = `@prefix rec: <urn:ontara:standin:rec#> . @prefix c: <urn:ontara:stack:cap:s515#> .\n`;
+  const ask = (q: string) => db.ask(`PREFIX rec: <urn:ontara:standin:rec#> PREFIX c: <urn:ontara:stack:cap:s515#> ${q}`);
+  const cases: any[] = [];
+  const run = async (name: string, req: any, expect: "committed" | "rejected") => {
+    const o = await write({ graph: G, label: `cap s515 ${name}`, ...req }, db);
+    cases.push({ case: name, expect, write: brief(o), pass: o.outcome === expect });
+  };
+  await run("good: record with one mode, one method", { turtle: REC + `c:rec1 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:DirectMethod .` }, "committed");
+  await run("bad A: no method", { turtle: REC + `c:rec2 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode .` }, "rejected");
+  await run("bad B: two modes", { turtle: REC + `c:rec3 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode , rec:SimulatedMode ; rec:hasProvenanceMethod rec:DirectMethod .` }, "rejected");
+  await run("bad C: second method added to an existing good record", { turtle: REC + `c:rec1 rec:hasProvenanceMethod rec:InferredMethod .` }, "rejected");
+  await run("bad D: method outside the allowed list", { turtle: REC + `c:rec4 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:GuessedMethod .` }, "rejected");
+  await run("bad E: deleting the only method of an existing record", { updates: [`PREFIX rec: <urn:ontara:standin:rec#> DELETE DATA { GRAPH <${G}> { <urn:ontara:stack:cap:s515#rec1> rec:hasProvenanceMethod rec:DirectMethod } }`] }, "rejected");
+  await run("mixed F: good rec5 and bad rec6 in one request", { turtle: REC + `c:rec5 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:DirectMethod . c:rec6 a rec:PlatformRecord ; rec:hasRealityMode rec:RealMode .` }, "rejected");
+  const after = {
+    rec1IntactWithOriginalModeAndMethod: await ask(`ASK { c:rec1 rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:DirectMethod . FILTER NOT EXISTS { c:rec1 rec:hasProvenanceMethod rec:InferredMethod } }`),
+    anyOfRec2to6Stored: await ask(`ASK { VALUES ?r { c:rec2 c:rec3 c:rec4 c:rec5 c:rec6 } ?r ?p ?o }`),
+  };
+  return { shapesLoad: load.status, cases, after, pass: cases.every((c) => c.pass) && after.rec1IntactWithOriginalModeAndMethod && !after.anyOfRec2to6Stored };
+}
+
+// ---- 7. The stand-in SPARQL constraint's line-only case (S515 notes §2.4; ADR-014 §4.3):
+// an existing Ready order has one line set back to InProgress, line triple
+// only. Whole mode catches it; targeted mode does not, because the write does
+// not touch the order the constraint targets. Expected, and the reason the
+// load harness uses the two-sided shapes (S521).
+async function testSparqlNonTargetChange() {
+  await clearData();
+  await loadShapes(readFixture("shapes/standin-shapes.ttl"));
+  const o = "urn:ontara:standin:cafe#cap-order-N";
+  const setup = await write(orderWrite(o, G), db); // order + rule + labelling: Ready
+  const flip = await write({ graph: G, label: "cap line-only change",
+    updates: [`PREFIX cafe: <urn:ontara:standin:cafe#> DELETE DATA { GRAPH <${G}> { <${o}/line/4> cafe:status cafe:Ready } } ; INSERT DATA { GRAPH <${G}> { <${o}/line/4> cafe:status cafe:InProgress } }`] }, db);
+  return { setup: brief(setup), lineOnlyChange: brief(flip), caught: flip.outcome === "rejected" };
+}
+
+// ---- 9. OP-134 follow-up (S519, Part D item 3): Cyril's two-sided readiness
+// shapes (fixtures/shapes/spike-two-sided-readiness.ttl, loaded with the
+// core-only stand-in file in place of the stand-in SPARQL constraint). Each
+// case starts from a cleared graph and one fresh order written as the load
+// harness writes it (order Placed, four lines Ready, readiness rule and
+// labelling in the same write, so the order ends Ready), then sends one write.
+//   A  line-only write against a ready order (line/4 Ready -> InProgress): rejected expected
+//   B  legitimate per-line collection (line/1 Ready -> Collected, others Ready): committed expected
+//   C  order-only write: an order with line/4 InProgress set Placed -> Ready (rule off): rejected expected
+//   D  case B against the stand-in shapes (SPARQL constraint): observed, no expectation
+//      (the stand-in requires every line Ready; Cyril §4.1 says legitimate data breaks it)
+async function testTwoSidedReadiness() {
+  const twoSided = readFixture("shapes/standin-shapes-core-only.ttl") + "\n" + readFixture("shapes/spike-two-sided-readiness.ttl");
+  const standin = readFixture("shapes/standin-shapes.ttl");
+  const C = "PREFIX cafe: <urn:ontara:standin:cafe#> ";
+  const setStatus = (s: string, from: string, to: string) => `${C} DELETE DATA { GRAPH <${G}> { <${s}> cafe:status cafe:${from} } } ; INSERT DATA { GRAPH <${G}> { <${s}> cafe:status cafe:${to} } }`;
+  const statusOf = async (s: string) => (await db.select(`${C} SELECT ?st WHERE { GRAPH <${G}> { <${s}> cafe:status ?st } }`)).map((b: any) => b.st.value.replace("urn:ontara:standin:cafe#", ""));
+  const cases: any[] = [];
+  const run = async (id: string, name: string, shapes: "two-sided" | "standin", expect: "committed" | "rejected" | null,
+                     prepare: (o: string) => Promise<any[]>, act: (o: string) => string, watch: (o: string) => string[]) => {
+    await clearData();
+    const load = await loadShapes(shapes === "two-sided" ? twoSided : standin);
+    const o = `urn:ontara:standin:cafe#cap-2s-${id}`;
+    const setup = await prepare(o);
+    const before: any = {}; for (const s of watch(o)) before[s.replace(o, "<order>")] = await statusOf(s);
+    const w = await write({ graph: G, label: `cap two-sided ${id}`, updates: [act(o)] }, db);
+    const after: any = {}; for (const s of watch(o)) after[s.replace(o, "<order>")] = await statusOf(s);
+    cases.push({ case: `${id}: ${name}`, shapes, shapesLoad: load.status, setup: setup.map(brief), statusBefore: before, write: brief(w), statusAfter: after, expect, pass: expect === null ? null : w.outcome === expect });
+  };
+  const placeReady = async (o: string) => [await write(orderWrite(o, G), db)];
+  await run("A", "line-only write against a ready order (line/4 Ready -> InProgress)", "two-sided", "rejected", placeReady,
+    (o) => setStatus(`${o}/line/4`, "Ready", "InProgress"), (o) => [o, `${o}/line/4`]);
+  await run("B", "legitimate per-line collection (line/1 Ready -> Collected, lines 2-4 Ready)", "two-sided", "committed", placeReady,
+    (o) => setStatus(`${o}/line/1`, "Ready", "Collected"), (o) => [o, `${o}/line/1`]);
+  await run("C", "order-only write: order with line/4 InProgress set Placed -> Ready", "two-sided", "rejected",
+    async (o) => [await write(orderWrite(o, G, { rule: false }), db), await write({ graph: G, label: "cap two-sided C prep", updates: [setStatus(`${o}/line/4`, "Ready", "InProgress")] }, db)],
+    (o) => setStatus(o, "Placed", "Ready"), (o) => [o, `${o}/line/4`]);
+  await run("D", "case B against the stand-in shapes (SPARQL constraint)", "standin", null, placeReady,
+    (o) => setStatus(`${o}/line/1`, "Ready", "Collected"), (o) => [o, `${o}/line/1`]);
+  return { shapesFile: "fixtures/shapes/spike-two-sided-readiness.ttl (+ standin-shapes-core-only.ttl)", cases, pass: cases.filter((c) => c.pass !== null).every((c) => c.pass) };
+}
+
+// ---- 8. sh:rule (SHACL Advanced Features): does the store execute a triple rule?
+// If it does, that is store-side derivation, which R4 forbids.
+async function testShRule() {
+  await clearData();
+  const load = await loadShapes(PFX + `ex:RuleShape a sh:NodeShape ; sh:targetClass ex:RuleT ; sh:rule [ a sh:TripleRule ; sh:subject sh:this ; sh:predicate ex:derived ; sh:object true ] .`);
+  const w = load.ok ? await write({ graph: G, turtle: PFX + `ex:ru1 a ex:RuleT .`, label: "cap sh:rule" }, db) : null;
+  const derived = load.ok ? await db.ask(`ASK { { <urn:ontara:stack:cap#ru1> <urn:ontara:stack:cap#derived> ?o } UNION { GRAPH ?g { <urn:ontara:stack:cap#ru1> <urn:ontara:stack:cap#derived> ?o } } }`) : null;
+  return {
+    predicate: "sh:rule", shapeLoad: load, write: w ? brief(w) : null,
+    verdict: !load.ok ? "shape refused at load" : derived ? "EXECUTED (the store derived a triple: store-side derivation)" : "not executed (rule ignored; no triple derived)",
   };
 }
 
 // ---- 5. R4: no store-side inference (OP-134 requirements paper, R4; ADR-013)
 // Loads a real knowledge-graph module (the platform record module) into a KG
-// graph in the scratch repository, writes an instance of a class that has a
+// graph in the scratch dataset, writes an instance of a class that has a
 // superclass there, and checks that the store added nothing: no rdf:type
 // triple for any superclass, and the default graph grows by exactly the
-// triples written. The scratch repository is built from the same config as
-// the runtime repository, so this tests the runtime repository's ruleset.
+// triples written. The scratch dataset is served by the same module as the
+// runtime dataset, so this tests the runtime store's (absent) inference.
 async function testNoInference() {
   const RDFS = "http://www.w3.org/2000/01/rdf-schema#";
   const kgGraph = "urn:ontara:stack:kg:ontara-record";
@@ -264,7 +421,7 @@ async function testNoInference() {
     ? (await db.select(`SELECT DISTINCT ?sup WHERE { VALUES ?sup { ${values} } { <${inst}> a ?sup } UNION { GRAPH ?g { <${inst}> a ?sup } } }`)).map((b) => b.sup.value)
     : [];
   const aboutInstance = (await db.select(`SELECT DISTINCT ?p ?o WHERE { { <${inst}> ?p ?o } UNION { GRAPH ?g { <${inst}> ?p ?o } } }`)).length;
-  // Clean the KG graph out of the scratch repository again.
+  // Clean the KG graph out of the scratch dataset again.
   await db.update(`CLEAR SILENT GRAPH <${kgGraph}>`);
   const pass = w.outcome === "committed" && supers.length > 0 && superTypeTriples.length === 0 && after - before === written && aboutInstance === written;
   return {
@@ -279,69 +436,109 @@ async function testNoInference() {
 }
 
 async function main() {
+  if (args.includes("--combine")) return combine(opt("--combine", "capabilities"));
   const startedAt = new Date().toISOString();
-  const declaredPath = path.join(paths.results, "shacl-supported-predicates.json");
-  let declaredJson: any = null;
-  let declared: Set<string> | null = null;
-  if (fs.existsSync(declaredPath)) {
-    declaredJson = JSON.parse(fs.readFileSync(declaredPath, "utf8"));
-    declared = new Set(declaredJson.predicates);
-  } else {
-    console.warn(`WARNING: ${declaredPath} missing; run bin/capabilities.sh, not this script directly`);
+  fs.mkdirSync(OUT, { recursive: true });
+
+  // The scratch dataset: its status must read validating, in this run's mode; emptied first.
+  const scratchStatus = await db.status();
+  if (scratchStatus.validating !== true || scratchStatus.validationMode !== MODE) {
+    throw new Error(`/${SCRATCH} status: validating=${scratchStatus.validating} mode=${scratchStatus.validationMode}; this run expects ${MODE}`);
   }
+  const cr = await base.clearDataset(SCRATCH);
+  if (!cr.ok) throw new Error(`clearing ${SCRATCH}: HTTP ${cr.status} ${cr.body}`);
 
-  // scratch repository
-  const repos = await base.listRepositories();
-  if (repos.includes(SCRATCH)) await base.deleteRepository(SCRATCH);
-  const cr = await base.createRepository(await shaclRepositoryConfig(base, SCRATCH, "S0.1 capability checks (scratch, deleted after)"));
-  if (cr.status !== 201) throw new Error(`create ${SCRATCH}: HTTP ${cr.status} ${cr.body}`);
-  const cfg = await base.repositoryConfig(SCRATCH);
-  if (param(cfg, "isShacl") !== "true") throw new Error(`${SCRATCH} isShacl=${param(cfg, "isShacl")}`);
-
-  const result: any = { startedAt, graphdb: await base.version(), scratchRepository: SCRATCH, runtimeRepositoryTouched: false };
+  const result: any = {
+    startedAt, mode: MODE, storeUrl: config.storeUrl,
+    store: { product: `Apache Jena Fuseki ${scratchStatus.fusekiVersion}`, jenaVersion: scratchStatus.jenaVersion, jenaBuildVersion: scratchStatus.jenaBuildVersion, module: scratchStatus.module, validationMode: scratchStatus.validationMode, engine: scratchStatus.engine },
+    scratchDataset: SCRATCH, scratchCleared: true, runtimeDatasetTouched: false,
+  };
   try {
-    const asked = ["equals", "disjoint", "lessThan", "closed"].map((p) => SH + p);
-    result.item1_declared = declared ? {
-      source: declaredJson.source, rdf4j: declaredJson.rdf4jShaclJarVersion,
-      asked: Object.fromEntries(asked.map((p) => ["sh:" + p.slice(SH.length), declared!.has(p)])),
-      alsoAbsent: ["xone", "zeroOrMorePath", "oneOrMorePath", "zeroOrOnePath", "rule", "ask"].filter((p) => !declared!.has(SH + p)).map((p) => "sh:" + p),
-    } : null;
     result.item1_empirical = [];
     for (const t of componentTests) {
-      const r = await testComponent(t, declared);
-      console.log(`[cap] ${t.predicate}: declared=${r.declaredSupported} -> ${r.verdict}`);
+      const r = await testComponent(t);
+      console.log(`[cap ${MODE}] ${t.predicate}: ${r.verdict}`);
       result.item1_empirical.push(r);
     }
     result.item2_ruleRunner = await testRuleRunner();
-    for (const r of result.item2_ruleRunner) console.log(`[cap] ${r.pass ? "PASS" : "FAIL"} ${r.test}`);
+    for (const r of result.item2_ruleRunner) console.log(`[cap ${MODE}] ${r.pass ? "PASS" : "FAIL"} ${r.test}`);
     result.item3_messages = await testMessages();
-    console.log(`[cap] sh:message returned: core=${result.item3_messages.coreShape.messageReturned} sparql=${result.item3_messages.sparqlConstraint.messageReturned}`);
+    console.log(`[cap ${MODE}] sh:message returned: core=${result.item3_messages.coreShape.messageReturned} sparql=${result.item3_messages.sparqlConstraint.messageReturned}`);
     result.item4_namedGraphs = await testNamedGraphScope();
-    console.log(`[cap] named graphs: ${JSON.stringify(result.item4_namedGraphs)}`);
+    console.log(`[cap ${MODE}] named graphs: ${JSON.stringify(result.item4_namedGraphs)}`);
     result.item5_noInference = await testNoInference();
-    result.item5_noInference.runtimeRepositoryRuleset = param(await base.repositoryConfig(config.repository), "ruleset");
-    result.item5_noInference.scratchRepositoryRuleset = param(cfg, "ruleset");
-    console.log(`[cap] ${result.item5_noInference.pass ? "PASS" : "FAIL"} R4 no store-side inference: ruleset=${result.item5_noInference.scratchRepositoryRuleset} (runtime ${result.item5_noInference.runtimeRepositoryRuleset}), delta=${result.item5_noInference.defaultGraphDelta} for ${result.item5_noInference.triplesWritten} written, superclass types=${JSON.stringify(result.item5_noInference.superclassTypeTriplesFound)}`);
+    result.item5_noInference.runtimeDatasetInference = (await base.status()).inference;
+    result.item5_noInference.scratchDatasetInference = scratchStatus.inference;
+    result.item6_s515FiveCase = await testS515FiveCase();
+    console.log(`[cap ${MODE}] ${result.item6_s515FiveCase.pass ? "PASS" : "FAIL"} S515 five-case in-transaction test: ${result.item6_s515FiveCase.cases.map((c: any) => `${c.case.split(":")[0]}=${c.write.outcome}`).join(" ")}; after=${JSON.stringify(result.item6_s515FiveCase.after)}`);
+    result.item7_sparqlNonTargetChange = await testSparqlNonTargetChange();
+    console.log(`[cap ${MODE}] stand-in SPARQL constraint, line-only change caught: ${result.item7_sparqlNonTargetChange.caught}`);
+    result.item9_twoSidedReadiness = await testTwoSidedReadiness();
+    for (const c of result.item9_twoSidedReadiness.cases) console.log(`[cap ${MODE}] ${c.pass === null ? "OBSERVED" : c.pass ? "PASS" : "FAIL"} two-sided ${c.case}: ${c.write.outcome}${c.expect ? ` (expected ${c.expect})` : ""}${c.write.validation ? ` [${c.write.validation}]` : ""}`);
+    result.item8_shRule = await testShRule();
+    console.log(`[cap ${MODE}] sh:rule: ${result.item8_shRule.verdict}`);
+    console.log(`[cap ${MODE}] ${result.item5_noInference.pass ? "PASS" : "FAIL"} R4 no store-side inference: inference=${result.item5_noInference.scratchDatasetInference} (runtime ${result.item5_noInference.runtimeDatasetInference}), delta=${result.item5_noInference.defaultGraphDelta} for ${result.item5_noInference.triplesWritten} written, superclass types=${JSON.stringify(result.item5_noInference.superclassTypeTriplesFound)}`);
   } finally {
-    const d = await base.deleteRepository(SCRATCH);
-    result.scratchDeleted = d.status === 200 || d.status === 204;
+    const d = await base.clearDataset(SCRATCH);
+    result.scratchClearedAfter = d.ok;
   }
+  // How every validated write was validated.
+  const modeOf = (h: string | null) => (h ? h.split(/[; ]/)[0] : "(no header)");
+  const byMode = seen.reduce((a: Record<string, number>, x) => { const k = modeOf(x.validation); a[k] = (a[k] ?? 0) + 1; return a; }, {});
+  const off = seen.filter((x) => !validatedAs(x.validation, MODE));
+  result.validation = { expectedMode: MODE, validatedWrites: seen.length, byMode, notInExpectedMode: off.length, samplesNotInExpectedMode: off.slice(0, 10) };
   result.finishedAt = new Date().toISOString();
 
-  fs.writeFileSync(path.join(paths.results, "shacl-capabilities.json"), JSON.stringify(result, null, 2) + "\n");
-  fs.writeFileSync(path.join(paths.results, "shacl-capabilities.md"), markdown(result));
-  console.log(`[cap] written results/shacl-capabilities.json and results/shacl-capabilities.md`);
+  fs.writeFileSync(path.join(OUT, `shacl-capabilities-${MODE}.json`), JSON.stringify(result, null, 2) + "\n");
+  fs.writeFileSync(path.join(OUT, `shacl-capabilities-${MODE}.md`), markdown(result));
+  console.log(`[cap ${MODE}] ${seen.length} validated writes, by mode ${JSON.stringify(byMode)}; not ${MODE}: ${off.length}`);
+  console.log(`[cap ${MODE}] written results/${path.relative(paths.results, OUT)}/shacl-capabilities-${MODE}.json and .md`);
   // R4 is a binding requirement, not a component survey: a failure fails the script.
-  if (!result.item5_noInference?.pass) { console.error(`[cap] R4 CHECK FAILED: the store added triples a declared writer did not write`); process.exitCode = 1; }
+  if (!result.item5_noInference?.pass) { console.error(`[cap ${MODE}] R4 CHECK FAILED: the store added triples a declared writer did not write`); process.exitCode = 1; }
+  if (off.length) { console.error(`[cap ${MODE}] CONFIGURATION FAULT: ${off.length} write(s) not validated ${MODE} (or no X-Ontara-Validation header)`); process.exitCode = 3; }
+}
+
+// Both modes in one table (specification 2.5 item 7.1).
+function combine(dir: string) {
+  const d = path.join(paths.results, dir);
+  const read = (m: string) => { const f = path.join(d, `shacl-capabilities-${m}.json`); return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : null; };
+  const t = read("targeted"), w = read("whole");
+  if (!t || !w) { console.error(`[cap] --combine needs shacl-capabilities-targeted.json and -whole.json in results/${dir}`); process.exit(1); }
+  const L: string[] = [];
+  const pf = (x: any) => (x === true ? "pass" : x === false ? "**FAIL**" : "n/a");
+  L.push(`# SHACL capability checks (S0.1 pass 3, Fuseki)`, ``);
+  L.push(`Generated by \`stack/bin/capabilities.sh\`. Store: ${t.store.product}, Jena ${t.store.jenaVersion}, ${t.store.module}. Targeted run finished ${t.finishedAt}, against the stack's store; whole run finished ${w.finishedAt}, against a short-lived container of the same image with \`ONTARA_VALIDATION=whole\`. Each ran in the scratch dataset \`${t.scratchDataset}\`, emptied before and after. Detail: \`shacl-capabilities-targeted.json\` and \`shacl-capabilities-whole.json\`, with their \`.md\` files.`, ``);
+  L.push(`Validated writes: targeted ${t.validation.validatedWrites}, by mode ${JSON.stringify(t.validation.byMode)}; whole ${w.validation.validatedWrites}, by mode ${JSON.stringify(w.validation.byMode)}.`, ``);
+  L.push(`## 1. Components`, ``, `| Component | Targeted | Whole |`, `|---|---|---|`);
+  for (const a of t.item1_empirical) { const b = w.item1_empirical.find((x: any) => x.predicate === a.predicate); L.push(`| ${a.predicate} | ${a.verdict} | ${b?.verdict ?? "n/a"} |`); }
+  L.push(``, `## 2. Labelling step and inline VALUES binding`, ``, `| Test | Targeted | Whole |`, `|---|---|---|`);
+  for (const a of t.item2_ruleRunner) { const b = w.item2_ruleRunner.find((x: any) => x.test === a.test); L.push(`| ${a.test} | ${pf(a.pass)} | ${pf(b?.pass)} |`); }
+  L.push(``, `## 3. sh:message in the rejection report`, ``, `| Shape | Targeted | Whole |`, `|---|---|---|`);
+  L.push(`| Core shape | ${t.item3_messages.coreShape.messageReturned} | ${w.item3_messages.coreShape.messageReturned} |`);
+  L.push(`| SHACL-SPARQL constraint | ${t.item3_messages.sparqlConstraint.messageReturned} | ${w.item3_messages.sparqlConstraint.messageReturned} |`);
+  L.push(``, `Core-shape messages (targeted): ${JSON.stringify(t.item3_messages.coreShape.messages)}.`);
+  L.push(``, `## 4. Named graphs (observed, for S0.5)`, ``, `| Observation | Targeted | Whole |`, `|---|---|---|`);
+  for (const k of ["shapesApplyToDataInAnyNamedGraph", "shapesGraphTriplesVisibleToSparqlGraphQuery", "shapeInOrdinaryNamedGraphEnforced"]) L.push(`| ${k} | ${t.item4_namedGraphs[k]} | ${w.item4_namedGraphs[k]} |`);
+  L.push(``, `## 5. R4: no store-side inference`, ``, `Targeted: **${pf(t.item5_noInference.pass)}** (delta ${t.item5_noInference.defaultGraphDelta} for ${t.item5_noInference.triplesWritten} written). Whole: **${pf(w.item5_noInference.pass)}** (delta ${w.item5_noInference.defaultGraphDelta}).`);
+  L.push(``, `## 6. The S515 five-case in-transaction test`, ``, `| Case | Expected | Targeted | Whole |`, `|---|---|---|---|`);
+  for (const a of t.item6_s515FiveCase.cases) { const b = w.item6_s515FiveCase.cases.find((x: any) => x.case === a.case); L.push(`| ${a.case} | ${a.expect} | ${a.write.outcome} | ${b?.write.outcome ?? "n/a"} |`); }
+  L.push(``, `Result: targeted **${pf(t.item6_s515FiveCase.pass)}**, whole **${pf(w.item6_s515FiveCase.pass)}**.`);
+  L.push(``, `## 7. Stand-in SPARQL constraint, line-only change`, ``, `Caught: targeted **${t.item7_sparqlNonTargetChange.caught}**, whole **${w.item7_sparqlNonTargetChange.caught}**. Targeted mode is expected to miss it (ADR-014 §4.3): the write does not touch the order the constraint targets.`);
+  L.push(``, `## 8. sh:rule`, ``, `Targeted: ${t.item8_shRule.verdict}. Whole: ${w.item8_shRule.verdict}.`);
+  L.push(``, `## 9. Two-sided readiness shapes (Cyril, S519)`, ``, `| Case | Shapes | Expected | Targeted | Whole |`, `|---|---|---|---|---|`);
+  for (const a of t.item9_twoSidedReadiness.cases) { const b = w.item9_twoSidedReadiness.cases.find((x: any) => x.case === a.case); L.push(`| ${a.case} | ${a.shapes} | ${a.expect ?? "observed"} | ${a.write.outcome}${a.pass === false ? " **(unexpected)**" : ""} | ${b ? b.write.outcome + (b.pass === false ? " **(unexpected)**" : "") : "n/a"} |`); }
+  L.push(``, `Result: targeted **${pf(t.item9_twoSidedReadiness.pass)}**, whole **${pf(w.item9_twoSidedReadiness.pass)}**.`);
+  const out = path.join(d, "shacl-capabilities.md");
+  fs.writeFileSync(out, L.join("\n") + "\n");
+  console.log(`[cap] written results/${path.relative(paths.results, out)}`);
 }
 
 function markdown(r: any): string {
   const L: string[] = [];
-  L.push(`# SHACL capability checks (S0.1)`, ``);
-  L.push(`Generated by \`stack/bin/capabilities.sh\` at ${r.finishedAt}. GraphDB ${r.graphdb.productVersion} (${r.graphdb.productType}), RDF4J ${r.graphdb.sesame}. Scratch repository \`${r.scratchRepository}\`, deleted after: ${r.scratchDeleted}. Full detail: \`shacl-capabilities.json\`.`, ``);
-  L.push(`## 1. Components`, ``, `| Component | In getSupportedShaclPredicates() | Tested behaviour |`, `|---|---|---|`);
-  for (const t of r.item1_empirical) L.push(`| ${t.predicate} | ${t.declaredSupported === null ? "n/a" : t.declaredSupported ? "yes" : "**no**"} | ${t.verdict} |`);
-  if (r.item1_declared) L.push(``, `Also absent from the declared list: ${r.item1_declared.alsoAbsent.join(", ")}.`);
+  L.push(`# SHACL capability checks (S0.1 pass 3), ${r.mode} mode`, ``);
+  L.push(`Generated by \`stack/bin/capabilities.sh\` at ${r.finishedAt}. Store: ${r.store.product}, Jena ${r.store.jenaVersion}, ${r.store.module}, validation mode ${r.store.validationMode}. Scratch dataset \`${r.scratchDataset}\`, emptied before and after (${r.scratchClearedAfter}). Validated writes: ${r.validation.validatedWrites}, by mode ${JSON.stringify(r.validation.byMode)}, not ${r.mode}: ${r.validation.notInExpectedMode}. Full detail: \`shacl-capabilities-${r.mode}.json\`.`, ``);
+  L.push(`## 1. Components`, ``, `| Component | Tested behaviour |`, `|---|---|`);
+  for (const t of r.item1_empirical) L.push(`| ${t.predicate} | ${t.verdict} |`);
   L.push(``, `## 2. Labelling step and inline VALUES binding`, ``, `| Test | Result |`, `|---|---|`);
   for (const t of r.item2_ruleRunner) L.push(`| ${t.test} | ${t.pass ? "pass" : "**FAIL**"} |`);
   const m = r.item3_messages;
@@ -351,16 +548,32 @@ function markdown(r: any): string {
   const n = r.item4_namedGraphs;
   L.push(``, `## 4. Named graphs (observed, for S0.5)`, ``);
   L.push(`1. Shapes apply to data written into any named graph: ${n.shapesApplyToDataInAnyNamedGraph}.`);
-  L.push(`2. The shapes graph is visible to a SPARQL \`GRAPH\` query: ${n.shapesGraphTriplesVisibleToSparqlGraphQuery} triples; through the RDF4J statements API: ${n.shapesGraphTriplesViaStatementsApi} triples.`);
+  L.push(`2. The shapes graph is visible to a SPARQL \`GRAPH\` query: ${n.shapesGraphTriplesVisibleToSparqlGraphQuery} triples.`);
   const i = r.item5_noInference;
   if (i) {
     L.push(``, `## 5. R4: no store-side inference`, ``);
-    L.push(`Result: **${i.pass ? "pass" : "FAIL"}**. Scratch repository ruleset \`${i.scratchRepositoryRuleset}\`; runtime repository ruleset \`${i.runtimeRepositoryRuleset}\`.`, ``);
+    L.push(`Result: **${i.pass ? "pass" : "FAIL"}**. Scratch dataset inference \`${i.scratchDatasetInference}\`; runtime dataset inference \`${i.runtimeDatasetInference}\`.`, ``);
     L.push(`1. Knowledge-graph module loaded: \`${i.kgModule}\`; \`<${i.class}>\` has superclasses ${i.superclassesInKg.map((s: string) => `\`<${s}>\``).join(", ")}.`);
     L.push(`2. Written: ${i.triplesWritten} triples (the instance's type and label), outcome ${i.write.outcome}.`);
     L.push(`3. Default-graph triple count grew by ${i.defaultGraphDelta} (${i.defaultGraphCountBefore} to ${i.defaultGraphCountAfter}); triples about the instance: ${i.triplesAboutInstance}.`);
     L.push(`4. \`rdf:type\` triples for a superclass found: ${i.superclassTypeTriplesFound.length ? i.superclassTypeTriplesFound.map((s: string) => `\`<${s}>\``).join(", ") : "none"}.`);
   }
+  if (n.shapesGraph) L.push(``, `Named graphs, further (OP-134 spike): shapes graph \`<${n.shapesGraph}>\`, read through ${n.shapesGraphReadRoute}; a shape placed in an ordinary named graph is enforced: ${n.shapeInOrdinaryNamedGraphEnforced}.`);
+  const f = r.item6_s515FiveCase;
+  if (f) {
+    L.push(``, `## 6. The S515 five-case in-transaction test`, ``, `Result: **${f.pass ? "pass" : "FAIL"}**.`, ``, `| Case | Expected | Outcome |`, `|---|---|---|`);
+    for (const c of f.cases) L.push(`| ${c.case} | ${c.expect} | ${c.write.outcome}${c.pass ? "" : " **(unexpected)**"} |`);
+    L.push(``, `After: rec1 intact with its original mode and method = ${f.after.rec1IntactWithOriginalModeAndMethod}; any of rec2 to rec6 stored = ${f.after.anyOfRec2to6Stored}.`);
+  }
+  const x = r.item7_sparqlNonTargetChange;
+  if (x) L.push(``, `## 7. Stand-in SPARQL constraint, line-only change`, ``, `An existing Ready order has one line set back to InProgress (line triple only). Caught: **${x.caught}** (validation: ${x.lineOnlyChange.validation}).`);
+  const ts = r.item9_twoSidedReadiness;
+  if (ts) {
+    L.push(``, `## 9. Two-sided readiness shapes (S519; Cyril's note §4.2)`, ``, `Shapes: ${ts.shapesFile}. Result: **${ts.pass ? "pass" : "FAIL"}** (cases with an expectation).`, ``, `| Case | Shapes | Expected | Outcome | Validation | Status before -> after |`, `|---|---|---|---|---|---|`);
+    for (const c of ts.cases) L.push(`| ${c.case} | ${c.shapes} | ${c.expect ?? "observed"} | ${c.write.outcome}${c.pass === false ? " **(unexpected)**" : ""}${c.write.nodeShapes?.length ? ` (${c.write.nodeShapes.join(", ")})` : ""} | ${c.write.validation ?? "n/a"} | ${JSON.stringify(c.statusBefore)} -> ${JSON.stringify(c.statusAfter)} |`);
+  }
+  const ru = r.item8_shRule;
+  if (ru) L.push(``, `## 8. sh:rule (SHACL Advanced Features)`, ``, `${ru.verdict}.`);
   return L.join("\n") + "\n";
 }
 

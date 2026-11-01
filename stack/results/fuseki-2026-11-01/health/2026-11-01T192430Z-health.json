@@ -1,0 +1,128 @@
+{
+  "status": "pass",
+  "run": "bae31be5",
+  "started": "2026-11-01T19:24:30.122Z",
+  "store": "Apache Jena Fuseki 6.2.0, ontara-fuseki-validated-update 0.2.0, targeted validation",
+  "dataset": "cafe-runtime",
+  "checks": [
+    {
+      "name": "store: knowledge-graph content",
+      "pass": true,
+      "ms": 19,
+      "detail": [
+        {
+          "probe": "BMM metamodel has its 39 classes",
+          "result": true
+        },
+        {
+          "probe": "BMM class ServiceOffering sits under a BFO parent",
+          "result": true
+        },
+        {
+          "probe": "Platform record module defines PlatformRecord",
+          "result": true
+        },
+        {
+          "probe": "BFO 2020 entity is present",
+          "result": true
+        }
+      ]
+    },
+    {
+      "name": "store: module validating, targeted mode, Jena 6.2.0, shapes loaded",
+      "pass": true,
+      "ms": 3,
+      "detail": {
+        "dataset": "cafe-runtime",
+        "module": "ontara-fuseki-validated-update 0.2.0",
+        "validating": true,
+        "validationMode": "targeted",
+        "jenaVersion": "6.2.0",
+        "jenaBuildVersion": "6.2.0",
+        "shapesGraph": "urn:ontara:stack:shapes",
+        "shapesTriples": 84,
+        "unionDefaultGraph": true,
+        "inference": "none",
+        "expected": {
+          "validationMode": "targeted",
+          "jenaVersion": "6.2.0"
+        }
+      }
+    },
+    {
+      "name": "gate: known-good write commits",
+      "pass": true,
+      "ms": 29,
+      "detail": {
+        "http": 200,
+        "outcome": "committed",
+        "validation": "targeted; changes=3 touched=4 focus=1",
+        "timings": {
+          "begin": 0,
+          "add": 0.7382500000021537,
+          "updates": 0,
+          "commit": 25.74737499999901,
+          "rollback": 0,
+          "total": 26.526125000003958
+        }
+      }
+    },
+    {
+      "name": "gate: known-bad write is a SHACL rejection naming the shape",
+      "pass": true,
+      "ms": 20,
+      "detail": {
+        "http": 422,
+        "outcome": "rejected",
+        "shapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape-method"
+        ],
+        "nodeShapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape"
+        ],
+        "components": [
+          "http://www.w3.org/ns/shacl#MinCountConstraintComponent"
+        ],
+        "messages": [
+          "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod."
+        ],
+        "rolledBack": true,
+        "transaction": "aborted",
+        "validation": "targeted; changes=2 touched=3 focus=1"
+      }
+    },
+    {
+      "name": "gate: write after the rejection commits, and the rejected record is not stored",
+      "pass": true,
+      "ms": 28,
+      "detail": {
+        "http": 200,
+        "outcome": "committed",
+        "validation": "targeted; changes=3 touched=4 focus=1",
+        "rejectedRecordStored": false,
+        "timings": {
+          "begin": 0,
+          "add": 0.4672909999935655,
+          "updates": 0,
+          "commit": 22.968791999999667,
+          "rollback": 0,
+          "total": 23.45762499999546
+        }
+      }
+    },
+    {
+      "name": "temporal: no-op workflow starts and completes",
+      "pass": true,
+      "ms": 22,
+      "detail": {
+        "workflowId": "stack-health-noop-bae31be5",
+        "result": "noop:bae31be5"
+      }
+    }
+  ],
+  "cleanup": {
+    "http": 200,
+    "outcome": "committed",
+    "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+  }
+}

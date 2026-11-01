@@ -1,0 +1,22 @@
+ Container ontara-cafe-regression-bootstrap-run-f6c961c67b6e Creating 
+ Container ontara-cafe-regression-bootstrap-run-f6c961c67b6e Created 
+[bootstrap] store http://store:3030, runtime dataset /cafe-runtime; required: validating, whole mode, Jena 5.6.0
+[bootstrap] Apache Jena Fuseki 5.6.0 (Jena 5.6.0); licence: none needed (Apache-2.0)
+[bootstrap] status /cafe-runtime: module="ontara-fuseki-validated-update 0.2.0" validating=true mode=whole jena=5.6.0 (built for 5.6.0) store=TDB2 unionDefaultGraph=true inference=none shapesGraph=<urn:ontara:stack:shapes> shapesTriples=0
+[bootstrap] status /cafe-capability-scratch: module="ontara-fuseki-validated-update 0.2.0" validating=true mode=whole jena=5.6.0 (built for 5.6.0) store=TDB2 unionDefaultGraph=true inference=none shapesGraph=<urn:ontara:stack:shapes> shapesTriples=0
+[bootstrap] shapes loaded into <urn:ontara:stack:shapes>: 84 triples from shapes/standin-shapes-core-only.ttl + shapes/spike-two-sided-readiness.ttl (read back by SPARQL)
+[bootstrap] kg <urn:ontara:stack:kg:bfo-core> 1014 triples (158 ms) from ontology/imports/bfo-core.owl
+[bootstrap] kg <urn:ontara:stack:kg:iao> 5002 triples (221 ms) from ontology/imports/iao.owl
+[bootstrap] kg <urn:ontara:stack:kg:cco-merged> 14228 triples (343 ms) from ontology/imports/CommonCoreOntologiesMerged.ttl
+[bootstrap] kg <urn:ontara:stack:kg:prov-core> 79 triples (47 ms) from ontology/imports/prov-core.ttl
+[bootstrap] kg <urn:ontara:stack:kg:ontara-record> 169 triples (37 ms) from ontology/record/ontara-record.ttl
+[bootstrap] kg <urn:ontara:stack:kg:ontara-bmm> 200 triples (40 ms) from generated-ontology/ontara-bmm.ttl
+[bootstrap] kg <urn:ontara:stack:kg:ontara-bmm-axioms> 330 triples (41 ms) from ontology/axioms/ontara-bmm-axioms.ttl
+[bootstrap] kg <urn:ontara:stack:kg:ontara-bmm-properties> 99 triples (38 ms) from generated-ontology/ontara-bmm-properties.ttl
+[bootstrap] kg <urn:ontara:stack:kg:ontara-bmm-weights> 786 triples (47 ms) from generated-ontology/ontara-bmm-weights.ttl
+[bootstrap] kg <urn:ontara:stack:kg:ontara-governance> 568 triples (39 ms) from ontology/governance/ontara-governance.ttl
+[bootstrap] kg <urn:ontara:stack:kg:ontara-domain> 755 triples (39 ms) from ontology/domain/ontara-domain.ttl
+[bootstrap] kg <urn:ontara:stack:kg:ontara-reasoning> 564 triples (41 ms) from ontology/reasoning/ontara-reasoning.ttl
+[bootstrap] runtime dataset holds 23878 triples in named graphs
+[bootstrap] status /cafe-runtime: module="ontara-fuseki-validated-update 0.2.0" validating=true mode=whole jena=5.6.0 (built for 5.6.0) store=TDB2 unionDefaultGraph=true inference=none shapesGraph=<urn:ontara:stack:shapes> shapesTriples=84
+[bootstrap] OK in 1.3 s: validating, whole mode, Jena 5.6.0, 84 shapes triples

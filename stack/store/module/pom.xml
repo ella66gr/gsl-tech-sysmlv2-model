@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Ontara validated-update module for Apache Jena Fuseki (ported unchanged from the OP-134
+     spike, spike/op-134-store, at S521 S0.1 pass 3; S0.5 builds its production configuration).
+     Built inside the image (stack/store/Dockerfile); never on the host. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>dev.ontara.spike</groupId>
+  <artifactId>ontara-fuseki-validated-update</artifactId>
+  <version>0.1.0</version>
+  <packaging>jar</packaging>
+  <properties>
+    <jena.version>6.2.0</jena.version><!-- overridden by the image build: -Djena.version=${JENA_VERSION}; never below 6.1.0 (ADR-014) -->
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    <dependency><groupId>org.apache.jena</groupId><artifactId>jena-fuseki-main</artifactId><version>${jena.version}</version></dependency>
+    <dependency><groupId>org.apache.jena</groupId><artifactId>jena-shacl</artifactId><version>${jena.version}</version></dependency>
+    <dependency><groupId>org.apache.jena</groupId><artifactId>jena-tdb2</artifactId><version>${jena.version}</version></dependency>
+    <dependency><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId><version>2.0.17</version></dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId><artifactId>maven-dependency-plugin</artifactId><version>3.8.1</version>
+        <executions><execution><id>copy</id><phase>package</phase><goals><goal>copy-dependencies</goal></goals>
+          <configuration><outputDirectory>${project.build.directory}/lib</outputDirectory><includeScope>runtime</includeScope></configuration>
+        </execution></executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

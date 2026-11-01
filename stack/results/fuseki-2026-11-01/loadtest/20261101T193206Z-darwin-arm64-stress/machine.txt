@@ -1,0 +1,18 @@
+run id:        20261101T193206Z-darwin-arm64-stress
+recorded at:   2026-11-01T19:32:06Z
+host:          Darwin 25.6.0 arm64
+machine:       MacBookPro18,2
+cpu:           Apple M1 Max
+cores:         10 logical (8 performance + 2 efficiency)
+memory:        32 GiB
+os:            macOS 26.6.2
+docker:        29.9.2 linux/arm64
+docker VM/engine sees: 10 CPUs, 8319504384 bytes memory
+store image:   ontara-cafe-stack/store:local sha256:fbdcc0adb2c6cabdc7efa6a21cb888ea3a03780bc9cb1a8edf04d8ad34feff72
+store heap:    -Xmx2g -Xms2g
+args:          --orders 500 --readers continuous
+store:         Apache Jena Fuseki 6.2.0 (Jena 6.2.0, image built for 6.2.0), ontara-fuseki-validated-update 0.2.0, TDB2, validation mode targeted
+store status:  {"module":"ontara-fuseki-validated-update 0.2.0","jenaVersion":"6.2.0","jenaBuildVersion":"6.2.0","fusekiVersion":"6.2.0","store":"TDB2","unionDefaultGraph":true,"validating":true,"validationMode":"targeted","engine":"jena-shacl targeted (nodes the update touched, VLib.isFocusNode + VLib.validateShape; whole graph for other update forms)","shapesGraph":"urn:ontara:stack:shapes","shapesTriples":84,"inference":"none"}
+expected mode: targeted (every write's X-Ontara-Validation header is checked)
+shapes:        fixtures/shapes/standin-shapes-core-only.ttl + fixtures/shapes/spike-two-sided-readiness.ttl
+validation:    order writes by mode {"targeted":500}; not targeted: 0; missing header: 0

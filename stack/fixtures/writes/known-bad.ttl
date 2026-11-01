@@ -1,7 +1,7 @@
 # Known-bad stand-in write: a record with a mode and no provenance method.
 # Expected: a SHACL rejection naming sis:RecordModeMethodShape-method
 # (node shape sis:RecordModeMethodShape), sh:MinCountConstraintComponent.
-# {{RUN}} must be replaced before posting (bin/write.sh does it; with curl see README §3), else HTTP 502 "Invalid IRI value".
+# {{RUN}} must be replaced before posting (bin/write.sh does it; with curl see README §3), else HTTP 502, a fault before the store is reached ("Invalid IRI code point '{'").
 @prefix rec: <urn:ontara:standin:rec#> .
 <urn:ontara:standin:cafe#bad-{{RUN}}> a rec:PlatformRecord ;
   rec:hasRealityMode rec:RealMode .

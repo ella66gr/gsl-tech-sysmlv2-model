@@ -1,0 +1,5 @@
+store:         Apache Jena Fuseki 6.2.0 (Jena 6.2.0, image built for 6.2.0), ontara-fuseki-validated-update 0.2.0, TDB2, validation mode targeted
+store status:  {"module":"ontara-fuseki-validated-update 0.2.0","jenaVersion":"6.2.0","jenaBuildVersion":"6.2.0","fusekiVersion":"6.2.0","store":"TDB2","unionDefaultGraph":true,"validating":true,"validationMode":"targeted","engine":"jena-shacl targeted (nodes the update touched, VLib.isFocusNode + VLib.validateShape; whole graph for other update forms)","shapesGraph":"urn:ontara:stack:shapes","shapesTriples":84,"inference":"none"}
+expected mode: targeted (every write's X-Ontara-Validation header is checked)
+shapes:        fixtures/shapes/standin-shapes-core-only.ttl + fixtures/shapes/spike-two-sided-readiness.ttl
+validation:    order writes by mode {"targeted":300}; not targeted: 0; missing header: 0

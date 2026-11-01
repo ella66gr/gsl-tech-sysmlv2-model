@@ -28,8 +28,3 @@ pnpm-lock.yaml
 
 # External tool binaries (downloaded per-developer)
 tools/*.jar
-
-# GraphDB licence files (S517, S0.1): supplied per machine, never committed
-*.license
-*.licence
-graphdb.license*

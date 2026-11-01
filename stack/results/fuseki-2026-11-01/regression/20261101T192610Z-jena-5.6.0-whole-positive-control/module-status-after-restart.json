@@ -1,0 +1,14 @@
+{
+  "module": "ontara-fuseki-validated-update 0.2.0",
+  "jenaVersion": "5.6.0",
+  "jenaBuildVersion": "5.6.0",
+  "fusekiVersion": "5.6.0",
+  "store": "TDB2",
+  "unionDefaultGraph": true,
+  "validating": true,
+  "validationMode": "whole",
+  "engine": "jena-shacl GraphValidation.update (whole union graph)",
+  "shapesGraph": "urn:ontara:stack:shapes",
+  "shapesTriples": 84,
+  "inference": "none"
+}

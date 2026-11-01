@@ -1,0 +1,7 @@
+[load] run 55742a33: 300 orders x 1 writer(s), readers=none, shapes=fixtures/shapes/standin-shapes-core-only.ttl + fixtures/shapes/spike-two-sided-readiness.ttl, reject-every=off, store: Apache Jena Fuseki 5.6.0 (Jena 5.6.0, image built for 5.6.0), ontara-fuseki-validated-update 0.2.0, TDB2, validation mode targeted, graph <urn:ontara:stack:graph:loadtest>, out fuseki-2026-11-01/regression/20261101T192753Z-jena-5.6.0-targeted-positive-control-targeted/preload
+[load] w1 100/300  last=30 ms  p95 so far=42.2 ms
+[load] w1 200/300  last=39 ms  p95 so far=40.1 ms
+[load] w1 300/300  last=29 ms  p95 so far=40.3 ms
+[load] done in 10.5 s: write latency p50=33.2 p95=40.3 max=94.8 ms; failures=0; faults=0; correctness={"orders":300,"ordersReady":300,"derivedRecordsLabelled":300}
+[load] store: Apache Jena Fuseki 5.6.0 (Jena 5.6.0, image built for 5.6.0), ontara-fuseki-validated-update 0.2.0, TDB2, validation mode targeted; writes by validation mode: {"targeted":300}; not targeted: 0
+[load] results in results/fuseki-2026-11-01/regression/20261101T192753Z-jena-5.6.0-targeted-positive-control-targeted/preload/ (writes.csv, readers.csv, summary.json)

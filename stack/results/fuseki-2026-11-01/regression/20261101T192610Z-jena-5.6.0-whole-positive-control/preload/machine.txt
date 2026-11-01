@@ -1,0 +1,5 @@
+store:         Apache Jena Fuseki 5.6.0 (Jena 5.6.0, image built for 5.6.0), ontara-fuseki-validated-update 0.2.0, TDB2, validation mode whole
+store status:  {"module":"ontara-fuseki-validated-update 0.2.0","jenaVersion":"5.6.0","jenaBuildVersion":"5.6.0","fusekiVersion":"5.6.0","store":"TDB2","unionDefaultGraph":true,"validating":true,"validationMode":"whole","engine":"jena-shacl GraphValidation.update (whole union graph)","shapesGraph":"urn:ontara:stack:shapes","shapesTriples":84,"inference":"none"}
+expected mode: whole (every write's X-Ontara-Validation header is checked)
+shapes:        fixtures/shapes/standin-shapes-core-only.ttl + fixtures/shapes/spike-two-sided-readiness.ttl
+validation:    order writes by mode {"whole":300}; not whole: 0; missing header: 0

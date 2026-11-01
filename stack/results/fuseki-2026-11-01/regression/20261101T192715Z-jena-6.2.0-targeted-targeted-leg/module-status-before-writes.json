@@ -1,0 +1,14 @@
+{
+  "module": "ontara-fuseki-validated-update 0.2.0",
+  "jenaVersion": "6.2.0",
+  "jenaBuildVersion": "6.2.0",
+  "fusekiVersion": "6.2.0",
+  "store": "TDB2",
+  "unionDefaultGraph": true,
+  "validating": true,
+  "validationMode": "targeted",
+  "engine": "jena-shacl targeted (nodes the update touched, VLib.isFocusNode + VLib.validateShape; whole graph for other update forms)",
+  "shapesGraph": "urn:ontara:stack:shapes",
+  "shapesTriples": 84,
+  "inference": "none"
+}
