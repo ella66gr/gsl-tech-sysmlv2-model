@@ -1,0 +1,17 @@
+run id:        20261101T102720Z-darwin-arm64-preload
+recorded at:   2026-11-01T10:27:20Z
+host:          Darwin 25.6.0 arm64
+cpu:           Apple M1 Max
+cores:         10 logical (8 performance + 2 efficiency)
+memory:        32 GiB
+os:            macOS 26.6.2
+docker:        29.9.2 linux/arm64
+docker VM/engine sees: 10 CPUs, 8319504384 bytes memory
+store:         fuseki (Jena Fuseki 5.6.0 TDB2 + validated-update module (whole validation))
+args:          --orders 300 --readers none
+[load] run d5aefee1: 300 orders x 1 writer(s), readers=none, validation=normal, shapes=shapes/standin-shapes.ttl, reject-every=off, store=fuseki, graph <urn:ontara:stack:graph:loadtest>, out spike-op134/fuseki/fault/20261101T102710Z-jena-5.6.0-whole-preload300-cold-repeat/preload/20261101T102720Z-darwin-arm64-preload
+[load] w1 100/300  last=71 ms  p95 so far=62.5 ms
+[load] w1 200/300  last=40 ms  p95 so far=66.2 ms
+[load] w1 300/300  last=45 ms  p95 so far=64.1 ms
+[load] done in 14.5 s: write latency p50=45.7 p95=64.1 max=117.5 ms; failures=0; faults=0; correctness={"orders":300,"ordersReady":300,"derivedRecordsLabelled":300}
+[load] results in results/spike-op134/fuseki/fault/20261101T102710Z-jena-5.6.0-whole-preload300-cold-repeat/preload/20261101T102720Z-darwin-arm64-preload/ (writes.csv, readers.csv, summary.json)

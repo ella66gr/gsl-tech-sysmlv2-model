@@ -1,0 +1,1 @@
+FUSEKI_DATA=/fuseki/databases/s519-rejmix-history-whole-103330; 300 orders written first (the *-history300 run folder just before this one), store restarted cold, then this run with --keep

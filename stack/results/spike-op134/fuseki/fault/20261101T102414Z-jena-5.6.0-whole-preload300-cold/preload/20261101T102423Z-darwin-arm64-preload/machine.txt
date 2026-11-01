@@ -1,0 +1,11 @@
+run id:        20261101T102423Z-darwin-arm64-preload
+recorded at:   2026-11-01T10:24:23Z
+host:          Darwin 25.6.0 arm64
+cpu:           Apple M1 Max
+cores:         10 logical (8 performance + 2 efficiency)
+memory:        32 GiB
+os:            macOS 26.6.2
+docker:        29.9.2 linux/arm64
+docker VM/engine sees: 10 CPUs, 8319504384 bytes memory
+store:         fuseki (Jena Fuseki 5.6.0 TDB2 + validated-update module (whole validation))
+args:          --orders 300 --readers none

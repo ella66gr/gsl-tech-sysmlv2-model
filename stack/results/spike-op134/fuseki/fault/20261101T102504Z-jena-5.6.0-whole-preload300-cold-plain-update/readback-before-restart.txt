@@ -1,0 +1,2 @@
+http=200 quads=43337 quads-naming-a-good-record=180 curl=
+last bytes: 02547> <urn:ontara:standin:rec#hasRealityMode> <urn:ontara:standin:rec#RealMode> <urn:ontara:stack:graph:fault-20261101T102504Z-jena-5.6.0-whole-preload300-cold-plain-update> . <urn:ontara:standin:cafe#good-fr061-102547> <urn:ontara:standin:rec#hasProvenanceMethod> <urn:ontara:standin:rec#DirectMethod> <urn:ontara:stack:graph:fault-20261101T102504Z-jena-5.6.0-whole-preload300-cold-plain-update> . 

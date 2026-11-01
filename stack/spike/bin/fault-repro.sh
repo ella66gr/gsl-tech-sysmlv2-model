@@ -24,7 +24,8 @@
 #    just loaded by the bootstrap the caches are warm).
 #    With --abort-via plain-update, each "bad" write bypasses the gate and the
 #    Ontara module: it goes to Fuseki's own standard /cafe-runtime/update as
-#    INSERT DATA of new nodes followed by LOAD of a missing file, so Fuseki
+#    INSERT DATA of new nodes, then a DELETE whose WHERE reads every quad (node
+#    reads, as validation does; it deletes nothing), then LOAD of a missing file, so Fuseki
 #    itself aborts the write transaction (no SHACL involved). This isolates
 #    whether the fault needs the module.
 # 2. Sends K known-bad writes (default 1; fixtures/writes/known-bad.ttl), then
@@ -87,7 +88,7 @@ echo "seq,kind,iri,outcome,http,exit,fault_detail,validation" > "$out/outcomes.c
 plain_abort() {   # seq: an aborted write through Fuseki's standard update endpoint, no module
   local seq="$1" rid="fr$(printf '%03d' "$1")-$(date -u +%H%M%S)" iri body code resp
   iri="urn:ontara:standin:cafe#plainabort-$rid"
-  body="INSERT DATA { GRAPH <$graph> { <$iri> <urn:ontara:standin:rec#hasRealityMode> <urn:ontara:standin:rec#RealMode> ; <urn:ontara:standin:cafe#note> \"plain-update abort $rid\" } } ; LOAD <file:///does-not-exist-$rid.ttl>"
+  body="INSERT DATA { GRAPH <$graph> { <$iri> <urn:ontara:standin:rec#hasRealityMode> <urn:ontara:standin:rec#RealMode> ; <urn:ontara:standin:cafe#note> \"plain-update abort $rid\" } } ; DELETE { GRAPH <urn:ontara:stack:graph:none> { ?s ?p ?o } } WHERE { GRAPH ?g { ?s ?p ?o } } ; LOAD <file:///does-not-exist-$rid.ttl>"
   resp="$(mktemp)"
   code="$(curl -sS -o "$resp" -w '%{http_code}' -X POST -H 'Content-Type: application/sparql-update' --data-binary "$body" http://127.0.0.1:7210/cafe-runtime/update || echo curl-error)"
   local stored; stored="$(curl -sS -X POST http://127.0.0.1:7210/cafe-runtime/query -H 'Accept: application/sparql-results+json' --data-urlencode "query=ASK { GRAPH ?g { <$iri> ?p ?o } }" | jq -r .boolean)"

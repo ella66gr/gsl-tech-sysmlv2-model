@@ -1,0 +1,2 @@
+http=200 quads=43134 quads-naming-a-good-record=0 curl=
+last bytes: andin:cafe#order-ae4c01ce-w1-00300/line/2/record> <urn:ontara:standin:rec#hasRealityMode> <urn:ontara:standin:rec#RealMode> <urn:ontara:stack:graph:loadtest> . <urn:ontara:standin:cafe#order-ae4c01ce-w1-00300/line/2/record> <urn:ontara:standin:rec#hasProvenanceMethod> <urn:ontara:standin:rec#DirectMethod> <urn:ontara:stack:graph:loadtest> . <urn:ontara:stFailed to write output: NodeTableTRDF/Read 

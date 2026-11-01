@@ -1,0 +1,1474 @@
+[main] INFO org.eclipse.jetty.server.Server - jetty-12.1.1; built: 2025-09-08T04:29:45.457Z; git: b7068950f9afa5f1df80e46053eda1d982895b03; jvm 21.0.13+9-LTS
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@482d776b{org.apache.jena.fuseki.Servlet,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@4052274f{STARTED}}
+[main] INFO org.eclipse.jetty.ee10.servlet.ServletContextHandler - Started oeje10s.ServletContextHandler@482d776b{org.apache.jena.fuseki.Servlet,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@4052274f{STARTED}}
+[main] INFO org.eclipse.jetty.server.AbstractConnector - Started oejs.ServerConnector@4d34b9ea{HTTP/1.1, (http/1.1)}{0.0.0.0:3030}
+[main] INFO org.eclipse.jetty.server.Server - Started oejs.Server@117e0fe5{STARTING}[12.1.1,sto=0] @753ms
+[main] INFO org.apache.jena.fuseki.Server - Start Fuseki (http=3030)
+[ontara-fuseki] Jena 5.6.0 (built for 5.6.0) on :3030, data /fuseki/databases/fault-20261101T102620Z-jena-5.6.0-whole-preload300-cold-plain-scan, validation whole, shapes graph <urn:ontara:stack:shapes>
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [1] GET http://localhost:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [1] 200 OK (19 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - [0:0:0:0:0:0:0:1] - - [01/Nov/2026:10:26:27 +0000] "GET /cafe-runtime/validated-update" 200 - "" "curl/8.18.0"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [2] GET http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [2] 200 OK (3 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:27 +0000] "GET /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [3] GET http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [3] 200 OK (2 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:27 +0000] "GET /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [4] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Ashapes
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [4] Body: Content-Length=2133, Content-Type=text/turtle, Charset=null => Turtle : Count=32 Triples=32 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [4] 201 Created (102 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:27 +0000] "PUT /cafe-runtime/data" 201 63 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [5] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [5] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:shapes> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [5] 200 OK (78 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [6] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Abfo-core
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [6] Body: Content-Length=98418, Content-Type=application/rdf+xml, Charset=null => RDF/XML : Count=1014 Triples=1014 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [6] 201 Created (156 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "PUT /cafe-runtime/data" 201 67 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [7] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [7] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:bfo-core> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [7] 200 OK (10 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [8] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Aiao
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [8] Body: Content-Length=589716, Content-Type=application/rdf+xml, Charset=null => RDF/XML : Count=5002 Triples=5002 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [8] 201 Created (200 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "PUT /cafe-runtime/data" 201 67 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [9] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [9] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:iao> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [9] 200 OK (7 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [10] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Acco-merged
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [10] Body: Content-Length=1274898, Content-Type=text/turtle, Charset=null => Turtle : Count=14228 Triples=14228 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [10] 201 Created (327 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "PUT /cafe-runtime/data" 201 69 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [11] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [11] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:cco-merged> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [11] 200 OK (11 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [12] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Aprov-core
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [12] Body: Content-Length=7465, Content-Type=text/turtle, Charset=null => Turtle : Count=79 Triples=79 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [12] 201 Created (30 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "PUT /cafe-runtime/data" 201 63 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [13] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [13] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:prov-core> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [13] 200 OK (2 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [14] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Aontara-record
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [14] Body: Content-Length=22548, Content-Type=text/turtle, Charset=null => Turtle : Count=169 Triples=169 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [14] 201 Created (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "PUT /cafe-runtime/data" 201 65 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [15] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [15] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:ontara-record> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [15] 200 OK (3 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [16] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Aontara-bmm
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [16] Body: Content-Length=21264, Content-Type=text/turtle, Charset=null => Turtle : Count=175 Triples=175 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [16] 201 Created (33 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "PUT /cafe-runtime/data" 201 65 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [17] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [17] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:ontara-bmm> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [17] 200 OK (2 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [18] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Aontara-bmm-axioms
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [18] Body: Content-Length=20124, Content-Type=text/turtle, Charset=null => Turtle : Count=256 Triples=256 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [18] 201 Created (30 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "PUT /cafe-runtime/data" 201 65 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [19] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [19] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:ontara-bmm-axioms> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [19] 200 OK (2 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [20] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Aontara-bmm-properties
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [20] Body: Content-Length=5941, Content-Type=text/turtle, Charset=null => Turtle : Count=99 Triples=99 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [20] 201 Created (24 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "PUT /cafe-runtime/data" 201 63 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [21] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [21] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:ontara-bmm-properties> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [21] 200 OK (3 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:28 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [22] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Aontara-bmm-weights
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [22] Body: Content-Length=59164, Content-Type=text/turtle, Charset=null => Turtle : Count=716 Triples=716 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [22] 201 Created (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:29 +0000] "PUT /cafe-runtime/data" 201 65 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [23] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [23] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:ontara-bmm-weights> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [23] 200 OK (2 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:29 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [24] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Aontara-governance
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [24] Body: Content-Length=30668, Content-Type=text/turtle, Charset=null => Turtle : Count=568 Triples=568 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [24] 201 Created (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:29 +0000] "PUT /cafe-runtime/data" 201 65 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [25] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [25] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:ontara-governance> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [25] 200 OK (2 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:29 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [26] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Aontara-domain
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [26] Body: Content-Length=45171, Content-Type=text/turtle, Charset=null => Turtle : Count=755 Triples=755 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [26] 201 Created (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:29 +0000] "PUT /cafe-runtime/data" 201 65 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [27] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [27] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:ontara-domain> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [27] 200 OK (3 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:29 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [28] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Akg%3Aontara-reasoning
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [28] Body: Content-Length=124016, Content-Type=text/turtle, Charset=null => Turtle : Count=564 Triples=564 Quads=0
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [28] 201 Created (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:29 +0000] "PUT /cafe-runtime/data" 201 65 "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [29] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [29] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:ontara-reasoning> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [29] 200 OK (3 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:29 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [30] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [30] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH ?g { ?s ?p ?o } }
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [30] 200 OK (10 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.7 - - [01/Nov/2026:10:26:29 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [31] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [31] 200 OK (53 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:30 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [32] PUT http://store:3030/cafe-runtime/data?graph=urn%3Aontara%3Astack%3Ashapes
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [32] Body: Content-Length=2133, Content-Type=text/turtle, Charset=null => Turtle : Count=32 Triples=32 Quads=0
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [32] 200 OK (29 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:30 +0000] "PUT /cafe-runtime/data" 200 63 "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [33] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [33] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH ?g { ?s ?p ?o } }
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [33] 200 OK (17 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:30 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [34] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [34] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:graph:loadtest> { ?s ?p ?o } }
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [34] 200 OK (3 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:30 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [35] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [35] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:graph:loadtest> { ?s ?p ?o } }
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [35] 200 OK (4 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:30 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [36] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [36] 200 OK (68 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [37] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [37] 200 OK (41 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [38] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [38] 200 OK (41 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [39] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [39] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [40] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [40] 200 OK (38 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [41] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [41] 200 OK (40 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [42] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [42] 200 OK (42 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [43] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [43] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [44] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [44] 200 OK (37 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [45] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [45] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [46] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [46] 200 OK (36 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [47] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [47] 200 OK (38 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [48] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [48] 200 OK (37 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [49] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [49] 200 OK (40 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [50] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [50] 200 OK (36 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [51] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [51] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [52] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [52] 200 OK (41 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [53] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [53] 200 OK (46 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [54] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [54] 200 OK (45 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [55] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [55] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [56] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [56] 200 OK (33 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [57] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [57] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:31 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [58] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [58] 200 OK (33 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [59] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [59] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [60] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [60] 200 OK (37 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [61] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [61] 200 OK (40 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [62] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [62] 200 OK (38 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [63] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [63] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [64] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [64] 200 OK (34 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [65] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [66] GET http://localhost:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [65] 200 OK (42 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [66] 200 OK (10 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - [0:0:0:0:0:0:0:1] - - [01/Nov/2026:10:26:32 +0000] "GET /cafe-runtime/validated-update" 200 - "" "curl/8.18.0"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [67] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [67] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [68] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [68] 200 OK (35 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [69] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [69] 200 OK (34 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [70] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [70] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [71] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [71] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [72] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [72] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [73] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [73] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [74] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [74] 200 OK (33 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [75] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [75] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [76] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [76] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [77] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [77] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [78] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [78] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [79] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [79] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [80] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [80] 200 OK (34 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [81] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [81] 200 OK (34 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:32 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [82] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [82] 200 OK (46 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [83] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [83] 200 OK (42 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [84] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [84] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [85] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [85] 200 OK (34 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [86] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [86] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:graph:loadtest> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [86] 200 OK (4 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [87] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [87] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [88] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [88] 200 OK (37 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [89] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [89] 200 OK (46 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [90] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [90] 200 OK (35 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [91] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [91] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [92] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [92] 200 OK (44 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [93] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [93] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [94] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [94] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [95] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [95] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [96] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [96] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [97] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [97] 200 OK (41 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [98] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [98] 200 OK (47 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [99] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [99] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [100] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [100] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [101] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [101] 200 OK (44 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [102] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [102] 200 OK (51 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [103] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [103] 200 OK (41 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [104] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [104] 200 OK (46 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:33 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [105] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [105] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [106] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [106] 200 OK (41 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [107] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [107] 200 OK (50 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [108] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [108] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [109] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [109] 200 OK (43 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [110] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [110] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [111] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [111] 200 OK (40 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [112] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [112] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [113] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [113] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [114] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [114] 200 OK (58 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [115] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [115] 200 OK (47 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [116] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [116] 200 OK (48 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [117] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [117] 200 OK (72 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [118] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [118] 200 OK (65 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [119] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [119] 200 OK (40 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [120] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [120] 200 OK (55 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [121] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [121] 200 OK (43 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [122] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [122] 200 OK (49 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [123] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [123] 200 OK (48 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:34 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [124] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [124] 200 OK (51 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [125] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [125] 200 OK (45 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [126] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [126] 200 OK (42 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [127] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [127] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [128] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [128] 200 OK (53 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [129] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [129] 200 OK (48 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [130] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [130] 200 OK (52 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [131] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [131] 200 OK (44 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [132] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [132] 200 OK (34 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [133] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [133] 200 OK (45 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [134] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [134] 200 OK (50 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [135] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [135] 200 OK (65 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [136] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [136] 200 OK (79 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [137] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [137] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:graph:loadtest> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [137] 200 OK (17 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [138] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [138] 200 OK (59 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [139] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [139] 200 OK (62 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [140] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [140] 200 OK (48 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [141] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [141] 200 OK (48 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:35 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [142] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [142] 200 OK (59 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [143] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [143] 200 OK (50 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [144] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [144] 200 OK (61 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [145] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [145] 200 OK (62 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [146] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [146] 200 OK (50 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [147] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [147] 200 OK (61 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [148] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [148] 200 OK (61 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [149] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [149] 200 OK (50 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [150] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [150] 200 OK (55 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [151] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [151] 200 OK (58 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [152] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [152] 200 OK (61 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [153] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [153] 200 OK (45 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [154] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [154] 200 OK (44 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [155] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [155] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [156] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [156] 200 OK (46 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [157] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [157] 200 OK (45 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [158] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [158] 200 OK (49 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [159] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [159] 200 OK (50 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:36 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [160] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [160] 200 OK (60 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [161] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [161] 200 OK (54 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [162] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [162] 200 OK (53 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [163] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [163] 200 OK (54 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [164] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [164] 200 OK (53 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [165] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [165] 200 OK (49 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [166] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [167] GET http://localhost:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [167] 200 OK (2 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - [0:0:0:0:0:0:0:1] - - [01/Nov/2026:10:26:37 +0000] "GET /cafe-runtime/validated-update" 200 - "" "curl/8.18.0"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [166] 200 OK (54 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [168] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [168] 200 OK (45 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [169] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [169] 200 OK (46 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [170] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [170] 200 OK (47 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [171] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [171] 200 OK (54 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [172] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [172] 200 OK (50 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [173] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [173] 200 OK (41 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [174] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [174] 200 OK (44 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [175] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [175] 200 OK (43 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [176] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [176] 200 OK (35 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [177] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [177] 200 OK (38 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [178] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [178] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [179] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [179] 200 OK (33 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:37 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [180] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [180] 200 OK (41 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [181] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [181] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [182] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [182] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [183] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [183] 200 OK (47 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [184] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [184] 200 OK (37 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [185] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [185] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [186] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [186] 200 OK (32 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [187] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [187] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [188] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [188] 200 OK (34 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [189] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [189] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:graph:loadtest> { ?s ?p ?o } }
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [189] 200 OK (3 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [190] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [190] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [191] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [191] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [192] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [192] 200 OK (67 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [193] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [193] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [194] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [194] 200 OK (35 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [195] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [195] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [196] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [196] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [197] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [197] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [198] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [198] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [199] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [199] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [200] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [200] 200 OK (37 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [201] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [201] 200 OK (32 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [202] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [202] 200 OK (34 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:38 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [203] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [203] 200 OK (30 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [204] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [204] 200 OK (30 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [205] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [205] 200 OK (34 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [206] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [206] 200 OK (33 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [207] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [207] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [208] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [208] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [209] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [209] 200 OK (38 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [210] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [210] 200 OK (33 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [211] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [211] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [212] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [212] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [213] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [213] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [214] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [214] 200 OK (37 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [215] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [215] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [216] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [216] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [217] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [217] 200 OK (41 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [218] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [218] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [219] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [219] 200 OK (38 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [220] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [220] 200 OK (35 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [221] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [221] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [222] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [222] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [223] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [223] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [224] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [224] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [225] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [225] 200 OK (34 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [226] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [226] 200 OK (35 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:39 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [227] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [227] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [228] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [228] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [229] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [229] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [230] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [230] 200 OK (34 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [231] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [231] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [232] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [232] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [233] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [233] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [234] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [234] 200 OK (37 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [235] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [235] 200 OK (35 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [236] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [236] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [237] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [237] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [238] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [238] 200 OK (37 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [239] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [239] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [240] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [240] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:graph:loadtest> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [240] 200 OK (3 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [241] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [241] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [242] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [242] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [243] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [243] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [244] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [244] 200 OK (37 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [245] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [245] 200 OK (40 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [246] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [246] 200 OK (41 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [247] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [247] 200 OK (43 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [248] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [248] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [249] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [249] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [250] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [250] 200 OK (37 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [251] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [251] 200 OK (34 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:40 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [252] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [252] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [253] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [253] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [254] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [254] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [255] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [255] 200 OK (36 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [256] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [256] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [257] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [257] 200 OK (38 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [258] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [258] 200 OK (37 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [259] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [259] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [260] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [260] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [261] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [261] 200 OK (38 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [262] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [262] 200 OK (36 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [263] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [263] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [264] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [264] 200 OK (41 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [265] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [265] 200 OK (40 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [266] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [266] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [267] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [267] 200 OK (40 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [268] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [268] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [269] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [269] 200 OK (41 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [270] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [270] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [271] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [271] 200 OK (39 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [272] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [272] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [273] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [273] 200 OK (37 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [274] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [274] 200 OK (37 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:41 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [275] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [275] 200 OK (41 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [276] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [276] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [277] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [277] 200 OK (45 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [278] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [278] 200 OK (41 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [279] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [279] 200 OK (42 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [280] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [280] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [281] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [281] 200 OK (44 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [282] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [282] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [283] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [284] GET http://localhost:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [284] 200 OK (0 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - [0:0:0:0:0:0:0:1] - - [01/Nov/2026:10:26:42 +0000] "GET /cafe-runtime/validated-update" 200 - "" "curl/8.18.0"
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Fuseki - [283] 200 OK (44 ms)
+[qtp1751403001-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [285] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [285] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [286] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [286] 200 OK (38 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [287] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [287] 200 OK (43 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [288] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [288] 200 OK (36 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [289] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [289] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [290] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [290] 200 OK (39 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [291] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [291] 200 OK (37 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [292] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [292] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:graph:loadtest> { ?s ?p ?o } }
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [292] 200 OK (3 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [293] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [293] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [294] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [294] 200 OK (38 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [295] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [295] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [296] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [296] 200 OK (42 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [297] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [297] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [298] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [298] 200 OK (36 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:42 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [299] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [299] 200 OK (41 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [300] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [300] 200 OK (39 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [301] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [301] 200 OK (41 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [302] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [302] 200 OK (37 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [303] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [303] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [304] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [304] 200 OK (39 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [305] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [305] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [306] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [306] 200 OK (40 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [307] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [307] 200 OK (42 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [308] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [308] 200 OK (38 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [309] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [309] 200 OK (44 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [310] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [310] 200 OK (41 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [311] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [311] 200 OK (42 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [312] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [312] 200 OK (42 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [313] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [313] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [314] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [314] 200 OK (40 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [315] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [315] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [316] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [316] 200 OK (41 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [317] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [317] 200 OK (43 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [318] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [318] 200 OK (42 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [319] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [319] 200 OK (41 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [320] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [320] 200 OK (41 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:43 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [321] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [321] 200 OK (43 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [322] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [322] 200 OK (41 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [323] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [323] 200 OK (41 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [324] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [324] 200 OK (39 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [325] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [325] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [326] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [326] 200 OK (41 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [327] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [327] 200 OK (39 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [328] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [328] 200 OK (40 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [329] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [329] 200 OK (48 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [330] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [330] 200 OK (39 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [331] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [331] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [332] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [332] 200 OK (39 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [333] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [333] 200 OK (42 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [334] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [334] 200 OK (40 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [335] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [335] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [336] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [336] 200 OK (40 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [337] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [337] 200 OK (38 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [338] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [338] 200 OK (38 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [339] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [339] 200 OK (40 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [340] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [340] 200 OK (43 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [341] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [341] 200 OK (41 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [342] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [342] 200 OK (38 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:44 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [343] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [343] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:graph:loadtest> { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [343] 200 OK (4 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:45 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [344] POST http://store:3030/cafe-runtime/validated-update
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [344] 200 OK (40 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:45 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [345] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [345] Query = PREFIX cafe: <urn:ontara:standin:cafe#> PREFIX rec: <urn:ontara:standin:rec#>  SELECT (COUNT(DISTINCT ?o) AS ?orders) (COUNT(DISTINCT ?readyOrder) AS ?ready) (COUNT(DISTINCT ?labRecord) AS ?labelled) WHERE { GRAPH <urn:ontara:stack:graph:loadtest> { ?o a cafe:Order . OPTIONAL { ?o cafe:status cafe:Ready . BIND(?o AS ?readyOrder) } OPTIONAL { ?rr rec:recordOf ?o ; rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm . FILTER(STRENDS(STR(?rr), "/ready-record")) BIND(?rr AS ?labRecord) } } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [345] 200 OK (17 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:45 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [346] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [346] Query = PREFIX cafe: <urn:ontara:standin:cafe#> PREFIX rec: <urn:ontara:standin:rec#>  SELECT (COUNT(DISTINCT ?o) AS ?orders) (COUNT(DISTINCT ?readyOrder) AS ?ready) (COUNT(DISTINCT ?labRecord) AS ?labelled) WHERE { GRAPH <urn:ontara:stack:graph:loadtest> { ?o a cafe:Order . OPTIONAL { ?o cafe:status cafe:Ready . BIND(?o AS ?readyOrder) } OPTIONAL { ?rr rec:recordOf ?o ; rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm . FILTER(STRENDS(STR(?rr), "/ready-record")) BIND(?rr AS ?labRecord) } } }
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [346] 200 OK (8 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:45 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [347] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [347] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH ?g { ?s ?p ?o } }
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Fuseki - [347] 200 OK (8 ms)
+[qtp1751403001-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:45 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [348] POST http://store:3030/cafe-runtime/query
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [348] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <urn:ontara:stack:graph:loadtest> { ?s ?p ?o } }
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Fuseki - [348] 200 OK (4 ms)
+[qtp1751403001-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:45 +0000] "POST /cafe-runtime/query" 200 - "" "node"
+[main] INFO org.eclipse.jetty.server.Server - jetty-12.1.1; built: 2025-09-08T04:29:45.457Z; git: b7068950f9afa5f1df80e46053eda1d982895b03; jvm 21.0.13+9-LTS
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@4ba534b0{org.apache.jena.fuseki.Servlet,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@6f0ca692{STARTED}}
+[main] INFO org.eclipse.jetty.ee10.servlet.ServletContextHandler - Started oeje10s.ServletContextHandler@4ba534b0{org.apache.jena.fuseki.Servlet,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@6f0ca692{STARTED}}
+[main] INFO org.eclipse.jetty.server.AbstractConnector - Started oejs.ServerConnector@64f3daa6{HTTP/1.1, (http/1.1)}{0.0.0.0:3030}
+[main] INFO org.eclipse.jetty.server.Server - Started oejs.Server@7c351808{STARTING}[12.1.1,sto=0] @516ms
+[main] INFO org.apache.jena.fuseki.Server - Start Fuseki (http=3030)
+[ontara-fuseki] Jena 5.6.0 (built for 5.6.0) on :3030, data /fuseki/databases/fault-20261101T102620Z-jena-5.6.0-whole-preload300-cold-plain-scan, validation whole, shapes graph <urn:ontara:stack:shapes>
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [1] GET http://127.0.0.1:7210/cafe-runtime/validated-update
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [1] 200 OK (24 ms)
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Request - 172.20.0.1 - - [01/Nov/2026:10:26:47 +0000] "GET /cafe-runtime/validated-update" 200 - "" "curl/8.7.1"
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [2] GET http://127.0.0.1:7210/cafe-runtime/validated-update
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [2] 200 OK (2 ms)
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Request - 172.20.0.1 - - [01/Nov/2026:10:26:47 +0000] "GET /cafe-runtime/validated-update" 200 - "" "curl/8.7.1"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [3] POST http://127.0.0.1:7210/cafe-runtime/update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [3] Update
+[qtp1447353473-21] WARN org.apache.jena.fuseki.Fuseki - [3] ActionErrorException with cause
+org.apache.jena.fuseki.servlets.ActionErrorException: Failed to LOAD 'file:///does-not-exist-fr001-102648.ttl' :: Not found: file:///does-not-exist-fr001-102648.ttl
+	at org.apache.jena.fuseki.servlets.ServletOps.actionErrorException(ServletOps.java:274)
+	at org.apache.jena.fuseki.servlets.ServletOps.errorOccurred(ServletOps.java:269)
+	at org.apache.jena.fuseki.servlets.SPARQL_Update.execute(SPARQL_Update.java:256)
+	at org.apache.jena.fuseki.servlets.SPARQL_Update.executeBody(SPARQL_Update.java:188)
+	at org.apache.jena.fuseki.servlets.SPARQL_Update.execute(SPARQL_Update.java:105)
+	at org.apache.jena.fuseki.servlets.ActionService.executeLifecycle(ActionService.java:58)
+	at org.apache.jena.fuseki.servlets.SPARQL_Update.execPost(SPARQL_Update.java:92)
+	at org.apache.jena.fuseki.servlets.ActionProcessor.process(ActionProcessor.java:34)
+	at org.apache.jena.fuseki.servlets.ActionBase.process(ActionBase.java:54)
+	at org.apache.jena.fuseki.servlets.ActionExecLib.execActionSub(ActionExecLib.java:124)
+	at org.apache.jena.fuseki.servlets.ActionExecLib.execAction(ActionExecLib.java:98)
+	at org.apache.jena.fuseki.server.Dispatcher.dispatchAction(Dispatcher.java:239)
+	at org.apache.jena.fuseki.server.Dispatcher.process(Dispatcher.java:229)
+	at org.apache.jena.fuseki.server.Dispatcher.dispatch(Dispatcher.java:147)
+	at org.apache.jena.fuseki.servlets.FusekiFilter.doFilter(FusekiFilter.java:49)
+	at org.eclipse.jetty.ee10.servlet.FilterHolder.doFilter(FilterHolder.java:205)
+	at org.eclipse.jetty.ee10.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1592)
+	at org.eclipse.jetty.ee10.servlet.ServletHandler$MappedServlet.handle(ServletHandler.java:1554)
+	at org.eclipse.jetty.ee10.servlet.ServletChannel.dispatch(ServletChannel.java:805)
+	at org.eclipse.jetty.ee10.servlet.ServletChannel.handle(ServletChannel.java:442)
+	at org.eclipse.jetty.ee10.servlet.ServletHandler.handle(ServletHandler.java:469)
+	at org.eclipse.jetty.server.handler.ContextHandler.handle(ContextHandler.java:1174)
+	at org.eclipse.jetty.server.Server.handle(Server.java:182)
+	at org.eclipse.jetty.server.internal.HttpChannelState$HandlerInvoker.run(HttpChannelState.java:682)
+	at org.eclipse.jetty.server.internal.HttpConnection.onFillable(HttpConnection.java:411)
+	at org.eclipse.jetty.server.internal.HttpConnection$FillableCallback.succeeded(HttpConnection.java:1819)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:105)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:54)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:521)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.epcRunTask(AdaptiveExecutionStrategy.java:492)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:447)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:297)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.run(AdaptiveExecutionStrategy.java:202)
+	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:312)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:1009)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1239)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1194)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: org.apache.jena.query.QueryException: Failed to LOAD 'file:///does-not-exist-fr001-102648.ttl' :: Not found: file:///does-not-exist-fr001-102648.ttl
+	at org.apache.jena.sparql.lang.arq.ParserARQUpdate.executeParse(ParserARQUpdate.java:55)
+	at org.apache.jena.sparql.lang.UpdateParser.parse(UpdateParser.java:53)
+	at org.apache.jena.update.UpdateAction.parseExecute(UpdateAction.java:459)
+	at org.apache.jena.update.UpdateAction.parseExecute(UpdateAction.java:411)
+	at org.apache.jena.fuseki.servlets.SPARQL_Update.execute(SPARQL_Update.java:226)
+	... 35 more
+Caused by: org.apache.jena.update.UpdateException: Failed to LOAD 'file:///does-not-exist-fr001-102648.ttl' :: Not found: file:///does-not-exist-fr001-102648.ttl
+	at org.apache.jena.sparql.modify.UpdateEngineWorker.lambda$visit$2(UpdateEngineWorker.java:236)
+	at org.apache.jena.sparql.modify.UpdateEngineWorker.executeOperation(UpdateEngineWorker.java:624)
+	at org.apache.jena.sparql.modify.UpdateEngineWorker.visit(UpdateEngineWorker.java:192)
+	at org.apache.jena.sparql.modify.request.UpdateLoad.visit(UpdateLoad.java:61)
+	at org.apache.jena.sparql.modify.UpdateVisitorSink.send(UpdateVisitorSink.java:45)
+	at org.apache.jena.sparql.modify.UpdateVisitorSink.send(UpdateVisitorSink.java:31)
+	at org.apache.jena.sparql.modify.UsingUpdateSink.send(UsingUpdateSink.java:55)
+	at org.apache.jena.sparql.modify.UsingUpdateSink.send(UsingUpdateSink.java:31)
+	at org.apache.jena.sparql.lang.SPARQLParserBase.emitUpdate(SPARQLParserBase.java:174)
+	at org.apache.jena.sparql.lang.arq.javacc.ARQParser.Update1(ARQParser.java:2064)
+	at org.apache.jena.sparql.lang.arq.javacc.ARQParser.Update(ARQParser.java:1990)
+	at org.apache.jena.sparql.lang.arq.javacc.ARQParser.UpdateUnit(ARQParser.java:63)
+	at org.apache.jena.sparql.lang.arq.ParserARQUpdate.executeParse(ParserARQUpdate.java:41)
+	... 39 more
+Caused by: org.apache.jena.riot.RiotNotFoundException: Not found: file:///does-not-exist-fr001-102648.ttl
+	at org.apache.jena.riot.RDFParser.openTypedInputStream(RDFParser.java:497)
+	at org.apache.jena.riot.RDFParser.parseURI(RDFParser.java:390)
+	at org.apache.jena.riot.RDFParser.parse(RDFParser.java:384)
+	at org.apache.jena.riot.RDFParserBuilder.parse(RDFParserBuilder.java:553)
+	at org.apache.jena.riot.RDFDataMgr.parseFromURI(RDFDataMgr.java:564)
+	at org.apache.jena.riot.RDFDataMgr.read(RDFDataMgr.java:429)
+	at org.apache.jena.riot.RDFDataMgr.read(RDFDataMgr.java:406)
+	at org.apache.jena.riot.RDFDataMgr.read(RDFDataMgr.java:386)
+	at org.apache.jena.sparql.modify.UpdateEngineWorker.lambda$visit$2(UpdateEngineWorker.java:207)
+	... 51 more
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [3] 500 Server Error (407 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.1 - - [01/Nov/2026:10:26:48 +0000] "POST /cafe-runtime/update" 500 111 "" "curl/8.7.1"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [4] POST http://127.0.0.1:7210/cafe-runtime/query
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [4] Query = ASK { GRAPH ?g { <urn:ontara:standin:cafe#plainabort-fr001-102648> ?p ?o } }
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [4] 200 OK (12 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.1 - - [01/Nov/2026:10:26:48 +0000] "POST /cafe-runtime/query" 200 - "" "curl/8.7.1"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [5] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [5] 200 OK (260 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:48 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [6] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [6] 200 OK (140 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:49 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [7] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [7] 200 OK (96 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:49 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [8] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [8] 200 OK (61 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:49 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [9] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [9] 200 OK (68 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:50 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [10] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [10] 200 OK (52 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:50 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [11] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [11] 200 OK (48 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:50 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [12] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [12] 200 OK (47 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:50 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [13] GET http://localhost:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [13] 200 OK (0 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - [0:0:0:0:0:0:0:1] - - [01/Nov/2026:10:26:50 +0000] "GET /cafe-runtime/validated-update" 200 - "" "curl/8.18.0"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [14] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [14] 200 OK (54 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:50 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [15] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [15] 200 OK (49 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:51 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [16] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [16] 200 OK (46 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:51 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [17] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [17] 200 OK (47 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:51 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [18] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [18] 200 OK (48 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:51 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [19] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [19] 200 OK (49 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:52 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [20] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [20] 200 OK (45 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:52 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [21] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [21] 200 OK (44 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:52 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [22] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [22] 200 OK (46 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:52 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [23] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [23] 200 OK (107 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:53 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [24] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [24] 200 OK (45 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:53 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [25] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [25] 200 OK (47 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:53 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [26] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [26] 200 OK (48 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:53 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [27] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [27] 200 OK (61 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:53 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [28] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [28] 200 OK (49 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:54 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [29] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [29] 200 OK (50 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:54 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [30] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [30] 200 OK (47 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:54 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [31] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [31] 200 OK (40 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:54 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [32] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [32] 200 OK (43 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:55 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [33] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [33] 200 OK (45 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:55 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [34] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [34] 200 OK (45 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:55 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [35] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [35] 200 OK (40 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:55 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [36] GET http://localhost:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [36] 200 OK (0 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - [0:0:0:0:0:0:0:1] - - [01/Nov/2026:10:26:55 +0000] "GET /cafe-runtime/validated-update" 200 - "" "curl/8.18.0"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [37] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [37] 200 OK (36 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:55 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [38] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [38] 200 OK (38 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:56 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [39] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [39] 200 OK (42 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:56 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [40] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [40] 200 OK (39 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:56 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [41] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [41] 200 OK (40 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:56 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [42] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [42] 200 OK (39 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:57 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [43] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [43] 200 OK (40 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:57 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [44] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [44] 200 OK (42 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:57 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [45] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [45] 200 OK (41 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:57 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [46] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [46] 200 OK (46 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:58 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [47] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [47] 200 OK (48 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:58 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [48] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [48] 200 OK (45 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:58 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [49] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [49] 200 OK (42 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:58 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [50] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [50] 200 OK (34 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:58 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [51] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [51] 200 OK (36 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:59 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [52] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [52] 200 OK (60 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:59 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [53] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [53] 200 OK (39 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:59 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [54] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [54] 200 OK (53 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:26:59 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [55] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [55] 200 OK (38 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:00 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [56] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [56] 200 OK (52 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:00 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [57] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [57] 200 OK (46 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:00 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [58] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-35] INFO org.apache.jena.fuseki.Fuseki - [59] GET http://localhost:3030/cafe-runtime/validated-update
+[qtp1447353473-35] INFO org.apache.jena.fuseki.Fuseki - [59] 200 OK (0 ms)
+[qtp1447353473-35] INFO org.apache.jena.fuseki.Request - [0:0:0:0:0:0:0:1] - - [01/Nov/2026:10:27:00 +0000] "GET /cafe-runtime/validated-update" 200 - "" "curl/8.18.0"
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Fuseki - [58] 200 OK (47 ms)
+[qtp1447353473-23] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:00 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [60] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [60] 200 OK (41 ms)
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:01 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [61] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [61] 200 OK (47 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:01 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [62] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [62] 200 OK (48 ms)
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:01 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [63] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [63] 200 OK (42 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:01 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [64] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [64] 200 OK (44 ms)
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:02 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [65] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [65] 200 OK (46 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:02 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [66] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [66] 200 OK (42 ms)
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:02 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [67] POST http://store:3030/cafe-runtime/validated-update
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [67] 200 OK (38 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.6 - - [01/Nov/2026:10:27:02 +0000] "POST /cafe-runtime/validated-update" 200 - "" "node"
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [68] POST http://127.0.0.1:7210/cafe-runtime/query
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [68] Query = SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE { GRAPH <urn:ontara:stack:graph:fault-20261101T102620Z-jena-5.6.0-whole-preload300-cold-plain-scan> { ?s a <urn:ontara:standin:rec#PlatformRecord> . FILTER(STRSTARTS(STR(?s), "urn:ontara:standin:cafe#good-")) } }
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [68] 200 OK (16 ms)
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Request - 172.20.0.1 - - [01/Nov/2026:10:27:02 +0000] "POST /cafe-runtime/query" 200 - "" "curl/8.7.1"
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [69] GET http://127.0.0.1:7210/cafe-runtime/data
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [69] 200 OK (191 ms)
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Request - 172.20.0.1 - - [01/Nov/2026:10:27:03 +0000] "GET /cafe-runtime/data" 200 - "" "curl/8.7.1"
+[main] INFO org.eclipse.jetty.server.Server - jetty-12.1.1; built: 2025-09-08T04:29:45.457Z; git: b7068950f9afa5f1df80e46053eda1d982895b03; jvm 21.0.13+9-LTS
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@4ba534b0{org.apache.jena.fuseki.Servlet,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@6f0ca692{STARTED}}
+[main] INFO org.eclipse.jetty.ee10.servlet.ServletContextHandler - Started oeje10s.ServletContextHandler@4ba534b0{org.apache.jena.fuseki.Servlet,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@6f0ca692{STARTED}}
+[main] INFO org.eclipse.jetty.server.AbstractConnector - Started oejs.ServerConnector@3185fa6b{HTTP/1.1, (http/1.1)}{0.0.0.0:3030}
+[main] INFO org.eclipse.jetty.server.Server - Started oejs.Server@7c351808{STARTING}[12.1.1,sto=0] @476ms
+[main] INFO org.apache.jena.fuseki.Server - Start Fuseki (http=3030)
+[ontara-fuseki] Jena 5.6.0 (built for 5.6.0) on :3030, data /fuseki/databases/fault-20261101T102620Z-jena-5.6.0-whole-preload300-cold-plain-scan, validation whole, shapes graph <urn:ontara:stack:shapes>
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [1] GET http://127.0.0.1:7210/cafe-runtime/validated-update
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [1] 200 OK (22 ms)
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Request - 172.20.0.1 - - [01/Nov/2026:10:27:06 +0000] "GET /cafe-runtime/validated-update" 200 - "" "curl/8.7.1"
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [2] POST http://127.0.0.1:7210/cafe-runtime/query
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [2] Query = SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE { GRAPH <urn:ontara:stack:graph:fault-20261101T102620Z-jena-5.6.0-whole-preload300-cold-plain-scan> { ?s a <urn:ontara:standin:rec#PlatformRecord> . FILTER(STRSTARTS(STR(?s), "urn:ontara:standin:cafe#good-")) } }
+[qtp1447353473-25] ERROR org.apache.jena.tdb2.solver.BindingTDB - get1(?s)
+org.apache.jena.tdb2.TDBException: NodeTableTRDF/Read
+	at org.apache.jena.tdb2.store.nodetable.NodeTableTRDF.readNodeFromTable(NodeTableTRDF.java:87)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableNative._retrieveNodeByNodeId(NodeTableNative.java:102)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableNative.getNodeForNodeId(NodeTableNative.java:52)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableCache._retrieveNodeByNodeId(NodeTableCache.java:212)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableCache.getNodeForNodeId(NodeTableCache.java:137)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableWrapper.getNodeForNodeId(NodeTableWrapper.java:52)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableInline.getNodeForNodeId(NodeTableInline.java:65)
+	at org.apache.jena.tdb2.solver.BindingTDB.get1(BindingTDB.java:127)
+	at org.apache.jena.sparql.engine.binding.BindingBase.get(BindingBase.java:119)
+	at org.apache.jena.sparql.expr.ExprVar.eval(ExprVar.java:63)
+	at org.apache.jena.sparql.expr.ExprVar.eval(ExprVar.java:57)
+	at org.apache.jena.sparql.expr.ExprNode.eval(ExprNode.java:109)
+	at org.apache.jena.sparql.expr.ExprFunction1.eval(ExprFunction1.java:64)
+	at org.apache.jena.sparql.expr.ExprNode.eval(ExprNode.java:109)
+	at org.apache.jena.sparql.expr.ExprFunction2.eval(ExprFunction2.java:76)
+	at org.apache.jena.sparql.expr.ExprNode.isSatisfied(ExprNode.java:47)
+	at org.apache.jena.sparql.engine.iterator.QueryIterFilterExpr.accept(QueryIterFilterExpr.java:50)
+	at org.apache.jena.sparql.engine.iterator.QueryIterProcessBinding.hasNextBinding(QueryIterProcessBinding.java:80)
+	at org.apache.jena.sparql.engine.iterator.QueryIteratorBase.hasNext(QueryIteratorBase.java:122)
+	at org.apache.jena.sparql.engine.iterator.QueryIterGroup$1.initializeIterator(QueryIterGroup.java:82)
+	at org.apache.jena.atlas.iterator.IteratorDelayedInitialization.init(IteratorDelayedInitialization.java:39)
+	at org.apache.jena.atlas.iterator.IteratorDelayedInitialization.hasNext(IteratorDelayedInitialization.java:49)
+	at org.apache.jena.sparql.engine.iterator.QueryIterPlainWrapper.hasNextBinding(QueryIterPlainWrapper.java:59)
+	at org.apache.jena.sparql.engine.iterator.QueryIteratorBase.hasNext(QueryIteratorBase.java:122)
+	at org.apache.jena.sparql.engine.iterator.QueryIterProcessBinding.hasNextBinding(QueryIterProcessBinding.java:76)
+	at org.apache.jena.sparql.engine.iterator.QueryIteratorBase.hasNext(QueryIteratorBase.java:122)
+	at org.apache.jena.sparql.engine.iterator.QueryIterConvert.hasNextBinding(QueryIterConvert.java:58)
+	at org.apache.jena.sparql.engine.iterator.QueryIteratorBase.hasNext(QueryIteratorBase.java:122)
+	at org.apache.jena.sparql.engine.iterator.QueryIteratorWrapper.hasNextBinding(QueryIteratorWrapper.java:37)
+	at org.apache.jena.sparql.engine.iterator.QueryIteratorBase.hasNext(QueryIteratorBase.java:122)
+	at org.apache.jena.sparql.engine.iterator.QueryIteratorWrapper.hasNextBinding(QueryIteratorWrapper.java:37)
+	at org.apache.jena.sparql.engine.iterator.QueryIteratorBase.hasNext(QueryIteratorBase.java:122)
+	at org.apache.jena.sparql.exec.RowSetStream.hasNext(RowSetStream.java:48)
+	at org.apache.jena.fuseki.servlets.SPARQLQueryProcessor.executeQuery(SPARQLQueryProcessor.java:391)
+	at org.apache.jena.fuseki.servlets.SPARQLQueryProcessor.execute(SPARQLQueryProcessor.java:284)
+	at org.apache.jena.fuseki.servlets.SPARQLQueryProcessor.executeWithParameter(SPARQLQueryProcessor.java:224)
+	at org.apache.jena.fuseki.servlets.SPARQLQueryProcessor.execute(SPARQLQueryProcessor.java:209)
+	at org.apache.jena.fuseki.servlets.ActionService.executeLifecycle(ActionService.java:58)
+	at org.apache.jena.fuseki.servlets.SPARQLQueryProcessor.execPost(SPARQLQueryProcessor.java:84)
+	at org.apache.jena.fuseki.servlets.ActionProcessor.process(ActionProcessor.java:34)
+	at org.apache.jena.fuseki.servlets.ActionBase.process(ActionBase.java:54)
+	at org.apache.jena.fuseki.servlets.ActionExecLib.execActionSub(ActionExecLib.java:124)
+	at org.apache.jena.fuseki.servlets.ActionExecLib.execAction(ActionExecLib.java:98)
+	at org.apache.jena.fuseki.server.Dispatcher.dispatchAction(Dispatcher.java:239)
+	at org.apache.jena.fuseki.server.Dispatcher.process(Dispatcher.java:229)
+	at org.apache.jena.fuseki.server.Dispatcher.dispatch(Dispatcher.java:147)
+	at org.apache.jena.fuseki.servlets.FusekiFilter.doFilter(FusekiFilter.java:49)
+	at org.eclipse.jetty.ee10.servlet.FilterHolder.doFilter(FilterHolder.java:205)
+	at org.eclipse.jetty.ee10.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1592)
+	at org.eclipse.jetty.ee10.servlet.ServletHandler$MappedServlet.handle(ServletHandler.java:1554)
+	at org.eclipse.jetty.ee10.servlet.ServletChannel.dispatch(ServletChannel.java:805)
+	at org.eclipse.jetty.ee10.servlet.ServletChannel.handle(ServletChannel.java:442)
+	at org.eclipse.jetty.ee10.servlet.ServletHandler.handle(ServletHandler.java:469)
+	at org.eclipse.jetty.server.handler.ContextHandler.handle(ContextHandler.java:1174)
+	at org.eclipse.jetty.server.Server.handle(Server.java:182)
+	at org.eclipse.jetty.server.internal.HttpChannelState$HandlerInvoker.run(HttpChannelState.java:682)
+	at org.eclipse.jetty.server.internal.HttpConnection.onFillable(HttpConnection.java:411)
+	at org.eclipse.jetty.server.internal.HttpConnection$FillableCallback.succeeded(HttpConnection.java:1819)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:105)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:54)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:1009)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1239)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1194)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: org.apache.thrift.protocol.TProtocolException: Unrecognized type 0
+	at org.apache.thrift.protocol.TProtocolUtil.skip(TProtocolUtil.java:140)
+	at org.apache.thrift.protocol.TProtocolUtil.skip(TProtocolUtil.java:53)
+	at org.apache.jena.riot.thrift.wire.RDF_Term.standardSchemeReadValue(RDF_Term.java:435)
+	at org.apache.thrift.TUnion$TUnionStandardScheme.read(TUnion.java:238)
+	at org.apache.thrift.TUnion$TUnionStandardScheme.read(TUnion.java:227)
+	at org.apache.thrift.TUnion.read(TUnion.java:145)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableTRDF.readNodeFromTable(NodeTableTRDF.java:82)
+	... 63 more
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Fuseki - [2] 200 OK (92 ms)
+[qtp1447353473-25] INFO org.apache.jena.fuseki.Request - 172.20.0.1 - - [01/Nov/2026:10:27:06 +0000] "POST /cafe-runtime/query" 200 - "" "curl/8.7.1"
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [3] GET http://127.0.0.1:7210/cafe-runtime/data
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Fuseki - [3] 406 Not Acceptable (296 ms)
+[qtp1447353473-21] INFO org.apache.jena.fuseki.Request - 172.20.0.1 - - [01/Nov/2026:10:27:06 +0000] "GET /cafe-runtime/data" 200 - "" "curl/8.7.1"

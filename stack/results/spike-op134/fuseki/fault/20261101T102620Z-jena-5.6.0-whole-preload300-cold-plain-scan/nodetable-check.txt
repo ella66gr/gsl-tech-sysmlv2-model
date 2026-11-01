@@ -1,0 +1,30 @@
+ Container ontara-spike-fuseki-store-run-2cca414fc75e Creating 
+ Container ontara-spike-fuseki-store-run-2cca414fc75e Created 
+Jena 5.6.0, database /fuseki/databases/fault-20261101T102620Z-jena-5.6.0-whole-preload300-cold-plain-scan/cafe-runtime, zero-run threshold 32 bytes
+PHYSICAL Data-0001/nodes-data.obj: 1237488 bytes; zero runs >= 32: 1, 217 bytes in all
+  zero run at offset 1234417, length 217
+LOGICAL read FAILED after 43157 quads; last good quad: [urn:ontara:stack:graph:loadtest urn:ontara:standin:cafe#order-ae4c01ce-w1-00300/ready-record urn:ontara:standin:rec#recordedAt "2026-11-01T10:26:45.01+00:00"^^xsd:dateTime]
+org.apache.jena.tdb2.TDBException: NodeTableTRDF/Read
+	at org.apache.jena.tdb2.store.nodetable.NodeTableTRDF.readNodeFromTable(NodeTableTRDF.java:87)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableNative._retrieveNodeByNodeId(NodeTableNative.java:102)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableNative.getNodeForNodeId(NodeTableNative.java:52)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableCache._retrieveNodeByNodeId(NodeTableCache.java:212)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableCache.getNodeForNodeId(NodeTableCache.java:137)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableWrapper.getNodeForNodeId(NodeTableWrapper.java:52)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableInline.getNodeForNodeId(NodeTableInline.java:65)
+	at org.apache.jena.tdb2.lib.TupleLib.quad(TupleLib.java:107)
+	at org.apache.jena.tdb2.lib.TupleLib.quad(TupleLib.java:103)
+	at org.apache.jena.tdb2.lib.TupleLib.lambda$convertToQuads$3(TupleLib.java:52)
+	at org.apache.jena.atlas.iterator.Iter$IterMap.next(Iter.java:443)
+	at org.apache.jena.atlas.iterator.IteratorWrapper.next(IteratorWrapper.java:42)
+	at org.apache.jena.dboe.transaction.txn.IteratorTxnTracker.next(IteratorTxnTracker.java:39)
+	at dev.ontara.spike.NodeTableCheck.main(NodeTableCheck.java:60)
+Caused by: org.apache.thrift.protocol.TProtocolException: Unrecognized type 0
+	at org.apache.thrift.protocol.TProtocolUtil.skip(TProtocolUtil.java:140)
+	at org.apache.thrift.protocol.TProtocolUtil.skip(TProtocolUtil.java:53)
+	at org.apache.jena.riot.thrift.wire.RDF_Term.standardSchemeReadValue(RDF_Term.java:435)
+	at org.apache.thrift.TUnion$TUnionStandardScheme.read(TUnion.java:238)
+	at org.apache.thrift.TUnion$TUnionStandardScheme.read(TUnion.java:227)
+	at org.apache.thrift.TUnion.read(TUnion.java:145)
+	at org.apache.jena.tdb2.store.nodetable.NodeTableTRDF.readNodeFromTable(NodeTableTRDF.java:82)
+	... 13 more
