@@ -1,0 +1,1 @@
+minds: IDENTICAL; text 2 types, 9 axes, 67 transitions, 0 preconditions in 0.052 s; opensysml 2 types, 9 axes, 67 transitions, 0 preconditions in 1.409 s (opensysml 0.11.0)

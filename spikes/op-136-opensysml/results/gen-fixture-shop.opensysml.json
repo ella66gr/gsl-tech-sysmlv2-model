@@ -1,0 +1,227 @@
+{
+  "ok": true,
+  "types": [
+    {
+      "type": "Ticket",
+      "qualified": "FixtureShop::Ticket",
+      "source": "generation/tests/fixtures/shop/domain/shop.sysml (FixtureShop::Ticket)",
+      "refs": {
+        "owner": [
+          "Item",
+          null
+        ],
+        "payer": [
+          "Party",
+          null
+        ]
+      },
+      "axes": [
+        {
+          "usage": "stageAxis",
+          "name": "stage",
+          "ident": "TicketStage",
+          "values": [
+            "placed",
+            "inPreparation",
+            "ready",
+            "collected",
+            "cancelled"
+          ],
+          "default": "placed",
+          "authority": [
+            "operatorSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [
+            "collected",
+            "cancelled"
+          ],
+          "transitions": [
+            {
+              "name": "placedToInPreparation",
+              "from": "placed",
+              "to": "inPreparation",
+              "label": "Start work",
+              "event": "Started",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "inPreparationToReady",
+              "from": "inPreparation",
+              "to": "ready",
+              "label": "Finish work",
+              "event": "Finished",
+              "requiredAuthority": [
+                "operatorSide",
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "readyToCollected",
+              "from": "ready",
+              "to": "collected",
+              "label": "Hand over",
+              "event": "Collected",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": [
+                {
+                  "name": "settled",
+                  "relatedVia": null,
+                  "relatedType": "Ticket",
+                  "requiredAxis": "payment",
+                  "requiredValues": [
+                    "paid",
+                    "waived"
+                  ],
+                  "rejectionReason": "The ticket is not settled."
+                }
+              ]
+            },
+            {
+              "name": "placedToCancelled",
+              "from": "placed",
+              "to": "cancelled",
+              "label": "Withdraw",
+              "event": "Withdrawn",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "inPreparationToCancelled",
+              "from": "inPreparation",
+              "to": "cancelled",
+              "label": "Withdraw",
+              "event": "Withdrawn",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "paymentAxis",
+          "name": "payment",
+          "ident": "TicketPayment",
+          "values": [
+            "unpaid",
+            "paid",
+            "waived"
+          ],
+          "default": "unpaid",
+          "authority": [
+            "operatorSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [
+            "paid",
+            "waived"
+          ],
+          "transitions": [
+            {
+              "name": "unpaidToPaid",
+              "from": "unpaid",
+              "to": "paid",
+              "label": "payment received",
+              "event": "Paid",
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "unpaidToWaived",
+              "from": "unpaid",
+              "to": "waived",
+              "label": "Waive",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "TicketTask",
+      "qualified": "FixtureShop::TicketTask",
+      "source": "generation/tests/fixtures/shop/domain/shop.sysml (FixtureShop::TicketTask)",
+      "refs": {
+        "ticket": [
+          "Ticket",
+          null
+        ]
+      },
+      "axes": [
+        {
+          "usage": "workAxis",
+          "name": "work",
+          "ident": "TicketTaskWork",
+          "values": [
+            "waiting",
+            "working",
+            "done"
+          ],
+          "default": "waiting",
+          "authority": [
+            "operatorSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [
+            "done"
+          ],
+          "transitions": [
+            {
+              "name": "waitingToWorking",
+              "from": "waiting",
+              "to": "working",
+              "label": "Begin task",
+              "event": "TaskBegun",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": [
+                {
+                  "name": "ticketUnderWay",
+                  "relatedVia": "ticket",
+                  "relatedType": "Ticket",
+                  "requiredAxis": "stage",
+                  "requiredValues": [
+                    "inPreparation",
+                    "ready"
+                  ],
+                  "rejectionReason": "The ticket is not under way."
+                }
+              ]
+            },
+            {
+              "name": "workingToDone",
+              "from": "working",
+              "to": "done",
+              "label": "task done",
+              "event": "TaskDone",
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

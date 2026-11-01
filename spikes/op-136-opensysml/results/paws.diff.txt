@@ -1,1 +1,1 @@
-paws: IDENTICAL; text 1 types, 4 axes, 15 transitions, 0 preconditions in 0.019 s; opensysml 1 types, 4 axes, 15 transitions, 0 preconditions in 1.138 s (opensysml 0.11.0)
+paws: IDENTICAL; text 1 types, 4 axes, 15 transitions, 0 preconditions in 0.018 s; opensysml 1 types, 4 axes, 15 transitions, 0 preconditions in 1.079 s (opensysml 0.11.0)

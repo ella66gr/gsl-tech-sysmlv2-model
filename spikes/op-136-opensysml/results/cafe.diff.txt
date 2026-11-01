@@ -12,4 +12,4 @@
            "Order",
            null
 
-cafe: DIFFERENT; text 2 types, 3 axes, 12 transitions, 1 preconditions in 0.033 s; opensysml 2 types, 3 axes, 12 transitions, 1 preconditions in 1.521 s (opensysml 0.11.0)
+cafe: DIFFERENT; text 2 types, 3 axes, 12 transitions, 1 preconditions in 0.029 s; opensysml 2 types, 3 axes, 12 transitions, 1 preconditions in 1.272 s (opensysml 0.11.0)

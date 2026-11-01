@@ -1,0 +1,984 @@
+{
+  "ok": true,
+  "types": [
+    {
+      "type": "ClientEngagement",
+      "qualified": "MindsCanonicalRuntime::ClientEngagement",
+      "source": "exercises/minds-demonstrator/model/minds.sysml (MindsCanonicalRuntime::ClientEngagement)",
+      "refs": {},
+      "axes": [
+        {
+          "usage": "lifecycleAxis",
+          "name": "lifecycle",
+          "ident": "ClientEngagementLifecycle",
+          "values": [
+            "prospective",
+            "intake",
+            "suitabilityReview",
+            "contracting",
+            "active",
+            "paused",
+            "underReview",
+            "transitioning",
+            "endedPlanned",
+            "endedUnplanned",
+            "referredOut",
+            "closed"
+          ],
+          "default": "prospective",
+          "authority": [
+            "operatorSide",
+            "customerSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [
+            "referredOut",
+            "closed"
+          ],
+          "transitions": [
+            {
+              "name": "prospectiveToIntake",
+              "from": "prospective",
+              "to": "intake",
+              "label": "enquiry received and intake form initiated",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide",
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "intakeToSuitabilityReview",
+              "from": "intake",
+              "to": "suitabilityReview",
+              "label": "intake form submitted; routed to suitability review",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "suitabilityReviewToContracting",
+              "from": "suitabilityReview",
+              "to": "contracting",
+              "label": "suitability accepted; proceed to first-session contracting",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "suitabilityReviewToReferredOut",
+              "from": "suitabilityReview",
+              "to": "referredOut",
+              "label": "out-of-scope; signposted to external destination",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "contractingToActive",
+              "from": "contracting",
+              "to": "active",
+              "label": "first session contracted; engagement active",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "activeToUnderReview",
+              "from": "active",
+              "to": "underReview",
+              "label": "review gate reached at session 6 / 12 / 20",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "underReviewToActive",
+              "from": "underReview",
+              "to": "active",
+              "label": "review gate decision: continue",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "underReviewToTransitioning",
+              "from": "underReview",
+              "to": "transitioning",
+              "label": "review gate decision: change modality",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "transitioningToActive",
+              "from": "transitioning",
+              "to": "active",
+              "label": "modality re-contracting complete; active under new modality",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "activeToPaused",
+              "from": "active",
+              "to": "paused",
+              "label": "client requests pause; preserved within 90-day re-presentation window",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "pausedToActive",
+              "from": "paused",
+              "to": "active",
+              "label": "client returns within 90-day window",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "pausedToClosed",
+              "from": "paused",
+              "to": "closed",
+              "label": "90-day re-presentation window passed without return",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "underReviewToEndedPlanned",
+              "from": "underReview",
+              "to": "endedPlanned",
+              "label": "review gate decision: ending well",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "activeToEndedUnplanned",
+              "from": "active",
+              "to": "endedUnplanned",
+              "label": "engagement ends without ending-well session",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "endedPlannedToClosed",
+              "from": "endedPlanned",
+              "to": "closed",
+              "label": "post-closure check-in window passed; engagement closed",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "endedUnplannedToClosed",
+              "from": "endedUnplanned",
+              "to": "closed",
+              "label": "post-closure check-in attempt completed or window passed; engagement closed",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "modalityAxis",
+          "name": "modality",
+          "ident": "ClientEngagementModality",
+          "values": [
+            "digitalOnly",
+            "counselling",
+            "psychotherapy",
+            "coaching",
+            "transitioning"
+          ],
+          "default": "digitalOnly",
+          "authority": [
+            "operatorSide",
+            "customerSide"
+          ],
+          "shape": "unorderedEnum",
+          "terminal": [],
+          "transitions": [
+            {
+              "name": "digitalOnlyToCounselling",
+              "from": "digitalOnly",
+              "to": "transitioning",
+              "label": "digital-only client moves into human-led counselling — re-contracting with Cara",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "transitioningToCounselling",
+              "from": "transitioning",
+              "to": "counselling",
+              "label": "re-contracting complete; counselling delivery active",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "counsellingToTransitioning",
+              "from": "counselling",
+              "to": "transitioning",
+              "label": "modality change initiated from counselling",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "psychotherapyToTransitioning",
+              "from": "psychotherapy",
+              "to": "transitioning",
+              "label": "modality change initiated from psychotherapy",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "coachingToTransitioning",
+              "from": "coaching",
+              "to": "transitioning",
+              "label": "modality change initiated from coaching",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "transitioningToPsychotherapy",
+              "from": "transitioning",
+              "to": "psychotherapy",
+              "label": "re-contracting complete; psychotherapy delivery active",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "transitioningToCoaching",
+              "from": "transitioning",
+              "to": "coaching",
+              "label": "re-contracting complete; coaching delivery active",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "customerSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "riskTierAxis",
+          "name": "riskTier",
+          "ident": "ClientEngagementRiskTier",
+          "values": [
+            "standard",
+            "gradedConcern",
+            "elevated",
+            "activeEscalation",
+            "postEscalationReview"
+          ],
+          "default": "standard",
+          "authority": [
+            "operatorSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [],
+          "transitions": [
+            {
+              "name": "standardToGradedConcern",
+              "from": "standard",
+              "to": "gradedConcern",
+              "label": "graded concern observed — continued engagement with watchpoint",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "gradedConcernToElevated",
+              "from": "gradedConcern",
+              "to": "elevated",
+              "label": "concern advanced to elevated risk — additional safeguards engaged",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "elevatedToActiveEscalation",
+              "from": "elevated",
+              "to": "activeEscalation",
+              "label": "active escalation — mandatory safety-plan activation, trusted-contact check",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "standardToActiveEscalation",
+              "from": "standard",
+              "to": "activeEscalation",
+              "label": "rapid escalation to active escalation from standard",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "activeEscalationToPostEscalationReview",
+              "from": "activeEscalation",
+              "to": "postEscalationReview",
+              "label": "active escalation closed — review of escalation closure",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "postEscalationReviewToStandard",
+              "from": "postEscalationReview",
+              "to": "standard",
+              "label": "post-escalation review confirms return to standard tier",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "paymentAxis",
+          "name": "payment",
+          "ident": "ClientEngagementPayment",
+          "values": [
+            "selfPayPerSession",
+            "blockPurchaseActive",
+            "corporateInvoice",
+            "overdue",
+            "paidUp",
+            "refunded"
+          ],
+          "default": "selfPayPerSession",
+          "authority": [
+            "systemSide",
+            "operatorSide"
+          ],
+          "shape": "unorderedEnum",
+          "terminal": [
+            "corporateInvoice",
+            "paidUp",
+            "refunded"
+          ],
+          "transitions": [
+            {
+              "name": "selfPayToBlockPurchase",
+              "from": "selfPayPerSession",
+              "to": "blockPurchaseActive",
+              "label": "client purchases a block (counselling or coaching only)",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "blockPurchaseToPaidUp",
+              "from": "blockPurchaseActive",
+              "to": "paidUp",
+              "label": "block prepay reconciled at session delivery",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "selfPayToOverdue",
+              "from": "selfPayPerSession",
+              "to": "overdue",
+              "label": "expected payment not received within window",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "overdueToSelfPay",
+              "from": "overdue",
+              "to": "selfPayPerSession",
+              "label": "outstanding payment received — return to standard",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "overdueToRefunded",
+              "from": "overdue",
+              "to": "refunded",
+              "label": "refund issued under PricingRule",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "selfPayToCorporateInvoice",
+              "from": "selfPayPerSession",
+              "to": "corporateInvoice",
+              "label": "engagement reconfigured under corporate-coaching arrangement",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "confidentialityAxis",
+          "name": "confidentiality",
+          "ident": "ClientEngagementConfidentiality",
+          "values": [
+            "consentedBaseline",
+            "consentedWithSharingPermission",
+            "safetyPlanActivated",
+            "consentWithdrawnPartial",
+            "consentWithdrawnFull"
+          ],
+          "default": "consentedBaseline",
+          "authority": [
+            "customerSide",
+            "operatorSide"
+          ],
+          "shape": "unorderedEnum",
+          "terminal": [
+            "consentWithdrawnPartial",
+            "consentWithdrawnFull"
+          ],
+          "transitions": [
+            {
+              "name": "baselineToWithSharingPermission",
+              "from": "consentedBaseline",
+              "to": "consentedWithSharingPermission",
+              "label": "client grants specific sharing permission (e.g. GP liaison)",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "withSharingPermissionToBaseline",
+              "from": "consentedWithSharingPermission",
+              "to": "consentedBaseline",
+              "label": "client revokes specific sharing permission",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "baselineToSafetyPlanActivated",
+              "from": "consentedBaseline",
+              "to": "safetyPlanActivated",
+              "label": "safety plan activated on clinical grounds",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "safetyPlanActivatedToBaseline",
+              "from": "safetyPlanActivated",
+              "to": "consentedBaseline",
+              "label": "post-escalation review confirms return to baseline",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "baselineToConsentWithdrawnPartial",
+              "from": "consentedBaseline",
+              "to": "consentWithdrawnPartial",
+              "label": "client withdraws specific consent (e.g. data sharing with employer)",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "baselineToConsentWithdrawnFull",
+              "from": "consentedBaseline",
+              "to": "consentWithdrawnFull",
+              "label": "client withdraws full consent — engagement closure required",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "DigitalSubscription",
+      "qualified": "MindsCanonicalRuntime::DigitalSubscription",
+      "source": "exercises/minds-demonstrator/model/minds.sysml (MindsCanonicalRuntime::DigitalSubscription)",
+      "refs": {},
+      "axes": [
+        {
+          "usage": "subscriptionLifecycleAxis",
+          "name": "subscriptionLifecycle",
+          "ident": "DigitalSubscriptionSubscriptionLifecycle",
+          "values": [
+            "trial",
+            "active",
+            "paused",
+            "gracePeriod",
+            "cancelledPendingEndOfPeriod",
+            "cancelled",
+            "churned",
+            "reactivated"
+          ],
+          "default": "trial",
+          "authority": [
+            "customerSide",
+            "systemSide"
+          ],
+          "shape": "unorderedEnum",
+          "terminal": [
+            "paused"
+          ],
+          "transitions": [
+            {
+              "name": "trialToActive",
+              "from": "trial",
+              "to": "active",
+              "label": "first paid billing event succeeds",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "activeToGracePeriod",
+              "from": "active",
+              "to": "gracePeriod",
+              "label": "billing failure — entered grace period for retry",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "gracePeriodToActive",
+              "from": "gracePeriod",
+              "to": "active",
+              "label": "billing resolved within grace period",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "gracePeriodToCancelledPendingEnd",
+              "from": "gracePeriod",
+              "to": "cancelledPendingEndOfPeriod",
+              "label": "billing not resolved within grace period — cancellation scheduled at period end",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "activeToCancelledPendingEnd",
+              "from": "active",
+              "to": "cancelledPendingEndOfPeriod",
+              "label": "user cancels — access continues until end of paid period",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "cancelledPendingEndToCancelled",
+              "from": "cancelledPendingEndOfPeriod",
+              "to": "cancelled",
+              "label": "paid period ends — subscription cancelled",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "cancelledToChurned",
+              "from": "cancelled",
+              "to": "churned",
+              "label": "30-day post-cancellation window passed without reactivation",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "churnedToReactivated",
+              "from": "churned",
+              "to": "reactivated",
+              "label": "previously-churned subscriber returns and signs up",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "reactivatedToActive",
+              "from": "reactivated",
+              "to": "active",
+              "label": "reactivated subscription enters active lifecycle",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "billingAxis",
+          "name": "billing",
+          "ident": "DigitalSubscriptionBilling",
+          "values": [
+            "current",
+            "paymentFailed",
+            "retryScheduled",
+            "resolved",
+            "finalFailure"
+          ],
+          "default": "current",
+          "authority": [
+            "systemSide"
+          ],
+          "shape": "unorderedEnum",
+          "terminal": [
+            "finalFailure"
+          ],
+          "transitions": [
+            {
+              "name": "currentToPaymentFailed",
+              "from": "current",
+              "to": "paymentFailed",
+              "label": "payment-processor reports failed transaction",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "paymentFailedToRetryScheduled",
+              "from": "paymentFailed",
+              "to": "retryScheduled",
+              "label": "automatic retry queued",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "retryScheduledToResolved",
+              "from": "retryScheduled",
+              "to": "resolved",
+              "label": "retry succeeds",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "resolvedToCurrent",
+              "from": "resolved",
+              "to": "current",
+              "label": "payment resolved; return to standard state",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "retryScheduledToFinalFailure",
+              "from": "retryScheduled",
+              "to": "finalFailure",
+              "label": "all retries exhausted; final failure recorded",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "engagementAxis",
+          "name": "engagement",
+          "ident": "DigitalSubscriptionEngagement",
+          "values": [
+            "dormant",
+            "occasional",
+            "regular",
+            "heavy",
+            "reEngaged",
+            "disengaging"
+          ],
+          "default": "dormant",
+          "authority": [
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [],
+          "transitions": [
+            {
+              "name": "dormantToOccasional",
+              "from": "dormant",
+              "to": "occasional",
+              "label": "RSR detects first or returning content engagement after dormancy",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "occasionalToRegular",
+              "from": "occasional",
+              "to": "regular",
+              "label": "RSR detects sustained regular engagement",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "regularToHeavy",
+              "from": "regular",
+              "to": "heavy",
+              "label": "RSR detects high engagement intensity",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "heavyToRegular",
+              "from": "heavy",
+              "to": "regular",
+              "label": "RSR detects engagement reduced to regular level",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "regularToDisengaging",
+              "from": "regular",
+              "to": "disengaging",
+              "label": "RSR detects regular-to-occasional-to-dormant trajectory — churn risk",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "disengagingToDormant",
+              "from": "disengaging",
+              "to": "dormant",
+              "label": "engagement falls to zero over trailing window",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "dormantToReEngaged",
+              "from": "dormant",
+              "to": "reEngaged",
+              "label": "RSR detects dormant-to-regular trajectory — re-engagement signal",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "reEngagedToRegular",
+              "from": "reEngaged",
+              "to": "regular",
+              "label": "re-engagement consolidated to regular",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "planConfigurationAxis",
+          "name": "planConfiguration",
+          "ident": "DigitalSubscriptionPlanConfiguration",
+          "values": [
+            "monthlyPaid",
+            "annualPaid",
+            "planChangingMonthlyToAnnual",
+            "planChangingAnnualToMonthly"
+          ],
+          "default": "monthlyPaid",
+          "authority": [
+            "customerSide",
+            "systemSide"
+          ],
+          "shape": "unorderedEnum",
+          "terminal": [],
+          "transitions": [
+            {
+              "name": "monthlyToChangingToAnnual",
+              "from": "monthlyPaid",
+              "to": "planChangingMonthlyToAnnual",
+              "label": "user requests plan change to annual — effective at period end",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "changingToAnnualComplete",
+              "from": "planChangingMonthlyToAnnual",
+              "to": "annualPaid",
+              "label": "plan change effective at period end — now annual",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "annualToChangingToMonthly",
+              "from": "annualPaid",
+              "to": "planChangingAnnualToMonthly",
+              "label": "user requests plan change to monthly — effective at period end",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "changingToMonthlyComplete",
+              "from": "planChangingAnnualToMonthly",
+              "to": "monthlyPaid",
+              "label": "plan change effective at period end — now monthly",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

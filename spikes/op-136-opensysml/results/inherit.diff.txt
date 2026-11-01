@@ -221,4 +221,4 @@
    ]
  }
 
-inherit: DIFFERENT; text 2 types, 2 axes, 4 transitions, 1 preconditions in 0.006 s; opensysml 5 types, 5 axes, 11 transitions, 4 preconditions in 0.767 s (opensysml 0.11.0)
+inherit: DIFFERENT; text 2 types, 2 axes, 4 transitions, 1 preconditions in 0.006 s; opensysml 5 types, 5 axes, 11 transitions, 4 preconditions in 0.735 s (opensysml 0.11.0)
