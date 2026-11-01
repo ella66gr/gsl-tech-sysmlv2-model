@@ -1,0 +1,42 @@
+{
+  "run": "20261101T115143Z-jena-5.6.0-whole-verify-preload300-cold",
+  "kind": "development run (Mac)",
+  "jenaVersion": "5.6.0",
+  "validation": "whole",
+  "freshStoreDirectory": "/fuseki/databases/fault-20261101T115143Z-jena-5.6.0-whole-verify-preload300-cold",
+  "preloadOrders": 300,
+  "coldCachesBeforeFirstWrite": true,
+  "abortVia": "module",
+  "graph": "urn:ontara:stack:graph:fault-20261101T115143Z-jena-5.6.0-whole-verify-preload300-cold",
+  "sequence": "1 known-bad write(s), then 60 known-good writes, one at a time through the gate",
+  "bad": {
+    "sent": 1,
+    "committed": 0,
+    "rejected": 1,
+    "fault": 0,
+    "abortedViaPlainUpdate": 0
+  },
+  "good": {
+    "sent": 60,
+    "committed": 60,
+    "rejected": 0,
+    "fault": 0
+  },
+  "firstFaultSeq": null,
+  "goodRecordsStored": {
+    "beforeRestart": "60",
+    "afterRestart": "59"
+  },
+  "fullReadBack": {
+    "beforeRestart": "http=200 quads=43337 good-record-quads=180",
+    "afterRestart": "http=200 quads=43133 good-record-quads=0",
+    "note": "http status and quad count of GET /cafe-runtime/data (N-Quads); details in readback-*.txt"
+  },
+  "faultStackTracesInStoreLog": 0,
+  "offlineCheck": {
+    "nodesDataZeroRuns": "Data-0001/nodes-data.obj: 1237404 bytes; zero runs >= 32: 1, 137 bytes in all",
+    "readEveryQuad": "read FAILED after 43157 quads; last good quad: [urn:ontara:stack:graph:loadtest urn:ontara:standin:cafe#order-1e91b8c4-w1-00300/ready-record urn:ontara:standin:rec#recordedAt \"2026-11-01T11:52:18.994+00:00\"^^xsd:dateTime]",
+    "detail": "nodetable-check.txt"
+  },
+  "expectedUnderASoundStore": "bad: all rejected; good: all committed; zero faults; every good record stored and readable after restart"
+}
