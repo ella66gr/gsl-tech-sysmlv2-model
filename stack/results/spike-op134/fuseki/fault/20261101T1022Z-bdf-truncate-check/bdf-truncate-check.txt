@@ -1,0 +1,2 @@
+Jena 5.6.0 BinaryDataFileRandomAccess truncate-read-write: write returned position 307200; file 307300 bytes; zero bytes 204800 -> DEFECT GH-3877 (stale writePosition)
+Jena 6.2.0 BinaryDataFileRandomAccess truncate-read-write: write returned position 102400; file 102500 bytes; zero bytes 0 -> SOUND (writePosition reset by truncate)

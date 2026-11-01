@@ -1,0 +1,223 @@
+ Image ontara-cafe-stack/gate:spike Building 
+ Image ontara-spike/fuseki:6.2.0 Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.21kB done
+#1 DONE 0.0s
+
+#2 [store internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.46kB done
+#2 DONE 0.0s
+
+#3 [bootstrap internal] load build definition from Dockerfile
+#3 transferring dockerfile: 790B done
+#3 DONE 0.0s
+
+#4 [store internal] load metadata for docker.io/library/maven:3.9-eclipse-temurin-21@sha256:99e61abcff91a9b1333463bd8451fb18495d6eba9250ac66a338b518f8278320
+#4 DONE 0.0s
+
+#5 [bootstrap internal] load metadata for docker.io/library/node:22.21.1-bookworm-slim@sha256:25b3eb23a00590b7499f2a2ce939322727fcce1b15fdd69754fcd09536a3ae2c
+#5 DONE 0.0s
+
+#6 [store internal] load metadata for docker.io/library/eclipse-temurin:21-jre@sha256:0b99b3376fbb50dbf9c0af8535fdd5b8eb0d3fdfc8b1e4967f383b6919f6901a
+#6 DONE 0.0s
+
+#7 [store internal] load .dockerignore
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [bootstrap internal] load .dockerignore
+#8 transferring context: 58B done
+#8 DONE 0.0s
+
+#9 [store build 1/6] FROM docker.io/library/maven:3.9-eclipse-temurin-21@sha256:99e61abcff91a9b1333463bd8451fb18495d6eba9250ac66a338b518f8278320
+#9 resolve docker.io/library/maven:3.9-eclipse-temurin-21@sha256:99e61abcff91a9b1333463bd8451fb18495d6eba9250ac66a338b518f8278320 0.0s done
+#9 DONE 0.0s
+
+#10 [bootstrap build 1/7] FROM docker.io/library/node:22.21.1-bookworm-slim@sha256:25b3eb23a00590b7499f2a2ce939322727fcce1b15fdd69754fcd09536a3ae2c
+#10 resolve docker.io/library/node:22.21.1-bookworm-slim@sha256:25b3eb23a00590b7499f2a2ce939322727fcce1b15fdd69754fcd09536a3ae2c 0.0s done
+#10 DONE 0.0s
+
+#11 [store stage-1 1/6] FROM docker.io/library/eclipse-temurin:21-jre@sha256:0b99b3376fbb50dbf9c0af8535fdd5b8eb0d3fdfc8b1e4967f383b6919f6901a
+#11 resolve docker.io/library/eclipse-temurin:21-jre@sha256:0b99b3376fbb50dbf9c0af8535fdd5b8eb0d3fdfc8b1e4967f383b6919f6901a 0.0s done
+#11 DONE 0.0s
+
+#12 [store internal] load build context
+#12 transferring context: 2.88kB done
+#12 DONE 0.0s
+
+#13 [bootstrap internal] load build context
+#13 transferring context: 1.28kB done
+#13 DONE 0.0s
+
+#14 [store build 2/6] WORKDIR /src
+#14 CACHED
+
+#15 [store build 3/6] COPY module/pom.xml ./
+#15 CACHED
+
+#16 [bootstrap build 6/7] COPY src ./src
+#16 CACHED
+
+#17 [bootstrap stage-1 4/5] COPY --from=build /app/node_modules ./node_modules
+#17 CACHED
+
+#18 [bootstrap build 3/7] COPY package.json package-lock.json ./
+#18 CACHED
+
+#19 [bootstrap stage-1 3/5] COPY --from=build /app/package.json ./
+#19 CACHED
+
+#20 [bootstrap build 4/7] RUN npm ci --no-audit --no-fund
+#20 CACHED
+
+#21 [bootstrap build 5/7] COPY tsconfig.json ./
+#21 CACHED
+
+#22 [bootstrap build 2/7] WORKDIR /app
+#22 CACHED
+
+#23 [bootstrap build 7/7] RUN npm run build && npm prune --omit=dev --no-audit --no-fund
+#23 CACHED
+
+#24 [bootstrap stage-1 5/5] COPY --from=build /app/dist ./dist
+#24 CACHED
+
+#25 [store build 4/6] RUN mvn -q -B -Djena.version=6.2.0 dependency:go-offline
+#25 CACHED
+
+#26 [store build 5/6] COPY module/src ./src
+#26 DONE 0.0s
+
+#27 [bootstrap] exporting to image
+#27 exporting layers done
+#27 exporting manifest sha256:81397328ce2aca38454e31cc0c78d69d53a66c2c08640ba4586eaa755f19f5f8 done
+#27 exporting config sha256:52efd886620980cac7d040a84dd8e94f260710b7f624421e557a0cc848d7169c done
+#27 exporting attestation manifest sha256:801470d09e2ea1bef50fbaec41fe868148f944a3b49fa32d17578cd02668795a 0.0s done
+#27 exporting manifest list sha256:9e0d1245f74f8622700f596827e766ee8c66376570ef21f8d975164568f47df1 done
+#27 naming to docker.io/ontara-cafe-stack/gate:spike
+#27 naming to docker.io/ontara-cafe-stack/gate:spike done
+#27 unpacking to docker.io/ontara-cafe-stack/gate:spike done
+#27 DONE 0.1s
+
+#28 [bootstrap] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#29 [store build 6/6] RUN mvn -q -B -Djena.version=6.2.0 -DskipTests package  && ls target/lib | grep -E '^jena-(arq|core|shacl|tdb2|fuseki-main|dboe-base)-' > target/jena-jars.txt  && grep -q -- "-6.2.0.jar" target/jena-jars.txt
+#29 DONE 2.5s
+
+#30 [store stage-1 3/6] COPY --from=build /src/target/lib ./lib
+#30 CACHED
+
+#31 [store stage-1 2/6] WORKDIR /opt/ontara-fuseki
+#31 CACHED
+
+#32 [store stage-1 4/6] COPY --from=build /src/target/jena-jars.txt ./
+#32 CACHED
+
+#33 [store stage-1 5/6] COPY --from=build /src/target/ontara-fuseki-validated-update-0.1.0.jar ./
+#33 DONE 0.0s
+
+#34 [store stage-1 6/6] RUN mkdir -p /fuseki/databases
+#34 DONE 0.1s
+
+#35 [store] exporting to image
+#35 exporting layers 0.0s done
+#35 exporting manifest sha256:9635898bdf7a142e6e79d874349b80ca37d0d9a8ccbcb4a2bd9015f65d99c619 done
+#35 exporting config sha256:71f1b70013fef4ce5d90c75bb7efd4313c5cb75f80047b97495eded1539bb132 done
+#35 exporting attestation manifest sha256:5f683350b71a5a34908d44850c2e4a139820fadb0d80b40b8a3e079a9c27cf1a done
+#35 exporting manifest list sha256:10fad5020b568b7028a9d81672ad1be9625d8e3c1fd2324d0a66fc1fe676836d done
+#35 naming to docker.io/ontara-spike/fuseki:6.2.0 done
+#35 unpacking to docker.io/ontara-spike/fuseki:6.2.0 0.0s done
+#35 DONE 0.1s
+
+#36 [store] resolving provenance for metadata file
+#36 DONE 0.0s
+ Image ontara-cafe-stack/gate:spike Built 
+ Image ontara-spike/fuseki:6.2.0 Built 
+ Container ontara-spike-fuseki-jena620-temporal-postgresql-1 Running 
+ Container ontara-spike-fuseki-jena620-temporal-1 Running 
+ Container ontara-spike-fuseki-jena620-worker-1 Running 
+ Container ontara-spike-fuseki-jena620-gate-1 Running 
+ Container ontara-spike-fuseki-jena620-store-1 Recreate 
+ Container ontara-spike-fuseki-jena620-store-1 Recreated 
+ Container ontara-spike-fuseki-jena620-store-1 Starting 
+ Container ontara-spike-fuseki-jena620-temporal-postgresql-1 Waiting 
+ Container ontara-spike-fuseki-jena620-store-1 Started 
+ Container ontara-spike-fuseki-jena620-store-1 Waiting 
+ Container ontara-spike-fuseki-jena620-temporal-postgresql-1 Healthy 
+ Container ontara-spike-fuseki-jena620-temporal-schema-1 Starting 
+ Container ontara-spike-fuseki-jena620-temporal-schema-1 Started 
+ Container ontara-spike-fuseki-jena620-temporal-schema-1 Waiting 
+ Container ontara-spike-fuseki-jena620-temporal-schema-1 Exited 
+ Container ontara-spike-fuseki-jena620-temporal-1 Waiting 
+ Container ontara-spike-fuseki-jena620-temporal-1 Healthy 
+ Container ontara-spike-fuseki-jena620-temporal-namespace-1 Starting 
+ Container ontara-spike-fuseki-jena620-temporal-namespace-1 Started 
+ Container ontara-spike-fuseki-jena620-store-1 Healthy 
+ Container ontara-spike-fuseki-jena620-bootstrap-1 Starting 
+ Container ontara-spike-fuseki-jena620-bootstrap-1 Started 
+ Container ontara-spike-fuseki-jena620-temporal-namespace-1 Waiting 
+ Container ontara-spike-fuseki-jena620-bootstrap-1 Waiting 
+ Container ontara-spike-fuseki-jena620-bootstrap-1 Waiting 
+ Container ontara-spike-fuseki-jena620-temporal-namespace-1 Waiting 
+ Container ontara-spike-fuseki-jena620-temporal-namespace-1 Exited 
+ Container ontara-spike-fuseki-jena620-temporal-namespace-1 Exited 
+ Container ontara-spike-fuseki-jena620-bootstrap-1 Exited 
+ Container ontara-spike-fuseki-jena620-bootstrap-1 Exited 
+ Container ontara-spike-fuseki-jena620-store-1 Waiting 
+ Container ontara-spike-fuseki-jena620-gate-1 Waiting 
+ Container ontara-spike-fuseki-jena620-temporal-1 Waiting 
+ Container ontara-spike-fuseki-jena620-temporal-postgresql-1 Waiting 
+ Container ontara-spike-fuseki-jena620-temporal-schema-1 Waiting 
+ Container ontara-spike-fuseki-jena620-bootstrap-1 Waiting 
+ Container ontara-spike-fuseki-jena620-worker-1 Waiting 
+ Container ontara-spike-fuseki-jena620-temporal-namespace-1 Waiting 
+ Container ontara-spike-fuseki-jena620-temporal-schema-1 Exited 
+ Container ontara-spike-fuseki-jena620-temporal-1 Healthy 
+ Container ontara-spike-fuseki-jena620-gate-1 Healthy 
+ Container ontara-spike-fuseki-jena620-store-1 Healthy 
+ Container ontara-spike-fuseki-jena620-worker-1 Healthy 
+ Container ontara-spike-fuseki-jena620-temporal-namespace-1 Exited 
+ Container ontara-spike-fuseki-jena620-temporal-postgresql-1 Healthy 
+ Container ontara-spike-fuseki-jena620-bootstrap-1 Exited 
+[bootstrap] fuseki http://store:3030, repository cafe-runtime
+[bootstrap] Apache Jena Fuseki 6.2.0 (Jena 6.2.0), module ontara-fuseki-validated-update 0.2.0
+[bootstrap] licence: not applicable (Apache-2.0, no licence key)
+[bootstrap] repository cafe-runtime already exists
+[bootstrap] read back: dataset=/cafe-runtime store=TDB2 unionDefaultGraph=true validatedUpdate=true engine=jena-shacl GraphValidation.update (whole union graph) shapesGraph=urn:ontara:stack:shapes inference=none
+[bootstrap] shapes loaded into <urn:ontara:stack:shapes>: 32 triples (read back via SPARQL)
+[bootstrap] repository size 23657 explicit statements
+[bootstrap] OK in 1.4 s
+[bootstrap] fuseki http://store:3030, repository cafe-runtime
+[bootstrap] Apache Jena Fuseki 6.2.0 (Jena 6.2.0), module ontara-fuseki-validated-update 0.2.0
+[bootstrap] licence: not applicable (Apache-2.0, no licence key)
+[bootstrap] repository cafe-runtime already exists
+[bootstrap] read back: dataset=/cafe-runtime store=TDB2 unionDefaultGraph=true validatedUpdate=true engine=jena-shacl GraphValidation.update (whole union graph) shapesGraph=urn:ontara:stack:shapes inference=none
+[bootstrap] shapes loaded into <urn:ontara:stack:shapes>: 32 triples (read back via SPARQL)
+[bootstrap] repository size 23657 explicit statements
+[bootstrap] OK in 1.3 s
+[bootstrap] fuseki http://store:3030, repository cafe-runtime
+[bootstrap] Apache Jena Fuseki 6.2.0 (Jena 6.2.0), module ontara-fuseki-validated-update 0.2.0
+[bootstrap] licence: not applicable (Apache-2.0, no licence key)
+[bootstrap] repository cafe-runtime already exists
+[bootstrap] read back: dataset=/cafe-runtime store=TDB2 unionDefaultGraph=true validatedUpdate=true engine=jena-shacl GraphValidation.update (whole union graph) shapesGraph=urn:ontara:stack:shapes inference=none
+[bootstrap] shapes loaded into <urn:ontara:stack:shapes>: 32 triples (read back via SPARQL)
+[bootstrap] repository size 23657 explicit statements
+[bootstrap] OK in 1.3 s
+[bootstrap] fuseki http://store:3030, repository cafe-runtime
+[bootstrap] Apache Jena Fuseki 6.2.0 (Jena 6.2.0), module ontara-fuseki-validated-update 0.2.0
+[bootstrap] licence: not applicable (Apache-2.0, no licence key)
+[bootstrap] repository cafe-runtime already exists
+[bootstrap] read back: dataset=/cafe-runtime store=TDB2 unionDefaultGraph=true validatedUpdate=true engine=jena-shacl GraphValidation.update (whole union graph) shapesGraph=urn:ontara:stack:shapes inference=none
+[bootstrap] shapes loaded into <urn:ontara:stack:shapes>: 32 triples (read back via SPARQL)
+[bootstrap] repository size 23657 explicit statements
+[bootstrap] OK in 1.4 s
+[bootstrap] fuseki http://store:3030, repository cafe-runtime
+[bootstrap] Apache Jena Fuseki 6.2.0 (Jena 6.2.0), module ontara-fuseki-validated-update 0.2.0
+[bootstrap] licence: not applicable (Apache-2.0, no licence key)
+[bootstrap] repository cafe-runtime already exists
+[bootstrap] read back: dataset=/cafe-runtime store=TDB2 unionDefaultGraph=true validatedUpdate=true engine=jena-shacl GraphValidation.update (whole union graph) shapesGraph=urn:ontara:stack:shapes inference=none
+[bootstrap] shapes loaded into <urn:ontara:stack:shapes>: 32 triples (read back via SPARQL)
+[bootstrap] repository size 23657 explicit statements
+[bootstrap] OK in 1.4 s
+UP in 12 s

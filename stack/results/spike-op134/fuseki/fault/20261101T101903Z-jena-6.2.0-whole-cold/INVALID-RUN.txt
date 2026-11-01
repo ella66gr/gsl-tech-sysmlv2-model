@@ -1,0 +1,2 @@
+INVALID RUN (harness defect, kept as found per brief Part B item 1).
+The script file was edited while this run was reading it (bash reads a script as it runs), and the run stopped after "up" with "syntax error near unexpected token" at line 55. No write was sent. The valid cold run for this version is a later folder.

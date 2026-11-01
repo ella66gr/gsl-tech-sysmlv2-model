@@ -44,7 +44,7 @@ case "$cfg" in
   oxigraph)   export STORE_KIND=oxigraph STORE_DESCRIPTION="Oxigraph 0.5.13, SHACL in the gate (shacl-engine 1.1.3)" ;;
 esac
 export STORE_SERVICE=store
-export RESULTS_SUBDIR="$CAP_OUT_DIR/loadtest"
+export RESULTS_SUBDIR="${RESULTS_SUBDIR_OVERRIDE:-$CAP_OUT_DIR/loadtest}"
 # The GraphDB licence path (README step 2) is needed to parse any file that names the secret.
 if [ -f .env ]; then set -a; . ./.env; set +a; fi
 : "${GRAPHDB_LICENSE_FILE:=/dev/null}"; export GRAPHDB_LICENSE_FILE

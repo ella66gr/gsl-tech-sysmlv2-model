@@ -1,0 +1,5 @@
+ Container ontara-spike-fuseki-jena620-store-run-d75e7f5d0509 Creating 
+ Container ontara-spike-fuseki-jena620-store-run-d75e7f5d0509 Created 
+Jena 6.2.0, database /fuseki/databases/fault-20261101T101732Z-jena-6.2.0-whole-warm/cafe-runtime, zero-run threshold 64 bytes
+PHYSICAL Data-0001/nodes-data.obj: 1010627 bytes; zero runs >= 64: 0, 0 bytes in all
+LOGICAL read every quad: 23657 quads, no error

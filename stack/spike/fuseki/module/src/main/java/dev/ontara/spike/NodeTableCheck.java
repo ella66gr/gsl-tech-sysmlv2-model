@@ -5,9 +5,11 @@ package dev.ontara.spike;
 // directory to one JVM). Two checks:
 //   1. physical: scan every Data-*/nodes-data.obj for runs of zero bytes of at
 //      least MINRUN bytes. Jena GH-3877 (TDB2 abort, fixed in 6.1.0) leaves
-//      exactly this: a zero-filled gap inside the append-only node data file.
-//      A node written by Jena's RDF Thrift encoding never contains a long run
-//      of zero bytes, so a run of 64 or more is the defect's signature.
+//      exactly this: a zero-filled gap inside the append-only node data file,
+//      as long as the aborted transaction's node bytes (one short IRI is about
+//      50 bytes). Jena's RDF Thrift encoding of a node holds at most about ten
+//      zero bytes in a row (an 8-byte double 0.0 next to field-stop bytes), so
+//      a run of 32 or more is the defect's signature.
 //   2. logical: in one read transaction, iterate every quad and turn every
 //      NodeId into its node, counting quads; the first failure is printed with
 //      its full stack trace.
@@ -25,7 +27,7 @@ import org.apache.jena.tdb2.TDB2Factory;
 public class NodeTableCheck {
     public static void main(String[] args) throws Exception {
         Path db = Paths.get(args[0]);
-        int minRun = args.length > 1 ? Integer.parseInt(args[1]) : 64;
+        int minRun = args.length > 1 ? Integer.parseInt(args[1]) : 32;
         System.out.println("Jena " + Jena.VERSION + ", database " + db + ", zero-run threshold " + minRun + " bytes");
         List<Path> files = new ArrayList<>();
         try (var s = Files.walk(db)) { s.filter(p -> p.getFileName().toString().equals("nodes-data.obj")).sorted().forEach(files::add); }

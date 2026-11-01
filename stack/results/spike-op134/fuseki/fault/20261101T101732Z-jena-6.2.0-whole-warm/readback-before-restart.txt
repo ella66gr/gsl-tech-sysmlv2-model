@@ -1,0 +1,2 @@
+http=200 quads=23657 quads-naming-a-good-record=0 curl=
+last bytes: yConstraint> <urn:ontara:stack:kg:ontara-reasoning> . <https://ontara.dev/ontology/reasoning/monitoredBy> <http://www.w3.org/2000/01/rdf-schema#range> <https://ontara.dev/ontology/reasoning/ControlLoop> <urn:ontara:stack:kg:ontara-reasoning> . <https://ontara.dev/ontology/reasoning/monitoredBy> <http://www.w3.org/2000/01/rdf-schema#label> "monitored by"@en <urn:ontara:stack:kg:ontara-reasoning> . 

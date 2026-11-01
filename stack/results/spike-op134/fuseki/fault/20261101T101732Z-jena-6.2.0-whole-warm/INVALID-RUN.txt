@@ -1,0 +1,2 @@
+INVALID RUN (harness defect, kept as found per brief Part B item 1).
+fault-repro.sh called bin/write.sh outside spike/bin/spike.sh, so docker compose had no project or files set and every write failed with "service gate is not running" (writes.jsonl). No write reached the store. Fixed in the next commit (writes go through spike.sh fuseki write); the valid runs are the later folders for the same version.
