@@ -121,12 +121,15 @@ def sparql_update(update):
 
 
 def check_graphdb():
-    """Verify GraphDB is reachable. Exits on failure."""
+    """Verify GraphDB is reachable. Exits non-zero on failure, so a QA layer
+    that needs GraphDB can never pass without running (S519: the SystemExit
+    from graphdb_request was caught here and turned into a quiet exit 0)."""
     try:
         graphdb_request("/rest/repositories")
         return True
     except SystemExit:
-        return False
+        print(f"Cannot reach GraphDB at {GRAPHDB_BASE}: this check fails.")
+        raise
     except Exception as e:
         print(f"Cannot reach GraphDB: {e}")
         sys.exit(1)
