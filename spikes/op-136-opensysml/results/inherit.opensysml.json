@@ -1,0 +1,333 @@
+{
+  "ok": true,
+  "types": [
+    {
+      "type": "Desk",
+      "qualified": "InheritFixture::Desk",
+      "source": "spikes/op-136-opensysml/fixtures/inherit/inherit.sysml (InheritFixture::Desk)",
+      "refs": {},
+      "axes": [
+        {
+          "usage": "staffingAxis",
+          "name": "staffing",
+          "ident": "DeskStaffing",
+          "values": [
+            "unstaffed",
+            "staffed"
+          ],
+          "default": "unstaffed",
+          "authority": [
+            "operatorSide"
+          ],
+          "shape": "unorderedEnum",
+          "terminal": [],
+          "transitions": [
+            {
+              "name": "unstaffedToStaffed",
+              "from": "unstaffed",
+              "to": "staffed",
+              "label": "someone sits down",
+              "event": "DeskStaffed",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "staffedToUnstaffed",
+              "from": "staffed",
+              "to": "unstaffed",
+              "label": "the desk is left",
+              "event": "DeskLeft",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Ticket",
+      "qualified": "InheritFixture::Ticket",
+      "source": "spikes/op-136-opensysml/fixtures/inherit/inherit.sysml (InheritFixture::Ticket)",
+      "refs": {
+        "desk": [
+          "Desk",
+          null
+        ]
+      },
+      "axes": [
+        {
+          "usage": "progressAxis",
+          "name": "progress",
+          "ident": "TicketProgress",
+          "values": [
+            "open",
+            "working",
+            "done"
+          ],
+          "default": "open",
+          "authority": [
+            "operatorSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [
+            "done"
+          ],
+          "transitions": [
+            {
+              "name": "openToWorking",
+              "from": "open",
+              "to": "working",
+              "label": "work starts",
+              "event": "WorkStarted",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": [
+                {
+                  "name": "deskStaffed",
+                  "relatedVia": "desk",
+                  "relatedType": "Desk",
+                  "requiredAxis": "staffing",
+                  "requiredValues": [
+                    "staffed"
+                  ],
+                  "rejectionReason": "Work cannot start at an unstaffed desk."
+                }
+              ]
+            },
+            {
+              "name": "workingToDone",
+              "from": "working",
+              "to": "done",
+              "label": "work finishes",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "UrgentTicket",
+      "qualified": "InheritFixture::UrgentTicket",
+      "source": "spikes/op-136-opensysml/fixtures/inherit/inherit.sysml (InheritFixture::UrgentTicket)",
+      "refs": {
+        "desk": [
+          "Desk",
+          null
+        ]
+      },
+      "axes": [
+        {
+          "usage": "progressAxis",
+          "name": "progress",
+          "ident": "UrgentTicketProgress",
+          "values": [
+            "open",
+            "working",
+            "done"
+          ],
+          "default": "open",
+          "authority": [
+            "operatorSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [
+            "done"
+          ],
+          "transitions": [
+            {
+              "name": "openToWorking",
+              "from": "open",
+              "to": "working",
+              "label": "work starts",
+              "event": "WorkStarted",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": [
+                {
+                  "name": "deskStaffed",
+                  "relatedVia": "desk",
+                  "relatedType": "Desk",
+                  "requiredAxis": "staffing",
+                  "requiredValues": [
+                    "staffed"
+                  ],
+                  "rejectionReason": "Work cannot start at an unstaffed desk."
+                }
+              ]
+            },
+            {
+              "name": "workingToDone",
+              "from": "working",
+              "to": "done",
+              "label": "work finishes",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "EscalatedTicket",
+      "qualified": "InheritFixture::EscalatedTicket",
+      "source": "spikes/op-136-opensysml/fixtures/inherit/inherit.sysml (InheritFixture::EscalatedTicket)",
+      "refs": {
+        "desk": [
+          "Desk",
+          null
+        ]
+      },
+      "axes": [
+        {
+          "usage": "progressAxis",
+          "name": "progress",
+          "ident": "EscalatedTicketProgress",
+          "values": [
+            "open",
+            "working",
+            "done"
+          ],
+          "default": "open",
+          "authority": [
+            "operatorSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [
+            "done"
+          ],
+          "transitions": [
+            {
+              "name": "openToWorking",
+              "from": "open",
+              "to": "working",
+              "label": "work starts",
+              "event": "WorkStarted",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": [
+                {
+                  "name": "deskStaffed",
+                  "relatedVia": "desk",
+                  "relatedType": "Desk",
+                  "requiredAxis": "staffing",
+                  "requiredValues": [
+                    "staffed"
+                  ],
+                  "rejectionReason": "Work cannot start at an unstaffed desk."
+                }
+              ]
+            },
+            {
+              "name": "workingToDone",
+              "from": "working",
+              "to": "done",
+              "label": "work finishes",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ReopenableTicket",
+      "qualified": "InheritFixture::ReopenableTicket",
+      "source": "spikes/op-136-opensysml/fixtures/inherit/inherit.sysml (InheritFixture::ReopenableTicket)",
+      "refs": {
+        "desk": [
+          "Desk",
+          null
+        ]
+      },
+      "axes": [
+        {
+          "usage": "progressAxis",
+          "name": "progress",
+          "ident": "ReopenableTicketProgress",
+          "values": [
+            "open",
+            "working",
+            "done"
+          ],
+          "default": "open",
+          "authority": [
+            "operatorSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [],
+          "transitions": [
+            {
+              "name": "openToWorking",
+              "from": "open",
+              "to": "working",
+              "label": "work starts",
+              "event": "WorkStarted",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": [
+                {
+                  "name": "deskStaffed",
+                  "relatedVia": "desk",
+                  "relatedType": "Desk",
+                  "requiredAxis": "staffing",
+                  "requiredValues": [
+                    "staffed"
+                  ],
+                  "rejectionReason": "Work cannot start at an unstaffed desk."
+                }
+              ]
+            },
+            {
+              "name": "workingToDone",
+              "from": "working",
+              "to": "done",
+              "label": "work finishes",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide",
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "doneToWorking",
+              "from": "done",
+              "to": "working",
+              "label": "work is reopened",
+              "event": "WorkReopened",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

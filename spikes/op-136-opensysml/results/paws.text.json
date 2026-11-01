@@ -1,0 +1,277 @@
+{
+  "ok": true,
+  "types": [
+    {
+      "type": "Booking",
+      "qualified": "PawsCanonicalRuntime::Booking",
+      "source": "exercises/paws-demonstrator/model/paws.sysml (PawsCanonicalRuntime::Booking)",
+      "refs": {},
+      "axes": [
+        {
+          "usage": "lifecycleAxis",
+          "name": "lifecycle",
+          "ident": "BookingLifecycle",
+          "values": [
+            "scheduled",
+            "checkedIn",
+            "inProgress",
+            "ready",
+            "collected",
+            "closed"
+          ],
+          "default": "scheduled",
+          "authority": [
+            "operatorSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [
+            "closed"
+          ],
+          "transitions": [
+            {
+              "name": "scheduledToCheckedIn",
+              "from": "scheduled",
+              "to": "checkedIn",
+              "label": "owner arrives and drops off dog",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "checkedInToInProgress",
+              "from": "checkedIn",
+              "to": "inProgress",
+              "label": "grooming begins",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "inProgressToReady",
+              "from": "inProgress",
+              "to": "ready",
+              "label": "grooming complete, awaiting collection",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "readyToCollected",
+              "from": "ready",
+              "to": "collected",
+              "label": "owner collects dog",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "collectedToClosed",
+              "from": "collected",
+              "to": "closed",
+              "label": "engagement closed, final payment settled",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "confirmationAxis",
+          "name": "confirmation",
+          "ident": "BookingConfirmation",
+          "values": [
+            "unconfirmed",
+            "awaitingReply",
+            "confirmed",
+            "confirmationLapsed"
+          ],
+          "default": "unconfirmed",
+          "authority": [
+            "customerSide",
+            "systemSide"
+          ],
+          "shape": "unorderedEnum",
+          "terminal": [
+            "confirmed",
+            "confirmationLapsed"
+          ],
+          "transitions": [
+            {
+              "name": "unconfirmedToAwaitingReply",
+              "from": "unconfirmed",
+              "to": "awaitingReply",
+              "label": "confirmation request sent to customer",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "awaitingReplyToConfirmed",
+              "from": "awaitingReply",
+              "to": "confirmed",
+              "label": "customer confirms booking",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "awaitingReplyToLapsed",
+              "from": "awaitingReply",
+              "to": "confirmationLapsed",
+              "label": "confirmation window passed without reply",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "paymentAxis",
+          "name": "payment",
+          "ident": "BookingPayment",
+          "values": [
+            "unpaid",
+            "preAuthHeld",
+            "depositHeld",
+            "fullyPrepaid",
+            "paidInFull",
+            "partiallyRefunded",
+            "fullyRefunded"
+          ],
+          "default": "unpaid",
+          "authority": [
+            "systemSide"
+          ],
+          "shape": "unorderedEnum",
+          "terminal": [
+            "preAuthHeld",
+            "fullyPrepaid",
+            "paidInFull",
+            "partiallyRefunded",
+            "fullyRefunded"
+          ],
+          "transitions": [
+            {
+              "name": "unpaidToDepositHeld",
+              "from": "unpaid",
+              "to": "depositHeld",
+              "label": "deposit charged at booking",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "depositHeldToPaidInFull",
+              "from": "depositHeld",
+              "to": "paidInFull",
+              "label": "final payment taken at collection",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "depositHeldToPartiallyRefunded",
+              "from": "depositHeld",
+              "to": "partiallyRefunded",
+              "label": "partial refund issued (late cancellation)",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "depositHeldToFullyRefunded",
+              "from": "depositHeld",
+              "to": "fullyRefunded",
+              "label": "full refund issued (early cancellation)",
+              "event": null,
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "cancellationAxis",
+          "name": "cancellation",
+          "ident": "BookingCancellation",
+          "values": [
+            "active",
+            "cancelledByOwner",
+            "cancelledByTenant",
+            "noShow"
+          ],
+          "default": "active",
+          "authority": [
+            "customerSide",
+            "operatorSide"
+          ],
+          "shape": "unorderedEnum",
+          "terminal": [
+            "cancelledByOwner",
+            "cancelledByTenant",
+            "noShow"
+          ],
+          "transitions": [
+            {
+              "name": "activeToCancelledByOwner",
+              "from": "active",
+              "to": "cancelledByOwner",
+              "label": "owner cancels the booking",
+              "event": null,
+              "requiredAuthority": [
+                "customerSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "activeToCancelledByTenant",
+              "from": "active",
+              "to": "cancelledByTenant",
+              "label": "tenant cancels the booking",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "activeToNoShow",
+              "from": "active",
+              "to": "noShow",
+              "label": "appointment time passed without customer arrival",
+              "event": null,
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

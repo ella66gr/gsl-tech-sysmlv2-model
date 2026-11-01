@@ -1,0 +1,251 @@
+{
+  "ok": true,
+  "types": [
+    {
+      "type": "OrderLine",
+      "qualified": "CoffeeShop::OrderLine",
+      "source": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop::OrderLine)",
+      "refs": {
+        "item": [
+          "MenuItem",
+          null
+        ],
+        "order": [
+          "Order",
+          null
+        ]
+      },
+      "axes": [
+        {
+          "usage": "preparationAxis",
+          "name": "preparation",
+          "ident": "OrderLinePreparation",
+          "values": [
+            "queued",
+            "inPreparation",
+            "ready",
+            "collected",
+            "cancelled"
+          ],
+          "default": "queued",
+          "authority": [
+            "operatorSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [
+            "collected",
+            "cancelled"
+          ],
+          "transitions": [
+            {
+              "name": "queuedToInPreparation",
+              "from": "queued",
+              "to": "inPreparation",
+              "label": "Barista: Start Preparation",
+              "event": "LinePreparationStarted",
+              "requiredAuthority": [
+                "operatorSide",
+                "systemSide"
+              ],
+              "preconditions": [
+                {
+                  "name": "orderPaid",
+                  "relatedVia": "order",
+                  "relatedType": "Order",
+                  "requiredAxis": "payment",
+                  "requiredValues": [
+                    "paid"
+                  ],
+                  "rejectionReason": "The order is not paid. A line cannot start preparation until its order is paid."
+                }
+              ]
+            },
+            {
+              "name": "inPreparationToReady",
+              "from": "inPreparation",
+              "to": "ready",
+              "label": "Barista: Mark Ready",
+              "event": "LinePreparationComplete",
+              "requiredAuthority": [
+                "operatorSide",
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "readyToCollected",
+              "from": "ready",
+              "to": "collected",
+              "label": "Customer: Collect Drink",
+              "event": "LineCollected",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "queuedToCancelled",
+              "from": "queued",
+              "to": "cancelled",
+              "label": "line cancelled with its order",
+              "event": "LineCancelled",
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "inPreparationToCancelled",
+              "from": "inPreparation",
+              "to": "cancelled",
+              "label": "line cancelled with its order",
+              "event": "LineCancelled",
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "readyToCancelled",
+              "from": "ready",
+              "to": "cancelled",
+              "label": "line cancelled with its order",
+              "event": "LineCancelled",
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Order",
+      "qualified": "CoffeeShop::Order",
+      "source": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop::Order)",
+      "refs": {
+        "orderingParty": [
+          "ServiceParticipant",
+          null
+        ],
+        "serviceSubject": [
+          "ServiceSubject",
+          null
+        ]
+      },
+      "axes": [
+        {
+          "usage": "lifecycleAxis",
+          "name": "lifecycle",
+          "ident": "OrderLifecycle",
+          "values": [
+            "placed",
+            "inPreparation",
+            "ready",
+            "collected",
+            "cancelled"
+          ],
+          "default": "placed",
+          "authority": [
+            "operatorSide",
+            "systemSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [
+            "collected",
+            "cancelled"
+          ],
+          "transitions": [
+            {
+              "name": "placedToInPreparation",
+              "from": "placed",
+              "to": "inPreparation",
+              "label": "first line enters preparation",
+              "event": "PreparationStarted",
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "inPreparationToReady",
+              "from": "inPreparation",
+              "to": "ready",
+              "label": "every line is ready",
+              "event": "PreparationComplete",
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "readyToCollected",
+              "from": "ready",
+              "to": "collected",
+              "label": "every line is collected",
+              "event": "OrderCollected",
+              "requiredAuthority": [
+                "systemSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "placedToCancelled",
+              "from": "placed",
+              "to": "cancelled",
+              "label": "Cancel Order",
+              "event": "CancellationRequested",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            },
+            {
+              "name": "inPreparationToCancelled",
+              "from": "inPreparation",
+              "to": "cancelled",
+              "label": "Cancel Order",
+              "event": "CancellationRequested",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        },
+        {
+          "usage": "paymentAxis",
+          "name": "payment",
+          "ident": "OrderPayment",
+          "values": [
+            "unpaid",
+            "paid"
+          ],
+          "default": "unpaid",
+          "authority": [
+            "operatorSide"
+          ],
+          "shape": "orderedEnum",
+          "terminal": [
+            "paid"
+          ],
+          "transitions": [
+            {
+              "name": "unpaidToPaid",
+              "from": "unpaid",
+              "to": "paid",
+              "label": "Till: Take Payment",
+              "event": "PaymentTaken",
+              "requiredAuthority": [
+                "operatorSide"
+              ],
+              "preconditions": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
