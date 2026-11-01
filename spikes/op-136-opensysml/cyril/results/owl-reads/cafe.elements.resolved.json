@@ -1,0 +1,274 @@
+[
+ {
+  "kind": "requirement_def",
+  "name": "LoyaltyDiscountRequired",
+  "parentPackage": "BusinessRules",
+  "topLevelPackage": "BusinessRules",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 9
+ },
+ {
+  "kind": "requirement_def",
+  "name": "MinimumOrderSize",
+  "parentPackage": "BusinessRules",
+  "topLevelPackage": "BusinessRules",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 16
+ },
+ {
+  "kind": "requirement_def",
+  "name": "MaximumOrderSize",
+  "parentPackage": "BusinessRules",
+  "topLevelPackage": "BusinessRules",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 22
+ },
+ {
+  "kind": "requirement_def",
+  "name": "veganMilkDrinkRule",
+  "parentPackage": "BusinessRules",
+  "topLevelPackage": "BusinessRules",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 29
+ },
+ {
+  "kind": "requirement_def",
+  "name": "BaristaMinimumHours",
+  "parentPackage": "BusinessRules",
+  "topLevelPackage": "BusinessRules",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 36
+ },
+ {
+  "kind": "part_def",
+  "name": "MenuItem",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 64
+ },
+ {
+  "kind": "part_def",
+  "name": "Drink",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 76,
+  "specialises": "CoffeeShop::MenuItem"
+ },
+ {
+  "kind": "part_def",
+  "name": "FoodItem",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 84,
+  "specialises": "CoffeeShop::MenuItem"
+ },
+ {
+  "kind": "part_def",
+  "name": "CatalogueEntry",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 93,
+  "specialises": "BusinessMetamodelGeneral::ServiceConcept::CatalogueEntry"
+ },
+ {
+  "kind": "part_def",
+  "name": "InventoryRecord",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 112,
+  "attributes": [
+   {
+    "name": "catalogueEntry",
+    "type": "CatalogueEntry",
+    "isRef": true,
+    "qualifiedType": "CoffeeShop::CatalogueEntry"
+   }
+  ]
+ },
+ {
+  "kind": "part_def",
+  "name": "Person",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 133
+ },
+ {
+  "kind": "part_def",
+  "name": "Customer",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 140,
+  "specialises": "CoffeeShop::Person"
+ },
+ {
+  "kind": "part_def",
+  "name": "StaffMember",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 147,
+  "specialises": "CoffeeShop::Person"
+ },
+ {
+  "kind": "part_def",
+  "name": "OrderLine",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 184,
+  "specialises": "BusinessMetamodelGeneral::CanonicalRuntime::CanonicalRuntimeType",
+  "attributes": [
+   {
+    "name": "order",
+    "type": "Order",
+    "isRef": true,
+    "qualifiedType": "CoffeeShop::Order"
+   }
+  ],
+  "userFacing": {
+   "friendlyName": "Order Line",
+   "shortDescription": "One item asked for on an order, with its quantity and its own preparation status."
+  },
+  "purposiveDescription": {
+   "description": "One item on a customer order, with its quantity and, optionally, who it is for. Each line is prepared and collected on its own, so it carries its own preparation status: queued, in preparation, ready, collected, or cancelled if its order is cancelled. A line cannot start preparation until its order is paid."
+  },
+  "annotations": [
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "An order line is a record of one item asked for on an order: information content, part of the order's record. The preparation of the item is a process in the fulfilment workflow; the line's preparation axis records where that process has reached."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Order Line",
+     "shortDescription": "One item asked for on an order, with its quantity and its own preparation status."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "One item on a customer order, with its quantity and, optionally, who it is for. Each line is prepared and collected on its own, so it carries its own preparation status: queued, in preparation, ready, collected, or cancelled if its order is cancelled. A line cannot start preparation until its order is paid."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "An order line is a record of one item asked for on an order: information content, part of the order's record. The preparation of the item is a process in the fulfilment workflow; the line's preparation axis records where that process has reached."
+  }
+ },
+ {
+  "kind": "part_def",
+  "name": "Order",
+  "parentPackage": "CoffeeShop",
+  "topLevelPackage": "CoffeeShop",
+  "doc": "",
+  "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+  "sourceDomain": "cafe",
+  "metaModelLayer": "",
+  "lineNumber": 293,
+  "specialises": "BusinessMetamodelGeneral::CanonicalRuntime::CanonicalRuntimeType",
+  "attributes": [
+   {
+    "name": "orderingParty",
+    "type": "ServiceParticipant",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::ServiceParticipant"
+   },
+   {
+    "name": "serviceSubject",
+    "type": "ServiceSubject",
+    "isRef": true,
+    "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::ServiceSubject"
+   }
+  ],
+  "userFacing": {
+   "friendlyName": "Order",
+   "shortDescription": "A customer's order of one or more items, with its lifecycle and payment status."
+  },
+  "purposiveDescription": {
+   "description": "What a customer asked for, as one or more order lines. An order carries two independent statuses. Its lifecycle runs from placed through in preparation and ready to collected, and follows its lines: it is never moved to ready or collected directly. It can be cancelled at the counter before it is ready. Its payment runs from unpaid to paid, taken at the till."
+  },
+  "annotations": [
+   {
+    "name": "BfoType",
+    "attrs": {
+     "bfoClass": "GenericallyDependentContinuant",
+     "midLevelClass": "IAO:InformationContentEntity",
+     "mappingNotes": "An order is a record of what a customer asked for: information content, as the Paws Booking is (Ella, S518, decision 6). The fulfilment is the process, and it sits in the workflow; the order's axes record where it has reached."
+    }
+   },
+   {
+    "name": "UserFacing",
+    "attrs": {
+     "friendlyName": "Order",
+     "shortDescription": "A customer's order of one or more items, with its lifecycle and payment status."
+    }
+   },
+   {
+    "name": "PurposiveDescription",
+    "attrs": {
+     "description": "What a customer asked for, as one or more order lines. An order carries two independent statuses. Its lifecycle runs from placed through in preparation and ready to collected, and follows its lines: it is never moved to ready or collected directly. It can be cancelled at the counter before it is ready. Its payment runs from unpaid to paid, taken at the till."
+    }
+   }
+  ],
+  "bfoType": {
+   "bfoClass": "GenericallyDependentContinuant",
+   "midLevelClass": "IAO:InformationContentEntity",
+   "mappingNotes": "An order is a record of what a customer asked for: information content, as the Paws Booking is (Ella, S518, decision 6). The fulfilment is the process, and it sits in the workflow; the order's axes record where it has reached."
+  }
+ }
+]
