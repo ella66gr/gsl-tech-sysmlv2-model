@@ -51,12 +51,29 @@ export enum StaffRole {
   kitchenStaff = "kitchenStaff",
 }
 
-export enum OrderStatus {
-  placed = "placed",
-  inPreparation = "inPreparation",
-  ready = "ready",
-  collected = "collected",
-  cancelled = "cancelled",
+// Status axes: each axis's value type, and each type's axis tuple
+
+/** OrderLine preparation: values in declared order; default queued. */
+export const orderLinePreparationValues = ["queued", "inPreparation", "ready", "collected", "cancelled"] as const;
+export type OrderLinePreparationValue = (typeof orderLinePreparationValues)[number];
+
+/** The axis tuple of OrderLine. */
+export interface OrderLineAxisTuple {
+  preparation: OrderLinePreparationValue;
+}
+
+/** Order lifecycle: values in declared order; default placed. */
+export const orderLifecycleValues = ["placed", "inPreparation", "ready", "collected", "cancelled"] as const;
+export type OrderLifecycleValue = (typeof orderLifecycleValues)[number];
+
+/** Order payment: values in declared order; default unpaid. */
+export const orderPaymentValues = ["unpaid", "paid"] as const;
+export type OrderPaymentValue = (typeof orderPaymentValues)[number];
+
+/** The axis tuple of Order. */
+export interface OrderAxisTuple {
+  lifecycle: OrderLifecycleValue;
+  payment: OrderPaymentValue;
 }
 
 export interface MenuItem {
@@ -110,23 +127,31 @@ export interface StaffMember extends Person {
   hoursPerWeek: number;
 }
 
-export interface OrderLine {
+export interface OrderLine extends CanonicalRuntimeType {
   quantity: number;
   beneficiaryLabel?: string;
   beneficiaryContactRef?: string;
   item: MenuItem;
+  order: Order;
+  /** The status axis tuple: one value per declared axis. */
+  axes: OrderLineAxisTuple;
 }
 
-export interface Order {
+export interface Order extends CanonicalRuntimeType {
   orderNumber: number;
-  status: OrderStatus;
   totalPrice: number;
   orderingParty: ServiceParticipant;
   serviceSubject: ServiceSubject;
   lines: OrderLine[];
+  /** The status axis tuple: one value per declared axis. */
+  axes: OrderAxisTuple;
 }
 
 // Platform defs used by this package (from the platform model)
+
+/** BusinessMetamodelGeneral::CanonicalRuntime::CanonicalRuntimeType */
+export interface CanonicalRuntimeType {
+}
 
 /** BusinessMetamodelGeneral::ServiceConcept::CatalogueEntry */
 export interface ServiceConceptCatalogueEntry {

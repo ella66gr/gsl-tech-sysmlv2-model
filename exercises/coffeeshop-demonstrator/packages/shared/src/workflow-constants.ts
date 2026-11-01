@@ -5,7 +5,7 @@
  * files in ../../../generated (imported through ./generated/, whose files
  * are links to them): the workflow name, task queue, signal names, state
  * query, the step table with its expected durations (the audit
- * expectations), and the lifecycle's next-action map. Regenerate with
+ * expectations), and the next-action map. Regenerate with
  * `make gen` from the repository root; never edit the generated files.
  *
  * The audit step display labels below are hand-written: exception A3-001
@@ -36,17 +36,20 @@ export const VALID_SIGNALS = fulfilDrinkSignals;
 
 export type SignalName = FulfilDrinkSignal;
 
-/** Query the current order lifecycle state. */
+/** Query the order line preparation value the workflow has reached. */
 export const QUERY_ORDER_STATE = fulfilDrinkStateQuery;
 
-// -- Next actions per lifecycle state (generated) --
-// For each state, the actions its outgoing transitions offer, with the
-// label from the model and the signal that raises the event (or null).
+// -- Next actions per axis value (generated) --
+// Since S0.4 the next-action maps come from the status axis declarations,
+// one per axis, in ./generated/axis-guard.js (re-exported by index.ts):
+// for each value, the moves an operator can make, with the model's label
+// and the workflow signal that raises the event (or null). The workflow
+// runs per order line, so its map is the line's preparation axis.
 
 export {
-  orderLifecycleNextActions as STATE_NEXT_ACTIONS,
-  type OrderLifecycleNextAction,
-} from './generated/order-lifecycle-guard.js';
+  orderLinePreparationNextActions as STATE_NEXT_ACTIONS,
+  type AxisNextAction,
+} from './generated/axis-guard.js';
 
 // -- Workflow step definitions for audit reporting --
 

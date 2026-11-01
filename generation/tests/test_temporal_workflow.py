@@ -49,39 +49,35 @@ class TemporalWorkflowTest(GenTestCase):
         wf = self.read(WF)
         for event in ("Started", "Finished", "Collected"):
             self.assertIn(f"raise('{event}');", wf)
-        self.assertIn("from './ticket-lifecycle-guard.js';", wf)
-        self.assertIn("nextTicketLifecycleState(state, event)", wf)
-        self.assertIn("export const ticketStateQuery = defineQuery<string>('ticketState');", wf)
+        self.assertIn("import { traceTicketStageMove, ticketStageDefault } from './axis-guard.js';", wf)
+        self.assertIn("const r = traceTicketStageMove(state, event);", wf)
+        self.assertIn("throw ApplicationFailure.nonRetryable(r.reason, 'AxisMoveRejected', r);", wf)
+        self.assertIn("export const ticketStageStateQuery = defineQuery<string>('ticketStageState');", wf)
         self.assertIn("export async function handleTicket(ticket: activities.TicketInput)", wf)
         self.assertIn("import type * as activities from '../activities/fixture.js';", wf)
         # Order: the event is raised after its step's wait.
         self.assertLess(wf.index("'15 minutes'"), wf.index("raise('Finished')"))
 
-    def test_trigger_into_the_initial_state_is_an_error(self):
-        """The OrderPlaced case: an event with no transition, on the first step."""
+    def test_trigger_no_axis_move_carries_is_an_error(self):
+        """The OrderPlaced case: an event no move carries, on the first step."""
         self.edit(
             ORCH,
             '@TemporalActivity { activityName = "openTicket"; }',
             '@TemporalActivity { activityName = "openTicket"; }\n'
             '            @StateTransitionTrigger { eventName = "Opened"; }',
         )
-        with self.assertRaisesRegex(ModelError, "triggers 'Opened'.*no transition"):
+        with self.assertRaisesRegex(ModelError, "trigger 'Opened' is not the triggerEvent of a move on a status axis of Ticket"):
             self.gen()
 
     def test_trigger_out_of_order_is_an_error(self):
-        # Finished is a real transition, but not from the initial state.
+        # Finished is a real move, but not from the axis default.
         self.edit(
             ORCH,
             '@TemporalActivity { activityName = "openTicket"; }',
             '@TemporalActivity { activityName = "openTicket"; }\n'
             '            @StateTransitionTrigger { eventName = "Finished"; }',
         )
-        with self.assertRaisesRegex(ModelError, "triggers 'Finished'.*from 'placed'"):
-            self.gen()
-
-    def test_one_event_raised_by_two_signals_is_an_error(self):
-        self.edit(ORCH, 'eventName = "Started";', 'eventName = "Collected";')
-        with self.assertRaisesRegex(ModelError, "raised by two signals"):
+        with self.assertRaisesRegex(ModelError, "triggers 'Finished', but Ticket stage has no move on it from 'placed'"):
             self.gen()
 
     def test_succession_must_follow_step_order(self):
@@ -92,6 +88,11 @@ class TemporalWorkflowTest(GenTestCase):
     def test_step_without_annotation_is_an_error(self):
         self.edit(ORCH, '@TemporalActivity { activityName = "doWork"; }', "")
         with self.assertRaisesRegex(ModelError, "'work'"):
+            self.gen()
+
+    def test_triggers_on_two_axes_are_an_error(self):
+        self.edit(ORCH, 'eventName = "Finished";', 'eventName = "Paid";')
+        with self.assertRaisesRegex(ModelError, "more than one axis"):
             self.gen()
 
     def test_identity_and_determinism(self):

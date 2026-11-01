@@ -49,7 +49,13 @@ qa:
 #   make gen-check  regenerate into a scratch folder and fail, with a diff,
 #                   on any difference from the files at the target paths
 #   make gen-test   the generation package's tests (fixture models only),
-#                   then the Cafe's generated lifecycle guard refusal check
+#                   then the Cafe's generated axis guard and precondition
+#                   checks
+#   make gen-test-guard          Stage 0 test path 4: the generated axis guard
+#                                refuses loudly (fixture model, then the Cafe)
+#   make gen-test-preconditions  Stage 0 test path 5: the generated E6
+#                                cross-axis evaluator (fixture model, then the
+#                                Cafe's rule)
 #
 # gen-test needs Node 23.6 or later (runs TypeScript by type stripping).
 
@@ -60,12 +66,13 @@ GSL_OUT    := generated
 NODE       ?= node
 GENERAL_PACKAGES := --general-package BusinessMetamodelGeneral --general-package SystemMetamodelGeneral
 
-.PHONY: gen gen-cafe gen-gsl gen-check gen-test
+.PHONY: gen gen-cafe gen-gsl gen-check gen-test gen-test-guard gen-test-preconditions
 
 gen: gen-cafe gen-gsl
 
-# Cafe: types, XState machine + lifecycle guard + next-action map, Temporal
-# workflow + step table, Mermaid pathway, General element list.
+# Cafe: types with axis tuples, axis guard + next-action maps + XState
+# machines, E6 axis-precondition evaluator, Temporal workflow + step table,
+# Mermaid pathway, General element list.
 gen-cafe:
 	$(PYTHON) -m generation.ts_types --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop --package CoffeeShop --platform-model model
@@ -73,8 +80,10 @@ gen-cafe:
 		--model-name CoffeeShop
 	$(PYTHON) -m generation.temporal_workflow --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop \
-		--activities-import ../activities/barista.js --input-type OrderDetails \
-		--lifecycle-import @coffeeshop/shared/dist/generated/order-lifecycle-guard.js
+		--activities-import ../activities/barista.js \
+		--lifecycle-import @coffeeshop/shared/dist/generated/axis-guard.js
+	$(PYTHON) -m generation.constraint_evaluator --model $(CAFE_MODEL) --out $(CAFE_OUT) \
+		--model-name CoffeeShop --quiet
 	$(PYTHON) -m generation.mermaid_pathway --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop --action-def FulfilDrink
 	$(PYTHON) -m generation.element_list --model $(CAFE_MODEL) --out $(CAFE_OUT) \
@@ -114,9 +123,20 @@ gen-check:
 	fi; \
 	echo "=== GEN-CHECK PASSED: $$checked generated files match the model"
 
+CAFE_TESTS := exercises/coffeeshop-demonstrator/tests
+NODE_TEST  := $(NODE) --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test
+
 gen-test:
 	$(PYTHON) -m unittest discover -s generation/tests -t . -v
-	$(NODE) --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test exercises/coffeeshop-demonstrator/tests/order-lifecycle-guard.test.mts
+	$(NODE_TEST) $(CAFE_TESTS)/axis-guard.test.mts $(CAFE_TESTS)/axis-preconditions.test.mts
+
+gen-test-guard:
+	$(PYTHON) -m unittest -v generation.tests.test_state_machine
+	$(NODE_TEST) $(CAFE_TESTS)/axis-guard.test.mts
+
+gen-test-preconditions:
+	$(PYTHON) -m unittest -v generation.tests.test_axis_preconditions
+	$(NODE_TEST) $(CAFE_TESTS)/axis-preconditions.test.mts
 
 # ---------------------------------------------------------------------------
 # SysML parse check (OP-123, Session 517).

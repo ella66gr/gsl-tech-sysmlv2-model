@@ -8,13 +8,21 @@ package FulfilDrinkOrchestration {
          * This models HOW THE SYSTEM MANAGES the drink fulfilment
          * process — activity boundaries, signal waits, and timeout
          * points. It is distinct from the domain-level FulfilDrink
-         * action flow (in coffeeshop-exercise) which models WHAT
+         * action flow (DrinkFulfilment::FulfilDrink, in
+         * drink-fulfilment.sysml in this folder) which models WHAT
          * THE BARISTA DOES.
          *
          * The Temporal workflow generator reads this action def and
          * its metadata annotations to produce a TypeScript workflow
          * function. The domain-level action flow remains the
          * governance-readable process description.
+         *
+         * Input (S518, S0.4): one OrderLine, a canonical runtime type.
+         * The workflow runs per line. Each @StateTransitionTrigger names
+         * the triggerEvent of a move on the line's preparation axis
+         * (CoffeeShop::OrderLine::preparationAxis). The order's own
+         * lifecycle moves are derived from its lines by MRB, not raised
+         * by this workflow.
          *
          * Mapping to domain flow:
          *   validateOrder    → receiveOrder (domain)
@@ -33,7 +41,7 @@ package FulfilDrinkOrchestration {
             taskQueue = "coffeeshop";
         }
 
-        in item orderDetails : OrderLine;
+        in item orderLine : OrderLine;
 
         // -- Step 1: Validate the incoming order --
 
@@ -49,7 +57,7 @@ package FulfilDrinkOrchestration {
             doc /* Suspend until a barista signals they have started.
                  * In clinical context: clinician picks up referral. */
             @TemporalSignal { signalName = "baristaStarted"; timeoutMinutes = 30; }
-            @StateTransitionTrigger { eventName = "PreparationStarted"; }
+            @StateTransitionTrigger { eventName = "LinePreparationStarted"; }
         }
         then prepareDrink;
 
@@ -69,7 +77,7 @@ package FulfilDrinkOrchestration {
             doc /* Suspend until barista marks drink as ready.
                  * In clinical context: lab results returned. */
             @TemporalSignal { signalName = "drinkReady"; timeoutMinutes = 15; }
-            @StateTransitionTrigger { eventName = "PreparationComplete"; }
+            @StateTransitionTrigger { eventName = "LinePreparationComplete"; }
         }
         then waitCollected;
 
@@ -79,7 +87,7 @@ package FulfilDrinkOrchestration {
             doc /* Suspend until customer collects their drink.
                  * In clinical context: patient attends appointment. */
             @TemporalSignal { signalName = "drinkCollected"; timeoutMinutes = 60; }
-            @StateTransitionTrigger { eventName = "OrderCollected"; }
+            @StateTransitionTrigger { eventName = "LineCollected"; }
         }
         then completeOrder;
 

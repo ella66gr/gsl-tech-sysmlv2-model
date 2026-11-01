@@ -15,7 +15,7 @@
     "reasoner": "HermiT"
   },
   "overall": "pass",
-  "overallNote": "Measured fail at 7fb1493 (64/66, finding F1). F1 resolved in Session 517: Q28 and Q29 now expect 98; qa-validate re-run 66/66 by Chat. The other three layers are unchanged by the fix.",
+  "overallNote": "Measured fail at 7fb1493 (64/66, finding F1). F1 resolved in Session 517: Q28 and Q29 now expect 98; qa-validate re-run 66/66 by Chat. The other three layers are unchanged by the fix. S0.4 (Session 518/519): Q1, Q4 and Q5 now expect 39 and Q28 and Q29 now expect 108, the axis family entering the generated OWL (+5 classes, +10 weights); accepted by Ella at S519.",
   "layers": {
     "pipeline": {
       "target": "qa-pipeline",
@@ -78,8 +78,8 @@
           "id": "Q1",
           "name": "All BMM classes and declared parent",
           "result": "PASS",
-          "count": 34,
-          "expectation": "expected: 34"
+          "count": 39,
+          "expectation": "expected: 39"
         },
         {
           "id": "Q2",
@@ -99,15 +99,15 @@
           "id": "Q4",
           "name": "BMM classes with complete annotations",
           "result": "PASS",
-          "count": 34,
-          "expectation": "expected: 34"
+          "count": 39,
+          "expectation": "expected: 39"
         },
         {
           "id": "Q5",
           "name": "All mapping records",
           "result": "PASS",
-          "count": 34,
-          "expectation": "expected: 34"
+          "count": 39,
+          "expectation": "expected: 39"
         },
         {
           "id": "Q6",
@@ -267,15 +267,15 @@
           "id": "Q28",
           "name": "Reified weighted relationship individuals",
           "result": "PASS",
-          "count": 98,
-          "expectation": "expected: 98"
+          "count": 108,
+          "expectation": "expected: 108"
         },
         {
           "id": "Q29",
           "name": "Weighted relationship correspondence records",
           "result": "PASS",
-          "count": 98,
-          "expectation": "expected: 98"
+          "count": 108,
+          "expectation": "expected: 108"
         },
         {
           "id": "Q30",

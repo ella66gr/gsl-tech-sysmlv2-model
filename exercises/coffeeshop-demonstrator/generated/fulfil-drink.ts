@@ -1,6 +1,6 @@
 // ============================================================
 // DO NOT EDIT — Generated from CoffeeShop SysML v2 model
-// Source: exercises/coffeeshop-demonstrator/model/domain/fulfil-drink-orchestration.sysml (FulfilDrinkOrchestration::FulfilDrinkWorkflow); exercises/coffeeshop-demonstrator/model/domain/order-lifecycle.sysml (OrderLifeCycle::OrderLifecycle); exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop::Order)
+// Source: exercises/coffeeshop-demonstrator/model/domain/fulfil-drink-orchestration.sysml (FulfilDrinkOrchestration::FulfilDrinkWorkflow); exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop::OrderLine)
 // Generator: generation/temporal_workflow.py
 // ============================================================
 
@@ -16,7 +16,7 @@ import {
 } from '@temporalio/workflow';
 
 import type * as activities from '../activities/barista.js';
-import { nextOrderLifecycleState, orderLifecycleInitialState, type OrderLifecycleState } from '@coffeeshop/shared/dist/generated/order-lifecycle-guard.js';
+import { traceOrderLinePreparationMove, orderLinePreparationDefault } from '@coffeeshop/shared/dist/generated/axis-guard.js';
 
 // -- Activity proxy (platform defaults: the model sets no activity timeout) --
 
@@ -37,30 +37,27 @@ export const baristaStartedSignal = defineSignal('baristaStarted');
 export const drinkReadySignal = defineSignal('drinkReady');
 export const drinkCollectedSignal = defineSignal('drinkCollected');
 
-// -- Query: the current OrderLifecycle state --
+// -- Query: the OrderLine preparation value the workflow has reached --
 
-export const orderStateQuery = defineQuery<string>('orderState');
+export const orderLinePreparationStateQuery = defineQuery<string>('orderLinePreparationState');
 
 // -- Workflow function --
 
-export async function fulfilDrink(orderDetails: activities.OrderDetails): Promise<string> {
+export async function fulfilDrink(orderLine: activities.OrderLine): Promise<string> {
   const ids = { workflowId: workflowInfo().workflowId };
-  let state: OrderLifecycleState = orderLifecycleInitialState;
+  let state: string = orderLinePreparationDefault;
 
-  // Raise a lifecycle event. The guard refuses an event OrderLifecycle has no transition for.
+  // Raise an event on OrderLine preparation. The guard refuses a move the axis does not permit.
   const raise = (event: string): void => {
-    const next = nextOrderLifecycleState(state, event);
-    if (next === null) {
-      throw ApplicationFailure.nonRetryable(
-        `OrderLifecycle refuses ${event} in state ${state}`,
-        'IllegalLifecycleTransition',
-      );
+    const r = traceOrderLinePreparationMove(state, event);
+    if (!r.ok) {
+      throw ApplicationFailure.nonRetryable(r.reason, 'AxisMoveRejected', r);
     }
-    log.info('Lifecycle transition', { ...ids, event, from: state, to: next });
-    state = next;
+    log.info('Axis move', { ...ids, axis: r.axis, event, from: r.from, to: r.to });
+    state = r.to;
   };
 
-  setHandler(orderStateQuery, () => state);
+  setHandler(orderLinePreparationStateQuery, () => state);
 
   // Set by the signal handlers.
   let baristaStarted = false;
@@ -83,7 +80,7 @@ export async function fulfilDrink(orderDetails: activities.OrderDetails): Promis
   log.info('Workflow started: fulfilDrink', ids);
 
   // -- Step 1: validateOrder (activity validateOrder) --
-  await validateOrder(orderDetails);
+  await validateOrder(orderLine);
   log.info('Activity completed: validateOrder', ids);
 
   // -- Step 2: waitBaristaStart (signal baristaStarted, timer 30 minutes) --
@@ -92,10 +89,10 @@ export async function fulfilDrink(orderDetails: activities.OrderDetails): Promis
     log.warn('Timer expired: waitBaristaStart, 30 minutes without baristaStarted', ids);
     await condition(() => baristaStarted);
   }
-  raise('PreparationStarted');
+  raise('LinePreparationStarted');
 
   // -- Step 3: prepareDrink (activity prepareDrink) --
-  await prepareDrink(orderDetails);
+  await prepareDrink(orderLine);
   log.info('Activity completed: prepareDrink', ids);
 
   // -- Step 4: waitDrinkReady (signal drinkReady, timer 15 minutes) --
@@ -104,7 +101,7 @@ export async function fulfilDrink(orderDetails: activities.OrderDetails): Promis
     log.warn('Timer expired: waitDrinkReady, 15 minutes without drinkReady', ids);
     await condition(() => drinkReady);
   }
-  raise('PreparationComplete');
+  raise('LinePreparationComplete');
 
   // -- Step 5: waitCollected (signal drinkCollected, timer 60 minutes) --
   log.info('Waiting for signal: drinkCollected', ids);
@@ -112,10 +109,10 @@ export async function fulfilDrink(orderDetails: activities.OrderDetails): Promis
     log.warn('Timer expired: waitCollected, 60 minutes without drinkCollected', ids);
     await condition(() => drinkCollected);
   }
-  raise('OrderCollected');
+  raise('LineCollected');
 
   // -- Step 6: completeOrder (activity completeOrder) --
-  await completeOrder(orderDetails);
+  await completeOrder(orderLine);
   log.info('Activity completed: completeOrder', ids);
 
   return 'fulfilDrink completed';

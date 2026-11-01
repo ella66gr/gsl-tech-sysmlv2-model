@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-31T15:44:39.159295",
+  "generatedAt": "2026-11-01T01:07:04.142357",
   "generator": "gen_model_introspection.py",
   "domains": {
     "core": {
       "label": "Core Model",
       "description": "The main GenderSense SysML model \u2014 meta models and GSL domain",
-      "elementCount": 263
+      "elementCount": 265
     },
     "cafe": {
       "label": "Cafe",
       "description": "Cafe demonstrator \u2014 reference validation domain",
-      "elementCount": 112
+      "elementCount": 127
     },
     "suds": {
       "label": "Suds",
@@ -29,12 +29,12 @@
     }
   },
   "summary": {
-    "totalElements": 790,
+    "totalElements": 807,
     "byKind": {
-      "enum_def": 62,
+      "enum_def": 61,
       "metadata_def": 17,
-      "part_def": 126,
-      "part": 537,
+      "part_def": 127,
+      "part": 554,
       "requirement_def": 15,
       "requirement": 7,
       "constraint_def": 14,
@@ -43,18 +43,18 @@
     },
     "byLayer": {
       "unknown": 108,
-      "bmm": 73,
+      "bmm": 75,
       "smm": 82,
-      "domain": 527
+      "domain": 542
     },
     "byDomain": {
-      "core": 263,
-      "cafe": 112,
+      "core": 265,
+      "cafe": 127,
       "suds": 69,
       "paws": 82,
       "gsl": 264
     },
-    "bfoTypeCoverage": 38
+    "bfoTypeCoverage": 41
   },
   "facets": {
     "bmmConcern": {
@@ -74,25 +74,25 @@
         "FinancialModel": 5,
         "Governance": 2,
         "StakeholderModel": 6,
-        "CanonicalRuntime": 4
+        "CanonicalRuntime": 5
       },
-      "total": 38
+      "total": 39
     },
     "classification": {
       "values": [
         "General"
       ],
       "counts": {
-        "General": 38
+        "General": 39
       },
-      "total": 38
+      "total": 39
     }
   },
   "comprehension": {
-    "catalogueTaggedCount": 38,
-    "userFacingCount": 38,
-    "purposiveDescriptionCount": 38,
-    "comprehensionAnnotationCount": 38,
+    "catalogueTaggedCount": 39,
+    "userFacingCount": 39,
+    "purposiveDescriptionCount": 39,
+    "comprehensionAnnotationCount": 39,
     "coveragePercent": 100.0,
     "purposiveCoveragePercent": 100.0,
     "missingUserFacing": [],
@@ -4400,6 +4400,56 @@
             "package": "CanonicalRuntime"
           }
         ],
+        "cafe": [
+          {
+            "name": "queuedToInPreparation",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "inPreparationToReady",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "readyToCollected",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "queuedToCancelled",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "inPreparationToCancelled",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "readyToCancelled",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "placedToInPreparation",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "inPreparationToReady",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "readyToCollected",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "placedToCancelled",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "inPreparationToCancelled",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "unpaidToPaid",
+            "package": "CoffeeShop"
+          }
+        ],
         "paws": [
           {
             "name": "scheduledToCheckedIn",
@@ -4464,6 +4514,60 @@
         ]
       }
     },
+    "AxisPrecondition": {
+      "name": "AxisPrecondition",
+      "layer": "bmm",
+      "package": "CanonicalRuntime",
+      "doc": "A cross-axis precondition on one permitted move\n(S518, S0.4, decision 5). Platform-general: it names no\ntenant.\nThe guarded move is the AxisTransition the precondition\nis declared inside. The conditio",
+      "catalogueTag": {
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Axis Precondition",
+        "shortDescription": "A condition on another status axis, of the same instance or of a related one, that must hold before a move is permitted."
+      },
+      "purposiveDescription": {
+        "description": "A condition that must hold before a permitted move on a status axis may be made. It names an axis, either on the same instance or on one related instance reached through a single reference, and the values that axis must hold. While the condition does not hold, the move is refused with a stated reason, never ignored. For example, a line on an order may not start preparation until the order is paid."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "AxisTransition",
+          "strength": "strong",
+          "rationale": "Every AxisPrecondition guards one AxisTransition and is declared inside it. A change to the transition (its endpoints, its authority, its removal) requires reassessing the preconditions that guard it."
+        },
+        {
+          "target": "StatusAxis",
+          "strength": "moderate",
+          "rationale": "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to that axis (its name, its value space) can invalidate the precondition's required axis or required values."
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An AxisPrecondition specifies a condition that must hold on an axis, of the same instance or of one related instance, before a declared transition is permitted. Information content: a rule about moves, not the check made at runtime. The check, when it is made, is part of a process."
+      },
+      "domains": {
+        "core": [
+          {
+            "name": "preconditions",
+            "package": "CanonicalRuntime"
+          }
+        ],
+        "cafe": [
+          {
+            "name": "orderPaid",
+            "package": "CoffeeShop"
+          }
+        ]
+      }
+    },
     "StatusAxis": {
       "name": "StatusAxis",
       "layer": "bmm",
@@ -4509,6 +4613,20 @@
         "mappingNotes": "A StatusAxis is a structural information artefact specifying a dimension of runtime status; it is generically dependent on the canonical runtime type that declares it."
       },
       "domains": {
+        "cafe": [
+          {
+            "name": "preparationAxis",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "lifecycleAxis",
+            "package": "CoffeeShop"
+          },
+          {
+            "name": "paymentAxis",
+            "package": "CoffeeShop"
+          }
+        ],
         "paws": [
           {
             "name": "lifecycleAxis",
@@ -8336,6 +8454,10 @@
           "rationale": "Every ValueSpace exists to describe a StatusAxis. A change to the value space (its shape, its permitted values) requires reassessing the axis it belongs to \u2014 the axis's permitted transitions and authority interpretation may need adjustment."
         },
         {
+          "name": "AxisPrecondition",
+          "friendlyName": "Axis Precondition"
+        },
+        {
           "name": "CanonicalRuntimeType",
           "friendlyName": "Canonical Runtime Type"
         }
@@ -8367,6 +8489,23 @@
           "count": 1,
           "instances": [
             "permittedTransitions"
+          ]
+        },
+        "cafe": {
+          "count": 12,
+          "instances": [
+            "queuedToInPreparation",
+            "inPreparationToReady",
+            "readyToCollected",
+            "queuedToCancelled",
+            "inPreparationToCancelled",
+            "readyToCancelled",
+            "placedToInPreparation",
+            "inPreparationToReady",
+            "readyToCollected",
+            "placedToCancelled",
+            "inPreparationToCancelled",
+            "unpaidToPaid"
           ]
         },
         "paws": {
@@ -8404,6 +8543,10 @@
           "rationale": "Every AxisTransition is declared on a specific StatusAxis. A change to a transition (its endpoints, its required authority) requires reassessing the axis whose transition rules it defines \u2014 the axis's runtime behaviour changes when its transitions change."
         },
         {
+          "name": "AxisPrecondition",
+          "friendlyName": "Axis Precondition"
+        },
+        {
           "name": "CanonicalRuntimeType",
           "friendlyName": "Canonical Runtime Type"
         }
@@ -8422,8 +8565,74 @@
           "type": "String"
         },
         {
+          "name": "triggerEvent",
+          "type": "String[0..1]"
+        },
+        {
           "name": "requiredAuthority",
           "type": "AxisAuthority[0..*]"
+        }
+      ]
+    },
+    "AxisPrecondition": {
+      "flags": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "domainInstantiations": {
+        "core": {
+          "count": 1,
+          "instances": [
+            "preconditions"
+          ]
+        },
+        "cafe": {
+          "count": 1,
+          "instances": [
+            "orderPaid"
+          ]
+        }
+      },
+      "relatedConcepts": [
+        {
+          "name": "AxisTransition",
+          "friendlyName": "Axis Transition",
+          "strength": "strong",
+          "rationale": "Every AxisPrecondition guards one AxisTransition and is declared inside it. A change to the transition (its endpoints, its authority, its removal) requires reassessing the preconditions that guard it."
+        },
+        {
+          "name": "StatusAxis",
+          "friendlyName": "Status Axis",
+          "strength": "moderate",
+          "rationale": "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to that axis (its name, its value space) can invalidate the precondition's required axis or required values."
+        },
+        {
+          "name": "ValueSpace",
+          "friendlyName": "Value Space"
+        },
+        {
+          "name": "CanonicalRuntimeType",
+          "friendlyName": "Canonical Runtime Type"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "relatedVia",
+          "type": "String[0..1]"
+        },
+        {
+          "name": "requiredAxis",
+          "type": "String"
+        },
+        {
+          "name": "requiredValues",
+          "type": "String[1..*]"
+        },
+        {
+          "name": "rejectionReason",
+          "type": "String"
         }
       ]
     },
@@ -8435,6 +8644,14 @@
         "surfaceAttributes": true
       },
       "domainInstantiations": {
+        "cafe": {
+          "count": 3,
+          "instances": [
+            "preparationAxis",
+            "lifecycleAxis",
+            "paymentAxis"
+          ]
+        },
         "paws": {
           "count": 4,
           "instances": [
@@ -8463,6 +8680,10 @@
           "friendlyName": "Canonical Runtime Type",
           "strength": "strong",
           "rationale": "A StatusAxis is declared on a CanonicalRuntimeType \u2014 it has no independent existence. A change to an axis (its value space, its transitions, its authority) requires reassessing the canonical type whose runtime instances carry it."
+        },
+        {
+          "name": "AxisPrecondition",
+          "friendlyName": "Axis Precondition"
         }
       ],
       "attributes": [
@@ -8509,6 +8730,10 @@
         {
           "name": "AxisTransition",
           "friendlyName": "Axis Transition"
+        },
+        {
+          "name": "AxisPrecondition",
+          "friendlyName": "Axis Precondition"
         }
       ]
     }
@@ -8562,6 +8787,14 @@
         "classification": "General",
         "package": "GovernanceMapping",
         "shortDescription": "A record that demonstrates compliance with a governance requirement \u2014 the proof that obligations are met."
+      },
+      {
+        "id": "AxisPrecondition",
+        "friendlyName": "Axis Precondition",
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General",
+        "package": "CanonicalRuntime",
+        "shortDescription": "A condition on another status axis, of the same instance or of a related one, that must hold before a move is permitted."
       },
       {
         "id": "AxisTransition",
@@ -9434,6 +9667,18 @@
         "rationale": "A transition's from-value and to-value must be drawn from the axis's value space. A change to the transition (especially endpoint changes) requires reassessing the value space \u2014 and conversely a change to the value space may invalidate existing transitions."
       },
       {
+        "source": "AxisPrecondition",
+        "target": "AxisTransition",
+        "strength": "strong",
+        "rationale": "Every AxisPrecondition guards one AxisTransition and is declared inside it. A change to the transition (its endpoints, its authority, its removal) requires reassessing the preconditions that guard it."
+      },
+      {
+        "source": "AxisPrecondition",
+        "target": "StatusAxis",
+        "strength": "moderate",
+        "rationale": "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to that axis (its name, its value space) can invalidate the precondition's required axis or required values."
+      },
+      {
         "source": "StatusAxis",
         "target": "CanonicalRuntimeType",
         "strength": "strong",
@@ -9459,10 +9704,10 @@
       }
     ],
     "stats": {
-      "nodeCount": 38,
-      "edgeCount": 106,
-      "strongCount": 41,
-      "moderateCount": 63,
+      "nodeCount": 39,
+      "edgeCount": 108,
+      "strongCount": 42,
+      "moderateCount": 64,
       "weakCount": 2,
       "bidirectionalPairCount": 33
     }
@@ -9865,6 +10110,13 @@
                       "bmmConcern": "Governance"
                     },
                     {
+                      "name": "AxisPrecondition",
+                      "tier": "bmm",
+                      "package": "CanonicalRuntime",
+                      "friendlyName": "Axis Precondition",
+                      "bmmConcern": "CanonicalRuntime"
+                    },
+                    {
                       "name": "AxisTransition",
                       "tier": "bmm",
                       "package": "CanonicalRuntime",
@@ -10176,7 +10428,7 @@
       ]
     },
     "stats": {
-      "bmmElementCount": 38,
+      "bmmElementCount": 39,
       "bfoClassesUsed": [
         "GenericallyDependentContinuant",
         "Role",
@@ -17826,7 +18078,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2433,
+      "lineNumber": 2441,
       "attributes": [
         {
           "name": "tenantDeclared"
@@ -17842,7 +18094,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2444,
+      "lineNumber": 2452,
       "attributes": [
         {
           "name": "operatorSide"
@@ -17873,7 +18125,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2473,
+      "lineNumber": 2481,
       "attributes": [
         {
           "name": "unorderedEnum"
@@ -17895,7 +18147,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2526,
+      "lineNumber": 2534,
       "attributes": [
         {
           "name": "valueShape",
@@ -18012,7 +18264,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2577,
+      "lineNumber": 2585,
       "attributes": [
         {
           "name": "fromValue",
@@ -18027,6 +18279,11 @@
         {
           "name": "transitionLabel",
           "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "triggerEvent",
+          "type": "String[0..1]",
           "isRedefinition": false
         },
         {
@@ -18126,6 +18383,140 @@
       }
     },
     {
+      "kind": "part",
+      "name": "preconditions",
+      "parentPackage": "CanonicalRuntime",
+      "topLevelPackage": "BusinessMetamodelGeneral",
+      "doc": "",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2618,
+      "specialises": "AxisPrecondition"
+    },
+    {
+      "kind": "part_def",
+      "name": "AxisPrecondition",
+      "parentPackage": "CanonicalRuntime",
+      "topLevelPackage": "BusinessMetamodelGeneral",
+      "doc": "A cross-axis precondition on one permitted move\n(S518, S0.4, decision 5). Platform-general: it names no\ntenant.\nThe guarded move is the AxisTransition the precondition\nis declared inside. The condition is on the axis named\nrequiredAxis (an axisName) of:\n- the same instance, when relatedVia is absent",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "metaModelLayer": "bmm",
+      "lineNumber": 2657,
+      "attributes": [
+        {
+          "name": "relatedVia",
+          "type": "String[0..1]",
+          "isRedefinition": false
+        },
+        {
+          "name": "requiredAxis",
+          "type": "String",
+          "isRedefinition": false
+        },
+        {
+          "name": "requiredValues",
+          "type": "String[1..*]",
+          "isRedefinition": false
+        },
+        {
+          "name": "rejectionReason",
+          "type": "String",
+          "isRedefinition": false
+        }
+      ],
+      "catalogueTag": {
+        "bmmConcern": "CanonicalRuntime",
+        "classification": "General"
+      },
+      "userFacing": {
+        "friendlyName": "Axis Precondition",
+        "shortDescription": "A condition on another status axis, of the same instance or of a related one, that must hold before a move is permitted."
+      },
+      "purposiveDescription": {
+        "description": "A condition that must hold before a permitted move on a status axis may be made. It names an axis, either on the same instance or on one related instance reached through a single reference, and the values that axis must hold. While the condition does not hold, the move is refused with a stated reason, never ignored. For example, a line on an order may not start preparation until the order is paid."
+      },
+      "comprehension": {
+        "surfaceEnumValues": false,
+        "surfaceDomainInstantiations": true,
+        "surfaceRelatedConcepts": true,
+        "surfaceAttributes": true
+      },
+      "weightedRelationships": [
+        {
+          "target": "AxisTransition",
+          "strength": "strong",
+          "rationale": "Every AxisPrecondition guards one AxisTransition and is declared inside it. A change to the transition (its endpoints, its authority, its removal) requires reassessing the preconditions that guard it."
+        },
+        {
+          "target": "StatusAxis",
+          "strength": "moderate",
+          "rationale": "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to that axis (its name, its value space) can invalidate the precondition's required axis or required values."
+        }
+      ],
+      "annotations": [
+        {
+          "name": "CatalogueTag",
+          "attrs": {
+            "bmmConcern": "CanonicalRuntime",
+            "classification": "General"
+          }
+        },
+        {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "An AxisPrecondition specifies a condition that must hold on an axis, of the same instance or of one related instance, before a declared transition is permitted. Information content: a rule about moves, not the check made at runtime. The check, when it is made, is part of a process."
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Axis Precondition",
+            "shortDescription": "A condition on another status axis, of the same instance or of a related one, that must hold before a move is permitted."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "A condition that must hold before a permitted move on a status axis may be made. It names an axis, either on the same instance or on one related instance reached through a single reference, and the values that axis must hold. While the condition does not hold, the move is refused with a stated reason, never ignored. For example, a line on an order may not start preparation until the order is paid."
+          }
+        },
+        {
+          "name": "Comprehension",
+          "attrs": {
+            "surfaceEnumValues": false,
+            "surfaceDomainInstantiations": true,
+            "surfaceRelatedConcepts": true,
+            "surfaceAttributes": true
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "AxisTransition",
+            "strength": "strong",
+            "rationale": "Every AxisPrecondition guards one AxisTransition and is declared inside it. A change to the transition (its endpoints, its authority, its removal) requires reassessing the preconditions that guard it."
+          }
+        },
+        {
+          "name": "WeightedRelationship",
+          "attrs": {
+            "target": "StatusAxis",
+            "strength": "moderate",
+            "rationale": "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to that axis (its name, its value space) can invalidate the precondition's required axis or required values."
+          }
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An AxisPrecondition specifies a condition that must hold on an axis, of the same instance or of one related instance, before a declared transition is permitted. Information content: a rule about moves, not the check made at runtime. The check, when it is made, is part of a process."
+      }
+    },
+    {
       "kind": "part_def",
       "name": "StatusAxis",
       "parentPackage": "CanonicalRuntime",
@@ -18134,7 +18525,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2639,
+      "lineNumber": 2729,
       "attributes": [
         {
           "name": "axisName",
@@ -18274,7 +18665,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2664,
+      "lineNumber": 2754,
       "specialises": "ValueSpace"
     },
     {
@@ -18286,7 +18677,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2665,
+      "lineNumber": 2755,
       "specialises": "AxisTransition"
     },
     {
@@ -18298,7 +18689,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2712,
+      "lineNumber": 2802,
       "catalogueTag": {
         "bmmConcern": "CanonicalRuntime",
         "classification": "General"
@@ -18385,7 +18776,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2764,
+      "lineNumber": 2854,
       "attributes": [
         {
           "name": "generallyGoverned"
@@ -18413,7 +18804,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2836,
+      "lineNumber": 2926,
       "attributes": [
         {
           "name": "gmc"
@@ -18465,7 +18856,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2889,
+      "lineNumber": 2979,
       "attributes": [
         {
           "name": "generalOnly"
@@ -18487,7 +18878,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2905,
+      "lineNumber": 2995,
       "attributes": [
         {
           "name": "referenceValidation"
@@ -18512,7 +18903,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2927,
+      "lineNumber": 3017,
       "attributes": [
         {
           "name": "england"
@@ -18540,7 +18931,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2943,
+      "lineNumber": 3033,
       "attributes": [
         {
           "name": "personalCare"
@@ -18595,7 +18986,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 2996,
+      "lineNumber": 3086,
       "attributes": [
         {
           "name": "registeredIndividual"
@@ -18620,7 +19011,7 @@
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
       "metaModelLayer": "bmm",
-      "lineNumber": 3011,
+      "lineNumber": 3101,
       "attributes": [
         {
           "name": "regulatoryShape",
@@ -28020,7 +28411,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 15,
+      "lineNumber": 16,
       "attributes": [
         {
           "name": "small"
@@ -28042,7 +28433,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 21,
+      "lineNumber": 22,
       "attributes": [
         {
           "name": "whole"
@@ -28073,7 +28464,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 30,
+      "lineNumber": 31,
       "attributes": [
         {
           "name": "hotDrink"
@@ -28095,7 +28486,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 36,
+      "lineNumber": 37,
       "attributes": [
         {
           "name": "active"
@@ -28120,7 +28511,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 44,
+      "lineNumber": 45,
       "attributes": [
         {
           "name": "prepared"
@@ -28142,7 +28533,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 53,
+      "lineNumber": 54,
       "attributes": [
         {
           "name": "inStock"
@@ -28167,7 +28558,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 63,
+      "lineNumber": 64,
       "attributes": [
         {
           "name": "name",
@@ -28200,7 +28591,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 72,
+      "lineNumber": 73,
       "specialises": "BusinessMetamodelGeneral::ServiceConcept::ExternalReference"
     },
     {
@@ -28212,7 +28603,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 75,
+      "lineNumber": 76,
       "specialises": "MenuItem",
       "attributes": [
         {
@@ -28241,7 +28632,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 83,
+      "lineNumber": 84,
       "specialises": "MenuItem",
       "attributes": [
         {
@@ -28265,7 +28656,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 92,
+      "lineNumber": 93,
       "specialises": "BusinessMetamodelGeneral::ServiceConcept::CatalogueEntry",
       "attributes": [
         {
@@ -28304,7 +28695,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 111,
+      "lineNumber": 112,
       "attributes": [
         {
           "name": "catalogueEntry",
@@ -28347,7 +28738,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 126,
+      "lineNumber": 127,
       "attributes": [
         {
           "name": "barista"
@@ -28369,7 +28760,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 132,
+      "lineNumber": 133,
       "attributes": [
         {
           "name": "firstName",
@@ -28392,7 +28783,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 139,
+      "lineNumber": 140,
       "specialises": "Person",
       "attributes": [
         {
@@ -28416,7 +28807,7 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 146,
+      "lineNumber": 147,
       "specialises": "Person",
       "attributes": [
         {
@@ -28432,43 +28823,16 @@
       ]
     },
     {
-      "kind": "enum_def",
-      "name": "OrderStatus",
-      "parentPackage": "CoffeeShop",
-      "topLevelPackage": "CoffeeShop",
-      "doc": "",
-      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
-      "sourceDomain": "cafe",
-      "metaModelLayer": "domain",
-      "lineNumber": 155,
-      "attributes": [
-        {
-          "name": "placed"
-        },
-        {
-          "name": "inPreparation"
-        },
-        {
-          "name": "ready"
-        },
-        {
-          "name": "collected"
-        },
-        {
-          "name": "cancelled"
-        }
-      ]
-    },
-    {
       "kind": "part_def",
       "name": "OrderLine",
       "parentPackage": "CoffeeShop",
       "topLevelPackage": "CoffeeShop",
-      "doc": "A single line on an order - one item with its quantity.\nA line may name who it is for (H-0486): a free-text\nbeneficiary label, with an optional contact reference.\nBoth are optional; most lines carry neither.",
+      "doc": "A single line on an order - one item with its quantity.\nA line may name who it is for (H-0486): a free-text\nbeneficiary label, with an optional contact reference.\nBoth are optional; most lines carry neither.\nCanonical runtime type (S518, S0.4) with one axis,\npreparation. Lines are prepared and colle",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 163,
+      "lineNumber": 184,
+      "specialises": "CanonicalRuntimeType",
       "attributes": [
         {
           "name": "quantity",
@@ -28481,6 +28845,11 @@
           "isRef": true
         },
         {
+          "name": "order",
+          "type": "Order",
+          "isRef": true
+        },
+        {
           "name": "beneficiaryLabel",
           "type": "String[0..1]",
           "isRedefinition": false
@@ -28490,27 +28859,154 @@
           "type": "String[0..1]",
           "isRedefinition": false
         }
-      ]
+      ],
+      "userFacing": {
+        "friendlyName": "Order Line",
+        "shortDescription": "One item asked for on an order, with its quantity and its own preparation status."
+      },
+      "purposiveDescription": {
+        "description": "One item on a customer order, with its quantity and, optionally, who it is for. Each line is prepared and collected on its own, so it carries its own preparation status: queued, in preparation, ready, collected, or cancelled if its order is cancelled. A line cannot start preparation until its order is paid."
+      },
+      "annotations": [
+        {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "An order line is a record of one item asked for on an order: information content, part of the order's record. The preparation of the item is a process in the fulfilment workflow; the line's preparation axis records where that process has reached."
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Order Line",
+            "shortDescription": "One item asked for on an order, with its quantity and its own preparation status."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "One item on a customer order, with its quantity and, optionally, who it is for. Each line is prepared and collected on its own, so it carries its own preparation status: queued, in preparation, ready, collected, or cancelled if its order is cancelled. A line cannot start preparation until its order is paid."
+          }
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An order line is a record of one item asked for on an order: information content, part of the order's record. The preparation of the item is a process in the fulfilment workflow; the line's preparation axis records where that process has reached."
+      }
+    },
+    {
+      "kind": "part",
+      "name": "preparationAxis",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 207,
+      "specialises": "StatusAxis"
+    },
+    {
+      "kind": "part",
+      "name": "queuedToInPreparation",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 220,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "orderPaid",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 228,
+      "specialises": "AxisPrecondition"
+    },
+    {
+      "kind": "part",
+      "name": "inPreparationToReady",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 236,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "readyToCollected",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 244,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "queuedToCancelled",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 255,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "inPreparationToCancelled",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 263,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "readyToCancelled",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 271,
+      "specialises": "AxisTransition"
     },
     {
       "kind": "part_def",
       "name": "Order",
       "parentPackage": "CoffeeShop",
       "topLevelPackage": "CoffeeShop",
-      "doc": "A customer order, containing one or more order lines.\nThe participant placing the order (orderingParty) and the\nservice subject are carried as separate fields, both typed\nby the General defs. For a walk-in Cafe the two coincide;\nboth are carried so that surface work generalises (H-0630).",
+      "doc": "A customer order, containing one or more order lines.\nThe participant placing the order (orderingParty) and the\nservice subject are carried as separate fields, both typed\nby the General defs. For a walk-in Cafe the two coincide;\nboth are carried so that surface work generalises (H-0630).\nCanonical r",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 175,
+      "lineNumber": 293,
+      "specialises": "CanonicalRuntimeType",
       "attributes": [
         {
           "name": "orderNumber",
           "type": "Integer",
-          "isRedefinition": false
-        },
-        {
-          "name": "status",
-          "type": "OrderStatus",
           "isRedefinition": false
         },
         {
@@ -28530,7 +29026,42 @@
           "isRef": true,
           "qualifiedType": "BusinessMetamodelGeneral::ServiceConcept::ServiceSubject"
         }
-      ]
+      ],
+      "userFacing": {
+        "friendlyName": "Order",
+        "shortDescription": "A customer's order of one or more items, with its lifecycle and payment status."
+      },
+      "purposiveDescription": {
+        "description": "What a customer asked for, as one or more order lines. An order carries two independent statuses. Its lifecycle runs from placed through in preparation and ready to collected, and follows its lines: it is never moved to ready or collected directly. It can be cancelled at the counter before it is ready. Its payment runs from unpaid to paid, taken at the till."
+      },
+      "annotations": [
+        {
+          "name": "BfoType",
+          "attrs": {
+            "bfoClass": "GenericallyDependentContinuant",
+            "midLevelClass": "IAO:InformationContentEntity",
+            "mappingNotes": "An order is a record of what a customer asked for: information content, as the Paws Booking is (Ella, S518, decision 6). The fulfilment is the process, and it sits in the workflow; the order's axes record where it has reached."
+          }
+        },
+        {
+          "name": "UserFacing",
+          "attrs": {
+            "friendlyName": "Order",
+            "shortDescription": "A customer's order of one or more items, with its lifecycle and payment status."
+          }
+        },
+        {
+          "name": "PurposiveDescription",
+          "attrs": {
+            "description": "What a customer asked for, as one or more order lines. An order carries two independent statuses. Its lifecycle runs from placed through in preparation and ready to collected, and follows its lines: it is never moved to ready or collected directly. It can be cancelled at the counter before it is ready. Its payment runs from unpaid to paid, taken at the till."
+          }
+        }
+      ],
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An order is a record of what a customer asked for: information content, as the Paws Booking is (Ella, S518, decision 6). The fulfilment is the process, and it sits in the workflow; the order's axes record where it has reached."
+      }
     },
     {
       "kind": "part",
@@ -28541,8 +29072,104 @@
       "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "metaModelLayer": "domain",
-      "lineNumber": 188,
+      "lineNumber": 322,
       "specialises": "OrderLine"
+    },
+    {
+      "kind": "part",
+      "name": "lifecycleAxis",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 326,
+      "specialises": "StatusAxis"
+    },
+    {
+      "kind": "part",
+      "name": "placedToInPreparation",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 339,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "inPreparationToReady",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 347,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "readyToCollected",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 355,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "placedToCancelled",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 363,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "inPreparationToCancelled",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 371,
+      "specialises": "AxisTransition"
+    },
+    {
+      "kind": "part",
+      "name": "paymentAxis",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 382,
+      "specialises": "StatusAxis"
+    },
+    {
+      "kind": "part",
+      "name": "unpaidToPaid",
+      "parentPackage": "CoffeeShop",
+      "topLevelPackage": "CoffeeShop",
+      "doc": "",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "metaModelLayer": "domain",
+      "lineNumber": 394,
+      "specialises": "AxisTransition"
     },
     {
       "kind": "part",

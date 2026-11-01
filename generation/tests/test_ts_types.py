@@ -66,3 +66,14 @@ class TsTypesTest(GenTestCase):
         self.edit("shop/domain/shop.sysml", "ShopPlatformFixture::Concepts::Party", "ShopPlatformFixture::Concepts::Missing")
         with self.assertRaises(ts_types.ModelError):
             self.gen()
+
+    def test_axis_value_types_and_axis_tuples(self):
+        self.gen()
+        text = self.read("types.ts")
+        self.assertIn('export const ticketStageValues = ["placed", "inPreparation", "ready", "collected", "cancelled"] as const;', text)
+        self.assertIn("export type TicketStageValue = (typeof ticketStageValues)[number];", text)
+        self.assertIn("export interface TicketAxisTuple {\n  stage: TicketStageValue;\n  payment: TicketPaymentValue;\n}", text)
+        self.assertIn("export interface TicketTaskAxisTuple {\n  work: TicketTaskWorkValue;\n}", text)
+        ticket = text.split("export interface Ticket extends Item {", 1)[1].split("}", 1)[0]
+        self.assertIn("  axes: TicketAxisTuple;", ticket)
+        self.assertNotIn("stageAxis", text)  # the axis usages are not fields

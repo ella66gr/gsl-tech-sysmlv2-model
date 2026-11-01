@@ -47,11 +47,12 @@ rules:
         - "FinancialPlanning"
         - "GovernanceMapping"
         - "StakeholderModel"
+        - "CanonicalRuntime"
       has_annotation: "@BfoType"
     classification: "DomainClass"
     target_graph: "domain"
     iri_template: "{ontara-bmm}{ElementName}"
-    notes: "BMM part defs with BFO mapping → OWL classes in domain graph"
+    notes: "BMM part defs with BFO mapping → OWL classes in domain graph. CanonicalRuntime (the status-axis family) added S518, S0.4 (H-0311, OP-32 part a)."
 
   # --- Phase 1: DomainClass (requirement_def) ---
   - match:
@@ -77,6 +78,22 @@ rules:
   # Classification applied programmatically in Stage 3c — no match rule
   # needed here. This entry documents the category for the mapping IR.
 
+  # --- S518 (S0.4): tenant canonical runtime types ---
+  # A tenant part def that specialises CanonicalRuntimeType and carries
+  # @BfoType becomes an OWL class in the tenant's own ontology namespace
+  # (https://ontara.dev/ontology/<domain>/), in ontara-tenant-types.ttl,
+  # grounded under its @BfoType parent (H-0289). Names no tenant.
+  - match:
+      construct: "part_def"
+      specialises: "CanonicalRuntimeType"
+      source_domain_not:
+        - "core"
+      has_annotation: "@BfoType"
+    classification: "TenantRuntimeType"
+    target_graph: "domain"
+    iri_template: "https://ontara.dev/ontology/tenant/{SourceDomain}/{ElementName}"
+    notes: "Tenant canonical runtime types with BFO grounding → OWL classes in tenant namespace (S518, S0.4)"
+
   # --- Phase 1: StructuralOnly (BMM without BFO) ---
   - match:
       construct: "part_def"
@@ -87,6 +104,7 @@ rules:
         - "FinancialPlanning"
         - "GovernanceMapping"
         - "StakeholderModel"
+        - "CanonicalRuntime"
       has_annotation: null
     classification: "StructuralOnly"
     target_graph: null

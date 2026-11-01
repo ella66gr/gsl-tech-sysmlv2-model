@@ -2,11 +2,12 @@
   "version": "2.0.0",
   "session": 116,
   "summary": {
-    "StructuralOnly": 727,
-    "DomainClass": 34,
+    "StructuralOnly": 766,
+    "DomainClass": 39,
+    "TenantRuntimeType": 2,
     "ObjectProperty": 14,
     "DeferredProperty": 2,
-    "WeightedRelationship": 98
+    "WeightedRelationship": 108
   },
   "elements": [
     {
@@ -975,8 +976,9 @@
       "parentPackage": "CanonicalRuntime",
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null,
+      "classification": "DomainClass",
+      "targetGraph": "domain",
+      "iriTemplate": "{ontara-bmm}{ElementName}",
       "bfoType": {
         "bfoClass": "GenericallyDependentContinuant",
         "midLevelClass": "IAO:InformationContentEntity",
@@ -989,12 +991,37 @@
       "parentPackage": "CanonicalRuntime",
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null,
+      "classification": "DomainClass",
+      "targetGraph": "domain",
+      "iriTemplate": "{ontara-bmm}{ElementName}",
       "bfoType": {
         "bfoClass": "GenericallyDependentContinuant",
         "midLevelClass": "IAO:InformationContentEntity",
         "mappingNotes": "An AxisTransition specifies a permitted from-value to-value pair on a single axis, with the authority required to write it. Information content \u2014 a rule, not the act of transitioning. The transitioning itself, when it occurs, is a Process."
+      }
+    },
+    {
+      "name": "preconditions",
+      "kind": "part",
+      "parentPackage": "CanonicalRuntime",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AxisPrecondition",
+      "kind": "part_def",
+      "parentPackage": "CanonicalRuntime",
+      "sourceFile": "model/business-metamodel-general.sysml",
+      "sourceDomain": "core",
+      "classification": "DomainClass",
+      "targetGraph": "domain",
+      "iriTemplate": "{ontara-bmm}{ElementName}",
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An AxisPrecondition specifies a condition that must hold on an axis, of the same instance or of one related instance, before a declared transition is permitted. Information content: a rule about moves, not the check made at runtime. The check, when it is made, is part of a process."
       }
     },
     {
@@ -1003,8 +1030,9 @@
       "parentPackage": "CanonicalRuntime",
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null,
+      "classification": "DomainClass",
+      "targetGraph": "domain",
+      "iriTemplate": "{ontara-bmm}{ElementName}",
       "bfoType": {
         "bfoClass": "GenericallyDependentContinuant",
         "midLevelClass": "IAO:InformationContentEntity",
@@ -1035,8 +1063,9 @@
       "parentPackage": "CanonicalRuntime",
       "sourceFile": "model/business-metamodel-general.sysml",
       "sourceDomain": "core",
-      "classification": "StructuralOnly",
-      "targetGraph": null,
+      "classification": "DomainClass",
+      "targetGraph": "domain",
+      "iriTemplate": "{ontara-bmm}{ElementName}",
       "bfoType": {
         "bfoClass": "Entity",
         "midLevelClass": "",
@@ -3343,6 +3372,414 @@
       "kind": "part",
       "parentPackage": "CoffeeshopScenarios",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-scenarios.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "LoyaltyDiscountRequired",
+      "kind": "requirement_def",
+      "parentPackage": "BusinessRules",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "MinimumOrderSize",
+      "kind": "requirement_def",
+      "parentPackage": "BusinessRules",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "MaximumOrderSize",
+      "kind": "requirement_def",
+      "parentPackage": "BusinessRules",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "veganMilkDrinkRule",
+      "kind": "requirement_def",
+      "parentPackage": "BusinessRules",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "BaristaMinimumHours",
+      "kind": "requirement_def",
+      "parentPackage": "BusinessRules",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "LoyaltyDiscountConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "BusinessRules",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OrderSizeConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "BusinessRules",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "VeganMilkConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "BusinessRules",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "BaristaHoursConstraint",
+      "kind": "constraint_def",
+      "parentPackage": "BusinessRules",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/business-rules.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "DrinkSize",
+      "kind": "enum_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "MilkOption",
+      "kind": "enum_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ItemCategory",
+      "kind": "enum_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "AvailabilityStatus",
+      "kind": "enum_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "ProvisionType",
+      "kind": "enum_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "StockStatus",
+      "kind": "enum_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "MenuItem",
+      "kind": "part_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "externalRefs",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Drink",
+      "kind": "part_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "FoodItem",
+      "kind": "part_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "CatalogueEntry",
+      "kind": "part_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "InventoryRecord",
+      "kind": "part_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "StaffRole",
+      "kind": "enum_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Person",
+      "kind": "part_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Customer",
+      "kind": "part_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "StaffMember",
+      "kind": "part_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "OrderLine",
+      "kind": "part_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "TenantRuntimeType",
+      "targetGraph": "domain",
+      "iriTemplate": "https://ontara.dev/ontology/tenant/{SourceDomain}/{ElementName}",
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An order line is a record of one item asked for on an order: information content, part of the order's record. The preparation of the item is a process in the fulfilment workflow; the line's preparation axis records where that process has reached."
+      }
+    },
+    {
+      "name": "preparationAxis",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "queuedToInPreparation",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "orderPaid",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "inPreparationToReady",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "readyToCollected",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "queuedToCancelled",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "inPreparationToCancelled",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "readyToCancelled",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "Order",
+      "kind": "part_def",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "TenantRuntimeType",
+      "targetGraph": "domain",
+      "iriTemplate": "https://ontara.dev/ontology/tenant/{SourceDomain}/{ElementName}",
+      "bfoType": {
+        "bfoClass": "GenericallyDependentContinuant",
+        "midLevelClass": "IAO:InformationContentEntity",
+        "mappingNotes": "An order is a record of what a customer asked for: information content, as the Paws Booking is (Ella, S518, decision 6). The fulfilment is the process, and it sits in the workflow; the order's axes record where it has reached."
+      }
+    },
+    {
+      "name": "lines",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "lifecycleAxis",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "placedToInPreparation",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "inPreparationToReady",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "readyToCollected",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "placedToCancelled",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "inPreparationToCancelled",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "paymentAxis",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
+      "sourceDomain": "cafe",
+      "classification": "StructuralOnly",
+      "targetGraph": null
+    },
+    {
+      "name": "unpaidToPaid",
+      "kind": "part",
+      "parentPackage": "CoffeeShop",
+      "sourceFile": "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml",
       "sourceDomain": "cafe",
       "classification": "StructuralOnly",
       "targetGraph": null
@@ -8093,6 +8530,96 @@
       "rationale": "Participation mode may affect which channels are used (e.g. self-service requires a digital channel), but channels serve multiple purposes (H4).",
       "sysmlSourceFile": "model/business-metamodel-general.sysml",
       "sysmlLineNumber": 2011
+    },
+    {
+      "individualName": "weight-ValueSpace-to-StatusAxis",
+      "source": "ValueSpace",
+      "target": "StatusAxis",
+      "strength": "strong",
+      "rationale": "Every ValueSpace exists to describe a StatusAxis. A change to the value space (its shape, its permitted values) requires reassessing the axis it belongs to \u2014 the axis's permitted transitions and authority interpretation may need adjustment.",
+      "sysmlSourceFile": "model/business-metamodel-general.sysml",
+      "sysmlLineNumber": 2534
+    },
+    {
+      "individualName": "weight-ValueSpace-to-AxisTransition",
+      "source": "ValueSpace",
+      "target": "AxisTransition",
+      "strength": "strong",
+      "rationale": "Permitted transitions reference values from the value space. A change to the value space (e.g. removing a value, adding a value, changing the shape from unordered to ordered) directly affects which transitions are well-formed.",
+      "sysmlSourceFile": "model/business-metamodel-general.sysml",
+      "sysmlLineNumber": 2534
+    },
+    {
+      "individualName": "weight-AxisTransition-to-StatusAxis",
+      "source": "AxisTransition",
+      "target": "StatusAxis",
+      "strength": "strong",
+      "rationale": "Every AxisTransition is declared on a specific StatusAxis. A change to a transition (its endpoints, its required authority) requires reassessing the axis whose transition rules it defines \u2014 the axis's runtime behaviour changes when its transitions change.",
+      "sysmlSourceFile": "model/business-metamodel-general.sysml",
+      "sysmlLineNumber": 2585
+    },
+    {
+      "individualName": "weight-AxisTransition-to-ValueSpace",
+      "source": "AxisTransition",
+      "target": "ValueSpace",
+      "strength": "strong",
+      "rationale": "A transition's from-value and to-value must be drawn from the axis's value space. A change to the transition (especially endpoint changes) requires reassessing the value space \u2014 and conversely a change to the value space may invalidate existing transitions.",
+      "sysmlSourceFile": "model/business-metamodel-general.sysml",
+      "sysmlLineNumber": 2585
+    },
+    {
+      "individualName": "weight-AxisPrecondition-to-AxisTransition",
+      "source": "AxisPrecondition",
+      "target": "AxisTransition",
+      "strength": "strong",
+      "rationale": "Every AxisPrecondition guards one AxisTransition and is declared inside it. A change to the transition (its endpoints, its authority, its removal) requires reassessing the preconditions that guard it.",
+      "sysmlSourceFile": "model/business-metamodel-general.sysml",
+      "sysmlLineNumber": 2657
+    },
+    {
+      "individualName": "weight-AxisPrecondition-to-StatusAxis",
+      "source": "AxisPrecondition",
+      "target": "StatusAxis",
+      "strength": "moderate",
+      "rationale": "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to that axis (its name, its value space) can invalidate the precondition's required axis or required values.",
+      "sysmlSourceFile": "model/business-metamodel-general.sysml",
+      "sysmlLineNumber": 2657
+    },
+    {
+      "individualName": "weight-StatusAxis-to-CanonicalRuntimeType",
+      "source": "StatusAxis",
+      "target": "CanonicalRuntimeType",
+      "strength": "strong",
+      "rationale": "A StatusAxis is declared on a CanonicalRuntimeType \u2014 it has no independent existence. A change to an axis (its value space, its transitions, its authority) requires reassessing the canonical type whose runtime instances carry it.",
+      "sysmlSourceFile": "model/business-metamodel-general.sysml",
+      "sysmlLineNumber": 2729
+    },
+    {
+      "individualName": "weight-StatusAxis-to-ValueSpace",
+      "source": "StatusAxis",
+      "target": "ValueSpace",
+      "strength": "strong",
+      "rationale": "Every StatusAxis has a ValueSpace. A change to the axis (its meaning, its purpose) typically requires reassessing the value space that defines its permitted values.",
+      "sysmlSourceFile": "model/business-metamodel-general.sysml",
+      "sysmlLineNumber": 2729
+    },
+    {
+      "individualName": "weight-StatusAxis-to-AxisTransition",
+      "source": "StatusAxis",
+      "target": "AxisTransition",
+      "strength": "strong",
+      "rationale": "A StatusAxis declares its set of permitted AxisTransitions. A change to the axis (especially to its value space or authority) requires reassessing the transitions \u2014 they may need to be added, removed, or have their required authority adjusted.",
+      "sysmlSourceFile": "model/business-metamodel-general.sysml",
+      "sysmlLineNumber": 2729
+    },
+    {
+      "individualName": "weight-CanonicalRuntimeType-to-StatusAxis",
+      "source": "CanonicalRuntimeType",
+      "target": "StatusAxis",
+      "strength": "strong",
+      "rationale": "A CanonicalRuntimeType declares the set of StatusAxes its runtime instances carry. A change to the canonical type's structural definition (especially to its declared axes) directly affects every instance \u2014 runtime tuple shape, substrate triple structure, and comprehension all flow from the axis declarations.",
+      "sysmlSourceFile": "model/business-metamodel-general.sysml",
+      "sysmlLineNumber": 2802
     }
   ]
 }

@@ -55,6 +55,32 @@ BusinessMetamodelGeneral::BusinessStrategy::PivotScenario
   part CoffeeshopScenarios::pivotKioskToCafe
 BusinessMetamodelGeneral::BusinessStrategy::StrategicObjective
   requirement CoffeeshopScenarios::kioskProfitability
+BusinessMetamodelGeneral::CanonicalRuntime::AxisPrecondition
+  part CoffeeShop::OrderLine::preparationAxis::queuedToInPreparation::orderPaid
+BusinessMetamodelGeneral::CanonicalRuntime::AxisTransition
+  part CoffeeShop::Order::lifecycleAxis::inPreparationToCancelled
+  part CoffeeShop::Order::lifecycleAxis::inPreparationToReady
+  part CoffeeShop::Order::lifecycleAxis::placedToCancelled
+  part CoffeeShop::Order::lifecycleAxis::placedToInPreparation
+  part CoffeeShop::Order::lifecycleAxis::readyToCollected
+  part CoffeeShop::Order::paymentAxis::unpaidToPaid
+  part CoffeeShop::OrderLine::preparationAxis::inPreparationToCancelled
+  part CoffeeShop::OrderLine::preparationAxis::inPreparationToReady
+  part CoffeeShop::OrderLine::preparationAxis::queuedToCancelled
+  part CoffeeShop::OrderLine::preparationAxis::queuedToInPreparation
+  part CoffeeShop::OrderLine::preparationAxis::readyToCancelled
+  part CoffeeShop::OrderLine::preparationAxis::readyToCollected
+BusinessMetamodelGeneral::CanonicalRuntime::CanonicalRuntimeType
+  def CoffeeShop::Order
+  def CoffeeShop::OrderLine
+  item DrinkFulfilment::FulfilDrink::orderLine (via CoffeeShop::OrderLine)
+  item FulfilDrinkOrchestration::FulfilDrinkWorkflow::orderLine (via CoffeeShop::OrderLine)
+  part CoffeeShop::Order::lines (via CoffeeShop::OrderLine)
+  ref CoffeeShop::OrderLine::order (via CoffeeShop::Order)
+BusinessMetamodelGeneral::CanonicalRuntime::StatusAxis
+  part CoffeeShop::Order::lifecycleAxis
+  part CoffeeShop::Order::paymentAxis
+  part CoffeeShop::OrderLine::preparationAxis
 BusinessMetamodelGeneral::DomainIdentityTypes::DomainIdentity
   part CoffeeShopDomainRegistration::cafeIdentity
 BusinessMetamodelGeneral::FinancialPlanning::CostDriver

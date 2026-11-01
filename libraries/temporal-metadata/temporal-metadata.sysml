@@ -65,9 +65,14 @@ package TemporalMetadata {
     // -- Cross-cutting metadata ---------------------------------
 
     metadata def StateTransitionTrigger {
-        doc /* Links an action step to the state machine event it
-             * triggers upon completion. Used for traceability between
-             * the orchestration flow and the domain lifecycle.
+        doc /* Links an action step to the event it triggers upon
+             * completion. Used for traceability between the
+             * orchestration flow and the domain lifecycle.
+             *
+             * eventName is the triggerEvent of an AxisTransition on a
+             * status axis of the workflow's input type (S518, S0.4: the
+             * axis declaration replaced the tenant state definition as
+             * the single source of a lifecycle).
              *
              * The generator can optionally emit a log statement or
              * event emission at this point.

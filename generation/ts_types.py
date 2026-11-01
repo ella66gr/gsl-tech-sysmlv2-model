@@ -14,7 +14,16 @@ is a platform def. With ``--platform-model``, each one the package uses is
 looked up there and emitted after the package's own declarations, sorted by
 qualified name, with the platform defs it uses in turn. A platform def keeps
 its own name, unless the package declares the same name: it is then
-prefixed with its owning package's name (S518).
+prefixed with its owning package's name (S518). A plain name that is not
+the package's own and that a wildcard import (``import Pkg::Sub::*;``)
+brings in from the platform model is resolved the same way (S0.4).
+
+Status axes (S0.4). For each part def of the package that declares status
+axes (see generation.status_axes), each axis gets its value type
+(``<Type><Axis>Value``, with the values in declared order as
+``<type><Axis>Values``), the type gets its axis tuple
+(``<Type>AxisTuple``: one field per axis, named by ``axisName``), and its
+interface carries the tuple as ``axes``.
 
 Usage (from the repository root):
     python3 -m generation.ts_types --model <tenant model folder> --out <folder> \\
@@ -38,6 +47,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from generation.output import base_parser, header, write
+from generation.status_axes import AxisType, axis_types
 from generation.sysml_text import (
     ModelError,
     braced_body,
@@ -193,8 +203,52 @@ def _qualify_siblings(part: dict, prefix: str) -> dict:
     return out
 
 
-def render(enums: dict[str, list[str]], parts: list[dict], head: str, platform: list[dict] | None = None) -> str:
+def _key(name: str) -> str:
+    return name if re.fullmatch(r"[A-Za-z_$][\w$]*", name) else '"' + name + '"'
+
+
+def _qualify_imported(pkg_body: str, enums: dict, parts: list[dict], platform_files: list) -> list[dict]:
+    """Rewrite plain names brought in by a wildcard import of a platform package to qualified names."""
+    imports = re.findall(r"\bimport\s+(\w+(?:::\w+)*)::\*\s*;", mask_comments(pkg_body))
+    local = set(enums) | {p["name"] for p in parts}
+    cache: dict[str, str | None] = {}
+
+    def resolve(t: str) -> str:
+        if "::" in t or t in TYPE_MAP or t in local:
+            return t
+        if t not in cache:
+            hits = sorted({
+                f.qualified
+                for kw in (r"part\s+def", r"enum\s+def")
+                for f in find_all(platform_files, kw, t)
+                for imp in imports
+                if f.qualified == f"{imp}::{t}"
+            })
+            if len(hits) > 1:
+                raise ModelError(f"{t!r} is imported from more than one platform package: {', '.join(hits)}")
+            cache[t] = hits[0] if hits else None
+        return cache[t] or t
+
+    out = []
+    for p in parts:
+        q = dict(p)
+        for g in ("attributes", "refs", "compositions"):
+            q[g] = [dict(f, type=resolve(f["type"])) for f in p[g]]
+        q["parent"] = resolve(p["parent"]) if p["parent"] else None
+        out.append(q)
+    return out
+
+
+def render(
+    enums: dict[str, list[str]],
+    parts: list[dict],
+    head: str,
+    platform: list[dict] | None = None,
+    axes: list[AxisType] | None = None,
+) -> str:
     platform = platform or []
+    axes = axes or []
+    axis_by_type = {t.name: t for t in axes}
     names = {d["qualified"]: d["ts_name"] for d in platform}
     lines = [head.rstrip("\n"), ""]
 
@@ -213,11 +267,30 @@ def render(enums: dict[str, list[str]], parts: list[dict], head: str, platform: 
                 suffix = "[]" if is_many(f["mult"]) else ""
                 optional = "?" if is_optional(f["mult"]) else ""
                 lines.append(f"  {f['name']}{optional}: {ts_type(f['type'], names)}{suffix};")
+        if name in axis_by_type:
+            lines.append(f"  /** The status axis tuple: one value per declared axis. */")
+            lines.append(f"  axes: {name}AxisTuple;")
         lines.append("}")
         lines.append("")
 
     for name, members in enums.items():
         enum(name, members)
+    if axes:
+        lines.append("// Status axes: each axis's value type, and each type's axis tuple")
+        lines.append("")
+    for t in axes:
+        for ax in t.axes:
+            vals = ", ".join('"' + v + '"' for v in ax.values)
+            lines.append(f"/** {t.name} {ax.name}: values in declared order; default {ax.default}. */")
+            lines.append(f"export const {ax.lower_ident}Values = [{vals}] as const;")
+            lines.append(f"export type {ax.ident}Value = (typeof {ax.lower_ident}Values)[number];")
+            lines.append("")
+        lines.append(f"/** The axis tuple of {t.name}. */")
+        lines.append(f"export interface {t.name}AxisTuple {{")
+        for ax in t.axes:
+            lines.append(f"  {_key(ax.name)}: {ax.ident}Value;")
+        lines.append("}")
+        lines.append("")
     for part in parts:
         interface(part["name"], part)
     if platform:
@@ -246,14 +319,25 @@ def generate(
     enums, parts = parse_package(pkg.body)
     if not enums and not parts:
         raise ModelError(f"package {package!r} has no enum def or part def")
+    platform_files = load_model(platform_model, root) if platform_model is not None else []
+    if platform_files:
+        parts = _qualify_imported(pkg.body, enums, parts, platform_files)
     platform, platform_sources = [], []
     if any("::" in t for p in parts for t in _types_of(p)):
         if platform_model is None:
             raise ModelError(f"package {package!r} uses qualified platform defs: pass --platform-model")
-        platform, platform_sources = resolve_platform(enums, parts, load_model(platform_model, root))
+        platform, platform_sources = resolve_platform(enums, parts, platform_files)
+    axes = [t for t in axis_types(files) if t.found.qualified.startswith(pkg.qualified + "::")]
+    for t in axes:
+        part = next((p for p in parts if p["name"] == t.name), None)
+        if part and any(f["name"] == "axes" for g in ("attributes", "refs", "compositions") for f in part[g]):
+            raise ModelError(f"part def {t.name!r} has a feature named 'axes', which the axis tuple needs")
     head = header(__file__, [pkg.source] + platform_sources, model_name)
-    path = write(out, filename, render(enums, parts, head, platform))
-    print(f"wrote {path} ({len(enums)} enums, {len(parts)} interfaces, {len(platform)} platform defs)")
+    path = write(out, filename, render(enums, parts, head, platform, axes))
+    print(
+        f"wrote {path} ({len(enums)} enums, {len(parts)} interfaces, {len(platform)} platform defs, "
+        f"{sum(len(t.axes) for t in axes)} axes)"
+    )
     return path
 
 

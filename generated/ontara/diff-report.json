@@ -4,14 +4,14 @@
     "added": 0,
     "removed": 0,
     "modified": 0,
-    "unchanged": 292
+    "unchanged": 322
   },
   "by_type": {
     "ClassDeclaration": {
       "added": 0,
       "removed": 0,
       "modified": 0,
-      "unchanged": 34
+      "unchanged": 39
     },
     "PropertyDeclaration": {
       "added": 0,
@@ -23,13 +23,13 @@
       "added": 0,
       "removed": 0,
       "modified": 0,
-      "unchanged": 98
+      "unchanged": 108
     },
     "MappingRecord": {
       "added": 0,
       "removed": 0,
       "modified": 0,
-      "unchanged": 146
+      "unchanged": 161
     }
   },
   "entries": []

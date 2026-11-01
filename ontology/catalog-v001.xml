@@ -13,6 +13,11 @@
     <uri name="https://ontara.dev/ontology/bmm/"
          uri="../generated/ontology/ontara-bmm.ttl"/>
 
+    <!-- Ontara tenant canonical runtime types (pipeline-generated, Stage 3g, Session 518, S0.4).
+         Tenant classes in their tenant's namespace (https://ontara.dev/ontology/<tenant>/). -->
+    <uri name="https://ontara.dev/ontology/tenant-types/"
+         uri="../generated/ontology/ontara-tenant-types.ttl"/>
+
     <!-- Ontara BMM axioms (hand-authored, OWL-authoritative) -->
     <uri name="https://ontara.dev/ontology/bmm/axioms"
          uri="axioms/ontara-bmm-axioms.ttl"/>
@@ -32,6 +37,10 @@
     <!-- Ontara Reasoning Vocabulary (hand-authored, OWL-authoritative, Session 150) -->
     <uri name="https://ontara.dev/ontology/reasoning/"
          uri="reasoning/ontara-reasoning.ttl"/>
+
+    <!-- Cafe Reasoning Instances (hand-authored, Session 518, S0.4; H-0055) -->
+    <uri name="https://ontara.dev/data/cafe/reasoning/"
+         uri="reasoning/cafe-reasoning-instances.ttl"/>
 
     <!-- Ontara Platform Record Module (hand-authored, OWL only, Session 514, OP-125 / ADR-011)
          Shared content at PML, outside the FGZ. Namespace names no layer.

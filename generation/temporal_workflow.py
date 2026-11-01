@@ -20,25 +20,29 @@ What it reads from the model:
   call, ``@TemporalSignal { signalName; timeoutMinutes }`` a signal wait
   with a durable timer of ``timeoutMinutes``;
 - ``@StateTransitionTrigger { eventName }`` on a step: after the step, the
-  workflow raises that event on the lifecycle that declares it, through
-  the generated lifecycle guard (see generation.state_machine).
+  workflow raises that event on the status axis whose move carries it as
+  its ``triggerEvent`` (an axis of the input type, see
+  generation.status_axes), through the generated guard's trace function
+  (see generation.state_machine). The workflow tracks the axis value in its
+  own state, which is private realiser storage: the stored axis is
+  authoritative, and the workflow writes no axis, so no authority is
+  checked. A trace the guard refuses fails the workflow, non-retryably.
 
 The timer in the workflow and the expected minutes in the step table come
 from the same ``timeoutMinutes`` annotation, in the same run.
 
 Checks made at generation time (each is an error):
-- a trigger names an event no lifecycle declares, or events from two
-  lifecycles;
-- walking the steps from the lifecycle's initial state, a trigger has no
-  transition from the state the order is in at that step. An event that
-  enters the initial state is not a transition and must not be a trigger;
+- a trigger names an event that no move on the input type's axes carries,
+  or the triggers name events of two axes;
+- walking the steps from the axis's default value, a trigger has no move
+  from the value the axis holds at that step;
 - a step has no Temporal annotation, or the steps break their succession.
 
 Usage (from the repository root):
     python3 -m generation.temporal_workflow --model <tenant model folder> --out <folder> \\
         [--workflow <workflowName>] [--activities-import ./activities.js] \\
         [--input-type <type exported by the activities module>] \\
-        [--lifecycle-import <module specifier of the generated guard>] [--model-name <name>]
+        [--lifecycle-import <module specifier of the generated axis guard>] [--model-name <name>]
 
 Timer expiry: the model declares the timeout but not what expiry means, so
 the workflow logs the expiry and keeps waiting for the signal. Nothing is
@@ -56,7 +60,8 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from generation.output import base_parser, header, write
-from generation.state_machine import Lifecycle, lifecycles
+from generation.state_machine import GUARD_FILE
+from generation.status_axes import Axis, AxisType, axis_types
 from generation.sysml_text import (
     Found,
     ModelError,
@@ -92,7 +97,7 @@ class Workflow:
     input_name: str
     input_type: str
     steps: list[Step]
-    lifecycle: Lifecycle | None
+    axis: Axis | None
 
 
 def _parse_steps(found: Found) -> list[Step]:
@@ -149,50 +154,47 @@ def _without_nested(body: str) -> str:
     return "".join(out)
 
 
-def _lifecycle_for(steps: list[Step], lcs: list[Lifecycle], wf_name: str) -> Lifecycle | None:
+def _axis_for(steps: list[Step], types: list[AxisType], input_type: str, wf_name: str) -> Axis | None:
     events = [s.event for s in steps if s.event]
     if not events:
         return None
-    owners = []
+    own = [t for t in types if t.name == input_type]
+    pool = [a for t in (own or types) for a in t.axes]
+    where = f"a status axis of {input_type}" if own else "any status axis"
+    owners: list[Axis] = []
     for ev in events:
-        hits = [lc for lc in lcs if ev in lc.events]
+        hits = [a for a in pool if any(m.event_name == ev for m in a.moves)]
         if not hits:
-            raise ModelError(f"workflow {wf_name!r}: trigger {ev!r} is not an event of any state def")
+            raise ModelError(f"workflow {wf_name!r}: trigger {ev!r} is not the triggerEvent of a move on {where}")
         if len(hits) > 1:
-            raise ModelError(f"workflow {wf_name!r}: trigger {ev!r} is declared beside more than one state def")
+            raise ModelError(f"workflow {wf_name!r}: trigger {ev!r} is carried by more than one axis")
         if hits[0] not in owners:
             owners.append(hits[0])
     if len(owners) > 1:
-        raise ModelError(f"workflow {wf_name!r}: triggers raise events of more than one lifecycle")
+        raise ModelError(f"workflow {wf_name!r}: triggers raise events of more than one axis")
     return owners[0]
 
 
 def check_trigger_path(wf: Workflow) -> None:
-    """Walk the steps from the initial state; every trigger must be a legal transition."""
-    lc = wf.lifecycle
-    if lc is None:
+    """Walk the steps from the axis default; every trigger must be a permitted move."""
+    ax = wf.axis
+    if ax is None:
         return
-    state = lc.initial
+    value = ax.default
     for s in wf.steps:
         if not s.event:
             continue
-        nxt = lc.next_state(state, s.event)
-        if nxt is None:
-            hint = ""
-            if state == lc.initial and all(t.event != s.event for t in lc.transitions):
-                hint = (
-                    f" {s.event!r} has no transition at all; if it is the event that enters the "
-                    f"initial state {lc.initial!r}, it is not a transition and the trigger should go"
-                )
+        move = next((m for m in ax.moves if m.source == value and m.event_name == s.event), None)
+        if move is None:
             raise ModelError(
-                f"step {s.name!r} triggers {s.event!r}, but {lc.name} has no transition on it from "
-                f"{state!r}.{hint}"
+                f"step {s.name!r} triggers {s.event!r}, but {ax.type_name} {ax.name} has no move on it from "
+                f"{value!r}"
             )
-        state = nxt
+        value = move.target
 
 
 def parse_workflows(files, only: str | None) -> list[Workflow]:
-    lcs = lifecycles(files)
+    types = axis_types(files)
     out = []
     for found in find_all(files, r"action\s+def"):
         wf_meta = metadata(found.body, "TemporalWorkflow")
@@ -212,7 +214,7 @@ def parse_workflows(files, only: str | None) -> list[Workflow]:
             input_name=m.group(1),
             input_type=m.group(2),
             steps=steps,
-            lifecycle=_lifecycle_for(steps, lcs, name),
+            axis=_axis_for(steps, types, m.group(2), name),
         )
         check_trigger_path(wf)
         out.append(wf)
@@ -230,7 +232,7 @@ def _s(text: str) -> str:
 
 
 def render_workflow(wf: Workflow, head: str, activities_import: str, input_type: str, lifecycle_import: str) -> str:
-    lc = wf.lifecycle
+    ax = wf.axis
     acts = []
     for s in wf.steps:
         if s.kind == "activity" and s.temporal_name not in acts:
@@ -238,7 +240,7 @@ def render_workflow(wf: Workflow, head: str, activities_import: str, input_type:
     sigs = [s for s in wf.steps if s.kind == "signal"]
 
     wf_imports = ["condition", "defineSignal", "log", "proxyActivities", "setHandler", "workflowInfo"]
-    if lc:
+    if ax:
         wf_imports += ["ApplicationFailure", "defineQuery"]
     wf_imports.sort(key=str.lower)
 
@@ -248,11 +250,8 @@ def render_workflow(wf: Workflow, head: str, activities_import: str, input_type:
     L.append("} from '@temporalio/workflow';")
     L.append("")
     L.append(f"import type * as activities from {_s(activities_import)};")
-    if lc:
-        L.append(
-            f"import {{ next{lc.name}State, {lc.ident}InitialState, type {lc.name}State }} "
-            f"from {_s(lifecycle_import)};"
-        )
+    if ax:
+        L.append(f"import {{ trace{ax.ident}Move, {ax.lower_ident}Default }} from {_s(lifecycle_import)};")
     L.append("")
     if acts:
         L.append("// -- Activity proxy (platform defaults: the model sets no activity timeout) --")
@@ -272,9 +271,9 @@ def render_workflow(wf: Workflow, head: str, activities_import: str, input_type:
         for s in sigs:
             L.append(f"export const {s.temporal_name}Signal = defineSignal({_s(s.temporal_name)});")
         L.append("")
-    if lc:
-        query = f"{lower_first(lc.type_prefix)}State"
-        L.append(f"// -- Query: the current {lc.name} state --")
+    if ax:
+        query = f"{ax.lower_ident}State"
+        L.append(f"// -- Query: the {ax.type_name} {ax.name} value the workflow has reached --")
         L.append("")
         L.append(f"export const {query}Query = defineQuery<string>({_s(query)});")
         L.append("")
@@ -284,23 +283,20 @@ def render_workflow(wf: Workflow, head: str, activities_import: str, input_type:
         f"export async function {wf.workflow_name}({wf.input_name}: activities.{input_type}): Promise<string> {{"
     )
     L.append("  const ids = { workflowId: workflowInfo().workflowId };")
-    if lc:
-        L.append(f"  let state: {lc.name}State = {lc.ident}InitialState;")
+    if ax:
+        L.append(f"  let state: string = {ax.lower_ident}Default;")
         L.append("")
-        L.append(f"  // Raise a lifecycle event. The guard refuses an event {lc.name} has no transition for.")
+        L.append(f"  // Raise an event on {ax.type_name} {ax.name}. The guard refuses a move the axis does not permit.")
         L.append("  const raise = (event: string): void => {")
-        L.append(f"    const next = next{lc.name}State(state, event);")
-        L.append("    if (next === null) {")
-        L.append("      throw ApplicationFailure.nonRetryable(")
-        L.append(f"        `{lc.name} refuses ${{event}} in state ${{state}}`,")
-        L.append(f"        {_s('IllegalLifecycleTransition')},")
-        L.append("      );")
+        L.append(f"    const r = trace{ax.ident}Move(state, event);")
+        L.append("    if (!r.ok) {")
+        L.append(f"      throw ApplicationFailure.nonRetryable(r.reason, {_s('AxisMoveRejected')}, r);")
         L.append("    }")
-        L.append("    log.info('Lifecycle transition', { ...ids, event, from: state, to: next });")
-        L.append("    state = next;")
+        L.append("    log.info('Axis move', { ...ids, axis: r.axis, event, from: r.from, to: r.to });")
+        L.append("    state = r.to;")
         L.append("  };")
         L.append("")
-        L.append(f"  setHandler({lower_first(lc.type_prefix)}StateQuery, () => state);")
+        L.append(f"  setHandler({ax.lower_ident}StateQuery, () => state);")
     if sigs:
         L.append("")
         L.append("  // Set by the signal handlers.")
@@ -354,8 +350,8 @@ def render_steps(wf: Workflow, head: str) -> str:
     L.append("")
     L.append(f"export const {p}WorkflowName = {_s(wf.workflow_name)};")
     L.append(f"export const {p}TaskQueue = {_s(wf.task_queue)};")
-    if wf.lifecycle:
-        L.append(f"export const {p}StateQuery = {_s(lower_first(wf.lifecycle.type_prefix) + 'State')};")
+    if wf.axis:
+        L.append(f"export const {p}StateQuery = {_s(wf.axis.lower_ident + 'State')};")
     L.append("")
     L.append(f"export const {p}Signals = [{', '.join(_s(s) for s in sigs)}] as const;")
     L.append(f"export type {P}Signal = (typeof {p}Signals)[number];")
@@ -370,7 +366,7 @@ def render_steps(wf: Workflow, head: str) -> str:
     L.append("  readonly temporalName: string;")
     L.append("  /** @TemporalSignal timeoutMinutes; null where the model declares no timeout. */")
     L.append("  readonly expectedMinutes: number | null;")
-    L.append("  /** The lifecycle event the step raises (@StateTransitionTrigger), or null. */")
+    L.append("  /** The axis event the step raises (@StateTransitionTrigger), or null. */")
     L.append("  readonly stateEvent: string | null;")
     L.append("}")
     L.append("")
@@ -404,13 +400,12 @@ def generate(
     written = []
     for wf in wfs:
         sources = [wf.found.source]
-        if wf.lifecycle:
-            for src in wf.lifecycle.sources:
-                if all(src.split(" (")[0] != have.split(" (")[0] for have in sources):
-                    sources.append(src)
+        if wf.axis:
+            src = next(t.source for t in axis_types(load_model(model, root)) if t.name == wf.axis.type_name)
+            sources.append(src)
         head = header(__file__, sources, model_name)
         stem = kebab(wf.workflow_name)
-        guard = lifecycle_import or (f"./{wf.lifecycle.guard_module}.js" if wf.lifecycle else "")
+        guard = lifecycle_import or (f"./{GUARD_FILE[:-3]}.js" if wf.axis else "")
         written.append(
             write(out, f"{stem}.ts", render_workflow(wf, head, activities_import, input_type or wf.input_type, guard))
         )
@@ -436,7 +431,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument(
         "--lifecycle-import",
         default=None,
-        help="module specifier of the generated lifecycle guard (default: ./<state-def>-guard.js)",
+        help="module specifier of the generated axis guard (default: ./axis-guard.js)",
     )
     a = p.parse_args(argv)
     try:

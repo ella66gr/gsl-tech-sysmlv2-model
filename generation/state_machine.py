@@ -1,40 +1,53 @@
 #!/usr/bin/env python3
 """
-State machine generator (platform-general): XState machine, lifecycle
-guard and next-action map.
+State machine generator (platform-general): axis guard, next-action map
+and XState machines, from status axis declarations.
 
-For every ``state def`` in the tenant model folder (or the one named with
-``--state-def``) it writes two files:
+Since S0.4 the generator reads ``StatusAxis`` declarations (see
+generation.status_axes), not state definitions: the axis declaration is
+the single source of each lifecycle. For every ``part def`` in the tenant
+model folder that declares status axes it writes, into two files:
 
-1. ``<state-def>-machine.ts``  an XState v5 machine with every transition.
-2. ``<state-def>-guard.ts``    the lifecycle guard and next-action map, with
-                               no imports, so any runtime can use it: the
-                               transition table, ``next<StateDef>State``
-                               (null when the lifecycle refuses an event),
-                               the legal-transition check, and for each
-                               state the actions its outgoing transitions
-                               offer.
+1. ``axis-guard.ts``    the guard, with no imports, so any runtime can use
+                        it. For each axis: its values, default, terminal
+                        values and permitted moves (``<axis>Axis``), a
+                        ``check<Type><Axis>Move`` guard, a
+                        ``trace<Type><Axis>Move`` lookup for a realiser that
+                        tracks the axis privately, and the next-action map
+                        ``<type><Axis>NextActions``. Also ``axisSpecs``, every
+                        axis by type and axis name.
+2. ``axis-machine.ts``  an XState v5 machine per type, with one parallel
+                        region per axis.
 
-What it reads from the model:
+The guard's result. ``check...Move({ from, to | event, authority })``
+returns ``{ ok: true, ... }`` for a permitted move, or a structured
+rejection ``{ ok: false, code, type, axis, from, to, event, authority,
+reason, permitted }``. It never returns the unchanged value as if the move
+had happened. The codes:
 
-- states (``state x;``) and transitions
-  (``transition t first a accept E then b;``) of the state def;
-- the initial state: the first state when the body has ``initial;``, or
-  the target of ``entry; then x;``;
-- events: the ``attribute def``s in the state def's own package;
-- each event's action label: ``@UserFacing { friendlyName = "..."; }``
-  inside the event's ``attribute def`` body. A transition whose event has
-  no label is an error, because labels come from the model, never from
-  the generator;
-- the signal that raises an event: an ``action`` step carrying both
-  ``@TemporalSignal { signalName }`` and
-  ``@StateTransitionTrigger { eventName }``;
-- the type names: the ``part def`` that ``exhibit state``s the state def
-  gives the prefix of ``<Part>Event`` and ``<Part>State``.
+- ``unknownValue``       ``from`` or ``to`` is not a value of the axis;
+- ``fromTerminalValue``  ``from`` is terminal: no move leaves it;
+- ``moveNotPermitted``   no declared move from ``from`` to ``to`` (or on
+                         ``event``), including a move to the same value;
+- ``authorityNotNamed``  the move exists, but ``authority`` is not one it
+                         names (the move's ``requiredAuthority``, else the
+                         axis's ``axisAuthority``).
+
+``permitted`` lists the moves the axis does allow from ``from``. An accepted
+move lists the names of its preconditions; the generated E6 evaluator
+(generation.constraint_evaluator) evaluates them.
+
+The next-action map offers, for each value, the moves an operator (the
+``operatorSide`` authority: people at a surface) can make. Each action
+carries the model's ``transitionLabel``, the event, and the workflow
+signal that raises the event: an ``action`` step carrying both
+``@TemporalSignal { signalName }`` and ``@StateTransitionTrigger
+{ eventName }``. A move without a ``triggerEvent`` uses its usage name as
+its event.
 
 Usage (from the repository root):
     python3 -m generation.state_machine --model <tenant model folder> --out <folder> \\
-        [--state-def <name>] [--model-name <name>]
+        [--type <part def name>] [--model-name <name>]
 """
 
 from __future__ import annotations
@@ -42,360 +55,379 @@ from __future__ import annotations
 import json
 import re
 import sys
-from dataclasses import dataclass, field
 from pathlib import Path
 
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from generation.output import base_parser, header, write
+from generation.status_axes import OPERATOR_AUTHORITY, AxisType, axis_types
 from generation.sysml_text import (
-    Found,
     ModelError,
     ModelFile,
     braced_body,
     enclosing_packages,
-    find_all,
-    find_one,
-    kebab,
     load_model,
     lower_first,
     mask_comments,
     metadata,
-    remove_doc_blocks,
-    top_level_members,
 )
 
-
-@dataclass
-class Transition:
-    name: str
-    source: str
-    event: str
-    target: str
+GUARD_FILE = "axis-guard.ts"
+MACHINE_FILE = "axis-machine.ts"
 
 
-@dataclass
-class Lifecycle:
-    """A parsed state def and everything the generators need from it."""
-
-    found: Found
-    name: str
-    states: list[str]
-    initial: str
-    transitions: list[Transition]
-    events: list[str]
-    labels: dict[str, str]  # event -> label
-    signals: dict[str, str]  # event -> signal name
-    type_prefix: str  # e.g. the exhibiting part def's name
-    sources: list[str] = field(default_factory=list)  # header sources
-
-    @property
-    def terminal_states(self) -> list[str]:
-        out = {t.source for t in self.transitions}
-        return [s for s in self.states if s not in out]
-
-    @property
-    def ident(self) -> str:
-        """Lower-camel identifier stem, e.g. ``orderLifecycle``."""
-        return lower_first(self.name)
-
-    @property
-    def guard_module(self) -> str:
-        return f"{kebab(self.name)}-guard"
-
-    @property
-    def machine_module(self) -> str:
-        return f"{kebab(self.name)}-machine"
-
-    def next_state(self, state: str, event: str) -> str | None:
-        for t in self.transitions:
-            if t.source == state and t.event == event:
-                return t.target
-        return None
+def _q(s: str | None) -> str:
+    return "null" if s is None else json.dumps(s, ensure_ascii=False)
 
 
-def _package_body(files: list[ModelFile], found: Found) -> tuple[Found | None, str]:
-    """The package directly enclosing ``found``, and its body."""
-    parts = found.qualified.split("::")
-    if len(parts) < 2:
-        return None, ""
-    pkg = find_one(files, r"package", parts[-2], "package")
-    return pkg, pkg.body
+def _list(items: list[str]) -> str:
+    return "[" + ", ".join(_q(i) for i in items) + "]"
 
 
-def _action_steps(files: list[ModelFile]) -> list[tuple[str, str, str]]:
-    """Every ``action <name> { ... }`` usage (not ``action def``).
-
-    Returns (header source of its package, step name, body).
-    """
-    steps = []
+def signals(files: list[ModelFile]) -> tuple[dict[str, str], list[str]]:
+    """Event -> signal name, from steps carrying @TemporalSignal and @StateTransitionTrigger."""
+    out: dict[str, str] = {}
+    sources: list[str] = []
     for f in files:
         text = mask_comments(f.text)
         for m in re.finditer(r"\baction\s+(?!def\b)(\w+)\s*\{", text):
             _, close = braced_body(text, m.end() - 1)
             body = f.text[m.end() : close]
-            pkgs = enclosing_packages(text, m.start())
-            steps.append((f"{f.rel} ({'::'.join(pkgs)})", m.group(1), body))
-    return steps
+            trig = metadata(body, "StateTransitionTrigger")
+            sig = metadata(body, "TemporalSignal")
+            if not trig or not sig or not trig.get("eventName"):
+                continue
+            ev, sn = trig["eventName"], sig.get("signalName", "")
+            if ev in out and out[ev] != sn:
+                raise ModelError(f"event {ev!r} is raised by two signals: {out[ev]!r} and {sn!r}")
+            out[ev] = sn
+            src = f"{f.rel} ({'::'.join(enclosing_packages(text, m.start()))})"
+            if src not in sources:
+                sources.append(src)
+    return out, sources
 
 
-def parse_lifecycle(files: list[ModelFile], found: Found) -> Lifecycle:
-    body = mask_comments(found.body)
-    flat = top_level_members(remove_doc_blocks(body))
+# -- Rendering: guard ---------------------------------------------------
 
-    states = re.findall(r"(?:^|;)\s*state\s+(\w+)\s*(?=;)", flat)
-    if not states:
-        raise ModelError(f"state def {found.name!r} declares no states")
+GUARD_PREAMBLE = '''// Status axis guards and next-action maps, from the StatusAxis declarations.
+// No imports: usable from any runtime, including a Temporal workflow sandbox.
 
-    initial = None
-    m = re.search(r"(?:^|;)\s*entry\s*;\s*then\s+(\w+)\s*;", flat + ";")
-    if m:
-        initial = m.group(1)
-    elif re.search(r"(?:^|;)\s*initial\s*(?=;)", flat):
-        initial = states[0]
-    if initial is None:
-        raise ModelError(f"state def {found.name!r} has no initial state (`initial;` or `entry; then x;`)")
-    if initial not in states:
-        raise ModelError(f"initial state {initial!r} is not a state of {found.name!r}")
+// -- The guard's result shape (the same for every axis) --------------
 
-    transitions = []
-    for t in re.finditer(r"\btransition\s+(\w+)\s+first\s+(\w+)\s+accept\s+(\w+)\s+then\s+(\w+)", flat):
-        tr = Transition(*t.groups())
-        for end in (tr.source, tr.target):
-            if end not in states:
-                raise ModelError(f"transition {tr.name!r} names unknown state {end!r}")
-        transitions.append(tr)
+/** Why a move was refused. */
+export type AxisMoveRejectionCode =
+  | "unknownValue"
+  | "fromTerminalValue"
+  | "moveNotPermitted"
+  | "authorityNotNamed";
 
-    pkg, pkg_body = _package_body(files, found)
-    pkg_text = mask_comments(pkg_body)
-    events: list[str] = []
-    labels: dict[str, str] = {}
-    for e in re.finditer(r"\battribute\s+def\s+(\w+)\s*(;|\{)", pkg_text):
-        events.append(e.group(1))
-        if e.group(2) == "{":
-            ebody, _ = braced_body(pkg_text, e.end() - 1)
-            uf = metadata(ebody, "UserFacing")
-            if uf and uf.get("friendlyName"):
-                labels[e.group(1)] = uf["friendlyName"]
-    for tr in transitions:
-        if tr.event not in events:
-            raise ModelError(
-                f"transition {tr.name!r} accepts {tr.event!r}, which is not an attribute def "
-                f"in the package of {found.name!r}"
-            )
-    missing = sorted({tr.event for tr in transitions if tr.event not in labels})
-    if missing:
-        raise ModelError(
-            "no action label for event(s) " + ", ".join(missing)
-            + ': add @UserFacing { friendlyName = "..."; } inside each event\'s attribute def'
-        )
+/** One permitted move, as the model declares it. */
+export interface AxisMoveSpec {
+  /** The AxisTransition usage name. */
+  readonly name: string;
+  readonly from: string;
+  readonly to: string;
+  /** The move's triggerEvent, or its usage name when the model gives none. */
+  readonly event: string;
+  /** The model's transitionLabel. */
+  readonly label: string;
+  /** The authorities that may make the move. */
+  readonly authorities: readonly string[];
+  /** Names of the move's preconditions, evaluated by the generated E6 evaluator. */
+  readonly preconditions: readonly string[];
+}
 
-    signals: dict[str, str] = {}
-    event_set = set(events)
-    signal_sources: list[str] = []
-    for ssrc, _name, sbody in _action_steps(files):
-        trig = metadata(sbody, "StateTransitionTrigger")
-        sig = metadata(sbody, "TemporalSignal")
-        if not trig or not sig or trig.get("eventName") not in event_set:
-            continue
-        ev, sn = trig["eventName"], sig.get("signalName", "")
-        if ev in signals and signals[ev] != sn:
-            raise ModelError(f"event {ev!r} is raised by two signals: {signals[ev]!r} and {sn!r}")
-        signals[ev] = sn
-        if ssrc not in signal_sources:
-            signal_sources.append(ssrc)
+/** One status axis, as the model declares it. */
+export interface AxisSpec {
+  readonly type: string;
+  readonly axis: string;
+  readonly values: readonly string[];
+  readonly defaultValue: string;
+  /** Values no move leaves. */
+  readonly terminalValues: readonly string[];
+  /** The axis's axisAuthority. */
+  readonly authorities: readonly string[];
+  readonly moves: readonly AxisMoveSpec[];
+}
 
-    prefix = found.name
-    exhibitors = []
-    for part in find_all(files, r"part\s+def"):
-        if re.search(rf"\bexhibit\s+state\s+\w+\s*:\s*{re.escape(found.name)}\b", mask_comments(part.body)):
-            exhibitors.append(part)
-    sources = [found.source]
-    if len(exhibitors) == 1:
-        prefix = exhibitors[0].name
-        sources.append(exhibitors[0].source)
-    sources.extend(signal_sources)
-    return Lifecycle(
-        found=found,
-        name=found.name,
-        states=states,
-        initial=initial,
-        transitions=transitions,
-        events=events,
-        labels=labels,
-        signals=signals,
-        type_prefix=prefix,
-        sources=sources,
-    )
+/** A requested move: name the target value or the event, and the writer's authority. */
+export interface AxisMoveRequest {
+  readonly from: string;
+  readonly to?: string;
+  readonly event?: string;
+  readonly authority: string;
+}
 
+export interface AxisMoveAccepted {
+  readonly ok: true;
+  readonly type: string;
+  readonly axis: string;
+  readonly from: string;
+  readonly to: string;
+  readonly event: string;
+  readonly transition: string;
+  /** The writer's authority; null for a trace (no write). */
+  readonly authority: string | null;
+  /** Preconditions still to evaluate before the move is made. */
+  readonly preconditions: readonly string[];
+}
 
-def lifecycles(files: list[ModelFile], only: str | None = None) -> list[Lifecycle]:
-    found = find_all(files, r"state\s+def", only)
-    if only and not found:
-        raise ModelError(f"state def {only!r} not found in the model folder")
-    return [parse_lifecycle(files, f) for f in found]
+export interface AxisMoveRejection {
+  readonly ok: false;
+  readonly code: AxisMoveRejectionCode;
+  readonly type: string;
+  readonly axis: string;
+  readonly from: string;
+  readonly to: string | null;
+  readonly event: string | null;
+  readonly authority: string | null;
+  /** A sentence saying why, built from the model's names. */
+  readonly reason: string;
+  /** The moves the axis permits from `from` (empty when `from` is terminal or unknown). */
+  readonly permitted: readonly AxisMoveSpec[];
+}
 
+export type AxisMoveResult = AxisMoveAccepted | AxisMoveRejection;
 
-# -- Rendering ----------------------------------------------------------
+/** One action a surface may offer: a move an operator can make. */
+export interface AxisNextAction {
+  readonly event: string;
+  readonly target: string;
+  readonly transition: string;
+  /** The model's transitionLabel. */
+  readonly label: string;
+  /** The workflow signal that raises the event, or null when no workflow step does. */
+  readonly signal: string | null;
+  readonly preconditions: readonly string[];
+}
 
+function reject(
+  spec: AxisSpec,
+  code: AxisMoveRejectionCode,
+  from: string,
+  to: string | null,
+  event: string | null,
+  authority: string | null,
+  reason: string,
+): AxisMoveRejection {
+  const permitted = spec.moves.filter((m) => m.from === from);
+  return { ok: false, code, type: spec.type, axis: spec.axis, from, to, event, authority, reason, permitted };
+}
 
-def _q(s: str) -> str:
-    return json.dumps(s, ensure_ascii=False)
+function find(spec: AxisSpec, from: string, to: string | null, event: string | null): AxisMoveSpec | AxisMoveRejection {
+  const what = `${spec.type} ${spec.axis}`;
+  if (!spec.values.includes(from)) {
+    return reject(spec, "unknownValue", from, to, event, null, `${what}: "${from}" is not a value of the axis.`);
+  }
+  if (to !== null && !spec.values.includes(to)) {
+    return reject(spec, "unknownValue", from, to, event, null, `${what}: "${to}" is not a value of the axis.`);
+  }
+  if (to === null && event === null) {
+    return reject(spec, "moveNotPermitted", from, to, event, null, `${what}: the request names neither a target value nor an event.`);
+  }
+  if (spec.terminalValues.includes(from)) {
+    return reject(spec, "fromTerminalValue", from, to, event, null, `${what}: "${from}" is terminal; no move leaves it.`);
+  }
+  const move = spec.moves.find(
+    (m) => m.from === from && (to === null || m.to === to) && (event === null || m.event === event),
+  );
+  if (move === undefined) {
+    const asked = to !== null ? `to "${to}"` : `on ${event}`;
+    const allowed = spec.moves.filter((m) => m.from === from).map((m) => `${m.to} (${m.event})`).join(", ");
+    return reject(
+      spec, "moveNotPermitted", from, to, event, null,
+      `${what}: no permitted move from "${from}" ${asked}. Permitted from "${from}": ${allowed}.`,
+    );
+  }
+  return move;
+}
 
+/** The guard: is this move, by this authority, permitted on the axis? */
+export function checkAxisMove(spec: AxisSpec, request: AxisMoveRequest): AxisMoveResult {
+  const to = request.to ?? null;
+  const event = request.event ?? null;
+  const found = find(spec, request.from, to, event);
+  if ("ok" in found) return { ...found, authority: request.authority };
+  if (!found.authorities.includes(request.authority)) {
+    return reject(
+      spec, "authorityNotNamed", request.from, to, event, request.authority,
+      `${spec.type} ${spec.axis}: the move ${found.from} -> ${found.to} may be made by ` +
+        `${found.authorities.join(" or ")}, not ${request.authority}.`,
+    );
+  }
+  return {
+    ok: true, type: spec.type, axis: spec.axis, from: found.from, to: found.to, event: found.event,
+    transition: found.name, authority: request.authority, preconditions: found.preconditions,
+  };
+}
 
-def render_machine(lc: Lifecycle, head: str) -> str:
-    p = lc.type_prefix
-    lines = [head.rstrip("\n"), "", 'import { setup } from "xstate";', ""]
-    lines.append(f"// Event types: the attribute defs beside {lc.name}")
-    lines.append(f"export type {p}Event =")
-    if not lc.events:
-        lines.append("  never;")
-    for i, ev in enumerate(lc.events):
-        prefix = "  | " if i > 0 else "  "
-        end = ";" if i == len(lc.events) - 1 else ""
-        lines.append(f"{prefix}{{ type: {_q(ev)} }}{end}")
-    lines.append("")
-    lines.append(f"export type {p}State = {' | '.join(_q(s) for s in lc.states)};")
-    lines.append("")
-    lines.append(f"export const {lc.ident}Machine = setup({{")
-    lines.append("  types: {")
-    lines.append(f"    events: {{}} as {p}Event,")
-    lines.append("  },")
-    lines.append("}).createMachine({")
-    lines.append(f"  id: {_q(lc.name)},")
-    lines.append(f"  initial: {_q(lc.initial)},")
-    lines.append("  states: {")
-    terminal = set(lc.terminal_states)
-    for s in lc.states:
-        lines.append(f"    {s}: {{")
-        if s in terminal:
-            lines.append('      type: "final",')
-        else:
-            lines.append("      on: {")
-            for t in lc.transitions:
-                if t.source == s:
-                    lines.append(f"        {t.event}: {_q(t.target)},")
-            lines.append("      },")
-        lines.append("    },")
-    lines.append("  },")
-    lines.append("});")
-    lines.append("")
-    return "\n".join(lines)
-
-
-def render_guard(lc: Lifecycle, head: str) -> str:
-    n, i = lc.name, lc.ident
-    S, E = f"{n}State", f"{n}Event"
-    lines = [head.rstrip("\n"), ""]
-    lines.append(f"// Lifecycle guard and next-action map for {n}.")
-    lines.append("// No imports: usable from any runtime, including a Temporal workflow sandbox.")
-    lines.append("")
-    lines.append(f"/** States of {n}, in model order. */")
-    lines.append(f"export const {i}States = [{', '.join(_q(s) for s in lc.states)}] as const;")
-    lines.append(f"export type {S} = (typeof {i}States)[number];")
-    lines.append("")
-    lines.append(f"/** Events declared beside {n}, in model order. */")
-    lines.append(f"export const {i}Events = [{', '.join(_q(e) for e in lc.events)}] as const;")
-    lines.append(f"export type {E} = (typeof {i}Events)[number];")
-    lines.append("")
-    lines.append(f"export const {i}InitialState: {S} = {_q(lc.initial)};")
-    lines.append(f"export const {i}TerminalStates: readonly {S}[] = [{', '.join(_q(s) for s in lc.terminal_states)}];")
-    lines.append("")
-    lines.append(f"export interface {n}Transition {{")
-    lines.append("  readonly name: string;")
-    lines.append(f"  readonly source: {S};")
-    lines.append(f"  readonly event: {E};")
-    lines.append(f"  readonly target: {S};")
-    lines.append("}")
-    lines.append("")
-    lines.append(f"/** Every transition of {n}, in model order. */")
-    lines.append(f"export const {i}Transitions: readonly {n}Transition[] = [")
-    for t in lc.transitions:
-        lines.append(
-            f"  {{ name: {_q(t.name)}, source: {_q(t.source)}, event: {_q(t.event)}, target: {_q(t.target)} }},"
-        )
-    lines.append("];")
-    lines.append("")
-    lines.append("/**")
-    lines.append(f" * The state that `event` moves `state` to, or null when {n} refuses it:")
-    lines.append(" * no transition from that state accepts that event (terminal states accept none).")
-    lines.append(" */")
-    lines.append(f"export function next{n}State(state: string, event: string): {S} | null {{")
-    lines.append(f"  for (const t of {i}Transitions) {{")
-    lines.append("    if (t.source === state && t.event === event) return t.target;")
-    lines.append("  }")
-    lines.append("  return null;")
-    lines.append("}")
-    lines.append("")
-    lines.append(f"/** True when {n} has a transition from `source` to `target`. */")
-    lines.append(f"export function is{n}TransitionLegal(source: string, target: string): boolean {{")
-    lines.append(f"  return {i}Transitions.some((t) => t.source === source && t.target === target);")
-    lines.append("}")
-    lines.append("")
-    lines.append(f"/** True when `state` is a terminal state of {n}. */")
-    lines.append(f"export function is{n}Terminal(state: string): boolean {{")
-    lines.append(f"  return {i}TerminalStates.some((s) => s === state);")
-    lines.append("}")
-    lines.append("")
-    lines.append(f"export interface {n}NextAction {{")
-    lines.append("  /** The event the action raises. */")
-    lines.append(f"  readonly event: {E};")
-    lines.append("  /** The state the action leads to. */")
-    lines.append(f"  readonly target: {S};")
-    lines.append("  /** The model transition behind the action. */")
-    lines.append("  readonly transition: string;")
-    lines.append("  /** The event's @UserFacing friendlyName in the model. */")
-    lines.append("  readonly label: string;")
-    lines.append("  /** The workflow signal that raises the event, or null when no workflow step does. */")
-    lines.append("  readonly signal: string | null;")
-    lines.append("}")
-    lines.append("")
-    lines.append(f"/** For each state, the actions its outgoing transitions offer, in model order. */")
-    lines.append(f"export const {i}NextActions: Readonly<Record<{S}, readonly {n}NextAction[]>> = {{")
-    for s in lc.states:
-        outgoing = [t for t in lc.transitions if t.source == s]
-        if not outgoing:
-            lines.append(f"  {s}: [],")
-            continue
-        lines.append(f"  {s}: [")
-        for t in outgoing:
-            sig = _q(lc.signals[t.event]) if t.event in lc.signals else "null"
-            lines.append(
-                f"    {{ event: {_q(t.event)}, target: {_q(t.target)}, transition: {_q(t.name)}, "
-                f"label: {_q(lc.labels[t.event])}, signal: {sig} }},"
-            )
-        lines.append("  ],")
-    lines.append("};")
-    lines.append("")
-    return "\n".join(lines)
+/**
+ * The move `event` makes from `from`, for a realiser that tracks the axis in
+ * its own private storage (it writes nothing, so no authority is checked).
+ * Refuses exactly as the guard does for an unknown, terminal or undeclared move.
+ */
+export function traceAxisMove(spec: AxisSpec, from: string, event: string): AxisMoveResult {
+  const found = find(spec, from, null, event);
+  if ("ok" in found) return found;
+  return {
+    ok: true, type: spec.type, axis: spec.axis, from: found.from, to: found.to, event: found.event,
+    transition: found.name, authority: null, preconditions: found.preconditions,
+  };
+}
+'''
 
 
-def generate(model: Path, out: Path, root: Path, state_def: str | None, model_name: str | None) -> list[Path]:
+def render_guard(types: list[AxisType], sigs: dict[str, str], head: str) -> str:
+    L = [head.rstrip("\n"), "", GUARD_PREAMBLE.rstrip("\n"), ""]
+    for t in types:
+        L.append(f"// -- {t.name} ({t.found.qualified}) --")
+        L.append("")
+        for ax in t.axes:
+            i, I = ax.lower_ident, ax.ident
+            L.append(f"type {I}Value = {' | '.join(_q(v) for v in ax.values)};")
+            L.append("")
+            L.append(f"/** {t.name} {ax.name} ({ax.usage}): values, default, terminal values and permitted moves. */")
+            L.append(f"export const {i}Axis: AxisSpec = {{")
+            L.append(f"  type: {_q(t.name)},")
+            L.append(f"  axis: {_q(ax.name)},")
+            L.append(f"  values: {_list(ax.values)},")
+            L.append(f"  defaultValue: {_q(ax.default)},")
+            L.append(f"  terminalValues: {_list(ax.terminal_values)},")
+            L.append(f"  authorities: {_list(ax.authorities)},")
+            L.append("  moves: [")
+            for mv in ax.moves:
+                L.append(
+                    f"    {{ name: {_q(mv.name)}, from: {_q(mv.source)}, to: {_q(mv.target)}, "
+                    f"event: {_q(mv.event_name)}, label: {_q(mv.label)}, authorities: {_list(mv.authorities)}, "
+                    f"preconditions: {_list([p.name for p in mv.preconditions])} }},"
+                )
+            L.append("  ],")
+            L.append("};")
+            L.append("")
+            L.append(f"export const {i}Default: {I}Value = {_q(ax.default)};")
+            L.append("")
+            L.append(f"/** The guard for {t.name} {ax.name}. */")
+            L.append(f"export function check{I}Move(request: AxisMoveRequest): AxisMoveResult {{")
+            L.append(f"  return checkAxisMove({i}Axis, request);")
+            L.append("}")
+            L.append("")
+            L.append(f"/** The move `event` makes on {t.name} {ax.name}, for a realiser tracking it privately. */")
+            L.append(f"export function trace{I}Move(from: string, event: string): AxisMoveResult {{")
+            L.append(f"  return traceAxisMove({i}Axis, from, event);")
+            L.append("}")
+            L.append("")
+            L.append(f"/** For each {ax.name} value, the moves an operator ({OPERATOR_AUTHORITY}) can make, in model order. */")
+            L.append(f"export const {i}NextActions: Readonly<Record<{I}Value, readonly AxisNextAction[]>> = {{")
+            for v in ax.values:
+                offered = [m for m in ax.moves if m.source == v and OPERATOR_AUTHORITY in m.authorities]
+                if not offered:
+                    L.append(f"  {v}: [],")
+                    continue
+                L.append(f"  {v}: [")
+                for m in offered:
+                    L.append(
+                        f"    {{ event: {_q(m.event_name)}, target: {_q(m.target)}, transition: {_q(m.name)}, "
+                        f"label: {_q(m.label)}, signal: {_q(sigs.get(m.event_name))}, "
+                        f"preconditions: {_list([p.name for p in m.preconditions])} }},"
+                    )
+                L.append("  ],")
+            L.append("};")
+            L.append("")
+    L.append("/** Every axis, by type and axis name. */")
+    L.append("export const axisSpecs: Readonly<Record<string, Readonly<Record<string, AxisSpec>>>> = {")
+    for t in types:
+        L.append(f"  {t.name}: {{")
+        for ax in t.axes:
+            L.append(f"    {_q(ax.name)}: {ax.lower_ident}Axis,")
+        L.append("  },")
+    L.append("};")
+    L.append("")
+    return "\n".join(L)
+
+
+# -- Rendering: XState machines ----------------------------------------
+
+
+def render_machine(types: list[AxisType], head: str) -> str:
+    L = [head.rstrip("\n"), "", 'import { setup } from "xstate";', ""]
+    L.append("// One XState machine per type, with one parallel region per status axis.")
+    L.append("// The guard (axis-guard.ts) is the check; these machines are its picture.")
+    for t in types:
+        events: list[str] = []
+        for ax in t.axes:
+            for mv in ax.moves:
+                if mv.event_name not in events:
+                    events.append(mv.event_name)
+        L.append("")
+        L.append(f"export type {t.name}AxisEvent =")
+        if not events:
+            L.append("  never;")
+        for n, ev in enumerate(events):
+            lead = "  | " if n else "  "
+            end = ";" if n == len(events) - 1 else ""
+            L.append(f"{lead}{{ type: {_q(ev)} }}{end}")
+        L.append("")
+        L.append(f"export const {lower_first(t.name)}AxesMachine = setup({{")
+        L.append("  types: {")
+        L.append(f"    events: {{}} as {t.name}AxisEvent,")
+        L.append("  },")
+        L.append("}).createMachine({")
+        L.append(f"  id: {_q(t.name)},")
+        L.append('  type: "parallel",')
+        L.append("  states: {")
+        for ax in t.axes:
+            terminal = set(ax.terminal_values)
+            L.append(f"    {_q(ax.name)}: {{")
+            L.append(f"      initial: {_q(ax.default)},")
+            L.append("      states: {")
+            for v in ax.values:
+                L.append(f"        {v}: {{")
+                if v in terminal:
+                    L.append('          type: "final",')
+                else:
+                    L.append("          on: {")
+                    for mv in ax.moves:
+                        if mv.source == v:
+                            L.append(f"            {_q(mv.event_name)}: {_q(mv.target)},")
+                    L.append("          },")
+                L.append("        },")
+            L.append("      },")
+            L.append("    },")
+        L.append("  },")
+        L.append("});")
+    L.append("")
+    return "\n".join(L)
+
+
+def generate(model: Path, out: Path, root: Path, only_type: str | None, model_name: str | None) -> list[Path]:
     files = load_model(model, root)
-    lcs = lifecycles(files, state_def)
-    if not lcs:
-        raise ModelError("no state def found in the model folder")
-    written = []
-    for lc in lcs:
-        head = header(__file__, lc.sources, model_name)
-        written.append(write(out, f"{lc.machine_module}.ts", render_machine(lc, head)))
-        written.append(write(out, f"{lc.guard_module}.ts", render_guard(lc, head)))
-        unused = [e for e in lc.events if all(t.event != e for t in lc.transitions)]
-        print(
-            f"wrote {lc.machine_module}.ts and {lc.guard_module}.ts: {len(lc.states)} states, "
-            f"{len(lc.transitions)} transitions, initial {lc.initial}"
-            + (f"; events no transition accepts: {', '.join(unused)}" if unused else "")
-        )
+    types = axis_types(files)
+    if only_type:
+        types = [t for t in types if t.name == only_type]
+        if not types:
+            raise ModelError(f"part def {only_type!r} declares no status axes")
+    if not types:
+        raise ModelError("no part def in the model folder declares a status axis (part x : StatusAxis)")
+    sigs, sig_sources = signals(files)
+    sources = [t.source for t in types]
+    written = [
+        write(out, GUARD_FILE, render_guard(types, sigs, header(__file__, sources + sig_sources, model_name))),
+        write(out, MACHINE_FILE, render_machine(types, header(__file__, sources, model_name))),
+    ]
+    for t in types:
+        desc = "; ".join(f"{a.name}: {len(a.values)} values, {len(a.moves)} moves, default {a.default}" for a in t.axes)
+        print(f"{t.name}: {desc}")
+    print(f"wrote {GUARD_FILE} and {MACHINE_FILE}: {len(types)} types, {sum(len(t.axes) for t in types)} axes")
     return written
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = base_parser("Generate XState machines, lifecycle guards and next-action maps from state defs.")
-    p.add_argument("--state-def", default=None, help="generate only this state def (default: every state def)")
+    p = base_parser("Generate axis guards, next-action maps and XState machines from StatusAxis declarations.")
+    p.add_argument("--type", default=None, help="generate only this part def (default: every type with axes)")
     a = p.parse_args(argv)
     try:
-        generate(a.model, a.out, a.root, a.state_def, a.model_name)
+        generate(a.model, a.out, a.root, a.type, a.model_name)
     except ModelError as e:
         print(f"ERROR: {e}", file=sys.stderr)
         return 1

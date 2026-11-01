@@ -1,6 +1,6 @@
 // ============================================================
 // DO NOT EDIT — Generated from CoffeeShop SysML v2 model
-// Source: exercises/coffeeshop-demonstrator/model/domain/fulfil-drink-orchestration.sysml (FulfilDrinkOrchestration::FulfilDrinkWorkflow); exercises/coffeeshop-demonstrator/model/domain/order-lifecycle.sysml (OrderLifeCycle::OrderLifecycle); exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop::Order)
+// Source: exercises/coffeeshop-demonstrator/model/domain/fulfil-drink-orchestration.sysml (FulfilDrinkOrchestration::FulfilDrinkWorkflow); exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop::OrderLine)
 // Generator: generation/temporal_workflow.py
 // ============================================================
 
@@ -10,7 +10,7 @@
 
 export const fulfilDrinkWorkflowName = 'fulfilDrink';
 export const fulfilDrinkTaskQueue = 'coffeeshop';
-export const fulfilDrinkStateQuery = 'orderState';
+export const fulfilDrinkStateQuery = 'orderLinePreparationState';
 
 export const fulfilDrinkSignals = ['baristaStarted', 'drinkReady', 'drinkCollected'] as const;
 export type FulfilDrinkSignal = (typeof fulfilDrinkSignals)[number];
@@ -25,15 +25,15 @@ export interface FulfilDrinkStep {
   readonly temporalName: string;
   /** @TemporalSignal timeoutMinutes; null where the model declares no timeout. */
   readonly expectedMinutes: number | null;
-  /** The lifecycle event the step raises (@StateTransitionTrigger), or null. */
+  /** The axis event the step raises (@StateTransitionTrigger), or null. */
   readonly stateEvent: string | null;
 }
 
 export const fulfilDrinkSteps: readonly FulfilDrinkStep[] = [
   { stepId: 'validateOrder', type: 'activity', temporalName: 'validateOrder', expectedMinutes: null, stateEvent: null },
-  { stepId: 'waitBaristaStart', type: 'signal', temporalName: 'baristaStarted', expectedMinutes: 30, stateEvent: 'PreparationStarted' },
+  { stepId: 'waitBaristaStart', type: 'signal', temporalName: 'baristaStarted', expectedMinutes: 30, stateEvent: 'LinePreparationStarted' },
   { stepId: 'prepareDrink', type: 'activity', temporalName: 'prepareDrink', expectedMinutes: null, stateEvent: null },
-  { stepId: 'waitDrinkReady', type: 'signal', temporalName: 'drinkReady', expectedMinutes: 15, stateEvent: 'PreparationComplete' },
-  { stepId: 'waitCollected', type: 'signal', temporalName: 'drinkCollected', expectedMinutes: 60, stateEvent: 'OrderCollected' },
+  { stepId: 'waitDrinkReady', type: 'signal', temporalName: 'drinkReady', expectedMinutes: 15, stateEvent: 'LinePreparationComplete' },
+  { stepId: 'waitCollected', type: 'signal', temporalName: 'drinkCollected', expectedMinutes: 60, stateEvent: 'LineCollected' },
   { stepId: 'completeOrder', type: 'activity', temporalName: 'completeOrder', expectedMinutes: null, stateEvent: null },
 ];

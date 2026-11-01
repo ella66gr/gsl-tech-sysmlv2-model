@@ -70,6 +70,13 @@ PIPELINE_FILES = [
         "content_type": "text/turtle",
     },
     {
+        # Tenant canonical runtime types, grounded (Stage 3g, Session 518, S0.4).
+        "file": "ontara-tenant-types.ttl",
+        "name": "Ontara Tenant Canonical Runtime Types (pipeline, Session 518)",
+        "graph": "https://ontara.dev/graph/domain",
+        "content_type": "text/turtle",
+    },
+    {
         "file": "ontara-correspondence.ttl",
         "name": "Ontara Correspondence (pipeline)",
         "graph": "https://ontara.dev/graph/correspondence",
@@ -125,6 +132,12 @@ PIPELINE_FILES = [
         "graph": "https://ontara.dev/graph/domain",
         "content_type": "text/turtle",
     },
+    {
+        "path": "ontology/reasoning/cafe-reasoning-instances.ttl",
+        "name": "Cafe Reasoning Instances (hand-authored, Session 518)",
+        "graph": "https://ontara.dev/graph/domain",
+        "content_type": "text/turtle",
+    },
 ]
 
 # ---------------------------------------------------------------
@@ -153,7 +166,7 @@ SELECT ?class ?label ?parent WHERE {
 }
 ORDER BY ?label
 """,
-        "expect_exactly": 34,
+        "expect_exactly": 39,  # 34 to S517; +5 S518 S0.4: CanonicalRuntime axis family (StatusAxis, ValueSpace, AxisTransition, AxisPrecondition, CanonicalRuntimeType)
         "display_vars": ["class", "label", "parent"],
     },
     {
@@ -215,7 +228,7 @@ SELECT DISTINCT ?class ?label WHERE {
 }
 ORDER BY ?label
 """,
-        "expect_exactly": 34,
+        "expect_exactly": 39,  # 34 to S517; +5 S518 S0.4: CanonicalRuntime axis family (StatusAxis, ValueSpace, AxisTransition, AxisPrecondition, CanonicalRuntimeType)
         "display_vars": ["class", "label"],
     },
     # --- Group 2: Correspondence ---
@@ -232,7 +245,7 @@ SELECT ?record ?sysmlName ?owlEntity ?classification WHERE {
 }
 ORDER BY ?sysmlName
 """,
-        "expect_exactly": 34,
+        "expect_exactly": 39,  # 34 to S517; +5 S518 S0.4: CanonicalRuntime axis family (StatusAxis, ValueSpace, AxisTransition, AxisPrecondition, CanonicalRuntimeType)
         "display_vars": ["sysmlName", "owlEntity", "classification"],
     },
     {
@@ -730,7 +743,7 @@ SELECT ?weight ?source ?target ?strength WHERE {
 }
 ORDER BY ?weight
 """,
-        "expect_exactly": 98,  # 96 at S117; AuditEvidenceRecord gained two at S277 (raised S517)
+        "expect_exactly": 108,  # 98 to S517 (96 at S117, +2 S277); +10 S518 S0.4: axis-family @WeightedRelationship (StatusAxis 3, ValueSpace 2, AxisTransition 2, CanonicalRuntimeType 1, AxisPrecondition 2)
         "display_vars": ["weight", "source", "target", "strength"],
     },
     {
@@ -749,7 +762,7 @@ SELECT ?record ?sysmlName ?weightTarget WHERE {
 }
 ORDER BY ?sysmlName ?weightTarget
 """,
-        "expect_exactly": 98,  # 96 at S117; AuditEvidenceRecord gained two at S277 (raised S517)
+        "expect_exactly": 108,  # 98 to S517 (96 at S117, +2 S277); +10 S518 S0.4: axis-family @WeightedRelationship (StatusAxis 3, ValueSpace 2, AxisTransition 2, CanonicalRuntimeType 1, AxisPrecondition 2)
         "display_vars": ["record", "sysmlName", "weightTarget"],
     },
     # --- Group 10: Domain Identity (Session 144) ---
@@ -1673,6 +1686,8 @@ def load_pipeline_output():
         "https://ontara.dev/ontology/reasoning/",
         "https://ontara.dev/data/governance/",
         "https://ontara.dev/data/ears/reasoning/",
+        "https://ontara.dev/ontology/tenant/",
+        "https://ontara.dev/data/cafe/reasoning/",
         "http://www.w3.org/ns/prov#",
     ]
 

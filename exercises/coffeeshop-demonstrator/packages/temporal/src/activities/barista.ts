@@ -12,6 +12,11 @@
  *
  * In later phases, activity function *signatures* will be generated
  * from the SysML model; the *bodies* remain hand-written.
+ *
+ * S0.4 (Session 518): the workflow input is the model's OrderLine, a
+ * canonical runtime type (generated in @coffeeshop/shared's types). The
+ * hand-written OrderDetails interface is gone; each activity derives what
+ * it needs from the line and its order (lineFacts below).
  */
 
 import { log } from '@temporalio/activity';
@@ -21,24 +26,36 @@ import {
   ORDER_TEMPLATE_ID,
 } from '@coffeeshop/shared';
 
-import type { OrderCompositionInput } from '@coffeeshop/shared';
+import type { Drink, MenuItem, OrderCompositionInput, OrderLine } from '@coffeeshop/shared';
 
 // ── Types ──
 
-export interface OrderDetails {
+/** The workflow input type: the model's order line (S0.4). */
+export type { OrderLine } from '@coffeeshop/shared';
+
+/** What the activities read from an order line and its order. */
+interface LineFacts {
   orderId: string;
   customerName: string;
   drinkType: string;
-  size: 'small' | 'medium' | 'large';
-  /** Milk choice — defaults to 'none' if not provided */
-  milkChoice?: string;
-  /** Free-text extras (e.g. "Extra shot") */
-  extras?: string;
-  // Phase 3: catalogue-sourced fields (optional for backward compatibility)
-  catalogueEntryId?: string;
-  pricePence?: number;
-  priceDisplay?: string;
-  provisionType?: string;
+  size: OrderCompositionInput['size'] | undefined;
+  milkChoice: string | undefined;
+}
+
+function isDrink(item: MenuItem): item is Drink {
+  return 'size' in item;
+}
+
+function lineFacts(line: OrderLine): LineFacts {
+  const item = line.item;
+  const drink = isDrink(item) ? item : undefined;
+  return {
+    orderId: String(line.order.orderNumber),
+    customerName: line.order.orderingParty.participantName,
+    drinkType: item.name,
+    size: drink ? (`${drink.size}` as OrderCompositionInput['size']) : undefined,
+    milkChoice: drink ? `${drink.milkChoice}` : undefined,
+  };
 }
 
 export interface OrderResult {
@@ -69,11 +86,12 @@ const ehrbaseClient = createEhrbaseClient();
  * If EHRbase is unavailable, the activity throws and Temporal retries
  * it (up to 3 attempts, per the workflow's retry configuration).
  */
-export async function validateOrder(order: OrderDetails): Promise<OrderResult> {
+export async function validateOrder(line: OrderLine): Promise<OrderResult> {
+  const order = lineFacts(line);
   log.info('Validating order', { orderId: order.orderId, drinkType: order.drinkType });
 
   // 1. Business logic (existing)
-  if (!order.drinkType || !order.customerName) {
+  if (!order.drinkType || !order.customerName || order.size === undefined) {
     throw new Error(`Invalid order ${order.orderId}: missing required fields`);
   }
 
@@ -95,7 +113,6 @@ export async function validateOrder(order: OrderDetails): Promise<OrderResult> {
     size: order.size,
     composerName: 'Barista System',
     ...(order.milkChoice !== undefined && { milkChoice: order.milkChoice }),
-    ...(order.extras !== undefined && { extras: order.extras }),
   };
   const composition = buildOrderComposition(compositionInput);
 
@@ -132,7 +149,8 @@ export async function validateOrder(order: OrderDetails): Promise<OrderResult> {
  * the PREPARATION_EVENT archetype and template have not been designed.
  * This will be added once that archetype is available.
  */
-export async function prepareDrink(order: OrderDetails): Promise<OrderResult> {
+export async function prepareDrink(line: OrderLine): Promise<OrderResult> {
+  const order = lineFacts(line);
   log.info('Preparing drink', { orderId: order.orderId, drinkType: order.drinkType, size: order.size });
 
   return {
@@ -148,7 +166,8 @@ export async function prepareDrink(order: OrderDetails): Promise<OrderResult> {
  *
  * No CDR commit — order closure is a state transition, not new data.
  */
-export async function completeOrder(order: OrderDetails): Promise<OrderResult> {
+export async function completeOrder(line: OrderLine): Promise<OrderResult> {
+  const order = lineFacts(line);
   log.info('Completing order', { orderId: order.orderId });
 
   return {

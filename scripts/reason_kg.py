@@ -82,6 +82,12 @@ ONTOLOGY_FILES = [
         "required": True,
     },
     {
+        # Tenant canonical runtime types, grounded (Stage 3g, Session 518, S0.4).
+        "file": REPO_ROOT / "generated" / "ontology" / "ontara-tenant-types.ttl",
+        "name": "Ontara Tenant Canonical Runtime Types (pipeline-generated, Session 518)",
+        "required": False,
+    },
+    {
         "file": REPO_ROOT / "ontology" / "axioms" / "ontara-bmm-axioms.ttl",
         "name": "Ontara BMM Axioms (hand-authored)",
         "required": True,
@@ -119,6 +125,11 @@ ONTOLOGY_FILES = [
     {
         "file": REPO_ROOT / "ontology" / "reasoning" / "ears-reasoning-instances.ttl",
         "name": "Ears Reasoning Instances (hand-authored, Session 166)",
+        "required": False,
+    },
+    {
+        "file": REPO_ROOT / "ontology" / "reasoning" / "cafe-reasoning-instances.ttl",
+        "name": "Cafe Reasoning Instances (hand-authored, Session 518)",
         "required": False,
     },
 ]

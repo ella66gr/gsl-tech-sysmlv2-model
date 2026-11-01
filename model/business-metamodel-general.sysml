@@ -2354,8 +2354,15 @@ package BusinessMetamodelGeneral {
     //     built-in axis (the epistemic axis was retired at S514, ADR-011).
     //   - StatusAxis: BMM General part def naming a single dimension of status
     //     on a canonical runtime type (S253 §3).
-    //   - Supporting types: ValueSpace, AxisTransition, AxisAuthority, AxisScope,
-    //     ValueSpaceShape.
+    //   - Supporting types: ValueSpace, AxisTransition, AxisPrecondition,
+    //     AxisAuthority, AxisScope, ValueSpaceShape.
+    //
+    // Session 518 — S0.4 (Plan B Stage 0), decisions 3 and 5. AxisTransition
+    //   gains triggerEvent (the event that triggers the move, so the axis
+    //   declaration replaces a tenant's state definition) and preconditions.
+    //   AxisPrecondition is added: a cross-axis precondition on one move,
+    //   naming an axis of the same instance or of one related instance and
+    //   the values it must hold. Cross-axis consequences are not modelled.
     //
     // Session 514 — OP-125 canon pass, Step 2 (ADR-011, decision 1). The
     //   epistemic axis is retired: `enum def EpistemicModality`, the
@@ -2368,9 +2375,10 @@ package BusinessMetamodelGeneral {
     //   the @BfoType annotation kept (Ella, S514; Cyril's reason below).
     //
     // Out of scope for this session:
-    //   - E6 generator extension for axis-aware semantics (S253 §6).
-    //   - OWL axiomatisation (S253 §3.7) — second pass after parse confirmed.
-    //   - Cross-axis consequence rule vocabulary (S253 §6).
+    //   - Cross-axis consequence rule vocabulary (S253 §6). (The E6
+    //     evaluator for preconditions and the OWL axiomatisation of this
+    //     family were added at S518, S0.4: OWL classes generated through
+    //     the pipeline, properties in ontology/axioms/ontara-bmm-axioms.ttl.)
     //   - Tenant declarations beyond Paws Booking (carried in paws.sysml).
     //
     // Verified syntax patterns used:
@@ -2407,7 +2415,7 @@ package BusinessMetamodelGeneral {
              * instances live in DBR or DSR), StatusAxis (a single named
              * dimension of status on a canonical runtime type), and the
              * supporting vocabulary (ValueSpace, AxisTransition,
-             * AxisAuthority, AxisScope, ValueSpaceShape).
+             * AxisPrecondition, AxisAuthority, AxisScope, ValueSpaceShape).
              *
              * No axis is built in. Every StatusAxis is tenant-declared on a
              * specific canonical type. Mode (real or simulated) and method
@@ -2584,15 +2592,97 @@ package BusinessMetamodelGeneral {
                  * rejected at write time by the canonical-edge contract
                  * with a category-error explanation.
                  *
-                 * Cross-axis preconditions and consequences are specified
-                 * in S253 §6 and will be added in a subsequent session
-                 * (not in scope for S255 first implementation).
+                 * transitionLabel is the text a person reads for the move
+                 * (the action label a surface shows, or a description of
+                 * a derived move). triggerEvent is the name of the event
+                 * that triggers the move: an identifier the generated
+                 * guard accepts and a workflow step's
+                 * @StateTransitionTrigger names. Two moves from different
+                 * values may share one event (a cancel from several
+                 * values). Added S518 (S0.4): the axis declaration is the
+                 * single source of a lifecycle, so the event a state
+                 * definition once carried moves onto the transition.
+                 *
+                 * preconditions: cross-axis preconditions guarding this
+                 * move (S0.4, decision 5). Declared inside the transition
+                 * they guard. All must hold for the move to be permitted.
+                 * Cross-axis consequences (S253 §6) are not modelled.
                  *
                  * Business meta model concept. */
             attribute fromValue : String;
             attribute toValue : String;
             attribute transitionLabel : String;
+            attribute triggerEvent : String[0..1];
             attribute requiredAuthority : AxisAuthority[0..*];
+
+            part preconditions : AxisPrecondition[0..*];
+        }
+
+        // =====================================================================
+        // CROSS-AXIS PRECONDITION — S518 (S0.4, decision 5)
+        // =====================================================================
+
+        @CatalogueTag {
+            bmmConcern = "CanonicalRuntime";
+            classification = "General";
+        }
+        @BfoType {
+            bfoClass = "GenericallyDependentContinuant";
+            midLevelClass = "IAO:InformationContentEntity";
+            mappingNotes = "An AxisPrecondition specifies a condition that must hold on an axis, of the same instance or of one related instance, before a declared transition is permitted. Information content: a rule about moves, not the check made at runtime. The check, when it is made, is part of a process.";
+        }
+        @UserFacing {
+            friendlyName = "Axis Precondition";
+            shortDescription = "A condition on another status axis, of the same instance or of a related one, that must hold before a move is permitted.";
+        }
+        @PurposiveDescription {
+            description = "A condition that must hold before a permitted move on a status axis may be made. It names an axis, either on the same instance or on one related instance reached through a single reference, and the values that axis must hold. While the condition does not hold, the move is refused with a stated reason, never ignored. For example, a line on an order may not start preparation until the order is paid.";
+        }
+        @Comprehension {
+            surfaceEnumValues = false;
+            surfaceDomainInstantiations = true;
+            surfaceRelatedConcepts = true;
+            surfaceAttributes = true;
+        }
+        @WeightedRelationship {
+            target = "AxisTransition";
+            strength = RelationshipStrength::strong;
+            rationale = "Every AxisPrecondition guards one AxisTransition and is declared inside it. A change to the transition (its endpoints, its authority, its removal) requires reassessing the preconditions that guard it.";
+        }
+        @WeightedRelationship {
+            target = "StatusAxis";
+            strength = RelationshipStrength::moderate;
+            rationale = "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to that axis (its name, its value space) can invalidate the precondition's required axis or required values.";
+        }
+        part def AxisPrecondition {
+            doc /* A cross-axis precondition on one permitted move
+                 * (S518, S0.4, decision 5). Platform-general: it names no
+                 * tenant.
+                 *
+                 * The guarded move is the AxisTransition the precondition
+                 * is declared inside. The condition is on the axis named
+                 * requiredAxis (an axisName) of:
+                 * - the same instance, when relatedVia is absent; or
+                 * - the one instance reached by the reference feature
+                 *   named relatedVia on the type that declares the axis.
+                 *   The reference must be single-valued.
+                 * The move is permitted only while that axis holds one of
+                 * requiredValues. Otherwise it is refused as a structured
+                 * rejection carrying rejectionReason (H-0563); it is never
+                 * left unapplied in silence.
+                 *
+                 * Out of scope: conditions over many related instances
+                 * (aggregates such as "every line is ready", which are
+                 * derived rules or state shapes), paths of more than one
+                 * reference, disjunction across preconditions, and
+                 * consequence writes on another axis (S253 §6 second
+                 * half).
+                 *
+                 * Business meta model concept. */
+            attribute relatedVia : String[0..1];
+            attribute requiredAxis : String;
+            attribute requiredValues : String[1..*];
+            attribute rejectionReason : String;
         }
 
         // =====================================================================

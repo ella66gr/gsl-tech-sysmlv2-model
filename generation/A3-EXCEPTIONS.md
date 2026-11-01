@@ -42,17 +42,17 @@ so that this file, like the generators, names no tenant folder.
 | Added | S517, S0.2 |
 | Retire when | The model carries a step label (for example a `label` attribute on a `TemporalMetadata` definition, if Ella approves the schema change) |
 
-### A3-002 — Cafe lifecycle guard refusal test
+### A3-002 — Cafe axis guard and precondition tests
 
 | Field | Value |
 |---|---|
 | Tenant | Cafe |
-| What | `tests/order-lifecycle-guard.test.mts`: the test `make gen-test` runs against the Cafe's generated lifecycle guard (test path 5) |
-| Why it cannot be generated | It is a test of the generated output. Generating it from the same model would test the generator against itself |
-| Model signature | `OrderLifeCycle::OrderLifecycle`: states `placed`, `inPreparation`, `ready`, `collected`, `cancelled`; events `PreparationStarted`, `PreparationComplete`, `OrderCollected`, `CancellationRequested` |
-| How the binding is checked | The test fails when the lifecycle's states, transitions or terminal states change, which is its purpose |
-| Added | S517, S0.2 |
-| Retire when | Not expected to retire. It is updated when the lifecycle changes on purpose, for example at S0.4 |
+| What | `tests/axis-guard.test.mts` and `tests/axis-preconditions.test.mts`: the tests `make gen-test-guard`, `make gen-test-preconditions` and `make gen-test` run against the Cafe's generated axis guard and E6 cross-axis evaluator (Stage 0 test paths 4 and 5). They replace `tests/order-lifecycle-guard.test.mts`, retired at S0.4 with the state definition it tested |
+| Why it cannot be generated | They are tests of the generated output. Generating them from the same model would test the generator against itself |
+| Model signature | In the Cafe domain package: `Order::lifecycleAxis` (values placed, inPreparation, ready, collected, cancelled), `Order::paymentAxis` (unpaid, paid), `OrderLine::preparationAxis` (queued, inPreparation, ready, collected, cancelled) and its precondition `queuedToInPreparation::orderPaid` |
+| How the binding is checked | The tests fail when those axes' values, moves, authorities or the precondition change, which is their purpose |
+| Added | S517, S0.2; replaced S518, S0.4 |
+| Retire when | Not expected to retire. They are updated when the axes change on purpose |
 
 ## Known gaps (not exceptions)
 
@@ -81,3 +81,24 @@ is not mistaken for generated or sanctioned content.
    The generated next-action map (`STATE_NEXT_ACTIONS`) and step table now
    exist for them to use. They are prior art, to be rewired or retired when the
    counter surfaces are built at S0.8.
+5. **The Cafe prior-art pages and callers broken by S0.4.** S0.4 removed the
+   Order's `status` attribute and `OrderStatus`, the `OrderLifecycle` state
+   definition, and the activities' hand-written `OrderDetails` input: the
+   status axes are now the single source, and the workflow runs per order
+   line with the model's `OrderLine` as its input. The following prior art
+   still assumes the old shapes. It is recorded here, and never patched:
+   - pages that show or branch on an order `status` or the old lifecycle
+     values: `packages/web/src/routes/+page.svelte`,
+     `packages/web/src/routes/orders/+page.svelte`,
+     `packages/web/src/routes/orders/[id]/+page.svelte` and
+     `packages/web/src/routes/pathway/+page.svelte`;
+   - callers that start the workflow with the old order-shaped input
+     (`customerName`, `drinkType`, `size`) and read the old state query:
+     `packages/web/src/routes/api/orders/+server.ts` and the other
+     `packages/web/src/routes/api/orders/` routes, and the demonstration
+     client `packages/temporal/src/client/start-order.ts`, which no longer
+     type-checks (it imports `orderStateQuery` and builds the old input).
+   The workflow's state query is now the line's preparation value
+   (`fulfilDrinkStateQuery`, generated), and the per-axis next-action maps
+   are in the generated `axis-guard.ts`. These callers are replaced when the
+   per-line workflow is built at S0.6 and the counter surfaces at S0.8.

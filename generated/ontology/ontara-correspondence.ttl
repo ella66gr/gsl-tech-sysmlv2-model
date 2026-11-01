@@ -56,6 +56,33 @@ ontara-corr:map-AuditEvidenceRecord a ontara-corr:MappingRecord ;
     ontara-corr:sysmlLineNumber 1611 ;
     ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" .
 
+ontara-corr:map-AxisPrecondition a ontara-corr:MappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:AxisPrecondition ;
+    ontara-corr:sourceHash "e1d2f1487d100d5f" ;
+    ontara-corr:sysmlElementName "AxisPrecondition" ;
+    ontara-corr:sysmlLineNumber 2657 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" .
+
+ontara-corr:map-AxisTransition a ontara-corr:MappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:AxisTransition ;
+    ontara-corr:sourceHash "2ea7d0e69795c3bb" ;
+    ontara-corr:sysmlElementName "AxisTransition" ;
+    ontara-corr:sysmlLineNumber 2585 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" .
+
+ontara-corr:map-CanonicalRuntimeType a ontara-corr:MappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:CanonicalRuntimeType ;
+    ontara-corr:sourceHash "54ba17e8c5e14c7b" ;
+    ontara-corr:sysmlElementName "CanonicalRuntimeType" ;
+    ontara-corr:sysmlLineNumber 2802 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" .
+
 ontara-corr:map-Capability a ontara-corr:MappingRecord ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
@@ -290,6 +317,15 @@ ontara-corr:map-StakeholderRelationship a ontara-corr:MappingRecord ;
     ontara-corr:sysmlLineNumber 1745 ;
     ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" .
 
+ontara-corr:map-StatusAxis a ontara-corr:MappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:StatusAxis ;
+    ontara-corr:sourceHash "caf5f9f7fce0927c" ;
+    ontara-corr:sysmlElementName "StatusAxis" ;
+    ontara-corr:sysmlLineNumber 2729 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" .
+
 ontara-corr:map-UnitEconomics a ontara-corr:MappingRecord ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "DomainClass" ;
@@ -306,6 +342,15 @@ ontara-corr:map-ValueProposition a ontara-corr:MappingRecord ;
     ontara-corr:sourceHash "0da59d60aa432cb0" ;
     ontara-corr:sysmlElementName "ValueProposition" ;
     ontara-corr:sysmlLineNumber 158 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" .
+
+ontara-corr:map-ValueSpace a ontara-corr:MappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "DomainClass" ;
+    ontara-corr:owlEntity ontara-bmm:ValueSpace ;
+    ontara-corr:sourceHash "47c52d15f4ca7400" ;
+    ontara-corr:sysmlElementName "ValueSpace" ;
+    ontara-corr:sysmlLineNumber 2534 ;
     ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" .
 
 ontara-corr:map-prop-hasActivityType a ontara-corr:PropertyMappingRecord ;
@@ -579,6 +624,56 @@ ontara-corr:map-weight-AuditEvidenceRecord-to-GovernanceRequirement a ontara-cor
     ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
     ontara-corr:weightStrength "strong" ;
     ontara-corr:weightTarget "GovernanceRequirement" .
+
+ontara-corr:map-weight-AxisPrecondition-to-AxisTransition a ontara-corr:WeightMappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "WeightedRelationship" ;
+    ontara-corr:owlEntity ontara-bmm:weight-AxisPrecondition-to-AxisTransition ;
+    ontara-corr:sysmlElementName "AxisPrecondition" ;
+    ontara-corr:sysmlLineNumber 2657 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
+    ontara-corr:weightStrength "strong" ;
+    ontara-corr:weightTarget "AxisTransition" .
+
+ontara-corr:map-weight-AxisPrecondition-to-StatusAxis a ontara-corr:WeightMappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "WeightedRelationship" ;
+    ontara-corr:owlEntity ontara-bmm:weight-AxisPrecondition-to-StatusAxis ;
+    ontara-corr:sysmlElementName "AxisPrecondition" ;
+    ontara-corr:sysmlLineNumber 2657 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
+    ontara-corr:weightStrength "moderate" ;
+    ontara-corr:weightTarget "StatusAxis" .
+
+ontara-corr:map-weight-AxisTransition-to-StatusAxis a ontara-corr:WeightMappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "WeightedRelationship" ;
+    ontara-corr:owlEntity ontara-bmm:weight-AxisTransition-to-StatusAxis ;
+    ontara-corr:sysmlElementName "AxisTransition" ;
+    ontara-corr:sysmlLineNumber 2585 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
+    ontara-corr:weightStrength "strong" ;
+    ontara-corr:weightTarget "StatusAxis" .
+
+ontara-corr:map-weight-AxisTransition-to-ValueSpace a ontara-corr:WeightMappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "WeightedRelationship" ;
+    ontara-corr:owlEntity ontara-bmm:weight-AxisTransition-to-ValueSpace ;
+    ontara-corr:sysmlElementName "AxisTransition" ;
+    ontara-corr:sysmlLineNumber 2585 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
+    ontara-corr:weightStrength "strong" ;
+    ontara-corr:weightTarget "ValueSpace" .
+
+ontara-corr:map-weight-CanonicalRuntimeType-to-StatusAxis a ontara-corr:WeightMappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "WeightedRelationship" ;
+    ontara-corr:owlEntity ontara-bmm:weight-CanonicalRuntimeType-to-StatusAxis ;
+    ontara-corr:sysmlElementName "CanonicalRuntimeType" ;
+    ontara-corr:sysmlLineNumber 2802 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
+    ontara-corr:weightStrength "strong" ;
+    ontara-corr:weightTarget "StatusAxis" .
 
 ontara-corr:map-weight-Capability-to-CapacityModel a ontara-corr:WeightMappingRecord ;
     ontara-corr:authorityZone "shared-constrained" ;
@@ -1350,6 +1445,36 @@ ontara-corr:map-weight-StakeholderRelationship-to-ServiceOffering a ontara-corr:
     ontara-corr:weightStrength "moderate" ;
     ontara-corr:weightTarget "ServiceOffering" .
 
+ontara-corr:map-weight-StatusAxis-to-AxisTransition a ontara-corr:WeightMappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "WeightedRelationship" ;
+    ontara-corr:owlEntity ontara-bmm:weight-StatusAxis-to-AxisTransition ;
+    ontara-corr:sysmlElementName "StatusAxis" ;
+    ontara-corr:sysmlLineNumber 2729 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
+    ontara-corr:weightStrength "strong" ;
+    ontara-corr:weightTarget "AxisTransition" .
+
+ontara-corr:map-weight-StatusAxis-to-CanonicalRuntimeType a ontara-corr:WeightMappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "WeightedRelationship" ;
+    ontara-corr:owlEntity ontara-bmm:weight-StatusAxis-to-CanonicalRuntimeType ;
+    ontara-corr:sysmlElementName "StatusAxis" ;
+    ontara-corr:sysmlLineNumber 2729 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
+    ontara-corr:weightStrength "strong" ;
+    ontara-corr:weightTarget "CanonicalRuntimeType" .
+
+ontara-corr:map-weight-StatusAxis-to-ValueSpace a ontara-corr:WeightMappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "WeightedRelationship" ;
+    ontara-corr:owlEntity ontara-bmm:weight-StatusAxis-to-ValueSpace ;
+    ontara-corr:sysmlElementName "StatusAxis" ;
+    ontara-corr:sysmlLineNumber 2729 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
+    ontara-corr:weightStrength "strong" ;
+    ontara-corr:weightTarget "ValueSpace" .
+
 ontara-corr:map-weight-UnitEconomics-to-FinancialProjection a ontara-corr:WeightMappingRecord ;
     ontara-corr:authorityZone "shared-constrained" ;
     ontara-corr:classification "WeightedRelationship" ;
@@ -1399,4 +1524,24 @@ ontara-corr:map-weight-ValueProposition-to-ServiceOffering a ontara-corr:WeightM
     ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
     ontara-corr:weightStrength "strong" ;
     ontara-corr:weightTarget "ServiceOffering" .
+
+ontara-corr:map-weight-ValueSpace-to-AxisTransition a ontara-corr:WeightMappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "WeightedRelationship" ;
+    ontara-corr:owlEntity ontara-bmm:weight-ValueSpace-to-AxisTransition ;
+    ontara-corr:sysmlElementName "ValueSpace" ;
+    ontara-corr:sysmlLineNumber 2534 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
+    ontara-corr:weightStrength "strong" ;
+    ontara-corr:weightTarget "AxisTransition" .
+
+ontara-corr:map-weight-ValueSpace-to-StatusAxis a ontara-corr:WeightMappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "WeightedRelationship" ;
+    ontara-corr:owlEntity ontara-bmm:weight-ValueSpace-to-StatusAxis ;
+    ontara-corr:sysmlElementName "ValueSpace" ;
+    ontara-corr:sysmlLineNumber 2534 ;
+    ontara-corr:sysmlSourceFile "model/business-metamodel-general.sysml" ;
+    ontara-corr:weightStrength "strong" ;
+    ontara-corr:weightTarget "StatusAxis" .
 

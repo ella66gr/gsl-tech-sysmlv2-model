@@ -9,12 +9,18 @@
 // Domain types generated from SysML structural model
 export * from './generated/types.js';
 
-// XState order lifecycle machine generated from SysML state def
+// XState machines generated from the SysML status axis declarations (S0.4):
+// one per canonical runtime type, one parallel region per axis
 export {
-  orderLifecycleMachine,
-  type OrderEvent,
-  type OrderState,
-} from './generated/order-lifecycle-machine.js';
+  orderAxesMachine,
+  orderLineAxesMachine,
+  type OrderAxisEvent,
+  type OrderLineAxisEvent,
+} from './generated/axis-machine.js';
+
+// Axis guard and E6 cross-axis precondition evaluator, generated (S0.4)
+export * from './generated/axis-guard.js';
+export * from './generated/axis-preconditions.js';
 
 // Workflow constants shared between Temporal and SvelteKit
 export * from './workflow-constants.js';

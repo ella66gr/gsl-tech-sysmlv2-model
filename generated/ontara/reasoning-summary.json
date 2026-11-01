@@ -1,5 +1,5 @@
 {
-  "modelDigest": "bd663295312a7da1c4f034a6c4a166ea7d0fea9573f33c5e6b9a0aed843996d8",
+  "modelDigest": "4183bc0b0b08fc0533db2b959dd608f76add8442b691e8446a6c0aacb9679b79",
   "generator": "reason_kg.py",
   "reasoner": "HermiT (via Robot)",
   "consistent": true,
@@ -38,13 +38,19 @@
     {
       "name": "Ontara BMM (pipeline-generated)",
       "file": "ontara-bmm.ttl",
-      "sizeBytes": 21264,
+      "sizeBytes": 24998,
+      "present": true
+    },
+    {
+      "name": "Ontara Tenant Canonical Runtime Types (pipeline-generated, Session 518)",
+      "file": "ontara-tenant-types.ttl",
+      "sizeBytes": 2026,
       "present": true
     },
     {
       "name": "Ontara BMM Axioms (hand-authored)",
       "file": "ontara-bmm-axioms.ttl",
-      "sizeBytes": 20124,
+      "sizeBytes": 28113,
       "present": true
     },
     {
@@ -56,7 +62,7 @@
     {
       "name": "Ontara BMM Weighted Relationships (pipeline-generated)",
       "file": "ontara-bmm-weights.ttl",
-      "sizeBytes": 59164,
+      "sizeBytes": 65374,
       "present": true
     },
     {
@@ -87,6 +93,12 @@
       "name": "Ears Reasoning Instances (hand-authored, Session 166)",
       "file": "ears-reasoning-instances.ttl",
       "sizeBytes": 81339,
+      "present": true
+    },
+    {
+      "name": "Cafe Reasoning Instances (hand-authored, Session 518)",
+      "file": "cafe-reasoning-instances.ttl",
+      "sizeBytes": 11309,
       "present": true
     }
   ],
@@ -205,14 +217,14 @@
     }
   ],
   "stats": {
-    "ontologyFileCount": 14,
+    "ontologyFileCount": 16,
     "objectPropertyCount": 14,
-    "reifiedWeightCount": 98,
-    "domainClassCount": 119,
+    "reifiedWeightCount": 108,
+    "domainClassCount": 124,
     "axiomFilePresent": true,
     "namedIndividualCount": 15,
     "datatypePropertyCount": 11,
-    "sparqlQueryCount": 78
+    "sparqlQueryCount": 80
   },
   "violationTest": {
     "ran": false,

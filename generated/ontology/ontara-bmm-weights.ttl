@@ -132,6 +132,46 @@ ontara-bmm:weight-AuditEvidenceRecord-to-GovernanceRequirement a owl:NamedIndivi
     ontara-bmm:weightStrength "strong"^^xsd:string ;
     ontara-bmm:weightTarget ontara-bmm:GovernanceRequirement .
 
+ontara-bmm:weight-AxisPrecondition-to-AxisTransition a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "AxisPrecondition → AxisTransition (strong)"@en ;
+    ontara-bmm:weightRationale "Every AxisPrecondition guards one AxisTransition and is declared inside it. A change to the transition (its endpoints, its authority, its removal) requires reassessing the preconditions that guard it."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:AxisPrecondition ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:AxisTransition .
+
+ontara-bmm:weight-AxisPrecondition-to-StatusAxis a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "AxisPrecondition → StatusAxis (moderate)"@en ;
+    ontara-bmm:weightRationale "A precondition reads the value of a named StatusAxis on the same or a related instance. A change to that axis (its name, its value space) can invalidate the precondition's required axis or required values."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:AxisPrecondition ;
+    ontara-bmm:weightStrength "moderate"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:StatusAxis .
+
+ontara-bmm:weight-AxisTransition-to-StatusAxis a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "AxisTransition → StatusAxis (strong)"@en ;
+    ontara-bmm:weightRationale "Every AxisTransition is declared on a specific StatusAxis. A change to a transition (its endpoints, its required authority) requires reassessing the axis whose transition rules it defines — the axis's runtime behaviour changes when its transitions change."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:AxisTransition ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:StatusAxis .
+
+ontara-bmm:weight-AxisTransition-to-ValueSpace a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "AxisTransition → ValueSpace (strong)"@en ;
+    ontara-bmm:weightRationale "A transition's from-value and to-value must be drawn from the axis's value space. A change to the transition (especially endpoint changes) requires reassessing the value space — and conversely a change to the value space may invalidate existing transitions."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:AxisTransition ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ValueSpace .
+
+ontara-bmm:weight-CanonicalRuntimeType-to-StatusAxis a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "CanonicalRuntimeType → StatusAxis (strong)"@en ;
+    ontara-bmm:weightRationale "A CanonicalRuntimeType declares the set of StatusAxes its runtime instances carry. A change to the canonical type's structural definition (especially to its declared axes) directly affects every instance — runtime tuple shape, substrate triple structure, and comprehension all flow from the axis declarations."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:CanonicalRuntimeType ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:StatusAxis .
+
 ontara-bmm:weight-Capability-to-CapacityModel a owl:NamedIndividual,
         ontara-bmm:WeightedRelationship ;
     rdfs:label "Capability → CapacityModel (moderate)"@en ;
@@ -748,6 +788,30 @@ ontara-bmm:weight-StakeholderRelationship-to-ServiceOffering a owl:NamedIndividu
     ontara-bmm:weightStrength "moderate"^^xsd:string ;
     ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
 
+ontara-bmm:weight-StatusAxis-to-AxisTransition a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "StatusAxis → AxisTransition (strong)"@en ;
+    ontara-bmm:weightRationale "A StatusAxis declares its set of permitted AxisTransitions. A change to the axis (especially to its value space or authority) requires reassessing the transitions — they may need to be added, removed, or have their required authority adjusted."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:StatusAxis ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:AxisTransition .
+
+ontara-bmm:weight-StatusAxis-to-CanonicalRuntimeType a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "StatusAxis → CanonicalRuntimeType (strong)"@en ;
+    ontara-bmm:weightRationale "A StatusAxis is declared on a CanonicalRuntimeType — it has no independent existence. A change to an axis (its value space, its transitions, its authority) requires reassessing the canonical type whose runtime instances carry it."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:StatusAxis ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:CanonicalRuntimeType .
+
+ontara-bmm:weight-StatusAxis-to-ValueSpace a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "StatusAxis → ValueSpace (strong)"@en ;
+    ontara-bmm:weightRationale "Every StatusAxis has a ValueSpace. A change to the axis (its meaning, its purpose) typically requires reassessing the value space that defines its permitted values."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:StatusAxis ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:ValueSpace .
+
 ontara-bmm:weight-UnitEconomics-to-FinancialProjection a owl:NamedIndividual,
         ontara-bmm:WeightedRelationship ;
     rdfs:label "UnitEconomics → FinancialProjection (moderate)"@en ;
@@ -787,6 +851,22 @@ ontara-bmm:weight-ValueProposition-to-ServiceOffering a owl:NamedIndividual,
     ontara-bmm:weightSource ontara-bmm:ValueProposition ;
     ontara-bmm:weightStrength "strong"^^xsd:string ;
     ontara-bmm:weightTarget ontara-bmm:ServiceOffering .
+
+ontara-bmm:weight-ValueSpace-to-AxisTransition a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ValueSpace → AxisTransition (strong)"@en ;
+    ontara-bmm:weightRationale "Permitted transitions reference values from the value space. A change to the value space (e.g. removing a value, adding a value, changing the shape from unordered to ordered) directly affects which transitions are well-formed."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ValueSpace ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:AxisTransition .
+
+ontara-bmm:weight-ValueSpace-to-StatusAxis a owl:NamedIndividual,
+        ontara-bmm:WeightedRelationship ;
+    rdfs:label "ValueSpace → StatusAxis (strong)"@en ;
+    ontara-bmm:weightRationale "Every ValueSpace exists to describe a StatusAxis. A change to the value space (its shape, its permitted values) requires reassessing the axis it belongs to — the axis's permitted transitions and authority interpretation may need adjustment."^^xsd:string ;
+    ontara-bmm:weightSource ontara-bmm:ValueSpace ;
+    ontara-bmm:weightStrength "strong"^^xsd:string ;
+    ontara-bmm:weightTarget ontara-bmm:StatusAxis .
 
 ontara-bmm:weightRationale a owl:DatatypeProperty ;
     rdfs:label "weight rationale"@en ;

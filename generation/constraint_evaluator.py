@@ -16,6 +16,22 @@ part usages), and writes three files to the output folder:
 The two tenant package names are arguments; the generator names no tenant.
 The pattern types are platform content, read from the platform model folder.
 
+Axis preconditions (S0.4, OP-32 part b). When the tenant model declares
+``AxisPrecondition`` usages on its status axes (see generation.status_axes),
+it also writes
+
+4. axis-preconditions.ts    one evaluator per declared precondition, and a
+                            move-level evaluator that runs every
+                            precondition of a move. No imports.
+
+A precondition holds when the named axis, on the same instance or on the
+instance its ``relatedVia`` reference names, holds one of its
+``requiredValues``. A move whose precondition fails, or cannot be decided
+because the value is missing, is rejected with the model's
+``rejectionReason``: a structured rejection, never a silent pass. The
+constraint and spec packages are optional when only axis preconditions are
+wanted; a model with neither is an error.
+
 Usage (from the repository root):
     python3 -m generation.constraint_evaluator \\
         --model <tenant model folder> --out <output folder> \\
@@ -37,7 +53,8 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from generation.output import base_parser, header as make_header, write
-from generation.sysml_text import ModelError, enclosing_packages, load_model, mask_comments
+from generation.status_axes import axis_types
+from generation.sysml_text import ModelError, enclosing_packages, load_model, mask_comments, upper_first
 
 # Platform pattern packages the evaluation types reflect (SystemMetamodelGeneral).
 PATTERN_PACKAGES = ("LogicEngine", "EvaluationSpecs")
@@ -629,8 +646,183 @@ def pattern_source(platform_files):
     return f"{located[0][0].rel} ({', '.join(parts)})"
 
 
+AXIS_PRECONDITIONS_FILE = "axis-preconditions.ts"
+
+AXIS_PRECONDITION_PREAMBLE = """// Cross-axis precondition evaluators (E6), from the AxisPrecondition declarations.
+// No imports: usable from any runtime. The guard (axis-guard.ts) decides whether a
+// move is permitted at all; these decide whether its preconditions hold.
+
+export type AxisPreconditionOutcome = 'pass' | 'fail' | 'indeterminate';
+
+/**
+ * The axis values an evaluator reads: the moving instance's own axis tuple,
+ * and each related instance's axis tuple by the name of the reference to it.
+ */
+export interface AxisPreconditionContext {
+  readonly self: Readonly<Record<string, string>>;
+  readonly related?: Readonly<Record<string, Readonly<Record<string, string>> | null | undefined>>;
+}
+
+export interface AxisPreconditionResult {
+  readonly precondition: string;
+  readonly type: string;
+  readonly axis: string;
+  readonly transition: string;
+  /** The reference to the related instance; null for the same instance. */
+  readonly relatedVia: string | null;
+  /** The type whose axis is read. */
+  readonly relatedType: string;
+  readonly requiredAxis: string;
+  readonly requiredValues: readonly string[];
+  /** The value found, or null when it was not supplied. */
+  readonly actualValue: string | null;
+  readonly outcome: AxisPreconditionOutcome;
+  /** The model's rejectionReason when the outcome is not pass; null on pass. */
+  readonly reason: string | null;
+}
+
+export interface AxisPreconditionRejection {
+  readonly ok: false;
+  readonly code: 'preconditionNotMet';
+  readonly type: string;
+  readonly axis: string;
+  readonly transition: string;
+  /** The rejectionReason of every precondition that did not pass. */
+  readonly reasons: readonly string[];
+  readonly results: readonly AxisPreconditionResult[];
+}
+
+export type AxisPreconditionVerdict =
+  | { readonly ok: true; readonly type: string; readonly axis: string; readonly transition: string; readonly results: readonly AxisPreconditionResult[] }
+  | AxisPreconditionRejection;
+
+interface PreconditionDecl {
+  readonly precondition: string;
+  readonly type: string;
+  readonly axis: string;
+  readonly transition: string;
+  readonly relatedVia: string | null;
+  readonly relatedType: string;
+  readonly requiredAxis: string;
+  readonly requiredValues: readonly string[];
+  readonly rejectionReason: string;
+}
+
+function evaluate(d: PreconditionDecl, ctx: AxisPreconditionContext): AxisPreconditionResult {
+  const tuple = d.relatedVia === null ? ctx.self : ctx.related?.[d.relatedVia];
+  const actual = tuple?.[d.requiredAxis];
+  const actualValue = typeof actual === 'string' ? actual : null;
+  const outcome: AxisPreconditionOutcome =
+    actualValue === null ? 'indeterminate' : d.requiredValues.includes(actualValue) ? 'pass' : 'fail';
+  const where = d.relatedVia === null ? d.requiredAxis : `${d.relatedVia}.${d.requiredAxis}`;
+  const reason =
+    outcome === 'pass'
+      ? null
+      : outcome === 'fail'
+        ? d.rejectionReason
+        : `${d.rejectionReason} (${where} was not supplied, so the precondition cannot be shown to hold.)`;
+  return {
+    precondition: d.precondition, type: d.type, axis: d.axis, transition: d.transition,
+    relatedVia: d.relatedVia, relatedType: d.relatedType, requiredAxis: d.requiredAxis,
+    requiredValues: d.requiredValues, actualValue, outcome, reason,
+  };
+}
+
+function verdict(type: string, axis: string, transition: string, results: AxisPreconditionResult[]): AxisPreconditionVerdict {
+  const failed = results.filter((r) => r.outcome !== 'pass');
+  if (failed.length === 0) return { ok: true, type, axis, transition, results };
+  return {
+    ok: false, code: 'preconditionNotMet', type, axis, transition,
+    reasons: failed.map((r) => r.reason ?? ''), results,
+  };
+}
+"""
+
+
+def _ts(s):
+    return "null" if s is None else "'" + s.replace("\\", "\\\\").replace("'", "\\'") + "'"
+
+
+def emit_axis_preconditions(types, header):
+    """Generate axis-preconditions.ts: one evaluator per declared AxisPrecondition."""
+    L = [header.rstrip("\n"), "", AXIS_PRECONDITION_PREAMBLE.rstrip("\n"), ""]
+    registry = []
+    for t in types:
+        for ax in t.axes:
+            for mv in ax.moves:
+                fns = []
+                for p in mv.preconditions:
+                    fn = f"evaluate{ax.ident}{upper_first(mv.name)}{upper_first(p.name)}"
+                    fns.append(fn)
+                    req = ", ".join(_ts(v) for v in p.required_values)
+                    L.append(f"/** {t.name} {ax.name}, {mv.name} ({mv.source} -> {mv.target}): {p.name}. */")
+                    L.append(f"export function {fn}(ctx: AxisPreconditionContext): AxisPreconditionResult {{")
+                    L.append("  return evaluate(")
+                    L.append("    {")
+                    L.append(f"      precondition: {_ts(p.name)}, type: {_ts(t.name)}, axis: {_ts(ax.name)}, transition: {_ts(mv.name)},")
+                    L.append(f"      relatedVia: {_ts(p.related_via)}, relatedType: {_ts(p.related_type)}, requiredAxis: {_ts(p.required_axis)},")
+                    L.append(f"      requiredValues: [{req}],")
+                    L.append(f"      rejectionReason: {_ts(p.rejection_reason)},")
+                    L.append("    },")
+                    L.append("    ctx,")
+                    L.append("  );")
+                    L.append("}")
+                    L.append("")
+                if fns:
+                    registry.append((t.name, ax.name, mv.name, fns))
+    L.append("/** The evaluators of each move that has preconditions, by type, axis and transition. */")
+    L.append("export const axisPreconditionEvaluators: Readonly<Record<string, Readonly<Record<string, Readonly<Record<string, readonly ((ctx: AxisPreconditionContext) => AxisPreconditionResult)[]>>>>>> = {")
+    by_type = {}
+    for tname, aname, mname, fns in registry:
+        by_type.setdefault(tname, {}).setdefault(aname, []).append((mname, fns))
+    for tname, axes in by_type.items():
+        L.append(f"  {tname}: {{")
+        for aname, moves in axes.items():
+            L.append(f"    {_ts(aname)}: {{")
+            for mname, fns in moves:
+                L.append(f"      {mname}: [{', '.join(fns)}],")
+            L.append("    },")
+        L.append("  },")
+    L.append("};")
+    L.append("")
+    L.append("/**")
+    L.append(" * Every precondition of a move, named as the guard's accepted result names it")
+    L.append(" * (type, axis, transition). A move with no preconditions passes.")
+    L.append(" */")
+    L.append("export function evaluateAxisMovePreconditions(")
+    L.append("  type: string,")
+    L.append("  axis: string,")
+    L.append("  transition: string,")
+    L.append("  ctx: AxisPreconditionContext,")
+    L.append("): AxisPreconditionVerdict {")
+    L.append("  const fns = axisPreconditionEvaluators[type]?.[axis]?.[transition] ?? [];")
+    L.append("  return verdict(type, axis, transition, fns.map((fn) => fn(ctx)));")
+    L.append("}")
+    L.append("")
+    return "\n".join(L)
+
+
 def generate(model_dir, out_dir, root, constraint_package, spec_package, platform_dir, model_name, verbose=True):
     files = load_model(model_dir, root)
+    if (constraint_package is None) != (spec_package is None):
+        raise ModelError("pass both --constraint-package and --spec-package, or neither")
+    written = []
+    if constraint_package is not None:
+        written += _generate_constraints(files, out_dir, root, constraint_package, spec_package,
+                                         platform_dir, model_name, verbose)
+    types = [t for t in axis_types(files) if any(mv.preconditions for ax in t.axes for mv in ax.moves)]
+    if types:
+        head = make_header(__file__, [t.source for t in types], model_name)
+        written.append(write(out_dir, AXIS_PRECONDITIONS_FILE, emit_axis_preconditions(types, head)))
+        if verbose:
+            n = sum(len(mv.preconditions) for t in types for ax in t.axes for mv in ax.moves)
+            print(f"  wrote {written[-1]} ({n} axis preconditions)")
+    if not written:
+        raise ModelError("nothing to generate: no constraint packages given and no AxisPrecondition declared")
+    return written
+
+
+def _generate_constraints(files, out_dir, root, constraint_package, spec_package, platform_dir, model_name, verbose):
     platform_files = load_model(platform_dir, root)
 
     lib_file, lib_q = locate_package(files, constraint_package)
@@ -679,8 +871,8 @@ def generate(model_dir, out_dir, root, constraint_package, spec_package, platfor
 
 def main(argv=None):
     p = base_parser("Generate E6 constraint evaluators from a tenant model.")
-    p.add_argument("--constraint-package", required=True, help="package holding the constraint defs")
-    p.add_argument("--spec-package", required=True, help="package holding the evaluation spec usages")
+    p.add_argument("--constraint-package", default=None, help="package holding the constraint defs")
+    p.add_argument("--spec-package", default=None, help="package holding the evaluation spec usages")
     p.add_argument("--platform-model", type=Path, default=Path("model"),
                    help="platform model folder holding the pattern packages (default: model)")
     p.add_argument("--quiet", action="store_true")
