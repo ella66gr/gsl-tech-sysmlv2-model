@@ -21,9 +21,9 @@ package PatternCatalogue {
          * and knowledge graph of semantic relationships.
          *
          * Platform description (ADR-012): this package describes
-         * how the platform is structured, not what the businesw
-         * offers. It belongs to no layer and is not part of th.
-         * system meta model, because its entries name tenane
+         * how the platform is structured, not what the business
+         * offers. It belongs to no layer and is not part of the
+         * system meta model, because its entries name tenant
          * content.
          *
          * Three kinds of entries:
