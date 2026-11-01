@@ -1,4 +1,4 @@
-// Apache Jena Fuseki 5.6.0 adapter, with the Ontara validated-update module
+// Apache Jena Fuseki adapter (5.6.0 at S518; 5.6.0 or 6.2.0 from S519), with the Ontara validated-update module
 // (stack/spike/fuseki/module). Fuseki takes each update request as one
 // transaction, so a gate write and its rules go as ONE SPARQL Update request:
 //   INSERT DATA { GRAPH <g> { ...the write's triples... } } ; rule 1 ; rule 2 ...
@@ -9,8 +9,10 @@
 // Not offered, said explicitly:
 //   - separate phase timings: one request, so begin/add/updates are 0 and the
 //     whole request is reported as `commit`;
-//   - RDF4J's Bulk validation setting: GraphValidation always validates the
-//     whole graph, so `validation: "bulk"` changes nothing here;
+//   - RDF4J's Bulk validation setting: the module's mode (whole or targeted,
+//     set when the store starts; S519) decides, so `validation: "bulk"`
+//     changes nothing here. Each outcome's `validation` field carries the
+//     module's X-Ontara-Validation header: how that write was validated;
 //   - creating repositories: datasets are fixed when the server starts. The
 //     scratch dataset `cafe-capability-scratch` is pre-provisioned, and
 //     "create" and "delete" clear it.
@@ -72,15 +74,16 @@ export class FusekiStore implements Store {
       const s = performance.now();
       const r = await http("POST", `${this.datasetUrl}/validated-update`, { body: ops.join(" ;\n"), contentType: "application/sparql-update", timeoutMs: 600_000 });
       t.commit = performance.now() - s;
-      if (r.status === 200 || r.status === 204) return { outcome: "committed", timings: finish(), note: "one request: whole-request time reported as commit" };
+      const validation = r.headers.get("x-ontara-validation") ?? undefined;
+      if (r.status === 200 || r.status === 204) return { outcome: "committed", timings: finish(), note: "one request: whole-request time reported as commit", validation } as WriteOutcome;
       if (r.status === 422 && looksLikeShaclRejection(r.contentType, r.body)) {
         const report = parseReport(r.body);
         const results = await Promise.all(report.results.map(async (x) => ({ ...x, nodeShape: await this.nodeShapeOf(x.sourceShape) })));
         const nodeShapes = [...new Set(results.map((x) => x.nodeShape).filter((x): x is string => !!x))];
         const aborted = r.headers.get("x-ontara-transaction") === "aborted";
-        return { outcome: "rejected", stage: "validate", shapes: report.shapes, nodeShapes, results, rolledBack: aborted, rollbackStatus: null, timings: finish(), note: "the module aborted the TDB2 write transaction (X-Ontara-Transaction header)" };
+        return { outcome: "rejected", stage: "validate", shapes: report.shapes, nodeShapes, results, rolledBack: aborted, rollbackStatus: null, timings: finish(), note: "the module aborted the TDB2 write transaction (X-Ontara-Transaction header)", validation } as WriteOutcome;
       }
-      return { outcome: "fault", stage, httpStatus: r.status, detail: r.body.slice(0, 2000), rolledBack: r.headers.get("x-ontara-transaction") === "aborted", rollbackStatus: null, timings: finish() };
+      return { outcome: "fault", stage, httpStatus: r.status, detail: r.body.slice(0, 2000), rolledBack: r.headers.get("x-ontara-transaction") === "aborted", rollbackStatus: null, timings: finish(), validation } as WriteOutcome;
     } catch (e: any) {
       return { outcome: "fault", stage, httpStatus: null, detail: String(e?.message ?? e), rolledBack: true, rollbackStatus: null, timings: finish() };
     }
@@ -97,7 +100,7 @@ export class FusekiStore implements Store {
   }
   async info(): Promise<StoreInfo> {
     const s = await this.moduleStatus();
-    return { product: `Apache Jena Fuseki ${s.fusekiVersion}`, version: s.fusekiVersion, shaclEngine: `jena-shacl ${s.jenaVersion} (GraphValidation.update, whole union graph)`, raw: s };
+    return { product: `Apache Jena Fuseki ${s.fusekiVersion}`, version: s.fusekiVersion, shaclEngine: `jena-shacl ${s.jenaVersion} (${s.engine})`, raw: s };
   }
   async licence() { return notApplicable("Apache Jena is Apache-2.0 open source; it has no licence key or edition"); }
   async listRepositories() { return PROVISIONED; }

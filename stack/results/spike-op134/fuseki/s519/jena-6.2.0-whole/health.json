@@ -1,0 +1,110 @@
+{
+  "status": "pass",
+  "run": "d79417ef",
+  "started": "2026-11-01T10:16:24.081Z",
+  "store": "fuseki",
+  "repository": "cafe-runtime",
+  "checks": [
+    {
+      "name": "fuseki: knowledge-graph content",
+      "pass": true,
+      "ms": 63,
+      "detail": [
+        {
+          "probe": "BMM metamodel has its 34 classes",
+          "result": true
+        },
+        {
+          "probe": "BMM class ServiceOffering sits under a BFO parent",
+          "result": true
+        },
+        {
+          "probe": "Platform record module defines PlatformRecord",
+          "result": true
+        },
+        {
+          "probe": "BFO 2020 entity is present",
+          "result": true
+        }
+      ]
+    },
+    {
+      "name": "fuseki: runtime repository has SHACL on",
+      "pass": true,
+      "ms": 3,
+      "detail": {
+        "repository": "cafe-runtime",
+        "isShacl": "true",
+        "validationEnabled": "true",
+        "shaclLocus": "store",
+        "inference": "none"
+      }
+    },
+    {
+      "name": "gate: known-good write commits",
+      "pass": true,
+      "ms": 85,
+      "detail": {
+        "http": 200,
+        "outcome": "committed",
+        "timings": {
+          "begin": 0,
+          "add": 12.289208000000144,
+          "updates": 0,
+          "commit": 68.71600000000035,
+          "rollback": 0,
+          "total": 81.08383299999969
+        }
+      }
+    },
+    {
+      "name": "gate: known-bad write is a SHACL rejection naming the shape",
+      "pass": true,
+      "ms": 36,
+      "detail": {
+        "http": 422,
+        "outcome": "rejected",
+        "shapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape-method"
+        ],
+        "nodeShapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape"
+        ],
+        "components": [
+          "http://www.w3.org/ns/shacl#MinCountConstraintComponent"
+        ],
+        "rolledBack": true
+      }
+    },
+    {
+      "name": "gate: write after the rejection commits (lock released)",
+      "pass": true,
+      "ms": 30,
+      "detail": {
+        "http": 200,
+        "outcome": "committed",
+        "timings": {
+          "begin": 0,
+          "add": 0.47195800000008603,
+          "updates": 0,
+          "commit": 27.521958999999697,
+          "rollback": 0,
+          "total": 28.007166999999754
+        }
+      }
+    },
+    {
+      "name": "temporal: no-op workflow starts and completes",
+      "pass": true,
+      "ms": 125,
+      "detail": {
+        "workflowId": "stack-health-noop-d79417ef",
+        "result": "noop:d79417ef"
+      }
+    }
+  ],
+  "cleanup": {
+    "http": 200,
+    "outcome": "committed"
+  }
+}

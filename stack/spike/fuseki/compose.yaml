@@ -1,21 +1,31 @@
-# OP-134 spike, configuration 3: Apache Jena Fuseki 5.6.0 (TDB2) with the
-# Ontara validated-update module (spike/fuseki/module), built here. Every gate
-# write goes as one SPARQL Update request to /cafe-runtime/validated-update.
+# OP-134 spike, configuration 3: Apache Jena Fuseki (TDB2) with the Ontara
+# validated-update module (spike/fuseki/module), built here. Every gate write
+# goes as one SPARQL Update request to /cafe-runtime/validated-update.
+#
+# S519 (OP-134 follow-up), set by spike/bin/spike.sh from the environment:
+#   JENA_VERSION       5.6.0 (default, the S518 build) or 6.2.0: build argument and image tag
+#   FUSEKI_VALIDATION  whole (default, S518) or targeted: the module's validation mode
+#   FUSEKI_DATA        the TDB2 location inside the volume; the fault reproduction
+#                      (spike/bin/fault-repro.sh) points it at a new, empty
+#                      directory per run, so each run starts from a fresh store
+#                      without deleting anything.
 x-store-env: &store-env
   STORE_KIND: fuseki
   STORE_URL: http://store:3030
-  STORE_VERSION: "5.6.0"
+  STORE_VERSION: "${JENA_VERSION:-5.6.0}"
 
 volumes:
   store-data:
 
 services:
   store:
-    image: ontara-spike/fuseki:local
+    image: ontara-spike/fuseki:${JENA_VERSION:-5.6.0}
     pull_policy: never
-    build: { context: ./fuseki }
+    build: { context: ./fuseki, args: { JENA_VERSION: "${JENA_VERSION:-5.6.0}" } }
     environment:
       JAVA_OPTS: -Xmx2g -Xms2g
+      ONTARA_VALIDATION: "${FUSEKI_VALIDATION:-whole}"
+      FUSEKI_DATA: "${FUSEKI_DATA:-/fuseki/databases}"
     volumes: [ "store-data:/fuseki/databases" ]
     ports: [ "127.0.0.1:7210:3030" ]
     healthcheck: { test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost:3030/cafe-runtime/validated-update"], interval: 5s, timeout: 5s, retries: 60, start_period: 10s }

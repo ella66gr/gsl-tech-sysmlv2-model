@@ -1,0 +1,5 @@
+GET /cafe-runtime/data (N-Quads) on the S518 Jena 5.6.0 store (volume ontara-spike-fuseki_store-data, directory /fuseki/databases/cafe-runtime), cold start, 2026-11-01 10:13Z
+http=200 (streamed), bytes=21962795, lines=117679
+last bytes:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <urn:ontara:standin:rec#PlatformRecord> <urn:ontara:stack:graph:loadtest-w3> . <urn:ontara:standin:cafe#orFailed to write output: NodeTableTRDF/Read 
+store log: "[35] 406 Not Acceptable (390 ms)" for this request; no stack trace logged
+repository size reported by the bootstrap: 121178 explicit statements

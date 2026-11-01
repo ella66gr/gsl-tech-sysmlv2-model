@@ -29,6 +29,16 @@
 //                         (no SPARQL constraint) into the store's shapes graph
 //                         for this run, and restore the stand-in shapes after.
 //                         S517 swapped the file by hand for its attribution runs.
+//   --shapes two-sided    (S519) the core-only file plus Cyril's two-sided
+//                         readiness shapes (fixtures/shapes/spike-two-sided-readiness.ttl)
+//                         in place of the stand-in SPARQL constraint.
+//   --reject-every K      (S519, OP-134 follow-up Part B item 2) before every
+//                         K-th order, the writer sends one known-bad write
+//                         (fixtures/writes/known-bad.ttl, a fresh IRI each
+//                         time) to its graph. Its outcome is recorded as its
+//                         own writes.csv row (kind "bad"); a store that is
+//                         sound rejects it and then commits the next order.
+//                         Latency figures and growth buckets count orders only.
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
@@ -46,8 +56,11 @@ const KEEP = args.includes("--keep");
 const OUT = path.join(paths.results, opt("--out", `loadtest/${new Date().toISOString().replace(/[:.]/g, "")}`));
 const G = graphs.loadtest;
 const WRITERS = Number(opt("--writers", "1"));
-const SHAPES = opt("--shapes", "standin") as "standin" | "core-only";
-const SHAPES_FILE = SHAPES === "core-only" ? "shapes/standin-shapes-core-only.ttl" : "shapes/standin-shapes.ttl";
+const SHAPES = opt("--shapes", "standin") as "standin" | "core-only" | "two-sided";
+const SHAPES_FILE = SHAPES === "core-only" ? "shapes/standin-shapes-core-only.ttl" : SHAPES === "two-sided" ? "shapes/standin-shapes-core-only.ttl + shapes/spike-two-sided-readiness.ttl" : "shapes/standin-shapes.ttl";
+const shapesTurtle = () => SHAPES === "two-sided" ? readFixture("shapes/standin-shapes-core-only.ttl") + "\n" + readFixture("shapes/spike-two-sided-readiness.ttl") : readFixture(SHAPES_FILE);
+const REJECT_EVERY = Number(opt("--reject-every", "0"));
+if (!["standin", "core-only", "two-sided"].includes(SHAPES)) throw new Error(`--shapes ${SHAPES}: standin, core-only or two-sided`);
 const writerGraph = (w: number) => (w === 1 ? G : `${G}-w${w}`);
 const db = runtimeStore();
 
@@ -85,7 +98,7 @@ const readers: ReaderDef[] = [
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
   const run = runId();
-  console.log(`[load] run ${run}: ${N} orders x ${WRITERS} writer(s), readers=${READERS}, validation=${VALIDATION}, shapes=${SHAPES_FILE}, store=${db.kind}, graph <${G}>, out ${path.relative(paths.results, OUT)}`);
+  console.log(`[load] run ${run}: ${N} orders x ${WRITERS} writer(s), readers=${READERS}, validation=${VALIDATION}, shapes=${SHAPES_FILE}, reject-every=${REJECT_EVERY || "off"}, store=${db.kind}, graph <${G}>, out ${path.relative(paths.results, OUT)}`);
 
   if (!KEEP) {
     for (let w = 1; w <= WRITERS; w++) {
@@ -94,7 +107,7 @@ async function main() {
       if (j.outcome !== "committed") throw new Error(`reset failed: ${JSON.stringify(j)}`);
     }
   }
-  const shapesLoad = await db.replaceGraph(db.shapesGraph, readFixture(SHAPES_FILE), "text/turtle");
+  const shapesLoad = await db.replaceGraph(db.shapesGraph, shapesTurtle(), "text/turtle");
   if (!shapesLoad.ok) throw new Error(`loading ${SHAPES_FILE}: HTTP ${shapesLoad.status} ${shapesLoad.body}`);
   const startSize = await db.size();
   const startGraph = await db.size(G);
@@ -121,7 +134,10 @@ async function main() {
   });
 
   // Writers
-  const writeRows: string[] = ["seq,writer,order,started_utc,ended_utc,latency_ms,gate_total_ms,begin_ms,add_ms,updates_ms,commit_ms,rollback_ms,outcome,graph_triples_before"];
+  const writeRows: string[] = ["seq,writer,order,started_utc,ended_utc,latency_ms,gate_total_ms,begin_ms,add_ms,updates_ms,commit_ms,rollback_ms,outcome,graph_triples_before,kind,validation,fault_detail"];
+  const bad = { sent: 0, rejected: 0, fault: 0, committed: 0, other: 0 };
+  const badFaults: any[] = [];
+  const csvSafe = (x: any) => String(x ?? "").replace(/[\r\n,]/g, " ").slice(0, 300);
   const lat: number[] = [];
   const latBy: Record<number, number[]> = {};
   const failures: any[] = [];
@@ -133,6 +149,17 @@ async function main() {
     latBy[w] = [];
     let graphTriples = w === 1 ? startGraph : 0;
     for (let i = 1; i <= N; i++) {
+      if (REJECT_EVERY > 0 && i % REJECT_EVERY === 0) {
+        const badIri = `urn:ontara:standin:cafe#bad-${run}-w${w}-${String(i).padStart(5, "0")}`;
+        const badBody = JSON.stringify({ graph: g, turtle: readFixture("writes/known-bad.ttl").replace(/<urn:ontara:standin:cafe#bad-\{\{RUN\}\}>/g, `<${badIri}>`), validation: VALIDATION, label: `load w${w} bad before ${i}` });
+        const bStarted = new Date().toISOString(); const b0 = performance.now();
+        const br = await fetch(`${config.gateUrl}/write`, { method: "POST", headers: { "Content-Type": "application/json" }, body: badBody });
+        const bj: any = await br.json(); const b1 = performance.now();
+        bad.sent++; if (bj.outcome in bad) (bad as any)[bj.outcome]++; else bad.other++;
+        if (bj.outcome !== "rejected") badFaults.push({ before: i, writer: w, outcome: bj.outcome, detail: bj.detail ?? bj });
+        const bt = bj.timings ?? {};
+        writeRows.push([i, w, badIri, bStarted, new Date().toISOString(), (b1 - b0).toFixed(2), (bt.total ?? NaN).toFixed?.(2), (bt.begin ?? 0).toFixed(2), (bt.add ?? 0).toFixed(2), (bt.updates ?? 0).toFixed(2), (bt.commit ?? 0).toFixed(2), (bt.rollback ?? 0).toFixed(2), bj.outcome, graphTriples, "bad", csvSafe(bj.validation), bj.outcome === "fault" ? csvSafe(bj.detail) : ""].join(","));
+      }
       if (i === 1 || i % 50 === 0) graphTriples = await db.size(g).catch((e: any) => { storeErrors.push({ at: `w${w} write ${i} size`, error: String(e?.message ?? e).slice(0, 300) }); return -1; }); // outside the timed section
       const order = `urn:ontara:standin:cafe#order-${run}-w${w}-${String(i).padStart(5, "0")}`;
       const body = JSON.stringify({ ...orderWrite(order, g), validation: VALIDATION, label: `load w${w} ${i}` });
@@ -144,7 +171,7 @@ async function main() {
       const ms = t1 - t0;
       intervals.push([t0, t1]);
       const t = j.timings ?? {};
-      writeRows.push([i, w, order, started, new Date().toISOString(), ms.toFixed(2), (t.total ?? NaN).toFixed?.(2), (t.begin ?? 0).toFixed(2), (t.add ?? 0).toFixed(2), (t.updates ?? 0).toFixed(2), (t.commit ?? 0).toFixed(2), (t.rollback ?? 0).toFixed(2), j.outcome, graphTriples].join(","));
+      writeRows.push([i, w, order, started, new Date().toISOString(), ms.toFixed(2), (t.total ?? NaN).toFixed?.(2), (t.begin ?? 0).toFixed(2), (t.add ?? 0).toFixed(2), (t.updates ?? 0).toFixed(2), (t.commit ?? 0).toFixed(2), (t.rollback ?? 0).toFixed(2), j.outcome, graphTriples, "order", csvSafe(j.validation), j.outcome === "fault" ? csvSafe(j.detail) : ""].join(","));
       if (j.outcome === "committed") { lat.push(ms); latBy[w].push(ms); } else failures.push({ seq: i, writer: w, outcome: j.outcome, detail: j });
       if (i % 100 === 0) console.log(`[load] w${w} ${i}/${N}  last=${ms.toFixed(0)} ms  p95 so far=${stats(latBy[w]).p95} ms`);
     }
@@ -177,7 +204,8 @@ async function main() {
   // Per-100 buckets (growth).
   // Columns: 0 seq, 1 writer, 2 order, 3 started, 4 ended, 5 latency, 6 gate total, 7 begin, 8 add, 9 updates, 10 commit, 11 rollback, 12 outcome, 13 graph triples.
   // Growth buckets are writer 1's writes (the single-writer harness's rows).
-  const rows = writeRows.slice(1).map((l) => l.split(","));
+  const allRows = writeRows.slice(1).map((l) => l.split(","));
+  const rows = allRows.filter((x) => x[14] === "order");
   const rows1 = rows.filter((x) => x[1] === "1");
   const buckets = [];
   for (let b = 0; b < N; b += 100) {
@@ -188,7 +216,7 @@ async function main() {
   const summary = {
     kind: "development run (Mac runs do not count as the S0.1 pass figure; specification 2.5 item 8.4)",
     run, startedUtc: new Date(Date.now() - elapsed * 1000).toISOString(), elapsedSeconds: Math.round(elapsed * 10) / 10,
-    config: { orders: N, writers: WRITERS, writerGraphs: Array.from({ length: WRITERS }, (_, k) => writerGraph(k + 1)), store: db.kind, readers: READERS, readerCadenceMs: READERS === "paced" ? Object.fromEntries(readers.map((r) => [r.name, r.everyMs])) : null, validation: VALIDATION, graph: G, repository: config.repository, rule: "fixtures/rules/order-readiness.rq + fixtures/rules/labelling.rq", write: "fixtures/writes/order-53.ttl", shapes: `fixtures/${SHAPES_FILE}`, shapesGraph: db.shapesGraph },
+    config: { orders: N, rejectEvery: REJECT_EVERY || null, writers: WRITERS, writerGraphs: Array.from({ length: WRITERS }, (_, k) => writerGraph(k + 1)), store: db.kind, readers: READERS, readerCadenceMs: READERS === "paced" ? Object.fromEntries(readers.map((r) => [r.name, r.everyMs])) : null, validation: VALIDATION, graph: G, repository: config.repository, rule: "fixtures/rules/order-readiness.rq + fixtures/rules/labelling.rq", write: "fixtures/writes/order-53.ttl", shapes: `fixtures/${SHAPES_FILE}`, shapesGraph: db.shapesGraph },
     percentileMethod: "nearest rank, over committed writes; latency = HTTP round trip to the gate's /write as the caller sees it",
     writeLatencyMs: stats(lat),
     gatePhaseMs: { commit: stats(rows.map((x) => Number(x[10]))), updates: stats(rows.map((x) => Number(x[9]))), add: stats(rows.map((x) => Number(x[8]))), begin: stats(rows.map((x) => Number(x[7]))) },
@@ -198,6 +226,9 @@ async function main() {
     passThresholdMs: 500,
     p95WithinThreshold: stats(lat).p95 <= 500,
     failures: failures.length, failureSamples: failures.slice(0, 5),
+    orderOutcomes: { committed: rows.filter((x) => x[12] === "committed").length, rejected: rows.filter((x) => x[12] === "rejected").length, fault: rows.filter((x) => x[12] === "fault").length },
+    rejectedWritesInMix: REJECT_EVERY > 0 ? { every: REJECT_EVERY, ...bad, notRejectedSamples: badFaults.slice(0, 5), note: "known-bad writes sent by --reject-every; a sound store rejects every one and commits every order" } : null,
+    faultsTotal: rows.filter((x) => x[12] === "fault").length + bad.fault,
     readers: Object.fromEntries(Object.entries(readerLat).map(([k, v]) => [k, stats(v)])),
     readerErrors: readerRows.filter((l) => l.split(",")[4] === "false").length,
     growthPer100Writes: buckets,
@@ -210,7 +241,7 @@ async function main() {
   fs.writeFileSync(path.join(OUT, "writes.csv"), writeRows.join("\n") + "\n");
   fs.writeFileSync(path.join(OUT, "readers.csv"), readerRows.join("\n") + "\n");
   fs.writeFileSync(path.join(OUT, "summary.json"), JSON.stringify(summary, null, 2) + "\n");
-  console.log(`[load] done in ${summary.elapsedSeconds} s: write latency p50=${summary.writeLatencyMs.p50} p95=${summary.writeLatencyMs.p95} max=${summary.writeLatencyMs.max} ms; failures=${failures.length}; correctness=${JSON.stringify(summary.correctness)}`);
+  console.log(`[load] done in ${summary.elapsedSeconds} s: write latency p50=${summary.writeLatencyMs.p50} p95=${summary.writeLatencyMs.p95} max=${summary.writeLatencyMs.max} ms; failures=${failures.length}; faults=${summary.faultsTotal}${REJECT_EVERY ? ` bad=${JSON.stringify(bad)}` : ""}; correctness=${JSON.stringify(summary.correctness)}`);
   console.log(`[load] results in results/${path.relative(paths.results, OUT)}/ (writes.csv, readers.csv, summary.json)`);
   if (failures.length) process.exitCode = 1;
 }

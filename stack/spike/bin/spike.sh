@@ -5,6 +5,13 @@
 #   spike/bin/spike.sh <configuration> <command> [args]
 #
 # configurations: graphdb (control), rdf4j, rdf4j-lmdb, fuseki, oxigraph
+# fuseki variants (S519, OP-134 follow-up), from the environment:
+#   JENA_VERSION=5.6.0|6.2.0      (default 5.6.0, the S518 build)
+#   FUSEKI_VALIDATION=whole|targeted  (default whole, the S518 behaviour)
+# Each Jena version is its own Compose project (and so its own volumes); 5.6.0
+# keeps the S518 project name. With either variable set, results go under
+# results/spike-op134/fuseki/s519/jena-<version>-<mode>/, so the S518 results
+# stay as they were.
 # commands:
 #   up            build and start (refuses if another Ontara stack, or GraphDB Desktop, is up)
 #   down          stop and remove containers, keep data volumes
@@ -22,16 +29,22 @@ cmd="${1:?command}"; shift
 [ -f "spike/$cfg/compose.yaml" ] || { echo "no such configuration: $cfg" >&2; exit 2; }
 export COMPOSE_FILE="spike/common.yaml:spike/$cfg/compose.yaml"
 export COMPOSE_PROJECT_NAME="ontara-spike-$cfg"
+export CAP_OUT_DIR="spike-op134/$cfg"
+if [ "$cfg" = fuseki ]; then
+  s519=0; { [ -n "${JENA_VERSION:-}" ] || [ -n "${FUSEKI_VALIDATION:-}" ]; } && s519=1
+  export JENA_VERSION="${JENA_VERSION:-5.6.0}" FUSEKI_VALIDATION="${FUSEKI_VALIDATION:-whole}"
+  case "$JENA_VERSION" in 5.6.0) ;; *) export COMPOSE_PROJECT_NAME="ontara-spike-fuseki-jena${JENA_VERSION//./}" ;; esac
+  [ "$s519" = 1 ] && export CAP_OUT_DIR="spike-op134/fuseki/s519/jena-$JENA_VERSION-$FUSEKI_VALIDATION"
+fi
 case "$cfg" in
   graphdb)    export STORE_KIND=graphdb  STORE_DESCRIPTION="GraphDB 11.3.1, ruleset empty" ;;
   rdf4j)      export STORE_KIND=rdf4j    STORE_DESCRIPTION="RDF4J Server 6.1.0, NativeStore + ShaclSail" ;;
   rdf4j-lmdb) export STORE_KIND=rdf4j    STORE_DESCRIPTION="RDF4J Server 6.1.0, LmdbStore + ShaclSail" ;;
-  fuseki)     export STORE_KIND=fuseki   STORE_DESCRIPTION="Jena Fuseki 5.6.0 TDB2 + validated-update module (GraphValidation.update)" ;;
+  fuseki)     export STORE_KIND=fuseki   STORE_DESCRIPTION="Jena Fuseki $JENA_VERSION TDB2 + validated-update module ($FUSEKI_VALIDATION validation)" ;;
   oxigraph)   export STORE_KIND=oxigraph STORE_DESCRIPTION="Oxigraph 0.5.13, SHACL in the gate (shacl-engine 1.1.3)" ;;
 esac
 export STORE_SERVICE=store
-export CAP_OUT_DIR="spike-op134/$cfg"
-export RESULTS_SUBDIR="spike-op134/$cfg/loadtest"
+export RESULTS_SUBDIR="$CAP_OUT_DIR/loadtest"
 # The GraphDB licence path (README step 2) is needed to parse any file that names the secret.
 if [ -f .env ]; then set -a; . ./.env; set +a; fi
 : "${GRAPHDB_LICENSE_FILE:=/dev/null}"; export GRAPHDB_LICENSE_FILE
