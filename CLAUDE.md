@@ -323,6 +323,14 @@ python3 scripts/reason_kg.py --save-summary        # Save reasoning-summary.json
 
 If a task instruction says "run reason_kg.py --save-summary", do NOT attempt to load GraphDB or run validate_kg.py unless explicitly instructed. These are independent operations.
 
+### Waiting on long runs
+
+`make qa` (about 12 minutes), the stack's load tests and the spike's measurement series outlast a normal tool call. Wait on them in ways that end when the run ends.
+
+1. **Run the command itself in the background** with your shell tool's background mode, and act on its completion notice. That needs no watcher.
+2. **If you must wait on a log, poll the file in a bounded loop**, for example `for i in $(seq 1 360); do grep -q '^exit=' "$L" && break; sleep 5; done`.
+3. **Never wait with `tail -f`.** Neither `grep -m1 -q PATTERN <(tail -n +1 -f "$L")` nor `tail -f "$L" | grep -m1 PATTERN` ends when the pattern appears. `grep` exits, but `tail` only notices on its next write, which never comes once the log stops growing, and the shell around it waits on `tail`. At S519 five such watchers sat idle for 8 to 11 hours, and one held a Desktop background task open overnight. macOS `tail` has no `--pid` option, so that is not a fix here.
+
 ## Cafe Demonstrator Commands
 
 ```bash
