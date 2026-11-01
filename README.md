@@ -122,7 +122,7 @@ gsl-sysml-model/
 | Component | Technology |
 |---|---|
 | Modelling language | SysML v2 (OMG ratified July 2025) — engineering projection of KG-canonical content |
-| Modelling tool | Syside Modeler (VS Code extension) |
+| Modelling tool | Syside Editor (VS Code extension `sensmetry.syside-editor`); `make parse-check` (OpenSysML) is the parse gate |
 | Canonical ontological formalism | OWL 2 DL — BFO 2020 + CCO + IAO + PROV-O (core subset) |
 | Triple store | GraphDB Free 10.x (OWL-Horst reasoning) |
 | Ontology authoring | Protégé 5.6+ |

@@ -158,7 +158,7 @@ gen-test-preconditions:
 #
 # The version is pinned (brew pin opensysml). To upgrade: brew unpin, upgrade,
 # change SYSML_VERSION, re-run, review any baseline change, brew pin again.
-# The Syside Editor stays Ella's check.
+# This is the SysML parse gate of record (S519).
 
 SYSML          ?= sysml
 SYSML_VERSION  := 0.11.0
