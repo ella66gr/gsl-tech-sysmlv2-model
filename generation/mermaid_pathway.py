@@ -4,10 +4,13 @@ Mermaid pathway generator (platform-general).
 
 Reads one domain-level ``action def`` (named with ``--action-def``) and
 writes ``<action-def>-pathway.mmd``: a Mermaid flowchart with one node per
-step and one edge per ``then`` succession. A ``then`` attaches to the most
-recently declared step, so several ``then``s after one step are a branch.
-The first step and the terminal steps are drawn as rounded nodes; branch
-points are highlighted.
+step and one edge per succession. The model is read through OpenSysML's
+resolved model (``generation.resolved``, S0.5 Pass A4): the steps are the
+def's named action usages, and each succession (``then``) is an edge from its
+resolved source to its resolved target, so several ``then``s after one step
+are a branch. Nodes are listed in the order the flow first names them. The
+first step and the terminal steps are drawn as rounded nodes; branch points
+are highlighted.
 
 Usage (from the repository root):
     python3 -m generation.mermaid_pathway --model <tenant model folder> --out <folder> \\
@@ -26,30 +29,28 @@ from pathlib import Path
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from generation import resolved
 from generation.output import base_parser, header, write
-from generation.sysml_text import ModelError, find_one, kebab, load_model, mask_comments, top_level_members
+from generation.sysml_text import ModelError, kebab
 
 
-def parse_flow(body: str) -> dict[str, list[str]]:
-    """Steps in declaration order, each with its successors."""
-    flat = top_level_members(mask_comments(body))
+def parse_flow(graph: resolved.ElementGraph, action_def: dict) -> dict[str, list[str]]:
+    """Steps in the order the flow first names them, each with its successors."""
     steps: dict[str, list[str]] = {}
-    current: str | None = None
-    for stmt in flat.split(";"):
-        stmt = " ".join(stmt.split())
-        if not stmt:
-            continue
-        m = re.fullmatch(r"action\s+(\w+)(?:\s*:\s*\w+)?", stmt)
-        if m:
-            current = m.group(1)
-            steps.setdefault(current, [])
-            continue
-        m = re.fullmatch(r"then\s+(\w+)", stmt)
-        if m and current:
-            target = m.group(1)
-            steps.setdefault(target, [])
-            if target not in steps[current]:
-                steps[current].append(target)
+    for m in graph.member_list(action_def):
+        if m["@type"] == "ActionUsage" and m.get("declaredName"):
+            steps.setdefault(m["declaredName"], [])
+        elif m["@type"] == "SuccessionAsUsage":
+            sources, targets = graph.get(m, "sourceFeature"), graph.get(m, "targetFeature")
+            if len(sources) != 1 or len(targets) != 1:
+                raise ModelError(f"a succession in {action_def.get('qualifiedName')} does not join one step to one step")
+            src, dst = sources[0].get("declaredName"), targets[0].get("declaredName")
+            if not src or not dst:
+                raise ModelError(f"a succession in {action_def.get('qualifiedName')} joins an unnamed step")
+            steps.setdefault(src, [])
+            steps.setdefault(dst, [])
+            if dst not in steps[src]:
+                steps[src].append(dst)
     return steps
 
 
@@ -84,12 +85,12 @@ def render(steps: dict[str, list[str]], head: str) -> str:
 
 
 def generate(model: Path, out: Path, root: Path, action_def: str, model_name: str | None) -> Path:
-    files = load_model(model, root)
-    found = find_one(files, r"action\s+def", action_def, "action def")
-    steps = parse_flow(found.body)
+    graph = resolved.load(model, root).elements()
+    found = graph.find_one("ActionDefinition", action_def, "action def")
+    steps = parse_flow(graph, found)
     if not steps:
         raise ModelError(f"action def {action_def!r} has no steps")
-    head = header(__file__, [found.source], model_name, comment="%%")
+    head = header(__file__, [graph.source(found)], model_name, comment="%%")
     path = write(out, f"{kebab(action_def)}-pathway.mmd", render(steps, head))
     print(f"wrote {path.name}: {len(steps)} steps")
     return path

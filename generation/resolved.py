@@ -528,6 +528,53 @@ class ElementGraph:
         )
         return [(self.metadata_name(m), self.metadata_values(m)) for m in mus]
 
+    # -- for the generators (S0.5 Pass A4) ---------------------------------
+
+    def owned_annotations(self, e: dict) -> list[tuple[str, dict]]:
+        """(metadata name, values) for each annotation of ``e`` by SysML v2 meaning, in source order.
+
+        That is every metadata usage written inside ``e``'s body without
+        ``about``, and every one written ``about`` ``e`` anywhere. This is
+        ownership, not position: the generators' annotations (``@TemporalWorkflow``,
+        ``@TemporalSignal`` and the like) are written inside what they describe.
+        """
+        mus = [m for m in self.members.get(e["@id"], []) if m["@type"] == "MetadataUsage" and not m.get("annotatedElement")]
+        mus += [
+            m for m in self.annotations_by_element.get(e["@id"], [])
+            if m.get("annotatedElement") and m not in mus
+        ]
+        mus.sort(key=lambda m: (m.get("sysx:sourceLine", 0), m.get("sysx:memberIndex", 0)))
+        return [(self.metadata_name(m), self.metadata_values(m)) for m in mus]
+
+    def metadata(self, e: dict, name: str) -> dict | None:
+        """The values of ``e``'s first ``@name`` annotation (``owned_annotations``), or None."""
+        return next((v for n, v in self.owned_annotations(e) if n == name), None)
+
+    def member_list(self, e: dict) -> list[dict]:
+        """``e``'s owned members, in declaration order."""
+        return list(self.members.get(e["@id"], []))
+
+    def source(self, e: dict) -> str:
+        """``document (Qualified::Name)``, for a generated-file header."""
+        return f"{self.document(e)} ({e.get('qualifiedName') or ''})"
+
+    def definitions(self, api_type: str, name: str | None = None) -> list[dict]:
+        """Every named element of ``api_type`` declared in a tenant document, in source order."""
+        return [
+            e for _, e in self.tenant_elements()
+            if e["@type"] == api_type and e.get("declaredName") and (name is None or e["declaredName"] == name)
+        ]
+
+    def find_one(self, api_type: str, name: str, what: str) -> dict:
+        """Exactly one ``api_type`` named ``name`` in the tenant documents, or a ModelError."""
+        found = self.definitions(api_type, name)
+        if not found:
+            raise ModelError(f"{what} {name!r} not found in the model folder")
+        if len(found) > 1:
+            where = ", ".join(self.document(x) or "?" for x in found)
+            raise ModelError(f"{what} {name!r} is declared more than once: {where}")
+        return found[0]
+
 
 def axis_types(model_folder: Path, root: Path) -> list[AxisType]:
     """Every tenant part def with at least one status axis, own or inherited, checked."""
