@@ -139,6 +139,8 @@ class MappingRecord:
     sysml_line_number: str = ""
     source_hash: str = ""
     authority_zone: str = ""
+    # Tenant canonical runtime type records only (S522 S0.5 A6, H-0641)
+    sysml_qualified_name: str = ""
     # PropertyMappingRecord extras
     is_functional: Optional[bool] = None
     multiplicity: str = ""
@@ -157,6 +159,7 @@ class MappingRecord:
             "sysml_line_number": self.sysml_line_number,
             "source_hash": self.source_hash,
             "authority_zone": self.authority_zone,
+            "sysml_qualified_name": self.sysml_qualified_name,
         }
         if self.record_type == "PropertyMappingRecord":
             base["is_functional"] = self.is_functional
@@ -291,7 +294,7 @@ def extract_mappings_from_store():
 PREFIX ontara-corr: <https://ontara.dev/ontology/correspondence/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 
-SELECT ?record ?sysmlName ?owlEntity ?classification ?sourceFile ?lineNum ?hash ?zone WHERE {
+SELECT ?record ?sysmlName ?owlEntity ?classification ?sourceFile ?lineNum ?hash ?zone ?qname WHERE {
   GRAPH <https://ontara.dev/graph/correspondence> {
     ?record a ontara-corr:MappingRecord ;
             ontara-corr:sysmlElementName ?sysmlName ;
@@ -301,6 +304,7 @@ SELECT ?record ?sysmlName ?owlEntity ?classification ?sourceFile ?lineNum ?hash 
     OPTIONAL { ?record ontara-corr:sysmlLineNumber ?lineNum }
     OPTIONAL { ?record ontara-corr:sourceHash ?hash }
     OPTIONAL { ?record ontara-corr:authorityZone ?zone }
+    OPTIONAL { ?record ontara-corr:sysmlQualifiedName ?qname }
     FILTER(STRSTARTS(STR(?record), "https://ontara.dev/ontology/correspondence/"))
     FILTER NOT EXISTS { ?record a ontara-corr:PropertyMappingRecord }
     FILTER NOT EXISTS { ?record a ontara-corr:WeightMappingRecord }
@@ -361,6 +365,7 @@ ORDER BY ?sysmlName
             sysml_line_number=get_binding_value(row, "lineNum", ""),
             source_hash=get_binding_value(row, "hash", ""),
             authority_zone=get_binding_value(row, "zone", ""),
+            sysml_qualified_name=get_binding_value(row, "qname", ""),
         )
 
     # Property mapping records
@@ -594,6 +599,7 @@ def extract_mappings_from_files():
             sysml_line_number=line_num,
             source_hash=_val(g, record, CORR.sourceHash),
             authority_zone=_val(g, record, CORR.authorityZone),
+            sysml_qualified_name=_val(g, record, CORR.sysmlQualifiedName),
             is_functional=is_func,
             multiplicity=_val(g, record, CORR.multiplicity),
             weight_strength=_val(g, record, CORR.weightStrength),

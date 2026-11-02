@@ -1,4 +1,5 @@
 @prefix ontara-bmm: <https://ontara.dev/ontology/bmm/> .
+@prefix ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/> .
 @prefix ontara-corr: <https://ontara.dev/ontology/correspondence/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -464,6 +465,26 @@ ontara-corr:map-prop-hasTargetSegment a ontara-corr:PropertyMappingRecord ;
     ontara-corr:multiplicity "1" ;
     ontara-corr:owlEntity <https://ontara.dev/ontology/bmm/axioms#hasTargetSegment> ;
     ontara-corr:sysmlElementName "ValueProposition.targetSegment" .
+
+ontara-corr:map-tenant-cafe-Order a ontara-corr:MappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "TenantRuntimeType" ;
+    ontara-corr:owlEntity ontara-cafe:Order ;
+    ontara-corr:sourceHash "bb408ea36489d9b8" ;
+    ontara-corr:sysmlElementName "Order" ;
+    ontara-corr:sysmlLineNumber 293 ;
+    ontara-corr:sysmlQualifiedName "CoffeeShop::Order" ;
+    ontara-corr:sysmlSourceFile "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml" .
+
+ontara-corr:map-tenant-cafe-OrderLine a ontara-corr:MappingRecord ;
+    ontara-corr:authorityZone "shared-constrained" ;
+    ontara-corr:classification "TenantRuntimeType" ;
+    ontara-corr:owlEntity ontara-cafe:OrderLine ;
+    ontara-corr:sourceHash "b249f53d1885403e" ;
+    ontara-corr:sysmlElementName "OrderLine" ;
+    ontara-corr:sysmlLineNumber 184 ;
+    ontara-corr:sysmlQualifiedName "CoffeeShop::OrderLine" ;
+    ontara-corr:sysmlSourceFile "exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml" .
 
 ontara-corr:map-weight-ActivityBudget-to-ActivityType a ontara-corr:WeightMappingRecord ;
     ontara-corr:authorityZone "shared-constrained" ;

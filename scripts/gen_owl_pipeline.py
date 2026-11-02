@@ -16,7 +16,9 @@ Pipeline stages:
   Stage 3b — Generate correspondence graph (ontara-correspondence.ttl)
   Stage 3c — Generate object properties from typed refs (ontara-bmm-properties.ttl)
   Stage 3e — Generate reified weighted relationship individuals (ontara-bmm-weights.ttl)
-  Stage 3g — Generate tenant canonical runtime types (ontara-tenant-types.ttl)
+  Stage 3g — Generate tenant canonical runtime types (ontara-tenant-types.ttl),
+             and their correspondence records (ontara-correspondence.ttl,
+             S0.5 Pass A6, H-0641)
 
 Phase 1 scope: DomainClass + StructuralOnly classifications only.
 Phase 2 extension (Session 116): ObjectProperty generation from typed refs.
@@ -393,6 +395,7 @@ def _stage1_element(rm, graph, e, kind, domain_key):
         source_file=graph.document(e),
         source_domain=domain_key,
         line_number=e["sysx:sourceLine"],
+        qualified_name=e["qualifiedName"],
     )
     # Typed refs, as Stage 3c reads them: owned `ref name : Type[mult];`
     # features (not redefinitions, not a requirement's subject).
@@ -819,6 +822,11 @@ def tenant_class_iri(elem):
     return URIRef(f"{TENANT_ONTOLOGY_BASE}{elem.source_domain}/{elem.name}")
 
 
+def tenant_mapping_record_iri(elem):
+    """Correspondence record of a tenant type: ontara-corr:map-tenant-<slug>-<Name> (S0.5 A6, H-0641)."""
+    return ONTARA_CORR[f"map-tenant-{elem.source_domain}-{elem.name}"]
+
+
 def stage3g_generate_tenant_types(classified, cco_lookup):
     """
     Pipeline Stage 3g: tenant canonical runtime types (ontara-tenant-types.ttl).
@@ -832,6 +840,14 @@ def stage3g_generate_tenant_types(classified, cco_lookup):
       - rdfs:subClassOf the BMM class it specialises, when that is a
         DomainClass in this run (ontara-bmm:CanonicalRuntimeType)
       - rdfs:label / rdfs:comment / skos:definition as for DomainClass
+
+    Also collects one correspondence record per TenantRuntimeType element
+    (S0.5 Pass A6, H-0641), written into the correspondence graph by main():
+    the BMM record's fields and hash recipe, classification
+    "TenantRuntimeType", plus sysmlQualifiedName. A record is collected even
+    when the parent IRI does not resolve, since the class is still written.
+    Returns (graph, count, unresolved, records); records is a list of
+    (record IRI, [(predicate, object), ...]).
     """
     g = Graph()
     g.bind("ontara-bmm", ONTARA_BMM)
@@ -857,12 +873,24 @@ def stage3g_generate_tenant_types(classified, cco_lookup):
 
     count = 0
     unresolved = []
+    records = []
     for elem, result in classified:
         if result["classification"] != "TenantRuntimeType":
             continue
         count += 1
         cls = tenant_class_iri(elem)
         g.add((cls, RDF.type, OWL.Class))
+        records.append((tenant_mapping_record_iri(elem), [
+            (RDF.type, ONTARA_CORR["MappingRecord"]),
+            (ONTARA_CORR["sysmlElementName"], Literal(elem.name)),
+            (ONTARA_CORR["sysmlQualifiedName"], Literal(elem.qualified_name)),
+            (ONTARA_CORR["sysmlSourceFile"], Literal(elem.source_file)),
+            (ONTARA_CORR["sysmlLineNumber"], Literal(elem.line_number, datatype=XSD.integer)),
+            (ONTARA_CORR["sourceHash"], Literal(source_hash(elem))),
+            (ONTARA_CORR["owlEntity"], cls),
+            (ONTARA_CORR["classification"], Literal("TenantRuntimeType")),
+            (ONTARA_CORR["authorityZone"], Literal("shared-constrained")),
+        ]))
         bfo_class = elem.bfo_type.get("bfoClass", "")
         mid_level = elem.bfo_type.get("midLevelClass", "")
         parent_iri = resolve_parent_iri(bfo_class, mid_level, cco_lookup) or BFO_IRI_LOOKUP.get(bfo_class)
@@ -882,7 +910,7 @@ def stage3g_generate_tenant_types(classified, cco_lookup):
         purposive = elem.purposive_description.get("description", "")
         if purposive:
             g.add((cls, SKOS.definition, Literal(purposive, lang="en")))
-    return g, count, unresolved
+    return g, count, unresolved, records
 
 
 def stage3e_generate_weights(classified):
@@ -1059,6 +1087,14 @@ def stage3e_generate_weights(classified):
 # Pipeline Stage 3b — Generate correspondence graph
 # ---------------------------------------------------------------
 
+def source_hash(elem):
+    """Change-detection hash of a correspondence record: first 16 hex chars of
+    SHA-256 over name|file|kind|json(bfo_type, sort_keys). The Stage 3b recipe,
+    used by Stage 3b (BMM records) and Stage 3g (tenant records, S0.5 A6)."""
+    content_key = f"{elem.name}|{elem.source_file}|{elem.kind}|{json.dumps(elem.bfo_type, sort_keys=True)}"
+    return hashlib.sha256(content_key.encode()).hexdigest()[:16]
+
+
 def stage3_generate_correspondence(classified, cco_lookup):
     """
     Pipeline Stage 3b: Generate correspondence graph (ontara-correspondence.ttl).
@@ -1069,6 +1105,8 @@ def stage3_generate_correspondence(classified, cco_lookup):
       - OWL entity IRI
       - Classification category
       - Authority zone
+    Tenant canonical runtime types get their records from Stage 3g
+    (S0.5 Pass A6), added to this graph in main().
     """
     g = Graph()
 
@@ -1094,10 +1132,8 @@ def stage3_generate_correspondence(classified, cco_lookup):
                Literal(elem.line_number, datatype=XSD.integer)))
 
         # Content hash for change detection
-        content_key = f"{elem.name}|{elem.source_file}|{elem.kind}|{json.dumps(elem.bfo_type, sort_keys=True)}"
-        content_hash = hashlib.sha256(content_key.encode()).hexdigest()[:16]
         g.add((record_uri, ONTARA_CORR["sourceHash"],
-               Literal(content_hash)))
+               Literal(source_hash(elem))))
 
         # Target OWL entity
         g.add((record_uri, ONTARA_CORR["owlEntity"],
@@ -1283,7 +1319,7 @@ def main():
             print(f"    {w}")
 
     # 3g: Tenant canonical runtime types (S518, S0.4)
-    tenant_graph, tenant_count, tenant_unresolved = \
+    tenant_graph, tenant_count, tenant_unresolved, tenant_records = \
         stage3g_generate_tenant_types(classified, cco_lookup)
     print(f"  Tenant types graph: {len(tenant_graph)} triples, {tenant_count} tenant canonical runtime types")
     if tenant_unresolved:
@@ -1340,6 +1376,15 @@ def main():
         corr_graph.add((record_uri, ONTARA_CORR["weightStrength"],
                         Literal(rec["strength"])))
     print(f"  Correspondence graph (with weights): {len(corr_graph)} triples")
+
+    # 3g: Add tenant canonical runtime type records (S0.5 Pass A6, H-0641)
+    for t in sorted({elem.source_domain for elem, r in classified
+                     if r["classification"] == "TenantRuntimeType"}):
+        corr_graph.bind(f"ontara-{t}", Namespace(f"{TENANT_ONTOLOGY_BASE}{t}/"))
+    for record_uri, pairs in tenant_records:
+        for pred, obj in pairs:
+            corr_graph.add((record_uri, pred, obj))
+    print(f"  Correspondence graph (with tenant types): {len(corr_graph)} triples")
 
     # --- Output ---
     if args.dry_run:

@@ -235,13 +235,14 @@ ORDER BY ?label
     {
         "id": "Q5",
         "group": "Correspondence",
-        "name": "All mapping records",
+        "name": "All BMM mapping records (DomainClass)",
         "sparql": """
 SELECT ?record ?sysmlName ?owlEntity ?classification WHERE {
   ?record a <https://ontara.dev/ontology/correspondence/MappingRecord> ;
           <https://ontara.dev/ontology/correspondence/sysmlElementName> ?sysmlName ;
           <https://ontara.dev/ontology/correspondence/owlEntity> ?owlEntity ;
           <https://ontara.dev/ontology/correspondence/classification> ?classification .
+  FILTER(?classification = "DomainClass")
 }
 ORDER BY ?sysmlName
 """,
@@ -294,6 +295,68 @@ SELECT ?sysmlName ?sourceFile ?lineNum WHERE {
             and rows[0].get("sourceFile", {}).get("value") == "model/business-metamodel-general.sysml"
         ) if rows else False,
         "extra_check_desc": "sysmlName=CustomerSegment, sourceFile=model/business-metamodel-general.sysml",
+    },
+    # S522 S0.5 Pass A6 (H-0641): tenant canonical runtime types, Q6's
+    # tenant counterpart (Q67) and its vacuity guard (Q68). Q-numbers are
+    # stable identifiers, so these take the next free numbers.
+    {
+        "id": "Q67",
+        "group": "Correspondence",
+        "name": "Correspondence completeness (no orphan tenant canonical runtime types)",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ontara-corr: <https://ontara.dev/ontology/correspondence/>
+
+SELECT ?class WHERE {
+  GRAPH <https://ontara.dev/graph/domain> {
+    ?class a owl:Class .
+    FILTER(STRSTARTS(STR(?class), "https://ontara.dev/ontology/tenant/"))
+  }
+  FILTER NOT EXISTS {
+    GRAPH <https://ontara.dev/graph/correspondence> {
+      ?record a ontara-corr:MappingRecord ;
+              ontara-corr:owlEntity ?class ;
+              ontara-corr:classification "TenantRuntimeType" ;
+              ontara-corr:sysmlElementName ?name ;
+              ontara-corr:sysmlQualifiedName ?qname ;
+              ontara-corr:sysmlSourceFile ?file ;
+              ontara-corr:sysmlLineNumber ?line ;
+              ontara-corr:sourceHash ?hash .
+      FILTER(DATATYPE(?line) = xsd:integer)
+    }
+  }
+}
+ORDER BY ?class
+""",
+        "expect_exactly": 0,
+        "zero_is_pass": True,
+        "display_vars": ["class"],
+    },
+    {
+        "id": "Q68",
+        "group": "Correspondence",
+        "name": "Tenant canonical runtime type mapping records",
+        "sparql": """
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX ontara-corr: <https://ontara.dev/ontology/correspondence/>
+
+SELECT ?record ?class ?qname WHERE {
+  GRAPH <https://ontara.dev/graph/correspondence> {
+    ?record a ontara-corr:MappingRecord ;
+            ontara-corr:classification "TenantRuntimeType" ;
+            ontara-corr:owlEntity ?class ;
+            ontara-corr:sysmlQualifiedName ?qname .
+  }
+  GRAPH <https://ontara.dev/graph/domain> {
+    ?class a owl:Class .
+    FILTER(STRSTARTS(STR(?class), "https://ontara.dev/ontology/tenant/"))
+  }
+}
+ORDER BY ?qname
+""",
+        "expect_exactly": 2,  # S522 S0.5 A6 (H-0641): Cafe Order and OrderLine
+        "display_vars": ["qname", "class"],
     },
     # --- Group 3: Inference ---
     {

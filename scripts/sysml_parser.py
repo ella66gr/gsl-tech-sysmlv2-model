@@ -27,7 +27,8 @@ class SysmlElement:
     """An element extracted from a .sysml file."""
     def __init__(self, kind, name, parent_package="", specialises="",
                  doc="", attributes=None, source_file="",
-                 source_domain="", line_number=0, top_level_package=""):
+                 source_domain="", line_number=0, top_level_package="",
+                 qualified_name=""):
         self.kind = kind              # "part_def", "part", "enum_def", etc.
         self.name = name
         self.parent_package = parent_package      # innermost enclosing package
@@ -38,6 +39,10 @@ class SysmlElement:
         self.source_file = source_file
         self.source_domain = source_domain
         self.line_number = line_number
+        # SysML qualified name (S0.5 A6, H-0641): the key of a tenant type's
+        # correspondence record. Not in to_dict(), which feeds
+        # model-introspection.json.
+        self.qualified_name = qualified_name
         self.meta_model_layer = ""    # "bmm", "smm", "domain", "unknown"
         # Stage 2 Phase 2: metadata annotation data
         self.catalogue_tag = {}       # {"bmmConcern": "...", "classification": "..."}
