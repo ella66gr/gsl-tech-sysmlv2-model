@@ -4,7 +4,7 @@
     "added": 0,
     "removed": 0,
     "modified": 0,
-    "unchanged": 322
+    "unchanged": 324
   },
   "by_type": {
     "ClassDeclaration": {
@@ -29,7 +29,7 @@
       "added": 0,
       "removed": 0,
       "modified": 0,
-      "unchanged": 161
+      "unchanged": 163
     }
   },
   "entries": []
