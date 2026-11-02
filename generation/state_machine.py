@@ -4,7 +4,9 @@ State machine generator (platform-general): axis guard, next-action map
 and XState machines, from status axis declarations.
 
 Since S0.4 the generator reads ``StatusAxis`` declarations (see
-generation.status_axes), not state definitions: the axis declaration is
+generation.status_axes), not state definitions, and since S0.5 Pass A4 it
+reads everything, axes and signals, through OpenSysML's resolved model
+(generation.resolved): the axis declaration is
 the single source of each lifecycle. For every ``part def`` in the tenant
 model folder that declares status axes it writes, into two files:
 
@@ -53,7 +55,6 @@ Usage (from the repository root):
 from __future__ import annotations
 
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -63,16 +64,7 @@ if __package__ in (None, ""):
 from generation.output import base_parser, header, write
 from generation import resolved
 from generation.status_axes import OPERATOR_AUTHORITY, AxisType
-from generation.sysml_text import (
-    ModelError,
-    ModelFile,
-    braced_body,
-    enclosing_packages,
-    load_model,
-    lower_first,
-    mask_comments,
-    metadata,
-)
+from generation.sysml_text import ModelError, lower_first
 
 GUARD_FILE = "axis-guard.ts"
 MACHINE_FILE = "axis-machine.ts"
@@ -86,26 +78,27 @@ def _list(items: list[str]) -> str:
     return "[" + ", ".join(_q(i) for i in items) + "]"
 
 
-def signals(files: list[ModelFile]) -> tuple[dict[str, str], list[str]]:
-    """Event -> signal name, from steps carrying @TemporalSignal and @StateTransitionTrigger."""
+def signals(graph: resolved.ElementGraph) -> tuple[dict[str, str], list[str]]:
+    """Event -> signal name, from action steps carrying @TemporalSignal and @StateTransitionTrigger.
+
+    Read from the resolved model (S0.5 Pass A4): every named action usage in
+    the tenant's documents, in source order, with the annotations written
+    inside it. A source is the step's document and its enclosing packages.
+    """
     out: dict[str, str] = {}
     sources: list[str] = []
-    for f in files:
-        text = mask_comments(f.text)
-        for m in re.finditer(r"\baction\s+(?!def\b)(\w+)\s*\{", text):
-            _, close = braced_body(text, m.end() - 1)
-            body = f.text[m.end() : close]
-            trig = metadata(body, "StateTransitionTrigger")
-            sig = metadata(body, "TemporalSignal")
-            if not trig or not sig or not trig.get("eventName"):
-                continue
-            ev, sn = trig["eventName"], sig.get("signalName", "")
-            if ev in out and out[ev] != sn:
-                raise ModelError(f"event {ev!r} is raised by two signals: {out[ev]!r} and {sn!r}")
-            out[ev] = sn
-            src = f"{f.rel} ({'::'.join(enclosing_packages(text, m.start()))})"
-            if src not in sources:
-                sources.append(src)
+    for step in graph.definitions("ActionUsage"):
+        trig = graph.metadata(step, "StateTransitionTrigger")
+        sig = graph.metadata(step, "TemporalSignal")
+        if not trig or not sig or not trig.get("eventName"):
+            continue
+        ev, sn = trig["eventName"], sig.get("signalName", "")
+        if ev in out and out[ev] != sn:
+            raise ModelError(f"event {ev!r} is raised by two signals: {out[ev]!r} and {sn!r}")
+        out[ev] = sn
+        src = f"{graph.document(step)} ({'::'.join(graph.packages(step))})"
+        if src not in sources:
+            sources.append(src)
     return out, sources
 
 
@@ -402,15 +395,15 @@ def render_machine(types: list[AxisType], head: str) -> str:
 
 
 def generate(model: Path, out: Path, root: Path, only_type: str | None, model_name: str | None) -> list[Path]:
-    files = load_model(model, root)
-    types = resolved.axis_types(model, root)
+    rm = resolved.load(model, root)
+    types = rm.axis_types()
     if only_type:
         types = [t for t in types if t.name == only_type]
         if not types:
             raise ModelError(f"part def {only_type!r} declares no status axes")
     if not types:
         raise ModelError("no part def in the model folder declares a status axis (part x : StatusAxis)")
-    sigs, sig_sources = signals(files)
+    sigs, sig_sources = signals(rm.elements())
     sources = [t.source for t in types]
     written = [
         write(out, GUARD_FILE, render_guard(types, sigs, header(__file__, sources + sig_sources, model_name))),
