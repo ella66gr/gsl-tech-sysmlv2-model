@@ -25,6 +25,16 @@ axes (see generation.status_axes), each axis gets its value type
 (``<Type>AxisTuple``: one field per axis, named by ``axisName``), and its
 interface carries the tuple as ``axes``.
 
+Reading (S0.5 Pass A4): the model is read through OpenSysML's resolved model
+(generation.resolved), loaded with the platform model folder, so every type
+name is the definition OpenSysML resolves it to, imports included. A type
+declared in the package, or a scalar (``ScalarValues``), is written by its
+plain name; a type declared in the platform model folder is a platform def,
+keyed by its full qualified name; any other type keeps its plain name. A
+feature is read when it is a plain declaration (``attribute``, ``ref`` or
+``part`` with a name, a ``:`` type and an optional multiplicity): one with a
+body, a value, a redefinition or a subsetting is not a field, as before.
+
 Usage (from the repository root):
     python3 -m generation.ts_types --model <tenant model folder> --out <folder> \\
         --package <package name> [--filename types.ts] [--model-name <name>] \\
@@ -49,15 +59,7 @@ if __package__ in (None, ""):
 from generation.output import base_parser, header, write
 from generation import resolved
 from generation.status_axes import AxisType
-from generation.sysml_text import (
-    ModelError,
-    braced_body,
-    find_all,
-    find_one,
-    load_model,
-    remove_doc_blocks,
-    mask_comments,
-)
+from generation.sysml_text import ModelError, rel_path
 
 TYPE_MAP = {
     "String": "string",
@@ -68,56 +70,104 @@ TYPE_MAP = {
 }
 
 
-NAME = r"\w+(?:::\w+)*"  # a plain or qualified name
-FEATURE = rf"(\w+)\s*:\s*({NAME})(?:\s*\[([^\]]+)\])?"
+SCALARS = "ScalarValues"
 
 
-def parse_package(body: str) -> tuple[dict[str, list[str]], list[dict]]:
-    """Enum defs and part defs of a package body, in source order."""
-    text = mask_comments(body)
-    enums: dict[str, list[str]] = {}
-    parts: list[dict] = []
-    for m in re.finditer(rf"\b(enum\s+def|part\s+def)\s+(\w+)(?:\s*:>\s*({NAME}))?\s*\{{", text):
-        kind, name, parent = m.group(1), m.group(2), m.group(3)
-        inner, _ = braced_body(text, m.end() - 1)
-        if kind.startswith("enum"):
-            enums[name] = _enum_members(inner)
-        else:
-            parts.append(_parse_part(name, parent, remove_doc_blocks(inner)))
-    return enums, parts
+class Reader:
+    """The package's and the platform's definitions, read from the resolved model."""
 
+    def __init__(self, rm: resolved.ResolvedModel, package_qualified: str, platform_documents: set[str]):
+        self.rm = rm
+        self.graph = rm.elements()
+        self.package = package_qualified
+        self.platform_documents = platform_documents
 
-def _enum_members(inner: str) -> list[str]:
-    members = []
-    for item in remove_doc_blocks(inner).split(";"):
-        item = item.strip()
-        if not item:
-            continue
-        item = re.sub(r"^enum\s+", "", item)
-        if re.fullmatch(r"\w+", item):
-            members.append(item)
-    return members
+    def in_package(self, e: dict) -> bool:
+        return (e.get("qualifiedName") or "").startswith(self.package + "::")
 
+    def type_name(self, d: dict | None, local_plain: bool, qualified: str = "") -> str:
+        """How a feature's type is written: plain for the package's own and scalars, qualified for platform defs.
 
-def _parse_part(name: str, parent: str | None, inner: str) -> dict:
-    attributes, refs, compositions = [], [], []
-    for stmt in inner.split(";"):
-        stmt = " ".join(stmt.split())
-        if not stmt:
-            continue
-        m = re.fullmatch(rf"attribute\s+{FEATURE}", stmt)
-        if m:
-            attributes.append({"name": m.group(1), "type": m.group(2), "mult": m.group(3)})
-            continue
-        m = re.fullmatch(rf"ref\s+(?:part\s+)?{FEATURE}", stmt)
-        if m:
-            refs.append({"name": m.group(1), "type": m.group(2), "mult": m.group(3)})
-            continue
-        m = re.fullmatch(rf"part\s+{FEATURE}", stmt)
-        if m:
-            compositions.append({"name": m.group(1), "type": m.group(2), "mult": m.group(3)})
-            continue
-    return {"name": name, "parent": parent, "attributes": attributes, "refs": refs, "compositions": compositions}
+        ``d`` is the type's element, or None when the element graph does not
+        hold it (the standard library, built into sysml-grpc); then
+        ``qualified`` is its resolved name from the symbol API.
+        """
+        if d is None:
+            return qualified.split("::")[-1] if qualified else ""
+        q = d.get("qualifiedName") or ""
+        if q.startswith(SCALARS + "::") or (local_plain and self.in_package(d)):
+            return d.get("declaredName") or q
+        if self.graph.document(d) in self.platform_documents:
+            return q
+        return d.get("declaredName") or q
+
+    def feature_type(self, f: dict, local_plain: bool) -> str:
+        types = self.graph.get(f, "type")
+        if types:
+            return self.type_name(types[0], local_plain)
+        sym = self.rm.sym(f["qualifiedName"])
+        tf = sym.type_facts if sym is not None else None
+        return self.type_name(None, local_plain, (tf.resolved_id or tf.declared or "") if tf else "")
+
+    def multiplicity(self, e: dict) -> str | None:
+        sym = self.rm.sym(e["qualifiedName"])
+        return (sym.metadata or {}).get("multiplicity") if sym is not None else None
+
+    def enum_members(self, e: dict) -> list[str]:
+        return [m["declaredName"] for m in self.graph.member_list(e) if m["@type"] == "EnumerationUsage" and m.get("declaredName")]
+
+    def _plain(self, f: dict) -> bool:
+        """A plain feature declaration: name, ``:`` type, optional multiplicity, nothing else."""
+        if not f.get("declaredName") or not f.get("ownedTyping") or f.get("sysx:hasBody"):
+            return False
+        if f.get("ownedRedefinition") or f.get("ownedSubsetting") or f.get("ownedReferenceSubsetting"):
+            return False
+        membership = self.graph.by_id.get((f.get("owningMembership") or {}).get("@id"), {})
+        if membership.get("@type") != "FeatureMembership":
+            return False
+        return not any(r.get("@type") == "FeatureValue" for r in self.graph.get(f, "ownedRelationship"))
+
+    def part(self, e: dict, local_plain: bool) -> dict:
+        attributes, refs, compositions = [], [], []
+        for f in self.graph.member_list(e):
+            if not self._plain(f):
+                continue
+            entry = {
+                "name": f["declaredName"],
+                "type": self.feature_type(f, local_plain),
+                "mult": self.multiplicity(f),
+            }
+            if f["@type"] == "AttributeUsage":
+                attributes.append(entry)
+            elif f["@type"] == "ReferenceUsage" or (f["@type"] == "PartUsage" and f.get("isReference")):
+                refs.append(entry)
+            elif f["@type"] == "PartUsage":
+                compositions.append(entry)
+        sup = self.graph.get(e, "specializes")
+        parent = self.type_name(sup[0], local_plain) if sup else None
+        return {"name": e["declaredName"], "parent": parent, "attributes": attributes, "refs": refs, "compositions": compositions}
+
+    def package_defs(self) -> tuple[dict[str, list[str]], list[dict]]:
+        """Enum defs and part defs inside the package, in source order."""
+        enums: dict[str, list[str]] = {}
+        parts: list[dict] = []
+        for _, e in self.graph.tenant_elements():
+            if not self.in_package(e) or not e.get("declaredName") or not e.get("sysx:hasBody"):
+                continue
+            if e["@type"] == "EnumerationDefinition":
+                enums[e["declaredName"]] = self.enum_members(e)
+            elif e["@type"] == "PartDefinition":
+                parts.append(self.part(e, local_plain=True))
+        return enums, parts
+
+    def platform_def(self, qualified: str) -> dict | None:
+        hits = [
+            e for e in self.graph.data
+            if e.get("qualifiedName") == qualified
+            and e["@type"] in ("PartDefinition", "EnumerationDefinition")
+            and self.graph.document(e) in self.platform_documents
+        ]
+        return hits[0] if len(hits) == 1 else None
 
 
 def is_many(mult: str | None) -> bool:
@@ -140,47 +190,37 @@ def ts_type(sysml_type: str, names: dict[str, str]) -> str:
     return names.get(sysml_type, sysml_type)
 
 
-def resolve_platform(enums: dict[str, list[str]], parts: list[dict], platform_files: list) -> tuple[list[dict], list[str]]:
+def resolve_platform(enums: dict[str, list[str]], parts: list[dict], reader: Reader) -> tuple[list[dict], list[str]]:
     """The platform defs the package uses, transitively, sorted by qualified name.
 
     Each is ``{"qualified", "kind", "name", ...}``: an enum carries
-    ``members``, a part def the fields of ``_parse_part``. Also returns the
+    ``members``, a part def the fields of ``Reader.part``. Also returns the
     header sources of the platform files used.
     """
     local = set(enums) | {p["name"] for p in parts}
     wanted = sorted({t for p in parts for t in _types_of(p) if "::" in t})
-    resolved: dict[str, dict] = {}
+    found_defs: dict[str, dict] = {}
     while wanted:
         qualified = wanted.pop(0)
-        if qualified in resolved:
+        if qualified in found_defs:
             continue
-        found = [
-            f for kw in (r"part\s+def", r"enum\s+def")
-            for f in find_all(platform_files, kw, qualified.split("::")[-1])
-            if f.qualified == qualified or f.qualified.endswith("::" + qualified)
-        ]
-        if len(found) != 1:
-            how = "not found" if not found else "declared more than once"
-            raise ModelError(f"platform def {qualified!r} is {how} in the platform model folder")
-        f = found[0]
-        owner = f.qualified.split("::")[-2] if "::" in f.qualified else ""
-        header = mask_comments(f.file.text)[f.start : f.start + 200]
-        if header.lstrip().startswith("enum"):
-            entry = {"kind": "enum", "members": _enum_members(f.body)}
+        e = reader.platform_def(qualified)
+        if e is None:
+            raise ModelError(f"platform def {qualified!r} is not found in the platform model folder")
+        name = e["declaredName"]
+        owner = qualified.split("::")[-2] if "::" in qualified else ""
+        if e["@type"] == "EnumerationDefinition":
+            entry = {"kind": "enum", "members": reader.enum_members(e)}
         else:
-            m = re.match(rf"part\s+def\s+\w+(?:\s*:>\s*({NAME}))?", header)
-            entry = {"kind": "part", **_parse_part(f.name, m.group(1) if m else None, remove_doc_blocks(mask_comments(f.body)))}
-            # A plain non-scalar name inside a platform def is a sibling in its package.
-            prefix = f.qualified.rsplit("::", 1)[0]
+            entry = {"kind": "part", **reader.part(e, local_plain=False)}
             for t in sorted(_types_of(entry)):
-                q = t if "::" in t else f"{prefix}::{t}"
-                if t not in TYPE_MAP and q not in resolved:
-                    wanted.append(q)
-            entry = _qualify_siblings(entry, prefix)
-        entry.update(qualified=qualified, owner=owner, source=f"{f.file.rel} ({f.qualified})")
-        entry["ts_name"] = f.name if f.name not in local else f"{owner}{f.name}"
-        resolved[qualified] = entry
-    defs = [resolved[q] for q in sorted(resolved)]
+                if "::" in t and t not in found_defs:
+                    wanted.append(t)
+        doc = reader.graph.document(e)
+        entry.update(qualified=qualified, owner=owner, source=f"{doc} ({qualified})")
+        entry["ts_name"] = name if name not in local else f"{owner}{name}"
+        found_defs[qualified] = entry
+    defs = [found_defs[q] for q in sorted(found_defs)]
     taken = [d["ts_name"] for d in defs] + sorted(local)
     clash = sorted({n for n in taken if taken.count(n) > 1})
     if clash:
@@ -193,51 +233,8 @@ def _types_of(part: dict) -> list[str]:
     return types + ([part["parent"]] if part["parent"] else [])
 
 
-def _qualify_siblings(part: dict, prefix: str) -> dict:
-    def q(t: str) -> str:
-        return t if "::" in t or t in TYPE_MAP else f"{prefix}::{t}"
-
-    out = dict(part)
-    for group in ("attributes", "refs", "compositions"):
-        out[group] = [dict(f, type=q(f["type"])) for f in part[group]]
-    out["parent"] = q(part["parent"]) if part["parent"] else None
-    return out
-
-
 def _key(name: str) -> str:
     return name if re.fullmatch(r"[A-Za-z_$][\w$]*", name) else '"' + name + '"'
-
-
-def _qualify_imported(pkg_body: str, enums: dict, parts: list[dict], platform_files: list) -> list[dict]:
-    """Rewrite plain names brought in by a wildcard import of a platform package to qualified names."""
-    imports = re.findall(r"\bimport\s+(\w+(?:::\w+)*)::\*\s*;", mask_comments(pkg_body))
-    local = set(enums) | {p["name"] for p in parts}
-    cache: dict[str, str | None] = {}
-
-    def resolve(t: str) -> str:
-        if "::" in t or t in TYPE_MAP or t in local:
-            return t
-        if t not in cache:
-            hits = sorted({
-                f.qualified
-                for kw in (r"part\s+def", r"enum\s+def")
-                for f in find_all(platform_files, kw, t)
-                for imp in imports
-                if f.qualified == f"{imp}::{t}"
-            })
-            if len(hits) > 1:
-                raise ModelError(f"{t!r} is imported from more than one platform package: {', '.join(hits)}")
-            cache[t] = hits[0] if hits else None
-        return cache[t] or t
-
-    out = []
-    for p in parts:
-        q = dict(p)
-        for g in ("attributes", "refs", "compositions"):
-            q[g] = [dict(f, type=resolve(f["type"])) for f in p[g]]
-        q["parent"] = resolve(p["parent"]) if p["parent"] else None
-        out.append(q)
-    return out
 
 
 def render(
@@ -315,25 +312,32 @@ def generate(
     model_name: str | None,
     platform_model: Path | None = None,
 ) -> Path:
-    files = load_model(model, root)
-    pkg = find_one(files, r"package", package, "package")
-    enums, parts = parse_package(pkg.body)
+    also = (platform_model,) if platform_model is not None else ()
+    rm = resolved.load(model, root, also=also)
+    graph = rm.elements()
+    pkg = graph.find_one("Package", package, "package")
+    platform_documents = set()
+    if platform_model is not None:
+        for f in sorted(platform_model.resolve().rglob("*.sysml")):
+            platform_documents |= {rel_path(f, root), rel_path(f, resolved.REPO)}
+    reader = Reader(rm, pkg["qualifiedName"], platform_documents)
+    enums, parts = reader.package_defs()
     if not enums and not parts:
         raise ModelError(f"package {package!r} has no enum def or part def")
-    platform_files = load_model(platform_model, root) if platform_model is not None else []
-    if platform_files:
-        parts = _qualify_imported(pkg.body, enums, parts, platform_files)
     platform, platform_sources = [], []
+    outside = sorted({
+        t for p in parts for t in _types_of(p) if t and t not in TYPE_MAP and t not in enums and t not in {x["name"] for x in parts}
+    })
+    if platform_model is None and outside:
+        raise ModelError(f"package {package!r} uses qualified platform defs: pass --platform-model")
     if any("::" in t for p in parts for t in _types_of(p)):
-        if platform_model is None:
-            raise ModelError(f"package {package!r} uses qualified platform defs: pass --platform-model")
-        platform, platform_sources = resolve_platform(enums, parts, platform_files)
-    axes = [t for t in resolved.axis_types(model, root) if t.qualified.startswith(pkg.qualified + "::")]
+        platform, platform_sources = resolve_platform(enums, parts, reader)
+    axes = [t for t in rm.axis_types() if t.qualified.startswith(pkg["qualifiedName"] + "::")]
     for t in axes:
         part = next((p for p in parts if p["name"] == t.name), None)
         if part and any(f["name"] == "axes" for g in ("attributes", "refs", "compositions") for f in part[g]):
             raise ModelError(f"part def {t.name!r} has a feature named 'axes', which the axis tuple needs")
-    head = header(__file__, [pkg.source] + platform_sources, model_name)
+    head = header(__file__, [graph.source(pkg)] + platform_sources, model_name)
     path = write(out, filename, render(enums, parts, head, platform, axes))
     print(
         f"wrote {path} ({len(enums)} enums, {len(parts)} interfaces, {len(platform)} platform defs, "
