@@ -17,11 +17,17 @@ platform model folder. The tenant instantiates it by:
 - a usage typed by such a tenant definition, listed with the definition it
   goes through.
 
-Attribute features are not instantiations and are left out. A plain type
-name is resolved as the model resolves it: a definition in an enclosing
-package, or one brought in by a wildcard or named import of the file. A
-name that resolves two ways is an error (``make parse-check`` already
-refuses the duplicate-import warning that would cause it).
+Attribute features are not instantiations and are left out, as are
+enumeration, attribute, calculation, constraint, port, interface and
+metadata definitions. The model is read through OpenSysML's resolved model
+(generation.resolved, S0.5 Pass A4), loaded with the platform model folder,
+so every type name is resolved as the model resolves it, imports included:
+a tenant definition's ``:>`` (its first specialisation) and a usage's type
+are the definitions OpenSysML resolves them to. The usages read are the
+named ones typed with ``:``; the kind listed is the keyword they are written
+with (``part``, ``ref``, ``item``, ``action``, ``state``, ``occurrence``,
+``requirement``, ``use case``, ``ref part``, ``ref item``). A requirement's
+``subject`` is not an instantiation.
 
 The output is a plain text file, sorted throughout, so the same model always
 gives the same bytes:
@@ -39,109 +45,55 @@ Usage (from the repository root):
 
 from __future__ import annotations
 
-import re
 import sys
-from dataclasses import dataclass, field
 from pathlib import Path
 
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+from generation import resolved
 from generation.output import base_parser, header, write
-from generation.sysml_text import ModelError, ModelFile, braced_body, load_model, mask_comments, rel_path
+from generation.sysml_text import ModelError, rel_path
 
-NAME = r"\w+(?:::\w+)*"
-DEF_RE = re.compile(rf"\b((?:\w+\s+)?\w+)\s+def\s+(\w+)(?:\s*:>\s*({NAME}))?[^;{{}}]*[{{;]")
-USAGE_KINDS = r"part|item|occurrence|action|state|requirement|ref(?:\s+part|\s+item)?|use\s+case"
-USAGE_RE = re.compile(rf"(?<![\w:])({USAGE_KINDS})\s+(\w+)\s*:\s*({NAME})")
-IMPORT_RE = re.compile(rf"\bimport\s+({NAME})(::\*)?\s*;")
-SCOPE_RE = re.compile(r"\b(?:package\s+(\w+)\s*|(?:\w+\s+)?\w+\s+def\s+(\w+)[^;{}]*|(?:\w+\s+)+(\w+)\s*:[^;{}]*)\{")
+# Definitions that are not instantiated as elements (API JSON element types).
+NOT_ELEMENTS = {
+    "MetadataDefinition",
+    "EnumerationDefinition",
+    "AttributeDefinition",
+    "CalculationDefinition",
+    "ConstraintDefinition",
+    "PortDefinition",
+    "InterfaceDefinition",
+}
 
-
-@dataclass
-class Def:
-    qualified: str
-    keyword: str
-    parent: str | None  # the :> name as written
-    file: ModelFile
-    scope: list[str]  # enclosing scope names, outermost first
-    resolved_parent: str | None = None
-
-
-@dataclass
-class FileScopes:
-    file: ModelFile
-    masked: str
-    spans: list[tuple[int, int, str]] = field(default_factory=list)  # (open, close, name)
-    imports: list[tuple[str, bool]] = field(default_factory=list)  # (name, is_wildcard)
-
-    def scope_at(self, pos: int) -> list[str]:
-        return [name for open_, close, name in self.spans if open_ < pos < close]
+# Usage element types read, and the keyword each is written with.
+USAGE_KINDS = {
+    "PartUsage": "part",
+    "ItemUsage": "item",
+    "OccurrenceUsage": "occurrence",
+    "ActionUsage": "action",
+    "PerformActionUsage": "action",
+    "StateUsage": "state",
+    "ExhibitStateUsage": "state",
+    "RequirementUsage": "requirement",
+    "SatisfyRequirementUsage": "requirement",
+    "ReferenceUsage": "ref",
+    "UseCaseUsage": "use case",
+}
 
 
-def read_scopes(f: ModelFile) -> FileScopes:
-    masked = mask_comments(f.text)
-    fs = FileScopes(file=f, masked=masked)
-    for m in SCOPE_RE.finditer(masked):
-        name = m.group(1) or m.group(2) or m.group(3)
-        open_pos = m.end() - 1
-        _, close = braced_body(masked, open_pos)
-        fs.spans.append((open_pos, close, name))
-    fs.imports = [(m.group(1), bool(m.group(2))) for m in IMPORT_RE.finditer(masked)]
-    return fs
+def _definitions(graph: resolved.ElementGraph, elements) -> dict[str, str | None]:
+    """Qualified name -> its first specialisation (qualified), for every element definition among ``elements``."""
+    out: dict[str, str | None] = {}
+    for e in elements:
+        if not e["@type"].endswith("Definition") or e["@type"] in NOT_ELEMENTS or not e.get("declaredName"):
+            continue
+        sup = graph.get(e, "specializes")
+        out[e["qualifiedName"]] = sup[0].get("qualifiedName") if sup else None
+    return out
 
 
-def read_defs(scopes: list[FileScopes]) -> dict[str, Def]:
-    defs: dict[str, Def] = {}
-    for fs in scopes:
-        for m in DEF_RE.finditer(fs.masked):
-            keyword = " ".join(m.group(1).split())
-            if keyword.split()[-1] in ("metadata", "enum", "attribute", "calc", "constraint", "port", "interface"):
-                continue
-            scope = fs.scope_at(m.start())
-            qualified = "::".join(scope + [m.group(2)])
-            defs[qualified] = Def(qualified, keyword, m.group(3), fs.file, scope)
-    return defs
-
-
-class Resolver:
-    """Resolves a type name, as written at a place in a file, to a definition."""
-
-    def __init__(self, tenant: dict[str, Def], general: dict[str, Def]):
-        self.tenant = tenant
-        self.general = general
-        self.by_name: dict[str, list[str]] = {}
-        for q in list(tenant) + list(general):
-            self.by_name.setdefault(q.rsplit("::", 1)[-1], []).append(q)
-
-    def resolve(self, name: str, scope: list[str], imports: list[tuple[str, bool]]) -> str | None:
-        simple = name.rsplit("::", 1)[-1]
-        candidates = self.by_name.get(simple, [])
-        if "::" in name:
-            hits = [q for q in candidates if q == name or q.endswith("::" + name)]
-        else:
-            visible = set()
-            for i in range(len(scope) + 1):
-                visible.add("::".join(scope[:i]))
-            hits = []
-            for q in candidates:
-                owner = q.rsplit("::", 1)[0] if "::" in q else ""
-                if owner in visible:
-                    hits.append(q)
-                    continue
-                for imp, wildcard in imports:
-                    if (wildcard and (owner == imp or owner.endswith("::" + imp))) or (
-                        not wildcard and (q == imp or q.endswith("::" + imp))
-                    ):
-                        hits.append(q)
-                        break
-        hits = sorted(set(hits))
-        if len(hits) > 1:
-            raise ModelError(f"type {name!r} resolves to more than one definition: {', '.join(hits)}")
-        return hits[0] if hits else None
-
-
-def general_root(q: str, tenant: dict[str, Def], general: dict[str, Def]) -> tuple[str | None, str | None]:
+def general_root(q: str | None, tenant: dict[str, str | None], general: dict[str, str | None]) -> tuple[str | None, str | None]:
     """The General def that ``q`` is or specialises, and the tenant def it goes through."""
     seen = set()
     via = None
@@ -149,47 +101,55 @@ def general_root(q: str, tenant: dict[str, Def], general: dict[str, Def]) -> tup
         seen.add(q)
         if q in general:
             return q, via
-        d = tenant.get(q)
-        if d is None:
+        if q not in tenant:
             return None, None
         if via is None:
             via = q
-        q = d.resolved_parent
+        q = tenant[q]
     return None, None
 
 
-def collect(model_files: list[ModelFile], platform_files: list[ModelFile], packages: list[str]) -> dict[str, list[str]]:
-    tenant_scopes = [read_scopes(f) for f in model_files]
-    platform_scopes = [read_scopes(f) for f in platform_files]
-    general = {q: d for q, d in read_defs(platform_scopes).items() if q.split("::", 1)[0] in packages}
+def _usage_kind(graph: resolved.ElementGraph, e: dict) -> str | None:
+    kind = USAGE_KINDS.get(e["@type"])
+    if kind is None:
+        return None
+    if kind == "ref":
+        membership = graph.by_id.get((e.get("owningMembership") or {}).get("@id"), {})
+        if membership.get("@type") != "FeatureMembership":  # a subject, a parameter
+            return None
+    elif kind in ("part", "item") and e.get("isReference"):
+        kind = f"ref {kind}"
+    return kind
+
+
+def collect(graph: resolved.ElementGraph, packages: list[str]) -> dict[str, list[str]]:
+    general = {
+        q: s for q, s in _definitions(graph, graph.data).items() if q.split("::", 1)[0] in packages
+    }
     if not general:
         raise ModelError("no definitions found in the named General packages: " + ", ".join(packages))
-    tenant = read_defs(tenant_scopes)
-    resolver = Resolver(tenant, general)
-    imports_of = {fs.file.rel: fs.imports for fs in tenant_scopes}
-
-    for d in tenant.values():
-        if d.parent:
-            d.resolved_parent = resolver.resolve(d.parent, d.scope, imports_of[d.file.rel])
+    tenant_elements = [e for _, e in graph.tenant_elements()]
+    tenant = _definitions(graph, tenant_elements)
 
     listing: dict[str, set[str]] = {}
-    for d in tenant.values():
-        if d.resolved_parent:
-            root, _ = general_root(d.resolved_parent, tenant, general)
+    for q, sup in tenant.items():
+        if sup:
+            root, _ = general_root(sup, tenant, general)
             if root:
-                listing.setdefault(root, set()).add(f"def {d.qualified}")
-    for fs in tenant_scopes:
-        for m in USAGE_RE.finditer(fs.masked):
-            kind = " ".join(m.group(1).split())
-            scope = fs.scope_at(m.start())
-            target = resolver.resolve(m.group(3), scope, fs.imports)
-            if target is None:
-                continue
-            root, via = general_root(target, tenant, general)
-            if root is None:
-                continue
-            entry = f"{kind} {'::'.join(scope + [m.group(2)])}"
-            listing.setdefault(root, set()).add(entry + (f" (via {via})" if via else ""))
+                listing.setdefault(root, set()).add(f"def {q}")
+    for e in tenant_elements:
+        if not e.get("declaredName") or not e.get("ownedTyping"):
+            continue
+        kind = _usage_kind(graph, e)
+        if kind is None:
+            continue
+        types = graph.get(e, "type")
+        if not types:
+            continue
+        root, via = general_root(types[0].get("qualifiedName"), tenant, general)
+        if root is None:
+            continue
+        listing.setdefault(root, set()).add(f"{kind} {e['qualifiedName']}" + (f" (via {via})" if via else ""))
     return {q: sorted(v) for q, v in sorted(listing.items())}
 
 
@@ -210,10 +170,8 @@ def generate(
     filename: str,
     model_name: str | None,
 ) -> Path:
-    model_files = load_model(model, root)
-    if not model_files:
-        raise ModelError(f"no .sysml files under {model}")
-    listing = collect(model_files, load_model(platform_model, root), packages)
+    graph = resolved.load(model, root, also=(platform_model,)).elements()
+    listing = collect(graph, packages)
     sources = [rel_path(model, root) + "/", "General packages: " + ", ".join(packages)]
     path = write(out, filename, render(listing, header(__file__, sources, model_name, comment="#")))
     count = sum(len(v) for v in listing.values())

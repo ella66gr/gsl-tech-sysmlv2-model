@@ -332,32 +332,52 @@ class ResolvedModel:
 _LOADED: dict[tuple, ResolvedModel] = {}
 
 
-def documents(model_folder: Path, root: Path) -> tuple[list[tuple[str, str]], int]:
-    """The (name, text) documents for a tenant folder, tenant first, and the tenant count."""
+def documents(model_folder: Path, root: Path, also: tuple[Path, ...] = ()) -> tuple[list[tuple[str, str]], int]:
+    """The (name, text) documents for a tenant folder, tenant first, and the tenant count.
+
+    ``also`` names further folders to load with it, as platform content (not
+    tenant documents): a generator's ``--platform-model``. A folder whose files
+    are already among the repository's platform folders adds nothing.
+    """
     folder = model_folder.resolve()
     if not folder.is_dir():
         raise ModelError(f"model folder not found: {folder}")
     tenant = _sysml_files(folder)
     if not tenant:
         raise ModelError(f"no .sysml files under {folder}")
-    return file_documents(tenant, root)
+    extra = []
+    for d in also:
+        d = d.resolve()
+        if not d.is_dir():
+            raise ModelError(f"platform model folder not found: {d}")
+        extra += _sysml_files(d)
+    return file_documents(tenant, root, extra)
 
 
-def file_documents(tenant: list[Path], root: Path) -> tuple[list[tuple[str, str]], int]:
-    """The (name, text) documents for the given tenant files, in that order, then the platform's."""
+def file_documents(
+    tenant: list[Path], root: Path, extra: list[Path] | None = None
+) -> tuple[list[tuple[str, str]], int]:
+    """The (name, text) documents for the given tenant files, in that order, then ``extra``, then the platform's.
+
+    ``extra`` files are loaded after the tenant's, named like them, and are
+    not tenant documents; any that is a tenant file or a repository platform
+    file is skipped (it is loaded already).
+    """
     if not tenant:
         raise ModelError("no tenant documents to load")
     seen = {p.resolve() for p in tenant}
     platform = [p for d in PLATFORM_FOLDERS for p in _sysml_files(REPO / d) if p.resolve() not in seen]
+    platform_set = {p.resolve() for p in platform}
+    extra = [p for p in (extra or []) if p.resolve() not in seen and p.resolve() not in platform_set]
     platform_docs = [(rel_path(p, REPO), p.read_text(encoding="utf-8")) for p in platform]
     taken = {name for name, _ in platform_docs}
     tenant_docs = []
-    for p in tenant:
+    for p in list(tenant) + extra:
         name = rel_path(p, root)
         if name in taken:  # a tenant file named like a platform file: keep them apart
             name = p.resolve().as_posix()
         tenant_docs.append((name, p.read_text(encoding="utf-8")))
-    return tenant_docs + platform_docs, len(tenant_docs)
+    return tenant_docs + platform_docs, len(tenant)
 
 
 def _load(docs: list[tuple[str, str]], n: int) -> ResolvedModel:
@@ -367,9 +387,12 @@ def _load(docs: list[tuple[str, str]], n: int) -> ResolvedModel:
     return _LOADED[key]
 
 
-def load(model_folder: Path, root: Path) -> ResolvedModel:
-    """The resolved model for a tenant folder: loaded once per process, again only when a file changes."""
-    return _load(*documents(model_folder, root))
+def load(model_folder: Path, root: Path, also: tuple[Path, ...] = ()) -> ResolvedModel:
+    """The resolved model for a tenant folder: loaded once per process, again only when a file changes.
+
+    ``also``: further platform folders to load with it (``documents``).
+    """
+    return _load(*documents(model_folder, root, tuple(also)))
 
 
 def load_files(files: list[Path], root: Path) -> ResolvedModel:
