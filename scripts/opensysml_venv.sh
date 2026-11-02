@@ -8,7 +8,11 @@
 # SYSML_VERSION, so there is no second version number to edit. The venv holds:
 #
 #   - the Python client `opensysml==<version>`, from the release wheel;
-#   - the gRPC service `sysml-grpc` at the same release, as <venv>/bin/sysml-grpc.
+#   - the gRPC service `sysml-grpc` at the same release, as <venv>/bin/sysml-grpc;
+#   - the OWL pipeline's two libraries, pinned in EXTRA_PACKAGES below
+#     (rdflib, PyYAML; S0.5 Pass A3), at the versions the system python3 had
+#     when the pipeline moved onto the venv, so its serialiser did not change
+#     underneath the move. They come from PyPI.
 #
 # Both come from https://github.com/Open-MBEE/OpenSysML/releases/tag/v<version>
 # and are checked against that release's SHA256SUMS.txt; the binary is also
@@ -17,8 +21,10 @@
 #
 # `ensure` is cheap when the venv is current: it reads the stamp file
 # <venv>/opensysml.stamp and runs `sysml-grpc -version`, and rebuilds only on
-# a mismatch (a new SYSML_VERSION, another platform, a missing or wrong binary,
-# a missing client, a broken interpreter). `refresh` always rebuilds.
+# a mismatch (a new SYSML_VERSION, another platform, a changed EXTRA_PACKAGES,
+# a missing or wrong binary, a missing client or library, a broken
+# interpreter). `refresh` always rebuilds. EXTRA_PACKAGES is part of the stamp,
+# so editing a pin here rebuilds the venv at the next make venv.
 #
 # It deletes <venv> only when <venv> carries this script's ownership marker, so
 # a venv made by hand at the same path is never removed: it stops instead.
@@ -34,6 +40,8 @@ mode=$1 version=$2 venv=$3 base_python=$4
 case "$mode" in ensure|refresh) ;; *) usage ;; esac
 
 repo=Open-MBEE/OpenSysML
+# The OWL pipeline's libraries (S0.5 Pass A3): exact pins, part of the stamp.
+EXTRA_PACKAGES="rdflib==7.6.0 PyYAML==6.0.3"
 release_url="https://github.com/$repo/releases/download/v$version"
 marker="$venv/.ontara-opensysml-venv"
 stamp="$venv/opensysml.stamp"
@@ -52,7 +60,7 @@ case "$(uname -m)" in
 esac
 asset="sysml-grpc-$goos-$goarch"
 wheel="opensysml-$version-py3-none-any.whl"
-want_stamp="opensysml $version; sysml-grpc v$version; $asset"
+want_stamp="opensysml $version; sysml-grpc v$version; $asset; $EXTRA_PACKAGES"
 
 why=""
 current() {
@@ -64,6 +72,11 @@ current() {
 	[ "$found" = "sysml-grpc version v$version" ] || { why="its sysml-grpc reports '${found:-nothing}'"; return 1; }
 	compgen -G "$venv/lib/python*/site-packages/opensysml-$version.dist-info" >/dev/null \
 		|| { why="opensysml $version is not installed in it"; return 1; }
+	local pkg
+	for pkg in $EXTRA_PACKAGES; do
+		compgen -G "$venv/lib/python*/site-packages/${pkg%%==*}-${pkg##*==}.dist-info" >/dev/null \
+			|| { why="$pkg is not installed in it"; return 1; }
+	done
 }
 
 if [ "$mode" = ensure ] && current; then
@@ -108,6 +121,8 @@ pip=("$venv/bin/python" -m pip install --disable-pip-version-check --quiet)
 "${pip[@]}" --no-index --no-deps --find-links "$dl" "opensysml==$version" \
 	|| fail "pip could not install $wheel"
 "${pip[@]}" "opensysml==$version" || fail "pip could not install the dependencies of opensysml $version"
+# shellcheck disable=SC2086 # EXTRA_PACKAGES is a space-separated list of pins
+"${pip[@]}" $EXTRA_PACKAGES || fail "pip could not install $EXTRA_PACKAGES"
 
 # The client pins the service digest for its own release; the binary must match it.
 pinned="$("$venv/bin/python" -I -c '
@@ -125,6 +140,8 @@ found="$("$venv/bin/sysml-grpc" -version 2>&1 | head -1)"
 [ "$found" = "sysml-grpc version v$version" ] || fail "sysml-grpc reports '$found', wanted v$version"
 client="$("$venv/bin/python" -I -c 'import opensysml; print(opensysml.__version__)')"
 [ "$client" = "$version" ] || fail "opensysml reports $client, wanted $version"
+libs="$("$venv/bin/python" -I -c 'import rdflib, yaml; print(f"rdflib=={rdflib.__version__} PyYAML=={yaml.__version__}")')"
+[ "$libs" = "$EXTRA_PACKAGES" ] || fail "the venv's libraries report '$libs', wanted '$EXTRA_PACKAGES'"
 
 "$venv/bin/python" -m pip freeze --disable-pip-version-check >"$venv/pip-freeze.txt"
 printf '%s\n' "$want_stamp" >"$stamp"

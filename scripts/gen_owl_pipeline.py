@@ -8,7 +8,9 @@ via declarative mapping rules, and produces OWL/Turtle ontology output
 using rdflib.
 
 Pipeline stages:
-  Stage 1 — Parse: Read .sysml files via the shared parser (sysml_parser.py)
+  Stage 1 — Read: the model's elements from OpenSysML's resolved model, through
+            the shared reader generation/resolved.py (S0.5 Pass A3); until
+            then the text parser sysml_parser.py
   Stage 2 — Classify: Apply mapping-rules.yaml to categorise each element
   Stage 3a — Generate domain ontology (ontara-bmm.ttl)
   Stage 3b — Generate correspondence graph (ontara-correspondence.ttl)
@@ -29,6 +31,10 @@ Design decisions:
   S105-D5: Graph isomorphism for regression validation
   S105-D6: Three outputs — ontara-bmm.ttl, ontara-correspondence.ttl, mapping-ir.json
 
+Run it with the OpenSysML venv's interpreter (make qa-pipeline does: it uses
+$(GEN_PYTHON), with the venv's OPENSYSML_* environment). Stage 1 needs the
+opensysml client; rdflib and PyYAML are in the venv at pinned versions.
+
 Usage:
     python scripts/gen_owl_pipeline.py                # Generate + print summary
     python scripts/gen_owl_pipeline.py --save         # Generate + save to generated/ontology/
@@ -38,7 +44,8 @@ Usage:
     python scripts/gen_owl_pipeline.py --verify       # Check CCO lookup completeness
 
 Source: Stage 5 Phase 1 — Step 4 (Session 105)
-Depends on: sysml_parser.py (Session 104), mapping-rules.yaml, cco-iri-lookup.json
+Depends on: generation/resolved.py (S0.5 Pass A3; sysml_parser.py before it),
+    mapping-rules.yaml, cco-iri-lookup.json
 """
 
 import argparse
@@ -56,7 +63,12 @@ from rdflib import Graph, Namespace, Literal, URIRef, BNode
 from rdflib.namespace import RDF, RDFS, OWL, XSD, SKOS
 from rdflib.compare import isomorphic
 
-from sysml_parser import parse_sysml_file
+from sysml_parser import SysmlElement
+
+# The shared resolved-model reader lives in the repository's generation package.
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
+from generation import resolved  # noqa: E402
+from generation.sysml_text import ModelError  # noqa: E402
 
 # ---------------------------------------------------------------
 # Path constants
@@ -323,24 +335,134 @@ def classify_element(element, rules):
 # Pipeline Stage 1 — Parse
 # ---------------------------------------------------------------
 
+# The element kinds Stage 1 reads, as the API JSON names them, and the
+# pipeline's kind names (the ones sysml_parser.py used). Definitions are read
+# when named; usages when named and typed with ``:`` (``part x : T``), which
+# is the form the text parser read. A ``satisfy`` with no type
+# (``satisfy requirement X by y;`` declares a new usage named X) is not read.
+STAGE1_DEFINITIONS = {
+    "PartDefinition": "part_def",
+    "EnumerationDefinition": "enum_def",
+    "MetadataDefinition": "metadata_def",
+    "RequirementDefinition": "requirement_def",
+    "ConstraintDefinition": "constraint_def",
+}
+STAGE1_TYPED_USAGES = {
+    "PartUsage": "part",
+    "ConstraintUsage": "constraint",
+    "RequirementUsage": "requirement",
+    "SatisfyRequirementUsage": "satisfy",
+}
+
+# The six BMM annotations, and where each goes on the element.
+_ANNOTATION_FIELDS = {
+    "CatalogueTag": "catalogue_tag",
+    "UserFacing": "user_facing",
+    "PurposiveDescription": "purposive_description",
+    "Comprehension": "comprehension",
+    "BfoType": "bfo_type",
+}
+
+
+def stage1_files(config):
+    """The .sysml files of one domain: each model dir globbed (not recursive), sorted, exclusions skipped."""
+    files = []
+    for model_dir in config["model_dirs"]:
+        if not model_dir.exists():
+            continue
+        for sysml_file in sorted(model_dir.glob("*.sysml")):
+            if any(sysml_file.name.startswith(p) for p in EXCLUDE_PATTERNS):
+                continue
+            files.append(sysml_file)
+    return files
+
+
+def _stage1_element(rm, graph, e, kind, domain_key):
+    """One SysmlElement from a resolved element: the fields Stages 2 and 3 read."""
+    pkgs = graph.packages(e)
+    if kind == "part_def":
+        sup = graph.get(e, "specializes")
+    else:
+        sup = graph.get(e, "type")
+    elem = SysmlElement(
+        kind=kind,
+        name=e["declaredName"],
+        parent_package=pkgs[-1] if pkgs else "",
+        top_level_package=pkgs[0] if pkgs else "",
+        specialises=graph.qualified_name(sup[0]) if sup else "",
+        source_file=graph.document(e),
+        source_domain=domain_key,
+        line_number=e["sysx:sourceLine"],
+    )
+    # Typed refs, as Stage 3c reads them: owned `ref name : Type[mult];`
+    # features (not redefinitions, not a requirement's subject).
+    refs = []
+    for c in graph.get(e, "ownedMember"):
+        if c["@type"] != "ReferenceUsage" or not c.get("declaredName") or not c.get("ownedTyping"):
+            continue
+        if c.get("ownedRedefinition"):
+            continue
+        membership = graph.by_id.get((c.get("owningMembership") or {}).get("@id"), {})
+        if membership.get("@type") != "FeatureMembership":
+            continue
+        types = graph.get(c, "type")
+        qualified = graph.qualified_name(types[0]) if types else ""
+        ref = {"name": c["declaredName"], "type": qualified.split("::")[-1], "isRef": True}
+        if qualified and qualified != ref["type"]:
+            ref["qualifiedType"] = qualified
+        sym = rm.sym(c["qualifiedName"])
+        multiplicity = (sym.metadata or {}).get("multiplicity") if sym is not None else None
+        if multiplicity:
+            ref["multiplicity"] = multiplicity
+        refs.append(ref)
+    elem.attributes = refs
+    for name, values in graph.annotations(e):
+        if name == "WeightedRelationship":
+            elem.weighted_relationships.append(dict(values))
+        elif name == "Comprehension":
+            elem.comprehension = {k: bool(v) for k, v in values.items()}
+        elif name in _ANNOTATION_FIELDS:
+            setattr(elem, _ANNOTATION_FIELDS[name], dict(values))
+        elem.annotations.append({"name": name, "attrs": dict(values)})
+    return elem
+
+
 def stage1_parse():
     """
-    Pipeline Stage 1: Parse all SysML files and return elements.
-    Uses the shared parser module (sysml_parser.py).
+    Pipeline Stage 1: read every domain's elements from the resolved model.
+
+    Each domain's files (stage1_files) are loaded through the shared reader,
+    generation/resolved.py, with the repository's model/ and libraries/, as
+    make parse-check loads each exercise; strict, so a model error stops the
+    pipeline. Elements come in file order, then source order, as the text
+    parser gave them. Annotations are bound by position for now (the next
+    member of the owning namespace), which is the text parser's rule applied
+    to the resolved structure.
+
+    Read for each element: kind, name, innermost and outermost package,
+    source file and line, the `:>` specialisation (part defs) or type
+    (usages), fully qualified; for definitions, the typed refs; and the six
+    BMM annotations. The doc text and plain attributes are not read: no
+    stage uses them.
     """
     all_elements = []
-
     for domain_key, config in DOMAIN_SOURCES.items():
-        for model_dir in config["model_dirs"]:
-            if not model_dir.exists():
+        files = stage1_files(config)
+        if not files:
+            continue
+        rm = resolved.load_files(files, REPO_ROOT)
+        graph = rm.elements()
+        for _, e in graph.tenant_elements():
+            if not e.get("declaredName"):
                 continue
-            for sysml_file in sorted(model_dir.glob("*.sysml")):
-                # Skip excluded files
-                if any(sysml_file.name.startswith(p) for p in EXCLUDE_PATTERNS):
-                    continue
-                elements = parse_sysml_file(sysml_file, domain_key, repo_root=REPO_ROOT)
-                all_elements.extend(elements)
-
+            t = e["@type"]
+            if t in STAGE1_DEFINITIONS:
+                kind = STAGE1_DEFINITIONS[t]
+            elif t in STAGE1_TYPED_USAGES and e.get("ownedTyping"):
+                kind = STAGE1_TYPED_USAGES[t]
+            else:
+                continue
+            all_elements.append(_stage1_element(rm, graph, e, kind, domain_key))
     return all_elements
 
 # ---------------------------------------------------------------
@@ -1098,8 +1220,12 @@ def main():
     print("=" * 60)
 
     # Stage 1: Parse
-    print("\nStage 1: Parsing SysML files...")
-    elements = stage1_parse()
+    print("\nStage 1: Reading the resolved model (OpenSysML)...")
+    try:
+        elements = stage1_parse()
+    except ModelError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        sys.exit(1)
     print(f"  Parsed {len(elements)} elements from {len(DOMAIN_SOURCES)} domains")
 
     # Stage 2: Classify

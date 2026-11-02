@@ -12,9 +12,13 @@ PYTHON ?= python3
 
 .PHONY: qa qa-pipeline qa-validate qa-reason qa-diff
 
-# Regenerates generated/ontology/ from the current model.
-qa-pipeline:
-	$(PYTHON) scripts/gen_owl_pipeline.py --save
+# Regenerates generated/ontology/ from the current model. Since S0.5 Pass A3
+# its Stage 1 reads the model through generation/resolved.py, so it runs on
+# the OpenSysML venv's interpreter, $(GEN_PYTHON), with the venv's OPENSYSML_*
+# environment (below); the venv also holds its rdflib and PyYAML, pinned.
+# qa-validate, qa-reason and qa-diff read no SysML and stay on $(PYTHON).
+qa-pipeline: venv
+	$(GEN_PYTHON) scripts/gen_owl_pipeline.py --save
 
 # Reloads the pipeline output into ontara-dev, then runs the SPARQL suite.
 qa-validate:
@@ -224,9 +228,9 @@ parse-check:
 # venv, or any make gen, rebuilds the venv at the new version. There is no
 # second version number. scripts/opensysml_venv.sh holds the details.
 #
-# The generation targets get the venv first (gen-cafe, gen-gsl), and every
-# generation target runs with this environment, so the client starts a private
-# child of the venv's sysml-grpc and nothing else:
+# The generation targets and qa-pipeline get the venv first, and every one of
+# them runs with this environment, so the client starts a private child of the
+# venv's sysml-grpc and nothing else:
 #
 #   OPENSYSML_BINARY=.venv/bin/sysml-grpc  the client's first choice; it never
 #                       looks in ~/.opensysml or $PATH, and never downloads
@@ -246,8 +250,9 @@ parse-check:
 #                       fresh cache folder, with or without the variable).
 #
 # GEN_PYTHON is the interpreter that may import opensysml; the generation
-# targets run on it since S0.5 Pass A2. Nothing a generator writes may import
-# opensysml: generation/tests/test_no_opensysml_import.py.
+# targets run on it since S0.5 Pass A2, and qa-pipeline since A3. Nothing a
+# generator writes may import opensysml:
+# generation/tests/test_no_opensysml_import.py.
 
 VENV        := .venv
 VENV_PYTHON := $(CURDIR)/$(VENV)/bin/python
@@ -262,7 +267,7 @@ venv:
 venv-refresh:
 	@scripts/opensysml_venv.sh refresh $(SYSML_VERSION) $(VENV) $(PYTHON)
 
-OPENSYSML_GEN_TARGETS := gen gen-cafe gen-gsl gen-check gen-test gen-test-guard gen-test-preconditions
+OPENSYSML_GEN_TARGETS := gen gen-cafe gen-gsl gen-check gen-test gen-test-guard gen-test-preconditions qa-pipeline
 
 $(OPENSYSML_GEN_TARGETS): export OPENSYSML_BINARY = $(VENV_GRPC)
 $(OPENSYSML_GEN_TARGETS): export OPENSYSML_GRPC_VERSION = v$(SYSML_VERSION)

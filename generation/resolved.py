@@ -1,18 +1,21 @@
-"""The shared reader over OpenSysML's resolved model (S0.5 Pass A2).
+"""The shared reader over OpenSysML's resolved model (S0.5 Pass A2, A3).
 
-The generators read a tenant's model through this module, not through the
-source text: OpenSysML parses and resolves the model, and the reader walks
-the result. It runs only inside ``make gen`` and the generation tests, on
-the authoring rig's virtual environment (``make venv``, ``GEN_PYTHON``);
-nothing a generator writes imports ``opensysml``
-(``generation/tests/test_no_opensysml_import.py``).
+The generators (A2) and the OWL pipeline's Stage 1 (A3,
+``scripts/gen_owl_pipeline.py``) read the model through this module, not
+through the source text: OpenSysML parses and resolves the model, and the
+reader walks the result. It runs only inside ``make gen``, the generation
+tests and ``make qa-pipeline``, on the authoring rig's virtual environment
+(``make venv``, ``GEN_PYTHON``); nothing a generator writes imports
+``opensysml`` (``generation/tests/test_no_opensysml_import.py``).
 
 How a model is loaded:
 
-1. Every ``.sysml`` file under the tenant model folder, in sorted path
-   order, then every ``.sysml`` file under the repository's ``model/`` (the
-   General metamodel, where ``StatusAxis`` is declared) and ``libraries/``:
-   the scope ``make parse-check`` loads each exercise with. The platform
+1. The tenant documents, then every ``.sysml`` file under the repository's
+   ``model/`` (the General metamodel, where ``StatusAxis`` is declared) and
+   ``libraries/``: the scope ``make parse-check`` loads each exercise with.
+   For a generator (``load``), the tenant documents are every ``.sysml``
+   file under the tenant model folder, in sorted path order; for the OWL
+   pipeline (``load_files``), the files its Stage 1 names. The platform
    folders always come from this repository, whatever ``--root`` is.
 2. The files are read here and passed to OpenSysML as (name, text) pairs,
    so what is parsed is exactly what was read. A tenant file is named by
@@ -47,11 +50,27 @@ How status axes are read (``ResolvedModel.axis_decls``):
 
 The declarations are checked by ``generation.status_axes.check_types``,
 the same checks the text reader's declarations get.
+
+The element graph (``ResolvedModel.elements``, for the OWL pipeline):
+OpenSysML's API JSON export, which carries what the symbol API omits in
+0.11.0: every element with its source line and column, its owner, its
+order among its owner's members, and the metadata usages (the
+``@Annotation { ... }`` blocks) with their values. ``ElementGraph`` indexes
+it. Annotations are bound by position for now (S0.5 Pass A3): a metadata
+usage written with ``about`` annotates what it names; any other annotates
+the next member of its owning namespace, in declaration order, that is not
+documentation or a comment, which is the rule the text parser applies. A
+metadata usage with no member after it binds to nothing. Under SysML v2,
+an annotation with no ``about`` annotates its owning namespace; the
+convention that makes the model say what the position says is S0.6's.
 """
 
 from __future__ import annotations
 
 import hashlib
+import json
+import warnings
+from collections import defaultdict
 from pathlib import Path
 
 import opensysml
@@ -95,6 +114,16 @@ class ResolvedModel:
             )
         self._sym: dict[str, object] = {}
         self._decls: list[TypeDecl] | None = None
+        self._elements: ElementGraph | None = None
+
+    def elements(self) -> "ElementGraph":
+        """The model's element graph (API JSON), converted once and kept."""
+        if self._elements is None:
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", opensysml.ExperimentalFeatureWarning)
+                data = json.loads(str(self.model.convert("api-json")))
+            self._elements = ElementGraph(data, [name for name, _ in self.documents[: self.tenant_count]])
+        return self._elements
 
     # -- symbols ---------------------------------------------------------
 
@@ -311,6 +340,13 @@ def documents(model_folder: Path, root: Path) -> tuple[list[tuple[str, str]], in
     tenant = _sysml_files(folder)
     if not tenant:
         raise ModelError(f"no .sysml files under {folder}")
+    return file_documents(tenant, root)
+
+
+def file_documents(tenant: list[Path], root: Path) -> tuple[list[tuple[str, str]], int]:
+    """The (name, text) documents for the given tenant files, in that order, then the platform's."""
+    if not tenant:
+        raise ModelError("no tenant documents to load")
     seen = {p.resolve() for p in tenant}
     platform = [p for d in PLATFORM_FOLDERS for p in _sysml_files(REPO / d) if p.resolve() not in seen]
     platform_docs = [(rel_path(p, REPO), p.read_text(encoding="utf-8")) for p in platform]
@@ -324,13 +360,173 @@ def documents(model_folder: Path, root: Path) -> tuple[list[tuple[str, str]], in
     return tenant_docs + platform_docs, len(tenant_docs)
 
 
-def load(model_folder: Path, root: Path) -> ResolvedModel:
-    """The resolved model for a tenant folder: loaded once per process, again only when a file changes."""
-    docs, n = documents(model_folder, root)
+def _load(docs: list[tuple[str, str]], n: int) -> ResolvedModel:
     key = (n,) + tuple((name, hashlib.sha256(text.encode("utf-8")).hexdigest()) for name, text in docs)
     if key not in _LOADED:
         _LOADED[key] = ResolvedModel(docs, n)
     return _LOADED[key]
+
+
+def load(model_folder: Path, root: Path) -> ResolvedModel:
+    """The resolved model for a tenant folder: loaded once per process, again only when a file changes."""
+    return _load(*documents(model_folder, root))
+
+
+def load_files(files: list[Path], root: Path) -> ResolvedModel:
+    """The resolved model for the given tenant files (in that order), with the platform folders."""
+    return _load(*file_documents(list(files), root))
+
+
+# -- The element graph (API JSON) ----------------------------------------
+
+_SKIP_IN_POSITION = {"Documentation", "Comment", "TextualRepresentation"}
+_PACKAGE_TYPES = {"Package", "LibraryPackage"}
+
+
+class ElementGraph:
+    """OpenSysML's API JSON elements, indexed, with annotations bound to elements.
+
+    ``tenant_documents`` are the names of the tenant documents, in load
+    order; ``tenant_elements`` yields only elements declared in them.
+    """
+
+    def __init__(self, data: list[dict], tenant_documents: list[str]):
+        self.data = data
+        self.tenant_documents = list(tenant_documents)
+        self.by_id: dict[str, dict] = {e["@id"]: e for e in data}
+        self._doc: dict[str, str | None] = {}
+        members: dict[str, list[dict]] = defaultdict(list)
+        for e in data:
+            if "sysx:memberIndex" in e and not e["@type"].endswith("Membership") and e.get("owner"):
+                members[e["owner"]["@id"]].append(e)
+        for v in members.values():
+            v.sort(key=lambda e: e["sysx:memberIndex"])
+        self.members = dict(members)
+        self.annotations_by_element: dict[str, list[dict]] = defaultdict(list)
+        self.unbound: list[dict] = []
+        self._bind()
+
+    # -- structure ---------------------------------------------------------
+
+    @staticmethod
+    def _refs(e: dict, key: str) -> list[dict]:
+        v = e.get(key)
+        if not v:
+            return []
+        return v if isinstance(v, list) else [v]
+
+    def get(self, e: dict, key: str) -> list[dict]:
+        """The elements ``e`` refers to under ``key``, in order."""
+        return [self.by_id[r["@id"]] for r in self._refs(e, key) if r.get("@id") in self.by_id]
+
+    def owner(self, e: dict) -> dict | None:
+        o = e.get("owner")
+        return self.by_id.get(o["@id"]) if o else None
+
+    def document(self, e: dict) -> str | None:
+        """The name of the document that declares ``e``."""
+        chain = []
+        cur: dict | None = e
+        found = None
+        while cur is not None:
+            if cur["@id"] in self._doc:
+                found = self._doc[cur["@id"]]
+                break
+            chain.append(cur["@id"])
+            if "sysx:sourceDocument" in cur:
+                found = cur["sysx:sourceDocument"]
+                break
+            cur = self.owner(cur)
+        for i in chain:
+            self._doc[i] = found
+        return found
+
+    def packages(self, e: dict) -> list[str]:
+        """The names of the packages that enclose ``e``, outermost first."""
+        out = []
+        cur = self.owner(e)
+        while cur is not None:
+            if cur["@type"] in _PACKAGE_TYPES and cur.get("declaredName"):
+                out.append(cur["declaredName"])
+            cur = self.owner(cur)
+        return out[::-1]
+
+    def qualified_name(self, e: dict | None) -> str:
+        return (e or {}).get("qualifiedName") or ""
+
+    def tenant_elements(self) -> list[tuple[int, dict]]:
+        """(document index, element) for every element declared in a tenant document, in source order."""
+        index = {name: i for i, name in enumerate(self.tenant_documents)}
+        out = []
+        for e in self.data:
+            if "sysx:sourceLine" not in e:
+                continue
+            d = self.document(e)
+            if d in index:
+                out.append((index[d], e))
+        out.sort(key=lambda x: (x[0], x[1]["sysx:sourceLine"], x[1].get("sysx:sourceColumn", 0)))
+        return out
+
+    # -- annotations -------------------------------------------------------
+
+    def _bind(self) -> None:
+        for e in self.data:
+            if e["@type"] == "MetadataUsage" and e.get("annotatedElement"):
+                for target in self._refs(e, "annotatedElement"):
+                    self.annotations_by_element[target["@id"]].append(e)
+        for mem in self.members.values():
+            pending: list[dict] = []
+            for e in mem:
+                if e["@type"] == "MetadataUsage" and not e.get("annotatedElement"):
+                    pending.append(e)
+                    continue
+                if e["@type"] in _SKIP_IN_POSITION:
+                    continue
+                self.annotations_by_element[e["@id"]].extend(pending)
+                pending = []
+            self.unbound.extend(pending)
+
+    def metadata_name(self, mu: dict) -> str:
+        """The metadata definition's name, e.g. ``BfoType``."""
+        defs = self.get(mu, "type")
+        return (defs[0].get("declaredName") or "") if defs else ""
+
+    def _feature_name(self, f: dict) -> str:
+        for r in self.get(f, "redefines"):
+            if r.get("declaredName"):
+                return r["declaredName"]
+        return f.get("declaredName") or f["@id"].split("__")[-1]
+
+    def _value(self, ref: dict | None):
+        if not ref:
+            return None
+        v = self.by_id.get(ref["@id"], {})
+        t = v.get("@type")
+        if t in ("LiteralString", "LiteralBoolean", "LiteralInteger", "LiteralRational"):
+            return v.get("value")
+        if t == "FeatureReferenceExpression":
+            target = self.by_id.get((v.get("referent") or {}).get("@id"), {})
+            return target.get("declaredName") or v.get("sysx:sourceText")
+        return v.get("sysx:sourceText")
+
+    def metadata_values(self, mu: dict) -> dict:
+        """The values a metadata usage sets, by feature name, in written order.
+
+        A string, boolean or number literal gives its value; an enumeration
+        literal (``RelationshipStrength::strong``) gives the literal's name.
+        """
+        out = {}
+        for f in self.get(mu, "ownedMember"):
+            out[self._feature_name(f)] = self._value(f.get("value"))
+        return out
+
+    def annotations(self, e: dict) -> list[tuple[str, dict]]:
+        """(metadata name, values) for each annotation bound to ``e``, in source order."""
+        mus = sorted(
+            self.annotations_by_element.get(e["@id"], []),
+            key=lambda m: (m.get("sysx:sourceLine", 0), m.get("sysx:memberIndex", 0)),
+        )
+        return [(self.metadata_name(m), self.metadata_values(m)) for m in mus]
 
 
 def axis_types(model_folder: Path, root: Path) -> list[AxisType]:
