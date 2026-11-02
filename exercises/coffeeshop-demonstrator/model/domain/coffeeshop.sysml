@@ -102,7 +102,7 @@ package CoffeeShop {
              * attributes are the ones the Cafe uses; the inherited
              * untyped pricingDescription, availabilityStatus and
              * provisionType are left unset. */
-        ref item : MenuItem;
+        ref menuItem : MenuItem;
         attribute pricePence : Integer;
         attribute priceDisplay : String;
         attribute availability : AvailabilityStatus;
@@ -197,7 +197,7 @@ package CoffeeShop {
              * reference the cross-axis precondition reads (relatedVia). */
 
         attribute quantity : Integer;
-        ref item : MenuItem;
+        ref menuItem : MenuItem;
         ref order : Order;
         attribute beneficiaryLabel : String[0..1];
         attribute beneficiaryContactRef : String[0..1];

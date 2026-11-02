@@ -47,7 +47,7 @@ function isDrink(item: MenuItem): item is Drink {
 }
 
 function lineFacts(line: OrderLine): LineFacts {
-  const item = line.item;
+  const item = line.menuItem;
   const drink = isDrink(item) ? item : undefined;
   return {
     orderId: String(line.order.orderNumber),

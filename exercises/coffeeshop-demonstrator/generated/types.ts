@@ -100,7 +100,7 @@ export interface CatalogueEntry extends ServiceConceptCatalogueEntry {
   priceDisplay: string;
   availability: AvailabilityStatus;
   provisionKind: ProvisionType;
-  item: MenuItem;
+  menuItem: MenuItem;
 }
 
 export interface InventoryRecord {
@@ -131,7 +131,7 @@ export interface OrderLine extends CanonicalRuntimeType {
   quantity: number;
   beneficiaryLabel?: string;
   beneficiaryContactRef?: string;
-  item: MenuItem;
+  menuItem: MenuItem;
   order: Order;
   /** The status axis tuple: one value per declared axis. */
   axes: OrderLineAxisTuple;
