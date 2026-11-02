@@ -11,7 +11,9 @@ folder it writes two files, named from the workflow's ``workflowName``:
                             each step's expected duration: the audit
                             expectations. No imports.
 
-What it reads from the model:
+What it reads from the model, through OpenSysML's resolved model
+(generation.resolved, S0.5 Pass A4; annotations are those written inside
+the element they describe):
 
 - ``@TemporalWorkflow { workflowName; taskQueue; }`` on the action def;
 - the action def's ``in item <name> : <Type>;`` as the workflow input;
@@ -51,7 +53,6 @@ invented beyond that.
 
 from __future__ import annotations
 
-import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -63,18 +64,7 @@ from generation.output import base_parser, header, write
 from generation.state_machine import GUARD_FILE
 from generation import resolved
 from generation.status_axes import Axis, AxisType
-from generation.sysml_text import (
-    Found,
-    ModelError,
-    braced_body,
-    find_all,
-    kebab,
-    load_model,
-    lower_first,
-    metadata,
-    mask_comments,
-    upper_first,
-)
+from generation.sysml_text import ModelError, kebab, lower_first, upper_first
 
 # Platform defaults for activity calls. The model has no annotation for them yet.
 ACTIVITY_START_TO_CLOSE = "1 minute"
@@ -92,7 +82,8 @@ class Step:
 
 @dataclass
 class Workflow:
-    found: Found
+    def_name: str  # the action def's name
+    source: str  # ``path (Qualified::Name)``, for the header
     workflow_name: str
     task_queue: str
     input_name: str
@@ -101,58 +92,65 @@ class Workflow:
     axis: Axis | None
 
 
-def _parse_steps(found: Found) -> list[Step]:
-    body = mask_comments(found.body)
-    steps: list[Step] = []
-    pos = 0
-    order: list[str] = []
-    bare = re.findall(r"\baction\s+(?!def\b)(\w+)\s*;", body)
+def _bare_steps(graph: resolved.ElementGraph, e: dict) -> list[str]:
+    """Named action usages anywhere inside ``e`` that have no body, in source order."""
+    out = []
+    for m in graph.member_list(e):
+        if m["@type"] == "ActionUsage" and m.get("declaredName"):
+            if not m.get("sysx:hasBody"):
+                out.append(m["declaredName"])
+            out += _bare_steps(graph, m)
+    return out
+
+
+def _parse_steps(graph: resolved.ElementGraph, wf_def: dict) -> list[Step]:
+    def_name = wf_def["declaredName"]
+    bare = _bare_steps(graph, wf_def)
     if bare:
         raise ModelError(
-            f"workflow {found.name!r}: step(s) {', '.join(bare)} have no body, so carry no Temporal annotation"
+            f"workflow {def_name!r}: step(s) {', '.join(bare)} have no body, so carry no Temporal annotation"
         )
-    for m in re.finditer(r"\baction\s+(?!def\b)(\w+)\s*\{", body):
-        if m.start() < pos:
-            continue  # nested inside the previous step
-        sbody, close = braced_body(body, m.end() - 1)
-        pos = close
-        name = m.group(1)
+    steps: list[Step] = []
+    order: list[str] = []
+    succ: list[str] = []
+    for m in graph.member_list(wf_def):
+        if m["@type"] == "SuccessionAsUsage":
+            succ += [x.get("declaredName") or "" for x in graph.get(m, "targetFeature")]
+            continue
+        if m["@type"] != "ActionUsage" or not m.get("declaredName"):
+            continue
+        name = m["declaredName"]
         order.append(name)
-        act = metadata(sbody, "TemporalActivity")
-        sig = metadata(sbody, "TemporalSignal")
-        trig = metadata(sbody, "StateTransitionTrigger")
+        act = graph.metadata(m, "TemporalActivity")
+        sig = graph.metadata(m, "TemporalSignal")
+        trig = graph.metadata(m, "StateTransitionTrigger")
         event = trig.get("eventName") if trig else None
         if act and sig:
             raise ModelError(f"step {name!r} carries both @TemporalActivity and @TemporalSignal")
         if act:
             steps.append(Step(name, "activity", act.get("activityName", name), None, event))
         elif sig:
-            minutes = int(sig.get("timeoutMinutes", "0"))
+            minutes = int(sig.get("timeoutMinutes", 0) or 0)
             steps.append(Step(name, "signal", sig.get("signalName", name), minutes or None, event))
         else:
-            raise ModelError(f"step {name!r} of {found.name!r} has no @TemporalActivity or @TemporalSignal")
+            raise ModelError(f"step {name!r} of {def_name!r} has no @TemporalActivity or @TemporalSignal")
     # The successions must follow source order, because the workflow runs the steps in sequence.
-    succ = re.findall(r"\bthen\s+(\w+)\s*;", _without_nested(body))
     expected = order[1:]
     if succ and succ != expected:
         raise ModelError(
-            f"workflow {found.name!r}: successions {succ} do not follow the step order {order}"
+            f"workflow {def_name!r}: successions {succ} do not follow the step order {order}"
         )
     return steps
 
 
-def _without_nested(body: str) -> str:
-    out, depth = [], 0
-    for c in body:
-        if c == "{":
-            depth += 1
-            continue
-        if c == "}":
-            depth -= 1
-            continue
-        if depth == 0:
-            out.append(c)
-    return "".join(out)
+def _input(graph: resolved.ElementGraph, wf_def: dict) -> tuple[str, str] | None:
+    """The first ``in item <name> : <Type>;`` of the action def: (name, type name)."""
+    for m in graph.member_list(wf_def):
+        if m["@type"] == "ItemUsage" and m.get("direction") == "in" and m.get("declaredName"):
+            types = graph.get(m, "type")
+            if types and types[0].get("declaredName"):
+                return m["declaredName"], types[0]["declaredName"]
+    return None
 
 
 def _axis_for(steps: list[Step], types: list[AxisType], input_type: str, wf_name: str) -> Axis | None:
@@ -194,27 +192,29 @@ def check_trigger_path(wf: Workflow) -> None:
         value = move.target
 
 
-def parse_workflows(files, types: list[AxisType], only: str | None) -> list[Workflow]:
+def parse_workflows(graph: resolved.ElementGraph, types: list[AxisType], only: str | None) -> list[Workflow]:
     out = []
-    for found in find_all(files, r"action\s+def"):
-        wf_meta = metadata(found.body, "TemporalWorkflow")
+    for wf_def in graph.definitions("ActionDefinition"):
+        wf_meta = graph.metadata(wf_def, "TemporalWorkflow")
         if not wf_meta:
             continue
-        name = wf_meta.get("workflowName", lower_first(found.name))
+        def_name = wf_def["declaredName"]
+        name = wf_meta.get("workflowName", lower_first(def_name))
         if only and name != only:
             continue
-        m = re.search(r"\bin\s+item\s+(\w+)\s*:\s*(\w+)\s*;", found.body)
-        if not m:
-            raise ModelError(f"workflow {found.name!r} has no `in item <name> : <Type>;` input")
-        steps = _parse_steps(found)
+        inp = _input(graph, wf_def)
+        if not inp:
+            raise ModelError(f"workflow {def_name!r} has no `in item <name> : <Type>;` input")
+        steps = _parse_steps(graph, wf_def)
         wf = Workflow(
-            found=found,
+            def_name=def_name,
+            source=graph.source(wf_def),
             workflow_name=name,
             task_queue=wf_meta.get("taskQueue", "default"),
-            input_name=m.group(1),
-            input_type=m.group(2),
+            input_name=inp[0],
+            input_type=inp[1],
             steps=steps,
-            axis=_axis_for(steps, types, m.group(2), name),
+            axis=_axis_for(steps, types, inp[1], name),
         )
         check_trigger_path(wf)
         out.append(wf)
@@ -393,14 +393,14 @@ def generate(
     lifecycle_import: str | None,
     model_name: str | None,
 ) -> list[Path]:
-    files = load_model(model, root)
-    types = resolved.axis_types(model, root)
-    wfs = parse_workflows(files, types, workflow)
+    rm = resolved.load(model, root)
+    types = rm.axis_types()
+    wfs = parse_workflows(rm.elements(), types, workflow)
     if not wfs:
         raise ModelError("no @TemporalWorkflow action def found in the model folder")
     written = []
     for wf in wfs:
-        sources = [wf.found.source]
+        sources = [wf.source]
         if wf.axis:
             src = next(t.source for t in types if t.name == wf.axis.type_name)
             sources.append(src)
