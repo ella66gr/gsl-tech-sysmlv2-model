@@ -38,6 +38,16 @@ Usage (from the repository root):
         --constraint-package <package> --spec-package <package> \\
         [--platform-model model] [--model-name <name>]
 
+Reading (S0.5 Pass A4): the model is read through OpenSysML's resolved model
+(generation.resolved), loaded with the platform model folder. Each
+constraint def's inputs are its ``in`` features; its expression is the result
+expression OpenSysML parsed, taken in its written form from the source span
+the resolved model gives (the translator below works on the notation); its
+doc is its documentation. A constraint satisfies the requirement its
+``satisfy`` names, through the constraint usage the ``satisfy`` gives as its
+``by``. Spec values are the literal values of the spec usage's redefined
+attributes.
+
 Generalised at S0.2 (Plan B Stage 0) from scripts/gen_constraint_evaluator.py.
 The parsers, the expression translator and the emitters are carried over
 unchanged, so the output below the header block is byte-identical; the
@@ -54,7 +64,7 @@ if __package__ in (None, ""):
 
 from generation.output import base_parser, header as make_header, write
 from generation import resolved
-from generation.sysml_text import ModelError, enclosing_packages, load_model, mask_comments, upper_first
+from generation.sysml_text import ModelError, rel_path, upper_first
 
 # Platform pattern packages the evaluation types reflect (SystemMetamodelGeneral).
 PATTERN_PACKAGES = ("LogicEngine", "EvaluationSpecs")
@@ -69,242 +79,146 @@ TYPE_MAP = {
 
 
 # ---------------------------------------------------------------
-# Parsers
+# Readers (over the resolved model, S0.5 Pass A4)
 # ---------------------------------------------------------------
 
-def find_package_block(text, package_name):
-    """Find the content of a named package block within the text.
+def _clean_doc(body):
+    """A documentation body as one line: each line stripped of whitespace and a leading ``*``."""
+    lines = []
+    for line in (body or "").split('\n'):
+        cleaned = line.strip().lstrip('*').strip()
+        if cleaned:
+            lines.append(cleaned)
+    return ' '.join(lines)
 
-    Returns the text inside the package braces, or None if not found.
-    Handles nested braces correctly.
-    """
-    # Find the package declaration
-    pattern = rf'\bpackage\s+{re.escape(package_name)}\s*\{{'
-    match = re.search(pattern, text)
-    if not match:
+
+class Reader:
+    """The constraint and spec packages, read from the resolved model."""
+
+    def __init__(self, rm):
+        self.rm = rm
+        self.graph = rm.elements()
+        self.texts = dict(rm.documents)
+
+    def doc(self, e):
+        d = next((m for m in self.graph.member_list(e) if m["@type"] == "Documentation"), None)
+        return _clean_doc(d.get("body")) if d else ""
+
+    def written(self, e):
+        """The written form of ``e``, from its source span, as one line (lines stripped, joined by spaces)."""
+        lines = self.texts[self.graph.document(e)].split('\n')
+        l0, c0 = e["sysx:sourceLine"], e["sysx:sourceColumn"]
+        l1, c1 = e["sysx:sourceEndLine"], e["sysx:sourceEndColumn"]
+        if l0 == l1:
+            span = [lines[l0 - 1][c0 - 1:c1 - 1]]
+        else:
+            span = [lines[l0 - 1][c0 - 1:]] + lines[l0:l1 - 1] + [lines[l1 - 1][:c1 - 1]]
+        return ' '.join(s.strip() for s in span if s.strip())
+
+    def type_name(self, f):
+        types = self.graph.get(f, "type")
+        if types:
+            return types[0].get("declaredName") or ""
+        sym = self.rm.sym(f["qualifiedName"])
+        tf = sym.type_facts if sym is not None else None
+        q = (tf.resolved_id or tf.declared or "") if tf else ""
+        return q.split("::")[-1]
+
+    def in_package(self, package_q, kind):
+        return [
+            e for e in self.graph.definitions(kind)
+            if (e.get("qualifiedName") or "").startswith(package_q + "::")
+        ]
+
+    def value(self, usage, feature):
+        """The literal value the usage's ``:>> feature = ...`` sets, or None."""
+        for m in self.graph.member_list(usage):
+            if any(r.get("declaredName") == feature for r in self.graph.get(m, "redefines")):
+                return self.graph._value(m.get("value"))
         return None
 
-    start = match.end()
-    depth = 1
-    i = start
-    while i < len(text) and depth > 0:
-        if text[i] == '{':
-            depth += 1
-        elif text[i] == '}':
-            depth -= 1
-        i += 1
-
-    return text[start:i - 1]
+    def typed_usages(self, package_q, type_name):
+        return [
+            e for e in self.in_package(package_q, "PartUsage")
+            if e.get("sysx:hasBody") and any(t.get("declaredName") == type_name for t in self.graph.get(e, "type"))
+        ]
 
 
-def parse_constraint_defs(constraint_lib_text):
-    """Parse constraint def blocks from ConstraintLibrary text.
+def parse_constraint_defs(reader, package_q):
+    """Constraint defs of the package, in source order.
 
-    Returns a list of dicts with: name, inputs, expression, doc, satisfy_target
+    Returns a list of dicts with: name, inputs, expression, doc, satisfies (when a satisfy names it)
     """
     constraints = []
-
-    # Find each constraint def block
-    for match in re.finditer(
-        r'constraint\s+def\s+(\w+)\s*\{',
-        constraint_lib_text
-    ):
-        name = match.group(1)
-        start = match.end()
-
-        # Find the matching closing brace
-        depth = 1
-        i = start
-        while i < len(constraint_lib_text) and depth > 0:
-            if constraint_lib_text[i] == '{':
-                depth += 1
-            elif constraint_lib_text[i] == '}':
-                depth -= 1
-            i += 1
-        body = constraint_lib_text[start:i - 1]
-
-        # Extract doc block
-        doc_match = re.search(r'doc\s*/\*(.+?)\*/', body, re.DOTALL)
-        doc_text = ""
-        if doc_match:
-            raw = doc_match.group(1)
-            # Clean doc: remove leading * and whitespace from each line
-            lines = []
-            for line in raw.split('\n'):
-                cleaned = line.strip().lstrip('*').strip()
-                if cleaned:
-                    lines.append(cleaned)
-            doc_text = ' '.join(lines)
-
-        # Extract input parameters (in name : Type;)
+    for cd in reader.in_package(package_q, "ConstraintDefinition"):
+        if not cd.get("sysx:hasBody"):
+            continue
         inputs = []
-        for inp_match in re.finditer(
-            r'\bin\s+(\w+)\s*:\s*(\w+)\s*;',
-            body
-        ):
-            inp_name = inp_match.group(1)
-            inp_type = inp_match.group(2)
-            inputs.append({
-                "name": inp_name,
-                "type": inp_type,
-                "tsType": TYPE_MAP.get(inp_type, inp_type),
-            })
-
-        # Extract the constraint expression (the bare expression after inputs)
-        # It's the text after the last input or doc block, before the closing brace
+        for m in reader.graph.member_list(cd):
+            if m.get("direction") == "in" and m.get("declaredName") and m.get("ownedTyping"):
+                inp_type = reader.type_name(m)
+                inputs.append({"name": m["declaredName"], "type": inp_type, "tsType": TYPE_MAP.get(inp_type, inp_type)})
         expression = ""
-        # Remove doc block and input lines to find the expression
-        expr_body = body
-        # Remove doc block
-        expr_body = re.sub(r'doc\s*/\*.+?\*/', '', expr_body, flags=re.DOTALL)
-        # Remove input declarations
-        expr_body = re.sub(r'\bin\s+\w+\s*:\s*\w+\s*;', '', expr_body)
-        # What's left (trimmed) should be the expression
-        expr_lines = [l.strip() for l in expr_body.strip().split('\n') if l.strip()]
-        if expr_lines:
-            expression = ' '.join(expr_lines)
-
+        for r in reader.graph.get(cd, "ownedRelationship"):
+            if r["@type"] == "ResultExpressionMembership":
+                for x in reader.graph.get(r, "ownedRelatedElement"):
+                    expression = reader.written(x)
         constraints.append({
-            "name": name,
+            "name": cd["declaredName"],
             "inputs": inputs,
             "expression": expression,
-            "doc": doc_text,
+            "doc": reader.doc(cd),
         })
 
-    # Now find satisfy relationships
-    # Pattern: satisfy requirement RequirementName\n            by constraintUsageName;
-    # First find constraint usages: constraint usageName : ConstraintDefName;
-    usage_to_def = {}
-    for usage_match in re.finditer(
-        r'constraint\s+(\w+)\s*:\s*(\w+)\s*;',
-        constraint_lib_text
-    ):
-        usage_name = usage_match.group(1)
-        def_name = usage_match.group(2)
-        usage_to_def[usage_name] = def_name
-
-    # Then find satisfy relationships
-    for sat_match in re.finditer(
-        r'satisfy\s+requirement\s+([\w:]+)\s*\n\s*by\s+(\w+)\s*;',
-        constraint_lib_text
-    ):
-        req_name = sat_match.group(1).split('::')[-1]  # take last segment
-        usage_name = sat_match.group(2)
-        def_name = usage_to_def.get(usage_name)
+    # A satisfy names the requirement and, through its `by`, a constraint usage typed by the def.
+    for sat in reader.in_package(package_q, "SatisfyRequirementUsage"):
+        req_name = sat.get("declaredName")
+        if not req_name:
+            refs = [x for r in reader.graph.get(sat, "ownedRelationship") for x in reader.graph.get(r, "referencedFeature")]
+            req_name = refs[0].get("declaredName") if refs else None
+        by = reader.graph.get(sat, "subject")
+        if not req_name or not by:
+            continue
+        defs = reader.graph.get(by[0], "type")
+        def_name = defs[0].get("declaredName") if defs else None
         if def_name:
             for c in constraints:
                 if c["name"] == def_name:
-                    c["satisfies"] = req_name
+                    c["satisfies"] = req_name.split('::')[-1]
                     break
 
     return constraints
 
 
-def parse_evaluation_specs(cds_text):
-    """Parse ConstraintEvaluationSpec part usages from CDS text.
+def parse_evaluation_specs(reader, package_q):
+    """ConstraintEvaluationSpec part usages of the package.
 
     Returns a list of dicts with: usageName, constraintName, requirementName, severity, doc
     """
     specs = []
-
-    for match in re.finditer(
-        r'part\s+(\w+)\s*:\s*ConstraintEvaluationSpec\s*\{',
-        cds_text
-    ):
-        usage_name = match.group(1)
-        start = match.end()
-
-        # Find closing brace
-        depth = 1
-        i = start
-        while i < len(cds_text) and depth > 0:
-            if cds_text[i] == '{':
-                depth += 1
-            elif cds_text[i] == '}':
-                depth -= 1
-            i += 1
-        body = cds_text[start:i - 1]
-
-        # Extract :>> redefined attributes
-        constraint_name = ""
-        requirement_name = ""
-        severity = ""
-        doc_text = ""
-
-        cn_match = re.search(r'attribute\s+:>>\s+constraintName\s*=\s*"([^"]+)"', body)
-        if cn_match:
-            constraint_name = cn_match.group(1)
-
-        rn_match = re.search(r'attribute\s+:>>\s+requirementName\s*=\s*"([^"]+)"', body)
-        if rn_match:
-            requirement_name = rn_match.group(1)
-
-        sev_match = re.search(r'attribute\s+:>>\s+severity\s*=\s*(\w+)::(\w+)', body)
-        if sev_match:
-            severity = sev_match.group(2)
-
-        doc_match = re.search(r'doc\s*/\*(.+?)\*/', body, re.DOTALL)
-        if doc_match:
-            raw = doc_match.group(1)
-            lines = []
-            for line in raw.split('\n'):
-                cleaned = line.strip().lstrip('*').strip()
-                if cleaned:
-                    lines.append(cleaned)
-            doc_text = ' '.join(lines)
-
+    for u in reader.typed_usages(package_q, "ConstraintEvaluationSpec"):
         specs.append({
-            "usageName": usage_name,
-            "constraintName": constraint_name,
-            "requirementName": requirement_name,
-            "severity": severity,
-            "doc": doc_text,
+            "usageName": u["declaredName"],
+            "constraintName": reader.value(u, "constraintName") or "",
+            "requirementName": reader.value(u, "requirementName") or "",
+            "severity": reader.value(u, "severity") or "",
+            "doc": reader.doc(u),
         })
-
     return specs
 
 
-def parse_decision_table_specs(cds_text):
-    """Parse DecisionTableEvaluationSpec part usages from CDS text.
+def parse_decision_table_specs(reader, package_q):
+    """DecisionTableEvaluationSpec part usages of the package.
 
-    Returns a list of dicts with: usageName, tableName, description, doc
+    Returns a list of dicts with: usageName, tableName, description
     """
     specs = []
-
-    for match in re.finditer(
-        r'part\s+(\w+)\s*:\s*DecisionTableEvaluationSpec\s*\{',
-        cds_text
-    ):
-        usage_name = match.group(1)
-        start = match.end()
-
-        depth = 1
-        i = start
-        while i < len(cds_text) and depth > 0:
-            if cds_text[i] == '{':
-                depth += 1
-            elif cds_text[i] == '}':
-                depth -= 1
-            i += 1
-        body = cds_text[start:i - 1]
-
-        table_name = ""
-        description = ""
-
-        tn_match = re.search(r'attribute\s+:>>\s+tableName\s*=\s*"([^"]+)"', body)
-        if tn_match:
-            table_name = tn_match.group(1)
-
-        desc_match = re.search(r'attribute\s+:>>\s+description\s*=\s*"([^"]+)"', body)
-        if desc_match:
-            description = desc_match.group(1)
-
+    for u in reader.typed_usages(package_q, "DecisionTableEvaluationSpec"):
         specs.append({
-            "usageName": usage_name,
-            "tableName": table_name,
-            "description": description,
+            "usageName": u["declaredName"],
+            "tableName": reader.value(u, "tableName") or "",
+            "description": reader.value(u, "description") or "",
         })
-
     return specs
 
 
@@ -615,27 +529,33 @@ def emit_specs(constraint_specs, decision_table_specs, header):
 # Model location (generalised at S0.2)
 # ---------------------------------------------------------------
 
-def locate_package(files, package_name):
-    """Return (model_file, qualified_name) for the one file declaring the package."""
-    hits = []
-    for f in files:
-        masked = mask_comments(f.text)
-        m = re.search(rf'\bpackage\s+{re.escape(package_name)}\s*\{{', masked)
-        if m:
-            qualified = "::".join(enclosing_packages(masked, m.start()) + [package_name])
-            hits.append((f, qualified))
+def locate_package(reader, package_name, documents=None):
+    """Return (document name, qualified name) for the one document declaring the package.
+
+    ``documents``: the documents to look in (default: the tenant's). A
+    document that declares the package more than once counts once (its first).
+    """
+    allowed = set(reader.graph.tenant_documents if documents is None else documents)
+    hits = {}
+    for _, e in sorted(
+        ((reader.graph.document(e) or "", e) for e in reader.graph.data
+         if e["@type"] == "Package" and e.get("declaredName") == package_name),
+        key=lambda x: (x[0], x[1].get("sysx:sourceLine", 0)),
+    ):
+        doc = reader.graph.document(e)
+        if doc in allowed and doc not in hits:
+            hits[doc] = e["qualifiedName"]
     if not hits:
         raise ModelError(f"package {package_name!r} not found in the model folder")
     if len(hits) > 1:
-        raise ModelError(f"package {package_name!r} is declared in more than one file: "
-                         + ", ".join(h[0].rel for h in hits))
-    return hits[0]
+        raise ModelError(f"package {package_name!r} is declared in more than one file: " + ", ".join(sorted(hits)))
+    return next(iter(hits.items()))
 
 
-def pattern_source(platform_files):
+def pattern_source(reader, platform_documents):
     """Header source for evaluation-types.ts: the platform pattern packages."""
-    located = [locate_package(platform_files, name) for name in PATTERN_PACKAGES]
-    paths = {f.rel for f, _ in located}
+    located = [locate_package(reader, name, platform_documents) for name in PATTERN_PACKAGES]
+    paths = {f for f, _ in located}
     if len(paths) != 1:
         raise ModelError("pattern packages are expected in one platform file: " + ", ".join(sorted(paths)))
     first_q = located[0][1]
@@ -643,7 +563,7 @@ def pattern_source(platform_files):
     parts = [first_q]
     for _, q in located[1:]:
         parts.append("::" + q.rsplit("::", 1)[1] if q.rsplit("::", 1)[0] == parent else q)
-    return f"{located[0][0].rel} ({', '.join(parts)})"
+    return f"{located[0][0]} ({', '.join(parts)})"
 
 
 AXIS_PRECONDITIONS_FILE = "axis-preconditions.ts"
@@ -803,14 +723,14 @@ def emit_axis_preconditions(types, header):
 
 
 def generate(model_dir, out_dir, root, constraint_package, spec_package, platform_dir, model_name, verbose=True):
-    files = load_model(model_dir, root)
     if (constraint_package is None) != (spec_package is None):
         raise ModelError("pass both --constraint-package and --spec-package, or neither")
+    rm = resolved.load(model_dir, root, also=(platform_dir,) if platform_dir is not None else ())
     written = []
     if constraint_package is not None:
-        written += _generate_constraints(files, out_dir, root, constraint_package, spec_package,
+        written += _generate_constraints(rm, out_dir, root, constraint_package, spec_package,
                                          platform_dir, model_name, verbose)
-    types = [t for t in resolved.axis_types(model_dir, root) if any(mv.preconditions for ax in t.axes for mv in ax.moves)]
+    types = [t for t in rm.axis_types() if any(mv.preconditions for ax in t.axes for mv in ax.moves)]
     if types:
         head = make_header(__file__, [t.source for t in types], model_name)
         written.append(write(out_dir, AXIS_PRECONDITIONS_FILE, emit_axis_preconditions(types, head)))
@@ -822,19 +742,19 @@ def generate(model_dir, out_dir, root, constraint_package, spec_package, platfor
     return written
 
 
-def _generate_constraints(files, out_dir, root, constraint_package, spec_package, platform_dir, model_name, verbose):
-    platform_files = load_model(platform_dir, root)
+def _generate_constraints(rm, out_dir, root, constraint_package, spec_package, platform_dir, model_name, verbose):
+    reader = Reader(rm)
+    platform_documents = set()
+    for f in sorted(Path(platform_dir).resolve().rglob("*.sysml")):
+        platform_documents |= {rel_path(f, root), rel_path(f, resolved.REPO)}
 
-    lib_file, lib_q = locate_package(files, constraint_package)
-    spec_file, spec_q = locate_package(files, spec_package)
+    lib_file, lib_q = locate_package(reader, constraint_package)
+    spec_file, spec_q = locate_package(reader, spec_package)
 
-    constraint_lib_text = find_package_block(lib_file.text, constraint_package)
-    cds_text = find_package_block(spec_file.text, spec_package)
-
-    # Parse
-    constraints = parse_constraint_defs(constraint_lib_text)
-    constraint_specs = parse_evaluation_specs(cds_text)
-    dt_specs = parse_decision_table_specs(cds_text)
+    # Read
+    constraints = parse_constraint_defs(reader, lib_q)
+    constraint_specs = parse_evaluation_specs(reader, spec_q)
+    dt_specs = parse_decision_table_specs(reader, spec_q)
 
     # Cross-reference: attach severity from specs to constraints
     spec_by_name = {s["constraintName"]: s for s in constraint_specs}
@@ -854,9 +774,9 @@ def _generate_constraints(files, out_dir, root, constraint_package, spec_package
         print(f"Parsed {len(constraint_specs)} constraint evaluation specs and "
               f"{len(dt_specs)} decision table evaluation specs from {spec_q}")
 
-    types_header = make_header(__file__, [pattern_source(platform_files)], model_name)
-    evaluators_header = make_header(__file__, [f"{lib_file.rel} ({lib_q})"], model_name)
-    specs_header = make_header(__file__, [f"{spec_file.rel} ({spec_q})"], model_name)
+    types_header = make_header(__file__, [pattern_source(reader, platform_documents)], model_name)
+    evaluators_header = make_header(__file__, [f"{lib_file} ({lib_q})"], model_name)
+    specs_header = make_header(__file__, [f"{spec_file} ({spec_q})"], model_name)
 
     written = [
         write(out_dir, "evaluation-types.ts", emit_types(types_header)),
