@@ -47,7 +47,8 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from generation.output import base_parser, header, write
-from generation.status_axes import AxisType, axis_types
+from generation import resolved
+from generation.status_axes import AxisType
 from generation.sysml_text import (
     ModelError,
     braced_body,
@@ -327,7 +328,7 @@ def generate(
         if platform_model is None:
             raise ModelError(f"package {package!r} uses qualified platform defs: pass --platform-model")
         platform, platform_sources = resolve_platform(enums, parts, platform_files)
-    axes = [t for t in axis_types(files) if t.found.qualified.startswith(pkg.qualified + "::")]
+    axes = [t for t in resolved.axis_types(model, root) if t.qualified.startswith(pkg.qualified + "::")]
     for t in axes:
         part = next((p for p in parts if p["name"] == t.name), None)
         if part and any(f["name"] == "axes" for g in ("attributes", "refs", "compositions") for f in part[g]):

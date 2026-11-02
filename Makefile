@@ -49,9 +49,9 @@ qa:
 #   make gen-check  regenerate into a scratch folder and fail, with a diff,
 #                   on any difference from the files at the target paths,
 #                   and on any orphaned generated file (below)
-#   make gen-test   the generation package's tests (fixture models only),
-#                   then the Cafe's generated axis guard and precondition
-#                   checks
+#   make gen-test   the generation package's tests (fixture models, and the
+#                   reader comparison on every tenant model), then the Cafe's
+#                   generated axis guard and precondition checks
 #   make gen-test-guard          Stage 0 test path 4: the generated axis guard
 #                                refuses loudly (fixture model, then the Cafe)
 #   make gen-test-preconditions  Stage 0 test path 5: the generated E6
@@ -71,6 +71,11 @@ qa:
 # and are never reported, so the shared GenderSense folder is safe.
 #
 # gen-test needs Node 23.6 or later (runs TypeScript by type stripping).
+#
+# The generators and their tests run on $(GEN_PYTHON), the OpenSysML venv's
+# interpreter (below), because the four axis generators read the model through
+# generation/resolved.py, OpenSysML's resolved model (S0.5 Pass A2). Each of
+# these targets has venv as a prerequisite.
 
 CAFE_MODEL := exercises/coffeeshop-demonstrator/model
 CAFE_OUT   := exercises/coffeeshop-demonstrator/generated
@@ -89,57 +94,57 @@ gen: gen-cafe gen-gsl
 gen-cafe: export ONTARA_GEN_WRITTEN = $(CAFE_OUT)/.generation-run.CoffeeShop
 gen-cafe:
 	@rm -f "$$ONTARA_GEN_WRITTEN"
-	$(PYTHON) -m generation.ts_types --model $(CAFE_MODEL) --out $(CAFE_OUT) \
+	$(GEN_PYTHON) -m generation.ts_types --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop --package CoffeeShop --platform-model model
-	$(PYTHON) -m generation.state_machine --model $(CAFE_MODEL) --out $(CAFE_OUT) \
+	$(GEN_PYTHON) -m generation.state_machine --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop
-	$(PYTHON) -m generation.temporal_workflow --model $(CAFE_MODEL) --out $(CAFE_OUT) \
+	$(GEN_PYTHON) -m generation.temporal_workflow --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop \
 		--activities-import ../activities/barista.js \
 		--lifecycle-import @coffeeshop/shared/dist/generated/axis-guard.js
-	$(PYTHON) -m generation.constraint_evaluator --model $(CAFE_MODEL) --out $(CAFE_OUT) \
+	$(GEN_PYTHON) -m generation.constraint_evaluator --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop --quiet
-	$(PYTHON) -m generation.mermaid_pathway --model $(CAFE_MODEL) --out $(CAFE_OUT) \
+	$(GEN_PYTHON) -m generation.mermaid_pathway --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop --action-def FulfilDrink
-	$(PYTHON) -m generation.element_list --model $(CAFE_MODEL) --out $(CAFE_OUT) \
+	$(GEN_PYTHON) -m generation.element_list --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop --platform-model model $(GENERAL_PACKAGES)
-	$(PYTHON) -m generation.record write --model $(CAFE_MODEL) --out $(CAFE_OUT) --model-name CoffeeShop
+	$(GEN_PYTHON) -m generation.record write --model $(CAFE_MODEL) --out $(CAFE_OUT) --model-name CoffeeShop
 
 # GenderSense: E6 constraint evaluators, General element list; then the record.
 gen-gsl: export ONTARA_GEN_WRITTEN = $(GSL_OUT)/.generation-run.GenderSense
 gen-gsl:
 	@rm -f "$$ONTARA_GEN_WRITTEN"
-	$(PYTHON) -m generation.constraint_evaluator --model $(GSL_MODEL) --out $(GSL_OUT) \
+	$(GEN_PYTHON) -m generation.constraint_evaluator --model $(GSL_MODEL) --out $(GSL_OUT) \
 		--model-name GenderSense --platform-model model \
 		--constraint-package ConstraintLibrary --spec-package ClinicalDecisionSupport --quiet
-	$(PYTHON) -m generation.element_list --model $(GSL_MODEL) --out $(GSL_OUT) \
+	$(GEN_PYTHON) -m generation.element_list --model $(GSL_MODEL) --out $(GSL_OUT) \
 		--model-name GenderSense --platform-model model $(GENERAL_PACKAGES) \
 		--filename gsl-general-elements.txt
-	$(PYTHON) -m generation.record write --model $(GSL_MODEL) --out $(GSL_OUT) --model-name GenderSense
+	$(GEN_PYTHON) -m generation.record write --model $(GSL_MODEL) --out $(GSL_OUT) --model-name GenderSense
 
 # The comparison, the orphan report and the summary line are in
 # generation/record.py (check).
-gen-check:
+gen-check: venv
 	@tmp=$$(mktemp -d "$${TMPDIR:-/tmp}/ontara-gen-check.XXXXXX") || exit 2; \
 	trap 'rm -rf "$$tmp"' EXIT; \
 	if ! $(MAKE) --no-print-directory gen CAFE_OUT="$$tmp/cafe" GSL_OUT="$$tmp/gsl" >"$$tmp/gen.log" 2>&1; then \
 		cat "$$tmp/gen.log"; echo "=== GEN-CHECK FAILED: generation itself failed"; exit 1; \
 	fi; \
-	$(PYTHON) -m generation.record check --folder "$$tmp/cafe" $(CAFE_OUT) --folder "$$tmp/gsl" $(GSL_OUT)
+	$(GEN_PYTHON) -m generation.record check --folder "$$tmp/cafe" $(CAFE_OUT) --folder "$$tmp/gsl" $(GSL_OUT)
 
 CAFE_TESTS := exercises/coffeeshop-demonstrator/tests
 NODE_TEST  := $(NODE) --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test
 
-gen-test:
-	$(PYTHON) -m unittest discover -s generation/tests -t . -v
+gen-test: venv
+	$(GEN_PYTHON) -m unittest discover -s generation/tests -t . -v
 	$(NODE_TEST) $(CAFE_TESTS)/axis-guard.test.mts $(CAFE_TESTS)/axis-preconditions.test.mts
 
-gen-test-guard:
-	$(PYTHON) -m unittest -v generation.tests.test_state_machine
+gen-test-guard: venv
+	$(GEN_PYTHON) -m unittest -v generation.tests.test_state_machine
 	$(NODE_TEST) $(CAFE_TESTS)/axis-guard.test.mts
 
-gen-test-preconditions:
-	$(PYTHON) -m unittest -v generation.tests.test_axis_preconditions
+gen-test-preconditions: venv
+	$(GEN_PYTHON) -m unittest -v generation.tests.test_axis_preconditions
 	$(NODE_TEST) $(CAFE_TESTS)/axis-preconditions.test.mts
 
 # ---------------------------------------------------------------------------
@@ -228,6 +233,10 @@ parse-check:
 #   OPENSYSML_GRPC_VERSION=v$(SYSML_VERSION)  the client refuses a service that
 #                       reports another release (StaleServiceError)
 #   OPENSYSML_SERVICE=  (empty) never a shared, externally run service
+#   OPENSYSML_LIBRARY_PATH=, SYSML_LIBRARY_PATH=  (empty) the standard
+#                       library is the one built into sysml-grpc, never one a
+#                       developer's shell names (checked S522: empty acts as
+#                       unset; a stray path in either fails every load)
 #   OPENSYSML_RECORD_CACHE=0  the record cache off, as parse-check's
 #                       -no-record-cache: honoured by sysml, sysml-lsp and
 #                       sysml-mcp. sysml-grpc v0.11.0 does not read it, and has
@@ -236,9 +245,9 @@ parse-check:
 #                       built into it (checked S522: it wrote nothing to a
 #                       fresh cache folder, with or without the variable).
 #
-# GEN_PYTHON is the interpreter that may import opensysml; the generators move
-# to it in S0.5 Pass A2 (until then they run on $(PYTHON)). Nothing a generator
-# writes may import opensysml: generation/tests/test_no_opensysml_import.py.
+# GEN_PYTHON is the interpreter that may import opensysml; the generation
+# targets run on it since S0.5 Pass A2. Nothing a generator writes may import
+# opensysml: generation/tests/test_no_opensysml_import.py.
 
 VENV        := .venv
 VENV_PYTHON := $(CURDIR)/$(VENV)/bin/python
@@ -259,5 +268,7 @@ $(OPENSYSML_GEN_TARGETS): export OPENSYSML_BINARY = $(VENV_GRPC)
 $(OPENSYSML_GEN_TARGETS): export OPENSYSML_GRPC_VERSION = v$(SYSML_VERSION)
 $(OPENSYSML_GEN_TARGETS): export OPENSYSML_SERVICE =
 $(OPENSYSML_GEN_TARGETS): export OPENSYSML_RECORD_CACHE = 0
+$(OPENSYSML_GEN_TARGETS): export OPENSYSML_LIBRARY_PATH =
+$(OPENSYSML_GEN_TARGETS): export SYSML_LIBRARY_PATH =
 
 gen-cafe gen-gsl: venv

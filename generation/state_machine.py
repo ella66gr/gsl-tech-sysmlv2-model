@@ -61,7 +61,8 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from generation.output import base_parser, header, write
-from generation.status_axes import OPERATOR_AUTHORITY, AxisType, axis_types
+from generation import resolved
+from generation.status_axes import OPERATOR_AUTHORITY, AxisType
 from generation.sysml_text import (
     ModelError,
     ModelFile,
@@ -281,7 +282,7 @@ export function traceAxisMove(spec: AxisSpec, from: string, event: string): Axis
 def render_guard(types: list[AxisType], sigs: dict[str, str], head: str) -> str:
     L = [head.rstrip("\n"), "", GUARD_PREAMBLE.rstrip("\n"), ""]
     for t in types:
-        L.append(f"// -- {t.name} ({t.found.qualified}) --")
+        L.append(f"// -- {t.name} ({t.qualified}) --")
         L.append("")
         for ax in t.axes:
             i, I = ax.lower_ident, ax.ident
@@ -402,7 +403,7 @@ def render_machine(types: list[AxisType], head: str) -> str:
 
 def generate(model: Path, out: Path, root: Path, only_type: str | None, model_name: str | None) -> list[Path]:
     files = load_model(model, root)
-    types = axis_types(files)
+    types = resolved.axis_types(model, root)
     if only_type:
         types = [t for t in types if t.name == only_type]
         if not types:

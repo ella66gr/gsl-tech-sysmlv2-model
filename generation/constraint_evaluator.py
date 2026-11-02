@@ -53,7 +53,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from generation.output import base_parser, header as make_header, write
-from generation.status_axes import axis_types
+from generation import resolved
 from generation.sysml_text import ModelError, enclosing_packages, load_model, mask_comments, upper_first
 
 # Platform pattern packages the evaluation types reflect (SystemMetamodelGeneral).
@@ -810,7 +810,7 @@ def generate(model_dir, out_dir, root, constraint_package, spec_package, platfor
     if constraint_package is not None:
         written += _generate_constraints(files, out_dir, root, constraint_package, spec_package,
                                          platform_dir, model_name, verbose)
-    types = [t for t in axis_types(files) if any(mv.preconditions for ax in t.axes for mv in ax.moves)]
+    types = [t for t in resolved.axis_types(model_dir, root) if any(mv.preconditions for ax in t.axes for mv in ax.moves)]
     if types:
         head = make_header(__file__, [t.source for t in types], model_name)
         written.append(write(out_dir, AXIS_PRECONDITIONS_FILE, emit_axis_preconditions(types, head)))

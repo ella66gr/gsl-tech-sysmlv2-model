@@ -61,7 +61,8 @@ if __package__ in (None, ""):
 
 from generation.output import base_parser, header, write
 from generation.state_machine import GUARD_FILE
-from generation.status_axes import Axis, AxisType, axis_types
+from generation import resolved
+from generation.status_axes import Axis, AxisType
 from generation.sysml_text import (
     Found,
     ModelError,
@@ -193,8 +194,7 @@ def check_trigger_path(wf: Workflow) -> None:
         value = move.target
 
 
-def parse_workflows(files, only: str | None) -> list[Workflow]:
-    types = axis_types(files)
+def parse_workflows(files, types: list[AxisType], only: str | None) -> list[Workflow]:
     out = []
     for found in find_all(files, r"action\s+def"):
         wf_meta = metadata(found.body, "TemporalWorkflow")
@@ -394,14 +394,15 @@ def generate(
     model_name: str | None,
 ) -> list[Path]:
     files = load_model(model, root)
-    wfs = parse_workflows(files, workflow)
+    types = resolved.axis_types(model, root)
+    wfs = parse_workflows(files, types, workflow)
     if not wfs:
         raise ModelError("no @TemporalWorkflow action def found in the model folder")
     written = []
     for wf in wfs:
         sources = [wf.found.source]
         if wf.axis:
-            src = next(t.source for t in axis_types(load_model(model, root)) if t.name == wf.axis.type_name)
+            src = next(t.source for t in types if t.name == wf.axis.type_name)
             sources.append(src)
         head = header(__file__, sources, model_name)
         stem = kebab(wf.workflow_name)
