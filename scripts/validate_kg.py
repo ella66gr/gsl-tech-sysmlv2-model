@@ -11,8 +11,9 @@ Part of Stage 5 Phase 1 — Step 5.
 
 Prerequisites:
   - GraphDB Free running on localhost:7200
-  - Repository 'ontara-dev' exists with BFO/CCO/IAO loaded
-    (see setup_graphdb.py)
+  - Repository 'ontara-dev' exists (see setup_graphdb.py). --load clears
+    the domain and correspondence graphs and reloads them whole, the
+    BFO/CCO/IAO foundation imports included, from the files.
   - Pipeline has been run: python3 scripts/gen_owl_pipeline.py --save
   - Hand-authored ontology modules present in ontology/ subdirectories
 
@@ -1686,14 +1687,6 @@ SELECT (COUNT(*) AS ?count) WHERE {{
 # Loading
 # ---------------------------------------------------------------
 
-def clear_correspondence_graph():
-    """Clear the correspondence graph entirely (pipeline-only content)."""
-    print("  Clearing correspondence graph...")
-    update = "CLEAR GRAPH <https://ontara.dev/graph/correspondence>"
-    sparql_update(update)
-    print("  Done.")
-
-
 def load_pipeline_file(entry):
     """Load a Turtle file into its named graph.
 
@@ -1733,51 +1726,59 @@ def load_pipeline_file(entry):
         return False
 
 
-def load_pipeline_output():
-    """Clear old Ontara data and reload all ontology files into GraphDB."""
-    print(f"\nLoading ontology stack into GraphDB ({REPO_ID})...")
+DOMAIN_GRAPH = "https://ontara.dev/graph/domain"
+CORRESPONDENCE_GRAPH = "https://ontara.dev/graph/correspondence"
 
-    # Step 1: clear all Ontara namespace triples from domain graph.
-    # This covers pipeline-generated (ontara-bmm:) and hand-authored
-    # (ontara-gov:, ontara-dom:, ontara-rsn:, ontara-ax:) content.
-    # Foundation imports (BFO, CCO, IAO) are untouched.
-    ontara_namespaces = [
-        "https://ontara.dev/ontology/bmm/",
-        "https://ontara.dev/ontology/bmm/axioms#",
-        "https://ontara.dev/ontology/governance/",
-        "https://ontara.dev/ontology/domain/",
-        "https://ontara.dev/ontology/reasoning/",
-        "https://ontara.dev/data/governance/",
-        "https://ontara.dev/data/ears/reasoning/",
-        "https://ontara.dev/ontology/tenant/",
-        "https://ontara.dev/data/cafe/reasoning/",
-        "http://www.w3.org/ns/prov#",
+
+def foundation_files():
+    """The foundation imports (BFO, CCO, IAO) as load entries.
+
+    setup_graphdb.ONTOLOGY_STACK is the one list of them, with their graph
+    (the domain graph) and load order; this reads it rather than copy it.
+    """
+    # Built with dict() keywords: reason_kg.count_sparql_queries() counts
+    # the quoted name keys in this file, so a literal one here would
+    # inflate reasoning-summary.json's sparqlQueryCount.
+    from setup_graphdb import IMPORTS_DIR, ONTOLOGY_STACK
+
+    return [
+        dict(
+            path=str((IMPORTS_DIR / e["file"]).relative_to(REPO_ROOT)),
+            name=e["name"] + " (foundation import)",
+            graph=e["graph"],
+            content_type=e["content_type"],
+        )
+        for e in ONTOLOGY_STACK
     ]
 
-    for ns in ontara_namespaces:
-        print(f"  Clearing <{ns}> triples from domain graph...")
-        update = f"""
-DELETE {{
-  GRAPH <https://ontara.dev/graph/domain> {{
-    ?s ?p ?o .
-  }}
-}}
-WHERE {{
-  GRAPH <https://ontara.dev/graph/domain> {{
-    ?s ?p ?o .
-    FILTER(STRSTARTS(STR(?s), "{ns}"))
-  }}
-}}
-"""
-        sparql_update(update)
-    print("  Namespace clearing complete.")
 
-    # Step 2: clear correspondence graph
-    clear_correspondence_graph()
+def load_pipeline_output():
+    """Rebuild the domain and correspondence graphs from files, whole.
 
-    # Step 3: load each file
+    Both graphs are cleared outright and reloaded: the foundation imports
+    (BFO, CCO, IAO, from setup_graphdb.ONTOLOGY_STACK) first, in their import
+    order, then PIPELINE_FILES. The result depends only on the files, so
+    repeated runs give the same graphs.
+
+    Before S0.5 Pass A7 (Session 522) the loader deleted domain-graph triples
+    by subject namespace and left the foundation imports in place. Blank-node
+    subjects (owl:AllDisjointClasses axioms, restrictions, RDF lists) match
+    no namespace, so every run left about 446 triples behind and Q26 grew by
+    7. A loaded file's blank nodes are new on every parse, so they cannot be
+    told from the foundation imports' own blank nodes by identity; reloading
+    the whole graph avoids having to. The foundation imports stay in the
+    domain graph, as setup_graphdb.py places them (B28's graph split is
+    unchanged).
+    """
+    print(f"\nLoading ontology stack into GraphDB ({REPO_ID})...")
+
+    for graph in (DOMAIN_GRAPH, CORRESPONDENCE_GRAPH):
+        print(f"  Clearing <{graph}>...")
+        sparql_update(f"CLEAR SILENT GRAPH <{graph}>")
+    print("  Done.")
+
     results = []
-    for entry in PIPELINE_FILES:
+    for entry in foundation_files() + PIPELINE_FILES:
         ok = load_pipeline_file(entry)
         results.append((entry["name"], ok))
 

@@ -238,18 +238,33 @@ ORDER BY ?label
 """
     rows = sparql_query(sparql)
     units = {}
+    # A property can carry more than one rdfs:comment in the store: 13
+    # ontara-ax: properties are declared both by ontara-bmm-properties.ttl
+    # (pipeline) and ontara-bmm-axioms.ttl (hand-authored), with different
+    # comments. Keeping one row's value made the result depend on the
+    # store's row order (S0.5 Pass A7, Session 522), so every value is kept
+    # and diff_units() treats a tuple as "the file's value is among these".
+    comments = {}
     for row in rows:
         iri = get_binding_value(row, "prop")
         func_val = get_binding_value(row, "functional", "false")
+        comment = get_binding_value(row, "comment", "")
+        if comment:
+            comments.setdefault(iri, set()).add(comment)
         units[iri] = PropertyDeclaration(
             iri=iri,
             label=get_binding_value(row, "label", ""),
-            comment=get_binding_value(row, "comment", ""),
             domain=get_binding_value(row, "domain", ""),
             range=get_binding_value(row, "range", ""),
             functional=(func_val == "true"),
             sub_property_of=get_binding_value(row, "subProp", ""),
         )
+    for iri, unit in units.items():
+        values = sorted(comments.get(iri, ()))
+        if len(values) == 1:
+            unit.comment = values[0]
+        elif values:
+            unit.comment = tuple(values)
     return units
 
 
@@ -666,8 +681,14 @@ def diff_units(file_units, store_units, unit_type_name):
                 s_val = store_props.get(key, "")
                 # Normalise for comparison: strip language tags, whitespace
                 f_norm = _normalise(f_val)
-                s_norm = _normalise(s_val)
-                if f_norm != s_norm:
+                if isinstance(s_val, tuple):
+                    # Several store values (see extract_properties_from_store):
+                    # unchanged if the file's value is one of them.
+                    matched = f_norm in {_normalise(v) for v in s_val}
+                    s_val = list(s_val)
+                else:
+                    matched = f_norm == _normalise(s_val)
+                if not matched:
                     modifications[key] = {"file": f_val, "store": s_val}
 
             if modifications:
