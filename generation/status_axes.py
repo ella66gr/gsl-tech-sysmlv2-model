@@ -1,4 +1,4 @@
-"""Status axis declarations: the structures, the checks, and the text reader (platform-general).
+"""Status axis declarations: the structures and the checks (platform-general).
 
 A canonical runtime type declares its state as status axes: ``part``
 usages typed ``StatusAxis`` inside a ``part def`` (the General metamodel's
@@ -18,19 +18,14 @@ What is read, for each ``part <name> : StatusAxis``:
 - each ``AxisPrecondition`` usage inside a transition: ``relatedVia``
   (optional), ``requiredAxis``, ``requiredValues``, ``rejectionReason``.
 
-There are two readers, and one set of checks (S0.5 Pass A2):
-
-1. ``generation.resolved`` reads the declarations from OpenSysML's
-   resolved model. The four axis generators (``state_machine``,
-   ``ts_types``, ``constraint_evaluator``, ``temporal_workflow``) use it.
-2. The text reader at the end of this module reads them from the source
-   text. It stays only so that ``generation/tests/test_reader_comparison.py``
-   can compare the two readers, and is removed in Pass A4.
-
-Both readers return the same unchecked declarations (``TypeDecl`` and
-below). ``check_types`` checks them and builds the ``AxisType`` objects the
-generators read, so a fault in the model is reported in the same words
-whichever reader found it. Values are the strings the model declares. A
+``generation.resolved`` reads the declarations from OpenSysML's resolved
+model as unchecked ``TypeDecl`` objects (and below); ``check_types`` checks
+them and builds the ``AxisType`` objects the four axis generators
+(``state_machine``, ``ts_types``, ``constraint_evaluator``,
+``temporal_workflow``) read. Until S0.5 Pass A4 a text reader here returned
+the same declarations, checked by the same code, and a test compared the
+two on every tenant model and fixture; both were removed when no generator
+read the text any more. Values are the strings the model declares. A
 value with no outgoing move is terminal.
 """
 
@@ -39,16 +34,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
-from generation.sysml_text import (
-    ModelError,
-    ModelFile,
-    braced_body,
-    find_all,
-    mask_comments,
-    remove_doc_blocks,
-    top_level_members,
-    upper_first,
-)
+from generation.common import ModelError, upper_first
 
 # The authority whose writers are people through a surface: the next-action
 # map offers only the moves it can make. A General metamodel value
@@ -275,129 +261,3 @@ def _check_preconditions(types: list[AxisType]) -> None:
 
 def all_axes(types: list[AxisType]) -> list[Axis]:
     return [a for t in types for a in t.axes]
-
-
-# -- The text reader (kept for the reader comparison; removed in Pass A4) --
-#
-# Reads only what is written inside each part def: axes, moves and refs
-# are not inherited through ``:>``, and an axis needs a body
-# (``part <name> : StatusAxis { ... }``).
-
-
-def _string(body: str, attr: str) -> str | None:
-    m = re.search(rf"(?:\battribute\s+)?:>>\s*{attr}\s*=\s*\"([^\"]*)\"\s*;", body)
-    return m.group(1) if m else None
-
-
-def _strings(body: str, attr: str) -> list[str] | None:
-    m = re.search(rf"(?:\battribute\s+)?:>>\s*{attr}\s*=\s*(\([^;]*\)|\"[^\"]*\")\s*;", body)
-    if not m:
-        return None
-    return re.findall(r"\"([^\"]*)\"", m.group(1))
-
-
-def _enum_refs(body: str, attr: str, enum: str) -> list[str] | None:
-    m = re.search(rf"(?:\battribute\s+)?:>>\s*{attr}\s*=\s*([^;]*);", body)
-    if not m:
-        return None
-    return re.findall(rf"\b{enum}::(\w+)", m.group(1))
-
-
-def _usages(body: str, type_name: str) -> list[tuple[str, str]]:
-    """Every ``part <name> : <type_name> { ... }`` in ``body``: (name, inner body)."""
-    out = []
-    pos = 0
-    for m in re.finditer(rf"\bpart\s+(\w+)\s*:\s*{type_name}\s*\{{", body):
-        if m.start() < pos:
-            continue
-        inner, close = braced_body(body, m.end() - 1)
-        pos = close
-        out.append((m.group(1), inner))
-    return out
-
-
-def _without_usages(body: str, type_name: str) -> str:
-    """``body`` with each ``part x : <type_name> { ... }`` removed."""
-    out, pos = [], 0
-    for m in re.finditer(rf"\bpart\s+(\w+)\s*:\s*{type_name}\s*\{{", body):
-        if m.start() < pos:
-            continue
-        _, close = braced_body(body, m.end() - 1)
-        out.append(body[pos : m.start()])
-        pos = close + 1
-    out.append(body[pos:])
-    return "".join(out)
-
-
-def _value_space(body: str) -> tuple[list[str], str | None]:
-    m = re.search(r"\bpart\s+(?::>>\s*)?valueSpace\b[^{;]*\{", body)
-    if not m:
-        return [], None
-    inner, _ = braced_body(body, m.end() - 1)
-    values = _strings(inner, "enumValues") or []
-    shape = re.search(r":>>\s*valueShape\s*=\s*\w+::(\w+)\s*;", inner)
-    return values, shape.group(1) if shape else None
-
-
-def _text_axis(usage: str, body: str) -> AxisDecl:
-    own = _without_usages(_without_usages(body, "AxisTransition"), r"ValueSpace")
-    values, shape = _value_space(body)
-    moves = []
-    for tname, tbody in _usages(body, "AxisTransition"):
-        town = _without_usages(tbody, "AxisPrecondition")
-        pres = [
-            PreconditionDecl(
-                pname,
-                _string(pbody, "relatedVia"),
-                _string(pbody, "requiredAxis"),
-                _strings(pbody, "requiredValues"),
-                _string(pbody, "rejectionReason"),
-            )
-            for pname, pbody in _usages(tbody, "AxisPrecondition")
-        ]
-        moves.append(
-            MoveDecl(
-                tname,
-                _string(town, "fromValue"),
-                _string(town, "toValue"),
-                _string(town, "transitionLabel"),
-                _string(town, "triggerEvent"),
-                _enum_refs(town, "requiredAuthority", "AxisAuthority") or [],
-                pres,
-            )
-        )
-    return AxisDecl(
-        usage,
-        _string(own, "axisName"),
-        values,
-        _string(own, "defaultValue"),
-        _enum_refs(own, "axisAuthority", "AxisAuthority") or [],
-        shape,
-        moves,
-    )
-
-
-def _refs(body: str) -> dict[str, tuple[str, str | None]]:
-    flat = top_level_members(remove_doc_blocks(body))
-    out = {}
-    for m in re.finditer(r"(?:^|;)\s*ref\s+(?:part\s+)?(\w+)\s*:\s*([\w:]+)\s*(?:\[([^\]]+)\])?\s*(?=;)", flat):
-        out[m.group(1)] = (m.group(2).split("::")[-1], m.group(3))
-    return out
-
-
-def text_decls(files: list[ModelFile]) -> list[TypeDecl]:
-    """Every part def that declares at least one status axis, in source order, unchecked."""
-    decls: list[TypeDecl] = []
-    for found in find_all(files, r"part\s+def"):
-        body = mask_comments(found.body)
-        usages = _usages(body, "StatusAxis")
-        if not usages:
-            continue
-        axes = [_text_axis(u, b) for u, b in usages]
-        decls.append(TypeDecl(found.name, found.qualified, found.source, axes, _refs(body)))
-    return decls
-
-
-def text_axis_types(files: list[ModelFile]) -> list[AxisType]:
-    """The text reader's axis types, checked by the shared checks."""
-    return check_types(text_decls(files))

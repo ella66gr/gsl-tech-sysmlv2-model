@@ -64,7 +64,7 @@ if __package__ in (None, ""):
 
 from generation.output import base_parser, header as make_header, write
 from generation import resolved
-from generation.sysml_text import ModelError, rel_path, upper_first
+from generation.common import ModelError, rel_path, upper_first
 
 # Platform pattern packages the evaluation types reflect (SystemMetamodelGeneral).
 PATTERN_PACKAGES = ("LogicEngine", "EvaluationSpecs")

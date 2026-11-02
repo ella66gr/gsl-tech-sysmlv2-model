@@ -68,7 +68,7 @@ from sysml_parser import SysmlElement
 # The shared resolved-model reader lives in the repository's generation package.
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 from generation import resolved  # noqa: E402
-from generation.sysml_text import ModelError  # noqa: E402
+from generation.common import ModelError  # noqa: E402
 
 # ---------------------------------------------------------------
 # Path constants

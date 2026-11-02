@@ -22,7 +22,7 @@ How a model is loaded:
    its path relative to ``root`` (as in a generated-file header), a
    platform file by its path relative to the repository.
 3. ``opensysml.parse_sources(..., strict=True)``: any error in the model
-   raises, and is re-raised as ``generation.sysml_text.ModelError`` with
+   raises, and is re-raised as ``generation.common.ModelError`` with
    OpenSysML's own message. A fault of the client or of its gRPC service
    (``ConnectionError``, ``StaleServiceError`` and the like) is not a
    model fault and is raised as it is.
@@ -48,8 +48,7 @@ How status axes are read (``ResolvedModel.axis_decls``):
    name, a one-element sequence as a list where a list is wanted, and an
    unset feature (``Undetermined``) as None.
 
-The declarations are checked by ``generation.status_axes.check_types``,
-the same checks the text reader's declarations get.
+The declarations are checked by ``generation.status_axes.check_types``.
 
 The element graph (``ResolvedModel.elements``, for the OWL pipeline):
 OpenSysML's API JSON export, which carries what the symbol API omits in
@@ -83,7 +82,7 @@ from generation.status_axes import (
     TypeDecl,
     check_types,
 )
-from generation.sysml_text import ModelError, rel_path
+from generation.common import ModelError, rel_path
 
 REPO = Path(__file__).resolve().parent.parent
 PLATFORM_FOLDERS = ("model", "libraries")

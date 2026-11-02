@@ -64,7 +64,7 @@ if __package__ in (None, ""):
 from generation.output import base_parser, header, write
 from generation import resolved
 from generation.status_axes import OPERATOR_AUTHORITY, AxisType
-from generation.sysml_text import ModelError, lower_first
+from generation.common import ModelError, lower_first
 
 GUARD_FILE = "axis-guard.ts"
 MACHINE_FILE = "axis-machine.ts"

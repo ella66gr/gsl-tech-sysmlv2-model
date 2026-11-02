@@ -31,7 +31,7 @@ if __package__ in (None, ""):
 
 from generation import resolved
 from generation.output import base_parser, header, write
-from generation.sysml_text import ModelError, kebab
+from generation.common import ModelError, kebab
 
 
 def parse_flow(graph: resolved.ElementGraph, action_def: dict) -> dict[str, list[str]]:

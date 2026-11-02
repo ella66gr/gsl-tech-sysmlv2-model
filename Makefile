@@ -53,9 +53,8 @@ qa:
 #   make gen-check  regenerate into a scratch folder and fail, with a diff,
 #                   on any difference from the files at the target paths,
 #                   and on any orphaned generated file (below)
-#   make gen-test   the generation package's tests (fixture models, and the
-#                   reader comparison on every tenant model), then the Cafe's
-#                   generated axis guard and precondition checks
+#   make gen-test   the generation package's tests (fixture models), then the
+#                   Cafe's generated axis guard and precondition checks
 #   make gen-test-guard          Stage 0 test path 4: the generated axis guard
 #                                refuses loudly (fixture model, then the Cafe)
 #   make gen-test-preconditions  Stage 0 test path 5: the generated E6

@@ -53,7 +53,7 @@ if __package__ in (None, ""):
 
 from generation import resolved
 from generation.output import base_parser, header, write
-from generation.sysml_text import ModelError, rel_path
+from generation.common import ModelError, rel_path
 
 # Definitions that are not instantiated as elements (API JSON element types).
 NOT_ELEMENTS = {

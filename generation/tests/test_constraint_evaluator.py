@@ -1,5 +1,5 @@
 from generation import constraint_evaluator
-from generation.sysml_text import ModelError
+from generation.common import ModelError
 from generation.tests.support import GenTestCase
 
 

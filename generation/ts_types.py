@@ -59,7 +59,7 @@ if __package__ in (None, ""):
 from generation.output import base_parser, header, write
 from generation import resolved
 from generation.status_axes import AxisType
-from generation.sysml_text import ModelError, rel_path
+from generation.common import ModelError, rel_path
 
 TYPE_MAP = {
     "String": "string",

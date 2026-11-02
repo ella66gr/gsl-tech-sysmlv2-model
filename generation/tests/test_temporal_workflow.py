@@ -1,5 +1,5 @@
 from generation import temporal_workflow
-from generation.sysml_text import ModelError
+from generation.common import ModelError
 from generation.tests.support import GenTestCase
 
 WF = "handle-ticket.ts"

@@ -64,7 +64,7 @@ from generation.output import base_parser, header, write
 from generation.state_machine import GUARD_FILE
 from generation import resolved
 from generation.status_axes import Axis, AxisType
-from generation.sysml_text import ModelError, kebab, lower_first, upper_first
+from generation.common import ModelError, kebab, lower_first, upper_first
 
 # Platform defaults for activity calls. The model has no annotation for them yet.
 ACTIVITY_START_TO_CLOSE = "1 minute"
