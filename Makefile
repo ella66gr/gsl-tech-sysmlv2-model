@@ -200,3 +200,64 @@ parse-check:
 	fi; \
 	if [ $$status -ne 0 ]; then echo "=== PARSE-CHECK FAILED"; exit 1; fi; \
 	echo "=== PARSE-CHECK PASSED: sysml v$(SYSML_VERSION), $$n loads, no errors, $$(wc -l <"$$tmp/warnings.sorted" | tr -d ' ') baseline warnings"
+
+# ---------------------------------------------------------------------------
+# The OpenSysML authoring venv (S0.5 Pass A5, Session 522).
+#
+# .venv/ holds the OpenSysML Python client (opensysml) and its gRPC service
+# (sysml-grpc, as .venv/bin/sysml-grpc), both at SYSML_VERSION, from that
+# release's assets, digest-checked. It is the authoring rig's, for make gen
+# and the OWL pipeline only: nothing under stack/ uses it, and the Cafe's
+# runtime never depends on it.
+#
+#   make venv          create it, or refresh it when its stamp
+#                      (.venv/opensysml.stamp) does not match SYSML_VERSION
+#                      and this platform; a no-op when it is current
+#   make venv-refresh  rebuild it from the release regardless
+#
+# Upgrading: change SYSML_VERSION (with the brew upgrade above); the next make
+# venv, or any make gen, rebuilds the venv at the new version. There is no
+# second version number. scripts/opensysml_venv.sh holds the details.
+#
+# The generation targets get the venv first (gen-cafe, gen-gsl), and every
+# generation target runs with this environment, so the client starts a private
+# child of the venv's sysml-grpc and nothing else:
+#
+#   OPENSYSML_BINARY=.venv/bin/sysml-grpc  the client's first choice; it never
+#                       looks in ~/.opensysml or $PATH, and never downloads
+#   OPENSYSML_GRPC_VERSION=v$(SYSML_VERSION)  the client refuses a service that
+#                       reports another release (StaleServiceError)
+#   OPENSYSML_SERVICE=  (empty) never a shared, externally run service
+#   OPENSYSML_RECORD_CACHE=0  the record cache off, as parse-check's
+#                       -no-record-cache: honoured by sysml, sysml-lsp and
+#                       sysml-mcp. sysml-grpc v0.11.0 does not read it, and has
+#                       no record cache to turn off: it holds every document
+#                       loaded and takes the standard library from the snapshot
+#                       built into it (checked S522: it wrote nothing to a
+#                       fresh cache folder, with or without the variable).
+#
+# GEN_PYTHON is the interpreter that may import opensysml; the generators move
+# to it in S0.5 Pass A2 (until then they run on $(PYTHON)). Nothing a generator
+# writes may import opensysml: generation/tests/test_no_opensysml_import.py.
+
+VENV        := .venv
+VENV_PYTHON := $(CURDIR)/$(VENV)/bin/python
+VENV_GRPC   := $(CURDIR)/$(VENV)/bin/sysml-grpc
+GEN_PYTHON  := $(VENV_PYTHON)
+
+.PHONY: venv venv-refresh
+
+venv:
+	@scripts/opensysml_venv.sh ensure $(SYSML_VERSION) $(VENV) $(PYTHON)
+
+venv-refresh:
+	@scripts/opensysml_venv.sh refresh $(SYSML_VERSION) $(VENV) $(PYTHON)
+
+OPENSYSML_GEN_TARGETS := gen gen-cafe gen-gsl gen-check gen-test gen-test-guard gen-test-preconditions
+
+$(OPENSYSML_GEN_TARGETS): export OPENSYSML_BINARY = $(VENV_GRPC)
+$(OPENSYSML_GEN_TARGETS): export OPENSYSML_GRPC_VERSION = v$(SYSML_VERSION)
+$(OPENSYSML_GEN_TARGETS): export OPENSYSML_SERVICE =
+$(OPENSYSML_GEN_TARGETS): export OPENSYSML_RECORD_CACHE = 0
+
+gen-cafe gen-gsl: venv
