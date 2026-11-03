@@ -302,6 +302,15 @@ package CoffeeShopBusinessModel {
     // engine holds only private workflow state. No Cafe policy
     // targets businessDatabase or clinicalDataRepository.
     //
+    // S525 (S0.5 Pass B7, H-0646): each policy names its concept by
+    // typed reference (ref :>> domainConcept : <type>), and sets at
+    // least one characteristic. orderRecordPolicy now references
+    // Order; orderLinePolicy added. feedbackRecordPolicy, which named
+    // "FeedbackRecord", is removed: the Cafe has no feedback type, and
+    // Ella chose removal over adding one (S525). Feedback's placement
+    // (DSR content, in the knowledge graph; S515 D1) returns with a
+    // feedback type when a stage needs one.
+    //
     // Added Session 29: CSW Extension Phase 10 (item 8.3).
     // Source: gsl-spec-catalogue-inventory-v2.1.md §8.3
 
@@ -309,33 +318,39 @@ package CoffeeShopBusinessModel {
         doc /* Runtime content: the catalogue, prices and availability
              * are held as triples in the knowledge graph (H-0264;
              * S515 D1). */
-        attribute :>> domainConcept = "CatalogueEntry";
+        ref :>> domainConcept : CoffeeShop::CatalogueEntry;
         attribute :>> targetLayer = PersistenceLayer::knowledgeGraph;
         attribute :>> rationale = "The catalogue, prices and availability are runtime content, held in the knowledge graph (H-0264).";
+        attribute :>> characteristics = DataCharacteristic::referenceData;
     }
 
     part inventoryRecordPolicy : PersistencePolicy {
         doc /* Runtime operational state, held as triples in the knowledge
              * graph with the catalogue entry it counts (S515 D1). */
-        attribute :>> domainConcept = "InventoryRecord";
+        ref :>> domainConcept : InventoryRecord;
         attribute :>> targetLayer = PersistenceLayer::knowledgeGraph;
         attribute :>> rationale = "Stock levels are runtime operational state, held in the knowledge graph beside the catalogue (S515 D1).";
+        attribute :>> characteristics = (DataCharacteristic::highFrequencyUpdate, DataCharacteristic::relationalJoins);
     }
 
     part orderRecordPolicy : PersistencePolicy {
         doc /* Orders are DBR content: the record of the business's own
              * transactions, held in the knowledge graph (S515 D1). */
-        attribute :>> domainConcept = "OrderRecord";
+        ref :>> domainConcept : Order;
         attribute :>> targetLayer = PersistenceLayer::knowledgeGraph;
         attribute :>> rationale = "Orders are DBR content, held in the knowledge graph (S515 D1).";
+        attribute :>> characteristics = DataCharacteristic::transactionalIntegrity;
     }
 
-    part feedbackRecordPolicy : PersistencePolicy {
-        doc /* Feedback is DSR content: a record about the service delivered,
-             * held in the knowledge graph (S515 D1). */
-        attribute :>> domainConcept = "FeedbackRecord";
+    part orderLinePolicy : PersistencePolicy {
+        doc /* Order lines are part of the order's DBR content, written
+             * with their order and held in the knowledge graph (S515 D1).
+             * Each line carries its own preparation axis, moved as the
+             * line is made (S0.4). Added S525 (S0.5 Pass B7). */
+        ref :>> domainConcept : OrderLine;
         attribute :>> targetLayer = PersistenceLayer::knowledgeGraph;
-        attribute :>> rationale = "Feedback is DSR content, held in the knowledge graph (S515 D1).";
+        attribute :>> rationale = "Order lines are DBR content, written with their order and held in the knowledge graph (S515 D1). Each line's preparation axis moves as the line is made.";
+        attribute :>> characteristics = (DataCharacteristic::transactionalIntegrity, DataCharacteristic::highFrequencyUpdate);
     }
 
     part orderWorkflowPolicy : PersistencePolicy {
@@ -344,18 +359,20 @@ package CoffeeShopBusinessModel {
              * realiser storage, never a source of truth: anything with
              * meaning beyond the workflow is written to DSR through its
              * binding (H-0462). */
-        attribute :>> domainConcept = "OrderWorkflow";
+        ref :>> domainConcept : FulfilDrinkOrchestration::FulfilDrinkWorkflow;
         attribute :>> targetLayer = PersistenceLayer::processEngine;
         attribute :>> rationale = "Temporal's store is private realiser storage, never a source of truth; anything with meaning beyond the workflow is written to DSR through its binding (H-0462).";
+        attribute :>> characteristics = (DataCharacteristic::durableExecution, DataCharacteristic::eventDriven);
     }
 
     part externalKnowledgePolicy : PersistencePolicy {
         doc /* Knowledge the system links to but does not own.
              * Coffee shop: supplier datasheets.
              * GSL: SPCs, BNF entries, NICE guidance. */
-        attribute :>> domainConcept = "ExternalKnowledge";
+        ref :>> domainConcept : BusinessMetamodelGeneral::ServiceConcept::ExternalReference;
         attribute :>> targetLayer = PersistenceLayer::externalReference;
         attribute :>> rationale = "Knowledge the system links to but does not own.";
+        attribute :>> characteristics = DataCharacteristic::referenceData;
     }
 
     // -- Stakeholder Model ------------------------------------

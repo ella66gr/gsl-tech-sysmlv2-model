@@ -1728,8 +1728,22 @@ package SystemMetamodelGeneral {
                  * Instantiated per domain concept in each domain's
                  * business model (e.g. CoffeeShopBusinessModel).
                  *
+                 * domainConcept is a typed reference (S525, S0.5 Pass
+                 * B7; H-0646), not text: each policy redefines it with
+                 * the type it places, for example
+                 *     ref :>> domainConcept : Order;
+                 * so a policy naming a type that does not exist, or a
+                 * type that is not an occurrence (an attribute or enum
+                 * def), fails make parse-check. Its type here is the
+                 * library's Occurrences::Occurrence, the common
+                 * supertype of every part, item and action def, so this
+                 * package never imports a tenant package: the tenant's
+                 * own model, which can see its types, names the type.
+                 * The policy has no side field: side is read from the
+                 * content.
+                 *
                  * Source: gsl-spec-catalogue-inventory-v2.1.md §8.3 */
-            attribute domainConcept : String;
+            ref domainConcept : Occurrences::Occurrence;
             attribute targetLayer : PersistenceLayer;
             attribute rationale : String;
             attribute characteristics : DataCharacteristic [1..*];

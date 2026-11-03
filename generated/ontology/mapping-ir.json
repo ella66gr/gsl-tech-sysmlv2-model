@@ -2882,7 +2882,7 @@
       "targetGraph": null
     },
     {
-      "name": "feedbackRecordPolicy",
+      "name": "orderLinePolicy",
       "kind": "part",
       "parentPackage": "CoffeeShopBusinessModel",
       "sourceFile": "exercises/coffeeshop-demonstrator/model/coffeeshop-business-model.sysml",

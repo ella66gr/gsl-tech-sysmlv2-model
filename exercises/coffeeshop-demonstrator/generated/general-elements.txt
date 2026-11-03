@@ -152,7 +152,7 @@ SystemMetamodelGeneral::LogicEngine::GoalProjection
 SystemMetamodelGeneral::Persistence::PersistencePolicy
   part CoffeeShopBusinessModel::catalogueEntryPolicy
   part CoffeeShopBusinessModel::externalKnowledgePolicy
-  part CoffeeShopBusinessModel::feedbackRecordPolicy
   part CoffeeShopBusinessModel::inventoryRecordPolicy
+  part CoffeeShopBusinessModel::orderLinePolicy
   part CoffeeShopBusinessModel::orderRecordPolicy
   part CoffeeShopBusinessModel::orderWorkflowPolicy
