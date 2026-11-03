@@ -224,7 +224,7 @@
     "axiomFilePresent": true,
     "namedIndividualCount": 15,
     "datatypePropertyCount": 11,
-    "sparqlQueryCount": 82
+    "sparqlQueryCount": 68
   },
   "violationTest": {
     "ran": false,
