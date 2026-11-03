@@ -167,6 +167,10 @@ gen-test-preconditions: venv
 # The version is pinned (brew pin opensysml). To upgrade: brew unpin, upgrade,
 # change SYSML_VERSION, re-run, review any baseline change, brew pin again.
 # This is the SysML parse gate of record (S519).
+#
+# OPENSYSML_LIBRARY_PATH and SYSML_LIBRARY_PATH are exported empty, as for
+# the generation targets (below): the standard library is the one built into
+# sysml, never one named in a developer's shell (S525, Pass A close-out).
 
 SYSML          ?= sysml
 SYSML_VERSION  := 0.11.0
@@ -174,6 +178,9 @@ SYSML_BASELINE := qa/parse-warnings-baseline.txt
 SYSML_SCOPES   := $(sort $(wildcard exercises/*/) $(wildcard generation/tests/fixtures/*/))
 
 .PHONY: parse-check
+
+parse-check: export OPENSYSML_LIBRARY_PATH =
+parse-check: export SYSML_LIBRARY_PATH =
 
 parse-check:
 	@found=$$($(SYSML) -version 2>/dev/null | head -1); \

@@ -29,6 +29,7 @@ C1 (2026-05-10): ELK added as daily classifier; HermiT remains release-gate.
 """
 
 import argparse
+import ast
 import hashlib
 import json
 import os
@@ -644,13 +645,23 @@ def count_reified_weights():
 
 
 def count_sparql_queries():
-    """Count SPARQL validation queries in validate_kg.py by scanning QUERIES list."""
+    """Count the queries in validate_kg.py's VALIDATION_QUERIES list.
+
+    Reads the list from the file's syntax tree, so other dicts in the file
+    (the load entries) are not counted, and nothing is imported or run.
+    Until S525 this counted the text '"name":', which also matched the load
+    entries (82 against 68 queries).
+    """
     validate_file = REPO_ROOT / "scripts" / "validate_kg.py"
     if not validate_file.exists():
         return 0
-    content = validate_file.read_text(encoding="utf-8")
-    # Count entries in the QUERIES list — each query is a dict with "name" key
-    return content.count('"name":')
+    tree = ast.parse(validate_file.read_text(encoding="utf-8"))
+    for node in tree.body:
+        if (isinstance(node, ast.Assign)
+                and any(getattr(t, "id", None) == "VALIDATION_QUERIES" for t in node.targets)
+                and isinstance(node.value, ast.List)):
+            return len(node.value.elts)
+    return 0
 
 
 # ---------------------------------------------------------------

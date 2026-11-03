@@ -758,16 +758,29 @@ ORDER BY ?label
     {
         "id": "Q26",
         "group": "Axioms",
-        "name": "BMM concern-group disjointness declarations",
+        "name": "BMM disjointness declarations (concern groups, axis family)",
+        # Only the owl:AllDisjointClasses nodes whose members are all BMM
+        # classes: ontara-bmm-axioms.ttl holds two (the six concern groups;
+        # the axis family). BFO, CCO, the record module and governance hold
+        # 15 more, which this query counted until S525 (Pass A close-out).
         "sparql": """
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
-SELECT ?disjoint WHERE {
-  ?disjoint a owl:AllDisjointClasses .
+SELECT ?disjoint (GROUP_CONCAT(STRAFTER(STR(?member), "https://ontara.dev/ontology/bmm/"); separator=", ") AS ?members)
+WHERE {
+  ?disjoint a owl:AllDisjointClasses ;
+            owl:members ?list .
+  ?list rdf:rest*/rdf:first ?member .
+  FILTER NOT EXISTS {
+    ?list rdf:rest*/rdf:first ?other .
+    FILTER(!STRSTARTS(STR(?other), "https://ontara.dev/ontology/bmm/"))
+  }
 }
+GROUP BY ?disjoint
 """,
-        "expect_at_least": 9,
-        "display_vars": ["count"],
+        "expect_exactly": 2,
+        "display_vars": ["members"],
     },
     {
         "id": "Q27",
@@ -1736,18 +1749,15 @@ def foundation_files():
     setup_graphdb.ONTOLOGY_STACK is the one list of them, with their graph
     (the domain graph) and load order; this reads it rather than copy it.
     """
-    # Built with dict() keywords: reason_kg.count_sparql_queries() counts
-    # the quoted name keys in this file, so a literal one here would
-    # inflate reasoning-summary.json's sparqlQueryCount.
     from setup_graphdb import IMPORTS_DIR, ONTOLOGY_STACK
 
     return [
-        dict(
-            path=str((IMPORTS_DIR / e["file"]).relative_to(REPO_ROOT)),
-            name=e["name"] + " (foundation import)",
-            graph=e["graph"],
-            content_type=e["content_type"],
-        )
+        {
+            "path": str((IMPORTS_DIR / e["file"]).relative_to(REPO_ROOT)),
+            "name": e["name"] + " (foundation import)",
+            "graph": e["graph"],
+            "content_type": e["content_type"],
+        }
         for e in ONTOLOGY_STACK
     ]
 
