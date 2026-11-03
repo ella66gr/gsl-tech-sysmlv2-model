@@ -1,0 +1,315 @@
+{
+  "kind": "development run (Mac runs do not count as the S0.1 pass figure; specification 2.5 item 8.4)",
+  "run": "1cbc64ca",
+  "startedUtc": "2026-11-03T18:59:41.431Z",
+  "elapsedSeconds": 16.6,
+  "store": {
+    "product": "Apache Jena Fuseki 6.2.0",
+    "jenaVersion": "6.2.0",
+    "jenaBuildVersion": "6.2.0",
+    "module": "ontara-fuseki-validated-update 0.5.0",
+    "storage": "TDB2",
+    "validationMode": "targeted",
+    "engine": "jena-shacl targeted (nodes the update touched, VLib.isFocusNode + VLib.validateShape; whole graph for other update forms)",
+    "statusReadBeforeRun": {
+      "module": "ontara-fuseki-validated-update 0.5.0",
+      "moduleVersion": "0.5.0",
+      "jenaVersion": "6.2.0",
+      "jenaBuildVersion": "6.2.0",
+      "fusekiVersion": "6.2.0",
+      "store": "TDB2",
+      "unionDefaultGraph": true,
+      "validating": true,
+      "validationMode": "targeted",
+      "engine": "jena-shacl targeted (nodes the update touched, VLib.isFocusNode + VLib.validateShape; whole graph for other update forms)",
+      "validationProbe": {
+        "passed": true,
+        "microseconds": 569,
+        "cases": [
+          {
+            "case": "violation, INSERT DATA",
+            "expected": "rejected",
+            "outcome": "rejected",
+            "validation": "targeted; changes=1 touched=2 focus=1"
+          },
+          {
+            "case": "violation, INSERT DATA then CLEAR",
+            "expected": "rejected",
+            "outcome": "rejected",
+            "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+          },
+          {
+            "case": "conforming, INSERT DATA",
+            "expected": "committed",
+            "outcome": "committed",
+            "validation": "targeted; changes=2 touched=3 focus=1"
+          }
+        ]
+      },
+      "shapesGraph": "https://ontara.dev/graph/shapes",
+      "shapesTriples": 147,
+      "targetShapes": 9,
+      "inference": "none",
+      "rrb": {
+        "dhbId": "1a59ad7f-c4fa-44d9-89dd-5b2b3d51ac32",
+        "generatedAt": "2026-11-03T17:50:43.397228381Z"
+      },
+      "listener": {
+        "name": "stack-network",
+        "port": 3030,
+        "standardWriteEndpoints": true
+      }
+    }
+  },
+  "validation": {
+    "expectedMode": "targeted",
+    "orderWritesByMode": {
+      "targeted": 500
+    },
+    "knownBadWritesByMode": null,
+    "orderWritesNotInExpectedMode": 0,
+    "knownBadWritesNotInExpectedMode": 0,
+    "missingHeader": 0,
+    "samplesNotInExpectedMode": [],
+    "note": "the removal of this run's orders after the run (by IRI, outside the timed writes) is not counted"
+  },
+  "validAsMeasure": true,
+  "configurationFault": null,
+  "config": {
+    "orders": 500,
+    "rejectEvery": null,
+    "writers": 1,
+    "branch": {
+      "dhbId": "1a59ad7f-c4fa-44d9-89dd-5b2b3d51ac32",
+      "dbr": "https://ontara.dev/graph/dhb/cafe/1a59ad7f-c4fa-44d9-89dd-5b2b3d51ac32/dbr",
+      "dsr": "https://ontara.dev/graph/dhb/cafe/1a59ad7f-c4fa-44d9-89dd-5b2b3d51ac32/dsr"
+    },
+    "keep": true,
+    "store": "fuseki",
+    "readers": "paced",
+    "readerCadenceMs": {
+      "counter-queue": 1000,
+      "kds-stream": 500,
+      "operator-board": 2000
+    },
+    "graph": "https://ontara.dev/graph/dhb/cafe/1a59ad7f-c4fa-44d9-89dd-5b2b3d51ac32/dbr",
+    "dataset": "cafe-runtime",
+    "rule": "fixtures/rules/order-readiness.rq + fixtures/rules/labelling.rq",
+    "write": "fixtures/writes/order-54.ttl",
+    "shapes": "fixtures/shapes/standin-shapes-core-only.ttl + fixtures/shapes/spike-two-sided-readiness.ttl + tenant-generated/cafe/axis-shapes.ttl",
+    "shapesGraph": "https://ontara.dev/graph/shapes"
+  },
+  "percentileMethod": "nearest rank, over committed order writes; latency = HTTP round trip to the gate's /write as the caller sees it (writes.csv column latency_ms, rows with kind=order and outcome=committed)",
+  "writeLatencyMs": {
+    "n": 500,
+    "p50": 31.3,
+    "p95": 41.5,
+    "max": 54.7,
+    "mean": 32.5
+  },
+  "gatePhaseMs": {
+    "commit": {
+      "n": 500,
+      "p50": 27.6,
+      "p95": 36.3,
+      "max": 51.2,
+      "mean": 28.5
+    },
+    "updates": {
+      "n": 500,
+      "p50": 0,
+      "p95": 0,
+      "max": 0,
+      "mean": 0
+    },
+    "add": {
+      "n": 500,
+      "p50": 1.3,
+      "p95": 3.9,
+      "max": 8,
+      "mean": 1.7
+    },
+    "begin": {
+      "n": 500,
+      "p50": 0,
+      "p95": 0,
+      "max": 0,
+      "mean": 0
+    }
+  },
+  "writeLatencyMsByWriter": {
+    "w1": {
+      "n": 500,
+      "p50": 31.3,
+      "p95": 41.5,
+      "max": 54.7,
+      "mean": 32.5
+    }
+  },
+  "throughputWritesPerSecond": 30.05,
+  "concurrency": {
+    "writers": 1,
+    "sumOfWriteLatencyOverWallTime": 0.98,
+    "shareOfWritingTimeWithTwoOrMoreInFlight": 0,
+    "maxWritesInFlight": 1,
+    "note": "client-side view: a write is in flight from request to reply. With one gate and a store that serialises, latency rises with writers and throughput stays flat."
+  },
+  "passThresholdMs": 500,
+  "p95WithinThreshold": true,
+  "failures": 0,
+  "failureSamples": [],
+  "orderOutcomes": {
+    "committed": 500,
+    "rejected": 0,
+    "fault": 0
+  },
+  "rejectedWritesInMix": null,
+  "faultsTotal": 0,
+  "readers": {
+    "counter-queue": {
+      "n": 17,
+      "p50": 7.7,
+      "p95": 17.7,
+      "max": 17.7,
+      "mean": 8.5
+    },
+    "kds-stream": {
+      "n": 34,
+      "p50": 7.5,
+      "p95": 20,
+      "max": 27.9,
+      "mean": 9.4
+    },
+    "operator-board": {
+      "n": 9,
+      "p50": 21.4,
+      "p95": 30,
+      "max": 30,
+      "mean": 21
+    }
+  },
+  "readerErrors": 0,
+  "growthPer100Writes": [
+    {
+      "writes": "1-100",
+      "graphTriplesAtStart": 0,
+      "latency": {
+        "n": 100,
+        "p50": 35.1,
+        "p95": 47.1,
+        "max": 49.6,
+        "mean": 36
+      },
+      "commit": {
+        "n": 100,
+        "p50": 29.8,
+        "p95": 38.1,
+        "max": 42.2,
+        "mean": 30.9
+      }
+    },
+    {
+      "writes": "101-200",
+      "graphTriplesAtStart": 6534,
+      "latency": {
+        "n": 100,
+        "p50": 34.5,
+        "p95": 42.5,
+        "max": 46.4,
+        "mean": 35.3
+      },
+      "commit": {
+        "n": 100,
+        "p50": 30.1,
+        "p95": 37.1,
+        "max": 38.9,
+        "mean": 30.7
+      }
+    },
+    {
+      "writes": "201-300",
+      "graphTriplesAtStart": 13134,
+      "latency": {
+        "n": 100,
+        "p50": 30.2,
+        "p95": 37.5,
+        "max": 54.7,
+        "mean": 31
+      },
+      "commit": {
+        "n": 100,
+        "p50": 27,
+        "p95": 32.9,
+        "max": 51.2,
+        "mean": 27.5
+      }
+    },
+    {
+      "writes": "301-400",
+      "graphTriplesAtStart": 19734,
+      "latency": {
+        "n": 100,
+        "p50": 30,
+        "p95": 34.9,
+        "max": 37.9,
+        "mean": 30.5
+      },
+      "commit": {
+        "n": 100,
+        "p50": 26.5,
+        "p95": 31.5,
+        "max": 34.6,
+        "mean": 27.1
+      }
+    },
+    {
+      "writes": "401-500",
+      "graphTriplesAtStart": 26334,
+      "latency": {
+        "n": 100,
+        "p50": 29.2,
+        "p95": 32.7,
+        "max": 49.8,
+        "mean": 29.6
+      },
+      "commit": {
+        "n": 100,
+        "p50": 25.9,
+        "p95": 29.3,
+        "max": 46.9,
+        "mean": 26.4
+      }
+    }
+  ],
+  "dataset": {
+    "triplesBefore": 24874,
+    "triplesAfter": 57874,
+    "branchDbrGraphBefore": 0,
+    "branchDbrGraphAfterWrites": 33000,
+    "removal": {
+      "kept": true,
+      "requests": 0,
+      "committed": 0,
+      "other": []
+    }
+  },
+  "storeErrors": [],
+  "correctness": {
+    "orders": 500,
+    "ordersReady": 500,
+    "derivedRecordsLabelled": 500
+  },
+  "correctnessByWriter": {
+    "w1": {
+      "orders": 500,
+      "ordersReady": 500,
+      "derivedRecordsLabelled": 500
+    }
+  },
+  "containerView": {
+    "cpus": 10,
+    "cpuModel": "unknown",
+    "totalMemGiB": 7.75,
+    "note": "as seen inside the gate container (the Docker VM on a Mac); host figures are in machine.txt"
+  }
+}
