@@ -1,2 +1,5 @@
 # Local settings (optional overrides; .env.example). Never commit.
 .env
+# The whole-graph check's reports (S0.5 Pass B4): operational, written every five
+# minutes by the running stack. Read them there; never commit them.
+results/whole-graph-check/

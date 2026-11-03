@@ -136,6 +136,11 @@ export interface Store {
   // Never rejects: every failure is an outcome (S519, e42a70c).
   write(req: WriteRequest): Promise<WriteOutcome>;
 
+  // The whole-graph check (S0.5 Pass B4): a whole-graph SHACL validation of
+  // the union graph and the given queries, in one read transaction in the
+  // store (module operation whole-graph-check). Never on the write path.
+  wholeGraphCheck(queries: { name: string; query: string }[]): Promise<WholeGraphCheckResult>;
+
   // The module's status for this (or another) dataset.
   status(id?: string): Promise<ModuleStatus>;
   // Datasets are fixed when the store starts; these are the ones it serves.
@@ -143,6 +148,16 @@ export interface Store {
   // Empties a dataset (the capability scratch dataset), through the
   // unvalidated update endpoint.
   clearDataset(id: string): Promise<GraphLoad>;
+}
+
+// What the module's whole-graph-check operation returns (stack/store/module).
+export interface WholeGraphCheckResult {
+  checkedAt: string;
+  ms: number;
+  triplesChecked: { namedGraphs: number; storedDefaultGraph: number; graphs: number };
+  shacl: { graph: string; triples: number; targetShapes?: number; conforms: boolean; results?: number; byShape?: Record<string, number>;
+           sample?: { focusNode: string; path?: string; value?: string; sourceShape: string; component?: string; message?: string }[]; error?: string; ms: number };
+  queries: { name: string; rows: number; sample?: Record<string, string>[]; error?: string; ms: number }[];
 }
 
 export const SH = "http://www.w3.org/ns/shacl#";

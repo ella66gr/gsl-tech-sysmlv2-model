@@ -26,6 +26,19 @@
 //   GET  /{dataset}/validated-update   JSON status
 // Response header X-Ontara-Validation says how the request was validated.
 //
+// The whole-graph check's operation (S0.5 Pass B4; H-0640; ADR-014 §4.4
+// condition 2), on the stack-network listener only:
+//   POST /{dataset}/whole-graph-check   application/json {"queries": [{"name", "query"}]}
+//        200  JSON: the triples checked, a whole-graph SHACL validation of the
+//             union graph against every shape in the shapes graph, and each
+//             query's rows (the placement queries, sent filled by the caller)
+//        405  on the published listener;  400 bad request;  500 fault
+// It runs entirely inside ONE read transaction, so every part of a report
+// reads the same snapshot. It is not on the write path: no write calls it, it
+// takes no write lock (TDB2 readers never block the writer, nor the writer
+// them), and it changes nothing. Its caller is the whole-graph-check service
+// and the bootstrap (gate/src/wholegraph.ts), never the gate's write path.
+//
 // The write policy (S0.5 Pass B3, the named-graph scheme's four write rules).
 // The constraint gate decides, for each runtime write, which graphs it may
 // change, and sends that as the request header X-Ontara-Write-Policy (JSON:
@@ -125,7 +138,14 @@ import org.apache.jena.fuseki.servlets.HttpAction;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
+import org.apache.jena.query.DatasetFactory;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.TxnType;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.shacl.ShaclValidator;
+import org.apache.jena.shacl.validation.ReportEntry;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFParser;
@@ -187,6 +207,8 @@ public class OntaraFuseki {
         if (stackPort == publishedPort) throw new IllegalArgumentException("FUSEKI_PORT and FUSEKI_PUBLISHED_PORT must differ, both are " + stackPort);
         Operation op = Operation.alloc("https://ontara.dev/store/fuseki#validated-update", "validated-update",
                 "SHACL-validated SPARQL Update (jena-shacl)");
+        Operation check = Operation.alloc("https://ontara.dev/store/fuseki#whole-graph-check", "whole-graph-check",
+                "Whole-graph SHACL validation and placement queries, in one read transaction (jena-shacl)");
         Map<String, DatasetGraph> datasets = new LinkedHashMap<>();
         for (String name : DATASETS) {
             boolean fresh = !Files.exists(Path.of(base, name));
@@ -195,8 +217,8 @@ public class OntaraFuseki {
             datasets.put(name, dsg);
             if (RUNTIME_DATASETS.contains(name)) RRB.put(dsg, rrb(base, name, fresh));
         }
-        FusekiServer stack = server(stackPort, op, datasets, Listener.STACK);
-        FusekiServer published = server(publishedPort, op, datasets, Listener.PUBLISHED);
+        FusekiServer stack = server(stackPort, op, check, datasets, Listener.STACK);
+        FusekiServer published = server(publishedPort, op, check, datasets, Listener.PUBLISHED);
         try {
             stack.start();
             published.start();
@@ -245,11 +267,14 @@ public class OntaraFuseki {
         }
     }
 
-    static FusekiServer server(int port, Operation op, Map<String, DatasetGraph> datasets, Listener listener) {
+    static FusekiServer server(int port, Operation op, Operation check, Map<String, DatasetGraph> datasets, Listener listener) {
         FusekiServer.Builder b = FusekiServer.create().port(port)
-                .registerOperation(op, WebContent.contentTypeSPARQLUpdate, new ValidatedUpdate(listener));
+                .registerOperation(op, WebContent.contentTypeSPARQLUpdate, new ValidatedUpdate(listener))
+                .registerOperation(check, WebContent.contentTypeJSON, new WholeGraphCheck(listener));
         for (Map.Entry<String, DatasetGraph> e : datasets.entrySet())
-            b.add("/" + e.getKey(), e.getValue(), listener.standardWrites).addEndpoint("/" + e.getKey(), "validated-update", op);
+            b.add("/" + e.getKey(), e.getValue(), listener.standardWrites)
+             .addEndpoint("/" + e.getKey(), "validated-update", op)
+             .addEndpoint("/" + e.getKey(), "whole-graph-check", check);
         return b.build();
     }
 
@@ -511,6 +536,144 @@ public class OntaraFuseki {
         l.put("standardWriteEndpoints", listener.standardWrites);
         o.put("listener", l);
         return JSON.toStringFlat(o);
+    }
+
+    // ------------------------------------------------- the whole-graph check
+    static final int SAMPLE = 50;
+
+    static String text(Node n) { return n == null ? null : n.isURI() ? n.getURI() : n.isBlank() ? "_:" + n.getBlankNodeLabel() : n.toString(); }
+
+    static long countQuery(DatasetGraph dsg, String q) {
+        try (QueryExecution qe = QueryExecution.dataset(DatasetFactory.wrap(dsg)).query(q).build()) {
+            ResultSet rs = qe.execSelect();
+            return rs.hasNext() ? rs.next().getLiteral("n").getLong() : 0;
+        }
+    }
+
+    // One run of the whole-graph check, in one read transaction on dsg.
+    static JsonObject wholeGraphCheck(DatasetGraph dsg, JsonArray queries) {
+        long t0 = System.nanoTime();
+        JsonObject o = new JsonObject();
+        o.put("checkedAt", Instant.now().toString());
+        dsg.begin(TxnType.READ);
+        try {
+            long named = countQuery(dsg, "SELECT (COUNT(*) AS ?n) WHERE { GRAPH ?g { ?s ?p ?o } }");
+            long dflt = countQuery(dsg, "SELECT (COUNT(*) AS ?n) WHERE { GRAPH <" + Quad.defaultGraphIRI.getURI() + "> { ?s ?p ?o } }");
+            long graphs = countQuery(dsg, "SELECT (COUNT(DISTINCT ?g) AS ?n) WHERE { GRAPH ?g { ?s ?p ?o } }");
+            JsonObject t = new JsonObject();
+            t.put("namedGraphs", named);
+            t.put("storedDefaultGraph", dflt);
+            t.put("graphs", graphs);
+            o.put("triplesChecked", t);
+
+            Graph shapesGraph = GraphFactory.createDefaultGraph();
+            dsg.getGraph(NodeFactory.createURI(SHAPES_GRAPH)).find().forEachRemaining(shapesGraph::add);
+            JsonObject sh = new JsonObject();
+            sh.put("graph", SHAPES_GRAPH);
+            sh.put("triples", shapesGraph.size());
+            long s0 = System.nanoTime();
+            try {
+                Shapes shapes = Shapes.parse(shapesGraph);
+                sh.put("targetShapes", shapes.getTargetShapes().size());
+                // The data validated: the union of the named graphs, as on the write path.
+                ValidationReport report = ShaclValidator.get().validate(shapes, dsg.getUnionGraph());
+                sh.put("conforms", report.conforms());
+                sh.put("results", report.getEntries().size());
+                Map<String, Integer> byShape = new LinkedHashMap<>();
+                JsonArray sample = new JsonArray();
+                for (ReportEntry e : report.getEntries()) {
+                    String src = text(e.source());
+                    byShape.merge(src, 1, Integer::sum);
+                    if (sample.size() < SAMPLE) {
+                        JsonObject r = new JsonObject();
+                        r.put("focusNode", text(e.focusNode()));
+                        if (e.resultPath() != null) r.put("path", e.resultPath().toString());
+                        if (e.value() != null) r.put("value", text(e.value()));
+                        r.put("sourceShape", src);
+                        if (e.sourceConstraintComponent() != null) r.put("component", text(e.sourceConstraintComponent()));
+                        if (e.message() != null) r.put("message", e.message());
+                        sample.add(r);
+                    }
+                }
+                JsonObject bs = new JsonObject();
+                byShape.forEach(bs::put);
+                sh.put("byShape", bs);
+                sh.put("sample", sample);
+            } catch (Throwable e) {
+                sh.put("conforms", false);
+                sh.put("error", String.valueOf(e));
+            }
+            sh.put("ms", (System.nanoTime() - s0) / 1_000_000);
+            o.put("shacl", sh);
+
+            JsonArray qa = new JsonArray();
+            for (JsonValue v : queries) {
+                JsonObject q = v.getAsObject();
+                JsonObject r = new JsonObject();
+                r.put("name", q.getString("name"));
+                long q0 = System.nanoTime();
+                try (QueryExecution qe = QueryExecution.dataset(DatasetFactory.wrap(dsg)).query(q.getString("query")).build()) {
+                    ResultSet rs = qe.execSelect();
+                    List<String> vars = rs.getResultVars();
+                    JsonArray rows = new JsonArray();
+                    long n = 0;
+                    while (rs.hasNext()) {
+                        QuerySolution qs = rs.next();
+                        n++;
+                        if (rows.size() < SAMPLE) {
+                            JsonObject row = new JsonObject();
+                            for (String var : vars) {
+                                RDFNode x = qs.get(var);
+                                if (x != null) row.put(var, x.isLiteral() ? x.asLiteral().getLexicalForm() : text(x.asNode()));
+                            }
+                            rows.add(row);
+                        }
+                    }
+                    r.put("rows", n);
+                    r.put("sample", rows);
+                } catch (Throwable e) {
+                    r.put("rows", -1);
+                    r.put("error", String.valueOf(e));
+                }
+                r.put("ms", (System.nanoTime() - q0) / 1_000_000);
+                qa.add(r);
+            }
+            o.put("queries", qa);
+        } finally { dsg.end(); }
+        o.put("ms", (System.nanoTime() - t0) / 1_000_000);
+        return o;
+    }
+
+    static class WholeGraphCheck extends BaseActionREST {
+        final Listener listener;
+        WholeGraphCheck(Listener listener) { this.listener = listener; }
+
+        @Override
+        protected void doGet(HttpAction action) {
+            ValidatedUpdate.reply(action, 405, "application/json", "{\"outcome\": \"refused\", \"detail\": \"whole-graph-check takes POST {queries: [...]} on the stack network (store:3030)\"}", null, null);
+        }
+
+        @Override
+        protected void doPost(HttpAction action) {
+            if (!listener.standardWrites) {
+                ValidatedUpdate.reply(action, 405, "application/json", "{\"outcome\": \"refused\", \"detail\": \"whole-graph-check runs only on the stack network (store:3030), from the whole-graph-check service and the bootstrap\"}", null, null);
+                return;
+            }
+            JsonArray queries;
+            try (InputStream in = action.getRequestInputStream()) {
+                String body = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+                JsonObject req = body.isBlank() ? new JsonObject() : JSON.parse(body);
+                queries = req.hasKey("queries") ? req.get("queries").getAsArray() : new JsonArray();
+            } catch (Exception e) { ValidatedUpdate.reply(action, 400, "text/plain", "request: " + e.getMessage(), null, null); return; }
+            try {
+                JsonObject o = wholeGraphCheck(action.getDataset(), queries);
+                ValidatedUpdate.reply(action, 200, "application/json", JSON.toStringFlat(o), null, null);
+            } catch (Throwable e) {
+                System.err.println("[ontara-fuseki] " + Instant.now() + " whole-graph check FAULT: " + e);
+                e.printStackTrace(System.err);
+                ValidatedUpdate.reply(action, 500, "text/plain", "fault: " + e, null, null);
+            }
+        }
     }
 
     static class ValidatedUpdate extends BaseActionREST {

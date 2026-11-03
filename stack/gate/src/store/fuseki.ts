@@ -26,7 +26,7 @@
 import { http, HttpResult } from "./http";
 import { SparqlHttp } from "./sparql-http";
 import { parseTurtleInto, dataBlock } from "./rdfjs";
-import { Store, WriteRequest, WriteOutcome, GraphLoad, Timings, ModuleStatus, TransactionEnd,
+import { Store, WriteRequest, WriteOutcome, GraphLoad, Timings, ModuleStatus, TransactionEnd, WholeGraphCheckResult,
          ONTARA_SHAPES_GRAPH, RUNTIME_DATASET, SCRATCH_DATASET, SH } from "./types";
 import { looksLikeShaclRejection, parseReport } from "../report";
 
@@ -145,6 +145,11 @@ export class FusekiStore implements Store {
   async status(id = this.dataset): Promise<ModuleStatus> {
     const r = await http("GET", `${this.base}/${id}/validated-update`, { accept: "application/json", timeoutMs: 10_000 });
     if (r.status !== 200) throw new Error(`validated-update status /${id}: HTTP ${r.status}: ${r.body.slice(0, 300)}`);
+    return JSON.parse(r.body);
+  }
+  async wholeGraphCheck(queries: { name: string; query: string }[]): Promise<WholeGraphCheckResult> {
+    const r = await http("POST", `${this.base}/${this.dataset}/whole-graph-check`, { body: JSON.stringify({ queries }), contentType: "application/json", accept: "application/json", timeoutMs: 600_000 });
+    if (r.status !== 200) throw new Error(`whole-graph-check /${this.dataset}: HTTP ${r.status}: ${r.body.slice(0, 500)}`);
     return JSON.parse(r.body);
   }
   datasets() { return [...PROVISIONED]; }

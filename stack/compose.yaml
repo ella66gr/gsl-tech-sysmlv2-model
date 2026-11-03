@@ -23,6 +23,11 @@ x-jena-version: &jena-version "6.2.0"
 # The validation mode the module runs in and the bootstrap requires.
 x-validation-mode: &validation-mode targeted
 
+# The whole-graph check's schedule (S0.5 Pass B4; H-0640; D2: every five
+# minutes, configurable): seconds between scheduled runs. The ONE place it is
+# set; WHOLE_GRAPH_CHECK_INTERVAL in .env overrides it (README section 4).
+x-whole-graph-check-interval: &whole-graph-check-interval "${WHOLE_GRAPH_CHECK_INTERVAL:-300}"
+
 x-gate-image: &gate-image
   image: ontara-cafe-stack/gate:local
   pull_policy: never
@@ -178,6 +183,10 @@ services:
       TEMPORAL_NAMESPACE: default
       GATE_URL: http://gate:7220
       STACK_DIR: /stack
+      # The whole-graph check (S0.5 Pass B4): its schedule, and its reports'
+      # folder under results/ (host stack/results/whole-graph-check/, git-ignored).
+      ONTARA_WHOLE_GRAPH_CHECK_INTERVAL: *whole-graph-check-interval
+      ONTARA_WHOLE_GRAPH_CHECK_DIR: whole-graph-check
     volumes: &gate-volumes
       - ./fixtures:/stack/fixtures:ro
       - ./results:/stack/results
@@ -209,6 +218,24 @@ services:
       timeout: 5s
       retries: 30
       start_period: 5s
+
+  # ------------------------------------------------- Whole-graph check
+  # S0.5 Pass B4 (H-0640; ADR-014 §4.4 condition 2; D2). Its own container,
+  # never the gate's: on the schedule above it asks the store's module for a
+  # whole-graph SHACL validation and the three placement queries, in one read
+  # transaction (no write lock; no write calls it), and writes a report file
+  # and a log line. No automatic action. The bootstrap runs the same check at
+  # every knowledge-graph load. By hand: bin/whole-graph-check.sh.
+  whole-graph-check:
+    <<: *gate-image
+    command: ["node", "dist/cli/wholegraph.js", "--schedule"]
+    depends_on:
+      bootstrap:
+        condition: service_completed_successfully
+    environment: *gate-env
+    volumes: *gate-volumes
+    networks: [stack]
+    restart: unless-stopped
 
   # ----------------------------------------- Temporal worker (no-op only)
   # Serves the health check's no-op workflow. Nothing else is deployed to

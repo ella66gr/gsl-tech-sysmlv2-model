@@ -81,7 +81,7 @@ fail_run() { echo "[regression] could not run: $1" >&2; docker compose logs --no
 
 docker compose up -d --wait store > "$out/up.log" 2>&1 || fail_run "store did not start (see $out/up.log)"
 expect=(); [ -n "$EXPECT_JENA" ] && expect=(-e "EXPECTED_JENA_VERSION=$EXPECT_JENA")
-docker compose run --rm --no-deps -T ${expect[@]+"${expect[@]}"} bootstrap > "$out/bootstrap.log" 2>&1 || { cat "$out/bootstrap.log"; fail_run "bootstrap failed (see $out/bootstrap.log)"; }
+docker compose run --rm --no-deps -T --user "$u" -e "ONTARA_WHOLE_GRAPH_CHECK_DIR=$rel/whole-graph-check" ${expect[@]+"${expect[@]}"} bootstrap > "$out/bootstrap.log" 2>&1 || { cat "$out/bootstrap.log"; fail_run "bootstrap failed (see $out/bootstrap.log)"; }
 grep -E 'status /cafe-runtime|OK in' "$out/bootstrap.log" | tail -2
 docker compose up -d --wait --no-deps gate >> "$out/up.log" 2>&1 || fail_run "gate did not start"
 echo "[regression] preload: $PRELOAD orders through the load harness (no readers)"

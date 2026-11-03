@@ -17,6 +17,17 @@ export const config = {
   healthTaskQueue: "stack-health",
 };
 
+// The whole-graph check (S0.5 Pass B4; H-0640; D2). Its schedule is set in
+// ONE place, compose.yaml (x-whole-graph-check-interval, overridable by
+// WHOLE_GRAPH_CHECK_INTERVAL in .env), passed here as seconds.
+export const wholeGraphCheck = {
+  intervalSeconds: Number(process.env.ONTARA_WHOLE_GRAPH_CHECK_INTERVAL ?? 300),
+  // Reports kept (the oldest beyond this are removed; latest.json and the log stay).
+  keep: Number(process.env.ONTARA_WHOLE_GRAPH_CHECK_KEEP ?? 288),
+  // Folder under results/ (host stack/results/, git-ignored).
+  dir: process.env.ONTARA_WHOLE_GRAPH_CHECK_DIR ?? "whole-graph-check",
+};
+
 export const paths = {
   fixtures: path.join(config.stackDir, "fixtures"),
   results: path.join(config.stackDir, "results"),

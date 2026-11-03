@@ -58,8 +58,8 @@ t0=$(date +%s)
 
 echo "[scoping] run $run: project $COMPOSE_PROJECT_NAME, fresh stores (targeted and whole), the stack's own bootstrap and gate"
 docker compose up -d --wait store store-whole > "$out/up.log" 2>&1 || fail_run "the stores did not start (see $out/up.log)"
-docker compose run --rm --no-deps -T bootstrap > "$out/bootstrap.log" 2>&1 || { tail -20 "$out/bootstrap.log"; fail_run "bootstrap failed (see $out/bootstrap.log)"; }
-grep -E 'Reality Reference Branch|OK in' "$out/bootstrap.log" | sed 's/^/  /'
+docker compose run --rm --no-deps -T --user "$u" -e "ONTARA_WHOLE_GRAPH_CHECK_DIR=$rel/whole-graph-check" bootstrap > "$out/bootstrap.log" 2>&1 || { tail -20 "$out/bootstrap.log"; fail_run "bootstrap failed (see $out/bootstrap.log)"; }
+grep -E 'Reality Reference Branch|whole-graph-check\]|OK in' "$out/bootstrap.log" | sed 's/^/  /'
 docker compose up -d --wait --no-deps gate >> "$out/up.log" 2>&1 || fail_run "the gate did not start"
 
 echo "[scoping] groups 1 to 7, inside the suite's network"

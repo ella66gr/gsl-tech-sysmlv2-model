@@ -24,7 +24,14 @@
 //     it, the others are added;
 //  4. the module's status is read once more: validating (probe passed and
 //     shapes with targets in place), and the shapes count equal to what was
-//     written. Only then does the bootstrap succeed.
+//     written;
+//  5. the whole-graph check runs (S0.5 Pass B4; H-0640: at every
+//     knowledge-graph load), over everything just loaded, writing its report
+//     and log line (wholegraph.ts). D2: a finding takes no automatic action,
+//     so findings do not fail the bootstrap; they are in the report and the
+//     log. A check that cannot run does fail it (ADR-014 §4.4 condition 2:
+//     the check must run at every knowledge-graph load).
+//  Only then does the bootstrap succeed.
 //
 // Steps 2 and 3 are the one sanctioned unvalidated write (Graph Store
 // Protocol PUT): they reach the store on its stack-network listener (3030),
@@ -38,6 +45,7 @@ import { openStore, ModuleStatus, SCRATCH_DATASET } from "../store";
 import { config, paths, RUNTIME_SHAPE_FILES } from "../config";
 import { readFixture, readStackFile } from "../fixtures";
 import { KG_GRAPHS, KgGraph, SHAPES_GRAPH, isDhbId, branch, TENANT } from "../graphs";
+import { runWholeGraphCheck } from "../wholegraph";
 
 const db = openStore();
 
@@ -98,6 +106,7 @@ async function main() {
   console.log(`[bootstrap] shapes loaded into <${db.shapesGraph}>: ${shapeTriples} triples from ${RUNTIME_SHAPE_FILES.join(" + ")} (read back by SPARQL)`);
 
   // 3. knowledge graph
+  const kgLoadStarted = new Date().toISOString();
   const manifest = JSON.parse(readFixture("kg/manifest.json"));
   const started = new Set<string>();
   for (const f of manifest.files as { path: string; graph: KgGraph; contentType: string }[]) {
@@ -112,7 +121,9 @@ async function main() {
     if (!r.ok) die(`loading ${f.path} into <${g}>: HTTP ${r.status}: ${r.body.slice(0, 1000)}`);
     console.log(`[bootstrap] kg <${g}> ${first ? "replaced by" : "added"} ${f.path}: graph now ${await db.size(g)} triples (${Date.now() - ts} ms)`);
   }
-  for (const [k, g] of Object.entries(KG_GRAPHS)) console.log(`[bootstrap] kg ${k}: <${g}> ${await db.size(g)} triples`);
+  const kgCounts: Record<string, number> = {};
+  for (const [k, g] of Object.entries(KG_GRAPHS)) { kgCounts[k] = await db.size(g); console.log(`[bootstrap] kg ${k}: <${g}> ${kgCounts[k]} triples`); }
+  const kgLoadFinished = new Date().toISOString();
   console.log(`[bootstrap] runtime dataset holds ${await db.size()} triples in named graphs`);
 
   // 4. read the status back once more, with the shapes in place
@@ -120,7 +131,13 @@ async function main() {
   console.log(line(config.dataset, after));
   checkStatus(config.dataset, after, true);
   if (after.shapesTriples !== shapeTriples) die(`module reports ${after.shapesTriples} shapes triples, ${shapeTriples} were loaded`);
-  console.log(`[bootstrap] OK in ${((Date.now() - t0) / 1000).toFixed(1)} s: validating, ${after.validationMode} mode, Jena ${after.jenaVersion}, ${after.shapesTriples} shapes triples`);
+
+  // 5. the whole-graph check, at this knowledge-graph load
+  const check = await runWholeGraphCheck(db, { trigger: "knowledge-graph-load", context: {
+    knowledgeGraphLoad: { startedAt: kgLoadStarted, finishedAt: kgLoadFinished, files: manifest.files.length, graphs: kgCounts, shapesTriples: shapeTriples } } });
+  if (check.fault) die(`the whole-graph check could not run after the knowledge-graph load: ${check.fault}`);
+  if (!check.clean) console.log(`[bootstrap] the whole-graph check FOUND something after the knowledge-graph load (no automatic action, D2): ${check.reportFile ?? "see its log line above"}`);
+  console.log(`[bootstrap] OK in ${((Date.now() - t0) / 1000).toFixed(1)} s: validating, ${after.validationMode} mode, Jena ${after.jenaVersion}, ${after.shapesTriples} shapes triples; whole-graph check at the knowledge-graph load: ${check.clean ? "clean" : "FINDINGS"} (${check.durationMs} ms)`);
 }
 
 main().catch((e) => die(String(e?.stack ?? e)));

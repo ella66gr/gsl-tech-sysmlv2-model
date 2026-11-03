@@ -25,11 +25,14 @@
 //      lands and whether validation sees it; and whether the standard
 //      endpoints are closed to writes from outside the stack's network.
 //
-// The whole-graph validation used by groups 4 and 5 (change 1 of step 4) is
-// the module's own whole-graph path: a request that changes nothing and is
-// not one of the three targeted forms (ADD SILENT GRAPH <g> TO GRAPH <g>), so
-// the module validates every shape against the whole union graph and answers
-// 200 (conforms) or 422 (the report), aborting in either case nothing changed.
+// Group 5 uses the whole-graph check itself (S0.5 Pass B4; ../wholegraph.ts),
+// the same code the whole-graph-check service and the bootstrap run, so the
+// blind spot is tested against what will run. Group 5 also shows that the
+// check ran after this store's knowledge-graph load (the bootstrap's report),
+// and that it finds each placement query's seeded breach. Groups 4 and 7 use
+// the module's own whole-graph validation path: a request that changes
+// nothing and is not one of the three targeted forms (ADD SILENT GRAPH <g> TO
+// GRAPH <g>), answered 200 (conforms) or 422 (the report).
 //
 //   node dist/cli/scoping.js --out <rel>                the suite (inside the suite's network)
 //   node dist/cli/scoping.js --outside <url> --out <rel> group 7's outside leg, from a container
@@ -50,6 +53,7 @@ import { parseTurtleInto, dataBlock } from "../store/rdfjs";
 import { branch, Branch, KG_GRAPHS, SHAPES_GRAPH, STORED_DEFAULT_GRAPH, TENANT, placementTokens, bindBranch } from "../graphs";
 import { writePolicy } from "../gate";
 import { fillPlacement, PLACEMENT_QUERIES } from "./placement";
+import { runWholeGraphCheck, WholeGraphReport, FORMAT } from "../wholegraph";
 
 const DS = "cafe-runtime";
 const STORE = config.storeUrl;                                   // the suite's store, stack-network listener
@@ -432,8 +436,41 @@ async function group4() {
 }
 
 // ------------------------------------------------------------- group 5
+let runRel = "";
+let kgAtStart: Record<string, number> = {};
+const checkDir = () => `${runRel}/whole-graph-check`;
+const B4 = (trigger = "scoping-suite") => runWholeGraphCheck(db, { trigger, dir: checkDir() });
+const shapeHits = (r: WholeGraphReport) => Object.keys(r.shacl?.byShape ?? {}).map(ln).sort();
+const rows = (r: WholeGraphReport) => Object.fromEntries(r.placement.map((p) => [p.query.split("-")[0], p.rows]));
+function checkB4(id: string, name: string, r: WholeGraphReport, want: { clean: boolean; shapes?: string[]; focus?: string[]; placement?: Record<string, number> }) {
+  const hits = shapeHits(r);
+  const focus = (r.shacl?.sample ?? []).map((x) => ln(x.focusNode));
+  const pr = rows(r);
+  let pass = !r.fault && r.clean === want.clean && r.format === FORMAT;
+  if (want.shapes) pass &&= want.shapes.every((x) => hits.includes(x));
+  if (want.focus) pass &&= want.focus.every((x) => focus.includes(x));
+  if (want.placement) pass &&= Object.entries(want.placement).every(([k, v]) => (v === 0 ? pr[k] === 0 : pr[k] >= v));
+  record({ group: 5, id, name,
+    expected: [want.clean ? "clean report" : "findings in the report", want.shapes?.length ? `SHACL ${want.shapes.join(", ")}` : "", want.focus?.length ? `on ${want.focus.join(", ")}` : "", want.placement ? Object.entries(want.placement).map(([k, v]) => `${k} ${v === 0 ? "0 rows" : `>= ${v} row(s)`}`).join(", ") : ""].filter(Boolean).join("; "),
+    observed: `${r.fault ? `FAULT ${r.fault}; ` : ""}${r.clean ? "clean" : "findings"}; SHACL ${r.shacl?.conforms ? "conforms" : `${r.shacl?.results} result(s) ${hits.join(", ")}${focus.length ? ` on ${[...new Set(focus)].join(", ")}` : ""}`}; ${Object.entries(pr).map(([k, v]) => `${k} ${v}`).join(", ")}; ${r.triplesChecked?.total} triples, ${r.durationMs} ms; ${r.reportFile}`,
+    pass, validation: null });
+}
+
 async function group5() {
-  console.log("\n== Group 5: the known blind spot (F11, a shape that breaks the shape-authoring rule)");
+  console.log("\n== Group 5: the known blind spot (F11), caught by the whole-graph check (B4); the check at the knowledge-graph load; the placement queries");
+  // 5.0 The bootstrap ran the check after this store's knowledge-graph load.
+  const dir = path.join(paths.results, checkDir());
+  const loads = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => /-knowledge-graph-load-.*\.json$/.test(f)) : [];
+  const kgReport: any = loads.length === 1 ? JSON.parse(fs.readFileSync(path.join(dir, loads[0]), "utf8")) : null;
+  const kl = kgReport?.context?.knowledgeGraphLoad;
+  const ok0 = !!kgReport && !kgReport.fault && kgReport.clean === true && kl && kgReport.startedAt >= kl.finishedAt
+    && kl.graphs?.domain === kgAtStart.domain && kl.graphs?.correspondence === kgAtStart.correspondence
+    && kgReport.triplesChecked?.namedGraphs >= kgAtStart.domain + kgAtStart.correspondence;
+  record({ group: 5, id: "5.0", name: "The whole-graph check ran at this store's knowledge-graph load (the bootstrap's run), after the load, over what it loaded",
+    expected: "one knowledge-graph-load report; started after the load finished; its load counts equal kg/domain and kg/correspondence; clean",
+    observed: kgReport ? `${loads.length} report(s): ${loads[0]}; load finished ${kl?.finishedAt}, check started ${kgReport.startedAt}; kg/domain ${kl?.graphs?.domain} (store ${kgAtStart.domain}), kg/correspondence ${kl?.graphs?.correspondence} (store ${kgAtStart.correspondence}); triples checked ${kgReport.triplesChecked?.total}; ${kgReport.clean ? "clean" : "findings"}${kgReport.fault ? `, fault ${kgReport.fault}` : ""}` : `${loads.length} knowledge-graph-load report(s) in results/${checkDir()}`,
+    pass: ok0 });
+
   const pol = writePolicy(rrb);
   const G = rrb.dbr;
   await must(db.appendGraph(KG_GRAPHS.domain, ttl("scoping/data/kg-standin.ttl"), "text/turtle"), "kg stand-in");
@@ -445,10 +482,10 @@ async function group5() {
   await loadBase();
   let r = await vu(STORE, ready, pol);
   check(5, "5.1", "Set-up: the order ready, one line ready and one collected (one-sided readiness shape loaded, no line-side twin)", r, { outcome: "committed", mode: "targeted" });
-  checkWhole(5, "5.2", "Set-up validated whole: conforms", await wholeGraph(STORE, G), true);
+  checkB4("5.2", "Set-up, through the whole-graph check: clean", await B4(), { clean: true, placement: { P1: 0, P2: 0, P3: 0 } });
   r = await vu(STORE, regress, pol);
   check(5, "5.3", "The line-only regression on the ready order is MISSED by targeted validation: it commits (the order is not touched, so the order-side shape is not run)", r, { outcome: "committed", mode: "targeted" });
-  checkWhole(5, "5.4", "The same data validated whole: the order breaks the one-sided readiness shape", await wholeGraph(STORE, G), false, ["OneSidedReadinessShape"], ["A"]);
+  checkB4("5.4", "The whole-graph check finds it: the order breaks the one-sided readiness shape", await B4(), { clean: false, shapes: ["OneSidedReadinessShape"], focus: ["A"], placement: { P1: 0, P2: 0, P3: 0 } });
   await setShapes([SHAPES.axis, SHAPES.readiness]);
   await loadBase();
   r = await vu(STORE, ready, pol);
@@ -457,6 +494,29 @@ async function group5() {
   check(5, "5.5", "Contrast: with the two-sided shapes (the rule followed), the same write is rejected by the line side", r, { outcome: "rejected", mode: "targeted", shapes: ["LineReadinessTwoSidedShape"], focus: ["A-1"] });
   await must(db.update(`${PFX} DELETE DATA { GRAPH <${KG_GRAPHS.domain}> { cafe:Drink rdfs:subClassOf cafe:MenuItem } }`), "kg stand-in removed");
   await resetBranch();
+
+  // 5.6 to 5.9: each placement query's seeded breach (Cyril, step 2 §3), seeded
+  // with no policy on the stack network (what the check exists for), found by
+  // the check, then removed by its own subjects; then a clean report.
+  await setShapes(SHAPES.runtime);
+  const ORD = (iri: string) => `<${iri}> a ontara-cafe:Order ; ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-placed ; ontara-cafe:orderPayment ontara-cafe:OrderPayment-unpaid ; cafe:hasLine <${iri}/line/1> . <${iri}/line/1> a ontara-cafe:OrderLine ; cafe:lineOf <${iri}> ; cafe:menuItem cafe:FlatWhite ; cafe:quantity 1 ; ontara-cafe:orderLinePreparation ontara-cafe:OrderLinePreparation-queued .`;
+  const removeSubjects = (iris: string[]) => must(db.update(`DELETE { GRAPH ?g { ?s ?p ?o } } WHERE { VALUES ?s { ${iris.map((x) => `<${x}>`).join(" ")} } GRAPH ?g { ?s ?p ?o } }`), "remove seeded subjects");
+  const P1o = "https://ontara.dev/data/cafe/order/00000000-0000-4000-8000-0000000000b1";
+  await must(db.update(req(ins(rrb.dbr, ORD(P1o)), ins(rrb.dsr, `<${P1o}> rdfs:comment "seeded breach P1"`))), "seed P1");
+  checkB4("5.6", "P1 seeded breach (an order's triple in the RRB's dsr as well as its dbr) is found by the check", await B4(), { clean: false, placement: { P1: 1, P2: 0, P3: 0 } });
+  await removeSubjects([P1o, `${P1o}/line/1`]);
+  const P2o = "https://ontara.dev/data/cafe/order/00000000-0000-4000-8000-0000000000b4";
+  await must(db.update(req(ins(KG_GRAPHS.domain, ORD(P2o)))), "seed P2");
+  checkB4("5.7", "P2 seeded breach (an order and its line in kg/domain) is found by the check", await B4(), { clean: false, placement: { P1: 0, P2: 2, P3: 0 } });
+  await removeSubjects([P2o, `${P2o}/line/1`]);
+  const P3o = "https://ontara.dev/data/cafe/order/00000000-0000-4000-8000-0000000000b3";
+  const undeclared = branch(TENANT, "00000000-0000-4000-8000-000000000000");
+  await must(db.update(req(ins(undeclared.dbr, ORD(P3o)))), "seed P3");
+  checkB4("5.8", "P3 seeded breach (an order in an undeclared DHB's dbr graph) is found by the check", await B4(), { clean: false, placement: { P1: 0, P2: 0, P3: 1 } });
+  await removeSubjects([P3o, `${P3o}/line/1`]);
+  checkB4("5.9", "Every seed removed by its own subjects: the check gives a clean report", await B4(), { clean: true, placement: { P1: 0, P2: 0, P3: 0 } });
+  const pubCheck = await http("POST", `${PUBLISHED_INSIDE}/${DS}/whole-graph-check`, { body: "{}", contentType: "application/json", timeoutMs: 30_000 });
+  record({ group: 5, id: "5.10", name: "The module's whole-graph-check operation is refused on the published listener", expected: "405", observed: `HTTP ${pubCheck.status}`, pass: pubCheck.status === 405 });
 }
 
 // ------------------------------------------------------------- group 6
@@ -709,7 +769,7 @@ function summarise(rel: string) {
   const byGroup = groups.map((g) => ({ group: g, cases: all.filter((c) => c.group === g).length, failed: all.filter((c) => c.group === g && !c.pass).length }));
   const failed = all.filter((c) => !c.pass);
   const pass = failed.length === 0 && missing.length === 0 && byGroup.every((g) => g.cases > 0);
-  const titles: Record<number, string> = { 1: "Targeted forms", 2: "Other forms fall back to whole", 3: "Mixed requests", 4: "Shape forms F1 to F10, and E1 to E4", 5: "The known blind spot (F11)", 6: "The scheme's refusals", 7: "Default-graph writes; endpoint closure" };
+  const titles: Record<number, string> = { 1: "Targeted forms", 2: "Other forms fall back to whole", 3: "Mixed requests", 4: "Shape forms F1 to F10, and E1 to E4", 5: "The known blind spot (F11) and the whole-graph check", 6: "The scheme's refusals", 7: "Default-graph writes; endpoint closure" };
   const summary = { suite: "stack scoping test suite (S0.5 Pass B2)", pass, cases: all.length, failed: failed.length, missing, byGroup, store: inside?.store, ranUtc: inside?.ranUtc, elapsedSeconds: inside?.elapsedSeconds };
   fs.writeFileSync(path.join(dir, "summary.json"), JSON.stringify({ ...summary, cases: all }, null, 2) + "\n");
   const md = [
@@ -741,6 +801,8 @@ async function main() {
   const st = await db.status();
   if (!st.validating || st.validationMode !== "targeted") throw new Error(`the suite's store is not validating in targeted mode: ${JSON.stringify({ validating: st.validating, mode: st.validationMode })}`);
   rrb = branch(TENANT, st.rrb!.dhbId);
+  runRel = rel;
+  for (const [k, g] of Object.entries(KG_GRAPHS)) kgAtStart[k] = await db.size(g);
   console.log(`[scoping] store ${STORE} (${st.module}, Jena ${st.jenaVersion}, ${st.validationMode}); RRB ${rrb.dhbId}; whole-mode store ${WHOLE}; gate ${GATE}`);
   const groups: [string, () => Promise<void>][] = [["1", group1], ["2", group2], ["3", group3], ["4", group4], ["5", group5], ["6", group6], ["7", group7]];
   const only = arg("--groups")?.split(",");
