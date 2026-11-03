@@ -287,3 +287,20 @@ $(OPENSYSML_GEN_TARGETS): export OPENSYSML_LIBRARY_PATH =
 $(OPENSYSML_GEN_TARGETS): export SYSML_LIBRARY_PATH =
 
 gen-cafe gen-gsl: venv
+
+# ======================================================================
+# The Cafe runtime stack's scoping test suite (S0.5 Pass B2; ADR-014 §4.4
+# condition 1). Tests the store module's targeted validation, its fallback to
+# whole-graph validation, the shape forms S0.6 will use, the known blind spot,
+# the named-graph scheme's refusals, the default-graph behaviour and the
+# endpoint closure, against a fresh store of the stack's own images in its own
+# Compose project (ontara-cafe-scoping): the runtime stack's data is never
+# touched. Needs Docker and the stack's images built from this commit
+# (stack/README.md step 3: cd stack && docker compose build). Case list:
+# stack/README.md section 2, step 9.
+# ======================================================================
+
+.PHONY: stack-scoping-test
+
+stack-scoping-test:
+	@stack/bin/scoping-test.sh

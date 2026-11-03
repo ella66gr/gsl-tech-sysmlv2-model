@@ -1,0 +1,25 @@
+# E3, a constraint that becomes false with time alone (ADR-014 §4.3 kind 3),
+# for the scoping suite only (S0.5 Pass B2, group 4). Not a recommended form:
+# lateness is derived state (ADR-010), not a violation, and Cyril's step 2
+# recommends no such shape for S0.6. It exists to show that no write-time
+# check can catch it: the write that sets the deadline is valid when it is
+# made, and nothing is written when the deadline passes. Written by Hugo in
+# Cyril's E-form style (stand-in vocabulary); loaded ONLY in the suite's own
+# store.
+@prefix sh:          <http://www.w3.org/ns/shacl#> .
+@prefix sis:         <urn:ontara:standin:shapes#> .
+@prefix ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/> .
+
+sis:CollectByShape a sh:NodeShape ;
+  sh:targetClass ontara-cafe:Order ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "TIME-ONLY FIXTURE: an order still placed is not past its collect-by time."@en ;
+    sh:select """
+      PREFIX cafe: <urn:ontara:standin:cafe#>
+      PREFIX ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/>
+      SELECT $this WHERE {
+        $this cafe:collectBy ?t ;
+              ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-placed .
+        FILTER (NOW() > ?t)
+      }""" ] .

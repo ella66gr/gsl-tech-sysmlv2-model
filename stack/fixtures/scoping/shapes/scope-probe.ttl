@@ -1,0 +1,14 @@
+# The scoping suite's probe shape (S0.5 Pass B2, groups 1 to 3 and 7): every
+# instance of sp:T has at least one sp:p. Small on purpose: groups 1 to 3 test
+# which nodes the module validates (targeted, or the whole graph), not a
+# shape form, so a violation is easy to make and to name. Loaded beside the
+# runtime shapes, ONLY in the scoping suite's own store. Stand-in vocabulary.
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix sp: <urn:ontara:standin:scoping#> .
+
+sp:ProbeShape a sh:NodeShape ;
+  sh:targetClass sp:T ;
+  sh:property sp:ProbeShape-p .
+sp:ProbeShape-p a sh:PropertyShape ;
+  sh:path sp:p ; sh:minCount 1 ;
+  sh:message "SCOPING PROBE: every sp:T has an sp:p."@en .

@@ -1,0 +1,48 @@
+# The scoping test suite's own stack (S0.5 Pass B2; ADR-014 §4.4 condition 1).
+# Used only by bin/scoping-test.sh, always together with ../compose.yaml, as
+# its own Compose project (ontara-cafe-scoping), so it never touches the
+# runtime stack's data, network or ports, and may run while the stack is up:
+#   COMPOSE_FILE=compose.yaml:scoping/compose.yaml COMPOSE_PROJECT_NAME=ontara-cafe-scoping
+#
+# It runs the stack's own store and gate images (README step 3); it builds
+# nothing. Only the stores, the bootstrap and the gate run here: no Temporal.
+#
+#   store        the stack's store image in its runtime configuration (targeted
+#                mode), its data inside the container (FUSEKI_DATA under /tmp),
+#                so a fresh store every run, and nothing kept: no volume. Loaded
+#                by the stack's own bootstrap (the runtime shapes and the
+#                knowledge graph). Its published listener (3031) is published
+#                on 127.0.0.1:${SCOPING_STORE_PORT:-7211}, so the suite can test
+#                the endpoints from outside the stack's network (group 7).
+#   store-whole  the same image in whole mode, data inside the container, not
+#                published: the scheme's refusals in whole mode (group 6).
+#   bootstrap, gate   the stack's own, against `store`. The gate is not published.
+networks:
+  stack:
+    name: ontara-cafe-scoping
+
+services:
+  store:
+    environment:
+      FUSEKI_DATA: /tmp/scoping-store
+    volumes: !reset []
+    ports: !override
+      - "127.0.0.1:${SCOPING_STORE_PORT:-7211}:3031"
+
+  store-whole:
+    image: ontara-cafe-stack/store:local
+    pull_policy: never
+    environment:
+      ONTARA_VALIDATION: whole
+      FUSEKI_DATA: /tmp/scoping-store-whole
+      JAVA_OPTS: -Xmx1g -Xms1g
+    networks: [stack]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS -o /dev/null http://localhost:3030/cafe-runtime/validated-update"]
+      interval: 3s
+      timeout: 5s
+      retries: 60
+      start_period: 5s
+
+  gate:
+    ports: !reset []

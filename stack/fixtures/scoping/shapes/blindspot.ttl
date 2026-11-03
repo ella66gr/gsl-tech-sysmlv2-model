@@ -1,0 +1,25 @@
+# Copied verbatim for the scoping test suite (S0.5 Pass B2) from Cyril's checked
+# scratch file of S0.5 Pass B step 2 (session-524-s05-passB-step2-cyril.md §2).
+# Loaded ONLY into the scoping suite's own store (bin/scoping-test.sh), never
+# into the runtime shapes graph. Not canon: S0.6 writes the real shapes.
+#
+# F11. THE KNOWN BLIND SPOT (B2 item 5). Breaks the shape-authoring rule on
+# purpose: the readiness condition written on the order only (the S0.1
+# stand-in's form, in B8 vocabulary). A line-only write never touches the
+# order, so targeted validation never re-checks it. Loaded ONLY in the
+# scoping suite's scratch dataset, never in the runtime shapes graph, and
+# never together with readiness-b8.ttl (whose line-side shape would catch it).
+
+@prefix sh:          <http://www.w3.org/ns/shacl#> .
+@prefix cafe:        <urn:ontara:standin:cafe#> .
+@prefix sis:         <urn:ontara:standin:shapes#> .
+@prefix ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/> .
+
+sis:OneSidedReadinessShape a sh:NodeShape ;
+  sh:targetClass ontara-cafe:Order ;
+  sh:message "BLIND-SPOT FIXTURE: an order is ready or collected only when every line is ready or collected (order side only)."@en ;
+  sh:or (
+    [ sh:path ontara-cafe:orderLifecycle ;
+      sh:not [ sh:in ( ontara-cafe:OrderLifecycle-ready ontara-cafe:OrderLifecycle-collected ) ] ]
+    [ sh:path ( cafe:hasLine ontara-cafe:orderLinePreparation ) ;
+      sh:in ( ontara-cafe:OrderLinePreparation-ready ontara-cafe:OrderLinePreparation-collected ) ] ) .

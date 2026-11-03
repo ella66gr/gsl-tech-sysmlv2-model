@@ -1,0 +1,137 @@
+# Copied verbatim for the scoping test suite (S0.5 Pass B2) from Cyril's checked
+# scratch file of S0.5 Pass B step 2 (session-524-s05-passB-step2-cyril.md §2).
+# Loaded ONLY into the scoping suite's own store (bin/scoping-test.sh), never
+# into the runtime shapes graph. Not canon: S0.6 writes the real shapes.
+#
+# B2 item 4: one minimal example shape per form S0.6 will use (F4 to F10),
+# the known blind spot (F11) and two whole-graph-only exceptions (E2 uses F7;
+# E4 below). F1 and F2 are the generated B8 shapes (axis-shapes.ttl); F3 is
+# readiness-b8.ttl. Stand-in vocabulary for everything that is not B8's.
+
+@prefix sh:          <http://www.w3.org/ns/shacl#> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:        <http://www.w3.org/ns/prov#> .
+@prefix cafe:        <urn:ontara:standin:cafe#> .
+@prefix rec:         <urn:ontara:standin:rec#> .
+@prefix sis:         <urn:ontara:standin:shapes#> .
+@prefix ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/> .
+
+# F4. Bounded count on a part set: an order has 1 to 10 lines.
+sis:OrderLineCountShape a sh:NodeShape ;
+  sh:targetClass ontara-cafe:Order ;
+  sh:property sis:OrderLineCountShape-lines .
+sis:OrderLineCountShape-lines a sh:PropertyShape ;
+  sh:path cafe:hasLine ;
+  sh:minCount 1 ; sh:maxCount 10 ;
+  sh:message "An order has 1 to 10 lines."@en .
+
+# F5. Inverse-pair equality, two-sided: hasLine and lineOf agree.
+sis:LineInversePairShape a sh:NodeShape ;
+  sh:targetClass ontara-cafe:OrderLine ;
+  sh:property sis:LineInversePairShape-order .
+sis:LineInversePairShape-order a sh:PropertyShape ;
+  sh:path [ sh:inversePath cafe:hasLine ] ;
+  sh:equals cafe:lineOf ;
+  sh:message "A line's lineOf names exactly the orders that list it with hasLine."@en .
+sis:OrderInversePairShape a sh:NodeShape ;
+  sh:targetClass ontara-cafe:Order ;
+  sh:property sis:OrderInversePairShape-lines .
+sis:OrderInversePairShape-lines a sh:PropertyShape ;
+  sh:path [ sh:inversePath cafe:lineOf ] ;
+  sh:equals cafe:hasLine ;
+  sh:message "An order's hasLine names exactly the lines whose lineOf names it."@en .
+
+# F6. Uniqueness through a slot resource (D3 §3 mechanism 2): at most one
+#     order links to each display-number slot.
+sis:DisplayNumberSlotShape a sh:NodeShape ;
+  sh:targetObjectsOf cafe:displayNumberSlot ;
+  sh:property sis:DisplayNumberSlotShape-orders .
+sis:DisplayNumberSlotShape-orders a sh:PropertyShape ;
+  sh:path [ sh:inversePath cafe:displayNumberSlot ] ;
+  sh:maxCount 1 ;
+  sh:message "A display number is taken by at most one order in its scope."@en .
+
+# F7. Reference typing with its object-side twin: a line's menu item is a
+#     MenuItem, checked from the line and from the item.
+sis:LineMenuItemShape a sh:NodeShape ;
+  sh:targetClass ontara-cafe:OrderLine ;
+  sh:property sis:LineMenuItemShape-item .
+sis:LineMenuItemShape-item a sh:PropertyShape ;
+  sh:path cafe:menuItem ;
+  sh:minCount 1 ; sh:maxCount 1 ;
+  sh:class cafe:MenuItem ;
+  sh:message "A line names exactly one menu item, which is a MenuItem."@en .
+sis:ReferencedMenuItemShape a sh:NodeShape ;
+  sh:targetObjectsOf cafe:menuItem ;
+  sh:class cafe:MenuItem ;
+  sh:message "Anything a line names as its menu item is a MenuItem."@en .
+
+# F8. Literal value constraints on one resource.
+sis:LineQuantityShape a sh:NodeShape ;
+  sh:targetClass ontara-cafe:OrderLine ;
+  sh:property sis:LineQuantityShape-quantity .
+sis:LineQuantityShape-quantity a sh:PropertyShape ;
+  sh:path cafe:quantity ;
+  sh:minCount 1 ; sh:maxCount 1 ;
+  sh:datatype xsd:integer ; sh:minInclusive 1 ;
+  sh:message "A line has exactly one quantity, an integer of at least 1."@en .
+
+# F9. Conditional exclusion over two-step paths, written on the line only:
+#     a vegan item is not taken with a dairy milk. ONE-SIDED: a catalogue
+#     write that makes an item vegan, or an option dairy, does not touch the
+#     lines that name it, so targeted validation does not re-check them.
+sis:VeganNoDairyShape a sh:NodeShape ;
+  sh:targetClass ontara-cafe:OrderLine ;
+  sh:message "A vegan item is not taken with a dairy milk."@en ;
+  sh:not [ sh:and (
+      [ sh:path ( cafe:menuItem cafe:isVegan ) ; sh:hasValue true ]
+      [ sh:path ( cafe:milk cafe:isDairy ) ; sh:hasValue true ] ) ] .
+
+# F10. A SPARQL constraint on the resource whose own write can falsify it:
+#      a derived record's method is no stronger than its weakest input's.
+#      One-sided by design: inputs are append-only records (ADR-010), so no
+#      later write to an input can falsify it.
+sis:WeakestMethodShape a sh:NodeShape ;
+  sh:targetSubjectsOf prov:wasDerivedFrom ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "A derived record's method is no stronger than its weakest input's."@en ;
+    sh:select """
+      PREFIX rec:  <urn:ontara:standin:rec#>
+      PREFIX prov: <http://www.w3.org/ns/prov#>
+      SELECT $this ?in WHERE {
+        $this rec:hasProvenanceMethod ?m ; prov:wasDerivedFrom ?in .
+        ?in rec:hasProvenanceMethod ?im .
+        BIND (IF(?m  = rec:DirectMethod, 1, IF(?m  = rec:InferredMethod, 2, 3)) AS ?r)
+        BIND (IF(?im = rec:DirectMethod, 1, IF(?im = rec:InferredMethod, 2, 3)) AS ?ir)
+        FILTER (?r < ?ir)
+      }""" ] .
+
+# E4. Unbounded path: no record derives, at any depth, from a quarantined
+#     record. A write that quarantines an old record touches that record and
+#     the quarantine, never its descendants.
+sis:NoQuarantinedAncestryShape a sh:NodeShape ;
+  sh:targetSubjectsOf prov:wasDerivedFrom ;
+  sh:property sis:NoQuarantinedAncestryShape-ancestry .
+sis:NoQuarantinedAncestryShape-ancestry a sh:PropertyShape ;
+  sh:path [ sh:oneOrMorePath prov:wasDerivedFrom ] ;
+  sh:not [ sh:property [ sh:path [ sh:inversePath rec:quarantines ] ; sh:minCount 1 ] ] ;
+  sh:message "No record derives, at any depth, from a quarantined record."@en .
+
+# E1. An aggregate held on a resource that the writes it summarises do not
+#     touch: a daily summary's order count. Breaks the rule's second sentence
+#     unless the maintaining rule writes the summary in the same request.
+sis:DailySummaryCountShape a sh:NodeShape ;
+  sh:targetClass cafe:DailySummary ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "A daily summary's order count equals the orders of its day."@en ;
+    sh:select """
+      PREFIX cafe: <urn:ontara:standin:cafe#>
+      PREFIX ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/>
+      SELECT $this WHERE {
+        $this cafe:day ?d ; cafe:orderCount ?n .
+        OPTIONAL { ?o a ontara-cafe:Order ; cafe:day ?d }
+      }
+      GROUP BY $this ?n
+      HAVING (COUNT(?o) != ?n)""" ] .

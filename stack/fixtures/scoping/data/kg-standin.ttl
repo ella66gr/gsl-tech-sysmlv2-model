@@ -1,0 +1,9 @@
+# The scoping suite's stand-in knowledge-graph content (S0.5 Pass B2, group 4;
+# Cyril's step 2 harness, KG block): the one class axiom the shape forms read
+# through the hierarchy. Added to kg/domain of the suite's own store only, as
+# a knowledge-graph load stands in (Graph Store Protocol, unvalidated). The
+# Cafe's Order and OrderLine classes are already in kg/domain (the real load).
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix cafe: <urn:ontara:standin:cafe#> .
+
+cafe:Drink rdfs:subClassOf cafe:MenuItem .

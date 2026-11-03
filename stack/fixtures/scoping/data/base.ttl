@@ -1,0 +1,30 @@
+# The scoping suite's base runtime data (S0.5 Pass B2, groups 4 and 5; Cyril's
+# step 2 harness, BASE and KG blocks): one conforming order, in preparation and
+# paid, with two lines; two records; the stand-in catalogue entries the lines
+# name (catalogue instances are runtime content, in the branch's dbr graph: B3
+# item 8). Written into the suite store's Reality Reference Branch dbr graph
+# before each case. Stand-in vocabulary except the Cafe's types and axis values.
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:        <http://www.w3.org/ns/prov#> .
+@prefix cafe:        <urn:ontara:standin:cafe#> .
+@prefix rec:         <urn:ontara:standin:rec#> .
+@prefix ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/> .
+@prefix o:           <https://ontara.dev/data/cafe/order/> .
+
+cafe:FlatWhite a cafe:Drink ; cafe:isVegan false .
+cafe:OatLatte a cafe:Drink ; cafe:isVegan true .
+cafe:Croissant a cafe:MenuItem ; cafe:isVegan false .
+cafe:Oat a cafe:MilkOption ; cafe:isDairy false .
+cafe:Whole a cafe:MilkOption ; cafe:isDairy true .
+
+o:A a ontara-cafe:Order ;
+    ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-inPreparation ;
+    ontara-cafe:orderPayment ontara-cafe:OrderPayment-paid ;
+    cafe:hasLine o:A-1 , o:A-2 ;
+    cafe:displayNumberSlot cafe:slot-047 .
+o:A-1 a ontara-cafe:OrderLine ; cafe:lineOf o:A ; cafe:menuItem cafe:FlatWhite ; cafe:quantity 1 ;
+    cafe:milk cafe:Oat ; ontara-cafe:orderLinePreparation ontara-cafe:OrderLinePreparation-ready .
+o:A-2 a ontara-cafe:OrderLine ; cafe:lineOf o:A ; cafe:menuItem cafe:Croissant ; cafe:quantity 2 ;
+    ontara-cafe:orderLinePreparation ontara-cafe:OrderLinePreparation-inPreparation .
+o:r1 rec:hasProvenanceMethod rec:DirectMethod .
+o:r2 rec:hasProvenanceMethod rec:InferredMethod ; prov:wasDerivedFrom o:r1 .

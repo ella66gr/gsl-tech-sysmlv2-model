@@ -1,0 +1,22 @@
+# E1 written with a sub-select (Cyril's step 2, finding 6: pySHACL refused
+# this form, so his E1 uses a top-level GROUP BY/HAVING). Loaded ALONE in the
+# scoping suite's own store (S0.5 Pass B2, group 4) to settle whether Jena's
+# SHACL-SPARQL accepts a sub-select that uses $this, and enforces it. Same
+# meaning as sis:DailySummaryCountShape in forms.ttl.
+@prefix sh:   <http://www.w3.org/ns/shacl#> .
+@prefix sis:  <urn:ontara:standin:shapes#> .
+@prefix cafe: <urn:ontara:standin:cafe#> .
+
+sis:DailySummaryCountSubselectShape a sh:NodeShape ;
+  sh:targetClass cafe:DailySummary ;
+  sh:sparql [
+    a sh:SPARQLConstraint ;
+    sh:message "SUB-SELECT FIXTURE: a daily summary's order count equals the orders of its day."@en ;
+    sh:select """
+      PREFIX cafe: <urn:ontara:standin:cafe#>
+      PREFIX ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/>
+      SELECT $this WHERE {
+        $this cafe:day ?d ; cafe:orderCount ?n .
+        { SELECT ?d (COUNT(?o) AS ?actual) WHERE { ?o a ontara-cafe:Order ; cafe:day ?d } GROUP BY ?d }
+        FILTER (?actual != ?n)
+      }""" ] .
