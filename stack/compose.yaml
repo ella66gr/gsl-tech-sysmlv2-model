@@ -39,11 +39,15 @@ services:
 
   # ------------------------------------------------------------ The store
   # Two TDB2 datasets, declared in the module's own configuration
-  # (stack/store/module, OntaraFuseki.java): /cafe-runtime (knowledge graph
-  # and runtime state; README section 4) and /cafe-capability-scratch. Each
-  # has its union graph as the default graph, and the module's
-  # validated-update endpoint. Fuseki's standard update and data endpoints do
-  # NOT validate: only the gate's write path uses validated-update.
+  # (stack/store/module, dev.ontara.store.OntaraFuseki): /cafe-runtime
+  # (knowledge graph and runtime state; README section 4) and
+  # /cafe-capability-scratch. Each has its union graph as the default graph,
+  # and the module's validated-update endpoint. The module has two listeners
+  # (README section 8): 3030, on the stack network only, where Fuseki's
+  # standard endpoints accept writes (they do NOT validate: the bootstrap's
+  # knowledge-graph and shapes load, and the capability checks' scratch
+  # clearing); and 3031, the only one published, where the standard
+  # endpoints are read-only. Only the gate's write path uses validated-update.
   store:
     image: ontara-cafe-stack/store:local
     pull_policy: never
@@ -57,10 +61,12 @@ services:
     volumes:
       - store-data:/fuseki/databases
     ports:
-      - "127.0.0.1:${STORE_PORT:-7210}:3030"
+      # The published listener only (read-only standard endpoints). Never
+      # publish 3030: its standard endpoints accept unvalidated writes.
+      - "127.0.0.1:${STORE_PORT:-7210}:3031"
     networks: [stack]
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "-o", "/dev/null", "http://localhost:3030/cafe-runtime/validated-update"]
+      test: ["CMD-SHELL", "curl -fsS -o /dev/null http://localhost:3030/cafe-runtime/validated-update && curl -fsS -o /dev/null http://localhost:3031/cafe-runtime/validated-update"]
       interval: 5s
       timeout: 5s
       retries: 60

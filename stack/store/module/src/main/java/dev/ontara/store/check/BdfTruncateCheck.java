@@ -1,4 +1,4 @@
-package dev.ontara.spike;
+package dev.ontara.store.check;
 
 // OP-134 spike follow-up (S519, Part C): the minimal reproducer from Jena issue
 // apache/jena#3877, run against jena-dboe-base's BinaryDataFileRandomAccess
@@ -9,7 +9,7 @@ package dev.ontara.spike;
 //   Sound:    the write lands at 102400; the file is 102500 bytes, no zero bytes.
 //   GH-3877:  the write lands at the stale writePosition 307200; the file is
 //             307300 bytes, with 204800 zero bytes between the two.
-// Usage: java -cp '/opt/ontara-fuseki/*:/opt/ontara-fuseki/lib/*' dev.ontara.spike.BdfTruncateCheck
+// Usage: java -cp '/opt/ontara-fuseki/*:/opt/ontara-fuseki/lib/*' dev.ontara.store.check.BdfTruncateCheck
 import java.io.File;
 import java.nio.file.Files;
 import java.util.Arrays;

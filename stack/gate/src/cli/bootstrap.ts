@@ -2,16 +2,24 @@
 // starts. Exits non-zero, loudly, on any failure; the gate then never starts.
 //
 //  1. the store answers, and the module's status on both datasets (the
-//     runtime dataset and the capability scratch dataset) reads: validating
-//     on, the expected mode (targeted), the pinned Jena version (the image's
-//     own build argument and the version actually loaded), TDB2 with the
-//     union graph as the default graph, and no inference;
+//     runtime dataset and the capability scratch dataset) reads: the
+//     validation probe passed (the write path's own validation, in this
+//     mode, rejects known violations), the expected mode (targeted), the
+//     pinned Jena version (the image's own build argument and the version
+//     actually loaded), TDB2 with the union graph as the default graph, and
+//     no inference. `validating` itself may read false here: it is false
+//     until the shapes graph holds a shape with a target (README section 8);
 //  2. the runtime shapes are loaded into the runtime dataset's shapes graph
 //     (urn:ontara:stack:shapes) and read back;
 //  3. the knowledge-graph files are (re)loaded, one named graph per file, into
 //     the runtime dataset (README section 4: one dataset);
-//  4. the module's status is read once more: shapes loaded, and the count
-//     equal to what was written. Only then does the bootstrap succeed.
+//  4. the module's status is read once more: validating (probe passed and
+//     shapes with targets in place), and the shapes count equal to what was
+//     written. Only then does the bootstrap succeed.
+//
+// Steps 2 and 3 are the one sanctioned unvalidated write (Graph Store
+// Protocol PUT): they reach the store on its stack-network listener (3030),
+// whose standard endpoints accept writes; the published listener's do not.
 //
 // Datasets are declared in the store's own configuration (the module starts
 // the two TDB2 datasets; stack/store/module), not created here.
@@ -31,9 +39,12 @@ function die(msg: string): never {
   process.exit(2);
 }
 
-function checkStatus(id: string, s: ModuleStatus) {
+// `loaded`: the shapes are expected in place, so `validating` itself must be
+// true; before the load, only the probe (the engine) is required.
+function checkStatus(id: string, s: ModuleStatus, loaded: boolean) {
   const problems: string[] = [];
-  if (s.validating !== true) problems.push(`validating=${s.validating}, expected true`);
+  if (s.validationProbe?.passed !== true) problems.push(`validationProbe.passed=${s.validationProbe?.passed}, expected true (probe: ${JSON.stringify(s.validationProbe?.cases)})`);
+  if (loaded && s.validating !== true) problems.push(`validating=${s.validating} (targetShapes=${s.targetShapes}${s.shapesError ? `, ${s.shapesError}` : ""}), expected true`);
   if (s.validationMode !== config.expectedValidationMode) problems.push(`validationMode=${s.validationMode}, expected ${config.expectedValidationMode}`);
   if (s.jenaVersion !== config.expectedJenaVersion) problems.push(`jenaVersion (loaded)=${s.jenaVersion}, expected ${config.expectedJenaVersion}`);
   if (s.jenaBuildVersion !== config.expectedJenaVersion) problems.push(`jenaBuildVersion (image build argument)=${s.jenaBuildVersion}, expected ${config.expectedJenaVersion}`);
@@ -45,7 +56,7 @@ function checkStatus(id: string, s: ModuleStatus) {
 }
 
 const line = (id: string, s: ModuleStatus) =>
-  `[bootstrap] status /${id}: module="${s.module}" validating=${s.validating} mode=${s.validationMode} jena=${s.jenaVersion} (built for ${s.jenaBuildVersion}) store=${s.store} unionDefaultGraph=${s.unionDefaultGraph} inference=${s.inference} shapesGraph=<${s.shapesGraph}> shapesTriples=${s.shapesTriples}`;
+  `[bootstrap] status /${id}: module="${s.module}" validating=${s.validating} probe=${s.validationProbe?.passed ? "passed" : "FAILED"} mode=${s.validationMode} jena=${s.jenaVersion} (built for ${s.jenaBuildVersion}) store=${s.store} unionDefaultGraph=${s.unionDefaultGraph} inference=${s.inference} shapesGraph=<${s.shapesGraph}> shapesTriples=${s.shapesTriples} targetShapes=${s.targetShapes}`;
 
 async function main() {
   const t0 = Date.now();
@@ -61,7 +72,7 @@ async function main() {
   for (const id of [config.dataset, SCRATCH_DATASET]) {
     const s = id === config.dataset ? first! : await db.status(id).catch((e) => die(`status of /${id}: ${e?.message ?? e}`));
     console.log(line(id, s));
-    checkStatus(id, s);
+    checkStatus(id, s, false);
   }
 
   // 2. shapes (replace the shapes graph)
@@ -88,7 +99,7 @@ async function main() {
   // 4. read the status back once more, with the shapes in place
   const after = await db.status();
   console.log(line(config.dataset, after));
-  checkStatus(config.dataset, after);
+  checkStatus(config.dataset, after, true);
   if (after.shapesTriples !== shapeTriples) die(`module reports ${after.shapesTriples} shapes triples, ${shapeTriples} were loaded`);
   console.log(`[bootstrap] OK in ${((Date.now() - t0) / 1000).toFixed(1)} s: validating, ${after.validationMode} mode, Jena ${after.jenaVersion}, ${after.shapesTriples} shapes triples`);
 }

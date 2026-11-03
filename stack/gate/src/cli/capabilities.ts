@@ -440,10 +440,12 @@ async function main() {
   const startedAt = new Date().toISOString();
   fs.mkdirSync(OUT, { recursive: true });
 
-  // The scratch dataset: its status must read validating, in this run's mode; emptied first.
+  // The scratch dataset: its status must read the validation probe passed, in
+  // this run's mode; emptied first. (`validating` reads false here: the
+  // scratch dataset holds no shapes between runs; each case loads its own.)
   const scratchStatus = await db.status();
-  if (scratchStatus.validating !== true || scratchStatus.validationMode !== MODE) {
-    throw new Error(`/${SCRATCH} status: validating=${scratchStatus.validating} mode=${scratchStatus.validationMode}; this run expects ${MODE}`);
+  if (scratchStatus.validationProbe?.passed !== true || scratchStatus.validationMode !== MODE) {
+    throw new Error(`/${SCRATCH} status: validationProbe.passed=${scratchStatus.validationProbe?.passed} mode=${scratchStatus.validationMode}; this run expects ${MODE}`);
   }
   const cr = await base.clearDataset(SCRATCH);
   if (!cr.ok) throw new Error(`clearing ${SCRATCH}: HTTP ${cr.status} ${cr.body}`);

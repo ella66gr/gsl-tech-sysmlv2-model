@@ -19,7 +19,10 @@
 // or a request that never reaches the store, comes back as an outcome.
 //
 // Writes sent to a dataset's standard /update or /data endpoints are NOT
-// validated: only the module's endpoint validates.
+// validated: only the module's endpoint validates. Those endpoints accept
+// writes only on the store's stack-network listener (store:3030, which the
+// stack's containers use); the listener published to the host
+// (127.0.0.1:7210) serves them read-only (README section 8).
 import { http, HttpResult } from "./http";
 import { SparqlHttp } from "./sparql-http";
 import { parseTurtleInto, dataBlock } from "./rdfjs";

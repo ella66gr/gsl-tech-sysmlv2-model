@@ -56,20 +56,31 @@ export type WriteOutcome =
 
 export interface GraphLoad { ok: boolean; status: number; body: string }
 
-// The module's status (GET /<dataset>/validated-update), as it reports it.
+// The module's status (GET /<dataset>/validated-update), as it reports it
+// (stack/README.md section 8).
 export interface ModuleStatus {
-  module: string;
+  module: string;                // "ontara-fuseki-validated-update <moduleVersion>"
+  moduleVersion: string;         // pom.xml <version>, read from the jar manifest
   jenaVersion: string;
   jenaBuildVersion: string;
   fusekiVersion: string;
   store: string;
   unionDefaultGraph: boolean;
+  // Measured at each status read: validationProbe.passed AND targetShapes > 0.
   validating: boolean;
   validationMode: string;
   engine: string;
+  // The write path's own validation code, in this mode, run on a fixed
+  // in-memory probe: each violation rejected, the conforming case committed.
+  validationProbe: { passed: boolean; microseconds: number; cases: { case: string; expected: string; outcome: string; validation?: string }[] };
   shapesGraph: string;
   shapesTriples: number;
+  targetShapes: number;          // shapes with a target in the shapes graph; -1 if it does not parse
+  shapesError?: string;
   inference: string;
+  // The listener that answered: "published" (the host's 127.0.0.1:7210;
+  // standard endpoints read-only) or "stack-network" (read-write).
+  listener: { name: string; port: number; standardWriteEndpoints: boolean };
 }
 
 export interface Store {

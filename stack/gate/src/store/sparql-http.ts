@@ -1,7 +1,9 @@
 // SPARQL 1.1 Protocol and Graph Store Protocol calls to a Fuseki dataset's
 // standard endpoints (query, update, data). Standard protocol only. These
 // endpoints do NOT validate: only the module's validated-update does, and
-// only the gate's write path uses it (store/fuseki.ts).
+// only the gate's write path uses it (store/fuseki.ts). update() and
+// putGraph() work only against the store's stack-network listener (3030);
+// on the published listener (the host's 127.0.0.1:7210) they are refused.
 import { http, HttpResult } from "./http";
 
 export class SparqlHttp {

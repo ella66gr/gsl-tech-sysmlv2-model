@@ -1,4 +1,4 @@
-package dev.ontara.spike;
+package dev.ontara.store.check;
 
 // OP-134 spike follow-up (S519, Part C): offline integrity check of a TDB2
 // database, run in the Fuseki image with the store STOPPED (TDB2 locks its
@@ -13,8 +13,8 @@ package dev.ontara.spike;
 //   2. logical: in one read transaction, iterate every quad and turn every
 //      NodeId into its node, counting quads; the first failure is printed with
 //      its full stack trace.
-// Compiled into the module jar (the JRE image has no compiler). Usage (spike/bin/fault-check.sh runs it):
-//   java -cp '/opt/ontara-fuseki/*:/opt/ontara-fuseki/lib/*' dev.ontara.spike.NodeTableCheck <database directory> [MINRUN]
+// Compiled into the module jar (the JRE image has no compiler). Usage (bin/regression-check.sh runs it):
+//   java -cp '/opt/ontara-fuseki/*:/opt/ontara-fuseki/lib/*' dev.ontara.store.check.NodeTableCheck <database directory> [MINRUN]
 import java.io.RandomAccessFile;
 import java.nio.file.*;
 import java.util.*;

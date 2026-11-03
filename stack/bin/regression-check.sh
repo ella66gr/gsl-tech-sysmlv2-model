@@ -101,8 +101,8 @@ gate verify --graph "$G" --label after-restart
 docker compose logs --no-color --no-log-prefix --since "$since" store > "$out/store.log" 2>&1 || true
 echo "[regression] offline checks (store stopped)"
 docker compose stop store > /dev/null 2>&1
-docker compose run --rm --no-deps -T --entrypoint java store -cp '/opt/ontara-fuseki/*:/opt/ontara-fuseki/lib/*' dev.ontara.spike.NodeTableCheck "$REGRESSION_FUSEKI_DATA/cafe-runtime" > "$out/nodetable-check.txt" 2>&1 || true
-docker compose run --rm --no-deps -T --entrypoint java store -cp '/opt/ontara-fuseki/*:/opt/ontara-fuseki/lib/*' dev.ontara.spike.BdfTruncateCheck > "$out/bdf-truncate-check.txt" 2>&1 || true
+docker compose run --rm --no-deps -T --entrypoint java store -cp '/opt/ontara-fuseki/*:/opt/ontara-fuseki/lib/*' dev.ontara.store.check.NodeTableCheck "$REGRESSION_FUSEKI_DATA/cafe-runtime" > "$out/nodetable-check.txt" 2>&1 || true
+docker compose run --rm --no-deps -T --entrypoint java store -cp '/opt/ontara-fuseki/*:/opt/ontara-fuseki/lib/*' dev.ontara.store.check.BdfTruncateCheck > "$out/bdf-truncate-check.txt" 2>&1 || true
 grep -E '^(Jena|PHYSICAL|LOGICAL|  zero run)' "$out/nodetable-check.txt" "$out/bdf-truncate-check.txt" | sed 's#^results/[^:]*/##' | head -20
 set +e
 gate summarise --good "$GOOD" --bad "$BAD"

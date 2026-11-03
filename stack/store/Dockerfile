@@ -5,7 +5,13 @@
 # Built by `docker compose build` on the machine that runs it (S0.1 image
 # rule, specification section 2.5 item 10); never carried between machines.
 # Ported from the OP-134 spike (spike/op-134-store, stack/spike/fuseki/) at
-# S521, S0.1 pass 3.
+# S521, S0.1 pass 3; production configuration (package dev.ontara.store, one
+# version, two listeners) since S0.5 Pass B1, S525. README section 8.
+#
+# The module's version is pom.xml's <version>, and only there. The build reads
+# it back from what Maven wrote (target/maven-archiver/pom.properties), and
+# fails unless the jar's file name and its manifest (Implementation-Version,
+# which the module's status reports) both carry it.
 #
 # JENA_VERSION is a build argument, pinned by compose.yaml at 6.2.0. The build
 # FAILS for any version below 6.1.0: Jena 5.x and 6.0.x carry the TDB2 abort
@@ -30,16 +36,26 @@ COPY module/src ./src
 RUN mvn -q -B -Djena.version=${JENA_VERSION} -DskipTests package \
  && ls target/lib | grep -E '^jena-(arq|core|shacl|tdb2|fuseki-main|dboe-base)-' > target/jena-jars.txt \
  && test "$(grep -c -- "-${JENA_VERSION}.jar" target/jena-jars.txt)" -eq "$(wc -l < target/jena-jars.txt)"
+# One version: the jar's name and manifest must both carry pom.xml's <version>.
+RUN set -eu; v="$(sed -n 's/^version=//p' target/maven-archiver/pom.properties)"; \
+    jarfile="target/ontara-fuseki-validated-update-$v.jar"; \
+    test -n "$v" && test -f "$jarfile" || { echo "module jar for version '$v' not found" >&2; exit 1; }; \
+    mkdir -p /tmp/mf target/module; (cd /tmp/mf && jar xf "/src/$jarfile" META-INF/MANIFEST.MF); \
+    grep -q "^Implementation-Version: $v" /tmp/mf/META-INF/MANIFEST.MF || { echo "jar manifest does not carry version $v" >&2; exit 1; }; \
+    cp "$jarfile" target/module/; echo "module version $v: $jarfile"
 
 FROM eclipse-temurin:21-jre@sha256:0b99b3376fbb50dbf9c0af8535fdd5b8eb0d3fdfc8b1e4967f383b6919f6901a
 ARG JENA_VERSION
-ENV JENA_VERSION=${JENA_VERSION} FUSEKI_DATA=/fuseki/databases FUSEKI_PORT=3030
+# FUSEKI_PORT: the stack-network listener (standard endpoints read-write, not
+# published). FUSEKI_PUBLISHED_PORT: the listener compose.yaml publishes
+# (standard endpoints read-only). Both serve the module's validated-update.
+ENV JENA_VERSION=${JENA_VERSION} FUSEKI_DATA=/fuseki/databases FUSEKI_PORT=3030 FUSEKI_PUBLISHED_PORT=3031
 LABEL org.opencontainers.image.title="ontara-cafe-stack store" \
       dev.ontara.jena-version="${JENA_VERSION}"
 WORKDIR /opt/ontara-fuseki
 COPY --from=build /src/target/lib ./lib
 COPY --from=build /src/target/jena-jars.txt ./
-COPY --from=build /src/target/ontara-fuseki-validated-update-0.1.0.jar ./
+COPY --from=build /src/target/module/ ./
 RUN mkdir -p /fuseki/databases
-EXPOSE 3030
-ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -cp '/opt/ontara-fuseki/ontara-fuseki-validated-update-0.1.0.jar:/opt/ontara-fuseki/lib/*' dev.ontara.spike.OntaraFuseki"]
+EXPOSE 3030 3031
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -cp '/opt/ontara-fuseki/*:/opt/ontara-fuseki/lib/*' dev.ontara.store.OntaraFuseki"]

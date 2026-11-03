@@ -10,7 +10,7 @@ Specification: Plan B Stage 0 specification (vault slug `cafe-plan-b-stage-0-spe
 
 | Service | Image | Role | Host port |
 |---|---|---|---|
-| `store` | built here (`ontara-cafe-stack/store:local`, `store/`) | Apache Jena Fuseki 6.2.0, TDB2, with the validated-update module in targeted mode. Two datasets: `cafe-runtime` (knowledge graph and runtime state) and `cafe-capability-scratch` | `127.0.0.1:7210` |
+| `store` | built here (`ontara-cafe-stack/store:local`, `store/`) | Apache Jena Fuseki 6.2.0, TDB2, with the validated-update module (version 0.3.0) in targeted mode. Two datasets: `cafe-runtime` (knowledge graph and runtime state) and `cafe-capability-scratch`. Configuration: section 8 | `127.0.0.1:7210` (read-only listener; section 8) |
 | `bootstrap` | built here (`ontara-cafe-stack/gate:local`, `gate/`) | One-shot: checks the module's status, loads the shapes and the knowledge graph, checks again, then exits | none |
 | `gate` | built here | The constraint gate: `/write`, `/health`, `/live` | `127.0.0.1:7220` |
 | `worker` | built here | Temporal worker serving the health check's no-op workflow only | none |
@@ -72,15 +72,15 @@ docker compose logs --no-log-prefix bootstrap
 
 ```
 [bootstrap] Apache Jena Fuseki 6.2.0 (Jena 6.2.0); licence: none needed (Apache-2.0)
-[bootstrap] status /cafe-runtime: module="ontara-fuseki-validated-update 0.2.0" validating=true mode=targeted jena=6.2.0 (built for 6.2.0) store=TDB2 unionDefaultGraph=true inference=none ...
-[bootstrap] status /cafe-capability-scratch: ... validating=true mode=targeted jena=6.2.0 ...
+[bootstrap] status /cafe-runtime: module="ontara-fuseki-validated-update 0.3.0" validating=true probe=passed mode=targeted jena=6.2.0 (built for 6.2.0) store=TDB2 unionDefaultGraph=true inference=none ... targetShapes=...
+[bootstrap] status /cafe-capability-scratch: module="ontara-fuseki-validated-update 0.3.0" validating=false probe=passed mode=targeted jena=6.2.0 ... targetShapes=0
 [bootstrap] shapes loaded into <urn:ontara:stack:shapes>: 84 triples from shapes/standin-shapes-core-only.ttl + shapes/spike-two-sided-readiness.ttl (read back by SPARQL)
 [bootstrap] kg <urn:ontara:stack:kg:...> ... (12 lines)
-[bootstrap] status /cafe-runtime: ... shapesTriples=84
+[bootstrap] status /cafe-runtime: ... validating=true probe=passed ... shapesTriples=84 targetShapes=...
 [bootstrap] OK in ... s: validating, targeted mode, Jena 6.2.0, 84 shapes triples
 ```
 
-The bootstrap reads the module's status (`GET /<dataset>/validated-update`) on both datasets before it writes anything, and again after loading. Unless the status reads validating on, targeted mode, Jena 6.2.0 (both the version loaded and the image's build argument), TDB2 with the union graph as default graph, no inference and, after loading, the shapes in place, it prints a `BOOTSTRAP FAILED` banner and exits 2. Do not continue: never use the store unvalidated (section 6, "Recovery").
+The bootstrap reads the module's status (`GET /<dataset>/validated-update`) on both datasets before it writes anything, and again after loading. Before loading it requires the validation probe passed (the write path's own validation rejects known violations), targeted mode, Jena 6.2.0 (both the version loaded and the image's build argument), TDB2 with the union graph as default graph and no inference; `validating` may read `false` at that point, on a new store or on the scratch dataset, because no shapes are loaded yet (section 8). After loading it requires `validating=true`, and the shapes count it wrote. Otherwise it prints a `BOOTSTRAP FAILED` banner and exits 2. Do not continue: never use the store unvalidated (section 6, "Recovery").
 
 ### Step 5. Health check
 
@@ -90,13 +90,13 @@ bin/health.sh --record       # add --json for the full result
 
 Expected: six `PASS` lines and `HEALTH: PASS`. Exit code 0 on pass, 1 on fail, 2 if the gate is unreachable. `--record` also writes the full result to `results/fuseki-<UTC date>/health/<time>-health.json`. The same check is the endpoint `GET http://127.0.0.1:7220/health` (200 pass, 503 fail). It tests each service through the client the Cafe uses (H-0268):
 
-1. The store: SPARQL probes of the knowledge graph return the expected content (`fixtures/health/kg-expectations.json`), and the module's status reads validating on, targeted mode, Jena 6.2.0 and shapes loaded.
+1. The store: SPARQL probes of the knowledge graph return the expected content (`fixtures/health/kg-expectations.json`), and the module's status reads `validating=true` (measured; section 8), targeted mode, Jena 6.2.0 and shapes loaded.
 2. The gate, over its HTTP API: a known-good stand-in write commits; a known-bad one comes back as a SHACL rejection naming `sis:RecordModeMethodShape`; a further write commits, and the rejected record is not stored, which shows the rejected write left nothing behind. Each write must carry an `X-Ontara-Validation` header naming targeted mode.
 3. Temporal: a no-op workflow starts and completes.
 
 Steps 2 to 5 can be run, and timed, in one go with `bin/rebuild.sh` (prints `PROCEDURE ELAPSED: N s`).
 
-To read the store's status yourself: `bin/store-status.sh` (expected last line `STORE STATUS: OK`; `--line` for one line), or from the host, if curl is present, `curl -s http://127.0.0.1:7210/cafe-runtime/validated-update`.
+To read the store's status yourself: `bin/store-status.sh` (expected last line `STORE STATUS: OK`; `--line` for one line), or from the host, if curl is present, `curl -s http://127.0.0.1:7210/cafe-runtime/validated-update` (its `listener` field reads `published`). The fields are described in section 8.
 
 ### Step 6. SHACL capability checks
 
@@ -148,7 +148,7 @@ It passes only if every good write is stored and readable after the restart, wit
 
 It runs as its own Compose project (`ontara-cafe-regression`, `regression/compose.yaml`) with its own network and volume and no published port, so it never touches the runtime stack's data and may run while the stack is up. It needs the images from step 3. Run it here, on the clean machine, and at every change of Jena version.
 
-Options: `--mode whole|targeted`, `--preload N`, `--good N` (at least 50), `--bad K`, `--label NAME`. A positive control, to show the check fails on a defective store, names another image: `bin/regression-check.sh --image <image> --expect-jena <version> --label positive-control`. Never point the runtime stack at such an image.
+Options: `--mode whole|targeted`, `--preload N`, `--good N` (at least 50), `--bad K`, `--label NAME`. A positive control, to show the check fails on a defective store, names another image: `bin/regression-check.sh --image <image> --expect-jena <version> --label positive-control`. Never point the runtime stack at such an image. The image must carry the current module (0.3.0 or later: package `dev.ontara.store`, two listeners, the measured status); the S521 positive-control image `ontara-spike/fuseki:5.6.0` carries the spike module and no longer runs under this check.
 
 ## 3. Sending a write through the gate
 
@@ -187,13 +187,13 @@ A write goes to the store as one SPARQL Update request, `INSERT DATA` of the tri
 
 **Targeted validation** (ADR-014 §3). The module records the quads a request adds or deletes, and validates the subject and object of each against every shape that targets them. A request containing anything other than `INSERT DATA`, `DELETE DATA` or `DELETE/INSERT ... WHERE` (for example `CLEAR`) is validated whole, and its header says so. Targeted validation is sound only for shapes written under the shape-authoring rule (ADR-014 §4.3).
 
-**Writes that bypass validation.** Fuseki's standard endpoints on each dataset (`/query`, `/update`, `/data`) do not validate. The bootstrap loads the knowledge graph and the shapes through `/data` (Graph Store Protocol), and the capability checks empty their scratch dataset through `/update`. Only the gate's write path uses `validated-update`. Both are reachable on `127.0.0.1:7210`. S0.5 builds the store's production configuration.
+**Writes that bypass validation.** Fuseki's standard write endpoints on each dataset (`/update`, `/data`, Graph Store Protocol and quads on the dataset itself, RDF Patch) do not validate. Since S0.5 Pass B1 they accept writes only on the store's stack-network listener (`store:3030`), which is not published: the bootstrap loads the knowledge graph and the shapes through it (Graph Store Protocol `PUT`, the one sanctioned unvalidated write), and the capability checks empty their scratch dataset through it (`/update`). On `127.0.0.1:7210`, the published listener, they are read-only, and every write to them is refused (404, 405 or 400 `No operation for request`). Only the gate's write path uses `validated-update`. Section 8 has the full table.
 
 The gate does not consult the Access Decision Evaluator; that arrives at S0.7.
 
 ## 4. Dataset decision: one runtime dataset
 
-The canonical knowledge graph and the runtime state share **one** TDB2 dataset, `cafe-runtime`, separated by named graphs. The capability scratch dataset, `cafe-capability-scratch`, holds only the capability checks' test data. Both are declared in the store's own configuration (the module starts them; `store/module/src/main/java/dev/ontara/spike/OntaraFuseki.java`), each with its union graph as the default graph. Reasons for one runtime dataset:
+The canonical knowledge graph and the runtime state share **one** TDB2 dataset, `cafe-runtime`, separated by named graphs. The capability scratch dataset, `cafe-capability-scratch`, holds only the capability checks' test data. Both are declared in the store's own configuration (the module starts them; `store/module/src/main/java/dev/ontara/store/OntaraFuseki.java`; section 8), each with its union graph as the default graph. Reasons for one runtime dataset:
 
 1. **Rules and shapes must see both inside one transaction.** A write and its MRB rules run as one SPARQL Update request in one TDB2 write transaction, and that transaction is per dataset. The rules read the tenant's configured model (rule declarations at CML) and the shapes may need class definitions from the knowledge graph. A second dataset would sit outside the transaction.
 2. **The union default graph makes this plain SPARQL.** With the union graph as default, a rule's `WHERE` clause and the module's validation see the knowledge graph and runtime state together, with no `GRAPH` clause or dataset name in the rule.
@@ -223,8 +223,8 @@ Graph IRIs used now, all provisional until S0.5:
 | `compose.yaml` | The stack; the Jena version pin and the validation mode |
 | `.env.example` | Optional local overrides (ports, heap); copy to `.env` |
 | `.gitignore` | Ignores `.env` |
-| `store/Dockerfile` | The store image: builds the module with Maven, refuses Jena below 6.1.0 |
-| `store/module/` | Ontara's validated-update module for Fuseki (`OntaraFuseki.java`), and the offline checks `NodeTableCheck.java` and `BdfTruncateCheck.java`. Ported unchanged from the OP-134 spike at S521; S0.5 builds its production configuration |
+| `store/Dockerfile` | The store image: builds the module with Maven, refuses Jena below 6.1.0, and fails unless the jar's name and manifest carry `pom.xml`'s version |
+| `store/module/` | Ontara's validated-update module for Fuseki, version 0.3.0 (`pom.xml`, `groupId` `dev.ontara`): the server `dev.ontara.store.OntaraFuseki`, and the offline checks `dev.ontara.store.check.NodeTableCheck` and `dev.ontara.store.check.BdfTruncateCheck`. Ported from the OP-134 spike at S521; production configuration since S0.5 Pass B1 (section 8) |
 | `bin/common.sh` | Shared by the scripts: the results folder name (`fuseki-<UTC date>`, or `RESULTS_SET`) and the optional `.env` |
 | `bin/check-prereqs.sh` | Step 2 |
 | `bin/rebuild.sh` | Steps 2 to 5, timed |
@@ -282,3 +282,64 @@ COMPOSE_FILE=compose.yaml:regression/compose.yaml COMPOSE_PROJECT_NAME=ontara-ca
 | Health check fails on a knowledge-graph probe | The knowledge graph changed (for example the BMM gained a class): update `fixtures/health/kg-expectations.json` deliberately |
 | `bin/loadtest.sh` exits 3 | A write was validated other than targeted, or carried no `X-Ontara-Validation` header: a configuration fault (section 2, step 7) |
 | `bin/regression-check.sh` says a regression check is already running | An earlier run did not finish; take its project down (section 6) |
+| A write from the host to `127.0.0.1:7210/<dataset>/update` or `/data` returns 404, 405 or 400 | By design: the published listener is read-only (section 8). Write through the gate (`bin/write.sh`, `127.0.0.1:7220/write`); maintenance loads run inside the stack's network |
+| The store's status reads `validating: false` | Either no shape with a target is loaded in that dataset's shapes graph (normal for `cafe-capability-scratch` between capability runs, and for a new store before the bootstrap), or `validationProbe.passed` is `false`, which means the module's validation code did not reject a known violation: stop and report it |
+
+## 8. The store's configuration
+
+The store is Ontara's validated-update module running Apache Jena Fuseki embedded (`store/module/`, `dev.ontara.store.OntaraFuseki`). This section is its configuration as built since S0.5 Pass B1 (S525).
+
+| Setting | Value | Where it is set |
+|---|---|---|
+| Module version | **0.3.0** | `store/module/pom.xml` `<version>`, and only there. Maven writes it into the jar's name (`ontara-fuseki-validated-update-0.3.0.jar`) and manifest (`Implementation-Version`); the module's status reads it from the manifest (`module`, `moduleVersion`); the image build fails if name and manifest disagree with `pom.xml`, and the module refuses to start without it |
+| Jena (and Fuseki) version | 6.2.0; never below 6.1.0 | `compose.yaml` `x-jena-version`, passed as the image's build argument; the `Dockerfile` refuses below 6.1.0 (section 1) |
+| Datasets | `cafe-runtime` (knowledge graph and runtime state; section 4) and `cafe-capability-scratch` (capability checks only). TDB2, each with its union graph as the default graph | Fixed in `OntaraFuseki.java` (`DATASETS`); data in `/fuseki/databases/<dataset>` (`FUSEKI_DATA`), on the volume `ontara-cafe-stack_store-data` |
+| Shapes graph | `urn:ontara:stack:shapes`, read at the start of each write's transaction; a shape in any other graph is not enforced | `SHAPES_GRAPH` (default in `OntaraFuseki.java`; not set by `compose.yaml`) |
+| Validation mode | `targeted` (whole-graph for any request with an operation other than `INSERT DATA`, `DELETE DATA` or `DELETE/INSERT WHERE`; section 3) | `compose.yaml` `x-validation-mode`, as `ONTARA_VALIDATION`; the module's own default is `whole`; any other value stops it |
+| Inference | none (OP-134 R4) | No reasoner is configured; the capability checks test it (R4) |
+| Listeners | `3030` on the stack network (`FUSEKI_PORT`) and `3031` published (`FUSEKI_PUBLISHED_PORT`), in one JVM over the same datasets | `store/Dockerfile` (`ENV`); `compose.yaml` publishes only `3031`, as `127.0.0.1:${STORE_PORT:-7210}` |
+
+### Which endpoints accept writes, from where
+
+Per dataset (`/cafe-runtime`, `/cafe-capability-scratch`), tested at S525 from the host and from inside the network:
+
+| Endpoint | Validates? | From the host, `127.0.0.1:7210` (listener 3031) | From the stack network, `store:3030` |
+|---|---|---|---|
+| `POST /<ds>/validated-update` | Yes (SHACL in the write transaction) | Accepted | Accepted |
+| `GET /<ds>/validated-update` (the status) | n/a | Served | Served |
+| `/<ds>/query`, `/<ds>/sparql`, `GET /<ds>?query=` | n/a (read) | Served | Served |
+| `GET /<ds>/data`, `/<ds>/get`, `GET /<ds>` | n/a (read) | Served | Served |
+| `POST /<ds>/update`, `POST /<ds>` with `update=` | **No** | Refused (404, 400) | Accepted |
+| `PUT`, `POST`, `DELETE` on `/<ds>/data?graph=` or `?default` | **No** | Refused (405) | Accepted |
+| `PUT`, `POST`, `DELETE` on `/<ds>?graph=`, quads on `/<ds>` | **No** | Refused (405) | Accepted |
+| RDF Patch: `PATCH /<ds>`, `POST /<ds>/patch` | **No** | Refused (400, 404) | Accepted |
+
+Users of the stack-network listener's unvalidated writes: the bootstrap (shapes and knowledge-graph load, Graph Store Protocol `PUT`: the one sanctioned unvalidated write, which ADR-014's whole-graph check covers); the capability checks (scratch dataset only); the load harness's shapes replacement (`loadtest --shapes`). The gate's write path uses `validated-update`.
+
+**Why two listeners.** The closure does not depend on where a request comes from: Fuseki's unvalidated write routes do not exist on the published listener, so no source address (and no guess about how Docker Desktop's port forwarding presents the host) is involved. Only `3031` is published. The stack's containers reach `store:3030` by name on the stack network. Alternatives not taken: a source-address filter (depends on Docker's forwarding, which differs between Docker Desktop and Linux); HTTP authentication on the write endpoints (adds a secret to generate, store and rotate); a reverse proxy (another image and configuration to maintain).
+
+**What it does not do.** It stops unvalidated writes reaching the store through the port published on the host. It is not a boundary against the machine's own user: anyone who can run `docker` on the machine can reach `3030` (for example with `docker compose exec`), and on Linux the host can address a container's own IP directly. On a single-user Stage 0 machine those are the same person who can run the bootstrap.
+
+### The module's status
+
+`GET /<dataset>/validated-update` returns one JSON object. Its fields:
+
+| Field | Meaning |
+|---|---|
+| `module`, `moduleVersion` | `ontara-fuseki-validated-update 0.3.0`, `0.3.0`: from the jar manifest |
+| `jenaVersion`, `fusekiVersion` | The Jena version loaded (`org.apache.jena.Jena.VERSION`) |
+| `jenaBuildVersion` | The image's build argument (`JENA_VERSION`) |
+| `store` | `TDB2` when the dataset is a TDB2 database (measured: `DatabaseMgr.isTDB2`) |
+| `unionDefaultGraph` | Read from the dataset's context |
+| `validating` | **Measured at each status read.** `true` only when both (1) `validationProbe.passed` and (2) `targetShapes > 0`. So it reads `true` when a write to this dataset would be checked against at least one targeted shape by validation code that has just rejected known violations. It reads `false` on a store with no shapes loaded (a new store before the bootstrap; `cafe-capability-scratch` between capability runs), when the shapes graph does not parse (`shapesError`), or when the probe fails |
+| `validationProbe` | The write path's own validation code (`runAndValidate`, which every write runs), in this store's mode, run on a fresh in-memory dataset (never the store) holding one probe shape: a violating `INSERT DATA` (targeted path), a violating `INSERT DATA` followed by `CLEAR` (whole-graph path) and a conforming `INSERT DATA`. `passed` is `true` when both violations are rejected and the conforming case commits. Each case's outcome and `X-Ontara-Validation` text is listed. It takes a few milliseconds |
+| `validationMode`, `engine` | The configured mode, and how it validates |
+| `shapesGraph`, `shapesTriples`, `targetShapes` | The shapes graph, its triple count, and the number of shapes in it with a target (`-1` if it does not parse) |
+| `inference` | `none`: no reasoner is configured |
+| `listener` | Which listener answered: `published` (port 3031, `standardWriteEndpoints: false`) or `stack-network` (3030, `true`) |
+
+The bootstrap, the health check, `bin/store-status.sh`, the capability checks and the regression check read this status. Before the shapes are loaded they require `validationProbe.passed`; with the shapes loaded they require `validating`.
+
+### Building it
+
+`docker compose build` (step 3), or `bin/rebuild.sh` (steps 2 to 5), builds the module inside the store image from `store/module/` with Maven; nothing is built on the host. To change the module's version, change `pom.xml` `<version>` and rebuild: the jar name, the manifest and the status follow.
