@@ -93,7 +93,9 @@ gen: gen-cafe gen-gsl
 
 # Cafe: types with axis tuples, axis guard + next-action maps + XState
 # machines, E6 axis-precondition evaluator, Temporal workflow + step table,
-# Mermaid pathway, General element list; then the record.
+# Mermaid pathway, General element list, the axis membership shapes the
+# runtime stack loads (S0.5 Pass B8; --tenant is the slug in the tenant's
+# ontology namespace); then the record.
 gen-cafe: export ONTARA_GEN_WRITTEN = $(CAFE_OUT)/.generation-run.CoffeeShop
 gen-cafe:
 	@rm -f "$$ONTARA_GEN_WRITTEN"
@@ -111,6 +113,8 @@ gen-cafe:
 		--model-name CoffeeShop --action-def FulfilDrink
 	$(GEN_PYTHON) -m generation.element_list --model $(CAFE_MODEL) --out $(CAFE_OUT) \
 		--model-name CoffeeShop --platform-model model $(GENERAL_PACKAGES)
+	$(GEN_PYTHON) -m generation.axis_shapes --model $(CAFE_MODEL) --out $(CAFE_OUT) \
+		--model-name CoffeeShop --tenant cafe
 	$(GEN_PYTHON) -m generation.record write --model $(CAFE_MODEL) --out $(CAFE_OUT) --model-name CoffeeShop
 
 # GenderSense: E6 constraint evaluators, General element list; then the record.

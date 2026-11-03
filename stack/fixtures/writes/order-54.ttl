@@ -1,38 +1,45 @@
-# The load harness's order write: 53 triples, one per line (order, 4 lines,
-# 5 records). Rebuilt from Hugo's S515 notes section 3.3. Tokens are filled in
-# by the harness: {{O}} order IRI, {{T}} xsd:dateTime.
-# Lines arrive Ready, so the readiness rule fires on every write (the costlier case).
-@prefix rec:  <urn:ontara:standin:rec#> .
-@prefix cafe: <urn:ontara:standin:cafe#> .
-@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
-<{{O}}> a cafe:Order .
+# The load harness's order write, in B8 form: 54 triples, one per line (order,
+# 4 lines, 5 records). Tokens filled by the harness: {{O}} order IRI,
+# {{T}} xsd:dateTime. Was order-53.ttl: the order now carries both of its axes
+# (lifecycle and payment), so one triple more. The order arrives in
+# preparation and paid, with every line ready, so the readiness rule fires on
+# every write (the costlier case) and makes a move the model permits
+# (inPreparation -> ready). Axis values: generated predicates and value IRIs
+# (S0.5 Pass B8). Everything else stays in the stand-in vocabulary until
+# Pass C1; item -> menuItem follows A1's rename.
+@prefix rec:         <urn:ontara:standin:rec#> .
+@prefix cafe:        <urn:ontara:standin:cafe#> .
+@prefix ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+<{{O}}> a ontara-cafe:Order .
 <{{O}}> cafe:placedAt "{{T}}"^^xsd:dateTime .
 <{{O}}> cafe:counter "counter-1" .
-<{{O}}> cafe:status cafe:Placed .
+<{{O}}> ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-inPreparation .
+<{{O}}> ontara-cafe:orderPayment ontara-cafe:OrderPayment-paid .
 <{{O}}> cafe:hasLine <{{O}}/line/1> .
 <{{O}}> cafe:hasLine <{{O}}/line/2> .
 <{{O}}> cafe:hasLine <{{O}}/line/3> .
 <{{O}}> cafe:hasLine <{{O}}/line/4> .
-<{{O}}/line/1> a cafe:OrderLine .
+<{{O}}/line/1> a ontara-cafe:OrderLine .
 <{{O}}/line/1> cafe:lineOf <{{O}}> .
-<{{O}}/line/1> cafe:item cafe:FlatWhite .
+<{{O}}/line/1> cafe:menuItem cafe:FlatWhite .
 <{{O}}/line/1> cafe:quantity 1 .
-<{{O}}/line/1> cafe:status cafe:Ready .
-<{{O}}/line/2> a cafe:OrderLine .
+<{{O}}/line/1> ontara-cafe:orderLinePreparation ontara-cafe:OrderLinePreparation-ready .
+<{{O}}/line/2> a ontara-cafe:OrderLine .
 <{{O}}/line/2> cafe:lineOf <{{O}}> .
-<{{O}}/line/2> cafe:item cafe:Croissant .
+<{{O}}/line/2> cafe:menuItem cafe:Croissant .
 <{{O}}/line/2> cafe:quantity 2 .
-<{{O}}/line/2> cafe:status cafe:Ready .
-<{{O}}/line/3> a cafe:OrderLine .
+<{{O}}/line/2> ontara-cafe:orderLinePreparation ontara-cafe:OrderLinePreparation-ready .
+<{{O}}/line/3> a ontara-cafe:OrderLine .
 <{{O}}/line/3> cafe:lineOf <{{O}}> .
-<{{O}}/line/3> cafe:item cafe:Latte .
+<{{O}}/line/3> cafe:menuItem cafe:Latte .
 <{{O}}/line/3> cafe:quantity 1 .
-<{{O}}/line/3> cafe:status cafe:Ready .
-<{{O}}/line/4> a cafe:OrderLine .
+<{{O}}/line/3> ontara-cafe:orderLinePreparation ontara-cafe:OrderLinePreparation-ready .
+<{{O}}/line/4> a ontara-cafe:OrderLine .
 <{{O}}/line/4> cafe:lineOf <{{O}}> .
-<{{O}}/line/4> cafe:item cafe:Muffin .
+<{{O}}/line/4> cafe:menuItem cafe:Muffin .
 <{{O}}/line/4> cafe:quantity 1 .
-<{{O}}/line/4> cafe:status cafe:Ready .
+<{{O}}/line/4> ontara-cafe:orderLinePreparation ontara-cafe:OrderLinePreparation-ready .
 <{{O}}/record> a rec:PlatformRecord .
 <{{O}}/record> rec:recordOf <{{O}}> .
 <{{O}}/record> rec:hasRealityMode rec:RealMode .

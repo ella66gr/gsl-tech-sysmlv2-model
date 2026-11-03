@@ -292,6 +292,7 @@ class ResolvedModel:
             self.literals(a, "axisAuthority") or [],
             shape[0] if shape else None,
             moves,
+            self.string(a, "axisDescription"),
         )
 
     def _refs(self, td) -> dict[str, tuple[str, str | None]]:

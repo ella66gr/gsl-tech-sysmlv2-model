@@ -20,8 +20,13 @@
 //   4. named-graph observations, for S0.5.  5. R4, no store-side inference.
 //   6. the S515 five-case in-transaction test.  7. the stand-in SPARQL
 //      constraint's line-only case.  8. sh:rule.  9. Cyril's two-sided
-//      readiness shapes (S519).
+//      readiness shapes (S519), with the rest of the runtime shapes.
 // An unenforced component is a result, not a failure (input to S0.6).
+//
+// Since S0.5 Pass B8 the order write (fixtures/writes/order-54.ttl), the
+// readiness rule and the readiness shapes carry axis values as the generated
+// predicates and value IRIs (ontara-cafe:orderLifecycle, orderPayment,
+// orderLinePreparation), and items 2, 3, 7 and 9 read and write them so.
 //
 //   node dist/cli/capabilities.js --out <dir under results/> --mode targeted|whole
 //   node dist/cli/capabilities.js --combine <dir under results/>
@@ -29,8 +34,8 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { write as gateWrite, WriteOutcome } from "../gate";
 import { openStore, SCRATCH_DATASET, WriteRequest, Store } from "../store";
-import { config, graphs, paths, validatedAs } from "../config";
-import { readFixture, orderWrite, fill } from "../fixtures";
+import { config, graphs, paths, validatedAs, RUNTIME_SHAPE_FILES } from "../config";
+import { readFixture, readStackFile, orderWrite, fill } from "../fixtures";
 
 const args = process.argv.slice(2);
 const opt = (n: string, d: string) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d; };
@@ -51,6 +56,18 @@ async function write(req: WriteRequest, s: Store): Promise<WriteOutcome> {
 }
 
 const PFX = `@prefix sh: <${SH}> . @prefix ex: <urn:ontara:stack:cap#> . @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n`;
+
+// The Cafe's axis vocabulary (S0.5 Pass B8): an order's lifecycle and a line's
+// preparation, each its own generated predicate with its own value IRIs.
+const OC = "https://ontara.dev/ontology/tenant/cafe/";
+const Q_PFX = `PREFIX cafe: <urn:ontara:standin:cafe#> PREFIX rec: <urn:ontara:standin:rec#> PREFIX ontara-cafe: <${OC}> `;
+const isLine = (s: string) => s.includes("/line/");
+const axisOf = (s: string) => (isLine(s) ? { p: `${OC}orderLinePreparation`, v: `${OC}OrderLinePreparation-` } : { p: `${OC}orderLifecycle`, v: `${OC}OrderLifecycle-` });
+// One axis move as one request: DELETE DATA of the old value, INSERT DATA of the new.
+const setAxis = (s: string, from: string, to: string) => { const a = axisOf(s); return `DELETE DATA { GRAPH <${G}> { <${s}> <${a.p}> <${a.v}${from}> } } ; INSERT DATA { GRAPH <${G}> { <${s}> <${a.p}> <${a.v}${to}> } }`; };
+// The order's lifecycle triple and a line's preparation triple as the order write's Turtle has them.
+const lifecycleLine = (o: string, v: string) => `<${o}> ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-${v} .`;
+const preparationLine = (line: string, v: string) => `<${line}> ontara-cafe:orderLinePreparation ontara-cafe:OrderLinePreparation-${v} .`;
 
 // `validation`: how the store validated the write, where the adapter says
 // (the Fuseki module's X-Ontara-Validation header, S519); absent otherwise.
@@ -182,9 +199,10 @@ async function testRuleRunner() {
 
   const order = (n: string) => `urn:ontara:standin:cafe#cap-order-${n}`;
   const out: any[] = [];
-  const ask = (q: string) => db.ask(`PREFIX cafe: <urn:ontara:standin:cafe#> PREFIX rec: <urn:ontara:standin:rec#> ${q}`);
+  const ask = (q: string) => db.ask(`${Q_PFX} ${q}`);
+  const READY = "ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-ready";
 
-  // Orders written without the rule: all lines Ready, status Placed.
+  // Orders written without the rule: in preparation and paid, all lines ready.
   const plain = (o: string, edit?: (ttl: string) => string) => {
     const w = orderWrite(o, G, { rule: false });
     return { graph: G, turtle: edit ? edit(w.turtle) : w.turtle };
@@ -198,8 +216,8 @@ async function testRuleRunner() {
   const a = order("A"), b = order("B");
   const wa = await write(plain(a), db), wb = await write(plain(b), db);
   const ra = await write({ graph: G, updates: ruleAndLabel(a), label: "cap rule bound to A" }, db);
-  const aReady = await ask(`ASK { <${a}> cafe:status cafe:Ready }`);
-  const bReady = await ask(`ASK { <${b}> cafe:status cafe:Ready }`);
+  const aReady = await ask(`ASK { <${a}> ${READY} }`);
+  const bReady = await ask(`ASK { <${b}> ${READY} }`);
   const aLabel = await db.select(`PREFIX rec: <urn:ontara:standin:rec#> SELECT ?mode ?method WHERE { <${a}/ready-record> rec:hasRealityMode ?mode ; rec:hasProvenanceMethod ?method }`);
   out.push({
     test: "2a inline VALUES binding: rule bound to order A, order B also eligible",
@@ -227,7 +245,7 @@ async function testRuleRunner() {
   const d = order("D");
   const wd = await write(plain(d, (t) => t.replace(`<${d}/line/4/record> rec:hasRealityMode rec:RealMode`, `<${d}/line/4/record> rec:hasRealityMode rec:SimulatedMode`)), db);
   const rd = await write({ graph: G, updates: ruleAndLabel(d), label: "cap mixed modes" }, db);
-  const dReady = await ask(`ASK { <${d}> cafe:status cafe:Ready }`);
+  const dReady = await ask(`ASK { <${d}> ${READY} }`);
   const dRec = await ask(`ASK { <${d}/ready-record> ?p ?o }`);
   out.push({
     test: "2c labelling: inputs Real and Simulated -> no mode written -> SHACL rejection, rule output rolled back",
@@ -248,7 +266,7 @@ async function testRuleRunner() {
   // 2e. The whole order write with rule and labelling in one transaction (the load harness's write).
   const f = order("F");
   const wf = await write(orderWrite(f, G), db);
-  const fReady = await ask(`ASK { <${f}> cafe:status cafe:Ready . <${f}/ready-record> rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:DirectMethod }`);
+  const fReady = await ask(`ASK { <${f}> ${READY} . <${f}/ready-record> rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:DirectMethod }`);
   out.push({
     test: "2e order write + readiness rule + labelling in one transaction (the load harness write)",
     write: brief(wf), orderF_ReadyAndLabelled: fReady,
@@ -262,11 +280,13 @@ async function testMessages() {
   await clearData();
   const load = await loadShapes(readFixture("shapes/standin-shapes.ttl"));
   const core = await write({ graph: G, turtle: fill(readFixture("writes/known-bad.ttl"), { RUN: "msg" }) }, db);
-  // SPARQL constraint: a typed order marked Ready with an open line, in one write.
+  // SPARQL constraint: a typed order marked ready with a line in preparation, in one write.
   const o = "urn:ontara:standin:cafe#cap-order-M";
-  const t = orderWrite(o, G, { rule: false }).turtle
-    .replace(`<${o}> cafe:status cafe:Placed`, `<${o}> cafe:status cafe:Ready`)
-    .replace(`<${o}/line/4> cafe:status cafe:Ready`, `<${o}/line/4> cafe:status cafe:InProgress`);
+  const w0 = orderWrite(o, G, { rule: false }).turtle;
+  if (!w0.includes(lifecycleLine(o, "inPreparation")) || !w0.includes(preparationLine(`${o}/line/4`, "ready"))) throw new Error("item 3: the order fixture no longer has the lines this test edits");
+  const t = w0
+    .replace(lifecycleLine(o, "inPreparation"), lifecycleLine(o, "ready"))
+    .replace(preparationLine(`${o}/line/4`, "ready"), preparationLine(`${o}/line/4`, "inPreparation"));
   const sparql = await write({ graph: G, turtle: t }, db);
   const msgs = (w: WriteOutcome) => (w.outcome === "rejected" ? w.results.map((r) => r.message) : null);
   return {
@@ -325,37 +345,38 @@ async function testS515FiveCase() {
 }
 
 // ---- 7. The stand-in SPARQL constraint's line-only case (S515 notes §2.4; ADR-014 §4.3):
-// an existing Ready order has one line set back to InProgress, line triple
-// only. Whole mode catches it; targeted mode does not, because the write does
+// an existing ready order has one line set back to in preparation, line
+// triple only. Whole mode catches it; targeted mode does not, because the write does
 // not touch the order the constraint targets. Expected, and the reason the
 // load harness uses the two-sided shapes (S521).
 async function testSparqlNonTargetChange() {
   await clearData();
   await loadShapes(readFixture("shapes/standin-shapes.ttl"));
   const o = "urn:ontara:standin:cafe#cap-order-N";
-  const setup = await write(orderWrite(o, G), db); // order + rule + labelling: Ready
+  const setup = await write(orderWrite(o, G), db); // order + rule + labelling: ready
   const flip = await write({ graph: G, label: "cap line-only change",
-    updates: [`PREFIX cafe: <urn:ontara:standin:cafe#> DELETE DATA { GRAPH <${G}> { <${o}/line/4> cafe:status cafe:Ready } } ; INSERT DATA { GRAPH <${G}> { <${o}/line/4> cafe:status cafe:InProgress } }`] }, db);
+    updates: [setAxis(`${o}/line/4`, "ready", "inPreparation")] }, db);
   return { setup: brief(setup), lineOnlyChange: brief(flip), caught: flip.outcome === "rejected" };
 }
 
 // ---- 9. OP-134 follow-up (S519, Part D item 3): Cyril's two-sided readiness
-// shapes (fixtures/shapes/spike-two-sided-readiness.ttl, loaded with the
-// core-only stand-in file in place of the stand-in SPARQL constraint). Each
-// case starts from a cleared graph and one fresh order written as the load
-// harness writes it (order Placed, four lines Ready, readiness rule and
-// labelling in the same write, so the order ends Ready), then sends one write.
-//   A  line-only write against a ready order (line/4 Ready -> InProgress): rejected expected
-//   B  legitimate per-line collection (line/1 Ready -> Collected, others Ready): committed expected
-//   C  order-only write: an order with line/4 InProgress set Placed -> Ready (rule off): rejected expected
+// shapes (fixtures/shapes/spike-two-sided-readiness.ttl), loaded as the
+// runtime set the bootstrap loads (config.ts RUNTIME_SHAPE_FILES: with the
+// core-only stand-in file and, since S0.5 Pass B8, the generated axis shapes)
+// in place of the stand-in SPARQL constraint. Each case starts from a cleared
+// graph and one fresh order written as the load harness writes it (order in
+// preparation and paid, four lines ready, readiness rule and labelling in the
+// same write, so the order ends ready), then sends one write.
+//   A  line-only write against a ready order (line/4 ready -> inPreparation): rejected expected
+//   B  legitimate per-line collection (line/1 ready -> collected, others ready): committed expected
+//   C  order-only write: an order with line/4 inPreparation set inPreparation -> ready (rule off): rejected expected
 //   D  case B against the stand-in shapes (SPARQL constraint): observed, no expectation
-//      (the stand-in requires every line Ready; Cyril §4.1 says legitimate data breaks it)
+//      (the stand-in requires every line ready; Cyril §4.1 says legitimate data breaks it)
 async function testTwoSidedReadiness() {
-  const twoSided = readFixture("shapes/standin-shapes-core-only.ttl") + "\n" + readFixture("shapes/spike-two-sided-readiness.ttl");
+  const twoSided = RUNTIME_SHAPE_FILES.map((f) => readStackFile(f)).join("\n");
   const standin = readFixture("shapes/standin-shapes.ttl");
-  const C = "PREFIX cafe: <urn:ontara:standin:cafe#> ";
-  const setStatus = (s: string, from: string, to: string) => `${C} DELETE DATA { GRAPH <${G}> { <${s}> cafe:status cafe:${from} } } ; INSERT DATA { GRAPH <${G}> { <${s}> cafe:status cafe:${to} } }`;
-  const statusOf = async (s: string) => (await db.select(`${C} SELECT ?st WHERE { GRAPH <${G}> { <${s}> cafe:status ?st } }`)).map((b: any) => b.st.value.replace("urn:ontara:standin:cafe#", ""));
+  const setStatus = setAxis;
+  const statusOf = async (s: string) => (await db.select(`SELECT ?st WHERE { GRAPH <${G}> { <${s}> <${axisOf(s).p}> ?st } }`)).map((b: any) => b.st.value.replace(OC, ""));
   const cases: any[] = [];
   const run = async (id: string, name: string, shapes: "two-sided" | "standin", expect: "committed" | "rejected" | null,
                      prepare: (o: string) => Promise<any[]>, act: (o: string) => string, watch: (o: string) => string[]) => {
@@ -369,16 +390,16 @@ async function testTwoSidedReadiness() {
     cases.push({ case: `${id}: ${name}`, shapes, shapesLoad: load.status, setup: setup.map(brief), statusBefore: before, write: brief(w), statusAfter: after, expect, pass: expect === null ? null : w.outcome === expect });
   };
   const placeReady = async (o: string) => [await write(orderWrite(o, G), db)];
-  await run("A", "line-only write against a ready order (line/4 Ready -> InProgress)", "two-sided", "rejected", placeReady,
-    (o) => setStatus(`${o}/line/4`, "Ready", "InProgress"), (o) => [o, `${o}/line/4`]);
-  await run("B", "legitimate per-line collection (line/1 Ready -> Collected, lines 2-4 Ready)", "two-sided", "committed", placeReady,
-    (o) => setStatus(`${o}/line/1`, "Ready", "Collected"), (o) => [o, `${o}/line/1`]);
-  await run("C", "order-only write: order with line/4 InProgress set Placed -> Ready", "two-sided", "rejected",
-    async (o) => [await write(orderWrite(o, G, { rule: false }), db), await write({ graph: G, label: "cap two-sided C prep", updates: [setStatus(`${o}/line/4`, "Ready", "InProgress")] }, db)],
-    (o) => setStatus(o, "Placed", "Ready"), (o) => [o, `${o}/line/4`]);
+  await run("A", "line-only write against a ready order (line/4 ready -> inPreparation)", "two-sided", "rejected", placeReady,
+    (o) => setStatus(`${o}/line/4`, "ready", "inPreparation"), (o) => [o, `${o}/line/4`]);
+  await run("B", "legitimate per-line collection (line/1 ready -> collected, lines 2-4 ready)", "two-sided", "committed", placeReady,
+    (o) => setStatus(`${o}/line/1`, "ready", "collected"), (o) => [o, `${o}/line/1`]);
+  await run("C", "order-only write: order with line/4 inPreparation set inPreparation -> ready", "two-sided", "rejected",
+    async (o) => [await write(orderWrite(o, G, { rule: false }), db), await write({ graph: G, label: "cap two-sided C prep", updates: [setStatus(`${o}/line/4`, "ready", "inPreparation")] }, db)],
+    (o) => setStatus(o, "inPreparation", "ready"), (o) => [o, `${o}/line/4`]);
   await run("D", "case B against the stand-in shapes (SPARQL constraint)", "standin", null, placeReady,
-    (o) => setStatus(`${o}/line/1`, "Ready", "Collected"), (o) => [o, `${o}/line/1`]);
-  return { shapesFile: "fixtures/shapes/spike-two-sided-readiness.ttl (+ standin-shapes-core-only.ttl)", cases, pass: cases.filter((c) => c.pass !== null).every((c) => c.pass) };
+    (o) => setStatus(`${o}/line/1`, "ready", "collected"), (o) => [o, `${o}/line/1`]);
+  return { shapesFile: `the runtime shapes: ${RUNTIME_SHAPE_FILES.join(" + ")}`, cases, pass: cases.filter((c) => c.pass !== null).every((c) => c.pass) };
 }
 
 // ---- 8. sh:rule (SHACL Advanced Features): does the store execute a triple rule?
@@ -568,7 +589,7 @@ function markdown(r: any): string {
     L.push(``, `After: rec1 intact with its original mode and method = ${f.after.rec1IntactWithOriginalModeAndMethod}; any of rec2 to rec6 stored = ${f.after.anyOfRec2to6Stored}.`);
   }
   const x = r.item7_sparqlNonTargetChange;
-  if (x) L.push(``, `## 7. Stand-in SPARQL constraint, line-only change`, ``, `An existing Ready order has one line set back to InProgress (line triple only). Caught: **${x.caught}** (validation: ${x.lineOnlyChange.validation}).`);
+  if (x) L.push(``, `## 7. Stand-in SPARQL constraint, line-only change`, ``, `An existing ready order has one line set back to in preparation (line triple only). Caught: **${x.caught}** (validation: ${x.lineOnlyChange.validation}).`);
   const ts = r.item9_twoSidedReadiness;
   if (ts) {
     L.push(``, `## 9. Two-sided readiness shapes (S519; Cyril's note §4.2)`, ``, `Shapes: ${ts.shapesFile}. Result: **${ts.pass ? "pass" : "FAIL"}** (cases with an expectation).`, ``, `| Case | Shapes | Expected | Outcome | Validation | Status before -> after |`, `|---|---|---|---|---|---|`);

@@ -21,6 +21,9 @@ export const paths = {
   fixtures: path.join(config.stackDir, "fixtures"),
   results: path.join(config.stackDir, "results"),
   kgSource: path.join(config.stackDir, "kg-source"),
+  // Each tenant's generated folder, mounted read-only by compose.yaml
+  // (the Cafe's at tenant-generated/cafe; S0.5 Pass B8).
+  tenantGenerated: path.join(config.stackDir, "tenant-generated"),
 };
 
 // Named graphs used by the stack at S0.1. Provisional: S0.5 sets the real
@@ -33,12 +36,19 @@ export const graphs = {
   capability: "urn:ontara:stack:graph:capability",
 };
 
-// The shapes the bootstrap loads into the runtime dataset (S521, pass 3):
-// the stand-in record shape (core) and Cyril's two-sided core readiness
-// shapes, in place of the S0.1 stand-in SPARQL readiness constraint, which
-// targeted validation misses in its line-only case (ADR-014 §4.3). The load
-// harness measures with these (specification 2.5 item 8.1).
-export const RUNTIME_SHAPE_FILES = ["shapes/standin-shapes-core-only.ttl", "shapes/spike-two-sided-readiness.ttl"];
+// The shapes the bootstrap loads into the runtime dataset, as paths under
+// config.stackDir: the stand-in record shape (core) and Cyril's two-sided core
+// readiness shapes (S521, pass 3), in place of the S0.1 stand-in SPARQL
+// readiness constraint, which targeted validation misses in its line-only case
+// (ADR-014 §4.3); and the Cafe's generated axis membership and subject shapes
+// (S0.5 Pass B8, H-0647; generation/axis_shapes.py, written by make gen into
+// the Cafe's generated folder, a build output). The load harness measures with
+// these (specification 2.5 item 8.1).
+export const RUNTIME_SHAPE_FILES = [
+  "fixtures/shapes/standin-shapes-core-only.ttl",
+  "fixtures/shapes/spike-two-sided-readiness.ttl",
+  "tenant-generated/cafe/axis-shapes.ttl",
+];
 
 // A write was validated in the expected mode when its X-Ontara-Validation
 // header starts with the mode's name ("targeted; ..." or "whole ...").

@@ -74,10 +74,10 @@ docker compose logs --no-log-prefix bootstrap
 [bootstrap] Apache Jena Fuseki 6.2.0 (Jena 6.2.0); licence: none needed (Apache-2.0)
 [bootstrap] status /cafe-runtime: module="ontara-fuseki-validated-update 0.3.0" validating=true probe=passed mode=targeted jena=6.2.0 (built for 6.2.0) store=TDB2 unionDefaultGraph=true inference=none ... targetShapes=...
 [bootstrap] status /cafe-capability-scratch: module="ontara-fuseki-validated-update 0.3.0" validating=false probe=passed mode=targeted jena=6.2.0 ... targetShapes=0
-[bootstrap] shapes loaded into <urn:ontara:stack:shapes>: 84 triples from shapes/standin-shapes-core-only.ttl + shapes/spike-two-sided-readiness.ttl (read back by SPARQL)
+[bootstrap] shapes loaded into <urn:ontara:stack:shapes>: 147 triples from fixtures/shapes/standin-shapes-core-only.ttl + fixtures/shapes/spike-two-sided-readiness.ttl + tenant-generated/cafe/axis-shapes.ttl (read back by SPARQL)
 [bootstrap] kg <urn:ontara:stack:kg:...> ... (12 lines)
-[bootstrap] status /cafe-runtime: ... validating=true probe=passed ... shapesTriples=84 targetShapes=...
-[bootstrap] OK in ... s: validating, targeted mode, Jena 6.2.0, 84 shapes triples
+[bootstrap] status /cafe-runtime: ... validating=true probe=passed ... shapesTriples=147 targetShapes=9
+[bootstrap] OK in ... s: validating, targeted mode, Jena 6.2.0, 147 shapes triples
 ```
 
 The bootstrap reads the module's status (`GET /<dataset>/validated-update`) on both datasets before it writes anything, and again after loading. Before loading it requires the validation probe passed (the write path's own validation rejects known violations), targeted mode, Jena 6.2.0 (both the version loaded and the image's build argument), TDB2 with the union graph as default graph and no inference; `validating` may read `false` at that point, on a new store or on the scratch dataset, because no shapes are loaded yet (section 8). After loading it requires `validating=true`, and the shapes count it wrote. Otherwise it prints a `BOOTSTRAP FAILED` banner and exits 2. Do not continue: never use the store unvalidated (section 6, "Recovery").
@@ -118,7 +118,7 @@ bin/loadtest.sh                                   # 500 orders, three paced read
 bin/loadtest.sh --orders 500 --readers continuous --label stress
 ```
 
-Each write is the 53-triple order with the readiness rule and the labelling step in the same request. The shapes are the runtime set the bootstrap loads: the stand-in record shape and Cyril's two-sided core readiness shapes (not the S0.1 stand-in SPARQL constraint, which targeted validation misses in its line-only case; ADR-014 §4.3). Each run writes `results/fuseki-<UTC date>/loadtest/<UTC time>-<os>-<arch>-<label>/` with:
+Each write is the 54-triple order (`fixtures/writes/order-54.ttl`) with the readiness rule and the labelling step in the same request. The order arrives in preparation and paid, with every line ready, so the rule makes the move `inPreparation` to `ready` on every write. Axis values are in their runtime form (S0.5 Pass B8): one triple per axis, through the generated predicate, with a value IRI from the axis's declared set. The shapes are the runtime set the bootstrap loads: the stand-in record shape, Cyril's two-sided core readiness shapes (not the S0.1 stand-in SPARQL constraint, which targeted validation misses in its line-only case; ADR-014 §4.3) and the Cafe's generated axis shapes. Each run writes `results/fuseki-<UTC date>/loadtest/<UTC time>-<os>-<arch>-<label>/` with:
 
 1. `machine.txt`: the machine (model, processors, memory, Docker), the store image, and the store as its module reports it (product, Jena version, validation mode);
 2. `writes.csv`: raw per-write timings, one row per write, with each write's `X-Ontara-Validation` header in the `validation` column (the latency is `latency_ms`, the HTTP round trip to the gate);
@@ -211,7 +211,7 @@ Graph IRIs used now, all provisional until S0.5:
 | Graph | Holds |
 |---|---|
 | `urn:ontara:stack:kg:<module>` | one per knowledge-graph file (`fixtures/kg/manifest.json`: the 12-file General-only stack) |
-| `urn:ontara:stack:shapes` | the runtime shapes (`standin-shapes-core-only.ttl` and `spike-two-sided-readiness.ttl`) |
+| `urn:ontara:stack:shapes` | the runtime shapes (`standin-shapes-core-only.ttl`, `spike-two-sided-readiness.ttl` and the Cafe's generated `axis-shapes.ttl`) |
 | `urn:ontara:stack:graph:loadtest` | load-harness orders (cleared at the start of each run) |
 | `urn:ontara:stack:graph:health` | health-check writes (cleared after each check) |
 | `urn:ontara:stack:graph:manual` | `bin/write.sh` writes |
@@ -220,7 +220,7 @@ Graph IRIs used now, all provisional until S0.5:
 
 | Path | What it is |
 |---|---|
-| `compose.yaml` | The stack; the Jena version pin and the validation mode |
+| `compose.yaml` | The stack; the Jena version pin and the validation mode. The bootstrap and the gate mount the repository's `ontology/` and `generated/ontology/` (the knowledge graph) and the Cafe's generated folder, `exercises/coffeeshop-demonstrator/generated/` (as `/stack/tenant-generated/cafe`, for its axis shapes), all read-only: build outputs, never the authoring rig |
 | `.env.example` | Optional local overrides (ports, heap); copy to `.env` |
 | `.gitignore` | Ignores `.env` |
 | `store/Dockerfile` | The store image: builds the module with Maven, refuses Jena below 6.1.0, and fails unless the jar's name and manifest carry `pom.xml`'s version |
@@ -238,10 +238,11 @@ Graph IRIs used now, all provisional until S0.5:
 | `gate/` | The gate, bootstrap, worker, health check, capability checks, load harness and the regression check's driver (TypeScript, Node 22). `gate/src/store/` is the store interface and its one adapter, Fuseki. `package-lock.json` pins every dependency |
 | `temporal/scripts/`, `temporal/dynamicconfig/` | Temporal schema setup and namespace scripts, from `temporalio/samples-server` (MIT) |
 | `fixtures/shapes/standin-shapes-core-only.ttl` | The stand-in record shape (Hugo, S515). Not canon; S0.6 replaces it |
-| `fixtures/shapes/spike-two-sided-readiness.ttl` | Cyril's two-sided core readiness shapes (S519), in the stand-in vocabulary. Not canon |
+| `fixtures/shapes/spike-two-sided-readiness.ttl` | Cyril's two-sided core readiness shapes (S519), on the generated axis predicates and values since S0.5 Pass B8. Not canon |
+| `../exercises/coffeeshop-demonstrator/generated/axis-shapes.ttl` | The Cafe's axis shapes, generated by `make gen` (`generation/axis_shapes.py`; S0.5 Pass B8): per status axis, exactly one value from the declared set (`sh:in`), and only an instance of the declaring type carries it. Never edited by hand |
 | `fixtures/shapes/standin-shapes.ttl` | The S0.1 stand-in shapes with the SPARQL readiness constraint. Used only by the capability checks and `loadtest --shapes standin`; it does not follow the shape-authoring rule and must not be copied (ADR-014 §4.3) |
-| `fixtures/writes/order-53.ttl` | The 53-triple order write (order, four lines, five records) |
-| `fixtures/rules/order-readiness.rq` | The readiness rule, bound to one order by an inline `VALUES` clause |
+| `fixtures/writes/order-54.ttl` | The 54-triple order write (order, four lines, five records), axis values in their runtime form; `menuItem` for the line's item (was `order-53.ttl` until S0.5 Pass B8) |
+| `fixtures/rules/order-readiness.rq` | The readiness rule, bound to one order by an inline `VALUES` clause; it makes only the permitted move `inPreparation` to `ready` |
 | `fixtures/rules/labelling.rq` | The platform labelling step: mode from the inputs, weakest input method |
 | `fixtures/writes/known-good.ttl`, `known-bad.ttl` | The health check's and `bin/write.sh`'s stand-in writes |
 | `fixtures/kg/manifest.json` | Knowledge-graph files and their graphs |

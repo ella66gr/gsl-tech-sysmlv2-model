@@ -173,6 +173,9 @@ services:
       - ./results:/stack/results
       - ../ontology:/stack/kg-source/ontology:ro
       - ../generated/ontology:/stack/kg-source/generated-ontology:ro
+      # The Cafe's generated folder (make gen): the axis membership shapes
+      # the bootstrap loads (S0.5 Pass B8). A build output, read-only.
+      - ../exercises/coffeeshop-demonstrator/generated:/stack/tenant-generated/cafe:ro
     networks: [stack]
     restart: "no"
 

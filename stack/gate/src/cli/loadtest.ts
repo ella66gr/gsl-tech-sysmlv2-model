@@ -1,10 +1,11 @@
 // Load harness (S0.1, specification 2.5 item 8). Run by stack/bin/loadtest.sh.
 //
-// Writer: one, sequential. Each write is the 53-triple order
-//   (fixtures/writes/order-53.ttl) plus the readiness rule and the labelling
-//   step (fixtures/rules/) in the same transaction, POSTed to the gate's
-//   /write endpoint over HTTP, with the runtime shapes loaded: the stand-in
-//   record shape and Cyril's two-sided core readiness shapes (S521; the
+// Writer: one, sequential. Each write is the 54-triple order
+//   (fixtures/writes/order-54.ttl; axis values in B8 form, S0.5 Pass B8) plus
+//   the readiness rule and the labelling step (fixtures/rules/) in the same
+//   transaction, POSTed to the gate's /write endpoint over HTTP, with the
+//   runtime shapes loaded: the stand-in record shape, Cyril's two-sided core
+//   readiness shapes (S521) and the Cafe's generated axis shapes (B8; the
 //   bootstrap's RUNTIME_SHAPE_FILES), not the stand-in SPARQL constraint.
 // Readers: three, concurrent with the writer, querying the store directly:
 //   counter queue, kitchen-display (KDS) stream, operator board.
@@ -26,8 +27,9 @@
 //                         harness unchanged). Readers query writer 1's graph.
 //   --shapes runtime|standin|core-only
 //                         runtime (default, S521): what the bootstrap loads,
-//                         the core-only stand-in file plus Cyril's two-sided
-//                         readiness shapes (fixtures/shapes/spike-two-sided-readiness.ttl).
+//                         the core-only stand-in file, Cyril's two-sided
+//                         readiness shapes (fixtures/shapes/spike-two-sided-readiness.ttl)
+//                         and the Cafe's generated axis shapes (S0.5 Pass B8).
 //                         standin: the S0.1 stand-in shapes, with the SPARQL
 //                         constraint (for comparison with pass 1 only).
 //                         core-only: the record shape alone (diagnostic).
@@ -51,7 +53,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
 import { runtimeStore } from "../gate";
-import { readFixture } from "../fixtures";
+import { readFixture, readStackFile, ORDER_FIXTURE } from "../fixtures";
 import { config, graphs, paths, RUNTIME_SHAPE_FILES, validatedAs } from "../config";
 import { orderWrite, runId } from "../fixtures";
 
@@ -65,15 +67,16 @@ const G = graphs.loadtest;
 const WRITERS = Number(opt("--writers", "1"));
 const SHAPES = opt("--shapes", "runtime") as "runtime" | "standin" | "core-only";
 if (!["runtime", "standin", "core-only"].includes(SHAPES)) throw new Error(`--shapes ${SHAPES}: runtime, standin or core-only`);
-const SHAPE_FILES = SHAPES === "runtime" ? RUNTIME_SHAPE_FILES : SHAPES === "core-only" ? ["shapes/standin-shapes-core-only.ttl"] : ["shapes/standin-shapes.ttl"];
-const SHAPES_FILE = SHAPE_FILES.map((f) => `fixtures/${f}`).join(" + ");
-const shapesTurtle = (files = SHAPE_FILES) => files.map((f) => readFixture(f)).join("\n");
+const SHAPE_FILES = SHAPES === "runtime" ? RUNTIME_SHAPE_FILES : SHAPES === "core-only" ? ["fixtures/shapes/standin-shapes-core-only.ttl"] : ["fixtures/shapes/standin-shapes.ttl"];
+const SHAPES_FILE = SHAPE_FILES.join(" + ");
+const shapesTurtle = (files = SHAPE_FILES) => files.map((f) => readStackFile(f)).join("\n");
 const REJECT_EVERY = Number(opt("--reject-every", "0"));
 const EXPECT_MODE = config.expectedValidationMode;
 const writerGraph = (w: number) => (w === 1 ? G : `${G}-w${w}`);
 const db = runtimeStore();
 
-const PFX = `PREFIX cafe: <urn:ontara:standin:cafe#> PREFIX rec: <urn:ontara:standin:rec#> `;
+// Axis values are read through the generated predicates (S0.5 Pass B8).
+const PFX = `PREFIX cafe: <urn:ontara:standin:cafe#> PREFIX rec: <urn:ontara:standin:rec#> PREFIX ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/> `;
 
 function pct(sorted: number[], p: number): number {
   // nearest-rank percentile
@@ -92,15 +95,15 @@ let kdsCursor = "1970-01-01T00:00:00Z";
 const readers: ReaderDef[] = [
   {
     name: "counter-queue", everyMs: 1000,
-    query: () => `${PFX} SELECT ?order ?placed ?status WHERE { GRAPH <${G}> { ?order a cafe:Order ; cafe:placedAt ?placed ; cafe:status ?status . } FILTER (?status != cafe:Collected) } ORDER BY ?placed LIMIT 20`,
+    query: () => `${PFX} SELECT ?order ?placed ?status WHERE { GRAPH <${G}> { ?order a ontara-cafe:Order ; cafe:placedAt ?placed ; ontara-cafe:orderLifecycle ?status . } FILTER (?status != ontara-cafe:OrderLifecycle-collected) } ORDER BY ?placed LIMIT 20`,
   },
   {
     name: "kds-stream", everyMs: 500,
-    query: () => `${PFX} SELECT ?order ?placed ?line ?item ?qty ?status WHERE { GRAPH <${G}> { ?order a cafe:Order ; cafe:placedAt ?placed ; cafe:hasLine ?line . ?line cafe:item ?item ; cafe:quantity ?qty ; cafe:status ?status . } FILTER (?placed > "${kdsCursor}"^^<http://www.w3.org/2001/XMLSchema#dateTime>) } ORDER BY ?placed`,
+    query: () => `${PFX} SELECT ?order ?placed ?line ?item ?qty ?status WHERE { GRAPH <${G}> { ?order a ontara-cafe:Order ; cafe:placedAt ?placed ; cafe:hasLine ?line . ?line cafe:menuItem ?item ; cafe:quantity ?qty ; ontara-cafe:orderLinePreparation ?status . } FILTER (?placed > "${kdsCursor}"^^<http://www.w3.org/2001/XMLSchema#dateTime>) } ORDER BY ?placed`,
   },
   {
     name: "operator-board", everyMs: 2000,
-    query: () => `${PFX} SELECT ?status (COUNT(DISTINCT ?order) AS ?orders) (SUM(?qty) AS ?items) (COUNT(DISTINCT ?r) AS ?records) WHERE { GRAPH <${G}> { ?order a cafe:Order ; cafe:status ?status ; cafe:hasLine ?l . ?l cafe:quantity ?qty . OPTIONAL { ?r rec:recordOf ?order ; rec:hasProvenanceMethod ?m } } } GROUP BY ?status`,
+    query: () => `${PFX} SELECT ?status (COUNT(DISTINCT ?order) AS ?orders) (SUM(?qty) AS ?items) (COUNT(DISTINCT ?r) AS ?records) WHERE { GRAPH <${G}> { ?order a ontara-cafe:Order ; ontara-cafe:orderLifecycle ?status ; cafe:hasLine ?l . ?l cafe:quantity ?qty . OPTIONAL { ?r rec:recordOf ?order ; rec:hasProvenanceMethod ?m } } } GROUP BY ?status`,
   },
 ];
 
@@ -195,11 +198,12 @@ async function main() {
   stop = true;
   await Promise.all(readerLoops);
 
-  // Correctness spot-check: every order Ready and its derived record labelled.
+  // Correctness spot-check: every order ready (lifecycle OrderLifecycle-ready)
+  // and its derived record labelled.
   // OP-134 spike: the S0.1 query bound ?ready and ?lab and then reused them as
   // aggregate aliases, which SPARQL 1.1 forbids (18.2.4.1). GraphDB and RDF4J
   // accept it; Jena rejects it. Aliases renamed; the counts are unchanged.
-  const checkGraph = (g: string) => db.select(`${PFX} SELECT (COUNT(DISTINCT ?o) AS ?orders) (COUNT(DISTINCT ?readyOrder) AS ?ready) (COUNT(DISTINCT ?labRecord) AS ?labelled) WHERE { GRAPH <${g}> { ?o a cafe:Order . OPTIONAL { ?o cafe:status cafe:Ready . BIND(?o AS ?readyOrder) } OPTIONAL { ?rr rec:recordOf ?o ; rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm . FILTER(STRENDS(STR(?rr), "/ready-record")) BIND(?rr AS ?labRecord) } } }`, 120_000);
+  const checkGraph = (g: string) => db.select(`${PFX} SELECT (COUNT(DISTINCT ?o) AS ?orders) (COUNT(DISTINCT ?readyOrder) AS ?ready) (COUNT(DISTINCT ?labRecord) AS ?labelled) WHERE { GRAPH <${g}> { ?o a ontara-cafe:Order . OPTIONAL { ?o ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-ready . BIND(?o AS ?readyOrder) } OPTIONAL { ?rr rec:recordOf ?o ; rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm . FILTER(STRENDS(STR(?rr), "/ready-record")) BIND(?rr AS ?labRecord) } } }`, 120_000);
   const failedCheck = (e: any, at: string) => { storeErrors.push({ at, error: String(e?.message ?? e).slice(0, 300) }); return [{ orders: { value: "-1" }, ready: { value: "-1" }, labelled: { value: "-1" } }]; };
   const check = await checkGraph(G).catch((e) => failedCheck(e, "correctness check"));
   const checkByWriter: any = {};
@@ -250,7 +254,7 @@ async function main() {
     validation: validationCheck,
     validAsMeasure: !configurationFault,
     configurationFault: configurationFault ? `writes validated other than ${EXPECT_MODE}, or with no X-Ontara-Validation header: a configuration fault; the run is invalid as a measure (specification 2.8 item 9)` : null,
-    config: { orders: N, rejectEvery: REJECT_EVERY || null, writers: WRITERS, writerGraphs: Array.from({ length: WRITERS }, (_, k) => writerGraph(k + 1)), store: db.kind, readers: READERS, readerCadenceMs: READERS === "paced" ? Object.fromEntries(readers.map((r) => [r.name, r.everyMs])) : null, graph: G, dataset: config.dataset, rule: "fixtures/rules/order-readiness.rq + fixtures/rules/labelling.rq", write: "fixtures/writes/order-53.ttl", shapes: SHAPES_FILE, shapesGraph: db.shapesGraph },
+    config: { orders: N, rejectEvery: REJECT_EVERY || null, writers: WRITERS, writerGraphs: Array.from({ length: WRITERS }, (_, k) => writerGraph(k + 1)), store: db.kind, readers: READERS, readerCadenceMs: READERS === "paced" ? Object.fromEntries(readers.map((r) => [r.name, r.everyMs])) : null, graph: G, dataset: config.dataset, rule: "fixtures/rules/order-readiness.rq + fixtures/rules/labelling.rq", write: `fixtures/${ORDER_FIXTURE}`, shapes: SHAPES_FILE, shapesGraph: db.shapesGraph },
     percentileMethod: "nearest rank, over committed order writes; latency = HTTP round trip to the gate's /write as the caller sees it (writes.csv column latency_ms, rows with kind=order and outcome=committed)",
     writeLatencyMs: stats(lat),
     gatePhaseMs: { commit: stats(rows.map((x) => Number(x[10]))), updates: stats(rows.map((x) => Number(x[9]))), add: stats(rows.map((x) => Number(x[8]))), begin: stats(rows.map((x) => Number(x[7]))) },

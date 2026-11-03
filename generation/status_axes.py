@@ -10,7 +10,7 @@ usages) on an axis of the same instance or of one related instance.
 
 What is read, for each ``part <name> : StatusAxis``:
 
-- ``axisName``, ``defaultValue``, ``axisAuthority``;
+- ``axisName``, ``axisDescription`` (optional), ``defaultValue``, ``axisAuthority``;
 - ``valueSpace``'s ``enumValues`` (in declared order) and ``valueShape``;
 - each ``AxisTransition`` usage: ``fromValue``, ``toValue``,
   ``transitionLabel``, ``triggerEvent`` (optional), ``requiredAuthority``
@@ -27,6 +27,14 @@ the same declarations, checked by the same code, and a test compared the
 two on every tenant model and fixture; both were removed when no generator
 read the text any more. Values are the strings the model declares. A
 value with no outgoing move is terminal.
+
+Since S0.5 Pass B8 (H-0647) each value is also a named individual at
+runtime, with one generated predicate per axis (``generation.axis_iris``).
+So the checks also keep the IRIs those rules mint safe and distinct: every
+value string is letters and digits, starting with a letter; no two axes of
+one model share a predicate (``Axis.lower_ident``); no two axis-bearing types
+share a lower-cased name (the declaration IRIs use it); and precondition
+usage names are unique within a type (their IRI omits the axis and the move).
 """
 
 from __future__ import annotations
@@ -40,6 +48,11 @@ from generation.common import ModelError, upper_first
 # map offers only the moves it can make. A General metamodel value
 # (BusinessMetamodelGeneral::CanonicalRuntime::AxisAuthority), not tenant content.
 OPERATOR_AUTHORITY = "operatorSide"
+
+# A value string becomes part of an IRI and of a Turtle prefixed name
+# (generation.axis_iris: {Type}{Axis}-{value}), so it is letters and digits,
+# starting with a letter (S0.5 Pass B8).
+VALUE_PATTERN = re.compile(r"^[A-Za-z][A-Za-z0-9]*$")
 
 
 # -- The checked structures the generators read -------------------------
@@ -81,6 +94,7 @@ class Axis:
     authorities: list[str]
     shape: str | None
     moves: list[Move]
+    description: str | None = None  # axisDescription
 
     @property
     def ident(self) -> str:
@@ -141,6 +155,7 @@ class AxisDecl:
     authority: list[str]  # axisAuthority
     shape: str | None
     moves: list[MoveDecl]
+    description: str | None = None  # axisDescription
 
 
 @dataclass
@@ -166,6 +181,12 @@ def check_axis(type_name: str, d: AxisDecl) -> Axis:
         raise ModelError(f"axis {where} has no enumValues in its valueSpace")
     if len(set(values)) != len(values):
         raise ModelError(f"axis {where} declares a value twice")
+    for v in values:
+        if not VALUE_PATTERN.match(v):
+            raise ModelError(
+                f"axis {where}: value {v!r} cannot be used in an IRI "
+                "(letters and digits only, starting with a letter)"
+            )
     default = d.default
     if default is None:
         raise ModelError(f"axis {where} has no defaultValue")
@@ -211,7 +232,7 @@ def check_axis(type_name: str, d: AxisDecl) -> Axis:
                 f"({by_event[key]} and {mv.name})"
             )
         by_event[key] = mv.name
-    return Axis(type_name, d.usage, name, values, default, axis_auth, d.shape, moves)
+    return Axis(type_name, d.usage, name, values, default, axis_auth, d.shape, moves, d.description)
 
 
 def check_types(decls: list[TypeDecl]) -> list[AxisType]:
@@ -228,8 +249,43 @@ def check_types(decls: list[TypeDecl]) -> list[AxisType]:
     seen = [t.name for t in types]
     if len(set(seen)) != len(seen):
         raise ModelError("two part defs with status axes share a name: " + ", ".join(sorted(seen)))
+    _check_runtime_iris(types)
     _check_preconditions(types)
     return types
+
+
+def _check_runtime_iris(types: list[AxisType]) -> None:
+    """The IRIs ``generation.axis_iris`` mints from this model are distinct (S0.5 Pass B8)."""
+    by_lower: dict[str, str] = {}
+    for t in types:
+        key = t.name.lower()
+        if key in by_lower:
+            raise ModelError(
+                f"part defs {by_lower[key]!r} and {t.name!r} with status axes differ only in case: "
+                "their axis declaration IRIs would collide"
+            )
+        by_lower[key] = t.name
+    predicates: dict[str, str] = {}
+    for t in types:
+        for ax in t.axes:
+            where = f"{t.name}::{ax.usage}"
+            if ax.lower_ident in predicates:
+                raise ModelError(
+                    f"axes {predicates[ax.lower_ident]} and {where} would share the runtime predicate "
+                    f"{ax.lower_ident!r}"
+                )
+            predicates[ax.lower_ident] = where
+        pre_names: dict[str, str] = {}
+        for ax in t.axes:
+            for mv in ax.moves:
+                for p in mv.preconditions:
+                    where = f"{t.name}::{ax.usage}::{mv.name}::{p.name}"
+                    if p.name in pre_names:
+                        raise ModelError(
+                            f"preconditions {pre_names[p.name]} and {where} share the usage name {p.name!r}: "
+                            f"precondition names must be unique within {t.name!r}"
+                        )
+                    pre_names[p.name] = where
 
 
 def _check_preconditions(types: list[AxisType]) -> None:

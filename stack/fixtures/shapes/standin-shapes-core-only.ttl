@@ -1,6 +1,7 @@
-# DIAGNOSTIC ONLY: the stand-in shapes with the SHACL-SPARQL constraint removed
-# (core shape 1 only). Used at S517 to attribute load-test growth to the
-# SPARQL constraint. Never loaded by the bootstrap.
+# The stand-in shapes with the SHACL-SPARQL constraint removed (core shape 1
+# only). Used at S517 to attribute load-test growth to the SPARQL constraint;
+# since S521 part of the runtime shapes the bootstrap loads (config.ts
+# RUNTIME_SHAPE_FILES), as the stand-in record shape.
 # Stand-in shapes for S0.1 (rebuilt from Hugo's S515 notes, sections 1.3 and 2.4).
 # NOT canon. Saskia's real shapes replace these at S0.6. The vocabulary is a
 # stand-in namespace (urn:ontara:standin:...), deliberately not ontara-rec:.

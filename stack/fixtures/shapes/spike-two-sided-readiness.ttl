@@ -1,59 +1,60 @@
-# OP-134 spike follow-up (S519, Part D item 3): Cyril's two-sided readiness
-# shapes, from session-519-op-134-cyril-shacl-classification §4.2, written in
-# the stand-in vocabulary. NOT canon, and NOT a change to the stand-in shapes:
-# this file sits beside them and is loaded only by the spike's capability
-# check (item 9) and by `loadtest --shapes two-sided`, together with
-# standin-shapes-core-only.ttl, in place of the stand-in SPARQL constraint.
+# Cyril's two-sided readiness shapes (S519, session-519-op-134-cyril-shacl-
+# classification §4.2), in the B8 vocabulary since S0.5 Pass B8 (S525; Cyril's
+# S0.5 Pass B step 2, §1.8). NOT canon: S0.6 writes the real shapes. Loaded by
+# the bootstrap as part of the runtime shapes (config.ts RUNTIME_SHAPE_FILES),
+# with the stand-in record shape and the generated axis membership shapes.
 #
-# The stand-in vocabulary has one status property, cafe:status, for both the
-# order's lifecycle and the line's preparation axis, so "lifecycle" and
-# "preparation" below are both cafe:status.
+# The order's lifecycle and the line's preparation are now separate generated
+# predicates with separate value sets, so the order's "ready" and the line's
+# "ready" are different IRIs, and the old shared sis:ReadyOrCollected node
+# shape splits: each shape names its own set. hasLine and lineOf stay in the
+# stand-in namespace (B8 covers axis values only; Pass C1 names the rest).
 #
-# SHACL Core only: sh:or, sh:not, sh:in and sequence paths. No SPARQL.
+# SHACL Core only: sh:or, sh:not, sh:in and sequence paths. No SPARQL. Both
+# sides follow the shape-authoring rule (ADR-014 §4.3), so targeted validation
+# catches a write on either side.
 
-@prefix sh:   <http://www.w3.org/ns/shacl#> .
-@prefix cafe: <urn:ontara:standin:cafe#> .
-@prefix sis:  <urn:ontara:standin:shapes#> .
+@prefix sh:          <http://www.w3.org/ns/shacl#> .
+@prefix cafe:        <urn:ontara:standin:cafe#> .
+@prefix sis:         <urn:ontara:standin:shapes#> .
+@prefix ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/> .
 
-# Shared: a value that is Ready or Collected.
-sis:ReadyOrCollected a sh:NodeShape ;
-  sh:in ( cafe:Ready cafe:Collected ) .
+# An order lifecycle value that is ready or collected.
+sis:OrderReadyOrCollected a sh:NodeShape ;
+  sh:in ( ontara-cafe:OrderLifecycle-ready ontara-cafe:OrderLifecycle-collected ) .
 
 # 1. Order side, targeting the order: "lifecycle is not ready or collected, or
 #    every line's preparation is ready or collected". sh:in applies to every
-#    value node of hasLine/status, so the universal condition needs no SPARQL.
+#    value node of hasLine/orderLinePreparation, so the universal condition
+#    needs no SPARQL.
 sis:OrderReadinessTwoSidedShape a sh:NodeShape ;
-  sh:targetClass cafe:Order ;
-  sh:message "An order is Ready or Collected only when every line is Ready or Collected."@en ;
+  sh:targetClass ontara-cafe:Order ;
+  sh:message "An order is ready or collected only when every line is ready or collected."@en ;
   sh:or ( sis:OrderNotReadyOrCollected sis:OrderEveryLineReadyOrCollected ) .
-
 sis:OrderNotReadyOrCollected a sh:NodeShape ;
-  sh:property sis:OrderNotReadyOrCollected-status .
-sis:OrderNotReadyOrCollected-status a sh:PropertyShape ;
-  sh:path cafe:status ;
-  sh:not sis:ReadyOrCollected .
-
+  sh:property sis:OrderNotReadyOrCollected-lifecycle .
+sis:OrderNotReadyOrCollected-lifecycle a sh:PropertyShape ;
+  sh:path ontara-cafe:orderLifecycle ;
+  sh:not sis:OrderReadyOrCollected .
 sis:OrderEveryLineReadyOrCollected a sh:NodeShape ;
   sh:property sis:OrderEveryLineReadyOrCollected-lines .
 sis:OrderEveryLineReadyOrCollected-lines a sh:PropertyShape ;
-  sh:path ( cafe:hasLine cafe:status ) ;
-  sh:in ( cafe:Ready cafe:Collected ) .
+  sh:path ( cafe:hasLine ontara-cafe:orderLinePreparation ) ;
+  sh:in ( ontara-cafe:OrderLinePreparation-ready ontara-cafe:OrderLinePreparation-collected ) .
 
 # 2. Line side, targeting the line: "its order's lifecycle is not ready or
 #    collected, or its preparation is ready or collected".
 sis:LineReadinessTwoSidedShape a sh:NodeShape ;
-  sh:targetClass cafe:OrderLine ;
-  sh:message "A line of an order that is Ready or Collected is itself Ready or Collected."@en ;
+  sh:targetClass ontara-cafe:OrderLine ;
+  sh:message "A line of an order that is ready or collected is itself ready or collected."@en ;
   sh:or ( sis:LineOrderNotReadyOrCollected sis:LineReadyOrCollected ) .
-
 sis:LineOrderNotReadyOrCollected a sh:NodeShape ;
   sh:property sis:LineOrderNotReadyOrCollected-order .
 sis:LineOrderNotReadyOrCollected-order a sh:PropertyShape ;
-  sh:path ( cafe:lineOf cafe:status ) ;
-  sh:not sis:ReadyOrCollected .
-
+  sh:path ( cafe:lineOf ontara-cafe:orderLifecycle ) ;
+  sh:not sis:OrderReadyOrCollected .
 sis:LineReadyOrCollected a sh:NodeShape ;
-  sh:property sis:LineReadyOrCollected-status .
-sis:LineReadyOrCollected-status a sh:PropertyShape ;
-  sh:path cafe:status ;
-  sh:in ( cafe:Ready cafe:Collected ) .
+  sh:property sis:LineReadyOrCollected-preparation .
+sis:LineReadyOrCollected-preparation a sh:PropertyShape ;
+  sh:path ontara-cafe:orderLinePreparation ;
+  sh:in ( ontara-cafe:OrderLinePreparation-ready ontara-cafe:OrderLinePreparation-collected ) .

@@ -1,0 +1,53 @@
+# ============================================================
+# DO NOT EDIT — Generated from CoffeeShop SysML v2 model
+# Source: exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop::OrderLine); exercises/coffeeshop-demonstrator/model/domain/coffeeshop.sysml (CoffeeShop::Order)
+# Generator: generation/axis_shapes.py
+# ============================================================
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/> .
+@prefix ontara-cafe-shp: <https://ontara.dev/ontology/tenant/cafe/shapes#> .
+
+# Order Line, preparation axis (CoffeeShop::OrderLine::preparationAxis)
+ontara-cafe-shp:OrderLinePreparationAxisShape a sh:NodeShape ;
+    sh:targetClass ontara-cafe:OrderLine ;
+    sh:property ontara-cafe-shp:OrderLinePreparationAxisShape-value .
+ontara-cafe-shp:OrderLinePreparationAxisShape-value a sh:PropertyShape ;
+    sh:path ontara-cafe:orderLinePreparation ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:in ( ontara-cafe:OrderLinePreparation-queued ontara-cafe:OrderLinePreparation-inPreparation ontara-cafe:OrderLinePreparation-ready ontara-cafe:OrderLinePreparation-collected ontara-cafe:OrderLinePreparation-cancelled ) ;
+    sh:message "An Order Line has exactly one preparation value, one of: queued, inPreparation, ready, collected, cancelled."@en .
+ontara-cafe-shp:OrderLinePreparationAxisSubjectShape a sh:NodeShape ;
+    sh:targetSubjectsOf ontara-cafe:orderLinePreparation ;
+    sh:class ontara-cafe:OrderLine ;
+    sh:message "Only an Order Line carries the preparation axis."@en .
+
+# Order, lifecycle axis (CoffeeShop::Order::lifecycleAxis)
+ontara-cafe-shp:OrderLifecycleAxisShape a sh:NodeShape ;
+    sh:targetClass ontara-cafe:Order ;
+    sh:property ontara-cafe-shp:OrderLifecycleAxisShape-value .
+ontara-cafe-shp:OrderLifecycleAxisShape-value a sh:PropertyShape ;
+    sh:path ontara-cafe:orderLifecycle ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:in ( ontara-cafe:OrderLifecycle-placed ontara-cafe:OrderLifecycle-inPreparation ontara-cafe:OrderLifecycle-ready ontara-cafe:OrderLifecycle-collected ontara-cafe:OrderLifecycle-cancelled ) ;
+    sh:message "An Order has exactly one lifecycle value, one of: placed, inPreparation, ready, collected, cancelled."@en .
+ontara-cafe-shp:OrderLifecycleAxisSubjectShape a sh:NodeShape ;
+    sh:targetSubjectsOf ontara-cafe:orderLifecycle ;
+    sh:class ontara-cafe:Order ;
+    sh:message "Only an Order carries the lifecycle axis."@en .
+
+# Order, payment axis (CoffeeShop::Order::paymentAxis)
+ontara-cafe-shp:OrderPaymentAxisShape a sh:NodeShape ;
+    sh:targetClass ontara-cafe:Order ;
+    sh:property ontara-cafe-shp:OrderPaymentAxisShape-value .
+ontara-cafe-shp:OrderPaymentAxisShape-value a sh:PropertyShape ;
+    sh:path ontara-cafe:orderPayment ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:in ( ontara-cafe:OrderPayment-unpaid ontara-cafe:OrderPayment-paid ) ;
+    sh:message "An Order has exactly one payment value, one of: unpaid, paid."@en .
+ontara-cafe-shp:OrderPaymentAxisSubjectShape a sh:NodeShape ;
+    sh:targetSubjectsOf ontara-cafe:orderPayment ;
+    sh:class ontara-cafe:Order ;
+    sh:message "Only an Order carries the payment axis."@en .

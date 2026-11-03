@@ -18,7 +18,8 @@ Pipeline stages:
   Stage 3e — Generate reified weighted relationship individuals (ontara-bmm-weights.ttl)
   Stage 3g — Generate tenant canonical runtime types (ontara-tenant-types.ttl),
              and their correspondence records (ontara-correspondence.ttl,
-             S0.5 Pass A6, H-0641)
+             S0.5 Pass A6, H-0641); with their status-axis declarations and
+             runtime axis vocabulary (S0.5 Pass B8, H-0647)
 
 Phase 1 scope: DomainClass + StructuralOnly classifications only.
 Phase 2 extension (Session 116): ObjectProperty generation from typed refs.
@@ -70,6 +71,7 @@ from sysml_parser import SysmlElement
 # The shared resolved-model reader lives in the repository's generation package.
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 from generation import resolved  # noqa: E402
+from generation import axis_iris  # noqa: E402
 from generation.common import ModelError  # noqa: E402
 
 # ---------------------------------------------------------------
@@ -455,6 +457,10 @@ def stage1_parse():
             continue
         rm = resolved.load_files(files, REPO_ROOT)
         graph = rm.elements()
+        # Status axes, read and checked by the shared reader (S0.5 Pass B8):
+        # Stage 3g writes each tenant runtime type's axis declarations and
+        # runtime axis vocabulary from them.
+        axis_types = {t.qualified: t for t in rm.axis_types()}
         for _, e in graph.tenant_elements():
             if not e.get("declaredName"):
                 continue
@@ -465,7 +471,9 @@ def stage1_parse():
                 kind = STAGE1_TYPED_USAGES[t]
             else:
                 continue
-            all_elements.append(_stage1_element(rm, graph, e, kind, domain_key))
+            elem = _stage1_element(rm, graph, e, kind, domain_key)
+            elem.axis_type = axis_types.get(elem.qualified_name) if kind == "part_def" else None
+            all_elements.append(elem)
     return all_elements
 
 # ---------------------------------------------------------------
@@ -827,6 +835,102 @@ def tenant_mapping_record_iri(elem):
     return ONTARA_CORR[f"map-tenant-{elem.source_domain}-{elem.name}"]
 
 
+ONTARA_AXIS = Namespace(axis_iris.AXIS_NS)
+
+
+def _decamel(s):
+    """``inPreparation`` -> ``in preparation``; ``orderLinePreparation`` -> ``order line preparation``."""
+    return re.sub(r"(?<=[a-z0-9])(?=[A-Z])", " ", s).lower()
+
+
+def _sentence(s):
+    """``Order Line`` -> ``Order line``."""
+    s = s.lower()
+    return s[:1].upper() + s[1:]
+
+
+def stage3g_axis_vocabulary(g, elem):
+    """
+    Stage 3g, per tenant runtime type with status axes (S0.5 Pass B8, H-0647):
+    the axis declarations (StatusAxis, ValueSpace, AxisTransition and
+    AxisPrecondition individuals, under the IRIs the hand-authored module
+    used since S518) and the runtime axis vocabulary (one predicate per axis,
+    a sub-property of ontara-axis:hasAxisValue; one AxisValue individual per
+    value, with skos:notation holding the model's string; the axis names its
+    predicate through ontara-axis:valuePredicate and its value space each
+    value through ontara-axis:permitsValue). Every IRI comes from
+    generation/axis_iris.py, which generation/axis_shapes.py also uses for
+    the membership shapes. Optional lines are written only when the model
+    gives a value. Returns the number of axes written.
+    """
+    at = elem.axis_type
+    t = elem.source_domain
+    friendly = elem.user_facing.get("friendlyName", "") or _decamel(elem.name)
+    label_name = _sentence(friendly)
+    cls = URIRef(axis_iris.class_iri(t, elem.name))
+    for ax in at.axes:
+        axis = URIRef(axis_iris.axis_decl_iri(t, ax))
+        values = URIRef(axis_iris.value_space_iri(t, ax))
+        pred = URIRef(axis_iris.predicate_iri(t, ax))
+        # The declaration
+        g.add((axis, RDF.type, OWL.NamedIndividual))
+        g.add((axis, RDF.type, ONTARA_BMM["StatusAxis"]))
+        g.add((axis, RDFS.label, Literal(f"{label_name} {ax.name} axis", lang="en")))
+        if ax.description:
+            g.add((axis, RDFS.comment, Literal(ax.description, lang="en")))
+        g.add((axis, ONTARA_AXIS["axisDeclaredOn"], cls))
+        g.add((axis, ONTARA_AXIS["axisName"], Literal(ax.name)))
+        g.add((axis, ONTARA_AXIS["defaultValue"], Literal(ax.default)))
+        g.add((axis, ONTARA_AXIS["hasValueSpace"], values))
+        g.add((axis, ONTARA_AXIS["valuePredicate"], pred))
+        g.add((values, RDF.type, OWL.NamedIndividual))
+        g.add((values, RDF.type, ONTARA_BMM["ValueSpace"]))
+        g.add((values, RDFS.label, Literal(f"{label_name} {ax.name} values", lang="en")))
+        if ax.shape:
+            g.add((values, ONTARA_AXIS["valueShape"], Literal(ax.shape)))
+        for mv in ax.moves:
+            move = URIRef(axis_iris.move_iri(t, ax, mv.name))
+            g.add((axis, ONTARA_AXIS["permitsTransition"], move))
+            g.add((move, RDF.type, OWL.NamedIndividual))
+            g.add((move, RDF.type, ONTARA_BMM["AxisTransition"]))
+            if mv.label:
+                g.add((move, RDFS.label, Literal(mv.label, lang="en")))
+            g.add((move, ONTARA_AXIS["fromValue"], Literal(mv.source)))
+            g.add((move, ONTARA_AXIS["toValue"], Literal(mv.target)))
+            if mv.event:
+                g.add((move, ONTARA_AXIS["triggerEvent"], Literal(mv.event)))
+            for authority in mv.authorities:
+                g.add((move, ONTARA_AXIS["requiredAuthority"], Literal(authority)))
+            for pc in mv.preconditions:
+                pre = URIRef(axis_iris.precondition_iri(t, elem.name, pc.name))
+                g.add((move, ONTARA_AXIS["hasPrecondition"], pre))
+                g.add((pre, RDF.type, OWL.NamedIndividual))
+                g.add((pre, RDF.type, ONTARA_BMM["AxisPrecondition"]))
+                g.add((pre, RDFS.comment, Literal(pc.rejection_reason, lang="en")))
+                if pc.related_via:
+                    g.add((pre, ONTARA_AXIS["relatedVia"], Literal(pc.related_via)))
+                g.add((pre, ONTARA_AXIS["requiredAxis"], Literal(pc.required_axis)))
+                for rv in pc.required_values:
+                    g.add((pre, ONTARA_AXIS["requiredValue"], Literal(rv)))
+        # The runtime axis vocabulary
+        g.add((pred, RDF.type, OWL.ObjectProperty))
+        g.add((pred, RDFS.subPropertyOf, ONTARA_AXIS["hasAxisValue"]))
+        g.add((pred, RDFS.label, Literal(_decamel(axis_iris.predicate_local(ax)), lang="en")))
+        g.add((pred, RDFS.comment, Literal(
+            f"Runtime predicate of the {ax.name} axis of {friendly} ({at.qualified}::{ax.usage}): its object "
+            f"is the instance's current {ax.name} value, one of the values its value space permits. "
+            "Generated by gen_owl_pipeline.py Stage 3g (S0.5 Pass B8, H-0647).", lang="en")))
+        for v in ax.values:
+            value = URIRef(axis_iris.value_iri(t, ax, v))
+            g.add((values, ONTARA_AXIS["enumValue"], Literal(v)))
+            g.add((values, ONTARA_AXIS["permitsValue"], value))
+            g.add((value, RDF.type, OWL.NamedIndividual))
+            g.add((value, RDF.type, ONTARA_AXIS["AxisValue"]))
+            g.add((value, RDFS.label, Literal(_decamel(v), lang="en")))
+            g.add((value, SKOS.notation, Literal(v)))
+    return len(at.axes)
+
+
 def stage3g_generate_tenant_types(classified, cco_lookup):
     """
     Pipeline Stage 3g: tenant canonical runtime types (ontara-tenant-types.ttl).
@@ -861,23 +965,33 @@ def stage3g_generate_tenant_types(classified, cco_lookup):
                       if r["classification"] == "TenantRuntimeType"})
     for t in tenants:
         g.bind(f"ontara-{t}", Namespace(f"{TENANT_ONTOLOGY_BASE}{t}/"))
+        g.bind(f"{t}-rsn", Namespace(axis_iris.tenant_data_ns(t)))
+    g.bind("ontara-axis", ONTARA_AXIS)
 
     g.add((TENANT_TYPES_ONTOLOGY, RDF.type, OWL.Ontology))
     g.add((TENANT_TYPES_ONTOLOGY, RDFS.label, Literal("Ontara Tenant Canonical Runtime Types", lang="en")))
     g.add((TENANT_TYPES_ONTOLOGY, RDFS.comment, Literal(
-        "Generated by gen_owl_pipeline.py (Stage 3g, Session 518). Tenant part defs that "
-        "specialise CanonicalRuntimeType and carry @BfoType, each in its tenant's ontology "
-        "namespace, grounded under its BFO or IAO parent. Merged with the BMM ontology "
-        "(ontara-bmm.ttl) in the stack; declares no imports, as ontara-bmm.ttl declares none.",
+        "Generated by gen_owl_pipeline.py (Stage 3g, Session 518). The tenant canonical runtime "
+        "types, their status-axis declarations and their runtime axis vocabulary. The types are "
+        "tenant part defs that specialise CanonicalRuntimeType and carry @BfoType, each in its "
+        "tenant's ontology namespace, grounded under its BFO or IAO parent. Their axis declarations "
+        "(StatusAxis, ValueSpace, AxisTransition and AxisPrecondition individuals) are in the "
+        "tenant's reasoning-data namespace, and the runtime axis vocabulary (one predicate per axis, "
+        "one AxisValue individual per value) in its ontology namespace (S0.5 Pass B8, H-0647); all "
+        "IRIs from generation/axis_iris.py. Merged with the BMM ontology (ontara-bmm.ttl) in the "
+        "stack; declares no imports, as ontara-bmm.ttl declares none.",
         lang="en")))
 
     count = 0
+    axis_count = 0
     unresolved = []
     records = []
     for elem, result in classified:
         if result["classification"] != "TenantRuntimeType":
             continue
         count += 1
+        if getattr(elem, "axis_type", None) is not None:
+            axis_count += stage3g_axis_vocabulary(g, elem)
         cls = tenant_class_iri(elem)
         g.add((cls, RDF.type, OWL.Class))
         records.append((tenant_mapping_record_iri(elem), [
@@ -910,6 +1024,8 @@ def stage3g_generate_tenant_types(classified, cco_lookup):
         purposive = elem.purposive_description.get("description", "")
         if purposive:
             g.add((cls, SKOS.definition, Literal(purposive, lang="en")))
+    if axis_count:
+        g.add((SKOS.notation, RDF.type, OWL.AnnotationProperty))
     return g, count, unresolved, records
 
 

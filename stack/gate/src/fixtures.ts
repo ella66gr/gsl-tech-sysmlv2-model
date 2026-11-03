@@ -2,10 +2,15 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { randomUUID } from "node:crypto";
-import { paths } from "./config";
+import { config, paths } from "./config";
 
 export function readFixture(rel: string): string {
   return fs.readFileSync(path.join(paths.fixtures, rel), "utf8");
+}
+
+// A file by its path under config.stackDir (fixtures/..., tenant-generated/...).
+export function readStackFile(rel: string): string {
+  return fs.readFileSync(path.join(config.stackDir, rel), "utf8");
 }
 
 export function fill(template: string, values: Record<string, string>): string {
@@ -20,11 +25,14 @@ export const runId = () => randomUUID().slice(0, 8);
 export const ORDER_NS = "urn:ontara:standin:cafe#order-";
 export const EXEC_NS = "urn:ontara:standin:cafe#exec-";
 
-// The 53-triple order write plus the readiness rule and the labelling step,
-// as one gate write request.
+// The 54-triple order write (axis values in B8 form: S0.5 Pass B8) plus the
+// readiness rule and the labelling step, as one gate write request. The
+// order arrives in preparation and paid, every line ready, so the rule makes
+// the permitted move inPreparation -> ready on every write.
+export const ORDER_FIXTURE = "writes/order-54.ttl";
 export function orderWrite(orderIri: string, graph: string, opts: { rule?: boolean } = {}) {
   const t = new Date().toISOString();
-  const turtle = fill(readFixture("writes/order-53.ttl"), { O: orderIri, T: t });
+  const turtle = fill(readFixture(ORDER_FIXTURE), { O: orderIri, T: t });
   const exec = `${orderIri}/exec/readiness`;
   const updates = opts.rule === false ? [] : [
     fill(readFixture("rules/order-readiness.rq"), { O: orderIri, EXEC: exec, G: graph }),

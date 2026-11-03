@@ -9,7 +9,9 @@
 //     actually loaded), TDB2 with the union graph as the default graph, and
 //     no inference. `validating` itself may read false here: it is false
 //     until the shapes graph holds a shape with a target (README section 8);
-//  2. the runtime shapes are loaded into the runtime dataset's shapes graph
+//  2. the runtime shapes (config.ts RUNTIME_SHAPE_FILES: the stand-in record
+//     shape, the two-sided readiness shapes and the Cafe's generated axis
+//     shapes) are loaded into the runtime dataset's shapes graph
 //     (urn:ontara:stack:shapes) and read back;
 //  3. the knowledge-graph files are (re)loaded, one named graph per file, into
 //     the runtime dataset (README section 4: one dataset);
@@ -27,7 +29,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { openStore, ModuleStatus, SCRATCH_DATASET } from "../store";
 import { config, paths, RUNTIME_SHAPE_FILES } from "../config";
-import { readFixture } from "../fixtures";
+import { readFixture, readStackFile } from "../fixtures";
 
 const db = openStore();
 
@@ -76,7 +78,8 @@ async function main() {
   }
 
   // 2. shapes (replace the shapes graph)
-  const shapes = RUNTIME_SHAPE_FILES.map((f) => readFixture(f)).join("\n");
+  for (const f of RUNTIME_SHAPE_FILES) if (!fs.existsSync(path.join(config.stackDir, f))) die(`runtime shapes file missing: ${f} (is the repository complete, and make gen run?)`);
+  const shapes = RUNTIME_SHAPE_FILES.map((f) => readStackFile(f)).join("\n");
   const s = await db.replaceGraph(db.shapesGraph, shapes, "text/turtle");
   if (!s.ok) die(`loading shapes: HTTP ${s.status}: ${s.body.slice(0, 1000)}`);
   const shapeTriples = await db.shapesTriples();

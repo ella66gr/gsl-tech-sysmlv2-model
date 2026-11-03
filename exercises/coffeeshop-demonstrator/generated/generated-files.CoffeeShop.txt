@@ -6,6 +6,7 @@
 axis-guard.ts
 axis-machine.ts
 axis-preconditions.ts
+axis-shapes.ttl
 fulfil-drink-pathway.mmd
 fulfil-drink-steps.ts
 fulfil-drink.ts
