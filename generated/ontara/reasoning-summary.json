@@ -1,5 +1,5 @@
 {
-  "modelDigest": "6082c00471458ec87582bbae91e66b9600016a03f514a10e4e6edd37a86ecbd6",
+  "modelDigest": "879373fdbedf7194c5d9af61d4850dfc9e7e26d914811f55ce713d3061119c1e",
   "generator": "reason_kg.py",
   "reasoner": "HermiT (via Robot)",
   "consistent": true,
@@ -44,13 +44,13 @@
     {
       "name": "Ontara Tenant Canonical Runtime Types (pipeline-generated, Session 518)",
       "file": "ontara-tenant-types.ttl",
-      "sizeBytes": 2026,
+      "sizeBytes": 14122,
       "present": true
     },
     {
       "name": "Ontara BMM Axioms (hand-authored)",
       "file": "ontara-bmm-axioms.ttl",
-      "sizeBytes": 28113,
+      "sizeBytes": 30950,
       "present": true
     },
     {
@@ -98,7 +98,7 @@
     {
       "name": "Cafe Reasoning Instances (hand-authored, Session 518)",
       "file": "cafe-reasoning-instances.ttl",
-      "sizeBytes": 11309,
+      "sizeBytes": 2845,
       "present": true
     }
   ],
