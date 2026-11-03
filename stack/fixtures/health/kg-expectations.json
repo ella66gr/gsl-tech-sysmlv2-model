@@ -1,21 +1,41 @@
 {
-  "_comment": "The health check's knowledge-graph probes (specification 2.5 item 6.1). Each ASK must return true. If the BMM gains or loses a class, update the count here deliberately. 34 to 39 at S521: S0.4 (8d2b5df, S518) added AxisPrecondition, AxisTransition, CanonicalRuntimeType, StatusAxis and ValueSpace.",
+  "_comment": "The health check's knowledge-graph probes (specification 2.5 item 6.1). Each ASK must return true. Since S0.5 Pass B3 they read B28's model-content graphs (graphs.ts KG_GRAPHS; fixtures/kg/manifest.json says which file goes where) and check the Cafe's tenant types, axis declarations and reasoning module are in kg/domain, the correspondence records in kg/correspondence, and kg/metamodel empty. If the BMM gains or loses a class, update the count here deliberately; the count matches bmm/<Name> classes with a skos:definition (the pipeline's classes, as diff_kg counts them): in kg/domain the hand-authored axioms add the six concern-group classes and WeightedRelationship, which carry none, and the axis vocabulary (bmm/axis#AxisValue, S0.5 Pass B8) does not match the pattern. The graphs are named only by the tokens {{KG_DOMAIN}}, {{KG_CORRESPONDENCE}} and {{KG_METAMODEL}}, which the health check fills from graphs.ts (KG_GRAPHS), the one place graph names are spelled (S0.5 Pass B3 item 9).",
   "probes": [
     {
-      "name": "BMM metamodel has its 39 classes",
-      "ask": "PREFIX owl: <http://www.w3.org/2002/07/owl#> ASK { { SELECT (COUNT(DISTINCT ?c) AS ?n) WHERE { GRAPH <urn:ontara:stack:kg:ontara-bmm> { ?c a owl:Class . FILTER (STRSTARTS(STR(?c), \"https://ontara.dev/ontology/bmm/\")) } } } FILTER (?n = 39) }"
+      "name": "BMM metamodel has its 39 classes (kg/domain; generated classes, each with a skos:definition)",
+      "ask": "PREFIX owl: <http://www.w3.org/2002/07/owl#> PREFIX skos: <http://www.w3.org/2004/02/skos/core#> ASK { { SELECT (COUNT(DISTINCT ?c) AS ?n) WHERE { GRAPH <{{KG_DOMAIN}}> { ?c a owl:Class ; skos:definition ?d . FILTER (REGEX(STR(?c), \"^https://ontara.dev/ontology/bmm/[A-Za-z]+$\")) } } } FILTER (?n = 39) }"
     },
     {
-      "name": "BMM class ServiceOffering sits under a BFO parent",
-      "ask": "PREFIX owl: <http://www.w3.org/2002/07/owl#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ASK { GRAPH <urn:ontara:stack:kg:ontara-bmm> { <https://ontara.dev/ontology/bmm/ServiceOffering> a owl:Class ; rdfs:subClassOf ?parent . FILTER (STRSTARTS(STR(?parent), \"http://purl.obolibrary.org/obo/\")) } }"
+      "name": "BMM class ServiceOffering sits under a BFO parent (kg/domain)",
+      "ask": "PREFIX owl: <http://www.w3.org/2002/07/owl#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ASK { GRAPH <{{KG_DOMAIN}}> { <https://ontara.dev/ontology/bmm/ServiceOffering> a owl:Class ; rdfs:subClassOf ?parent . FILTER (STRSTARTS(STR(?parent), \"http://purl.obolibrary.org/obo/\")) } }"
     },
     {
-      "name": "Platform record module defines PlatformRecord",
-      "ask": "PREFIX owl: <http://www.w3.org/2002/07/owl#> ASK { GRAPH <urn:ontara:stack:kg:ontara-record> { <https://ontara.dev/ontology/record/PlatformRecord> a owl:Class } }"
+      "name": "Platform record module defines PlatformRecord (kg/domain)",
+      "ask": "PREFIX owl: <http://www.w3.org/2002/07/owl#> ASK { GRAPH <{{KG_DOMAIN}}> { <https://ontara.dev/ontology/record/PlatformRecord> a owl:Class } }"
     },
     {
-      "name": "BFO 2020 entity is present",
-      "ask": "ASK { GRAPH <urn:ontara:stack:kg:bfo-core> { <http://purl.obolibrary.org/obo/BFO_0000001> ?p ?o } }"
+      "name": "BFO 2020 entity is present (kg/domain)",
+      "ask": "ASK { GRAPH <{{KG_DOMAIN}}> { <http://purl.obolibrary.org/obo/BFO_0000001> ?p ?o } }"
+    },
+    {
+      "name": "The Cafe's tenant types are present, grounded under a canonical runtime type (kg/domain)",
+      "ask": "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> ASK { GRAPH <{{KG_DOMAIN}}> { <https://ontara.dev/ontology/tenant/cafe/Order> rdfs:subClassOf <https://ontara.dev/ontology/bmm/CanonicalRuntimeType> . <https://ontara.dev/ontology/tenant/cafe/OrderLine> rdfs:subClassOf <https://ontara.dev/ontology/bmm/CanonicalRuntimeType> } }"
+    },
+    {
+      "name": "The Cafe's three axis declarations name their generated predicates, with 12 permitted values (kg/domain)",
+      "ask": "PREFIX ontara-axis: <https://ontara.dev/ontology/bmm/axis#> ASK { { SELECT (COUNT(DISTINCT ?p) AS ?np) (COUNT(DISTINCT ?v) AS ?nv) WHERE { GRAPH <{{KG_DOMAIN}}> { ?axis ontara-axis:valuePredicate ?p ; ontara-axis:hasValueSpace/ontara-axis:permitsValue ?v . FILTER (STRSTARTS(STR(?axis), \"https://ontara.dev/data/cafe/reasoning/\")) } } } FILTER (?np = 3 && ?nv = 12) }"
+    },
+    {
+      "name": "The Cafe's reasoning module keeps the precondition's HardConstraint typing (kg/domain)",
+      "ask": "ASK { GRAPH <{{KG_DOMAIN}}> { <https://ontara.dev/data/cafe/reasoning/orderline-orderPaid> a <https://ontara.dev/ontology/reasoning/HardConstraint> } }"
+    },
+    {
+      "name": "The correspondence records hold the Cafe's tenant-type trace (kg/correspondence)",
+      "ask": "ASK { GRAPH <{{KG_CORRESPONDENCE}}> { <https://ontara.dev/ontology/correspondence/map-tenant-cafe-Order> ?p ?o } }"
+    },
+    {
+      "name": "kg/metamodel is empty at Stage 0",
+      "ask": "ASK { FILTER NOT EXISTS { GRAPH <{{KG_METAMODEL}}> { ?s ?p ?o } } }"
     }
   ]
 }

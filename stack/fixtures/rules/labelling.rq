@@ -4,16 +4,21 @@
 #   mode   = the inputs' shared mode (none written if they differ, so the
 #            record shape rejects the write and the transaction rolls back);
 #   method = the weakest input method (direct > inferred > predicted).
+# It writes into {{DBR}}, which the Write Stamping Stage binds to the request's
+# Declared History Branch's dbr graph (S0.5 Pass B3): the records it labels
+# are records of the order, so business side.
 PREFIX rec:  <urn:ontara:standin:rec#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
-INSERT { GRAPH <{{G}}> { ?r rec:hasRealityMode ?mode ; rec:hasProvenanceMethod ?method } }
+INSERT { GRAPH <{{DBR}}> { ?r rec:hasRealityMode ?mode ; rec:hasProvenanceMethod ?method } }
 WHERE {
   {
     SELECT ?r (COUNT(DISTINCT ?m) AS ?modes) (SAMPLE(?m) AS ?mode) (MAX(?rank) AS ?worst) WHERE {
       VALUES ?exec { <{{EXEC}}> }
-      ?r prov:wasGeneratedBy ?exec ; prov:wasDerivedFrom ?in .
-      FILTER NOT EXISTS { ?r rec:hasRealityMode ?any }
-      ?in rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm .
+      GRAPH <{{DBR}}> {
+        ?r prov:wasGeneratedBy ?exec ; prov:wasDerivedFrom ?in .
+        FILTER NOT EXISTS { ?r rec:hasRealityMode ?any }
+        ?in rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm .
+      }
       BIND (IF(?pm = rec:DirectMethod, 1, IF(?pm = rec:InferredMethod, 2, 3)) AS ?rank)
     } GROUP BY ?r
   }

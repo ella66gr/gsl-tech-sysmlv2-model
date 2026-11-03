@@ -6,14 +6,15 @@
 # IRIs, and it makes only the move the model permits (inPreparation -> ready,
 # "PreparationComplete"). The real rule (ready or collected) is Pass C3's.
 # It does NOT set mode or method: the labelling step does (labelling.rq).
-# The runner supplies the graph ({{G}}, the graph the order was written to),
-# {{O}} and {{EXEC}}. Every pattern names its graph.
+# The rule names its graph as {{DBR}}: the Write Stamping Stage binds it to the
+# request's Declared History Branch's dbr graph (S0.5 Pass B3); the runner
+# supplies {{O}} and {{EXEC}}. Every pattern names its graph.
 PREFIX rec:         <urn:ontara:standin:rec#>
 PREFIX cafe:        <urn:ontara:standin:cafe#>
 PREFIX prov:        <http://www.w3.org/ns/prov#>
 PREFIX ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/>
-DELETE { GRAPH <{{G}}> { ?order ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-inPreparation } }
-INSERT { GRAPH <{{G}}> {
+DELETE { GRAPH <{{DBR}}> { ?order ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-inPreparation } }
+INSERT { GRAPH <{{DBR}}> {
   ?order ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-ready .
   ?exec a prov:Activity ; prov:used rec:OrderReadiness-v1 .
   ?rr a rec:PlatformRecord ; rec:recordOf ?order ; rec:recordedAt ?now ;
@@ -21,7 +22,7 @@ INSERT { GRAPH <{{G}}> {
 } }
 WHERE {
   VALUES (?order ?exec) { (<{{O}}> <{{EXEC}}>) }
-  GRAPH <{{G}}> {
+  GRAPH <{{DBR}}> {
     ?order a ontara-cafe:Order ;
            ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-inPreparation .
     FILTER NOT EXISTS {

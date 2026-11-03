@@ -68,11 +68,10 @@ out="results/$rel"
 mkdir -p "$out"
 export REGRESSION_FUSEKI_DATA="/fuseki/databases/run-$run"
 u="$(id -u):$(id -g)"
-G="urn:ontara:stack:graph:regression-$run"
 image_id="$(docker image inspect "$REGRESSION_STORE_IMAGE" --format '{{.Id}}')"
 kind="regression check"; [ -n "$IMAGE" ] && kind="POSITIVE CONTROL (not the stack's image): $IMAGE"
 printf '{\n  "runId": "%s",\n  "kind": "%s",\n  "storeImage": "%s",\n  "storeImageId": "%s",\n  "imageJenaVersion": "%s",\n  "mode": "%s",\n  "preloadOrders": %s,\n  "coldCachesBeforeFirstWrite": true,\n  "bad": %s,\n  "good": %s,\n  "freshStoreDirectory": "%s",\n  "graph": "%s",\n  "host": "%s",\n  "startedUtc": "%s"\n}\n' \
-  "$run" "$kind" "$REGRESSION_STORE_IMAGE" "$image_id" "${jena_label:-unknown}" "$MODE" "$PRELOAD" "$BAD" "$GOOD" "$REGRESSION_FUSEKI_DATA" "$G" "$(uname -sm)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$out/params.json"
+  "$run" "$kind" "$REGRESSION_STORE_IMAGE" "$image_id" "${jena_label:-unknown}" "$MODE" "$PRELOAD" "$BAD" "$GOOD" "$REGRESSION_FUSEKI_DATA" "the fresh store's Reality Reference Branch (dbr), placed by the gate's Write Stamping Stage" "$(uname -sm)" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$out/params.json"
 since="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 echo "[regression] run $run: $kind; store image $REGRESSION_STORE_IMAGE (Jena ${jena_label:-?}), $MODE validation, fresh store at $REGRESSION_FUSEKI_DATA; preload $PRELOAD, cold, $BAD bad then $GOOD good"
 gate() { docker compose exec -T --user "$u" gate node dist/cli/regression.js "$@" --out "$rel"; }
@@ -86,18 +85,18 @@ docker compose run --rm --no-deps -T ${expect[@]+"${expect[@]}"} bootstrap > "$o
 grep -E 'status /cafe-runtime|OK in' "$out/bootstrap.log" | tail -2
 docker compose up -d --wait --no-deps gate >> "$out/up.log" 2>&1 || fail_run "gate did not start"
 echo "[regression] preload: $PRELOAD orders through the load harness (no readers)"
-docker compose exec -T --user "$u" gate node dist/cli/loadtest.js --orders "$PRELOAD" --readers none --out "$rel/preload" > "$out/preload.log" 2>&1 || { tail -5 "$out/preload.log"; fail_run "preload failed (see $out/preload.log)"; }
+docker compose exec -T --user "$u" gate node dist/cli/loadtest.js --orders "$PRELOAD" --readers none --keep --out "$rel/preload" > "$out/preload.log" 2>&1 || { tail -5 "$out/preload.log"; fail_run "preload failed (see $out/preload.log)"; }
 grep -E '^\[load\] (done|store)' "$out/preload.log"
 echo "[regression] cold: restarting the store before the first write"
 docker compose restart store > /dev/null 2>&1
 gate wait --label before-writes
-gate writes --graph "$G" --bad "$BAD" --good "$GOOD" --run "${run%%-*}" > "$out/writes.log" 2>&1 || true
+gate writes --bad "$BAD" --good "$GOOD" --run "${run%%-*}" > "$out/writes.log" 2>&1 || true
 awk '{print $1, $3}' "$out/writes.log" | sort | uniq -c
-gate verify --graph "$G" --label before-restart
+gate verify --label before-restart
 echo "[regression] restarting the store"
 docker compose restart store > /dev/null 2>&1
 gate wait --label after-restart
-gate verify --graph "$G" --label after-restart
+gate verify --label after-restart
 docker compose logs --no-color --no-log-prefix --since "$since" store > "$out/store.log" 2>&1 || true
 echo "[regression] offline checks (store stopped)"
 docker compose stop store > /dev/null 2>&1

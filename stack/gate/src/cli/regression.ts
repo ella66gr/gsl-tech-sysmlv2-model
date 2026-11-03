@@ -4,11 +4,13 @@
 // gate container, in steps, between the store restarts it makes:
 //
 //   wait      --out D --label L                 wait for the store; record its module status
-//   writes    --out D --graph G --bad K --good N --run R
-//                                               K known-bad then N known-good writes, one at a
-//                                               time, through the gate's HTTP API
-//   verify    --out D --graph G --label L       count the good records (SPARQL), then read every
-//                                               quad back through the Graph Store Protocol
+//   writes    --out D --bad K --good N --run R  K known-bad then N known-good writes, one at a
+//                                               time, through the gate's HTTP API; no graph: the
+//                                               gate's Write Stamping Stage places them in this
+//                                               fresh store's Reality Reference Branch (S0.5 Pass B3)
+//   verify    --out D --label L                 count the good records (SPARQL) in the branch's
+//                                               dbr graph, then read every quad back through the
+//                                               Graph Store Protocol
 //   summarise --out D --good N --bad K          judge the run; summary.json; exit 0 PASS, 1 FAIL
 //
 // Jena GH-3877 (5.x and 6.0.x): after an aborted write that read uncached
@@ -21,6 +23,7 @@ import * as path from "node:path";
 import { config, paths } from "../config";
 import { openStore } from "../store";
 import { fill, readFixture } from "../fixtures";
+import { requestBranch } from "../wss";
 
 const args = process.argv.slice(2);
 const cmd = args[0];
@@ -48,7 +51,7 @@ async function waitStore() {
 }
 
 async function writes() {
-  const graph = opt("--graph"), run = opt("--run");
+  const run = opt("--run");
   const BAD = Number(opt("--bad", "1")), GOOD = Number(opt("--good", "60"));
   const rows = ["seq,kind,iri,outcome,http,transaction,validation,fault_detail"];
   const jsonl: string[] = [];
@@ -62,7 +65,7 @@ async function writes() {
     try {
       const r = await fetch(`${config.gateUrl}/write`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ graph, turtle: fill(readFixture(file), { RUN: rid }), label: `regression ${kind} ${seq}` }),
+        body: JSON.stringify({ turtle: fill(readFixture(file), { RUN: rid }), label: `regression ${kind} ${seq}` }),
         signal: AbortSignal.timeout(120_000),
       });
       http = r.status; j = await r.json();
@@ -114,10 +117,11 @@ async function readBack() {
 }
 
 async function verify() {
-  const graph = opt("--graph"), label = opt("--label");
+  const label = opt("--label");
+  const graph = (await requestBranch(db)).dbr;
   const q = `SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE { GRAPH <${graph}> { ?s a <urn:ontara:standin:rec#PlatformRecord> . FILTER(STRSTARTS(STR(?s), "${GOOD_PREFIX}")) } }`;
   const qb = `SELECT (COUNT(DISTINCT ?s) AS ?n) WHERE { GRAPH ?g { ?s ?p ?o . FILTER(STRSTARTS(STR(?s), "${BAD_PREFIX}")) } }`;
-  const res: any = { label, at: new Date().toISOString() };
+  const res: any = { label, at: new Date().toISOString(), graph };
   try { res.goodRecordsStored = Number((await db.select(q, 120_000))[0]?.n?.value ?? -1); } catch (e: any) { res.goodRecordsStored = null; res.countError = String(e?.message ?? e).slice(0, 500); }
   try { res.badRecordsStored = Number((await db.select(qb, 120_000))[0]?.n?.value ?? -1); } catch (e: any) { res.badRecordsStored = null; res.badCountError = String(e?.message ?? e).slice(0, 500); }
   res.readBack = await readBack();

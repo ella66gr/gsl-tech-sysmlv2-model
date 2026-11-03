@@ -1,10 +1,13 @@
 // The constraint gate's HTTP service.
-//   POST /write   JSON WriteRequest, or text/turtle with ?graph=<iri>
-//                 200 committed | 422 rejected (SHACL) | 502 fault | 400 bad request
+//   POST /write   JSON { turtle?, updates?, remove?, label? }, or text/turtle
+//                 200 committed | 403 refused (a write rule of the named-graph
+//                 scheme) | 422 rejected (SHACL) | 502 fault | 400 bad request.
+//                 No graph: the Write Stamping Stage sets it (S0.5 Pass B3); a
+//                 request naming one (JSON "graph", or ?graph=) is refused.
 //   GET  /health  the S0.1 health check: 200 pass | 503 fail
 //   GET  /live    liveness only (used by the container healthcheck)
 import * as http from "node:http";
-import { write, WriteRequest } from "./gate";
+import { write, RuntimeWrite } from "./gate";
 import { runHealth } from "./health";
 import { config } from "./config";
 
@@ -23,7 +26,7 @@ function readBody(req: http.IncomingMessage): Promise<string> {
   });
 }
 
-const STATUS = { committed: 200, rejected: 422, fault: 502 } as const;
+const STATUS = { committed: 200, refused: 403, rejected: 422, fault: 502 } as const;
 
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url ?? "/", "http://gate");
@@ -36,13 +39,13 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "POST" && url.pathname === "/write") {
       const raw = await readBody(req);
       const ct = (req.headers["content-type"] ?? "").toLowerCase();
-      let wr: WriteRequest;
+      let wr: RuntimeWrite & { graph?: unknown };
       if (ct.includes("text/turtle")) {
-        wr = { turtle: raw, graph: url.searchParams.get("graph") ?? undefined };
+        wr = { turtle: raw, ...(url.searchParams.has("graph") ? { graph: url.searchParams.get("graph") } : {}) };
       } else {
         try { wr = JSON.parse(raw); } catch { return send(res, 400, { outcome: "bad-request", detail: "body is not JSON or text/turtle" }); }
       }
-      if (!wr.turtle && !(wr.updates && wr.updates.length)) return send(res, 400, { outcome: "bad-request", detail: "nothing to write: give turtle and/or updates" });
+      if (!wr.turtle && !(wr.updates && wr.updates.length) && !(wr.remove && wr.remove.length)) return send(res, 400, { outcome: "bad-request", detail: "nothing to write: give turtle, updates and/or remove" });
       const out = await write(wr);
       if (out.outcome !== "committed") console.log(`[gate] ${out.outcome} at ${out.stage}${wr.label ? ` (${wr.label})` : ""}; validation: ${out.validation ?? "(no X-Ontara-Validation header)"}`);
       return send(res, STATUS[out.outcome], out);
@@ -53,4 +56,4 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(config.port, "0.0.0.0", () => console.log(`[gate] listening on :${config.port}, dataset ${config.dataset} at ${config.storeUrl} (Fuseki, validated-update)`));
+server.listen(config.port, "0.0.0.0", () => console.log(`[gate] listening on :${config.port}, dataset ${config.dataset} at ${config.storeUrl} (Fuseki, validated-update; graphs set by the Write Stamping Stage)`));

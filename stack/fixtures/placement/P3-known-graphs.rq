@@ -1,0 +1,30 @@
+# P3. Every graph is a known graph; every runtime graph belongs to a declared
+# DHB (B4; D1 condition 3, check 3, Pass B form).
+# Lists every graph holding triples that is not one of the three kg graphs,
+# the shapes graph, or a declared DHB's dbr or dsr graph: a runtime graph
+# whose dhbId is not declared, a malformed runtime graph name, a misspelt kg
+# graph, a graph outside the scheme, and the stored default graph if anything
+# is in it. Since P2 keeps runtime instances (records included) in runtime
+# graphs, P2 and P3 together say: every platform record sits in a graph of a
+# declared DHB.
+# Rows = breaches. No rows = every graph is one the scheme names.
+# {{KNOWN_GRAPHS}} = from the templates module and the declared DHBs:
+#   <https://ontara.dev/graph/kg/metamodel>, <https://ontara.dev/graph/kg/domain>,
+#   <https://ontara.dev/graph/kg/correspondence>, <https://ontara.dev/graph/shapes>,
+#   and for each declared (tenant, dhbId): <.../dhb/{tenant}/{dhbId}/dbr>, <.../dhb/{tenant}/{dhbId}/dsr>
+# Pass B: the declared DHBs are the stack configuration's (the Cafe's RRB only).
+# Pass C: read from the RIR's declarations in the RRB's dsr graph instead.
+SELECT ?g (COUNT(*) AS ?triples)
+WHERE {
+  {
+    GRAPH ?g { ?s ?p ?o }
+    FILTER (?g NOT IN ( {{KNOWN_GRAPHS}} ))
+  }
+  UNION
+  {
+    GRAPH <{{STORED_DEFAULT_GRAPH}}> { ?s ?p ?o }
+    BIND (<{{STORED_DEFAULT_GRAPH}}> AS ?g)
+  }
+}
+GROUP BY ?g
+ORDER BY ?g

@@ -1,7 +1,14 @@
-# Known-bad stand-in write: a record with a mode and no provenance method.
-# Expected: a SHACL rejection naming sis:RecordModeMethodShape-method
-# (node shape sis:RecordModeMethodShape), sh:MinCountConstraintComponent.
+# Known-bad stand-in write: an order and a record of it with a mode and no
+# provenance method. Expected: a SHACL rejection naming
+# sis:RecordModeMethodShape-method (node shape sis:RecordModeMethodShape),
+# sh:MinCountConstraintComponent; nothing stored, the order included. The
+# record records the order, so its side is readable (S0.5 Pass B3).
 # {{RUN}} must be replaced before posting (bin/write.sh does it; with curl see README §3), else HTTP 502, a fault before the store is reached ("Invalid IRI code point '{'").
 @prefix rec: <urn:ontara:standin:rec#> .
+@prefix ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/> .
+<urn:ontara:standin:cafe#bad-{{RUN}}/order> a ontara-cafe:Order ;
+  ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-placed ;
+  ontara-cafe:orderPayment ontara-cafe:OrderPayment-unpaid .
 <urn:ontara:standin:cafe#bad-{{RUN}}> a rec:PlatformRecord ;
+  rec:recordOf <urn:ontara:standin:cafe#bad-{{RUN}}/order> ;
   rec:hasRealityMode rec:RealMode .

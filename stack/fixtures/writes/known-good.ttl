@@ -1,7 +1,17 @@
-# Known-good stand-in write: one record with one mode and one method.
-# {{RUN}} is replaced with a fresh id by the gate's write command and the health check.
+# Known-good stand-in write: one order and one record of it, with one mode and
+# one method. The record records the order, so its side (business, dbr) is read
+# from the content, as the Write Stamping Stage requires (S0.5 Pass B3); a
+# record of nothing has no side and is refused. The order carries both its
+# axes (S0.5 Pass B8). IRIs are unique within the branch: {{RUN}} is replaced
+# with a fresh id by the gate's write command, the health check and the
+# regression check.
 # Posting this file raw (e.g. with curl) is a fault before the store is reached, HTTP 502 ("Invalid IRI code point '{'"): substitute {{RUN}} first (README §3).
 @prefix rec: <urn:ontara:standin:rec#> .
+@prefix ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/> .
+<urn:ontara:standin:cafe#good-{{RUN}}/order> a ontara-cafe:Order ;
+  ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-placed ;
+  ontara-cafe:orderPayment ontara-cafe:OrderPayment-unpaid .
 <urn:ontara:standin:cafe#good-{{RUN}}> a rec:PlatformRecord ;
+  rec:recordOf <urn:ontara:standin:cafe#good-{{RUN}}/order> ;
   rec:hasRealityMode rec:RealMode ;
   rec:hasProvenanceMethod rec:DirectMethod .

@@ -26,6 +26,11 @@ export class SparqlHttp {
   putGraph(graph: string, data: string, contentType: string): Promise<HttpResult> {
     return http("PUT", `${this.gspUrl}?graph=${encodeURIComponent(graph)}`, { body: data, contentType, timeoutMs: 600_000 });
   }
+  // Graph Store Protocol POST: adds to a named graph (the bootstrap's second
+  // and later files for one knowledge-graph graph).
+  postGraph(graph: string, data: string, contentType: string): Promise<HttpResult> {
+    return http("POST", `${this.gspUrl}?graph=${encodeURIComponent(graph)}`, { body: data, contentType, timeoutMs: 600_000 });
+  }
   getGraph(graph: string, accept = "application/n-triples"): Promise<HttpResult> {
     return http("GET", `${this.gspUrl}?graph=${encodeURIComponent(graph)}`, { accept, timeoutMs: 30_000 });
   }

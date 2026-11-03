@@ -1,0 +1,19 @@
+# P1. One home graph (B4; D1 condition 3, check 1).
+# An IRI that is a subject in a runtime graph is a subject in no other graph:
+# not in the other side's graph, not in another DHB's graphs, not in a kg or
+# shapes graph, not in the stored default graph. Catches a resource split
+# across sides or DHBs, an IRI collision across DHBs (D1 F5), and a runtime
+# write that adds statements about knowledge-graph or shapes resources.
+# Rows = breaches. No rows = every runtime subject has exactly one home graph.
+# {{RUNTIME_GRAPH_ROOT}} = https://ontara.dev/graph/dhb/  (from the templates module)
+# {{STORED_DEFAULT_GRAPH}} = urn:x-arq:DefaultGraph      (Jena's name for the real default graph)
+SELECT ?s (COUNT(DISTINCT ?g) AS ?graphCount) (GROUP_CONCAT(DISTINCT STR(?g); separator=" ") AS ?graphs)
+WHERE {
+  { GRAPH ?g { ?s ?p ?o } }
+  UNION
+  { GRAPH <{{STORED_DEFAULT_GRAPH}}> { ?s ?p ?o } BIND (<{{STORED_DEFAULT_GRAPH}}> AS ?g) }
+  FILTER (isIRI(?s))
+}
+GROUP BY ?s
+HAVING (COUNT(DISTINCT ?g) > 1 && SUM(IF(STRSTARTS(STR(?g), "{{RUNTIME_GRAPH_ROOT}}"), 1, 0)) > 0)
+ORDER BY ?s

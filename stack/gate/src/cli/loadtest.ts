@@ -19,12 +19,17 @@
 //   --readers paced|continuous|none
 //                         paced (default): counter every 1 s, KDS every 0.5 s,
 //                         board every 2 s. continuous: back-to-back, no pause.
-//   --keep                do not clear the load-test graph first (accumulate)
+//   --keep                keep this run's orders afterwards (accumulate across
+//                         runs). By default the harness removes its own orders,
+//                         by IRI through the gate, after the run (S0.5 Pass B3;
+//                         Ella, S525: never a CLEAR of a branch graph). Nothing
+//                         is cleared before a run.
 //   --out <dir>           results subdirectory (bin/loadtest.sh sets this)
 //   --writers N           OP-134 spike (R7): N concurrent writers, each writing
-//                         --orders orders into its own run-scoped graph (writer 1
-//                         uses the load-test graph, so --writers 1 is the S0.1
-//                         harness unchanged). Readers query writer 1's graph.
+//                         --orders orders. Since S0.5 Pass B3 every writer writes
+//                         into the Reality Reference Branch, as the runtime does
+//                         (the per-writer graphs retired, Ella S525); each
+//                         writer's orders are told apart by IRI.
 //   --shapes runtime|standin|core-only
 //                         runtime (default, S521): what the bootstrap loads,
 //                         the core-only stand-in file, Cyril's two-sided
@@ -53,9 +58,10 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import * as os from "node:os";
 import { runtimeStore } from "../gate";
-import { readFixture, readStackFile, ORDER_FIXTURE } from "../fixtures";
-import { config, graphs, paths, RUNTIME_SHAPE_FILES, validatedAs } from "../config";
+import { readFixture, readStackFile, ORDER_FIXTURE, fill, orderSubjects } from "../fixtures";
+import { config, paths, RUNTIME_SHAPE_FILES, validatedAs } from "../config";
 import { orderWrite, runId } from "../fixtures";
+import { requestBranch } from "../wss";
 
 const args = process.argv.slice(2);
 const opt = (n: string, d: string) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d; };
@@ -63,7 +69,10 @@ const N = Number(opt("--orders", "500"));
 const READERS = opt("--readers", "paced") as "paced" | "continuous" | "none";
 const KEEP = args.includes("--keep");
 const OUT = path.join(paths.results, opt("--out", `loadtest/${new Date().toISOString().replace(/[:.]/g, "")}`));
-const G = graphs.loadtest;
+// The graph the orders land in: the Reality Reference Branch's dbr graph, which
+// the gate's Write Stamping Stage derives (the harness sends no graph). The
+// readers and the checks name it, from the templates (graphs.ts).
+let G = "";
 const WRITERS = Number(opt("--writers", "1"));
 const SHAPES = opt("--shapes", "runtime") as "runtime" | "standin" | "core-only";
 if (!["runtime", "standin", "core-only"].includes(SHAPES)) throw new Error(`--shapes ${SHAPES}: runtime, standin or core-only`);
@@ -72,7 +81,7 @@ const SHAPES_FILE = SHAPE_FILES.join(" + ");
 const shapesTurtle = (files = SHAPE_FILES) => files.map((f) => readStackFile(f)).join("\n");
 const REJECT_EVERY = Number(opt("--reject-every", "0"));
 const EXPECT_MODE = config.expectedValidationMode;
-const writerGraph = (w: number) => (w === 1 ? G : `${G}-w${w}`);
+const orderPrefix = (run: string, w?: number) => `urn:ontara:standin:cafe#order-${run}-${w ? `w${w}-` : ""}`;
 const db = runtimeStore();
 
 // Axis values are read through the generated predicates (S0.5 Pass B8).
@@ -110,6 +119,8 @@ const readers: ReaderDef[] = [
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
   const run = runId();
+  const rrb = await requestBranch(db);
+  G = rrb.dbr;
   // The store, read from the module before the run (recorded with the run).
   const storeStatus = await db.status();
   const storeLine = `Apache Jena Fuseki ${storeStatus.fusekiVersion} (Jena ${storeStatus.jenaVersion}, image built for ${storeStatus.jenaBuildVersion}), ${storeStatus.module}, ${storeStatus.store}, validation mode ${storeStatus.validationMode}`;
@@ -117,13 +128,6 @@ async function main() {
   fs.appendFileSync(machine, `store:         ${storeLine}\nstore status:  ${JSON.stringify(storeStatus)}\nexpected mode: ${EXPECT_MODE} (every write's X-Ontara-Validation header is checked)\nshapes:        ${SHAPES_FILE}\n`);
   console.log(`[load] run ${run}: ${N} orders x ${WRITERS} writer(s), readers=${READERS}, shapes=${SHAPES_FILE}, reject-every=${REJECT_EVERY || "off"}, store: ${storeLine}, graph <${G}>, out ${path.relative(paths.results, OUT)}`);
 
-  if (!KEEP) {
-    for (let w = 1; w <= WRITERS; w++) {
-      const r = await fetch(`${config.gateUrl}/write`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ updates: [`CLEAR SILENT GRAPH <${writerGraph(w)}>`], label: "loadtest reset" }) });
-      const j: any = await r.json();
-      if (j.outcome !== "committed") throw new Error(`reset failed: ${JSON.stringify(j)}`);
-    }
-  }
   const shapesLoad = await db.replaceGraph(db.shapesGraph, shapesTurtle(), "text/turtle");
   if (!shapesLoad.ok) throw new Error(`loading ${SHAPES_FILE}: HTTP ${shapesLoad.status} ${shapesLoad.body}`);
   const startSize = await db.size();
@@ -162,13 +166,14 @@ async function main() {
   const storeErrors: { at: string; error: string }[] = [];
   const tRun = performance.now();
   const writer = async (w: number) => {
-    const g = writerGraph(w);
+    const g = G;
     latBy[w] = [];
-    let graphTriples = w === 1 ? startGraph : 0;
+    let graphTriples = startGraph;
     for (let i = 1; i <= N; i++) {
       if (REJECT_EVERY > 0 && i % REJECT_EVERY === 0) {
-        const badIri = `urn:ontara:standin:cafe#bad-${run}-w${w}-${String(i).padStart(5, "0")}`;
-        const badBody = JSON.stringify({ graph: g, turtle: readFixture("writes/known-bad.ttl").replace(/<urn:ontara:standin:cafe#bad-\{\{RUN\}\}>/g, `<${badIri}>`), label: `load w${w} bad before ${i}` });
+        const badRun = `${run}-w${w}-${String(i).padStart(5, "0")}`;
+        const badIri = `urn:ontara:standin:cafe#bad-${badRun}`;
+        const badBody = JSON.stringify({ turtle: fill(readFixture("writes/known-bad.ttl"), { RUN: badRun }), label: `load w${w} bad before ${i}` });
         const bStarted = new Date().toISOString(); const b0 = performance.now();
         const br = await fetch(`${config.gateUrl}/write`, { method: "POST", headers: { "Content-Type": "application/json" }, body: badBody });
         const bj: any = await br.json(); const b1 = performance.now();
@@ -178,8 +183,8 @@ async function main() {
         writeRows.push([i, w, badIri, bStarted, new Date().toISOString(), (b1 - b0).toFixed(2), (bt.total ?? NaN).toFixed?.(2), (bt.begin ?? 0).toFixed(2), (bt.add ?? 0).toFixed(2), (bt.updates ?? 0).toFixed(2), (bt.commit ?? 0).toFixed(2), (bt.rollback ?? 0).toFixed(2), bj.outcome, graphTriples, "bad", csvSafe(bj.validation), bj.outcome === "fault" ? csvSafe(bj.detail) : ""].join(","));
       }
       if (i === 1 || i % 50 === 0) graphTriples = await db.size(g).catch((e: any) => { storeErrors.push({ at: `w${w} write ${i} size`, error: String(e?.message ?? e).slice(0, 300) }); return -1; }); // outside the timed section
-      const order = `urn:ontara:standin:cafe#order-${run}-w${w}-${String(i).padStart(5, "0")}`;
-      const body = JSON.stringify({ ...orderWrite(order, g), label: `load w${w} ${i}` });
+      const order = `${orderPrefix(run, w)}${String(i).padStart(5, "0")}`;
+      const body = JSON.stringify({ ...orderWrite(order), label: `load w${w} ${i}` });
       const started = new Date().toISOString();
       const t0 = performance.now();
       const r = await fetch(`${config.gateUrl}/write`, { method: "POST", headers: { "Content-Type": "application/json" }, body });
@@ -203,11 +208,29 @@ async function main() {
   // OP-134 spike: the S0.1 query bound ?ready and ?lab and then reused them as
   // aggregate aliases, which SPARQL 1.1 forbids (18.2.4.1). GraphDB and RDF4J
   // accept it; Jena rejects it. Aliases renamed; the counts are unchanged.
-  const checkGraph = (g: string) => db.select(`${PFX} SELECT (COUNT(DISTINCT ?o) AS ?orders) (COUNT(DISTINCT ?readyOrder) AS ?ready) (COUNT(DISTINCT ?labRecord) AS ?labelled) WHERE { GRAPH <${g}> { ?o a ontara-cafe:Order . OPTIONAL { ?o ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-ready . BIND(?o AS ?readyOrder) } OPTIONAL { ?rr rec:recordOf ?o ; rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm . FILTER(STRENDS(STR(?rr), "/ready-record")) BIND(?rr AS ?labRecord) } } }`, 120_000);
+  // Since S0.5 Pass B3 the branch's graph holds other writers' content too, so
+  // the check counts this run's orders only, by IRI prefix.
+  const checkGraph = (prefix: string) => db.select(`${PFX} SELECT (COUNT(DISTINCT ?o) AS ?orders) (COUNT(DISTINCT ?readyOrder) AS ?ready) (COUNT(DISTINCT ?labRecord) AS ?labelled) WHERE { GRAPH <${G}> { ?o a ontara-cafe:Order . FILTER (STRSTARTS(STR(?o), "${prefix}")) OPTIONAL { ?o ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-ready . BIND(?o AS ?readyOrder) } OPTIONAL { ?rr rec:recordOf ?o ; rec:hasRealityMode ?m ; rec:hasProvenanceMethod ?pm . FILTER(STRENDS(STR(?rr), "/ready-record")) BIND(?rr AS ?labRecord) } } }`, 120_000);
   const failedCheck = (e: any, at: string) => { storeErrors.push({ at, error: String(e?.message ?? e).slice(0, 300) }); return [{ orders: { value: "-1" }, ready: { value: "-1" }, labelled: { value: "-1" } }]; };
-  const check = await checkGraph(G).catch((e) => failedCheck(e, "correctness check"));
+  const check = await checkGraph(orderPrefix(run)).catch((e) => failedCheck(e, "correctness check"));
   const checkByWriter: any = {};
-  for (let w = 1; w <= WRITERS; w++) { const c = (await checkGraph(writerGraph(w)).catch((e) => failedCheck(e, `correctness check w${w}`)))[0]; checkByWriter[`w${w}`] = { orders: Number(c.orders.value), ordersReady: Number(c.ready.value), derivedRecordsLabelled: Number(c.labelled.value) }; }
+  for (let w = 1; w <= WRITERS; w++) { const c = (await checkGraph(orderPrefix(run, w)).catch((e) => failedCheck(e, `correctness check w${w}`)))[0]; checkByWriter[`w${w}`] = { orders: Number(c.orders.value), ordersReady: Number(c.ready.value), derivedRecordsLabelled: Number(c.labelled.value) }; }
+  // Remove this run's orders by IRI through the gate, unless --keep (outside
+  // the timed writes). Rejected known-bad writes left nothing to remove.
+  const graphAfterWrites = await db.size(G).catch(() => -1);
+  const removal: any = { kept: KEEP, requests: 0, committed: 0, other: [] as any[] };
+  if (!KEEP) {
+    const committedOrders = writeRows.slice(1).map((l) => l.split(",")).filter((x) => x[14] === "order" && x[12] === "committed").map((x) => x[2]);
+    for (let k = 0; k < committedOrders.length; k += 25) {
+      const remove = committedOrders.slice(k, k + 25).flatMap(orderSubjects);
+      const r = await fetch(`${config.gateUrl}/write`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ remove, label: "loadtest removal" }) });
+      const j: any = await r.json();
+      removal.requests++;
+      if (j.outcome === "committed") removal.committed++; else if (removal.other.length < 3) removal.other.push(j);
+    }
+    removal.leftOfThisRun = Number((await db.select(`SELECT (COUNT(*) AS ?n) WHERE { GRAPH ?g { ?s ?p ?o } FILTER (STRSTARTS(STR(?s), "${orderPrefix(run)}")) }`).catch(() => [{ n: { value: "-1" } }]))[0].n.value);
+    console.log(`[load] removed this run's orders: ${removal.committed}/${removal.requests} removal requests committed; triples of this run left: ${removal.leftOfThisRun}`);
+  }
   // Restore the runtime shapes (the bootstrap's) if this run loaded others.
   if (SHAPES !== "runtime") await db.replaceGraph(db.shapesGraph, shapesTurtle(RUNTIME_SHAPE_FILES), "text/turtle");
 
@@ -243,7 +266,7 @@ async function main() {
     orderWritesNotInExpectedMode: notInMode.length, knownBadWritesNotInExpectedMode: badNotInMode.length,
     missingHeader: [...rows, ...badRows].filter((x) => !x[15]).length,
     samplesNotInExpectedMode: [...notInMode, ...badNotInMode].slice(0, 5).map((x) => ({ seq: Number(x[0]), kind: x[14], validation: x[15] || null })),
-    note: "the per-run reset (CLEAR SILENT GRAPH, outside the timed writes) is validated whole by the module's fall-back rule and is not counted",
+    note: "the removal of this run's orders after the run (by IRI, outside the timed writes) is not counted",
   };
   const configurationFault = validationCheck.orderWritesNotInExpectedMode + validationCheck.knownBadWritesNotInExpectedMode > 0;
 
@@ -254,7 +277,7 @@ async function main() {
     validation: validationCheck,
     validAsMeasure: !configurationFault,
     configurationFault: configurationFault ? `writes validated other than ${EXPECT_MODE}, or with no X-Ontara-Validation header: a configuration fault; the run is invalid as a measure (specification 2.8 item 9)` : null,
-    config: { orders: N, rejectEvery: REJECT_EVERY || null, writers: WRITERS, writerGraphs: Array.from({ length: WRITERS }, (_, k) => writerGraph(k + 1)), store: db.kind, readers: READERS, readerCadenceMs: READERS === "paced" ? Object.fromEntries(readers.map((r) => [r.name, r.everyMs])) : null, graph: G, dataset: config.dataset, rule: "fixtures/rules/order-readiness.rq + fixtures/rules/labelling.rq", write: `fixtures/${ORDER_FIXTURE}`, shapes: SHAPES_FILE, shapesGraph: db.shapesGraph },
+    config: { orders: N, rejectEvery: REJECT_EVERY || null, writers: WRITERS, branch: { dhbId: rrb.dhbId, dbr: rrb.dbr, dsr: rrb.dsr }, keep: KEEP, store: db.kind, readers: READERS, readerCadenceMs: READERS === "paced" ? Object.fromEntries(readers.map((r) => [r.name, r.everyMs])) : null, graph: G, dataset: config.dataset, rule: "fixtures/rules/order-readiness.rq + fixtures/rules/labelling.rq", write: `fixtures/${ORDER_FIXTURE}`, shapes: SHAPES_FILE, shapesGraph: db.shapesGraph },
     percentileMethod: "nearest rank, over committed order writes; latency = HTTP round trip to the gate's /write as the caller sees it (writes.csv column latency_ms, rows with kind=order and outcome=committed)",
     writeLatencyMs: stats(lat),
     gatePhaseMs: { commit: stats(rows.map((x) => Number(x[10]))), updates: stats(rows.map((x) => Number(x[9]))), add: stats(rows.map((x) => Number(x[8]))), begin: stats(rows.map((x) => Number(x[7]))) },
@@ -270,7 +293,7 @@ async function main() {
     readers: Object.fromEntries(Object.entries(readerLat).map(([k, v]) => [k, stats(v)])),
     readerErrors: readerRows.filter((l) => l.split(",")[4] === "false").length,
     growthPer100Writes: buckets,
-    dataset: { triplesBefore: startSize, triplesAfter: await db.size().catch(() => -1), loadtestGraphBefore: startGraph, loadtestGraphAfter: await db.size(G).catch(() => -1) },
+    dataset: { triplesBefore: startSize, triplesAfter: await db.size().catch(() => -1), branchDbrGraphBefore: startGraph, branchDbrGraphAfterWrites: graphAfterWrites, removal },
     storeErrors,
     correctness: { orders: Number(check[0].orders.value), ordersReady: Number(check[0].ready.value), derivedRecordsLabelled: Number(check[0].labelled.value) },
     correctnessByWriter: checkByWriter,

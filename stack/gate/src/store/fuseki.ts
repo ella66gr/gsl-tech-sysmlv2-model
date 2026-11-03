@@ -29,7 +29,6 @@ import { parseTurtleInto, dataBlock } from "./rdfjs";
 import { Store, WriteRequest, WriteOutcome, GraphLoad, Timings, ModuleStatus, TransactionEnd,
          ONTARA_SHAPES_GRAPH, RUNTIME_DATASET, SCRATCH_DATASET, SH } from "./types";
 import { looksLikeShaclRejection, parseReport } from "../report";
-import { graphs } from "../config";
 
 const PROVISIONED = [RUNTIME_DATASET, SCRATCH_DATASET];
 
@@ -50,6 +49,10 @@ export class FusekiStore implements Store {
   update(u: string): Promise<HttpResult> { return this.sparql.update(u); }
   async replaceGraph(g: string, data: string, ct: string): Promise<GraphLoad> {
     const r = await this.sparql.putGraph(g, data, ct);
+    return { ok: r.status === 200 || r.status === 201 || r.status === 204, status: r.status, body: r.body };
+  }
+  async appendGraph(g: string, data: string, ct: string): Promise<GraphLoad> {
+    const r = await this.sparql.postGraph(g, data, ct);
     return { ok: r.status === 200 || r.status === 201 || r.status === 204, status: r.status, body: r.body };
   }
   size(graph?: string) { return this.sparql.count(graph); }
@@ -77,10 +80,16 @@ export class FusekiStore implements Store {
     try {
       const ops: string[] = [];
       if (req.turtle && req.turtle.trim()) {
+        if (!req.graph) return fault(null, "turtle with no graph: the adapter places nothing itself (the runtime write path's Write Stamping Stage sets the graph)");
         const s = performance.now();
-        const quads = parseTurtleInto(req.turtle, req.graph ?? graphs.manual);
+        const quads = parseTurtleInto(req.turtle, req.graph);
         ops.push(`INSERT DATA {\n${dataBlock(quads)}\n}`);
         t.add = performance.now() - s;
+      }
+      if (req.quads && req.quads.length) {
+        const s = performance.now();
+        ops.push(`INSERT DATA {\n${dataBlock(req.quads)}\n}`);
+        t.add += performance.now() - s;
       }
       for (const u of req.updates ?? []) ops.push(u);
       if (!ops.length) return fault(null, "nothing to write: give turtle and/or updates");
@@ -88,7 +97,10 @@ export class FusekiStore implements Store {
       const s = performance.now();
       let r: HttpResult;
       try {
-        r = await http("POST", `${this.datasetUrl}/validated-update`, { body: ops.join(" ;\n"), contentType: "application/sparql-update", timeoutMs: 600_000 });
+        r = await http("POST", `${this.datasetUrl}/validated-update`, {
+          body: ops.join(" ;\n"), contentType: "application/sparql-update", timeoutMs: 600_000,
+          headers: req.policy ? { "X-Ontara-Write-Policy": JSON.stringify(req.policy) } : undefined,
+        });
       } catch (e: any) {
         // The request failed or timed out without a reply: whether the store
         // committed is not known, so the outcome says "unknown", never "rolled back".
@@ -101,6 +113,15 @@ export class FusekiStore implements Store {
       transaction = tx === "committed" || tx === "aborted" ? tx : "unknown";
       if (r.status === 200 || r.status === 204) {
         return { outcome: "committed", timings: finish(), validation, transaction };
+      }
+      if (r.status === 403 && (r.contentType ?? "").includes("json")) {
+        // Refused by the request's write policy (the scheme's write rules), in the store's transaction, before validation.
+        let j: any;
+        try { j = JSON.parse(r.body); } catch { return fault(r.status, `write-policy refusal unreadable; body starts: ${r.body.slice(0, 2000)}`); }
+        stage = "store";
+        const rules: string[] = j.rules ?? [];
+        return { outcome: "refused", stage: "store", rules, violations: j.violations ?? [], rolledBack: transaction === "aborted", transaction, validation, timings: finish(),
+                 detail: `refused by the write rule${rules.length === 1 ? "" : "s"} ${rules.join(", ")} (the store aborted the write before validating it)` };
       }
       if (r.status === 422 && looksLikeShaclRejection(r.contentType, r.body)) {
         stage = "validate";

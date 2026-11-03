@@ -1,0 +1,29 @@
+# P2. Runtime instances only in runtime graphs (B4; D1 condition 3, check 2).
+# A runtime class instance is a resource typed with a class that is, through
+# the store's own class hierarchy, a subclass of a runtime root. No such
+# instance sits in a kg graph, the shapes graph, any other named graph that is
+# not a runtime graph (a leftover provisional stack graph included), or the
+# stored default graph (which neither validation nor the union default graph
+# sees). Rows = breaches. No rows = every runtime instance is in a runtime graph.
+# {{RUNTIME_ROOTS}} = the platform's runtime roots (from the templates module):
+#   <https://ontara.dev/ontology/bmm/CanonicalRuntimeType>  every tenant runtime type, generated under it
+#   <https://ontara.dev/ontology/record/PlatformRecord>      every platform record kind (Pass C)
+# The hierarchy is read through the union default graph, deliberately: it is
+# the hierarchy validation's targets and sh:class see.
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?g ?x ?class ?root
+WHERE {
+  VALUES ?root { {{RUNTIME_ROOTS}} }
+  ?class rdfs:subClassOf* ?root .
+  {
+    GRAPH ?g { ?x rdf:type ?class }
+    FILTER (!STRSTARTS(STR(?g), "{{RUNTIME_GRAPH_ROOT}}"))
+  }
+  UNION
+  {
+    GRAPH <{{STORED_DEFAULT_GRAPH}}> { ?x rdf:type ?class }
+    BIND (<{{STORED_DEFAULT_GRAPH}}> AS ?g)
+  }
+}
+ORDER BY ?g ?x

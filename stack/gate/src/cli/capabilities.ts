@@ -32,17 +32,27 @@
 //   node dist/cli/capabilities.js --combine <dir under results/>
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { write as gateWrite, WriteOutcome } from "../gate";
+import { writeScratch, WriteOutcome } from "../gate";
 import { openStore, SCRATCH_DATASET, WriteRequest, Store } from "../store";
-import { config, graphs, paths, validatedAs, RUNTIME_SHAPE_FILES } from "../config";
-import { readFixture, readStackFile, orderWrite, fill } from "../fixtures";
+import { config, CAPABILITY_GRAPH, paths, validatedAs, RUNTIME_SHAPE_FILES } from "../config";
+import { readFixture, readStackFile, orderWrite as orderWriteRuntime, fill } from "../fixtures";
+import { bindBranch } from "../graphs";
 
 const args = process.argv.slice(2);
 const opt = (n: string, d: string) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d; };
 const MODE = opt("--mode", config.expectedValidationMode);
 const SCRATCH = SCRATCH_DATASET;
 const SH = "http://www.w3.org/ns/shacl#";
-const G = graphs.capability;
+// The capability graph, in the scratch dataset only: outside the named-graph
+// scheme by decision (Ella, S525). The scratch dataset never holds runtime content.
+const G = CAPABILITY_GRAPH;
+// The load harness's order write, in the scratch dataset: its rules' {{DBR}}
+// token bound to the capability graph here (the runtime path's Write Stamping
+// Stage binds it to the branch's dbr graph).
+const orderWrite = (o: string, _g: string, opts: { rule?: boolean } = {}) => {
+  const w = orderWriteRuntime(o, opts);
+  return { graph: G, turtle: w.turtle, updates: w.updates.map((u) => bindBranch(u, { dbr: G, dsr: G })) };
+};
 const base = openStore();
 const db = base.withDataset(SCRATCH);
 const OUT = path.join(paths.results, opt("--out", "capabilities"));
@@ -50,7 +60,7 @@ const OUT = path.join(paths.results, opt("--out", "capabilities"));
 // Every validated write, with how the module validated it.
 const seen: { label: string; outcome: string; validation: string | null }[] = [];
 async function write(req: WriteRequest, s: Store): Promise<WriteOutcome> {
-  const o = await gateWrite(req, s);
+  const o = await writeScratch(req, s);
   seen.push({ label: req.label ?? "", outcome: o.outcome, validation: o.validation });
   return o;
 }
@@ -75,6 +85,7 @@ function brief(o: WriteOutcome) {
   const v = { validation: o.validation };
   if (o.outcome === "committed") return { outcome: o.outcome, ...v };
   if (o.outcome === "rejected") return { outcome: o.outcome, shapes: o.shapes, nodeShapes: o.nodeShapes, components: o.results.map((r) => r.component), messages: o.results.map((r) => r.message), rolledBack: o.rolledBack, ...v };
+  if (o.outcome === "refused") return { outcome: o.outcome, stage: o.stage, rules: o.rules, detail: o.detail.slice(0, 400), ...v };
   return { outcome: o.outcome, stage: o.stage, httpStatus: o.httpStatus, detail: o.detail.slice(0, 400), ...v };
 }
 

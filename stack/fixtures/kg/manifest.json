@@ -1,65 +1,79 @@
 {
-  "_comment": "Knowledge-graph content the bootstrap loads into the runtime repository, one named graph per file: the 12-file General-only stack as assembled by S0.1 pass 2 (session-517-s01-pass2-qa-baseline-return section 4). Paths are relative to /stack/kg-source inside the container, where compose.yaml mounts the repository's ontology/ (as ontology/) and generated/ontology/ (as generated-ontology/), read-only. Graph IRIs are provisional; S0.5 sets the named-graph scheme.",
-  "graphPrefix": "urn:ontara:stack:kg:",
+  "_comment": "Knowledge-graph content the bootstrap loads into the runtime dataset (S0.5 Pass B3 item 2; Ella, S525, decision 2): B28's three model-content graphs, named by graphs.ts (KG_GRAPHS), never here. 'graph' is the key of a knowledge-graph graph: domain holds the 12-file General-only stack of S0.1 pass 2 plus the Cafe's tenant types (with their axis declarations and runtime axis vocabulary, S0.5 Pass B8) and the Cafe's reasoning module; correspondence holds the correspondence records; metamodel is named and stays empty at Stage 0. The Ears and CQC instance files are not loaded. Paths are relative to /stack/kg-source inside the container, where compose.yaml mounts the repository's ontology/ (as ontology/) and generated/ontology/ (as generated-ontology/), read-only: build outputs, never the authoring rig. The first file of each graph replaces the graph (Graph Store Protocol PUT); the others are added to it (POST).",
   "files": [
     {
       "path": "ontology/imports/bfo-core.owl",
-      "graph": "bfo-core",
+      "graph": "domain",
       "contentType": "application/rdf+xml"
     },
     {
       "path": "ontology/imports/iao.owl",
-      "graph": "iao",
+      "graph": "domain",
       "contentType": "application/rdf+xml"
     },
     {
       "path": "ontology/imports/CommonCoreOntologiesMerged.ttl",
-      "graph": "cco-merged",
+      "graph": "domain",
       "contentType": "text/turtle"
     },
     {
       "path": "ontology/imports/prov-core.ttl",
-      "graph": "prov-core",
+      "graph": "domain",
       "contentType": "text/turtle"
     },
     {
       "path": "ontology/record/ontara-record.ttl",
-      "graph": "ontara-record",
+      "graph": "domain",
       "contentType": "text/turtle"
     },
     {
       "path": "generated-ontology/ontara-bmm.ttl",
-      "graph": "ontara-bmm",
+      "graph": "domain",
       "contentType": "text/turtle"
     },
     {
       "path": "ontology/axioms/ontara-bmm-axioms.ttl",
-      "graph": "ontara-bmm-axioms",
+      "graph": "domain",
       "contentType": "text/turtle"
     },
     {
       "path": "generated-ontology/ontara-bmm-properties.ttl",
-      "graph": "ontara-bmm-properties",
+      "graph": "domain",
       "contentType": "text/turtle"
     },
     {
       "path": "generated-ontology/ontara-bmm-weights.ttl",
-      "graph": "ontara-bmm-weights",
+      "graph": "domain",
       "contentType": "text/turtle"
     },
     {
       "path": "ontology/governance/ontara-governance.ttl",
-      "graph": "ontara-governance",
+      "graph": "domain",
       "contentType": "text/turtle"
     },
     {
       "path": "ontology/domain/ontara-domain.ttl",
-      "graph": "ontara-domain",
+      "graph": "domain",
       "contentType": "text/turtle"
     },
     {
       "path": "ontology/reasoning/ontara-reasoning.ttl",
-      "graph": "ontara-reasoning",
+      "graph": "domain",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "generated-ontology/ontara-tenant-types.ttl",
+      "graph": "domain",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "ontology/reasoning/cafe-reasoning-instances.ttl",
+      "graph": "domain",
+      "contentType": "text/turtle"
+    },
+    {
+      "path": "generated-ontology/ontara-correspondence.ttl",
+      "graph": "correspondence",
       "contentType": "text/turtle"
     }
   ]

@@ -4,13 +4,18 @@
 //      content, and the module's status reports validating on, the expected
 //      mode (targeted), the pinned Jena version and shapes loaded;
 //   2. the gate (over its own HTTP API): a known-good stand-in write commits,
-//      a known-bad one comes back as a SHACL rejection naming the shape, and
-//      a write after that commits; the rejected record is not stored, which
-//      shows the rejected write left nothing behind. Every write must carry
-//      an X-Ontara-Validation header naming the expected mode;
+//      and lands in the Reality Reference Branch's dbr graph, placed there by
+//      the Write Stamping Stage (S0.5 Pass B3); a known-bad one comes back as
+//      a SHACL rejection naming the shape, and a write after that commits; the
+//      rejected record is not stored, which shows the rejected write left
+//      nothing behind. Every write must carry an X-Ontara-Validation header
+//      naming the expected mode. The check then removes its own instances by
+//      IRI through the gate (never a CLEAR of a branch graph; Ella, S525);
 //   3. Temporal: a no-op workflow starts and completes.
 import { runtimeStore } from "./gate";
-import { config, graphs, validatedAs } from "./config";
+import { config, validatedAs } from "./config";
+import { requestBranch } from "./wss";
+import { KG_GRAPHS } from "./graphs";
 import { readFixture, fill, runId } from "./fixtures";
 import { runNoop } from "./temporal";
 
@@ -51,8 +56,14 @@ export async function runHealth() {
   // 1. The store
   checks.push(await timed("store: knowledge-graph content", async () => {
     const probes = JSON.parse(readFixture("health/kg-expectations.json")).probes as { name: string; ask: string }[];
+    // The probes name their graphs only by tokens, filled from the templates (graphs.ts).
+    const tokens = { KG_DOMAIN: KG_GRAPHS.domain, KG_CORRESPONDENCE: KG_GRAPHS.correspondence, KG_METAMODEL: KG_GRAPHS.metamodel };
     const results = [];
-    for (const p of probes) results.push({ probe: p.name, result: await db.ask(p.ask) });
+    const fillGraphs = (q: string) => q.replace(/\{\{([A-Z_]+)\}\}/g, (m, k: string) => {
+      if (!(k in tokens)) throw new Error(`health probe token {{${k}}} has no value`);
+      return (tokens as Record<string, string>)[k];
+    });
+    for (const p of probes) results.push({ probe: p.name, result: await db.ask(fillGraphs(p.ask)) });
     return { pass: results.every((r) => r.result === true), detail: results };
   }));
   checks.push(await timed(`store: module validating, ${mode} mode, Jena ${config.expectedJenaVersion}, shapes loaded`, async () => {
@@ -70,25 +81,32 @@ export async function runHealth() {
   }));
 
   // 2. The gate
-  const good = (id: string) => ({ graph: graphs.health, turtle: fill(readFixture("writes/known-good.ttl"), { RUN: id }), label: "health known-good" });
+  // Instance IRIs unique within the branch: the run id is fresh each check.
+  const good = (id: string) => ({ turtle: fill(readFixture("writes/known-good.ttl"), { RUN: id }), label: "health known-good" });
+  const goodIri = (id: string) => `urn:ontara:standin:cafe#good-${id}`;
   const badIri = `urn:ontara:standin:cafe#bad-${run}-b`;
-  checks.push(await timed("gate: known-good write commits", async () => {
+  checks.push(await timed("gate: known-good write commits, into the Reality Reference Branch's dbr graph", async () => {
     const r = await gateWrite(good(`${run}-a`));
-    return { pass: r.http === 200 && r.json.outcome === "committed" && inMode(r.json), detail: { http: r.http, outcome: r.json.outcome, validation: r.json.validation, timings: r.json.timings } };
+    const b = await requestBranch(db);
+    const graphsHeld = (await db.select(`SELECT DISTINCT ?g WHERE { GRAPH ?g { ?s ?p ?o } VALUES ?s { <${goodIri(`${run}-a`)}> <${goodIri(`${run}-a`)}/order> } }`)).map((x: any) => x.g.value);
+    const pass = r.http === 200 && r.json.outcome === "committed" && inMode(r.json) && graphsHeld.length === 1 && graphsHeld[0] === b.dbr;
+    return { pass, detail: { http: r.http, outcome: r.json.outcome, validation: r.json.validation, graphsHeld, expectedGraph: b.dbr, timings: r.json.timings } };
   }));
   checks.push(await timed("gate: known-bad write is a SHACL rejection naming the shape", async () => {
-    const r = await gateWrite({ graph: graphs.health, turtle: fill(readFixture("writes/known-bad.ttl"), { RUN: `${run}-b` }), label: "health known-bad" });
+    const r = await gateWrite({ turtle: fill(readFixture("writes/known-bad.ttl"), { RUN: `${run}-b` }), label: "health known-bad" });
     const pass = r.http === 422 && r.json.outcome === "rejected" && (r.json.nodeShapes ?? []).includes(EXPECTED_SHAPE) && r.json.rolledBack === true && inMode(r.json);
     return { pass, detail: { http: r.http, outcome: r.json.outcome, shapes: r.json.shapes, nodeShapes: r.json.nodeShapes, components: (r.json.results ?? []).map((x: any) => x.component), messages: (r.json.results ?? []).map((x: any) => x.message), rolledBack: r.json.rolledBack, transaction: r.json.transaction, validation: r.json.validation } };
   }));
   checks.push(await timed("gate: write after the rejection commits, and the rejected record is not stored", async () => {
     const r = await gateWrite(good(`${run}-c`), 15_000);
-    const rejectedStored = await db.ask(`ASK { GRAPH ?g { <${badIri}> ?p ?o } }`);
+    const rejectedStored = await db.ask(`ASK { GRAPH ?g { ?s ?p ?o } VALUES ?s { <${badIri}> <${badIri}/order> } }`);
     return { pass: r.http === 200 && r.json.outcome === "committed" && inMode(r.json) && rejectedStored === false, detail: { http: r.http, outcome: r.json.outcome, validation: r.json.validation, rejectedRecordStored: rejectedStored, timings: r.json.timings } };
   }));
-  // Housekeeping, not a pass criterion: empty the health graph through the
-  // gate. (A CLEAR is validated whole, by the module's fall-back rule.)
-  const cleanup = await gateWrite({ updates: [`CLEAR SILENT GRAPH <${graphs.health}>`], label: "health cleanup" }).catch((e) => ({ http: 0, json: { outcome: String(e) } }));
+  // Housekeeping, not a pass criterion: the check removes its own instances,
+  // by IRI, through the gate (the WSS turns them into one DELETE/INSERT WHERE
+  // over the branch's graphs). Never a CLEAR of a branch graph.
+  const own = [`${run}-a`, `${run}-c`].flatMap((id) => [goodIri(id), `${goodIri(id)}/order`]);
+  const cleanup = await gateWrite({ remove: own, label: "health cleanup" }).catch((e) => ({ http: 0, json: { outcome: String(e) } }));
 
   // 3. Temporal
   checks.push(await timed("temporal: no-op workflow starts and completes", async () => {

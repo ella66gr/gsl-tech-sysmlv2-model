@@ -26,15 +26,14 @@ export const paths = {
   tenantGenerated: path.join(config.stackDir, "tenant-generated"),
 };
 
-// Named graphs used by the stack at S0.1. Provisional: S0.5 sets the real
-// named-graph scheme.
-export const graphs = {
-  shapes: "urn:ontara:stack:shapes",
-  health: "urn:ontara:stack:graph:health",
-  loadtest: "urn:ontara:stack:graph:loadtest",
-  manual: "urn:ontara:stack:graph:manual",
-  capability: "urn:ontara:stack:graph:capability",
-};
+// Graph names come from the named-graph scheme's templates, graphs.ts (S0.5
+// Pass B3). The S0.1 provisional graphs are gone (Ella, S525): the health
+// check's, the load harness's and bin/write.sh's writes go into the Reality
+// Reference Branch's dbr/dsr graphs through the Write Stamping Stage, like any
+// runtime write. One provisional graph stays, by decision: the capability
+// checks' graph, which lives only in the scratch dataset
+// (cafe-capability-scratch), never in the runtime dataset.
+export const CAPABILITY_GRAPH = "urn:ontara:stack:graph:capability";
 
 // The shapes the bootstrap loads into the runtime dataset, as paths under
 // config.stackDir: the stand-in record shape (core) and Cyril's two-sided core

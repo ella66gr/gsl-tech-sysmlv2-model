@@ -13,9 +13,9 @@ const DEFAULT_TIMEOUT_MS = 60_000;
 export async function http(
   method: string,
   url: string,
-  opts: { body?: string; contentType?: string; accept?: string; timeoutMs?: number } = {},
+  opts: { body?: string; contentType?: string; accept?: string; timeoutMs?: number; headers?: Record<string, string> } = {},
 ): Promise<HttpResult> {
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ...(opts.headers ?? {}) };
   if (opts.contentType) headers["Content-Type"] = opts.contentType;
   if (opts.accept) headers["Accept"] = opts.accept;
   const res = await fetch(url, {
