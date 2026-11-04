@@ -1,0 +1,49 @@
+{
+  "module": "ontara-fuseki-validated-update 0.5.0",
+  "moduleVersion": "0.5.0",
+  "jenaVersion": "6.2.0",
+  "jenaBuildVersion": "6.2.0",
+  "fusekiVersion": "6.2.0",
+  "store": "TDB2",
+  "unionDefaultGraph": true,
+  "validating": true,
+  "validationMode": "whole",
+  "engine": "jena-shacl GraphValidation.update (whole union graph)",
+  "validationProbe": {
+    "passed": true,
+    "microseconds": 6251,
+    "cases": [
+      {
+        "case": "violation, INSERT DATA",
+        "expected": "rejected",
+        "outcome": "rejected",
+        "validation": "whole"
+      },
+      {
+        "case": "violation, INSERT DATA then CLEAR",
+        "expected": "rejected",
+        "outcome": "rejected",
+        "validation": "whole"
+      },
+      {
+        "case": "conforming, INSERT DATA",
+        "expected": "committed",
+        "outcome": "committed",
+        "validation": "whole"
+      }
+    ]
+  },
+  "shapesGraph": "https://ontara.dev/graph/shapes",
+  "shapesTriples": 147,
+  "targetShapes": 9,
+  "inference": "none",
+  "rrb": {
+    "dhbId": "1161952e-a42a-4dc0-9437-7cd766cdceea",
+    "generatedAt": "2026-11-03T23:16:26.356820385Z"
+  },
+  "listener": {
+    "name": "stack-network",
+    "port": 3030,
+    "standardWriteEndpoints": true
+  }
+}

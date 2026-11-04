@@ -1,0 +1,70 @@
+{
+  "format": "ontara-whole-graph-check/1",
+  "runId": "9ca47722",
+  "trigger": "knowledge-graph-load",
+  "startedAt": "2026-11-03T19:45:29.233Z",
+  "durationMs": 359,
+  "dataset": "cafe-runtime",
+  "store": {
+    "module": "ontara-fuseki-validated-update 0.5.0",
+    "jenaVersion": "6.2.0",
+    "validationMode": "targeted"
+  },
+  "declaredBranches": [
+    {
+      "tenant": "cafe",
+      "dhbId": "67a56cda-72a8-4ea7-8189-fbcd5a5fe1d5",
+      "dbr": "https://ontara.dev/graph/dhb/cafe/67a56cda-72a8-4ea7-8189-fbcd5a5fe1d5/dbr",
+      "dsr": "https://ontara.dev/graph/dhb/cafe/67a56cda-72a8-4ea7-8189-fbcd5a5fe1d5/dsr"
+    }
+  ],
+  "triplesChecked": {
+    "namedGraphs": 24874,
+    "storedDefaultGraph": 0,
+    "graphs": 3,
+    "total": 24874
+  },
+  "shacl": {
+    "graph": "https://ontara.dev/graph/shapes",
+    "triples": 147,
+    "targetShapes": 9,
+    "conforms": true,
+    "results": 0,
+    "byShape": {},
+    "sample": [],
+    "ms": 5
+  },
+  "placement": [
+    {
+      "query": "P1-one-home-graph",
+      "rows": 0,
+      "ms": 232
+    },
+    {
+      "query": "P2-runtime-instances-in-runtime-graphs",
+      "rows": 0,
+      "ms": 10
+    },
+    {
+      "query": "P3-known-graphs",
+      "rows": 0,
+      "ms": 31
+    }
+  ],
+  "clean": true,
+  "fault": null,
+  "context": {
+    "knowledgeGraphLoad": {
+      "startedAt": "2026-11-03T19:45:27.526Z",
+      "finishedAt": "2026-11-03T19:45:29.197Z",
+      "files": 15,
+      "graphs": {
+        "metamodel": 0,
+        "domain": 23327,
+        "correspondence": 1400
+      },
+      "shapesTriples": 147
+    }
+  },
+  "reportFile": "results/fuseki-2026-11-03/scoping/20261103T194521Z-scoping/whole-graph-check/20261103T194529Z-knowledge-graph-load-9ca47722.json"
+}
