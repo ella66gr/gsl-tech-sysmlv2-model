@@ -1,0 +1,71 @@
+{
+  "format": "ontara-whole-graph-check/1",
+  "runId": "210186c7",
+  "trigger": "scoping-suite",
+  "startedAt": "2026-11-04T11:00:53.310Z",
+  "durationMs": 82,
+  "dataset": "cafe-runtime",
+  "store": {
+    "module": "ontara-fuseki-validated-update 0.6.0",
+    "jenaVersion": "6.2.0",
+    "validationMode": "targeted"
+  },
+  "declaredBranches": [
+    {
+      "tenant": "cafe",
+      "dhbId": "a9657cfe-607d-46df-bc14-a82b7eb538c7",
+      "dbr": "https://ontara.dev/graph/dhb/cafe/a9657cfe-607d-46df-bc14-a82b7eb538c7/dbr",
+      "dsr": "https://ontara.dev/graph/dhb/cafe/a9657cfe-607d-46df-bc14-a82b7eb538c7/dsr"
+    }
+  ],
+  "triplesChecked": {
+    "namedGraphs": 24883,
+    "storedDefaultGraph": 0,
+    "graphs": 3,
+    "total": 24883
+  },
+  "shacl": {
+    "graph": "https://ontara.dev/graph/shapes",
+    "triples": 147,
+    "targetShapes": 9,
+    "conforms": true,
+    "results": 0,
+    "byShape": {},
+    "sample": [],
+    "ms": 0
+  },
+  "placement": [
+    {
+      "query": "P1-one-home-graph",
+      "rows": 0,
+      "ms": 31
+    },
+    {
+      "query": "P2-runtime-instances-in-runtime-graphs",
+      "rows": 2,
+      "sample": [
+        {
+          "g": "https://ontara.dev/graph/kg/domain",
+          "x": "https://ontara.dev/data/cafe/order/00000000-0000-4000-8000-0000000000b4",
+          "class": "https://ontara.dev/ontology/tenant/cafe/Order",
+          "root": "https://ontara.dev/ontology/bmm/CanonicalRuntimeType"
+        },
+        {
+          "g": "https://ontara.dev/graph/kg/domain",
+          "x": "https://ontara.dev/data/cafe/order/00000000-0000-4000-8000-0000000000b4/line/1",
+          "class": "https://ontara.dev/ontology/tenant/cafe/OrderLine",
+          "root": "https://ontara.dev/ontology/bmm/CanonicalRuntimeType"
+        }
+      ],
+      "ms": 2
+    },
+    {
+      "query": "P3-known-graphs",
+      "rows": 0,
+      "ms": 16
+    }
+  ],
+  "clean": false,
+  "fault": null,
+  "reportFile": "results/fuseki-2026-11-04/scoping/20261104T110028Z-scoping/whole-graph-check/20261104T110053Z-scoping-suite-210186c7.json"
+}

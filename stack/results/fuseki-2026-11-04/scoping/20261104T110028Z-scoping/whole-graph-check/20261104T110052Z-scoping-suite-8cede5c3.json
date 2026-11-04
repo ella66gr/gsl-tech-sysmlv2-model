@@ -1,0 +1,67 @@
+{
+  "format": "ontara-whole-graph-check/1",
+  "runId": "8cede5c3",
+  "trigger": "scoping-suite",
+  "startedAt": "2026-11-04T11:00:52.868Z",
+  "durationMs": 123,
+  "dataset": "cafe-runtime",
+  "store": {
+    "module": "ontara-fuseki-validated-update 0.6.0",
+    "jenaVersion": "6.2.0",
+    "validationMode": "targeted"
+  },
+  "declaredBranches": [
+    {
+      "tenant": "cafe",
+      "dhbId": "a9657cfe-607d-46df-bc14-a82b7eb538c7",
+      "dbr": "https://ontara.dev/graph/dhb/cafe/a9657cfe-607d-46df-bc14-a82b7eb538c7/dbr",
+      "dsr": "https://ontara.dev/graph/dhb/cafe/a9657cfe-607d-46df-bc14-a82b7eb538c7/dsr"
+    }
+  ],
+  "triplesChecked": {
+    "namedGraphs": 24846,
+    "storedDefaultGraph": 0,
+    "graphs": 4,
+    "total": 24846
+  },
+  "shacl": {
+    "graph": "https://ontara.dev/graph/shapes",
+    "triples": 88,
+    "targetShapes": 7,
+    "conforms": false,
+    "results": 1,
+    "byShape": {
+      "urn:ontara:standin:shapes#OneSidedReadinessShape": 1
+    },
+    "sample": [
+      {
+        "focusNode": "https://ontara.dev/data/cafe/order/A",
+        "value": "https://ontara.dev/data/cafe/order/A",
+        "sourceShape": "urn:ontara:standin:shapes#OneSidedReadinessShape",
+        "component": "http://www.w3.org/ns/shacl#OrConstraintComponent",
+        "message": "BLIND-SPOT FIXTURE: an order is ready or collected only when every line is ready or collected (order side only)."
+      }
+    ],
+    "ms": 1
+  },
+  "placement": [
+    {
+      "query": "P1-one-home-graph",
+      "rows": 0,
+      "ms": 52
+    },
+    {
+      "query": "P2-runtime-instances-in-runtime-graphs",
+      "rows": 0,
+      "ms": 1
+    },
+    {
+      "query": "P3-known-graphs",
+      "rows": 0,
+      "ms": 19
+    }
+  ],
+  "clean": false,
+  "fault": null,
+  "reportFile": "results/fuseki-2026-11-04/scoping/20261104T110028Z-scoping/whole-graph-check/20261104T110052Z-scoping-suite-8cede5c3.json"
+}

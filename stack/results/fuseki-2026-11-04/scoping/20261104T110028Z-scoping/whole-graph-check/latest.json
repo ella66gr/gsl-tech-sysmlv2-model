@@ -1,0 +1,57 @@
+{
+  "format": "ontara-whole-graph-check/1",
+  "runId": "3e39ab94",
+  "trigger": "scoping-suite",
+  "startedAt": "2026-11-04T11:00:53.546Z",
+  "durationMs": 85,
+  "dataset": "cafe-runtime",
+  "store": {
+    "module": "ontara-fuseki-validated-update 0.6.0",
+    "jenaVersion": "6.2.0",
+    "validationMode": "targeted"
+  },
+  "declaredBranches": [
+    {
+      "tenant": "cafe",
+      "dhbId": "a9657cfe-607d-46df-bc14-a82b7eb538c7",
+      "dbr": "https://ontara.dev/graph/dhb/cafe/a9657cfe-607d-46df-bc14-a82b7eb538c7/dbr",
+      "dsr": "https://ontara.dev/graph/dhb/cafe/a9657cfe-607d-46df-bc14-a82b7eb538c7/dsr"
+    }
+  ],
+  "triplesChecked": {
+    "namedGraphs": 24874,
+    "storedDefaultGraph": 0,
+    "graphs": 3,
+    "total": 24874
+  },
+  "shacl": {
+    "graph": "https://ontara.dev/graph/shapes",
+    "triples": 147,
+    "targetShapes": 9,
+    "conforms": true,
+    "results": 0,
+    "byShape": {},
+    "sample": [],
+    "ms": 0
+  },
+  "placement": [
+    {
+      "query": "P1-one-home-graph",
+      "rows": 0,
+      "ms": 32
+    },
+    {
+      "query": "P2-runtime-instances-in-runtime-graphs",
+      "rows": 0,
+      "ms": 1
+    },
+    {
+      "query": "P3-known-graphs",
+      "rows": 0,
+      "ms": 12
+    }
+  ],
+  "clean": true,
+  "fault": null,
+  "reportFile": "results/fuseki-2026-11-04/scoping/20261104T110028Z-scoping/whole-graph-check/20261104T110053Z-scoping-suite-3e39ab94.json"
+}
