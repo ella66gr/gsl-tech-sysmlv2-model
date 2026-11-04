@@ -722,7 +722,7 @@ async function group7() {
   // The unvalidated /update endpoint stores it in the stored default graph.
   await must(db.update(body), "default-graph write via /update");
   const w3 = await where(STORE);
-  record({ group: 7, id: "7.1c", name: "The same write through Fuseki's unvalidated /update (stack network) lands in the same place", expected: "stored default graph only", observed: `stored default graph: ${w3.stored}; union: ${w3.union}; named: ${w3.named.length}`, pass: w3.stored && !w3.union && w3.named.length === 0 });
+  record({ group: 7, id: "7.1c", name: "The same write through Fuseki's unvalidated /update (stack network) is stored in Jena's stored default graph", expected: "stored default graph only", observed: `stored default graph: ${w3.stored}; union: ${w3.union}; named: ${w3.named.length}`, pass: w3.stored && !w3.union && w3.named.length === 0 });
   // The placement queries see it (B4's backstop for exactly this).
   const tokens = placementTokens([rrb]);
   const rows: Record<string, any[]> = {};

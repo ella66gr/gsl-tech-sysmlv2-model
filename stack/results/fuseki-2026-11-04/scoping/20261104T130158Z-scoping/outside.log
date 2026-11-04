@@ -1,0 +1,54 @@
+PASS  7.4.0  From outside the stack's network (http://host.docker.internal:7211): the published port answers reads
+        expected: status 200 from the published listener
+        observed: listener published
+PASS  7.4.1  From outside the stack's network, through the published port: POST /cafe-runtime/update (sparql-update)
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 404; store unchanged
+PASS  7.4.2  From outside the stack's network, through the published port: POST /cafe-runtime/update (form update=)
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 404; store unchanged
+PASS  7.4.3  From outside the stack's network, through the published port: POST /cafe-runtime (form update=)
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 400; store unchanged
+PASS  7.4.4  From outside the stack's network, through the published port: POST /cafe-runtime (sparql-update)
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 400; store unchanged
+PASS  7.4.5  From outside the stack's network, through the published port: PUT /cafe-runtime/data?graph=
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 405; store unchanged
+PASS  7.4.6  From outside the stack's network, through the published port: POST /cafe-runtime/data?graph=
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 405; store unchanged
+PASS  7.4.7  From outside the stack's network, through the published port: DELETE /cafe-runtime/data?graph=
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 405; store unchanged
+PASS  7.4.8  From outside the stack's network, through the published port: PUT /cafe-runtime/data?default
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 405; store unchanged
+PASS  7.4.9  From outside the stack's network, through the published port: POST /cafe-runtime/data?default
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 405; store unchanged
+PASS  7.4.10 From outside the stack's network, through the published port: PUT /cafe-runtime?graph=
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 405; store unchanged
+PASS  7.4.11 From outside the stack's network, through the published port: POST /cafe-runtime?graph=
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 405; store unchanged
+PASS  7.4.12 From outside the stack's network, through the published port: DELETE /cafe-runtime?graph=
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 405; store unchanged
+PASS  7.4.13 From outside the stack's network, through the published port: POST /cafe-runtime (n-quads)
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 405; store unchanged
+PASS  7.4.14 From outside the stack's network, through the published port: PUT /cafe-runtime (n-quads)
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 405; store unchanged
+PASS  7.4.15 From outside the stack's network, through the published port: PATCH /cafe-runtime (RDF Patch)
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 400; store unchanged
+PASS  7.4.16 From outside the stack's network, through the published port: POST /cafe-runtime/patch (RDF Patch)
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 404; store unchanged
+PASS  7.4.17 From outside the stack's network, through the published port: POST /cafe-runtime/validated-update
+        expected: refused (not 2xx); store unchanged (count, no marker, delete target kept)
+        observed: HTTP 405; store unchanged
