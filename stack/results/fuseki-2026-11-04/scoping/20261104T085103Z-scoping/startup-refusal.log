@@ -1,0 +1,1 @@
+[ontara-fuseki] REFUSING TO START: /cafe-runtime exists in /tmp/scoping-store-whole but has no Reality Reference Branch identifier (/tmp/scoping-store-whole/cafe-runtime.rrb.json). It predates the named-graph scheme (S0.5 Pass B3). Rebuild the store from empty (docker compose down -v), a new installation.

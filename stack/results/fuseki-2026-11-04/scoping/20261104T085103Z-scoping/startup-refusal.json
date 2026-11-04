@@ -1,0 +1,3 @@
+{
+  "cases": [ { "group": 6, "id": "6.12", "name": "A runtime dataset that exists with no Reality Reference Branch identifier (its rrb.json removed) is refused at start", "expected": "the store exits, logging REFUSING TO START", "observed": "container exited; [ontara-fuseki] REFUSING TO START: /cafe-runtime exists in /tmp/scoping-store-whole but has no Reality Reference Branch identifier (/tmp/scoping-store-whole/cafe-runtime.rrb.json). It predates the nam", "pass": true } ]
+}

@@ -1,0 +1,5 @@
+ Container ontara-cafe-regression-store-run-dfa191c1e76a Creating 
+ Container ontara-cafe-regression-store-run-dfa191c1e76a Created 
+Jena 6.2.0, database /fuseki/databases/run-20261104T085140Z-jena-6.2.0-whole-standing/cafe-runtime, zero-run threshold 32 bytes
+PHYSICAL Data-0001/nodes-data.obj: 1282806 bytes; zero runs >= 32: 0, 0 bytes in all
+LOGICAL read every quad: 45094 quads, no error

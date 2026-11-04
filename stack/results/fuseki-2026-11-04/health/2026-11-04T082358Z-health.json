@@ -1,0 +1,152 @@
+{
+  "status": "pass",
+  "run": "941169de",
+  "started": "2026-11-04T08:23:58.150Z",
+  "store": "Apache Jena Fuseki 6.2.0, ontara-fuseki-validated-update 0.5.0, targeted validation",
+  "dataset": "cafe-runtime",
+  "checks": [
+    {
+      "name": "store: knowledge-graph content",
+      "pass": true,
+      "ms": 39,
+      "detail": [
+        {
+          "probe": "BMM metamodel has its 39 classes (kg/domain; generated classes, each with a skos:definition)",
+          "result": true
+        },
+        {
+          "probe": "BMM class ServiceOffering sits under a BFO parent (kg/domain)",
+          "result": true
+        },
+        {
+          "probe": "Platform record module defines PlatformRecord (kg/domain)",
+          "result": true
+        },
+        {
+          "probe": "BFO 2020 entity is present (kg/domain)",
+          "result": true
+        },
+        {
+          "probe": "The Cafe's tenant types are present, grounded under a canonical runtime type (kg/domain)",
+          "result": true
+        },
+        {
+          "probe": "The Cafe's three axis declarations name their generated predicates, with 12 permitted values (kg/domain)",
+          "result": true
+        },
+        {
+          "probe": "The Cafe's reasoning module keeps the precondition's HardConstraint typing (kg/domain)",
+          "result": true
+        },
+        {
+          "probe": "The correspondence records hold the Cafe's tenant-type trace (kg/correspondence)",
+          "result": true
+        },
+        {
+          "probe": "kg/metamodel is empty at Stage 0",
+          "result": true
+        }
+      ]
+    },
+    {
+      "name": "store: module validating, targeted mode, Jena 6.2.0, shapes loaded",
+      "pass": true,
+      "ms": 3,
+      "detail": {
+        "dataset": "cafe-runtime",
+        "module": "ontara-fuseki-validated-update 0.5.0",
+        "validating": true,
+        "validationMode": "targeted",
+        "jenaVersion": "6.2.0",
+        "jenaBuildVersion": "6.2.0",
+        "shapesGraph": "https://ontara.dev/graph/shapes",
+        "shapesTriples": 147,
+        "unionDefaultGraph": true,
+        "inference": "none",
+        "expected": {
+          "validationMode": "targeted",
+          "jenaVersion": "6.2.0"
+        }
+      }
+    },
+    {
+      "name": "gate: known-good write commits, into the Reality Reference Branch's dbr graph",
+      "pass": true,
+      "ms": 63,
+      "detail": {
+        "http": 200,
+        "outcome": "committed",
+        "validation": "targeted; changes=7 touched=8 focus=6",
+        "graphsHeld": [
+          "https://ontara.dev/graph/dhb/cafe/1a59ad7f-c4fa-44d9-89dd-5b2b3d51ac32/dbr"
+        ],
+        "expectedGraph": "https://ontara.dev/graph/dhb/cafe/1a59ad7f-c4fa-44d9-89dd-5b2b3d51ac32/dbr",
+        "timings": {
+          "begin": 0,
+          "add": 0.5349999964237213,
+          "updates": 0,
+          "commit": 54.49337499588728,
+          "rollback": 0,
+          "total": 57.03737500309944
+        }
+      }
+    },
+    {
+      "name": "gate: known-bad write is a SHACL rejection naming the shape",
+      "pass": true,
+      "ms": 18,
+      "detail": {
+        "http": 422,
+        "outcome": "rejected",
+        "shapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape-method"
+        ],
+        "nodeShapes": [
+          "urn:ontara:standin:shapes#RecordModeMethodShape"
+        ],
+        "components": [
+          "http://www.w3.org/ns/shacl#MinCountConstraintComponent"
+        ],
+        "messages": [
+          "A record has exactly one provenance method: DirectMethod, InferredMethod or PredictedMethod."
+        ],
+        "rolledBack": true,
+        "transaction": "aborted",
+        "validation": "targeted; changes=6 touched=7 focus=6"
+      }
+    },
+    {
+      "name": "gate: write after the rejection commits, and the rejected record is not stored",
+      "pass": true,
+      "ms": 26,
+      "detail": {
+        "http": 200,
+        "outcome": "committed",
+        "validation": "targeted; changes=7 touched=8 focus=6",
+        "rejectedRecordStored": false,
+        "timings": {
+          "begin": 0,
+          "add": 0.38554199784994125,
+          "updates": 0,
+          "commit": 20.919208005070686,
+          "rollback": 0,
+          "total": 22.214042000472546
+        }
+      }
+    },
+    {
+      "name": "temporal: no-op workflow starts and completes",
+      "pass": true,
+      "ms": 98,
+      "detail": {
+        "workflowId": "stack-health-noop-941169de",
+        "result": "noop:941169de"
+      }
+    }
+  ],
+  "cleanup": {
+    "http": 200,
+    "outcome": "committed",
+    "validation": "targeted; changes=14 touched=10 focus=0"
+  }
+}

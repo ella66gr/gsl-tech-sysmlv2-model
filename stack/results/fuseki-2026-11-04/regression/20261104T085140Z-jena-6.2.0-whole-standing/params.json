@@ -1,0 +1,16 @@
+{
+  "runId": "20261104T085140Z-jena-6.2.0-whole-standing",
+  "kind": "regression check",
+  "storeImage": "ontara-cafe-stack/store:local",
+  "storeImageId": "sha256:788baa084cf7965eb697c419f800ede3f62726de4c37d402388c5e3bb01ddb55",
+  "imageJenaVersion": "6.2.0",
+  "mode": "whole",
+  "preloadOrders": 300,
+  "coldCachesBeforeFirstWrite": true,
+  "bad": 1,
+  "good": 60,
+  "freshStoreDirectory": "/fuseki/databases/run-20261104T085140Z-jena-6.2.0-whole-standing",
+  "graph": "the fresh store's Reality Reference Branch (dbr), placed by the gate's Write Stamping Stage",
+  "host": "Darwin arm64",
+  "startedUtc": "2026-11-04T08:51:40Z"
+}

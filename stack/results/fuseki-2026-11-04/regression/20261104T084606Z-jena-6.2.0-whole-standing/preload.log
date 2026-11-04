@@ -1,0 +1,7 @@
+[load] run 574f1c5e: 300 orders x 1 writer(s), readers=none, shapes=fixtures/shapes/standin-shapes-core-only.ttl + fixtures/shapes/spike-two-sided-readiness.ttl + tenant-generated/cafe/axis-shapes.ttl, reject-every=off, store: Apache Jena Fuseki 6.2.0 (Jena 6.2.0, image built for 6.2.0), ontara-fuseki-validated-update 0.6.0, TDB2, validation mode whole, graph <https://ontara.dev/graph/dhb/cafe/46c467e5-2f2c-4a3b-9a69-01ab5f4cf5ae/dbr>, out fuseki-2026-11-04/regression/20261104T084606Z-jena-6.2.0-whole-standing/preload
+[load] w1 100/300  last=53 ms  p95 so far=63.8 ms
+[load] w1 200/300  last=71 ms  p95 so far=72.1 ms
+[load] w1 300/300  last=94 ms  p95 so far=91 ms
+[load] done in 20.2 s: write latency p50=64.8 p95=91 max=131.3 ms; failures=0; faults=0; correctness={"orders":300,"ordersReady":300,"derivedRecordsLabelled":300}
+[load] store: Apache Jena Fuseki 6.2.0 (Jena 6.2.0, image built for 6.2.0), ontara-fuseki-validated-update 0.6.0, TDB2, validation mode whole; writes by validation mode: {"whole":300}; not whole: 0
+[load] results in results/fuseki-2026-11-04/regression/20261104T084606Z-jena-6.2.0-whole-standing/preload/ (writes.csv, readers.csv, summary.json)

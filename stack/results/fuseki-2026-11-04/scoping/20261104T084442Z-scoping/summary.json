@@ -1,0 +1,1500 @@
+{
+  "suite": "stack scoping test suite (S0.5 Pass B2)",
+  "pass": true,
+  "cases": [
+    {
+      "group": 1,
+      "id": "1.1",
+      "name": "INSERT DATA, conforming (the 54-triple order, no rule)",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted, focus > 0",
+      "pass": true,
+      "validation": "targeted; changes=54 touched=26 focus=22"
+    },
+    {
+      "group": 1,
+      "id": "1.2",
+      "name": "INSERT DATA, violating (an sp:T with no sp:p)",
+      "expected": "rejected, targeted, shapes ProbeShape-p, on n1",
+      "observed": "rejected, targeted, shapes ProbeShape-p, on n1",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=1"
+    },
+    {
+      "group": 1,
+      "id": "1.3",
+      "name": "INSERT DATA, violating (a second preparation value, from another axis)",
+      "expected": "rejected, targeted, shapes OrderLinePreparationAxisShape-value",
+      "observed": "rejected, targeted, shapes OrderLinePreparationAxisShape-value, on 1",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=3"
+    },
+    {
+      "group": 1,
+      "id": "1.4",
+      "name": "DELETE DATA, conforming (a triple no shape needs)",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=5"
+    },
+    {
+      "group": 1,
+      "id": "1.5",
+      "name": "DELETE DATA, violating (the order's only payment value)",
+      "expected": "rejected, targeted, shapes OrderPaymentAxisShape-value",
+      "observed": "rejected, targeted, shapes OrderPaymentAxisShape-value, on order-scoping-g1",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=4"
+    },
+    {
+      "group": 1,
+      "id": "1.6",
+      "name": "DELETE/INSERT WHERE, conforming (the readiness rule, inPreparation to ready, with the labelling step: both DELETE/INSERT WHERE forms)",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted, order ready after: true",
+      "pass": true,
+      "validation": "targeted; changes=38 touched=15 focus=10"
+    },
+    {
+      "group": 1,
+      "id": "1.7",
+      "name": "DELETE/INSERT WHERE, violating (a line leaves ready on a ready order)",
+      "expected": "rejected, targeted, shapes LineReadinessTwoSidedShape",
+      "observed": "rejected, targeted, shapes LineReadinessTwoSidedShape, on 1",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=3"
+    },
+    {
+      "group": 1,
+      "id": "1.8",
+      "name": "INSERT ... WHERE (the DELETE/INSERT form with no DELETE), conforming",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=5"
+    },
+    {
+      "group": 1,
+      "id": "1.12",
+      "name": "DELETE/INSERT WHERE in the WITH <graph> form, violating (removes the order's payment value)",
+      "expected": "rejected, targeted, shapes OrderPaymentAxisShape-value",
+      "observed": "rejected, targeted, shapes OrderPaymentAxisShape-value, on order-scoping-g1",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=4"
+    },
+    {
+      "group": 1,
+      "id": "1.13",
+      "name": "DELETE/INSERT WHERE over a graph variable (GRAPH ?g), violating (removes a line's preparation value)",
+      "expected": "rejected, targeted, shapes OrderLinePreparationAxisShape-value",
+      "observed": "rejected, targeted, shapes OrderLinePreparationAxisShape-value, on 2",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=2"
+    },
+    {
+      "group": 1,
+      "id": "1.14",
+      "name": "INSERT DATA of a blank-node line with no preparation value: the blank node is touched and validated",
+      "expected": "rejected, targeted, shapes OrderLinePreparationAxisShape-value",
+      "observed": "rejected, targeted, shapes OrderLinePreparationAxisShape-value, on _:B4e759b6dX2D7433X2D44b6X2D9823X2D7610808f059d",
+      "pass": true,
+      "validation": "targeted; changes=3 touched=3 focus=7"
+    },
+    {
+      "group": 1,
+      "id": "1.9",
+      "name": "Targeted means targeted: with an untouched violation (sp:v, seeded unvalidated) in the graph, a conforming INSERT DATA commits",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=5"
+    },
+    {
+      "group": 1,
+      "id": "1.10",
+      "name": "DELETE WHERE (the shorthand form) is not one of the three targeted forms: it falls back to whole-graph validation (no policy; sp:v present)",
+      "expected": "rejected, whole, on v",
+      "observed": "rejected, whole, shapes ProbeShape-p, on v",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 1,
+      "id": "1.11",
+      "name": "DELETE WHERE with the runtime write policy is refused as a whole-graph operation",
+      "expected": "refused, rule operation",
+      "observed": "refused, not validated, rule operation",
+      "pass": true,
+      "validation": "not run: refused by the write policy"
+    },
+    {
+      "group": 2,
+      "id": "2.1a",
+      "name": "CLEAR, conforming: falls back to whole-graph validation and commits",
+      "expected": "committed, whole",
+      "observed": "committed, whole, header names the fallback",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.1b",
+      "name": "CLEAR with a violation it does not touch (sp:v): the whole graph is validated, so it is rejected",
+      "expected": "rejected, whole, shapes ProbeShape-p, on v",
+      "observed": "rejected, whole, shapes ProbeShape-p, on v, store unchanged: true",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.1c",
+      "name": "CLEAR that itself makes a violation (an sp:T loses or lacks its sp:p): rejected by the whole-graph fallback",
+      "expected": "rejected, whole, shapes ProbeShape-p",
+      "observed": "rejected, whole, shapes ProbeShape-p, on n, store unchanged: true",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.2a",
+      "name": "DROP, conforming: falls back to whole-graph validation and commits",
+      "expected": "committed, whole",
+      "observed": "committed, whole, header names the fallback",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.2b",
+      "name": "DROP with a violation it does not touch (sp:v): the whole graph is validated, so it is rejected",
+      "expected": "rejected, whole, shapes ProbeShape-p, on v",
+      "observed": "rejected, whole, shapes ProbeShape-p, on v, store unchanged: true",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.2c",
+      "name": "DROP that itself makes a violation (an sp:T loses or lacks its sp:p): rejected by the whole-graph fallback",
+      "expected": "rejected, whole, shapes ProbeShape-p",
+      "observed": "rejected, whole, shapes ProbeShape-p, on n, store unchanged: true",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.3a",
+      "name": "LOAD, conforming: falls back to whole-graph validation and commits",
+      "expected": "committed, whole",
+      "observed": "committed, whole, header names the fallback",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.3b",
+      "name": "LOAD with a violation it does not touch (sp:v): the whole graph is validated, so it is rejected",
+      "expected": "rejected, whole, shapes ProbeShape-p, on v",
+      "observed": "rejected, whole, shapes ProbeShape-p, on v, store unchanged: true",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.3c",
+      "name": "LOAD that itself makes a violation (an sp:T loses or lacks its sp:p): rejected by the whole-graph fallback",
+      "expected": "rejected, whole, shapes ProbeShape-p",
+      "observed": "rejected, whole, shapes ProbeShape-p, on m, store unchanged: true",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.4a",
+      "name": "ADD, conforming: falls back to whole-graph validation and commits",
+      "expected": "committed, whole",
+      "observed": "committed, whole, header names the fallback",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.4b",
+      "name": "ADD with a violation it does not touch (sp:v): the whole graph is validated, so it is rejected",
+      "expected": "rejected, whole, shapes ProbeShape-p, on v",
+      "observed": "rejected, whole, shapes ProbeShape-p, on v, store unchanged: true",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.4c",
+      "name": "ADD that itself makes a violation",
+      "expected": "not applicable",
+      "observed": "not applicable: ADD copies triples between named graphs, so the union graph that is validated does not change: it cannot introduce a violation",
+      "pass": true
+    },
+    {
+      "group": 2,
+      "id": "2.5a",
+      "name": "MOVE, conforming: falls back to whole-graph validation and commits",
+      "expected": "committed, whole",
+      "observed": "committed, whole, header names the fallback",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.5b",
+      "name": "MOVE with a violation it does not touch (sp:v): the whole graph is validated, so it is rejected",
+      "expected": "rejected, whole, shapes ProbeShape-p, on v",
+      "observed": "rejected, whole, shapes ProbeShape-p, on v, store unchanged: true",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.5c",
+      "name": "MOVE that itself makes a violation (an sp:T loses or lacks its sp:p): rejected by the whole-graph fallback",
+      "expected": "rejected, whole, shapes ProbeShape-p",
+      "observed": "rejected, whole, shapes ProbeShape-p, on n, store unchanged: true",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.6a",
+      "name": "COPY, conforming: falls back to whole-graph validation and commits",
+      "expected": "committed, whole",
+      "observed": "committed, whole, header names the fallback",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.6b",
+      "name": "COPY with a violation it does not touch (sp:v): the whole graph is validated, so it is rejected",
+      "expected": "rejected, whole, shapes ProbeShape-p, on v",
+      "observed": "rejected, whole, shapes ProbeShape-p, on v, store unchanged: true",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 2,
+      "id": "2.6c",
+      "name": "COPY that itself makes a violation (an sp:T loses or lacks its sp:p): rejected by the whole-graph fallback",
+      "expected": "rejected, whole, shapes ProbeShape-p",
+      "observed": "rejected, whole, shapes ProbeShape-p, on n, store unchanged: true",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 3,
+      "id": "3.1",
+      "name": "INSERT DATA ; CLEAR (conforming): the whole request falls back to whole-graph validation",
+      "expected": "committed, whole",
+      "observed": "committed, whole",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 3,
+      "id": "3.2",
+      "name": "INSERT DATA ; CLEAR with an untouched violation (sp:v): the targeted part does not narrow the validation",
+      "expected": "rejected, whole, on v",
+      "observed": "rejected, whole, shapes ProbeShape-p, on v",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 3,
+      "id": "3.3",
+      "name": "INSERT DATA (violating) ; CLEAR: the inserted violation is caught in whole mode",
+      "expected": "rejected, whole, shapes ProbeShape-p, on m",
+      "observed": "rejected, whole, shapes ProbeShape-p, on m",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 3,
+      "id": "3.4",
+      "name": "INSERT DATA ; DELETE/INSERT WHERE (two targeted forms), untouched sp:v present: stays targeted and commits",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=4 touched=6 focus=2"
+    },
+    {
+      "group": 3,
+      "id": "3.5",
+      "name": "INSERT DATA ; DELETE/INSERT WHERE that removes sp:n's only sp:p: caught in targeted mode",
+      "expected": "rejected, targeted, shapes ProbeShape-p, on n",
+      "observed": "rejected, targeted, shapes ProbeShape-p, on n",
+      "pass": true,
+      "validation": "targeted; changes=4 touched=6 focus=2"
+    },
+    {
+      "group": 3,
+      "id": "3.6",
+      "name": "INSERT DATA ; CLEAR with the runtime write policy: refused (a runtime write may not act on whole graphs)",
+      "expected": "refused, rule operation",
+      "observed": "refused, not validated, rule operation",
+      "pass": true,
+      "validation": "not run: refused by the write policy"
+    },
+    {
+      "group": 4,
+      "id": "4.0",
+      "name": "The base data and the knowledge graph conform to every form's shape (whole-graph)",
+      "expected": "committed, whole",
+      "observed": "committed, whole",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.F1a",
+      "name": "F1 closed value set: a move to a member value (DELETE/INSERT WHERE) commits",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=7"
+    },
+    {
+      "group": 4,
+      "id": "4.F1aw",
+      "name": "4.F1a, the same data validated whole",
+      "expected": "committed, whole",
+      "observed": "committed, whole",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.F1b",
+      "name": "F1: an order created without its payment axis",
+      "expected": "rejected, targeted, shapes OrderPaymentAxisShape-value, on B",
+      "observed": "rejected, targeted, shapes LineInversePairShape-order, OrderInversePairShape-lines, OrderPaymentAxisShape-value, on A-1, B",
+      "pass": true,
+      "validation": "targeted; changes=3 touched=4 focus=14"
+    },
+    {
+      "group": 4,
+      "id": "4.F1c",
+      "name": "F1: a second preparation value",
+      "expected": "rejected, targeted, shapes OrderLinePreparationAxisShape-value, on A-1",
+      "observed": "rejected, targeted, shapes OrderLinePreparationAxisShape-value, on A-1",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=7"
+    },
+    {
+      "group": 4,
+      "id": "4.F1d",
+      "name": "F1: another axis's value on a line",
+      "expected": "rejected, targeted, shapes OrderLinePreparationAxisShape-value, on A-1",
+      "observed": "rejected, targeted, shapes OrderLinePreparationAxisShape-value, on A-1",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=7"
+    },
+    {
+      "group": 4,
+      "id": "4.F1e",
+      "name": "F1: a literal instead of the value IRI",
+      "expected": "rejected, targeted, shapes OrderLinePreparationAxisShape-value, on A-1",
+      "observed": "rejected, targeted, shapes OrderLinePreparationAxisShape-value, on A-1",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=7"
+    },
+    {
+      "group": 4,
+      "id": "4.F1f",
+      "name": "F1: the value deleted (DELETE DATA only)",
+      "expected": "rejected, targeted, shapes OrderPaymentAxisShape-value, on A",
+      "observed": "rejected, targeted, shapes OrderPaymentAxisShape-value, on A",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=7"
+    },
+    {
+      "group": 4,
+      "id": "4.F2a",
+      "name": "F2 subject typing: an axis triple on a menu item",
+      "expected": "rejected, targeted, shapes OrderLinePreparationAxisSubjectShape, on Croissant",
+      "observed": "rejected, targeted, shapes OrderLinePreparationAxisSubjectShape, on Croissant",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=2"
+    },
+    {
+      "group": 4,
+      "id": "4.F2b",
+      "name": "F2: a line's type deleted, its axis triple left",
+      "expected": "rejected, targeted, shapes OrderLinePreparationAxisSubjectShape, on A-2",
+      "observed": "rejected, targeted, shapes OrderLinePreparationAxisSubjectShape, on A-2",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=1"
+    },
+    {
+      "group": 4,
+      "id": "4.F3a",
+      "name": "F3 two-sided readiness: the order set ready while a line is in preparation (order side)",
+      "expected": "rejected, targeted, shapes OrderReadinessTwoSidedShape, on A",
+      "observed": "rejected, targeted, shapes OrderReadinessTwoSidedShape, on A",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=8"
+    },
+    {
+      "group": 4,
+      "id": "4.F3b",
+      "name": "F3: per-line collection (one line collected, one ready, the order ready) commits",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=4 touched=6 focus=15"
+    },
+    {
+      "group": 4,
+      "id": "4.F3bw",
+      "name": "4.F3b, the same data validated whole",
+      "expected": "committed, whole",
+      "observed": "committed, whole",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.F3c",
+      "name": "F3: a line-only regression on a ready order is caught by the line side",
+      "expected": "rejected, targeted, shapes LineReadinessTwoSidedShape, on A-1",
+      "observed": "rejected, targeted, shapes LineReadinessTwoSidedShape, on A-1",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=7"
+    },
+    {
+      "group": 4,
+      "id": "4.F4",
+      "name": "F4 bounded count: nine more lines (eleven)",
+      "expected": "rejected, targeted, shapes OrderLineCountShape-lines, on A",
+      "observed": "rejected, targeted, shapes OrderLineCountShape-lines, on A",
+      "pass": true,
+      "validation": "targeted; changes=54 touched=14 focus=72"
+    },
+    {
+      "group": 4,
+      "id": "4.F5a",
+      "name": "F5 inverse-pair equality (sh:inversePath + sh:equals): a line claims an order that does not list it",
+      "expected": "rejected, targeted, shapes LineInversePairShape-order, OrderInversePairShape-lines, on C-1, A",
+      "observed": "rejected, targeted, shapes LineInversePairShape-order, OrderInversePairShape-lines, on A, C-1",
+      "pass": true,
+      "validation": "targeted; changes=5 touched=6 focus=16"
+    },
+    {
+      "group": 4,
+      "id": "4.F5b",
+      "name": "F5: the order drops hasLine to a line that still names it",
+      "expected": "rejected, targeted, shapes LineInversePairShape-order, OrderInversePairShape-lines, on A-2, A",
+      "observed": "rejected, targeted, shapes LineInversePairShape-order, OrderInversePairShape-lines, on A, A-2",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=15"
+    },
+    {
+      "group": 4,
+      "id": "4.F5c",
+      "name": "F5: a new line written with both links commits",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=6 touched=6 focus=16"
+    },
+    {
+      "group": 4,
+      "id": "4.F5cw",
+      "name": "4.F5c, the same data validated whole",
+      "expected": "committed, whole",
+      "observed": "committed, whole",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.F6",
+      "name": "F6 uniqueness through a slot: a second order takes display slot 047",
+      "expected": "rejected, targeted, shapes DisplayNumberSlotShape-orders, on slot-047",
+      "observed": "rejected, targeted, shapes DisplayNumberSlotShape-orders, on slot-047",
+      "pass": true,
+      "validation": "targeted; changes=10 touched=10 focus=17"
+    },
+    {
+      "group": 4,
+      "id": "4.F7a",
+      "name": "F7 reference typing: a line names an untyped item",
+      "expected": "rejected, targeted, shapes LineMenuItemShape-item, ReferencedMenuItemShape, on A-2, Mystery",
+      "observed": "rejected, targeted, shapes LineMenuItemShape-item, ReferencedMenuItemShape, on A-2, Mystery",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=8"
+    },
+    {
+      "group": 4,
+      "id": "4.F7b",
+      "name": "F7: a named item loses its type (the object-side twin catches it)",
+      "expected": "rejected, targeted, shapes ReferencedMenuItemShape, on Croissant",
+      "observed": "rejected, targeted, shapes ReferencedMenuItemShape, on Croissant",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=1"
+    },
+    {
+      "group": 4,
+      "id": "4.F8a",
+      "name": "F8 literal constraints: quantity 0",
+      "expected": "rejected, targeted, shapes LineQuantityShape-quantity, on A-2",
+      "observed": "rejected, targeted, shapes LineQuantityShape-quantity, on A-2",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=7"
+    },
+    {
+      "group": 4,
+      "id": "4.F8b",
+      "name": "F8: quantity as a string",
+      "expected": "rejected, targeted, shapes LineQuantityShape-quantity, on A-2",
+      "observed": "rejected, targeted, shapes LineQuantityShape-quantity, on A-2",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=7"
+    },
+    {
+      "group": 4,
+      "id": "4.F9a",
+      "name": "F9 conditional exclusion (one-sided by intent): a line written with a vegan item and dairy milk",
+      "expected": "rejected, targeted, shapes VeganNoDairyShape, on A-1",
+      "observed": "rejected, targeted, shapes VeganNoDairyShape, on A-1",
+      "pass": true,
+      "validation": "targeted; changes=4 touched=5 focus=8"
+    },
+    {
+      "group": 4,
+      "id": "4.F9b",
+      "name": "F9: the catalogue write that makes an item vegan after a dairy line exists is missed by targeted validation and found by the whole-graph check",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=1"
+    },
+    {
+      "group": 4,
+      "id": "4.F9bw",
+      "name": "4.F9b, the same data validated whole",
+      "expected": "rejected, whole, shapes VeganNoDairyShape",
+      "observed": "rejected, whole, shapes VeganNoDairyShape, on A-1",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.F10",
+      "name": "F10 SHACL-SPARQL on the resource its own write can falsify: a Direct record derived from an Inferred one",
+      "expected": "rejected, targeted, shapes WeakestMethodShape, on r3",
+      "observed": "rejected, targeted, shapes WeakestMethodShape, on r3",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=4"
+    },
+    {
+      "group": 4,
+      "id": "4.F10b",
+      "name": "F10: an Inferred record derived from an Inferred one commits",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=4"
+    },
+    {
+      "group": 4,
+      "id": "4.F10bw",
+      "name": "4.F10b, the same data validated whole",
+      "expected": "committed, whole",
+      "observed": "committed, whole",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.E1a",
+      "name": "E1 aggregate: a new order of the day, the summary not rewritten: missed by targeted validation",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=10 touched=10 focus=16"
+    },
+    {
+      "group": 4,
+      "id": "4.E1aw",
+      "name": "4.E1a, the same data validated whole: the stale count is found",
+      "expected": "rejected, whole, shapes DailySummaryCountShape, on sum-1103",
+      "observed": "rejected, whole, shapes DailySummaryCountShape, on sum-1103",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.E1b",
+      "name": "E1 following the rule (the summary rewritten in the same request), wrongly: caught",
+      "expected": "rejected, targeted, shapes DailySummaryCountShape, on sum-1103",
+      "observed": "rejected, targeted, shapes DailySummaryCountShape, on sum-1103",
+      "pass": true,
+      "validation": "targeted; changes=12 touched=12 focus=17"
+    },
+    {
+      "group": 4,
+      "id": "4.E1c",
+      "name": "E1 following the rule, rightly: commits",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=12 touched=12 focus=17"
+    },
+    {
+      "group": 4,
+      "id": "4.E1cw",
+      "name": "4.E1c, the same data validated whole",
+      "expected": "committed, whole",
+      "observed": "committed, whole",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.E1s",
+      "name": "E1 written with a SHACL-SPARQL sub-select using $this (Cyril's finding 6): does Jena accept and enforce it?",
+      "expected": "either accepted and enforced (a wrong count rejected, a right count committed) or refused cleanly when the shapes are read",
+      "observed": "shapes parse: yes (targetShapes 1); wrong count: rejected (DailySummaryCountSubselectShape); right count: committed",
+      "pass": true,
+      "validation": "targeted; changes=12 touched=12 focus=1"
+    },
+    {
+      "group": 4,
+      "id": "4.E2",
+      "name": "E2 a knowledge-graph change (Drink no longer a MenuItem; no policy, as a knowledge-graph load stands in): missed by targeted validation",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=0"
+    },
+    {
+      "group": 4,
+      "id": "4.E2w",
+      "name": "4.E2, the same data validated whole: every line naming a drink is found",
+      "expected": "rejected, whole, shapes LineMenuItemShape-item, ReferencedMenuItemShape",
+      "observed": "rejected, whole, shapes LineMenuItemShape-item, ReferencedMenuItemShape, on A-1, FlatWhite",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.E3a",
+      "name": "E3 time-only (NOW()): an order with a collect-by time 4 s ahead commits (true when written)",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=10 touched=10 focus=16"
+    },
+    {
+      "group": 4,
+      "id": "4.E3b",
+      "name": "E3: validated whole at once, it conforms",
+      "expected": "committed, whole",
+      "observed": "committed, whole",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.E3c",
+      "name": "E3: validated whole 5 s later, with no write in between, it is found",
+      "expected": "rejected, whole, shapes CollectByShape, on T",
+      "observed": "rejected, whole, shapes CollectByShape, on T",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.E4",
+      "name": "E4 unbounded path (sh:oneOrMorePath): quarantining an ancestor is missed by targeted validation",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=0"
+    },
+    {
+      "group": 4,
+      "id": "4.E4w",
+      "name": "4.E4, the same data validated whole: the descendant is found",
+      "expected": "rejected, whole, shapes NoQuarantinedAncestryShape-ancestry, on r2",
+      "observed": "rejected, whole, shapes NoQuarantinedAncestryShape-ancestry, on r2",
+      "pass": true,
+      "validation": "whole (targeted mode: request has an operation other than INSERT DATA, DELETE DATA or DELETE/INSERT)"
+    },
+    {
+      "group": 4,
+      "id": "4.E4b",
+      "name": "E4: a new record whose own ancestry is quarantined, in one request: caught (the new record is touched)",
+      "expected": "rejected, targeted, shapes NoQuarantinedAncestryShape-ancestry, on r5",
+      "observed": "rejected, targeted, shapes NoQuarantinedAncestryShape-ancestry, on r5",
+      "pass": true,
+      "validation": "targeted; changes=3 touched=4 focus=4"
+    },
+    {
+      "group": 5,
+      "id": "5.0",
+      "name": "The whole-graph check ran at this store's knowledge-graph load (the bootstrap's run), after the load, over what it loaded",
+      "expected": "one knowledge-graph-load report; started after the load finished; its load counts equal kg/domain and kg/correspondence; clean",
+      "observed": "1 report(s): 20261104T084450Z-knowledge-graph-load-f616c96e.json; load finished 2026-11-04T08:44:50.187Z, check started 2026-11-04T08:44:50.223Z; kg/domain 23327 (store 23327), kg/correspondence 1400 (store 1400); triples checked 24874; clean",
+      "pass": true
+    },
+    {
+      "group": 5,
+      "id": "5.1",
+      "name": "Set-up: the order ready, one line ready and one collected (one-sided readiness shape loaded, no line-side twin)",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=4 touched=6 focus=7"
+    },
+    {
+      "group": 5,
+      "id": "5.2",
+      "name": "Set-up, through the whole-graph check: clean",
+      "expected": "clean report; P1 0 rows, P2 0 rows, P3 0 rows",
+      "observed": "clean; SHACL conforms; P1 0, P2 0, P3 0; 24846 triples, 119 ms; results/fuseki-2026-11-04/scoping/20261104T084442Z-scoping/whole-graph-check/20261104T084507Z-scoping-suite-352d4a4c.json",
+      "pass": true,
+      "validation": null
+    },
+    {
+      "group": 5,
+      "id": "5.3",
+      "name": "The line-only regression on the ready order is MISSED by targeted validation: it commits (the order is not touched, so the order-side shape is not run)",
+      "expected": "committed, targeted",
+      "observed": "committed, targeted",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=2"
+    },
+    {
+      "group": 5,
+      "id": "5.4",
+      "name": "The whole-graph check finds it: the order breaks the one-sided readiness shape",
+      "expected": "findings in the report; SHACL OneSidedReadinessShape; on A; P1 0 rows, P2 0 rows, P3 0 rows",
+      "observed": "findings; SHACL 1 result(s) OneSidedReadinessShape on A; P1 0, P2 0, P3 0; 24846 triples, 55 ms; results/fuseki-2026-11-04/scoping/20261104T084442Z-scoping/whole-graph-check/20261104T084507Z-scoping-suite-89361b51.json",
+      "pass": true,
+      "validation": null
+    },
+    {
+      "group": 5,
+      "id": "5.5",
+      "name": "Contrast: with the two-sided shapes (the rule followed), the same write is rejected by the line side",
+      "expected": "rejected, targeted, shapes LineReadinessTwoSidedShape, on A-1",
+      "observed": "rejected, targeted, shapes LineReadinessTwoSidedShape, on A-1",
+      "pass": true,
+      "validation": "targeted; changes=2 touched=3 focus=3"
+    },
+    {
+      "group": 5,
+      "id": "5.6",
+      "name": "P1 seeded breach (an order's triple in the RRB's dsr as well as its dbr) is found by the check",
+      "expected": "findings in the report; P1 >= 1 row(s), P2 0 rows, P3 0 rows",
+      "observed": "findings; SHACL conforms; P1 1, P2 0, P3 0; 24884 triples, 59 ms; results/fuseki-2026-11-04/scoping/20261104T084442Z-scoping/whole-graph-check/20261104T084507Z-scoping-suite-ca8e4af1.json",
+      "pass": true,
+      "validation": null
+    },
+    {
+      "group": 5,
+      "id": "5.7",
+      "name": "P2 seeded breach (an order and its line in kg/domain) is found by the check",
+      "expected": "findings in the report; P1 0 rows, P2 >= 2 row(s), P3 0 rows",
+      "observed": "findings; SHACL conforms; P1 0, P2 2, P3 0; 24883 triples, 83 ms; results/fuseki-2026-11-04/scoping/20261104T084442Z-scoping/whole-graph-check/20261104T084508Z-scoping-suite-08a48b23.json",
+      "pass": true,
+      "validation": null
+    },
+    {
+      "group": 5,
+      "id": "5.8",
+      "name": "P3 seeded breach (an order in an undeclared DHB's dbr graph) is found by the check",
+      "expected": "findings in the report; P1 0 rows, P2 0 rows, P3 >= 1 row(s)",
+      "observed": "findings; SHACL conforms; P1 0, P2 0, P3 1; 24883 triples, 106 ms; results/fuseki-2026-11-04/scoping/20261104T084442Z-scoping/whole-graph-check/20261104T084508Z-scoping-suite-23dae3b1.json",
+      "pass": true,
+      "validation": null
+    },
+    {
+      "group": 5,
+      "id": "5.9",
+      "name": "Every seed removed by its own subjects: the check gives a clean report",
+      "expected": "clean report; P1 0 rows, P2 0 rows, P3 0 rows",
+      "observed": "clean; SHACL conforms; P1 0, P2 0, P3 0; 24874 triples, 153 ms; results/fuseki-2026-11-04/scoping/20261104T084442Z-scoping/whole-graph-check/20261104T084508Z-scoping-suite-4515778c.json",
+      "pass": true,
+      "validation": null
+    },
+    {
+      "group": 5,
+      "id": "5.10",
+      "name": "The module's whole-graph-check operation is refused on the published listener",
+      "expected": "405",
+      "observed": "HTTP 405",
+      "pass": true
+    },
+    {
+      "group": 6,
+      "id": "6.0",
+      "name": "Control: a conforming order through the gate commits (into the RRB's dbr)",
+      "expected": "committed",
+      "observed": "HTTP 200 committed",
+      "pass": true,
+      "validation": "targeted; changes=92 touched=32 focus=23"
+    },
+    {
+      "group": 6,
+      "id": "6.1",
+      "name": "Rule default-graph: a quad in the default graph",
+      "expected": "refused, at store, rule default-graph, store unchanged",
+      "observed": "HTTP 403 refused, at store, rule default-graph, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.2a",
+      "name": "Rule knowledge-graph-or-shapes: a runtime write into kg/metamodel",
+      "expected": "refused, at store, rule knowledge-graph-or-shapes, store unchanged",
+      "observed": "HTTP 403 refused, at store, rule knowledge-graph-or-shapes, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.2b",
+      "name": "Rule knowledge-graph-or-shapes: a runtime write into kg/domain",
+      "expected": "refused, at store, rule knowledge-graph-or-shapes, store unchanged",
+      "observed": "HTTP 403 refused, at store, rule knowledge-graph-or-shapes, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.2c",
+      "name": "Rule knowledge-graph-or-shapes: a runtime write into kg/correspondence",
+      "expected": "refused, at store, rule knowledge-graph-or-shapes, store unchanged",
+      "observed": "HTTP 403 refused, at store, rule knowledge-graph-or-shapes, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.2d",
+      "name": "Rule knowledge-graph-or-shapes: a runtime write into the shapes graph",
+      "expected": "refused, at store, rule knowledge-graph-or-shapes, store unchanged",
+      "observed": "HTTP 403 refused, at store, rule knowledge-graph-or-shapes, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.2e",
+      "name": "Rule knowledge-graph-or-shapes: a runtime DELETE DATA from kg/domain (ontara-cafe:Order a owl:Class)",
+      "expected": "refused, at store, rule knowledge-graph-or-shapes, store unchanged",
+      "observed": "HTTP 403 refused, at store, rule knowledge-graph-or-shapes, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.3",
+      "name": "Rule other-branch: one request writing into the RRB's dbr and a second DHB's dbr (a request spanning two DHBs)",
+      "expected": "refused, at store, rule other-branch, store unchanged",
+      "observed": "HTTP 403 refused, at store, rule other-branch, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.4",
+      "name": "Rule not-home: a triple about an instance whose home is a second DHB (seeded there), sent as Turtle: the WSS places it in the RRB, the module refuses it",
+      "expected": "refused, at store, rule not-home, store unchanged",
+      "observed": "HTTP 403 refused, at store, rule not-home, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.5",
+      "name": "Rule operation: CLEAR of the branch's own dbr graph",
+      "expected": "refused, at store, rule operation, store unchanged",
+      "observed": "HTTP 403 refused, at store, rule operation, store unchanged: true",
+      "pass": true,
+      "validation": "not run: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.6",
+      "name": "Rule outside-scheme: a write into the retired provisional graph urn:ontara:stack:graph:manual",
+      "expected": "refused, at store, rule outside-scheme, store unchanged",
+      "observed": "HTTP 403 refused, at store, rule outside-scheme, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.7a",
+      "name": "Rule graph-from-writer: a JSON write naming its graph",
+      "expected": "refused, at gate, rule graph-from-writer, store unchanged",
+      "observed": "HTTP 403 refused, at gate, rule graph-from-writer, store unchanged: true",
+      "pass": true,
+      "validation": null
+    },
+    {
+      "group": 6,
+      "id": "6.7b",
+      "name": "Rule graph-from-writer: a text/turtle write with ?graph=",
+      "expected": "refused, at gate, rule graph-from-writer, store unchanged",
+      "observed": "HTTP 403 refused, at gate, rule graph-from-writer, store unchanged: true",
+      "pass": true,
+      "validation": null
+    },
+    {
+      "group": 6,
+      "id": "6.8",
+      "name": "Rule no-readable-side: an untyped subject",
+      "expected": "refused, at gate, rule no-readable-side, store unchanged",
+      "observed": "HTTP 403 refused, at gate, rule no-readable-side, store unchanged: true",
+      "pass": true,
+      "validation": null
+    },
+    {
+      "group": 6,
+      "id": "6.9",
+      "name": "A request's remove list acts only on its own DHB's two graphs",
+      "expected": "committed; gone from the RRB's dbr; still in the second DHB's dbr",
+      "observed": "HTTP 200 committed; in RRB dbr after: false; in second DHB's dbr after: true",
+      "pass": true,
+      "validation": "targeted; changes=1 touched=2 focus=0"
+    },
+    {
+      "group": 6,
+      "id": "6.10",
+      "name": "The published listener (3031) refuses a validated-update write, even with a policy",
+      "expected": "refused (405)",
+      "observed": "refused (405)",
+      "pass": true,
+      "validation": null
+    },
+    {
+      "group": 6,
+      "id": "6.11a",
+      "name": "Whole mode: a conforming write commits (control)",
+      "expected": "committed, whole",
+      "observed": "committed, whole",
+      "pass": true,
+      "validation": "whole"
+    },
+    {
+      "group": 6,
+      "id": "6.11b",
+      "name": "Whole mode: default-graph",
+      "expected": "refused, rule default-graph",
+      "observed": "refused, not validated, rule default-graph, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.11c",
+      "name": "Whole mode: knowledge-graph-or-shapes (kg/domain)",
+      "expected": "refused, rule knowledge-graph-or-shapes",
+      "observed": "refused, not validated, rule knowledge-graph-or-shapes, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.11d",
+      "name": "Whole mode: knowledge-graph-or-shapes (the shapes graph)",
+      "expected": "refused, rule knowledge-graph-or-shapes",
+      "observed": "refused, not validated, rule knowledge-graph-or-shapes, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.11e",
+      "name": "Whole mode: other-branch (two DHBs in one request)",
+      "expected": "refused, rule other-branch",
+      "observed": "refused, not validated, rule other-branch, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.11f",
+      "name": "Whole mode: not-home",
+      "expected": "refused, rule not-home",
+      "observed": "refused, not validated, rule not-home, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.11g",
+      "name": "Whole mode: operation (CLEAR)",
+      "expected": "refused, rule operation",
+      "observed": "refused, not validated, rule operation, store unchanged: true",
+      "pass": true,
+      "validation": "not run: refused by the write policy"
+    },
+    {
+      "group": 6,
+      "id": "6.11h",
+      "name": "Whole mode: outside-scheme",
+      "expected": "refused, rule outside-scheme",
+      "observed": "refused, not validated, rule outside-scheme, store unchanged: true",
+      "pass": true,
+      "validation": "not validated: refused by the write policy"
+    },
+    {
+      "group": 7,
+      "id": "7.1a",
+      "name": "A default-graph write sent straight to the module (stack network, no policy), targeted mode: an Order with neither axis value, which no check would see if it were stored",
+      "expected": "refused (403) by the default-graph rule, transaction aborted; nothing stored: not in Jena's stored default graph (urn:x-arq:DefaultGraph), which holds 0 triples, nor in the union default graph, nor in any named graph; the store's triple count unchanged",
+      "observed": "refused by default-graph (transaction aborted); in the stored default graph: false (it holds 0 triples); in the union default graph: false; in named graphs: none; triples 24874 before, 24874 after",
+      "pass": true,
+      "validation": "not run: refused by the default-graph rule (no write policy)"
+    },
+    {
+      "group": 7,
+      "id": "7.1b",
+      "name": "A default-graph write sent straight to the module (stack network, no policy), whole mode: an Order with neither axis value, which no check would see if it were stored",
+      "expected": "refused (403) by the default-graph rule, transaction aborted; nothing stored: not in Jena's stored default graph (urn:x-arq:DefaultGraph), which holds 0 triples, nor in the union default graph, nor in any named graph; the store's triple count unchanged",
+      "observed": "refused by default-graph (transaction aborted); in the stored default graph: false (it holds 0 triples); in the union default graph: false; in named graphs: none; triples 151 before, 151 after",
+      "pass": true,
+      "validation": "not run: refused by the default-graph rule (no write policy)"
+    },
+    {
+      "group": 7,
+      "id": "7.1c",
+      "name": "The same write through Fuseki's unvalidated /update (stack network) lands in the same place",
+      "expected": "stored default graph only",
+      "observed": "stored default graph: true; union: false; named: 0",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.1d",
+      "name": "The placement queries see the default-graph instance (P2: a runtime instance outside a runtime graph; P3: a non-empty stored default graph)",
+      "expected": "P2 and P3 each report it under urn:x-arq:DefaultGraph",
+      "observed": "P2: true; P3: true",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.1e",
+      "name": "A whole-graph form that writes into the default graph with no quad of its own (ADD GRAPH <dbr> TO DEFAULT), sent straight to the module (no policy), targeted mode",
+      "expected": "refused (403) by the default-graph rule (the stored default graph changed), transaction aborted; the stored default graph holds 0 triples; the store's triple count unchanged; the source graph kept",
+      "observed": "refused by default-graph (transaction aborted); stored default graph 0 triples; triples 24875 before, 24875 after; source kept: true",
+      "pass": true,
+      "validation": "not validated: refused by the default-graph rule (no write policy; the request changed the stored default graph)"
+    },
+    {
+      "group": 7,
+      "id": "7.1f",
+      "name": "A whole-graph form that writes into the default graph with no quad of its own (ADD GRAPH <dbr> TO DEFAULT), sent straight to the module (no policy), whole mode",
+      "expected": "refused (403) by the default-graph rule (the stored default graph changed), transaction aborted; the stored default graph holds 0 triples; the store's triple count unchanged; the source graph kept",
+      "observed": "refused by default-graph (transaction aborted); stored default graph 0 triples; triples 152 before, 152 after; source kept: true",
+      "pass": true,
+      "validation": "not validated: refused by the default-graph rule (no write policy; the request changed the stored default graph)"
+    },
+    {
+      "group": 7,
+      "id": "7.2.0",
+      "name": "The published listener (3031) serves reads: the module's status and a query",
+      "expected": "status 200 from listener published, standardWriteEndpoints false; query answers",
+      "observed": "listener published, standardWriteEndpoints false; query answered true",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.1",
+      "name": "Published listener 3031, from inside the network: POST /cafe-runtime/update (sparql-update)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 404; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.2",
+      "name": "Published listener 3031, from inside the network: POST /cafe-runtime/update (form update=)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 404; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.3",
+      "name": "Published listener 3031, from inside the network: POST /cafe-runtime (form update=)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 400; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.4",
+      "name": "Published listener 3031, from inside the network: POST /cafe-runtime (sparql-update)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 400; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.5",
+      "name": "Published listener 3031, from inside the network: PUT /cafe-runtime/data?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.6",
+      "name": "Published listener 3031, from inside the network: POST /cafe-runtime/data?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.7",
+      "name": "Published listener 3031, from inside the network: DELETE /cafe-runtime/data?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.8",
+      "name": "Published listener 3031, from inside the network: PUT /cafe-runtime/data?default",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.9",
+      "name": "Published listener 3031, from inside the network: POST /cafe-runtime/data?default",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.10",
+      "name": "Published listener 3031, from inside the network: PUT /cafe-runtime?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.11",
+      "name": "Published listener 3031, from inside the network: POST /cafe-runtime?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.12",
+      "name": "Published listener 3031, from inside the network: DELETE /cafe-runtime?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.13",
+      "name": "Published listener 3031, from inside the network: POST /cafe-runtime (n-quads)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.14",
+      "name": "Published listener 3031, from inside the network: PUT /cafe-runtime (n-quads)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.15",
+      "name": "Published listener 3031, from inside the network: PATCH /cafe-runtime (RDF Patch)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 400; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.16",
+      "name": "Published listener 3031, from inside the network: POST /cafe-runtime/patch (RDF Patch)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 404; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.2.17",
+      "name": "Published listener 3031, from inside the network: POST /cafe-runtime/validated-update",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.3.1",
+      "name": "Stack-network listener 3030 (control: the same requests are accepted there): POST /cafe-runtime/update (sparql-update)",
+      "expected": "accepted (2xx)",
+      "observed": "HTTP 204; store CHANGED (triples 24875 to 24876, marker true, delete target true to true)",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.3.2",
+      "name": "Stack-network listener 3030 (control: the same requests are accepted there): POST /cafe-runtime/update (form update=)",
+      "expected": "accepted (2xx)",
+      "observed": "HTTP 200; store CHANGED (triples 24876 to 24876, marker true, delete target true to true)",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.3.3",
+      "name": "Stack-network listener 3030 (control: the same requests are accepted there): POST /cafe-runtime/data?graph=",
+      "expected": "accepted (2xx)",
+      "observed": "HTTP 200; store CHANGED (triples 24876 to 24876, marker true, delete target true to true)",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.3.4",
+      "name": "Stack-network listener 3030 (control: the same requests are accepted there): POST /cafe-runtime?graph=",
+      "expected": "accepted (2xx)",
+      "observed": "HTTP 200; store CHANGED (triples 24876 to 24876, marker true, delete target true to true)",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.3.5",
+      "name": "Stack-network listener 3030 (control: the same requests are accepted there): POST /cafe-runtime (n-quads)",
+      "expected": "accepted (2xx)",
+      "observed": "HTTP 200; store CHANGED (triples 24876 to 24876, marker true, delete target true to true)",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.3.6",
+      "name": "Stack-network listener 3030 (control: the same requests are accepted there): PATCH /cafe-runtime (RDF Patch)",
+      "expected": "accepted (2xx)",
+      "observed": "HTTP 200; store CHANGED (triples 24876 to 24876, marker true, delete target true to true)",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.0",
+      "name": "From outside the stack's network (http://host.docker.internal:7211): the published port answers reads",
+      "expected": "status 200 from the published listener",
+      "observed": "listener published",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.1",
+      "name": "From outside the stack's network, through the published port: POST /cafe-runtime/update (sparql-update)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 404; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.2",
+      "name": "From outside the stack's network, through the published port: POST /cafe-runtime/update (form update=)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 404; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.3",
+      "name": "From outside the stack's network, through the published port: POST /cafe-runtime (form update=)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 400; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.4",
+      "name": "From outside the stack's network, through the published port: POST /cafe-runtime (sparql-update)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 400; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.5",
+      "name": "From outside the stack's network, through the published port: PUT /cafe-runtime/data?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.6",
+      "name": "From outside the stack's network, through the published port: POST /cafe-runtime/data?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.7",
+      "name": "From outside the stack's network, through the published port: DELETE /cafe-runtime/data?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.8",
+      "name": "From outside the stack's network, through the published port: PUT /cafe-runtime/data?default",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.9",
+      "name": "From outside the stack's network, through the published port: POST /cafe-runtime/data?default",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.10",
+      "name": "From outside the stack's network, through the published port: PUT /cafe-runtime?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.11",
+      "name": "From outside the stack's network, through the published port: POST /cafe-runtime?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.12",
+      "name": "From outside the stack's network, through the published port: DELETE /cafe-runtime?graph=",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.13",
+      "name": "From outside the stack's network, through the published port: POST /cafe-runtime (n-quads)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.14",
+      "name": "From outside the stack's network, through the published port: PUT /cafe-runtime (n-quads)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.15",
+      "name": "From outside the stack's network, through the published port: PATCH /cafe-runtime (RDF Patch)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 400; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.16",
+      "name": "From outside the stack's network, through the published port: POST /cafe-runtime/patch (RDF Patch)",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 404; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 7,
+      "id": "7.4.17",
+      "name": "From outside the stack's network, through the published port: POST /cafe-runtime/validated-update",
+      "expected": "refused (not 2xx); store unchanged (count, no marker, delete target kept)",
+      "observed": "HTTP 405; store unchanged",
+      "pass": true
+    },
+    {
+      "group": 6,
+      "id": "6.12",
+      "name": "A runtime dataset that exists with no Reality Reference Branch identifier (its rrb.json removed) is refused at start",
+      "expected": "the store exits, logging REFUSING TO START",
+      "observed": "container exited; [ontara-fuseki] REFUSING TO START: /cafe-runtime exists in /tmp/scoping-store-whole but has no Reality Reference Branch identifier (/tmp/scoping-store-whole/cafe-runtime.rrb.json). It predates the nam",
+      "pass": true
+    }
+  ],
+  "failed": 0,
+  "missing": [],
+  "byGroup": [
+    {
+      "group": 1,
+      "cases": 14,
+      "failed": 0
+    },
+    {
+      "group": 2,
+      "cases": 18,
+      "failed": 0
+    },
+    {
+      "group": 3,
+      "cases": 6,
+      "failed": 0
+    },
+    {
+      "group": 4,
+      "cases": 44,
+      "failed": 0
+    },
+    {
+      "group": 5,
+      "cases": 11,
+      "failed": 0
+    },
+    {
+      "group": 6,
+      "cases": 25,
+      "failed": 0
+    },
+    {
+      "group": 7,
+      "cases": 48,
+      "failed": 0
+    }
+  ],
+  "store": {
+    "url": "http://store:3030",
+    "module": "ontara-fuseki-validated-update 0.6.0",
+    "jenaVersion": "6.2.0",
+    "validationMode": "targeted",
+    "rrb": "ffe8c40d-c070-475b-8227-8852f113387b"
+  },
+  "ranUtc": "2026-11-04T08:44:56.518Z",
+  "elapsedSeconds": 16.9
+}

@@ -1,0 +1,17 @@
+{
+  "label": "before-restart",
+  "at": "2026-11-04T08:52:23.192Z",
+  "graph": "https://ontara.dev/graph/dhb/cafe/4d992db9-993a-4ac7-9725-b51aef8b4fe8/dbr",
+  "goodRecordsStored": 60,
+  "badRecordsStored": 0,
+  "readBack": {
+    "url": "http://store:3030/cafe-runtime/data",
+    "http": 200,
+    "quads": 45094,
+    "goodRecordQuads": 420,
+    "badRecordQuads": 0,
+    "complete": true,
+    "error": null,
+    "lastBytes": "://ontara.dev/graph/dhb/cafe/4d992db9-993a-4ac7-9725-b51aef8b4fe8/dbr> .\n<urn:ontara:standin:cafe#good-rg061-20261104T085140Z> <urn:ontara:standin:rec#recordOf> <urn:ontara:standin:cafe#good-rg061-20261104T085140Z/order> <https://ontara.dev/graph/dhb/cafe/4d992db9-993a-4ac7-9725-b51aef8b4fe8/dbr> .\n"
+  }
+}

@@ -1,0 +1,1 @@
+[whole-graph-check] 2026-11-04T08:24:06.611Z trigger=knowledge-graph-load dataset=cafe-runtime triples=24874 shacl=conforms P1=0 P2=0 P3=0 result=clean ms=217 report=results/fuseki-2026-11-04/regression/20261104T082358Z-jena-6.2.0-whole-standing/whole-graph-check/20261104T082406Z-knowledge-graph-load-ebbebf81.json

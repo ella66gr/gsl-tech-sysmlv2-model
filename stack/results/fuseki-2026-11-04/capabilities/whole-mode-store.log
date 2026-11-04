@@ -1,0 +1,656 @@
+[ontara-fuseki] /cafe-runtime created from empty: Reality Reference Branch dhbId ab6ac349-64c6-409c-afe5-7709dce69cdf written to /tmp/capabilities-whole/cafe-runtime.rrb.json
+[main] INFO org.apache.jena.fuseki.Server - Path = /cafe-capability-scratch
+[main] INFO org.apache.jena.fuseki.Server - Path = /cafe-runtime
+[main] INFO org.apache.jena.fuseki.Server - System
+[main] INFO org.apache.jena.fuseki.Server -   Memory: 2.0 GiB
+[main] INFO org.apache.jena.fuseki.Server -   PID:    1
+[main] INFO org.eclipse.jetty.server.Server - jetty-12.1.11; built: 2026-07-02T20:57:42.640Z; git: 6c1ced3f077bc633716c54758a743b09b21328e8; jvm 21.0.13+9-LTS
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started oeje11s.ServletContextHandler@fac80{org.apache.jena.fuseki.Servlet,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@726386ed{STARTED}}
+[main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler - Started oeje11s.ServletContextHandler@fac80{org.apache.jena.fuseki.Servlet,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@726386ed{STARTED}}
+[main] INFO org.eclipse.jetty.server.AbstractConnector - Started oejs.ServerConnector@669253b7{HTTP/1.1, (http/1.1)}{0.0.0.0:3030}
+[main] INFO org.eclipse.jetty.server.Server - Started oejs.Server@51a06cbe{STARTING}[12.1.11,sto=0] @21ms
+[main] INFO org.apache.jena.fuseki.Server -   Port:   http=3030
+[main] INFO org.apache.jena.fuseki.Server - Start Fuseki
+[main] INFO org.apache.jena.fuseki.Server - Path = /cafe-capability-scratch
+[main] INFO org.apache.jena.fuseki.Server - Path = /cafe-runtime
+[main] INFO org.apache.jena.fuseki.Server - System
+[main] INFO org.apache.jena.fuseki.Server -   Memory: 2.0 GiB
+[main] INFO org.apache.jena.fuseki.Server -   PID:    1
+[main] INFO org.eclipse.jetty.server.Server - jetty-12.1.11; built: 2026-07-02T20:57:42.640Z; git: 6c1ced3f077bc633716c54758a743b09b21328e8; jvm 21.0.13+9-LTS
+[main] INFO org.eclipse.jetty.server.handler.ContextHandler - Started oeje11s.ServletContextHandler@52c8295b{org.apache.jena.fuseki.Servlet,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@251f7d26{STARTED}}
+[main] INFO org.eclipse.jetty.ee11.servlet.ServletContextHandler - Started oeje11s.ServletContextHandler@52c8295b{org.apache.jena.fuseki.Servlet,/,b=null,a=AVAILABLE,h=oeje11s.ServletHandler@251f7d26{STARTED}}
+[main] INFO org.eclipse.jetty.server.AbstractConnector - Started oejs.ServerConnector@77b21474{HTTP/1.1, (http/1.1)}{0.0.0.0:3031}
+[main] INFO org.eclipse.jetty.server.Server - Started oejs.Server@52d10fb8{STARTING}[12.1.11,sto=0] @1ms
+[main] INFO org.apache.jena.fuseki.Server -   Port:   http=3031
+[main] INFO org.apache.jena.fuseki.Server - Start Fuseki
+[ontara-fuseki] ontara-fuseki-validated-update 0.6.0, Jena 6.2.0 (built for 6.2.0), data /tmp/capabilities-whole, validation whole, shapes graph <https://ontara.dev/graph/shapes>; listeners: :3030 stack network (standard endpoints read-write, and validated-update), :3031 published (standard endpoints read-only; validated-update status only, writes refused); validation probe passed
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [1] GET http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [1] 200 OK (16 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:26 +0000] "GET /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [2] GET http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [2] 200 OK (7 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:26 +0000] "GET /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [3] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [3] Update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [3] 204 No Content (18 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:26 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [4] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [4] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [4] 204 No Content (10 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [5] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [5] Body: Content-Length=293, Content-Type=text/turtle, Charset=null => Turtle : Count=5 Triples=5 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [5] 201 Created (38 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "PUT /cafe-capability-scratch/data" 201 61 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [6] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:27.078224464Z #1 rejected (aborted), 2 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [6] 422 Unprocessable Entity (27 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [7] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [7] 200 OK (22 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [8] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [8] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [8] 204 No Content (16 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [9] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [9] Body: Content-Length=297, Content-Type=text/turtle, Charset=null => Turtle : Count=5 Triples=5 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [9] 200 OK (26 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "PUT /cafe-capability-scratch/data" 200 61 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [10] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:27.171770631Z #3 rejected (aborted), 1 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [10] 422 Unprocessable Entity (13 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [11] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [11] 200 OK (21 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [12] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [12] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [12] 204 No Content (18 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [13] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [13] Body: Content-Length=301, Content-Type=text/turtle, Charset=null => Turtle : Count=5 Triples=5 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [13] 200 OK (24 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "PUT /cafe-capability-scratch/data" 200 61 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [14] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:27.266043381Z #5 rejected (aborted), 1 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [14] 422 Unprocessable Entity (20 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [15] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [15] 200 OK (21 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [16] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [16] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [16] 204 No Content (14 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [17] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [17] Body: Content-Length=311, Content-Type=text/turtle, Charset=null => Turtle : Count=5 Triples=5 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [17] 200 OK (26 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "PUT /cafe-capability-scratch/data" 200 61 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [18] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:27.348651631Z #7 rejected (aborted), 1 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [18] 422 Unprocessable Entity (11 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [19] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [19] 200 OK (20 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [20] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [20] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [20] 204 No Content (18 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [21] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [21] Body: Content-Length=337, Content-Type=text/turtle, Charset=null => Turtle : Count=8 Triples=8 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [21] 200 OK (22 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "PUT /cafe-capability-scratch/data" 200 61 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [22] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:27.428744423Z #9 rejected (aborted), 1 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [22] 422 Unprocessable Entity (11 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [23] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [23] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:stack:cap#ClosedShape> } } LIMIT 1
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [23] 200 OK (28 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [24] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [24] 200 OK (23 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [25] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [25] Update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [25] 204 No Content (17 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [26] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [26] Body: Content-Length=329, Content-Type=text/turtle, Charset=null => Turtle : Count=11 Triples=11 Quads=0
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [26] 200 OK (27 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "PUT /cafe-capability-scratch/data" 200 63 "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [27] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:27.552239214Z #11 rejected (aborted), 1 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [27] 422 Unprocessable Entity (17 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [28] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [28] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:stack:cap#XoneShape> } } LIMIT 1
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [28] 200 OK (2 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [29] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [29] 200 OK (24 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [30] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [30] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [30] 204 No Content (32 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [31] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [31] Body: Content-Length=341, Content-Type=text/turtle, Charset=null => Turtle : Count=14 Triples=14 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [31] 200 OK (32 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "PUT /cafe-capability-scratch/data" 200 63 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [32] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:27.667334173Z #13 rejected (aborted), 1 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [32] 422 Unprocessable Entity (13 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [33] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [33] 200 OK (22 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [34] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [34] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [34] 204 No Content (17 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [35] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [35] Body: Content-Length=318, Content-Type=text/turtle, Charset=null => Turtle : Count=6 Triples=6 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [35] 200 OK (22 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "PUT /cafe-capability-scratch/data" 200 61 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [36] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:27.747884589Z #15 rejected (aborted), 1 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [36] 422 Unprocessable Entity (10 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [37] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [37] 200 OK (20 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [38] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [38] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [38] 204 No Content (18 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [39] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [39] Body: Content-Length=317, Content-Type=text/turtle, Charset=null => Turtle : Count=6 Triples=6 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [39] 200 OK (24 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "PUT /cafe-capability-scratch/data" 200 61 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [40] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:27.829087673Z #17 rejected (aborted), 1 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [40] 422 Unprocessable Entity (11 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [41] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [41] 200 OK (21 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [42] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [42] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [42] 204 No Content (17 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [43] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [43] Body: Content-Length=315, Content-Type=text/turtle, Charset=null => Turtle : Count=6 Triples=6 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [43] 200 OK (23 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "PUT /cafe-capability-scratch/data" 200 61 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [44] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:27.906677840Z #19 rejected (aborted), 1 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [44] 422 Unprocessable Entity (8 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [45] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [45] 200 OK (20 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [46] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [46] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [46] 204 No Content (16 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [47] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [47] Body: Content-Length=313, Content-Type=text/turtle, Charset=null => Turtle : Count=6 Triples=6 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [47] 200 OK (22 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "PUT /cafe-capability-scratch/data" 200 61 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [48] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:27.981242340Z #21 rejected (aborted), 1 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [48] 422 Unprocessable Entity (9 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:27 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [49] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [49] 200 OK (22 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [50] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [50] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [50] 204 No Content (15 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [51] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [51] Body: Content-Length=506, Content-Type=text/turtle, Charset=null => Turtle : Count=12 Triples=12 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [51] 200 OK (22 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "PUT /cafe-capability-scratch/data" 200 63 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [52] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:28.072559715Z #23 rejected (aborted), 1 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [52] 422 Unprocessable Entity (25 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [53] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [53] 200 OK (22 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [54] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [54] Update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [54] 204 No Content (19 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [55] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [55] Body: Content-Length=2668, Content-Type=text/turtle, Charset=null => Turtle : Count=32 Triples=32 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [55] 200 OK (28 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "PUT /cafe-capability-scratch/data" 200 63 "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [56] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [56] 200 OK (35 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [57] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [57] 200 OK (27 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [58] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [58] 200 OK (44 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [59] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [59] Query = PREFIX cafe: <urn:ontara:standin:cafe#> PREFIX rec: <urn:ontara:standin:rec#> PREFIX ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/>  ASK { <urn:ontara:standin:cafe#cap-order-A> ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-ready }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [59] 200 OK (2 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [60] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [60] Query = PREFIX cafe: <urn:ontara:standin:cafe#> PREFIX rec: <urn:ontara:standin:rec#> PREFIX ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/>  ASK { <urn:ontara:standin:cafe#cap-order-B> ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-ready }
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [60] 200 OK (1 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [61] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [61] Query = PREFIX rec: <urn:ontara:standin:rec#> SELECT ?mode ?method WHERE { <urn:ontara:standin:cafe#cap-order-A/ready-record> rec:hasRealityMode ?mode ; rec:hasProvenanceMethod ?method }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [61] 200 OK (2 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [62] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [62] 200 OK (29 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [63] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [63] 200 OK (47 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [64] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [64] Query = PREFIX rec: <urn:ontara:standin:rec#> SELECT ?mode ?method WHERE { <urn:ontara:standin:cafe#cap-order-C/ready-record> rec:hasRealityMode ?mode ; rec:hasProvenanceMethod ?method }
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [64] 200 OK (1 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [65] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [65] 200 OK (27 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [66] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:28.424603340Z #31 rejected (aborted), 2 result(s); whole
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [66] 422 Unprocessable Entity (20 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [67] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [67] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-mode> } } LIMIT 1
+[qtp839771540-37] INFO org.apache.jena.fuseki.Fuseki - [68] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-37] INFO org.apache.jena.fuseki.Fuseki - [68] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-method> } } LIMIT 1
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [67] 200 OK (2 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-37] INFO org.apache.jena.fuseki.Fuseki - [68] 200 OK (1 ms)
+[qtp839771540-37] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [69] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [69] Query = PREFIX cafe: <urn:ontara:standin:cafe#> PREFIX rec: <urn:ontara:standin:rec#> PREFIX ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/>  ASK { <urn:ontara:standin:cafe#cap-order-D> ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-ready }
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [69] 200 OK (2 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [70] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [70] Query = PREFIX cafe: <urn:ontara:standin:cafe#> PREFIX rec: <urn:ontara:standin:rec#> PREFIX ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/>  ASK { <urn:ontara:standin:cafe#cap-order-D/ready-record> ?p ?o }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [70] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [71] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [71] 200 OK (29 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [72] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:28.487405090Z #33 rejected (aborted), 2 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [72] 422 Unprocessable Entity (17 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [73] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [74] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [73] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-method> } } LIMIT 1
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [74] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-mode> } } LIMIT 1
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [74] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [73] 200 OK (2 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [75] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [75] 200 OK (33 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [76] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [76] Query = PREFIX cafe: <urn:ontara:standin:cafe#> PREFIX rec: <urn:ontara:standin:rec#> PREFIX ontara-cafe: <https://ontara.dev/ontology/tenant/cafe/>  ASK { <urn:ontara:standin:cafe#cap-order-F> ontara-cafe:orderLifecycle ontara-cafe:OrderLifecycle-ready . <urn:ontara:standin:cafe#cap-order-F/ready-record> rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:DirectMethod }
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [76] 200 OK (2 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [77] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [77] Update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [77] 204 No Content (26 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [78] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [78] Body: Content-Length=2668, Content-Type=text/turtle, Charset=null => Turtle : Count=32 Triples=32 Quads=0
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [78] 200 OK (25 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "PUT /cafe-capability-scratch/data" 200 63 "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [79] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:28.601223632Z #35 rejected (aborted), 1 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [79] 422 Unprocessable Entity (11 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [80] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [80] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-method> } } LIMIT 1
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [80] 200 OK (2 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [81] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:28.623388090Z #36 rejected (aborted), 1 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [81] 422 Unprocessable Entity (14 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [82] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [82] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#OrderReadinessShape> } } LIMIT 1
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [82] 200 OK (2 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [83] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [83] Update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [83] 204 No Content (19 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [84] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [84] Body: Content-Length=2668, Content-Type=text/turtle, Charset=null => Turtle : Count=32 Triples=32 Quads=0
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [84] 200 OK (15 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "PUT /cafe-capability-scratch/data" 200 63 "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [85] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:28.678310215Z #37 rejected (aborted), 1 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [85] 422 Unprocessable Entity (11 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [86] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [86] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-method> } } LIMIT 1
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [86] 200 OK (2 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [87] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [87] Query = SELECT (COUNT(*) AS ?n) WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?s ?p ?o } }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [87] 200 OK (2 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [88] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [88] Update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [88] 204 No Content (19 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [89] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=urn%3Aontara%3Astack%3Agraph%3Acapability-shapes-elsewhere
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [89] Body: Content-Length=296, Content-Type=text/turtle, Charset=null => Turtle : Count=5 Triples=5 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [89] 201 Created (13 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "PUT /cafe-capability-scratch/data" 201 61 "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [90] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [90] 200 OK (25 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [91] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [91] Update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [91] 204 No Content (17 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [92] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [92] Update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [92] 204 No Content (17 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [93] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=urn%3Aontara%3Astack%3Akg%3Aontara-record
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [93] Body: Content-Length=22548, Content-Type=text/turtle, Charset=null => Turtle : Count=169 Triples=169 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [93] 201 Created (40 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "PUT /cafe-capability-scratch/data" 201 65 "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [94] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [94] Query = SELECT DISTINCT ?sup WHERE { GRAPH <urn:ontara:stack:kg:ontara-record> { <https://ontara.dev/ontology/record/PlatformRecord> <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?sup . FILTER (isIRI(?sup)) } }
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [94] 200 OK (2 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [95] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [95] Query = SELECT (COUNT(*) AS ?n) WHERE { ?s ?p ?o }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [95] 200 OK (3 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [96] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [96] 200 OK (22 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [97] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [97] Query = SELECT (COUNT(*) AS ?n) WHERE { ?s ?p ?o }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [97] 200 OK (2 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [98] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [98] Query = SELECT DISTINCT ?sup WHERE { VALUES ?sup { <http://purl.obolibrary.org/obo/IAO_0000030> <http://www.w3.org/ns/prov#Entity> } { <urn:ontara:stack:cap#r4-instance> a ?sup } UNION { GRAPH ?g { <urn:ontara:stack:cap#r4-instance> a ?sup } } }
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [98] 200 OK (3 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [99] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [99] Query = SELECT DISTINCT ?p ?o WHERE { { <urn:ontara:stack:cap#r4-instance> ?p ?o } UNION { GRAPH ?g { <urn:ontara:stack:cap#r4-instance> ?p ?o } } }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [99] 200 OK (2 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [100] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [100] Update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [100] 204 No Content (29 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [101] GET http://ontara-cafe-stack-capabilities-whole:3030/cafe-runtime/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [101] 200 OK (4 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "GET /cafe-runtime/validated-update" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [102] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [102] Update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [102] 204 No Content (18 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [103] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [103] Body: Content-Length=2668, Content-Type=text/turtle, Charset=null => Turtle : Count=32 Triples=32 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [103] 200 OK (23 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "PUT /cafe-capability-scratch/data" 200 63 "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [104] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [104] 200 OK (22 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [105] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:28.988865048Z #41 rejected (aborted), 1 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [105] 422 Unprocessable Entity (10 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [106] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [106] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-method> } } LIMIT 1
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [106] 200 OK (2 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:28 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [107] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:29.002781382Z #42 rejected (aborted), 1 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [107] 422 Unprocessable Entity (9 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [108] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [108] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-mode> } } LIMIT 1
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [108] 200 OK (2 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [109] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:29.017164423Z #43 rejected (aborted), 1 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [109] 422 Unprocessable Entity (9 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [110] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [110] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-method> } } LIMIT 1
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [110] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [111] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:29.032164007Z #44 rejected (aborted), 1 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [111] 422 Unprocessable Entity (10 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [112] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [112] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-method> } } LIMIT 1
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [112] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [113] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:29.047198423Z #45 rejected (aborted), 1 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [113] 422 Unprocessable Entity (10 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [114] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [114] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-method> } } LIMIT 1
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [114] 200 OK (2 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [115] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:29.060670257Z #46 rejected (aborted), 1 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [115] 422 Unprocessable Entity (8 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [116] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [116] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#RecordModeMethodShape-method> } } LIMIT 1
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [116] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [117] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [117] Query = PREFIX rec: <urn:ontara:standin:rec#> PREFIX c: <urn:ontara:stack:cap:s515#> ASK { c:rec1 rec:hasRealityMode rec:RealMode ; rec:hasProvenanceMethod rec:DirectMethod . FILTER NOT EXISTS { c:rec1 rec:hasProvenanceMethod rec:InferredMethod } }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [117] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [118] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [118] Query = PREFIX rec: <urn:ontara:standin:rec#> PREFIX c: <urn:ontara:stack:cap:s515#> ASK { VALUES ?r { c:rec2 c:rec3 c:rec4 c:rec5 c:rec6 } ?r ?p ?o }
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [118] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [119] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [119] Update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [119] 204 No Content (19 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [120] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [120] Body: Content-Length=2668, Content-Type=text/turtle, Charset=null => Turtle : Count=32 Triples=32 Quads=0
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [120] 200 OK (23 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "PUT /cafe-capability-scratch/data" 200 63 "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [121] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [121] 200 OK (30 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [122] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:29.162459507Z #48 rejected (aborted), 1 result(s); whole
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [122] 422 Unprocessable Entity (10 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [123] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [123] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#OrderReadinessShape> } } LIMIT 1
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [123] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [124] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [124] Update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [124] 204 No Content (25 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [125] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [125] Body: Content-Length=8333, Content-Type=text/turtle, Charset=null => Turtle : Count=147 Triples=147 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [125] 200 OK (29 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "PUT /cafe-capability-scratch/data" 200 65 "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [126] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [126] 200 OK (33 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [127] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [127] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-A> <https://ontara.dev/ontology/tenant/cafe/orderLifecycle> ?st } }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [127] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [128] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [128] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-A/line/4> <https://ontara.dev/ontology/tenant/cafe/orderLinePreparation> ?st } }
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [128] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [129] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:29.281374715Z #50 rejected (aborted), 2 result(s); whole
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [129] 422 Unprocessable Entity (12 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [130] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [131] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [130] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#LineReadinessTwoSidedShape> } } LIMIT 1
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [131] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#OrderReadinessTwoSidedShape> } } LIMIT 1
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [130] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [131] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [132] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [132] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-A> <https://ontara.dev/ontology/tenant/cafe/orderLifecycle> ?st } }
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [132] 200 OK (1 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [133] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [133] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-A/line/4> <https://ontara.dev/ontology/tenant/cafe/orderLinePreparation> ?st } }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [133] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [134] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [134] Update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [134] 204 No Content (17 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [135] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [135] Body: Content-Length=8333, Content-Type=text/turtle, Charset=null => Turtle : Count=147 Triples=147 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [135] 200 OK (26 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "PUT /cafe-capability-scratch/data" 200 65 "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [136] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [136] 200 OK (28 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [137] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [137] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-B> <https://ontara.dev/ontology/tenant/cafe/orderLifecycle> ?st } }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [137] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [138] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [138] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-B/line/1> <https://ontara.dev/ontology/tenant/cafe/orderLinePreparation> ?st } }
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [138] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [139] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [139] 200 OK (21 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [140] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [140] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-B> <https://ontara.dev/ontology/tenant/cafe/orderLifecycle> ?st } }
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [140] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [141] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [141] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-B/line/1> <https://ontara.dev/ontology/tenant/cafe/orderLinePreparation> ?st } }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [141] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [142] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [142] Update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [142] 204 No Content (19 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [143] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [143] Body: Content-Length=8333, Content-Type=text/turtle, Charset=null => Turtle : Count=147 Triples=147 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [143] 200 OK (25 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "PUT /cafe-capability-scratch/data" 200 65 "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [144] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [144] 200 OK (23 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [145] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [145] 200 OK (22 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [146] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [146] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-C> <https://ontara.dev/ontology/tenant/cafe/orderLifecycle> ?st } }
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [146] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [147] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [147] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-C/line/4> <https://ontara.dev/ontology/tenant/cafe/orderLinePreparation> ?st } }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [147] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [148] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:29.513107007Z #55 rejected (aborted), 2 result(s); whole
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [148] 422 Unprocessable Entity (11 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [149] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [150] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [150] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#OrderReadinessTwoSidedShape> } } LIMIT 1
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [149] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#LineReadinessTwoSidedShape> } } LIMIT 1
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [150] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [149] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [151] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [151] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-C> <https://ontara.dev/ontology/tenant/cafe/orderLifecycle> ?st } }
+[qtp839771540-21] INFO org.apache.jena.fuseki.Fuseki - [151] 200 OK (1 ms)
+[qtp839771540-21] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [152] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [152] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-C/line/4> <https://ontara.dev/ontology/tenant/cafe/orderLinePreparation> ?st } }
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [152] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [153] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [153] Update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [153] 204 No Content (18 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [154] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [154] Body: Content-Length=2668, Content-Type=text/turtle, Charset=null => Turtle : Count=32 Triples=32 Quads=0
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [154] 200 OK (25 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "PUT /cafe-capability-scratch/data" 200 63 "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [155] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [155] 200 OK (28 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [156] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [156] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-D> <https://ontara.dev/ontology/tenant/cafe/orderLifecycle> ?st } }
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [156] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [157] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [157] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-D/line/1> <https://ontara.dev/ontology/tenant/cafe/orderLinePreparation> ?st } }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [157] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [158] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[ontara-fuseki] 2026-11-04T08:48:29.618634799Z #57 rejected (aborted), 1 result(s); whole
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [158] 422 Unprocessable Entity (13 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 422 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [159] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [159] Query = SELECT ?n WHERE { GRAPH <https://ontara.dev/graph/shapes> { ?n <http://www.w3.org/ns/shacl#property> <urn:ontara:standin:shapes#OrderReadinessShape> } } LIMIT 1
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [159] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [160] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [160] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-D> <https://ontara.dev/ontology/tenant/cafe/orderLifecycle> ?st } }
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [160] 200 OK (1 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [161] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [161] Query = SELECT ?st WHERE { GRAPH <urn:ontara:stack:graph:capability> { <urn:ontara:standin:cafe#cap-2s-D/line/1> <https://ontara.dev/ontology/tenant/cafe/orderLinePreparation> ?st } }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [161] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [162] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [162] Update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [162] 204 No Content (24 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [163] PUT http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/data?graph=https%3A%2F%2Fontara.dev%2Fgraph%2Fshapes
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [163] Body: Content-Length=343, Content-Type=text/turtle, Charset=null => Turtle : Count=7 Triples=7 Quads=0
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [163] 200 OK (21 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "PUT /cafe-capability-scratch/data" 200 61 "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [164] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/validated-update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [164] 200 OK (22 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/validated-update" 200 - "" "node"
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [165] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/query
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [165] Query = ASK { { <urn:ontara:stack:cap#ru1> <urn:ontara:stack:cap#derived> ?o } UNION { GRAPH ?g { <urn:ontara:stack:cap#ru1> <urn:ontara:stack:cap#derived> ?o } } }
+[qtp839771540-34] INFO org.apache.jena.fuseki.Fuseki - [165] 200 OK (1 ms)
+[qtp839771540-34] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/query" 200 - "" "node"
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [166] POST http://ontara-cafe-stack-capabilities-whole:3030/cafe-capability-scratch/update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [166] Update
+[qtp839771540-36] INFO org.apache.jena.fuseki.Fuseki - [166] 204 No Content (19 ms)
+[qtp839771540-36] INFO org.apache.jena.fuseki.Request - 172.20.0.5 - - [04/Nov/2026:08:48:29 +0000] "POST /cafe-capability-scratch/update" 204 - "" "node"
