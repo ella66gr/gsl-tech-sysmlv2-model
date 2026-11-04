@@ -1,11 +1,13 @@
-# QA baseline: after S0.5 Pass A
+# QA baseline: after S0.5 Pass B
 
-**Date:** 2026-11-03 (Session 525, Plan B Stage 0, S0.5 Pass B step 0: Pass A's close-out)
-**Measured on:** `main` at `28f0d6b` (Pass A's A7) with the close-out's changes, which are committed with this file
+**Date:** 2026-11-04 (Session 527, Plan B Stage 0, S0.5 Pass B close-out, A2)
+**Measured on:** `main` at `2582f3e`. The QA inputs are unchanged at `b6b3caa`: `17442b1` and `b6b3caa`, which follow it, touch only `stack/`, which QA never reads
 **Machine-readable form:** `qa/baseline.json`
 **Re-run:** `make qa` from the repository root, with GraphDB Desktop running and `ontara-dev` answering on `http://localhost:7200`.
 
-This replaces the S517 baseline (66 queries, Q26 = 45), which Pass A outgrew. Pass A's A7 made the QA knowledge graph the same on every run, so these counts were taken from two consecutive `make qa` runs: every count was identical across the two, and neither run changed a tracked file beyond the one expected change below. Pass B's checks compare against these figures.
+This replaces the S525 baseline (Pass A's close-out, domain graph 24,041), at Ella's decision at S526 on the Pass B return (section 9.1, deviation 9). Pass B's B8 (axis values as IRIs) changed the domain graph to 24,136 triples, stable over the six `make qa` runs after it. These counts were taken from two consecutive `make qa` runs, each from a fresh login shell: every count and every per-query result was identical across the two, and neither run changed a tracked file. Later checks compare against these figures.
+
+Against the S525 baseline, B8 also changed the tenant types graph (15 to 244 triples), Q8 (39 to 40) and the axis family's disjointness members (5 to 6), each through the axis value class it added, and B7 and B8 together changed `reasoning-summary.json`'s `modelDigest`. Every other figure is unchanged.
 
 ## Result
 
@@ -22,10 +24,11 @@ Counted by SPARQL against `ontara-dev` after each run, explicit statements only 
 
 | Measure | Run 1 | Run 2 |
 |---|---|---|
-| Domain graph (`https://ontara.dev/graph/domain`) | 24,041 | 24,041 |
+| Domain graph (`https://ontara.dev/graph/domain`) | 24,136 | 24,136 |
 | Correspondence graph (`https://ontara.dev/graph/correspondence`) | 1,400 | 1,400 |
-| Explicit total | 25,441 | 25,441 |
+| Explicit total | 25,536 | 25,536 |
 | Explicit triples outside any named graph | 0 | 0 |
+| Named graphs | 2 | 2 |
 | `owl:AllDisjointClasses` nodes in the domain graph | 17 | 17 |
 | Q26: those whose members are all BMM classes | 2 | 2 |
 
@@ -39,11 +42,11 @@ Counted by SPARQL against `ontara-dev` after each run, explicit statements only 
 | `qa-diff` | `python3 scripts/diff_kg.py --json-only` (report in `generated/ontara/diff-report.json`) |
 | `qa` | the four above in order, carrying on past a failing layer |
 
-Tools: python3 with rdflib 7.6.0, the OpenSysML 0.11.0 venv for the pipeline, OpenJDK 25.0.2, Robot 1.9.8, GraphDB Desktop.
+Tools: python3 with rdflib 7.6.0 (`/usr/bin/python3` on a login shell's `PATH`: Apple Command Line Tools Python 3.9.6), the OpenSysML 0.11.0 venv for the pipeline (Python 3.12.2, rdflib 7.6.0, PyYAML 6.0.3), OpenJDK 25.0.2, Robot 1.9.8 (`tools/robot.jar`), GraphDB Desktop.
 
 ## 1. OWL pipeline
 
-Stage 1 read 807 elements from 5 domains through OpenSysML's resolved model. Stage 2 classified 39 DomainClass, 766 StructuralOnly and 2 TenantRuntimeType (`Order`, `OrderLine`). Stage 3 generated 39 OWL classes (200 triples), 14 object properties (99 triples), 108 reified weight individuals (786 triples), the tenant types graph (15 triples) and a correspondence graph of 1,400 triples. Two properties are deferred because their targets are not in the DomainClass set: `ObjectiveCapabilityMapping.strategicObjective → StrategicObjective` and `FinancialProjection.scenario → ScenarioDefinition`. A re-run changes no generated file.
+Stage 1 read 807 elements from 5 domains through OpenSysML's resolved model. Stage 2 classified 39 DomainClass, 766 StructuralOnly and 2 TenantRuntimeType (`Order`, `OrderLine`). Stage 3 generated 39 OWL classes (200 triples), 14 object properties (99 triples), 108 reified weight individuals (786 triples), the tenant types graph (244 triples; 15 until B8 generated the axis declarations and axis values into it) and a correspondence graph of 1,400 triples. Two properties are deferred because their targets are not in the DomainClass set: `ObjectiveCapabilityMapping.strategicObjective → StrategicObjective` and `FinancialProjection.scenario → ScenarioDefinition`. A re-run changes no generated file.
 
 ## 2. SPARQL validation
 
@@ -68,7 +71,7 @@ Stage 1 read 807 elements from 5 domains through OpenSysML's resolved model. Sta
 
 The per-query counts and expectations are in `qa/baseline.json` under `layers.validate.queries`.
 
-**Q26 (changed at S525).** It counted every `owl:AllDisjointClasses` node in the store against "at least 9": 17, from BFO (5), CCO (5, its merged file carrying its own copy of BFO's five), the BMM axioms (2), the record module (2) and governance (3). It now counts only the nodes whose `owl:members` are all BMM classes and expects exactly 2: the six concern groups, and the axis family (`AxisPrecondition`, `AxisTransition`, `CanonicalRuntimeType`, `StatusAxis`, `ValueSpace`), both in `ontology/axioms/ontara-bmm-axioms.ttl`.
+**Q26 (changed at S525).** It counted every `owl:AllDisjointClasses` node in the store against "at least 9": 17, from BFO (5), CCO (5, its merged file carrying its own copy of BFO's five), the BMM axioms (2), the record module (2) and governance (3). It now counts only the nodes whose `owl:members` are all BMM classes and expects exactly 2: the six concern groups, and the axis family (`AxisPrecondition`, `AxisTransition`, `CanonicalRuntimeType`, `StatusAxis`, `ValueSpace`, and since B8 `axis#AxisValue`), both in `ontology/axioms/ontara-bmm-axioms.ttl`.
 
 ## 3. HermiT consistency
 
@@ -91,7 +94,7 @@ The per-query counts and expectations are in `qa/baseline.json` under `layers.va
 15. `ontology/reasoning/ears-reasoning-instances.ttl` (Ears tenant instances)
 16. `ontology/reasoning/cafe-reasoning-instances.ttl` (Cafe tenant instances)
 
-The General-only stack (H-0320) was not re-measured at S525. It was last measured at S517: 12 files, consistent, by a direct Robot chain, because `reason_kg.py` has no option to select files.
+The General-only stack (H-0320) was not re-measured at S525 or S527. It was last measured at S517: 12 files, consistent, by a direct Robot chain, because `reason_kg.py` has no option to select files.
 
 `generated/ontara/reasoning-summary.json` records `sparqlQueryCount: 68`. Until S525 `reason_kg.count_sparql_queries()` counted the text `"name":` in `validate_kg.py`, load entries included, and reported 82; it now counts the entries of `VALIDATION_QUERIES` from the file's syntax tree.
 
@@ -105,7 +108,7 @@ The General-only stack (H-0320) was not re-measured at S525. It was last measure
 
 ## Observations (not failures)
 
-- Q8 returns 39 BMM continuants against an ideal of 34 (threshold 30, passes; diagnostic).
+- Q8 returns 40 BMM continuants against an ideal of 34 (threshold 30, passes; diagnostic). It returned 39 until B8 added the axis value class (`bmm/axis#AxisValue`, under IAO information content entity).
 - Q11 counts rows, one per inferred parent, rather than distinct classes; it passes on threshold.
 - `ontology/joins/ontara-joins-axioms.ttl` and `ontara-joins-shapes.ttl` (W-161, dormant) are loaded by neither `reason_kg.py` nor `validate_kg.py`.
 

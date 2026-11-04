@@ -1,7 +1,7 @@
 {
-  "baseline": "S0.5 Pass A close-out QA baseline (Plan B Stage 0, Session 525)",
-  "date": "2026-11-03",
-  "measuredAtCommit": "28f0d6b plus the S525 Pass A close-out (the commit that records this baseline)",
+  "baseline": "S0.5 Pass B close-out QA baseline (Plan B Stage 0, Session 527)",
+  "date": "2026-11-04",
+  "measuredAtCommit": "2582f3e (QA inputs unchanged at b6b3caa: 17442b1 and b6b3caa touch only stack/)",
   "rerun": "make qa",
   "graphdb": {
     "repository": "ontara-dev",
@@ -9,22 +9,23 @@
     "host": "GraphDB Desktop"
   },
   "tools": {
-    "python": "python3 (rdflib 7.6.0)",
+    "python": "python3 (rdflib 7.6.0): /usr/bin/python3 on a login shell's PATH, Apple Command Line Tools Python 3.9.6",
     "java": "openjdk 25.0.2",
-    "robot": "1.9.8",
+    "robot": "1.9.8 (tools/robot.jar)",
     "reasoner": "HermiT",
-    "pipelinePython": ".venv/bin/python (OpenSysML 0.11.0 venv; rdflib 7.6.0, PyYAML 6.0.3)"
+    "pipelinePython": ".venv/bin/python (OpenSysML 0.11.0 venv, Python 3.12.2; rdflib 7.6.0, PyYAML 6.0.3)"
   },
   "overall": "pass",
-  "overallNote": "Re-recorded at S525 (S0.5 Pass B step 0, Pass A close-out), replacing the S517 baseline, after Pass A's A7 made the QA knowledge graph identical across runs. Measured on two consecutive make qa runs, with identical counts and a clean tree after each. Q26 now counts only disjointness nodes whose members are all BMM classes, and expects exactly 2; reasoning-summary.json's sparqlQueryCount now counts the suite's queries (68), not the text '\"name\":' (82).",
+  "overallNote": "Re-recorded at S527 (S0.5 Pass B close-out, A2), replacing the S525 baseline, at Ella's decision at S526 on Pass B's return (section 9.1, deviation 9): Pass B's B8 changed the domain graph from 24,041 to 24,136 triples, stable over the six make qa runs after it. Measured on two consecutive make qa runs, each from a fresh login shell, with identical counts and per-query results and no tracked file changed by either. Against the S525 baseline, B8 also changed the tenant types graph (15 to 244 triples), Q8 (39 to 40, the axis value class) and the axis family's disjointness members (5 to 6, the same class), and B7 and B8 together changed reasoning-summary.json's modelDigest (6ab80ec, c17bd2c). Every other figure is unchanged.",
   "stability": {
     "runs": 2,
     "identical": true,
     "graphCountsBy": "Code's own SPARQL counts against ontara-dev after each run (explicit statements)",
-    "domainGraphTriples": 24041,
+    "domainGraphTriples": 24136,
     "correspondenceGraphTriples": 1400,
-    "explicitTotal": 25441,
+    "explicitTotal": 25536,
     "explicitOutsideNamedGraphs": 0,
+    "namedGraphs": 2,
     "allDisjointClassesInDomainGraph": 17,
     "allDisjointClassesWithBmmMembersOnly": 2
   },
@@ -45,7 +46,7 @@
         "domainGraphTriples": 200,
         "propertyGraphTriples": 99,
         "weightGraphTriples": 786,
-        "tenantTypesGraphTriples": 15,
+        "tenantTypesGraphTriples": 244,
         "correspondenceGraphTriples": 1400
       },
       "deferredProperties": [
@@ -63,7 +64,7 @@
         "passed": 68,
         "failed": 0,
         "filesLoaded": 17,
-        "domainGraphTriples": 24041,
+        "domainGraphTriples": 24136,
         "correspondenceGraphTriples": 1400
       },
       "filesLoaded": [
@@ -177,7 +178,7 @@
           "id": "Q8",
           "name": "BMM classes that are BFO:Continuant (inferred)",
           "result": "PASS",
-          "count": 39,
+          "count": 40,
           "expectation": "threshold: 30, ideal: 34",
           "group": "Inference"
         },
@@ -687,8 +688,8 @@
         "datatypePropertyCount": 11,
         "sparqlQueryCount": 68
       },
-      "modelDigest": "2cc1fe166da75010db259e0be2c96daee6c3df68868478b51acb909695cd4171",
-      "generalOnlyStack": "Not re-measured at S525. Last measured at S517 (12 files, consistent, 0 unsatisfiable, 7m31s, by a direct Robot chain; reason_kg.py has no option to select files)."
+      "modelDigest": "879373fdbedf7194c5d9af61d4850dfc9e7e26d914811f55ce713d3061119c1e",
+      "generalOnlyStack": "Not re-measured at S525 or S527. Last measured at S517 (12 files, consistent, 0 unsatisfiable, 7m31s, by a direct Robot chain; reason_kg.py has no option to select files)."
     },
     "diff": {
       "target": "qa-diff",
@@ -722,7 +723,7 @@
     }
   ],
   "observations": [
-    "Q8 returns 39 BMM continuants against an ideal of 34 (threshold 30, passes, diagnostic).",
+    "Q8 returns 40 BMM continuants against an ideal of 34 (threshold 30, passes, diagnostic). It returned 39 until B8 added the axis value class (bmm/axis#AxisValue, under IAO information content entity) at S525.",
     "Q11 counts rows (one per inferred parent), not distinct classes; it passes on threshold.",
     "Q26 counted every owl:AllDisjointClasses node in the store (17: BFO 5, CCO 5, BMM axioms 2, record module 2, governance 3) against 'at least 9' until S525; it now counts the 2 whose members are all BMM classes, exactly.",
     "ontology/joins/ontara-joins-axioms.ttl and ontara-joins-shapes.ttl (W-161, dormant) are loaded by neither reason_kg.py nor validate_kg.py.",
