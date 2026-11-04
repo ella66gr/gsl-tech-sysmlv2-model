@@ -21,9 +21,12 @@
 //      of the same data;
 //   6  the scheme's refusals (B3 item 4), through the suite's gate and directly
 //      against the module, in targeted and in whole mode;
-//   7  two store behaviours D1 could not confirm: where a default-graph write
-//      lands and whether validation sees it; and whether the standard
-//      endpoints are closed to writes from outside the stack's network.
+//   7  two store behaviours D1 could not confirm: default-graph writes (since
+//      module 0.6.0 the module refuses one sent with no policy, by either of
+//      its two checks; one sent through Fuseki's unvalidated /update lands in
+//      the stored default graph, which only the placement queries see); and
+//      whether the standard endpoints are closed to writes from outside the
+//      stack's network.
 //
 // Group 5 uses the whole-graph check itself (S0.5 Pass B4; ../wholegraph.ts),
 // the same code the whole-graph-check service and the bootstrap run, so the
@@ -681,7 +684,9 @@ async function group7() {
   console.log("\n== Group 7: two store behaviours D1 could not confirm");
   await setShapes(SHAPES.runtime);
   await resetBranch();
-  // 7.1 Where a default-graph write lands, and whether validation sees it.
+  // 7.1 Default-graph writes: the module refuses one sent with no policy
+  // (0.6.0); Fuseki's unvalidated /update stores one in the stored default
+  // graph, where validation never looks and the placement queries do.
   const DG = "urn:ontara:standin:cafe#order-scoping-default-graph";
   const where = async (base: string) => {
     const s = openStore(DS, base);
@@ -690,23 +695,31 @@ async function group7() {
     const named = (await s.select(`SELECT DISTINCT ?g WHERE { GRAPH ?g { <${DG}> ?p ?o } }`)).map((x: any) => x.g.value);
     return { stored, union, named };
   };
+  const storedDefault = async (base: string) => Number((await openStore(DS, base).select(`SELECT (COUNT(*) AS ?n) WHERE { GRAPH <${STORED_DEFAULT_GRAPH}> { ?s ?p ?o } }`))[0]?.n?.value ?? -1);
   const body = `INSERT DATA { <${DG}> a <https://ontara.dev/ontology/tenant/cafe/Order> }`;
+  // Since module 0.6.0 (S527) the module refuses a default-graph quad sent with
+  // no write policy (rule default-graph), in both modes. 7.1a and 7.1b check
+  // that nothing at all is stored: the stored default graph holds 0 triples
+  // afterwards, which is what the old 7.1ax and 7.1bx (removing the stored
+  // triple) now reduce to, so they are retired.
   for (const [id, label, base] of [["7.1a", "targeted", STORE], ["7.1b", "whole", WHOLE]] as const) {
     if (base === WHOLE) await setShapesOn(WHOLE, SHAPES.runtime);
+    const before = await countAll(base);
     const r = await vu(base, body);
+    const after = await countAll(base);
     const w = await where(base);
-    const s2 = openStore(DS, base);
-    const whole = await wholeGraph(base, (await branchOf(base)).dbr);
-    const pass = r.outcome === "committed" && w.stored && !w.union && w.named.length === 0 && whole.outcome === "committed";
-    record({ group: 7, id, name: `A default-graph write sent straight to the module (stack network, no policy), ${label} mode: an Order with neither axis value, which every axis shape would reject if it saw it`,
-      expected: "committed; stored in Jena's stored default graph (urn:x-arq:DefaultGraph); not in the union default graph nor in any named graph; a whole-graph validation of the dataset still conforms: invisible to validation",
-      observed: `${r.outcome} (${r.validation}); in the stored default graph: ${w.stored}; in the union default graph: ${w.union}; in named graphs: ${w.named.length ? w.named.join(", ") : "none"}; whole-graph validation: ${whole.outcome}${whole.report ? ` (${shapesOf(whole).join(", ")})` : ""}`,
+    const dflt = await storedDefault(base);
+    const rules: string[] = r.refusal?.rules ?? [];
+    const pass = r.outcome === "refused" && rules.includes("default-graph") && r.txn === "aborted"
+      && !w.stored && !w.union && w.named.length === 0 && dflt === 0 && before === after;
+    record({ group: 7, id, name: `A default-graph write sent straight to the module (stack network, no policy), ${label} mode: an Order with neither axis value, which no check would see if it were stored`,
+      expected: "refused (403) by the default-graph rule, transaction aborted; nothing stored: not in Jena's stored default graph (urn:x-arq:DefaultGraph), which holds 0 triples, nor in the union default graph, nor in any named graph; the store's triple count unchanged",
+      observed: `${r.outcome}${rules.length ? ` by ${rules.join(", ")}` : ""} (transaction ${r.txn ?? "no header"}); in the stored default graph: ${w.stored} (it holds ${dflt} triples); in the union default graph: ${w.union}; in named graphs: ${w.named.length ? w.named.join(", ") : "none"}; triples ${before} before, ${after} after`,
       pass, validation: r.validation });
-    await must(s2.update(`DELETE DATA { GRAPH <${STORED_DEFAULT_GRAPH}> { <${DG}> a <https://ontara.dev/ontology/tenant/cafe/Order> } }`), "remove the default-graph write");
-    const gone = await where(base);
-    record({ group: 7, id: `${id}x`, name: `The ${label}-mode default-graph triple is removed by naming urn:x-arq:DefaultGraph in an update`, expected: "gone", observed: gone.stored ? "still there" : "gone", pass: !gone.stored });
+    // If the refusal ever failed, take out what was stored, so 7.1c and 7.1d start from an empty stored default graph.
+    if (w.stored) await must(openStore(DS, base).update(`DELETE DATA { GRAPH <${STORED_DEFAULT_GRAPH}> { <${DG}> a <https://ontara.dev/ontology/tenant/cafe/Order> } }`), "remove the default-graph write");
   }
-  // The unvalidated /update endpoint lands it in the same place.
+  // The unvalidated /update endpoint stores it in the stored default graph.
   await must(db.update(body), "default-graph write via /update");
   const w3 = await where(STORE);
   record({ group: 7, id: "7.1c", name: "The same write through Fuseki's unvalidated /update (stack network) lands in the same place", expected: "stored default graph only", observed: `stored default graph: ${w3.stored}; union: ${w3.union}; named: ${w3.named.length}`, pass: w3.stored && !w3.union && w3.named.length === 0 });
@@ -718,6 +731,29 @@ async function group7() {
   const p3 = rows["P3-known-graphs.rq"].some((x: any) => x.g?.value === STORED_DEFAULT_GRAPH);
   record({ group: 7, id: "7.1d", name: "The placement queries see the default-graph instance (P2: a runtime instance outside a runtime graph; P3: a non-empty stored default graph)", expected: "P2 and P3 each report it under urn:x-arq:DefaultGraph", observed: `P2: ${p2}; P3: ${p3}`, pass: p2 && p3 });
   await must(db.update(`DELETE DATA { GRAPH <${STORED_DEFAULT_GRAPH}> { <${DG}> a <https://ontara.dev/ontology/tenant/cafe/Order> } }`), "remove");
+
+  // 7.1e, 7.1f: the whole-graph forms reach the stored default graph without
+  // naming a quad (here ADD GRAPH <dbr> TO DEFAULT). The module refuses them by
+  // its second check: the stored default graph compared before and after the
+  // request, inside its transaction (0.6.0).
+  const AM = "urn:ontara:standin:scoping#default-graph-by-add";
+  for (const [id, label, base] of [["7.1e", "targeted", STORE], ["7.1f", "whole", WHOLE]] as const) {
+    const s = openStore(DS, base);
+    const b = await branchOf(base);
+    await must(s.update(`INSERT DATA { GRAPH <${b.dbr}> { <${AM}> <${RDFS}comment> "copied to the default graph by ADD" } }`), "seed the ADD source");
+    const before = await countAll(base);
+    const r = await vu(base, `ADD GRAPH <${b.dbr}> TO DEFAULT`);
+    const after = await countAll(base);
+    const dflt = await storedDefault(base);
+    const kept = await s.ask(`ASK { GRAPH <${b.dbr}> { <${AM}> ?p ?o } }`);
+    const rules: string[] = r.refusal?.rules ?? [];
+    record({ group: 7, id, name: `A whole-graph form that writes into the default graph with no quad of its own (ADD GRAPH <dbr> TO DEFAULT), sent straight to the module (no policy), ${label} mode`,
+      expected: "refused (403) by the default-graph rule (the stored default graph changed), transaction aborted; the stored default graph holds 0 triples; the store's triple count unchanged; the source graph kept",
+      observed: `${r.outcome}${rules.length ? ` by ${rules.join(", ")}` : ""} (transaction ${r.txn ?? "no header"}); stored default graph ${dflt} triples; triples ${before} before, ${after} after; source kept: ${kept}`,
+      pass: r.outcome === "refused" && rules.includes("default-graph") && r.txn === "aborted" && dflt === 0 && before === after && kept, validation: r.validation });
+    if (dflt > 0) await must(s.update(`DELETE WHERE { GRAPH <${STORED_DEFAULT_GRAPH}> { ?s ?p ?o } }`), "empty the stored default graph");
+    await must(s.update(`DELETE DATA { GRAPH <${b.dbr}> { <${AM}> <${RDFS}comment> "copied to the default graph by ADD" } }`), "remove the ADD source");
+  }
 
   // 7.2 The standard endpoints, inside the network: the published listener refuses every write route; the stack-network listener accepts them (control).
   const st = await db.status();

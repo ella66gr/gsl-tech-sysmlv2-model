@@ -20,7 +20,9 @@
 //             (Content-Type application/shacl-validation-report+n-triples);
 //             the TDB2 write transaction was aborted
 //        403  refused by the request's write policy (below), before
-//             validation: JSON naming each broken rule; aborted
+//             validation: JSON naming each broken rule; aborted. Also a
+//             request with no policy that carries a default-graph quad
+//             (rule "default-graph", below)
 //        405  a write sent to the published listener (B3; refused, nothing run)
 //        400  the request does not parse;  500 any other fault (aborted)
 //   GET  /{dataset}/validated-update   JSON status
@@ -54,7 +56,28 @@
 // "not-home"). A policy request may use only INSERT DATA, DELETE DATA and
 // DELETE/INSERT WHERE (rule "operation": CLEAR, DROP and the other
 // whole-graph forms act on graphs, not quads). A request with no policy header
-// (maintenance and test seeding, from the stack network only) is not checked.
+// (maintenance and test seeding, from the stack network only) is not checked
+// against the policy's rules, with one exception, below.
+//
+// Default-graph quads with no write policy (module 0.6.0, S527; Ella, S526).
+// A default-graph quad is stored in Jena's stored default graph
+// (urn:x-arq:DefaultGraph), which is outside the union graph that every
+// check validates, so nothing would ever see it. A request with no policy is
+// therefore refused, 403 with rule "default-graph" (the rule name the policy
+// uses), in both modes, and nothing is stored, if either:
+//   1. any quad in it is in the default graph: an INSERT DATA or DELETE DATA
+//      quad, a DELETE WHERE pattern quad, or a DELETE/INSERT template quad,
+//      written with no GRAPH and no WITH <graph> (or naming the default graph).
+//      Checked on the parsed request before anything runs, so a request that
+//      mixes default-graph and named-graph quads is refused whole;
+//   2. running it changed the stored default graph (a triple added or
+//      removed), which is how the whole-graph forms reach it: LOAD with no
+//      INTO, ADD, MOVE or COPY to or from DEFAULT, CLEAR or DROP of DEFAULT or
+//      ALL when the stored default graph holds anything. Checked inside the
+//      write transaction, before the outcome is used, by comparing the stored
+//      default graph before and after; the transaction is aborted.
+// A write with a policy is unchanged: the policy's "default-graph" rule already
+// covers it.
 //
 // The Reality Reference Branch's identifier (S0.5 Pass B3; Ella, S525). When
 // the module creates the runtime dataset from empty, it generates a lower-case
@@ -117,6 +140,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -138,6 +162,7 @@ import org.apache.jena.fuseki.servlets.HttpAction;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
+import org.apache.jena.graph.Triple;
 import org.apache.jena.query.DatasetFactory;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QuerySolution;
@@ -161,8 +186,10 @@ import org.apache.jena.sparql.core.DatasetGraphFactory;
 import org.apache.jena.sparql.core.DatasetGraphWrapper;
 import org.apache.jena.sparql.core.Quad;
 import org.apache.jena.sparql.graph.GraphFactory;
+import org.apache.jena.sparql.modify.request.UpdateData;
 import org.apache.jena.sparql.modify.request.UpdateDataDelete;
 import org.apache.jena.sparql.modify.request.UpdateDataInsert;
+import org.apache.jena.sparql.modify.request.UpdateDeleteWhere;
 import org.apache.jena.sparql.modify.request.UpdateModify;
 import org.apache.jena.tdb2.DatabaseMgr;
 import org.apache.jena.tdb2.TDB2;
@@ -373,11 +400,62 @@ public class OntaraFuseki {
         return out;
     }
 
+    // ------------------------- default-graph quads with no write policy (0.6.0)
+    static final String NO_POLICY_DG = "no write policy: a quad in the default graph is stored in Jena's stored default graph (urn:x-arq:DefaultGraph), outside the union graph that every check validates";
+
+    static boolean isDefault(Node g) { return g == null || Quad.isDefaultGraph(g); }
+
+    // Check 1: the request's own quads, read from the parsed request before it
+    // runs. A DELETE/INSERT template quad with no GRAPH goes to the WITH graph
+    // when there is one, so it is in the default graph only without WITH (or
+    // with WITH naming the default graph).
+    static JsonArray defaultGraphQuads(UpdateRequest req) {
+        JsonArray out = new JsonArray();
+        for (Update u : req.getOperations()) {
+            List<Quad> qs = new ArrayList<>();
+            boolean templates = false;
+            Node with = null;
+            if (u instanceof UpdateData d) qs.addAll(d.getQuads());
+            else if (u instanceof UpdateDeleteWhere d) qs.addAll(d.getQuads());
+            else if (u instanceof UpdateModify m) { qs.addAll(m.getDeleteQuads()); qs.addAll(m.getInsertQuads()); templates = true; with = m.getWithIRI(); }
+            for (Quad q : qs) {
+                boolean dflt = isDefault(q.getGraph()) && (!templates || with == null || Quad.isDefaultGraph(with));
+                if (dflt && out.size() < 20) out.add(refusal("default-graph", Quad.defaultGraphIRI, q, NO_POLICY_DG));
+            }
+        }
+        return out;
+    }
+
+    // Check 2: the stored default graph itself, read inside the write
+    // transaction before and after the request runs.
+    static Set<Triple> storedDefaultGraph(DatasetGraph dsg) {
+        Set<Triple> s = new HashSet<>();
+        dsg.find(Quad.defaultGraphIRI, Node.ANY, Node.ANY, Node.ANY).forEachRemaining(q -> s.add(q.asTriple()));
+        return s;
+    }
+
+    static JsonArray defaultGraphChanges(DatasetGraph dsg, Set<Triple> before) {
+        JsonArray out = new JsonArray();
+        if (before == null) return out;
+        Set<Triple> after = storedDefaultGraph(dsg);
+        for (Triple t : after)
+            if (!before.contains(t) && out.size() < 20)
+                out.add(refusal("default-graph", Quad.defaultGraphIRI, Quad.create(Quad.defaultGraphIRI, t), "no write policy: the request added this triple to Jena's stored default graph (urn:x-arq:DefaultGraph), outside the union graph that every check validates"));
+        for (Triple t : before)
+            if (!after.contains(t) && out.size() < 20)
+                out.add(refusal("default-graph", Quad.defaultGraphIRI, Quad.create(Quad.defaultGraphIRI, t), "no write policy: the request removed this triple from Jena's stored default graph (urn:x-arq:DefaultGraph)"));
+        return out;
+    }
+
+    static final String HOW_DG_NOT_RUN = "not run: refused by the default-graph rule (no write policy)";
+    static final String HOW_DG_CHANGED = "not validated: refused by the default-graph rule (no write policy; the request changed the stored default graph)";
+
     // The write path's validation: runs the request inside dsg's open write
     // transaction and validates it in this module's mode. The caller commits
     // or aborts. Used by every write (ValidatedUpdate.doPost) and by the probe.
     // With a write policy, the changed quads are checked against it first; a
-    // refusal returns before validation (report null).
+    // refusal returns before validation (report null). With no write policy,
+    // the two default-graph checks above apply instead (refusal: report null).
     static Checked runAndValidate(DatasetGraph dsg, UpdateRequest req) { return runAndValidate(dsg, req, null); }
 
     static Checked runAndValidate(DatasetGraph dsg, UpdateRequest req, Policy pol) {
@@ -386,6 +464,15 @@ public class OntaraFuseki {
             r.add(refusal("operation", null, null, "a runtime write may use only INSERT DATA, DELETE DATA and DELETE/INSERT WHERE: CLEAR, DROP, LOAD, ADD, MOVE and COPY act on whole graphs"));
             r.get(0).getAsObject().put("graph", "(not run)");
             return new Checked(null, "not run: refused by the write policy", r);
+        }
+        // No write policy: default-graph quads are refused (0.6.0). Check 1
+        // before anything runs; check 2's "before" read here, its "after" read
+        // on each path below once the request has run.
+        Set<Triple> dgBefore = null;
+        if (pol == null) {
+            JsonArray dg = defaultGraphQuads(req);
+            if (dg.size() > 0) return new Checked(null, HOW_DG_NOT_RUN, dg);
+            dgBefore = storedDefaultGraph(dsg);
         }
         // Shapes: copied out of the shapes graph inside this transaction.
         Graph shapesGraph = GraphFactory.createDefaultGraph();
@@ -411,6 +498,9 @@ public class OntaraFuseki {
             if (pol != null) {
                 JsonArray refused = policyRefusals(dsg, rec, pol);
                 if (refused.size() > 0) return new Checked(null, "not validated: refused by the write policy", refused);
+            } else {
+                JsonArray changed = defaultGraphChanges(dsg, dgBefore);
+                if (changed.size() > 0) return new Checked(null, HOW_DG_CHANGED, changed);
             }
             ValidationContext vCxt = ValidationContext.create(shapes, data);
             int focus = 0;
@@ -426,8 +516,16 @@ public class OntaraFuseki {
                 : MODE;
         // GraphValidation.updateAndReport runs the update inside the graph's
         // transaction (here, the one the caller began), validates the whole
-        // graph, and returns the report.
-        return new Checked(GraphValidation.updateAndReport(shapes, data, () -> UpdateAction.execute(req, dsg)), how, null);
+        // graph, and returns the report. Only requests with no policy reach
+        // here; check 2 reads the stored default graph once the update has run.
+        final Set<Triple> before = dgBefore;
+        JsonArray[] changed = { new JsonArray() };
+        ValidationReport report = GraphValidation.updateAndReport(shapes, data, () -> {
+            UpdateAction.execute(req, dsg);
+            changed[0] = defaultGraphChanges(dsg, before);
+        });
+        if (changed[0].size() > 0) return new Checked(null, HOW_DG_CHANGED, changed[0]);
+        return new Checked(report, how, null);
     }
 
     // ---------------------------------------------------------- the probe
