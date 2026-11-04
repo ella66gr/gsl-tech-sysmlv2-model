@@ -177,7 +177,7 @@ gen-test-preconditions: venv
 # sysml, never one named in a developer's shell (S525, Pass A close-out).
 
 SYSML          ?= sysml
-SYSML_VERSION  := 0.11.0
+SYSML_VERSION  := 0.12.0
 SYSML_BASELINE := qa/parse-warnings-baseline.txt
 SYSML_SCOPES   := $(sort $(wildcard exercises/*/) $(wildcard generation/tests/fixtures/*/))
 
