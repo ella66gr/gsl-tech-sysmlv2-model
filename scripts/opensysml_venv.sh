@@ -87,6 +87,11 @@ if [ -e "$venv" ] && [ ! -f "$marker" ]; then
 	fail "$venv exists but was not made by this script (no $marker). Move it aside, then run make venv."
 fi
 
+# Check the interpreter before anything is deleted (S527): an old python3 on
+# the PATH, such as macOS's 3.9, must refuse here and leave the venv in place.
+"$base_python" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)' \
+	|| fail "$base_python is older than Python 3.10, which opensysml needs; $venv is left as it was"
+
 if [ -e "$venv" ]; then
 	echo "=== opensysml venv: rebuilding $venv (${why:-refresh asked for}; wanted: $want_stamp)"
 	rm -rf "$venv"
@@ -94,8 +99,6 @@ else
 	echo "=== opensysml venv: creating $venv ($want_stamp)"
 fi
 
-"$base_python" -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)' \
-	|| fail "$base_python is older than Python 3.10, which opensysml needs"
 "$base_python" -m venv "$venv"
 touch "$marker"
 
