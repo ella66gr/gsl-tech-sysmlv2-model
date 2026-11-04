@@ -122,8 +122,9 @@ class AxisType:
 
 # -- The unchecked declarations both readers return ---------------------
 #
-# A field the model does not set is None (a list of authorities: empty).
-# Nothing here is checked; check_types does that.
+# A single-valued field the model does not set is None; a multi-valued one
+# is the empty list (generation.resolved reads an unset feature as the empty
+# sequence). Nothing here is checked; check_types does that.
 
 
 @dataclass
@@ -131,7 +132,7 @@ class PreconditionDecl:
     name: str
     related_via: str | None
     required_axis: str | None
-    required_values: list[str] | None
+    required_values: list[str]
     rejection_reason: str | None
 
 

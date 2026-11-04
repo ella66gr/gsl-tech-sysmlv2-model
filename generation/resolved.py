@@ -44,9 +44,15 @@ How status axes are read (``ResolvedModel.axis_decls``):
    ``AxisPrecondition``, inside the move. Refs are the type's reference
    usages, inherited ones included, that redefine nothing.
 3. Values are evaluated, not parsed: ``Model.eval(<feature>,
-   context_symbol_id=<owner>)``. An enumeration literal is read as its own
-   name, a one-element sequence as a list where a list is wanted, and an
-   unset feature (``Undetermined``) as None.
+   context_symbol_id=<owner>)``, and every value is read as a sequence
+   (``ResolvedModel.values``), as KerML reads a feature's value. An unset
+   feature is the empty sequence: OpenSysML 0.11.0 returns ``Undetermined``
+   for it, and 0.12.0, following KerML, ``[]`` where the multiplicity is
+   open; both read the same here. A single-value read (``string``,
+   ``literal``) gives None for the empty sequence, the one item for a
+   sequence of one, and refuses more than one. A multi-value read
+   (``strings``, ``literals``) gives the sequence, so an unset feature is the
+   empty list. An enumeration literal is read as its own name.
 
 The declarations are checked by ``generation.status_axes.check_types``.
 
@@ -225,11 +231,25 @@ class ResolvedModel:
 
     # -- values ----------------------------------------------------------
 
-    def value(self, owner: str, feature: str):
+    def values(self, owner: str, feature: str) -> list:
+        """The feature's value as a sequence; an unset feature is the empty sequence.
+
+        The one place OpenSysML's value forms are read. ``Undetermined``
+        (0.11.0's unset), ``[]`` (0.12.0's unset, where the multiplicity is
+        open) and None give ``[]``; a list or tuple gives its items; any other
+        value is a sequence of one.
+        """
         v = self.model.eval(feature, context_symbol_id=owner)
-        if isinstance(v, opensysml.Undetermined):
-            return None
-        return v
+        if v is None or isinstance(v, opensysml.Undetermined):
+            return []
+        return list(v) if isinstance(v, (list, tuple)) else [v]
+
+    def _one(self, owner: str, feature: str):
+        """The feature's one value, or None when it is unset; more than one is a model error."""
+        vs = self.values(owner, feature)
+        if len(vs) > 1:
+            raise ModelError(f"{owner}: {feature} has {len(vs)} values, where the reader takes one")
+        return vs[0] if vs else None
 
     @staticmethod
     def _literal(v) -> str:
@@ -237,27 +257,24 @@ class ResolvedModel:
             return v.literal_id.split("::")[-1]
         return str(v)
 
-    @staticmethod
-    def _as_list(v) -> list:
-        return list(v) if isinstance(v, (list, tuple)) else [v]
-
     def string(self, owner: str, feature: str) -> str | None:
-        v = self.value(owner, feature)
+        v = self._one(owner, feature)
         return None if v is None else str(v)
 
-    def strings(self, owner: str, feature: str) -> list[str] | None:
-        v = self.value(owner, feature)
-        return None if v is None else [str(x) for x in self._as_list(v)]
+    def literal(self, owner: str, feature: str) -> str | None:
+        v = self._one(owner, feature)
+        return None if v is None else self._literal(v)
 
-    def literals(self, owner: str, feature: str) -> list[str] | None:
-        v = self.value(owner, feature)
-        return None if v is None else [self._literal(x) for x in self._as_list(v)]
+    def strings(self, owner: str, feature: str) -> list[str]:
+        return [str(x) for x in self.values(owner, feature)]
+
+    def literals(self, owner: str, feature: str) -> list[str]:
+        return [self._literal(x) for x in self.values(owner, feature)]
 
     # -- status axes -----------------------------------------------------
 
     def _axis_decl(self, ax) -> AxisDecl:
         a = ax.id
-        shape = self.literals(a, "valueSpace.valueShape")
         moves = []
         for t in self.effective_children(ax, ("redefines",)):
             if t.kind != "partUsage" or not self.typed(t, AXIS_TRANSITION):
@@ -280,17 +297,17 @@ class ResolvedModel:
                     self.string(t.id, "toValue"),
                     self.string(t.id, "transitionLabel"),
                     self.string(t.id, "triggerEvent"),
-                    self.literals(t.id, "requiredAuthority") or [],
+                    self.literals(t.id, "requiredAuthority"),
                     pres,
                 )
             )
         return AxisDecl(
             ax.name,
             self.string(a, "axisName"),
-            self.strings(a, "valueSpace.enumValues") or [],
+            self.strings(a, "valueSpace.enumValues"),
             self.string(a, "defaultValue"),
-            self.literals(a, "axisAuthority") or [],
-            shape[0] if shape else None,
+            self.literals(a, "axisAuthority"),
+            self.literal(a, "valueSpace.valueShape"),
             moves,
             self.string(a, "axisDescription"),
         )
