@@ -221,7 +221,7 @@ Build scripts (`db/exports/build-scripts/build_sNNN_*.py`) author substrate docu
 - **QA knowledge graph (authoring rig only):** GraphDB Free 10.x (local Java app, port 7200), used by the QA suite; it is not the runtime store, which is Fuseki in `stack/` (ADR-014). Robot (wraps HermiT, `tools/robot.jar`) for OWL 2 DL consistency checking. BFO 2020 + CCO 2.0 + IAO + PROV-O (core subset) as imported ontologies. A full reasoning run takes around 20 minutes.
 - **Resolver / database:** Local Homebrew PostgreSQL 16. The resolver is a FastAPI service auto-started via launchd (LaunchAgent at `~/Library/LaunchAgents/dev.ontara.resolver.plist`). Substrate write engine, marker-bound spec engine, and admin UI all in `db/resolver/`.
 - **Substrate editor:** Portal hosts the substrate editor at `http://localhost:5174/substrate/{slug}` (TipTap + ProseMirror). Used for in-browser editing of substrate-canonical documents.
-- **Model editing:** the free Syside Editor (VS Code extension `sensmetry.syside-editor`), which replaced Syside Modeler at S491; there is no Automator API or CLI. OpenSysML (`make parse-check`) is the SysML parse gate of record. Ella's Syside Editor check was retired as a gate at S519; the Syside Editor remains the editing tool. OpenSysML is pinned at v0.12.0 (`SYSML_VERSION` in the `Makefile`, `brew pin opensysml`; upgrade deliberately), and the accepted warnings are in `qa/parse-warnings-baseline.txt`. `scripts/check_package_direction.sh` is the scripted structural check.
+- **Model editing:** the free Syside Editor (VS Code extension `sensmetry.syside-editor`), which replaced Syside Modeler at S491; there is no Automator API or CLI. OpenSysML (`make parse-check`) is the SysML parse gate of record. Ella's Syside Editor check was retired as a gate at S519; the Syside Editor remains the editing tool. OpenSysML is pinned at v0.12.1 (`SYSML_VERSION` in the `Makefile`, `brew pin opensysml`; upgrade deliberately), and the accepted warnings are in `qa/parse-warnings-baseline.txt`. `scripts/check_package_direction.sh` is the scripted structural check.
 
 ## Console Commands
 
@@ -270,7 +270,7 @@ make gen-check                                                # Regenerate into 
 make gen-test                                                 # generation/ tests on fixtures + Cafe lifecycle guard refusal check (Node 23.6+)
 python3 scripts/gen_decision_table_evaluator.py               # Generate decision tables
 scripts/check_package_direction.sh                            # ADR-012 import rules R1-R8 (must PASS)
-make parse-check                                              # OpenSysML v0.12.0 over every .sysml file; fails on any error or non-baseline warning
+make parse-check                                              # OpenSysML v0.12.1 over every .sysml file; fails on any error or non-baseline warning
 ```
 
 ## Marker Regen Commands
